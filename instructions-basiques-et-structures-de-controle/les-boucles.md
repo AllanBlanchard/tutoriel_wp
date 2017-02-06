@@ -45,11 +45,11 @@ Le raisonnement produit par l'outil pour vérifier un invariant $I$ sera donc :
 En notant l'invariant $I$, la règle d'inférence correspondant à la boucle est 
 définie comme suit :
 
-->$\dfrac{\{I \wedge B \}\ c\ \{I\}}{\{I\}\ while(B)\{c\}\ \{I \wedge \neg B\}}$<-
+-> $\dfrac{\{I \wedge B \}\ c\ \{I\}}{\{I\}\ while(B)\{c\}\ \{I \wedge \neg B\}}$ <-
 
 Et le calcul de plus faible pré-condition est le suivant :
 
--> $wp(while (B) \{ S \}, Post) = I \wedge ((B \wedge I) \Rightarrow wp(S, I)) \wedge ((\neg B \wedge I) \Rightarrow Post) $ <-
+-> $wp(while (B) \{ S \}, Post) = I \wedge ((B \wedge I) \Rightarrow wp(S, I)) \wedge ((\neg B \wedge I) \Rightarrow Post)$ <-
 
 Détaillons cette formule :
 

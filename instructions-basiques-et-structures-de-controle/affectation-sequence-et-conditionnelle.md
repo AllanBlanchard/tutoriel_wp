@@ -14,7 +14,7 @@ chaque occurrence de $x$ dans la formule par $E$. Par exemple :
 
 -> $\{P\}\quad x = 43*c \quad \{ x = 258 \}$ <-
 
--> $ P = wp(x = 43*c , \{x = 258\}) = \{43*c = 258\} $ <-
+-> $P = wp(x = 43*c , \{x = 258\}) = \{43*c = 258\}$ <-
 
 Ce qui finalement nous donnerait cette écriture : 
 
@@ -27,7 +27,7 @@ Nous pourrions alors déduire qu'avant exécution c doit valoir 6.
 La règle d'inférence prenant en compte le calcul de plus faible pré-condition
 est donc la suivante :
 
--> $ \dfrac{}{\{Q[x \leftarrow E] \}\quad x = E \quad\{ Q \}} $ <-
+-> $\dfrac{}{\{Q[x \leftarrow E] \}\quad x = E \quad\{ Q \}}$ <-
 
 Nous noterons qu'il n'y a pas de prémisse à vérifier. Cela veut-il dire que le
 triplet est nécessairement vrai ? Oui. Mais cela ne dit pas si la pré-condition 
@@ -67,7 +67,7 @@ etc.
 
 Nous associons la règle d'inférence suivante à cette idée :
 
--> $\dfrac{\{P\}\quad S1 \quad \{R\} \ \ \ \{R\}\quad S2 \quad \{Q\}}{\{P\}\quad S1 ;\ S2 \quad \{Q\}} $<-
+-> $\dfrac{\{P\}\quad S1 \quad \{R\} \ \ \ \{R\}\quad S2 \quad \{Q\}}{\{P\}\quad S1 ;\ S2 \quad \{Q\}}$ <-
 
 Pour vérifier que la séquence d'instruction $S1;\ S2$ (NB : Où $S1$ et $S2$ 
 peuvent elles-mêmes être des séquences d'instruction), nous passons par une 
@@ -103,13 +103,13 @@ et que toutes les instructions qui la précède forme la première "instruction"
 De cette manière nous remontons bien les instructions une à une dans notre
 raisonnement, par exemple avec le programme précédent :
 
-+------------------------------------------+------------------------------------------------+---------------------------------------------+
-| -> $\{P\}\quad i_1 ; \quad \{Q_{-2}\}$<- | ->$ \{Q_{-2}\}\quad i_2 ; \quad \{Q_{-1}\} $<- |                                             |
-+------------------------------------------+------------------------------------------------+---------------------------------------------+
-| -> $\{P\}\quad i_1 ; \quad i_2 ; \quad \{Q_{-1}\} $<-                                     | -> $ \{Q_{-1}\} \quad i_3 ; \quad \{Q\} $<- |
-+-------------------------------------------------------------------------------------------+---------------------------------------------+
-| -> $\{P\}\quad i_1 ; \quad i_2 ; \quad i_3 ; \quad \{ Q \} $<-                                                                          |
-+-----------------------------------------------------------------------------------------------------------------------------------------+
++-------------------------------------------+------------------------------------------------+---------------------------------------------+
+| -> $\{P\}\quad i_1 ; \quad \{Q_{-2}\}$ <- | -> $\{Q_{-2}\}\quad i_2 ; \quad \{Q_{-1}\}$ <- |                                             |
++-------------------------------------------+------------------------------------------------+---------------------------------------------+
+| -> $\{P\}\quad i_1 ; \quad i_2 ; \quad \{Q_{-1}\}$ <-                                      | -> $\{Q_{-1}\} \quad i_3 ; \quad \{Q\}$ <-  |
++--------------------------------------------------------------------------------------------+---------------------------------------------+
+| -> $\{P\}\quad i_1 ; \quad i_2 ; \quad i_3 ; \quad \{ Q \}$ <-                                                                           |
++------------------------------------------------------------------------------------------------------------------------------------------+
 
 Nous pouvons par calcul de plus faibles pré-conditions construire la propriété
 $Q_{-1}$ à partir de $Q$ et $i_3$, ce qui nous permet de déduire $Q_{-2}$, à 
@@ -129,7 +129,7 @@ Comme avec la séquence d'instruction, nous aurons donc deux points à vérifier
 (pour éviter de confondre les accolades, j'utilise la syntaxe 
 $if\ B\ then\ S1\ else\ S2$) :
 
--> $\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad S2\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad S2 \quad \{Q\}} $<-
+-> $\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad S2\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad S2 \quad \{Q\}}$ <-
 
 Nos deux prémisses sont donc la vérification que lorque nous avons la 
 pré-condition et que nous passons dans la branche `if`, nous atteignons bien la
@@ -138,7 +138,7 @@ dans la branche `else`, nous obtenons bien également la post-condition.
 
 Le calcul de pré-condition correspondant est le suivant :
 
--> $wp(if\ B\ then\ S1\ else\ S2 , Post) = (B \Rightarrow wp(S1, Post)) \wedge (\neg B \Rightarrow wp(S2, Post)) $ <-
+-> $wp(if\ B\ then\ S1\ else\ S2 , Post) = (B \Rightarrow wp(S1, Post)) \wedge (\neg B \Rightarrow wp(S2, Post))$ <-
 
 À savoir que $B$ doit impliquer la pré-condition la plus faible de $S1$, pour 
 pouvoir l'exécuter sans erreur vers la post-condition, et que $\neg B$ doit 
@@ -150,7 +150,7 @@ En suivant cette définition, si le ```else``` ne fait rien, alors la règle
 d'inférence est de la forme suivante, en remplaçant $S2$ par une instruction
 "ne rien faire".
 
--> $\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad skip\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad skip \quad \{Q\}} $<-
+-> $\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad skip\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad skip \quad \{Q\}}$ <-
 
 Le triplet pour le ```else``` est :
 
@@ -158,7 +158,7 @@ Le triplet pour le ```else``` est :
 
 Ce qui veut dire que nous devons avoir :
 
--> $ Pre \wedge \neg B \Rightarrow Q $ <-
+-> $Pre \wedge \neg B \Rightarrow Q$ <-
 
 En résumé, si la condition du `if` est fausse, cela veut dire que la 
 post-condition de l'instruction conditionnelle globale est déjà vérifiée avant de 
@@ -196,29 +196,29 @@ Si l'on remplace dans notre règle d'inférence, les occurrences de $P$ par le
 calcule de plus faible pré-condition correspondant $Q$, nous obtenons (en notant
 l'instruction conditionnelle complète $c$) :
 
--> $\dfrac{\{wp(c,Q) \wedge B\}\quad S1\quad \{Q\} \quad \quad \{wp(c,Q) \wedge \neg B\}\quad S2\quad \{Q\}}{\{wp(c,Q)\}\quad c\quad \{Q\}} $<-
+-> $\dfrac{\{wp(c,Q) \wedge B\}\quad S1\quad \{Q\} \quad \quad \{wp(c,Q) \wedge \neg B\}\quad S2\quad \{Q\}}{\{wp(c,Q)\}\quad c\quad \{Q\}}$<-
 
 Or si l'on prend l'arbre de preuve qui correspond par exemple à $S1$ (c'est 
 similaire pour $S2$) et que nous y faisons le remplacement de $wp(c,Q)$, nous 
 obtenons :
 
--> $\{ (B \Rightarrow wp(S1,Q)) \wedge (\neg B \Rightarrow wp(S2,Q)) \wedge B \} \quad S1 \quad \{Q\} $<-
+-> $\{ (B \Rightarrow wp(S1,Q)) \wedge (\neg B \Rightarrow wp(S2,Q)) \wedge B \} \quad S1 \quad \{Q\}$ <-
 
 Ce qui n'est pas très modulaire : nous devons parler du calcul de plus faible
 pré-condition de $S2$ dans la preuve qui correspond à $S1$. En fait, en 
 simplifiant la formule nous obtenons :
 
--> $\{ wp(S1,Q) \wedge B \} \quad S1 \quad \{Q\} $<-
+-> $\{ wp(S1,Q) \wedge B \} \quad S1 \quad \{Q\}$ <-
 
 Or, $wp(S1,Q) \wedge B \Rightarrow wp(S1,Q)$. Et nous allons voir dans la section
 suivante une règle d'inférence, la règle de conséquence, qui nous permet de 
 construire l'arbre de déduction suivant :
 
--> $\dfrac{wp(S1,Q) \wedge B \Rightarrow wp(S1,Q)\quad\quad\{ wp(S1,Q) \} \quad S1 \quad \{Q\}}{\{ wp(S1,Q) \wedge B \} \quad S1 \quad \{Q\}} $<-
+-> $\dfrac{wp(S1,Q) \wedge B \Rightarrow wp(S1,Q)\quad\quad\{ wp(S1,Q) \} \quad S1 \quad \{Q\}}{\{ wp(S1,Q) \wedge B \} \quad S1 \quad \{Q\}}$ <-
 
 Nous laissant à prouver :
 
-->$\{ wp(S1,Q) \} \quad S1 \quad \{Q\}$<-
+-> $\{ wp(S1,Q) \} \quad S1 \quad \{Q\}$ <-
 
 qui est bien le calcul de plus pré-condition de $S1$, ne nécessitant alors plus
 de raisonner à propos de la pré-condition de $S2$ qui nous ennuyait.
