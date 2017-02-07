@@ -740,22 +740,25 @@ ce fichier et tapez la commande suivante dans votre terminal :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Cette fenêtre devrait s'ouvrir.
+La fenêtre présentée en figure~\ref{fig:install-1} devrait s'ouvrir.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{1-2-verif_install-1.png}
 \caption{Vérification installation 1}
+\label{fig:install-1}
 \end{figure}
 
 En cliquant sur \texttt{main.c} dans le volet latéral gauche pour le
 sélectionner, vous devriez voir le contenu du fichier \texttt{main.c}
-modifié et des pastilles vertes sur différentes lignes comme ceci :
+modifié et des pastilles vertes sur différentes lignes comme ceci
+illustré par la figure~\ref{fig:install-2}.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{1-2-verif_install-2.png}
 \caption{Vérification installation 2}
+\label{fig:install-2}
 \end{figure}
 
 Si c'est le cas, tant mieux, sinon vérifiez d'abord que vous n'avez rien
@@ -1077,22 +1080,24 @@ de \texttt{frama-c-gui}.
 \centering
 \includegraphics[scale=0.5]{2-1-1-abs-1.png}
 \caption{Le volet latéral liste l'arbre des fichiers et des fonctions}
+\label{fig:2-1-1-abs-1}
 \end{figure}
 
 La fenêtre de Frama-C s'ouvre, dans le volet correspondant aux fichiers
 et aux fonctions, nous pouvons sélectionner la fonction \texttt{abs}.
 Aux différentes lignes \texttt{ensures}, il y a un cercle bleu dans la
 marge, ils indiquent qu'aucune vérification n'a été tentée pour ces
-lignes.
+lignes (voir figure~\ref{fig:2-1-1-abs-1}).
 
 Nous demandons la vérification que le code répond à la spécification en
 faisant un clic droit sur le nom de la fonction et \og{}Prove function
-annotations by WP\fg{} :
+annotations by WP\fg{} (voir figure~\ref{fig:2-1-1-abs-2}).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{2-1-1-abs-2.png}
 \caption{Lancer la vérification de \texttt{abs} avec WP}
+\label{fig:2-1-1-abs-2}
 \end{figure}
 
 Nous pouvons voir que les cercles bleus deviennent des pastilles vertes,
@@ -1111,12 +1116,13 @@ déréférencements de pointeurs invalides, division par 0, etc).
 Pour activer ce contrôle, nous cochons la case montrée par cette capture
 (dans le volet de WP). Il est également possible de demander à Frama-C
 d'ajouter ces contrôles par un clic droit sur le nom de la fonction puis
-\og{}Insert RTE guards\fg{}.
+\og{}Insert RTE guards\fg{} (voir figure~\ref{fig:2-1-1-abs-3}).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{2-1-1-abs-3.png}
 \caption{Activer la vérification des erreurs d'exécution}
+\label{fig:2-1-1-abs-3}
 \end{figure}
 
 Enfin nous relançons la vérification (nous pouvons également cliquer sur
@@ -1126,12 +1132,13 @@ supprimer les preuves déjà effectuées).
 Nous pouvons alors voir alors que WP échoue à prouver l'impossibilité de
 débordement arithmétique sur le calcul de -val. Et c'est bien normal
 parce que -\texttt{INT\_MIN} (\(-2^{31}\)) \textgreater{}
-\texttt{INT\_MAX} (\(2^{31}-1\)).
+\texttt{INT\_MAX} (\(2^{31}-1\)) (voir figure~\ref{fig:2-1-1-abs-4}).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{2-1-1-abs-4.png}
 \caption{Preuve incomplète de \texttt{abs}}
+\label{fig:2-1-1-abs-4}
 \end{figure}
 
 Ici nous pouvons voir un autre type d'annotation ACSL. La ligne
@@ -1166,7 +1173,8 @@ propriété est vérifiable. Les deux raisons peuvent être :
 \end{itemize}
 
 Dans le volet inférieur, nous pouvons sélectionner l'onglet \og{}WP
-Goals\fg{}, celui-ci nous affiche la liste des obligations de preuve et
+Goals\fg{} (voir figure~\ref{fig:2-1-1-abs-5}),
+celui-ci nous affiche la liste des obligations de preuve et
 pour chaque prouveur indique un petit logo si la preuve a été tentée et
 si elle a été réussie, échouée ou a rencontré un timeout (ici nous
 pouvons voir un essai avec Z3 sur le contrôle de la RTE pour montrer le
@@ -1176,6 +1184,7 @@ logo des ciseaux associé au timeout).
 \centering
 \includegraphics[scale=0.5]{2-1-1-abs-5.png}
 \caption{Tableau des obligations de preuve de WP pour \texttt{abs}}
+\label{fig:2-1-1-abs-5}
 \end{figure}
 
 Le tableau est découpé comme suit, en première colonne nous avons le nom
@@ -1193,13 +1202,15 @@ accessibles à WP.
 Dans ces prouveurs, le premier élément de la colonne est Qed. Ce n'est
 pas à proprement parler un prouveur. En fait, si nous double-cliquons
 sur la propriété \og{}ne pas déborder\fg{} (surlignée en bleu dans la capture
-précédente), nous pouvons voir ceci :
+précédente), nous pouvons voir l'obligation correspondante (voir
+figure~\ref{fig:2-1-1-abs-6}).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{2-1-1-abs-6.png}
 \caption{Obligation de preuve associée à la vérification de débordement
 dans \texttt{abs}}
+\label{fig:2-1-1-abs-6}
 \end{figure}
 
 C'est l'obligation de preuve que génère WP par rapport à notre propriété
@@ -1309,12 +1320,14 @@ défini) :
 
 Une fois le code source modifié de cette manière, un clic sur
 \og{}Reparse\fg{} et nous lançons à nouveau l'analyse. Cette fois, tout est
-validé pour WP, notre implémentation est prouvée :
+validé pour WP, notre implémentation est prouvée (voir
+figure~\ref{fig:2-1-2-abs-1}).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{2-1-2-abs-1.png}
 \caption{Preuve de \texttt{abs} effectuée}
+\label{fig:2-1-2-abs-1}
 \end{figure}
 
 Nous pouvons également vérifier qu'une fonction qui appellerait
@@ -1331,10 +1344,13 @@ Nous pouvons également vérifier qu'une fonction qui appellerait
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
+(Le résultat est dans la figure~\ref{fig:2-1-2-foo-1}).
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{2-1-2-foo-1.png}
 \caption{Vérification du contrat à l'appel de \texttt{abs}}
+\label{fig:2-1-2-foo-1}
 \end{figure}
 
 Pour modifier un peu l'exemple, nous pouvons essayer d'inverser les deux
@@ -1356,18 +1372,21 @@ si nous avons la preuve de \og{}faux\fg{} alors \og{}faux\fg{} est vrai, de mêm
 
 En prenant le programme modifié, nous pouvons d'ailleurs regarder les
 obligations de preuve générées par WP pour l'appel fautif et l'appel
-prouvé par conséquent :
+prouvé par conséquent
+(figures~\ref{fig:2-1-2-foo-2} et~\ref{fig:2-1-2-foo-3}).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{2-1-2-foo-2.png}
 \caption{Obligation générée pour l'appel fautif}
+\label{fig:2-1-2-foo-2}
 \end{figure}
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{2-1-2-foo-3.png}
 \caption{Obligation générée pour l'appel qui suit}
+\label{fig:2-1-2-foo-3}
 \end{figure}
 
 Nous pouvons remarquer que pour les appels de fonctions, l'interface
@@ -1734,13 +1753,15 @@ pouvons modifier légèrement le code de cette façon (nous utilisons
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Le résultat n'est pas vraiment celui escompté :
+Le résultat n'est pas vraiment celui escompté, comme nous pouvons le
+voir dans la figure~\ref{fig:2-2-2-swap-1}.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{2-2-2-swap-1.png}
 \caption{Échec de preuve sur une globale non concernée par l'appel à
 \texttt{swap}}
+\label{fig:2-2-2-swap-1}
 \end{figure}
 
 En effet, nous n'avons pas spécifié les effets de bords autorisés pour
@@ -1825,12 +1846,13 @@ simple :
 \end{Shaded}\end{footnotesize}
 
 Si nous demandons à WP de prouver cette fonction, nous obtenons le
-résultat suivant :
+résultat présenté par la figure~\ref{fig:2-2-2-incr_a_by_b-1}.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{2-2-2-incr_a_by_b-1.png}
 \caption{Échec de preuve : risque d'aliasing}
+\label{fig:2-2-2-incr_a_by_b-1}
 \end{figure}
 
 La raison est simplement que rien ne garantit que le pointeur \texttt{a}
@@ -1880,12 +1902,14 @@ deux disjoints. Ici, nous spécifierions :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Et cette fois, la preuve est effectuée :
+Et cette fois, la preuve est effectuée, comme le montre la
+figure~\ref{fig:2-2-2-incr_a_by_b-2}.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{2-2-2-incr_a_by_b-2.png}
 \caption{Résolution des problèmes d'aliasing}
+\label{fig:2-2-2-incr_a_by_b-2}
 \end{figure}
 
 \section{Comportements}\label{comportements}
@@ -2097,12 +2121,13 @@ Et ouvrir ce dernier fichier dans Frama-C. Si nous regardons le panneau
 latéral, nous pouvons voir que les fichiers header que nous avons inclus
 dans le fichier \texttt{abs\_max.c} y apparaissent et que les contrats
 de fonction sont décorés avec des pastilles particulières (vertes et
-bleues) :
+bleues), comme illustré par la figure~\ref{fig:2-4-max_abs}.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{2-4-max_abs.png}
 \caption{Le contrat de \texttt{max} est valide par hypothèse}
+\label{fig:2-4-max_abs}
 \end{figure}
 
 Ces pastilles nous disent qu'en l'absence d'implémentation, les
@@ -2739,12 +2764,13 @@ Si l'invariant excluait l'égalité à 30, la post-condition ne serait pas
 atteignable.
 
 Une nouvelle fois, nous pouvons jeter un œil à la liste des buts dans WP
-Goals :
+Goals (montrée dans la figure~\ref{fig:3-3-1-i_30-1}).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{3-3-1-i_30-1.png}
 \caption{Obligations générées pour prouver notre boucle}
+\label{fig:3-3-1-i_30-1}
 \end{figure}
 
 Nous remarquons bien que WP décompose la preuve de l'invariant en deux
@@ -2754,13 +2780,14 @@ l'assertion. Dans les versions récentes de Frama-C, Qed est devenu
 particulièrement puissant, et l'obligation de preuve générée ne le
 montre pas (affichant simplement \og{}True\fg{}). En utilisant l'option
 \texttt{-wp-no-simpl} au lancement, nous pouvons quand même voir
-l'obligation correspondante :
+l'obligation correspondante (montrée dans la figure~\ref{fig:3-3-end_loop}).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{3-3-sortie-boucle.png}
 \caption{Preuve de l'assertion par connaissance de l'invariant et
-l'invalidation de la condition de boucle}
+  l'invalidation de la condition de boucle}
+\label{fig:3-3-end_loop}
 \end{figure}
 
 Mais notre spécification est-elle suffisante ?
@@ -2783,15 +2810,14 @@ Mais notre spécification est-elle suffisante ?
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Voyons le résultat :
-
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{3-3-boucle-effet-bord.png}
 \caption{Encore des effets de bord}
+\label{fig:3-3-loop-side-effect}
 \end{figure}
 
-Il semble que non.
+Il semble que non (voir figure~\ref{fig:3-3-loop-side-effect}).
 
 \subsection{\texorpdfstring{La clause \og{}assigns\fg{} \ldots{} pour les
 boucles}{La clause assigns \ldots{} pour les boucles}}\label{la-clause-assigns-pour-les-boucles}
@@ -2864,12 +2890,13 @@ partielle :
 \end{Shaded}\end{footnotesize}
 
 Si nous demandons la vérification de ce code en activant le contrôle de
-RTE, nous obtenons ceci :
+RTE, nous obtenons le résultat présenté en figure~\ref{fig:3-3-infini}.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{3-3-infinite.png}
 \caption{Preuve de faux par non-terminaison de boucle}
+\label{fig:3-3-infini}
 \end{figure}
 
 L'assertion \og{}FAUX\fg{} est prouvée ! La raison est simple : la
@@ -2921,12 +2948,14 @@ variant de cette façon :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Une nouvelle fois nous pouvons regarder les buts générés :
+Une nouvelle fois nous pouvons regarder les buts générés (voir
+figure~\ref{fig:3-3-loop-ok}).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{3-3-boucle_complete.png}
 \caption{Notre simple boucle complètement spécifiée et prouvée}
+\label{fig:3-3-loop-ok}
 \end{figure}
 
 Le variant nous génère bien deux obligations au niveau de la
@@ -3161,12 +3190,13 @@ valeur différente de l'élément recherché.
 Le but WP associé à la préservation de cet invariant est un peu
 compliqué, il n'est pour nous pas très intéressant de se pencher dessus.
 En revanche, la preuve de l'établissement de cet invariant est
-intéressante :
+intéressante (voir figure~\ref{fig:3-4-trivial}).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{3-4-trivial-establishment.png}
 \caption{But trivial}
+\label{fig:3-4-trivial}
 \end{figure}
 
 Nous pouvons constater que cette propriété, pourtant complexe, est
@@ -3672,13 +3702,14 @@ Elle peut nous servir à prouver le code de la fonction suivante :
 \centering
 \includegraphics[scale=0.5]{4-3-affine-1.png}
 \caption{Les débordements semblent pouvoir survenir}
+\label{fig:4-3-affine-1}
 \end{figure}
 
 Le code est bien prouvé mais les contrôles d'overflow, eux, ne le sont
-pas. Nous pouvons à nouveau définir des fonctions logiques générales
-pour avoir les bornes calculées de côté de la logique en fonction des
-valeurs que nous donnons en entrée. Ainsi qu'ajouter nos contrôles de
-bornes en pré-condition de fonction :
+pas (voir figure~\ref{fig:4-3-affine-1}). Nous pouvons à nouveau définir
+des fonctions logiques générales pour avoir les bornes calculées de côté
+de la logique en fonction des valeurs que nous donnons en entrée. Ainsi
+qu'ajouter nos contrôles de bornes en pré-condition de fonction :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -3984,12 +4015,13 @@ Nous pouvons par exemple définir cette axiomatique :
 \end{Shaded}\end{footnotesize}
 
 Et nous pouvons voir que dans Frama-C, la propriété est bien supposée
-vraie :
+vraie (voir figure~\ref{fig:5-1-1-fst-axiom}).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{5-1-1-premier-axiome.png}
 \caption{Premier axiome, supposé vrai par Frama-C}
+\label{fig:5-1-1-fst-axiom}
 \end{figure}
 
 \begin{zdssecretblock}{Hors sujet}
@@ -4235,12 +4267,13 @@ L'exemple le plus simple à produire est le suivant:
 \end{Shaded}\end{footnotesize}
 
 Et tout est prouvé, y compris que le déréférencement de l'adresse 0 est
-OK :
+valable (voir figure~\ref{fig:false-axiom}).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{false_axiom.png}
 \caption{Preuve de tout un tas de choses fausses}
+\label{fig:false-axiom}
 \end{figure}
 
 Évidemment cet exemple est extrême, nous n'écririons pas un tel axiome.
