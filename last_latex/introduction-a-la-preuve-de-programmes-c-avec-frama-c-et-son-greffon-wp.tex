@@ -14,7 +14,7 @@
   \usepackage[utf8]{inputenc}
 \else % if luatex or xelatex
   \ifxetex
-    % This will have to be removed some day : http://tx.stackexchange.com/questions/269786/unicode-math-broken
+    % This will have to be removed some day : http://tex.stackexchange.com/questions/269786/unicode-math-broken
     \expandafter\let\csname xetex_suppressfontnotfounderror:D\endcsname
       \suppressfontnotfounderror
     \usepackage{mathspec}
@@ -98,7 +98,7 @@
 \fi
 \hypersetup{breaklinks=true,
             bookmarks=true,
-            pdfauthor={06 février 2017},
+            pdfauthor={24 février 2017},
             pdftitle={INTRODUCTION À LA PREUVE DE PROGRAMMES C AVEC FRAMA-C ET SON GREFFON WP},
             colorlinks=true,
             citecolor=ocre,
@@ -113,9 +113,9 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
 \ifxetex
-\usepackage[francais]{babel}
+  \usepackage[francais]{babel}
 \else
-\usepackage[francais]{babel}
+  \usepackage[francais]{babel}
 \fi
 
 
@@ -162,7 +162,7 @@
 \begin{titlepage}
 \title{\color{white}{INTRODUCTION À LA PREUVE DE PROGRAMMES C AVEC FRAMA-C ET SON GREFFON WP}}
 \author{\color{ocre}{Allan Blanchard}}
-\date{\color{white}{$ $\\06 février 2017}}
+\date{\color{white}{$ $\\24 février 2017}}
 \end{titlepage}
 
 \begin{document}
@@ -245,9 +245,11 @@ programmes.
     en section III - 3 - 4 a honteusement été copié d'un de ses
     posts).
   \item \href{https://zestedesavoir.com/membres/voir/barockobamo/}{barockobamo}
+  \item \href{https://zestedesavoir.com/membres/voir/Vayel/}{Vayel}
   \end{itemize}
 \end{zdsblock}
-  
+
+
 \chapter{La preuve de programmes et notre outil pour ce tutoriel :
 Frama-C}\label{la-preuve-de-programmes-et-notre-outil-pour-ce-tutoriel-frama-c}
 
@@ -313,9 +315,7 @@ différence entre test et preuve :
 
 \begin{quote}
 Program testing can be used to show the presence of bugs, but never to
-show their absence!
-
-E.W. Dijkstra
+show their absence! Source: Dijkstra
 \end{quote}
 
 Le test de programme peut-être utilisé pour montrer la présence de bugs
@@ -354,7 +354,12 @@ spécification\fg{}. D'une part, c'est un sacré pas en avant par rapport à
 \og{}le test nous montre que l'implémentation ne contient pas beaucoup plus
 de bugs que la spécification\fg{}. Et d'autre part, il existe également des
 techniques permettant d'analyser les spécifications en quête d'erreurs
-ou de manquements.
+ou de manquements. Par exemple, les techniques de Model Checking -
+vérification de modèles - permettent de construire un modèle abstrait à
+partir d'une spécification et de produire un ensemble d'état du
+programme accessibles d'après le modèle. En caractérisant les états
+fautifs, nous sommes en mesure de déterminer si les états accessibles
+contiennent des états fautifs.
 
 \subsection{Un peu de contexte}\label{un-peu-de-contexte}
 
@@ -370,30 +375,101 @@ Ici, nous allons nous intéresser à la vérification que nos programmes
 sont conformes au comportement que nous attendons de leur part. Nous
 allons utiliser des outils capables d'analyser le code et de nous dire
 si oui, ou non, notre code correspond à ce que nous voulons exprimer. La
-technique que nous allons étudier ici est une analyse statique, même
-s'il existe également des analyses dynamiques notamment en ce qui
-concerne le monitoring de code. Le principe des analyses statiques est
-que nous n'exécuterons pas le programme pour nous assurer que son
-fonctionnement est correct, mais nous raisonnerons sur un modèle
-mathématique définissant l'ensemble des états qu'il peut atteindre.
+technique que nous allons étudier ici est une analyse statique, à
+opposer aux analyses dynamiques.
 
-Ce modèle peut être plus ou moins abstrait selon la technique utilisée,
-c'est donc une approximation des états possibles de notre programme.
-Plus l'approximation est précise, plus le modèle est concret, plus
-l'approximation est large, plus il est abstrait. Une des contraintes est
-bien sûr que nous ne devons jamais sous-approximer les comportements du
-programme : nous risquerions d'écarter un comportement qui contient une
-erreur. Inversement, si nous sur-approximons notre programme, nous
-ajoutons des exécutions qui ne peuvent en réalité pas arriver et si nous
-ajoutons trop d'exécutions inexistantes, nous pourrions ne plus être en
-mesure de prouver son bon fonctionnement dans le cas où certaines
-d'entre elles seraient fautives.
+Le principe des analyses statiques est que nous n'exécuterons pas le
+programme pour nous assurer que son fonctionnement est correct, mais
+nous raisonnerons sur un modèle mathématique définissant l'ensemble des
+états qu'il peut atteindre. A l'inverse, les analyses dynamiques comme
+le test de programme nécessite d'exécuter le code analysé. Il existe
+également des analyses dynamiques et formelles, comme de la génération
+automatique de tests ou encore des techniques de monitoring de code qui
+pourrons, par exemple, instrumenter un code source afin de vérifier à
+l'exécution que les allocations et désallocation de mémoire sont faites
+de manière sure.
+
+Dans le cas des analyses statiques, le modèle utilisé peut être plus ou
+moins abstrait selon la technique utilisée, c'est donc une approximation
+des états possibles de notre programme. Plus l'approximation est
+précise, plus le modèle est concret, plus l'approximation est large,
+plus il est abstrait.
+
+Pour illustrer la différence entre modèle concret et abstrait, nous
+pouvons prendre l'exemple d'un chronomètre simple. Une modélisation très
+abstraite du comportement de notre chronomètre est la suivante :
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.5]{1-1-model.png}
+\caption{Modélisation très abstraite d'un chronomètre}
+\end{figure}
+
+Nous avons bien une modélisation du comportement de notre chronomètre
+avec différents états qu'il peut atteindre en fonction des actions qui
+sont réalisées à son sujet. Cependant, nous n'avons pas modélisé comment
+ces états sont réprésentés dans le programme (est ce une énumération ?
+une position précise atteinte au sein du code ?), ni comment est
+modélisé le calcul du temps (une seule variable en secondes ? Plusieurs
+variables heures, minutes, secondes ?). Nous aurions donc bien du mal à
+spécifier des propriétés à propos de notre programme. Nous pouvons
+ajouter des informations :
+
+\begin{itemize}
+\tightlist
+\item
+  Etat arrêté à zéro : temps = 0s
+\item
+  Etat en marche : temps \textgreater{} 0s
+\item
+  Etat arrêté : temps \textgreater{} 0s
+\end{itemize}
+
+Ce qui nous donne déjà un modèle plus concret mais qui est toujours
+insuffisant pour poser des questions intéressantes à propos de notre
+système comme : \og{}est il possible que dans l'état arrêté, le temps
+continue de s'écouler ?\fg{}. Car nous n'avons pas modélisé l'écoulement du
+temps par le chronomètre.
+
+À l'inverse avec le code source du programme, nous avons un modèle
+concret du chronomètre, le code source exprime bien le comportement du
+chronomètre puisque c'est lui qui va nous servir à produire
+l'exécutable. Mais ce n'est pour autant pas le plus concret ! Par
+exemple, l'exécutable en code machine obtenu à la fin de la compilation
+est un modèle encore plus concret de notre programme.
+
+Plus un modèle est concret, plus il décrit précisément le comportement
+de notre programme. Le code source exprime le comportement plus
+précisément que notre diagramme, mais il est moins précis que le code de
+l'exécutable. Cependant, plus un modèle est précis, plus il est
+difficile d'avoir une vision globale du comportement qu'il définit.
+Notre diagramme est compréhensible en un coup d'oeil, le code demande un
+peu plus de temps, quant à l'exécutable \ldots{} Toute personne qui a
+déjà ouvert par erreur un exécutable avec un éditeur de texte sait que
+ce n'est pas très agréable à lire dans son ensemble\footnote{Il existe
+  des analyses formelles s'intéressant à comprendre le fonctionnement
+  des exécutables en code machine, par exemple pour comprendre ce que
+  font des malwares ou pour détecter des failles de sécurité introduites
+  lors de la compilation.}.
+
+Lorsque nous créons une abstraction d'un système, nous l'approximons,
+pour limiter la quantité d'informations que nous avons à son sujet et
+faciliter notre raisonnement. Une des contraintes si nous voulons qu'une
+vérification soit correcte est bien sûr que nous ne devons jamais
+sous-approximer les comportements du programme : nous risquerions
+d'écarter un comportement qui contient une erreur. Inversement, si nous
+sur-approximons notre programme, nous ajoutons des exécutions qui ne
+peuvent en réalité pas arriver et si nous ajoutons trop d'exécutions
+inexistantes, nous pourrions ne plus être en mesure de prouver son bon
+fonctionnement dans le cas où certaines d'entre elles seraient fautives.
 
 Dans le cas de l'outil que nous allons utiliser, le modèle est plutôt
 concret. Chaque type d'instruction, chaque type de structure de contrôle
 d'un programme se voit attribuer une sémantique, une représentation de
 son comportement dans un monde purement logique, mathématique. Le cadre
-logique qui nous intéresse ici, c'est la logique de Hoare.
+logique qui nous intéresse ici, c'est la logique de Hoare adaptée pour
+le langage C et toutes ses subtilités (qui rendent donc le modèle final
+très concret).
 
 \subsection{Les triplets de Hoare}\label{les-triplets-de-hoare}
 
@@ -421,12 +497,12 @@ triplets de Hoare :
 Où \(P\) et \(Q\) sont des prédicats, des formules logiques qui nous
 disent dans quel état se trouve la mémoire traitée par le programme.
 \(C\) est un ensemble de commandes définissant un programme. Cette
-écriture nous dit \og{}si nous sommes dans un état où \(P\) est vrai,
-alors, après exécution de \(C\) et si \(C\) termine, alors \(Q\) sera
-vrai pour le nouvel état du programme\fg{}. Dis autrement, \(P\) est la
-pré-condition nécessaire pour que \(C\) nous amène à la post-condition
-\(Q\). Par exemple, le triplet correspondant à l'action \og{}ne rien
-faire\fg{} (\textbf{skip}) est le suivant :
+écriture nous dit \og{}si nous sommes dans un état où \(P\) est vrai, après
+exécution de \(C\) et si \(C\) termine, alors \(Q\) sera vrai pour le
+nouvel état du programme\fg{}. Dis autrement, \(P\) est une pré-condition
+suffisante pour que \(C\) nous amène à la post-condition \(Q\). Par
+exemple, le triplet correspondant à l'action \og{}ne rien faire\fg{}
+(\textbf{skip}) est le suivant :
 
 \begin{center} \(\{P\}\) \textbf{skip} \(\{P\}\) \end{center}
 
@@ -797,19 +873,20 @@ tutoriel} est très bon.
 Si vous installez Frama-C par
 l'intermédiaire de votre gestionnaire de paquets, il peut
 arriver que celui-ci aie directement intégré Coq.
+\end{zdsblock}
 
 Pour plus d'informations à propos de Coq et de son installation, voir
 par ici : \href{https://coq.inria.fr/}{The Coq Proof Assistant}.
 
 Pour utiliser Coq lors d'une preuve dans Frama-C, il faudra le
 sélectionner par l'intermédiaire du paneau latéral à gauche, dans la
-partie qui concerne WP.
-\end{zdsblock}
+partie qui concerne WP (voir figure~\ref{fig:select-coq}).
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{1-2-select-coq.png}
 \caption{Sélectionner l'assistant de preuve Coq}
+\label{fig:select-coq}
 \end{figure}
 
 \begin{zdsblock}{Information}
@@ -989,33 +1066,49 @@ clause \texttt{ensures}, comme illustré ci-dessous.
 
 Cette spécification est l'opportunité de présenter un connecteur logique
 très utile que propose ACSL mais qui n'est pas présent en C :
-l'implication \texttt{A\ ==\textgreater{}\ B}. La table de vérité de
-l'implication est la suivante :
+l'implication \(A \Rightarrow B\), que l'on écrit en ACSL
+\texttt{A\ ==\textgreater{}\ B}. La table de vérité de l'implication est
+la suivante (\(\top\) = \texttt{true}, \(\bot\) = \texttt{false}) :
 
-\begin{longtable}[]{@{}lll@{}}
+\begin{longtable}[]{@{}ccc@{}}
 \toprule
-A & B & Resultat\tabularnewline
+\(A\) & \(B\) & \(A \Rightarrow B\)\tabularnewline
 \midrule
 \endhead
-false & true & true\tabularnewline
-false & false & true\tabularnewline
-true & true & true\tabularnewline
-true & false & false\tabularnewline
+\(\bot\) & \(\bot\) & \(\top\)\tabularnewline
+\(\bot\) & \(\top\) & \(\top\)\tabularnewline
+\(\top\) & \(\bot\) & \(\bot\)\tabularnewline
+\(\top\) & \(\top\) & \(\top\)\tabularnewline
 \bottomrule
 \end{longtable}
 
-Ce qui veut dire qu'une implication \texttt{A\ ==\textgreater{}\ B} est
-vraie dans deux cas : soit A est fausse (et dans ce cas, il ne faut pas
-se préoccuper de B), soit A est vraie et alors B doit être vraie aussi.
-L'idée étant finalement \og{}je veux savoir si dans le cas où A est vrai, B
-l'est aussi. Si A est faux, je considère que l'ensemble est vrai\fg{}.
+Ce qui veut dire qu'une implication \(A \Rightarrow B\) est vraie dans
+deux cas : soit \(A\) est fausse (et dans ce cas, il ne faut pas se
+préoccuper de \(B\)), soit \(A\) est vraie et alors \(B\) doit être
+vraie aussi. L'idée étant finalement \og{}je veux savoir si dans le cas où
+\(A\) est vrai, \(B\) l'est aussi. Si \(A\) est faux, je considère que
+l'ensemble est vrai\fg{}.
 
-Sa cousine l'équivalence \texttt{A\ \textless{}==\textgreater{}\ B} est
-plus forte. C'est la conjonction de l'implication dans les deux sens :
-\texttt{(A\ ==\textgreater{}\ B)\ \&\&\ (B\ ==\textgreater{}\ A)}. Cette
-formule n'est vraie que dans deux cas : A et B sont vraies toutes les
-deux, ou fausses toutes les deux (c'est donc la négation du
-ou-exclusif).
+Sa cousine l'équivalence \(A \Leftrightarrow B\) (écrite
+\texttt{A\ \textless{}==\textgreater{}\ B} en ACSL) est plus forte.
+C'est la conjonction de l'implication dans les deux sens :
+\((A \Rightarrow B) \wedge (B \Rightarrow A)\). Cette formule n'est
+vraie que dans deux cas : \(A\) et \(B\) sont vraies toutes les deux, ou
+fausses toutes les deux (c'est donc la négation du ou-exclusif).
+
+\begin{zdsblock}{Information}
+\begin{longtable}[]{@{}ccccccc@{}}
+\toprule
+\(A\) & \(B\) & \(\neg A\) & \(A \wedge B\) & \(A \vee B\) & \(A \Rightarrow B\) & \(A \Leftrightarrow B\)\tabularnewline
+\midrule
+\endhead
+\(\bot\) & \(\bot\) & \(\top\) & \(\bot\) & \(\bot\) & \(\top\) &\(\top\)\tabularnewline
+\(\bot\) & \(\top\) & \(\top\) & \(\bot\) & \(\top\) & \(\top\) &\(\bot\)\tabularnewline
+\(\top\) & \(\bot\) & \(\bot\) & \(\bot\) & \(\top\) & \(\bot\) &\(\bot\)\tabularnewline
+\(\top\) & \(\top\) & \(\bot\) & \(\top\) & \(\top\) & \(\top\) &\(\top\)\tabularnewline
+\bottomrule
+\end{longtable}
+\end{zdsblock}
 
 Revenons à notre spécification. Quand nos fichiers commencent à être
 longs et contenir beaucoup de spécifications, il peut être commode de
@@ -1878,7 +1971,7 @@ est bien différent du pointeur \texttt{b}. Or, si les pointeurs sont
   que cette zone et que si \texttt{a\ ==\ b}, il n'y a toujours
   que cette zone, et pas une autre.
 \end{zdsexampleblock}
-  
+
 Pour assurer que les pointeurs sont bien sur des zones séparées de
 mémoire, ACSL nous offre le prédicat
 \texttt{\textbackslash{}separated(p1,\ ...,\ pn)} qui reçoit en entrée
@@ -2130,6 +2223,7 @@ bleues), comme illustré par la figure~\ref{fig:2-4-max_abs}.
 \label{fig:2-4-max_abs}
 \end{figure}
 
+
 Ces pastilles nous disent qu'en l'absence d'implémentation, les
 propriétés sont supposées vraies. Et c'est une des forces de la preuve
 déductive de programmes par rapport à certaines autres méthodes
@@ -2202,7 +2296,7 @@ contrôle}\label{instructions-basiques-et-structures-de-contruxf4le}
   Les sections sur les boucles sont en revanches indispensables. Les
   éléments plus formels de ces sections seront signalés.
 \end{zdsblock}
-  
+
 Pour chaque notion en programmation C, Nous associerons la règle
 d'inférence qui lui correspond, la règle utilisée de calcul de plus
 faible pré-conditions qui la régit, et des exemples d'utilisation. Pas
@@ -3510,7 +3604,7 @@ mémoire n'a pas changé entre deux points particuliers de programme :
   \end{Shaded}\end{footnotesize}
   Car i est juste une copie de la variable reçue en paramètre.
 \end{zdsalertblock}
-  
+
 Nous pouvons par exemple vérifier ce petit code :
 
 \begin{footnotesize}\begin{Shaded}
@@ -4045,7 +4139,7 @@ vraie (voir figure~\ref{fig:5-1-1-fst-axiom}).
     \end{Shaded}
   \end{footnotesize}
 \end{zdssecretblock}
-  
+
 \subsubsection{Lien avec la notion de
 lemme}\label{lien-avec-la-notion-de-lemme}
 
@@ -4478,7 +4572,7 @@ illustration intéressant de l'usage des axiomatiques.
   \end{Shaded}\end{footnotesize}
   \end{footnotesize}
 \end{zdssecretblock}
-  
+
 En effet, une erreur commune que nous pourrions faire dans le cas de la
 preuve du tri est de poser cette spécification (qui est vraie !) :
 

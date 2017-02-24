@@ -1,5 +1,5 @@
 [[information]]
-| Le choix de certain exemples et d'une partie de l'organisation dans le présent 
+| Le choix de certains exemples et d'une partie de l'organisation dans le présent 
 | tutoriel est le même que celui du 
 | [tutoriel présenté à TAP 2013](http://www.spacios.eu/TAP2013/keynotes.html) 
 | par Nikolai Kosmatov, Virgile Prevosto et Julien Signoles du CEA LIST du fait de
@@ -57,3 +57,4 @@ permettant de mieux comprendre et mieux écrire les programmes.
 | - [Taurre](https://zestedesavoir.com/membres/voir/Taurre/) (l'exemple en section 
 | III - 3 - 4 a honteusement été copié d'un de ses posts).
 | - [barockobamo](https://zestedesavoir.com/membres/voir/barockobamo/)
+| - [Vayel](https://zestedesavoir.com/membres/voir/Vayel/)

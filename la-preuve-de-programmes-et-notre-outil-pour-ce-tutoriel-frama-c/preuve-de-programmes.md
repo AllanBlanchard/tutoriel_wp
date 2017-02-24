@@ -72,7 +72,12 @@ l'implémentation "ne contient aucun bugs de plus que la spécification". D'une
 part, c'est un sacré pas en avant par rapport à "le test nous montre que 
 l'implémentation ne contient pas beaucoup plus de bugs que la spécification". 
 Et d'autre part, il existe également des techniques permettant d'analyser les 
-spécifications en quête d'erreurs ou de manquements.
+spécifications en quête d'erreurs ou de manquements. Par exemple, les techniques
+de Model Checking - vérification de modèles - permettent de construire un modèle
+abstrait à partir d'une spécification et de produire un ensemble d'état du 
+programme accessibles d'après le modèle. En caractérisant les états fautifs, nous
+sommes en mesure de déterminer si les états accessibles contiennent des états
+fautifs.
 
 # Un peu de contexte
 
@@ -87,28 +92,83 @@ Ici, nous allons nous intéresser à la vérification que nos programmes sont
 conformes au comportement que nous attendons de leur part. Nous allons utiliser 
 des outils capables d'analyser le code et de nous dire si oui, ou non, notre 
 code correspond à ce que nous voulons exprimer. La technique que nous allons 
-étudier ici est une analyse statique, même s'il existe également des analyses
-dynamiques notamment en ce qui concerne le monitoring de code. Le principe des 
-analyses statiques est que nous n'exécuterons pas le programme pour nous assurer 
-que son fonctionnement est correct, mais nous raisonnerons sur un modèle 
-mathématique définissant l'ensemble des états qu'il peut atteindre.
+étudier ici est une analyse statique, à opposer aux analyses dynamiques.
 
-Ce modèle peut être plus ou moins abstrait selon la technique utilisée, c'est 
-donc une approximation des états possibles de notre programme. Plus l'approximation
-est précise, plus le modèle est concret, plus l'approximation est large, plus il
-est abstrait. Une des contraintes est bien sûr que nous ne devons jamais 
-sous-approximer les comportements du programme : nous risquerions d'écarter un 
-comportement qui contient une erreur. Inversement, si nous sur-approximons notre
-programme, nous ajoutons des exécutions qui ne peuvent en réalité pas arriver et
-si nous ajoutons trop d'exécutions inexistantes, nous pourrions ne plus être en
-mesure de prouver son bon fonctionnement dans le cas où certaines d'entre elles
-seraient fautives.
+Le principe des analyses statiques est que nous n'exécuterons pas le programme 
+pour nous assurer que son fonctionnement est correct, mais nous raisonnerons sur 
+un modèle mathématique définissant l'ensemble des états qu'il peut atteindre.
+A l'inverse, les analyses dynamiques comme le test de programme nécessite 
+d'exécuter le code analysé. Il existe également des analyses dynamiques et 
+formelles, comme de la génération automatique de tests ou encore des techniques de
+monitoring de code qui pourrons, par exemple, instrumenter un code source afin de
+vérifier à l'exécution que les allocations et désallocation de mémoire sont faites
+de manière sure.
+
+Dans le cas des analyses statiques, le modèle utilisé peut être plus ou moins 
+abstrait selon la technique utilisée, c'est donc une approximation des états 
+possibles de notre programme. Plus l'approximation est précise, plus le modèle est
+concret, plus l'approximation est large, plus il est abstrait.
+
+Pour illustrer la différence entre modèle concret et abstrait, nous pouvons 
+prendre l'exemple d'un chronomètre simple. Une modélisation très abstraite du
+comportement de notre chronomètre est la suivante :
+
+![Modélisation très abstraite d'un chronomètre](https://zestedesavoir.com:443/media/galleries/2584/be01ae1b-a9fd-4147-aa1f-98542f030a4d.png)
+
+Nous avons bien une modélisation du comportement de notre chronomètre avec 
+différents états qu'il peut atteindre en fonction des actions qui sont réalisées
+à son sujet. Cependant, nous n'avons pas modélisé comment ces états sont 
+réprésentés dans le programme (est ce une énumération ? une position précise 
+atteinte au sein du code ?), ni comment est modélisé le calcul du temps (une seule
+variable en secondes ? Plusieurs variables heures, minutes, secondes ?). Nous 
+aurions donc bien du mal à spécifier des propriétés à propos de notre programme. 
+Nous pouvons ajouter des informations :
+
+- Etat arrêté à zéro : temps = 0s
+- Etat en marche : temps > 0s
+- Etat arrêté : temps > 0s
+
+Ce qui nous donne déjà un modèle plus concret mais qui est toujours insuffisant 
+pour poser des questions intéressantes à propos de notre système comme : "est il 
+possible que dans l'état arrêté, le temps continue de s'écouler ?". Car nous
+n'avons pas modélisé l'écoulement du temps par le chronomètre.
+
+À l'inverse avec le code source du programme, nous avons un modèle concret du
+chronomètre, le code source exprime bien le comportement du chronomètre puisque
+c'est lui qui va nous servir à produire l'exécutable. Mais ce n'est pour autant
+pas le plus concret ! Par exemple, l'exécutable en code machine obtenu à la fin
+de la compilation est un modèle encore plus concret de notre programme.
+
+Plus un modèle est concret, plus il décrit précisément le comportement de notre
+programme. Le code source exprime le comportement plus précisément que notre 
+diagramme, mais il est moins précis que le code de l'exécutable. Cependant, plus
+un modèle est précis, plus il est difficile d'avoir une vision globale du 
+comportement qu'il définit. Notre diagramme est compréhensible en un coup d'oeil,
+le code demande un peu plus de temps, quant à l'exécutable ... Toute personne qui
+a déjà ouvert par erreur un exécutable avec un éditeur de texte sait que ce n'est
+pas très agréable à lire dans son ensemble[^binaires].
+
+Lorsque nous créons une abstraction d'un système, nous l'approximons, pour limiter
+la quantité d'informations que nous avons à son sujet et faciliter notre 
+raisonnement. Une des contraintes si nous voulons qu'une vérification soit 
+correcte est bien sûr que nous ne devons jamais sous-approximer les comportements 
+du programme : nous risquerions d'écarter un comportement qui contient une erreur.
+Inversement, si nous sur-approximons notre programme, nous ajoutons des exécutions
+qui ne peuvent en réalité pas arriver et si nous ajoutons trop d'exécutions 
+inexistantes, nous pourrions ne plus être en mesure de prouver son bon 
+fonctionnement dans le cas où certaines d'entre elles seraient fautives.
 
 Dans le cas de l'outil que nous allons utiliser, le modèle est plutôt concret. 
 Chaque type d'instruction, chaque type de structure de contrôle d'un programme 
 se voit attribuer une sémantique, une représentation de son comportement dans 
 un monde purement logique, mathématique. Le cadre logique qui nous intéresse 
-ici, c'est la logique de Hoare.
+ici, c'est la logique de Hoare adaptée pour le langage C et toutes ses 
+subtilités (qui rendent donc le modèle final très concret).
+
+[^binaires]: Il existe des analyses formelles s'intéressant à comprendre le 
+fonctionnement des exécutables en code machine, par exemple pour comprendre ce
+que font des malwares ou pour détecter des failles de sécurité introduites lors
+de la compilation.
 
 # Les triplets de Hoare
 
@@ -131,9 +191,9 @@ de Hoare :
 Où $P$ et $Q$ sont des prédicats, des formules logiques qui nous disent dans 
 quel état se trouve la mémoire traitée par le programme. $C$ est un ensemble de
 commandes définissant un programme. Cette écriture nous dit "si nous sommes 
-dans un état où $P$ est vrai, alors, après exécution de $C$ et si $C$ termine, 
+dans un état où $P$ est vrai, après exécution de $C$ et si $C$ termine, 
 alors $Q$ sera vrai pour le nouvel état du programme". Dis autrement, $P$ est 
-la pré-condition nécessaire pour que $C$ nous amène à la post-condition $Q$. 
+une pré-condition suffisante pour que $C$ nous amène à la post-condition $Q$. 
 Par exemple, le triplet correspondant à l'action "ne rien faire" (**skip**) 
 est le suivant :
 

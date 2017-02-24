@@ -79,26 +79,40 @@ int abs(int val){
 
 Cette spécification est l'opportunité de présenter un connecteur logique 
 très utile que propose ACSL mais qui n'est pas présent en C : 
-l'implication ```A ==> B```. La table de vérité de l'implication est la 
-suivante :
+l'implication $A \Rightarrow B$, que l'on écrit en ACSL ```A ==> B```.
+La table de vérité de l'implication est la suivante ($\top$ = `true`,
+$\bot$ = `false`) :
 
-   A   |   B   | Resultat
--------|-------|---------
-false  | true  | true
-false  | false | true
-true   | true  | true
-true   | false | false
+  $A$  |   $B$  | $A \Rightarrow B$
+-------|--------|---------
+$\bot$ | $\bot$ | $\top$
+$\bot$ | $\top$ | $\top$
+$\top$ | $\bot$ | $\bot$
+$\top$ | $\top$ | $\top$
 
-Ce qui veut dire qu'une implication ```A ==> B``` est vraie dans deux cas : 
-soit A est fausse (et dans ce cas, il ne faut pas se préoccuper de B), soit 
-A est vraie et alors B doit être vraie aussi. L'idée étant finalement "je 
-veux savoir si dans le cas où A est vrai, B l'est aussi. Si A est faux, 
+Ce qui veut dire qu'une implication $A \Rightarrow B$ est vraie dans deux cas : 
+soit $A$ est fausse (et dans ce cas, il ne faut pas se préoccuper de $B$), soit 
+$A$ est vraie et alors $B$ doit être vraie aussi. L'idée étant finalement "je 
+veux savoir si dans le cas où $A$ est vrai, $B$ l'est aussi. Si $A$ est faux, 
 je considère que l'ensemble est vrai".
 
-Sa cousine l'équivalence ```A <==> B``` est plus forte. C'est la conjonction de
-l'implication dans les deux sens : ```(A ==> B) && (B ==> A)```. Cette formule 
-n'est vraie que dans deux cas : A et B sont vraies toutes les deux, ou fausses 
+Sa cousine l'équivalence $A \Leftrightarrow B$ (écrite ```A <==> B``` en ACSL)
+est plus forte. C'est la conjonction de l'implication dans les deux sens :
+$(A \Rightarrow B) \wedge (B \Rightarrow A)$. Cette formule n'est vraie que
+dans deux cas : $A$ et $B$ sont vraies toutes les deux, ou fausses 
 toutes les deux (c'est donc la négation du ou-exclusif).
+
+[[information]]
+| Profitons en pour rappeler l'ensemble des tables de vérités des opérateurs
+| usuels en logique du premier order ($\neg$ = `!`, $\wedge$ = `&&`,
+| $\vee$ = `||`) :
+|
+|   $A$  |   $B$  | $\neg A$ | $A \wedge B$ | $A \vee B$ | $A \Rightarrow B$ | $A \Leftrightarrow B$
+| -------|--------|----------|--------------|------------|-------------------|-----------------------
+| $\bot$ | $\bot$ | $\top$   | $\bot$       | $\bot$     | $\top$            | $\top$
+| $\bot$ | $\top$ | $\top$   | $\bot$       | $\top$     | $\top$            | $\bot$
+| $\top$ | $\bot$ | $\bot$   | $\bot$       | $\top$     | $\top$            | $\bot$
+| $\top$ | $\top$ | $\bot$   | $\top$       | $\top$     | $\bot$            | $\top$
 
 Revenons à notre spécification. Quand nos fichiers commencent à être longs et 
 contenir beaucoup de spécifications, il peut être commode de nommer les 
