@@ -355,3 +355,9 @@ void incr_a_by_b(int* a, int const* b){
 Et cette fois, la preuve est effectuée :
 
 ![Résolution des problèmes d'aliasing](https://zestedesavoir.com:443/media/galleries/2584/dcca986e-e819-4320-a481-7c924635f8bb.png)
+
+Nous pouvons noter que nous ne nous intéressons pas ici à la preuve de 
+l'absence d'erreur à l'exécution car ce n'est pas l'objet de cette section.
+Cependant, si cette fonction faisait partie d'un programme complet à vérifier,
+il faudrait définir le contexte dans lequel on souhaite l'utiliser et définir
+les pré-conditions qui nous garantissent l'absence de débordement en conséquence.

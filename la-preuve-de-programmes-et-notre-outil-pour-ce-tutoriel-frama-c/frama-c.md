@@ -50,7 +50,7 @@ Linux, mais :
 ### Via les gestionnaires de paquets
 
 Sous Debian, Ubuntu et Fedora, il existe des paquets pour Frama-C. Dans ce cas, 
-il vous suffit de taper une ligne de commande comme celle-ci :
+il suffit de taper une ligne de commande comme celle-ci :
 
 ```bash
 apt-get/yum install frama-c
@@ -60,7 +60,8 @@ Par contre, ces dépôts ne sont pas systématiquement à jour de la dernière
 version. En soi ce n'est pas très gênant car il n'y a pas de nouvelle version
 de Frama-C tous les deux mois, mais il est tout de même bon de le savoir.
 
-Vous pouvez maintenant vous rendre à la sous section "Vérifier l'installation".
+Pour vérifier l'installation, c'est dans la sous-section "Vérifier l'installation"
+que les informations sont données.
 
 ### Via opam
 
@@ -83,24 +84,26 @@ opam install frama-c
 opam install alt-ergo
 ```
 
-Vous pouvez maintenant vous rendre à la sous section "Vérifier l'installation".
+Pour vérifier l'installation, c'est dans la sous-section "Vérifier l'installation"
+que les informations sont données.
 
 ### Via compilation "manuelle"
 
-Pour installer Frama-C via compilation manuelle, vous avez besoin des paquets 
-indiqués dans la section Opam (mis à part Opam lui-même bien sûr). Il vous faut
+Pour installer Frama-C via compilation manuelle, les paquets indiqués dans la 
+section Opam sont nécessaires (mis à part Opam lui-même bien sûr). Il faut
 également une version récente d'Ocaml et de son compilateur (y compris vers 
 code natif).
 
-Décompressez l'archive disponible ici : 
+Après décompression de l'archive disponible ici : 
 [http://frama-c.com/download.html](http://frama-c.com/download.html) (Source distribution). 
-Déplacez vous dans l'archive et tapez la commande :
+Il faut se rendre dans le dossier et exécuter la commande :
 
 ```bash
 ./configure && make && sudo make install
 ```
 
-Vous pouvez maintenant vous rendre à la sous section "Vérifier l'installation".
+Pour vérifier l'installation, c'est dans la sous-section "Vérifier l'installation"
+que les informations sont données.
 
 ## OSX
 
@@ -135,7 +138,8 @@ Frama-C et prouveur Alt-Ergo :
 > opam install frama-c
 ```
 
-Vous pouvez maintenant vous rendre à la sous section "Vérifier l'installation".
+Pour vérifier l'installation, c'est dans la sous-section "Vérifier l'installation"
+que les informations sont données.
 
 ## Windows
 
@@ -149,13 +153,13 @@ Les instructions d'installation se trouvent ici :
 
 Le lancement de Frama-C se fera par l'intermédiaire de cygwin.
 
-Vous pouvez maintenant vous rendre à la sous section "Vérifier 
-l'installation".
+Pour vérifier l'installation, c'est dans la sous-section "Vérifier l'installation"
+que les informations sont données.
 
 # Vérifier l'installation
 
-Pour vérifier votre installation, copiez ce code très simple dans un fichier
-"main.c" :
+Pour vérifier votre installation, nous allons utiliser ce code très simple dans un 
+fichier "main.c" :
 
 ```c
 /*@
@@ -182,8 +186,8 @@ int main(){
 }
 ```
 
-Ensuite, rendez-vous avec un terminal dans le dossier où vous avez créé ce 
-fichier et tapez la commande suivante dans votre terminal :
+Ensuite, depuis un terminal, dans le dossier où ce fichier a été créé,
+nous pouvons lancer Frama-C avec la commande suivante :
 
 ```bash
 frama-c-gui -wp -rte main.c
@@ -194,44 +198,54 @@ Cette fenêtre devrait s'ouvrir.
 ![Vérification installation 1](https://zestedesavoir.com:443/media/galleries/2584/c5a510d2-0252-4c40-a621-071a3130a641.png)
 
 En cliquant sur ```main.c``` dans le volet latéral gauche pour le sélectionner,
-vous devriez voir le contenu du fichier ```main.c``` modifié et des pastilles 
+nous pouvons voir le contenu du fichier ```main.c``` modifié et des pastilles 
 vertes sur différentes lignes comme ceci :
 
 ![Vérification installation 2](https://zestedesavoir.com:443/media/galleries/2584/8e6fc038-29e5-479f-affd-9040454dc3aa.png)
 
-Si c'est le cas, tant mieux, sinon vérifiez d'abord que vous n'avez rien raté
-de l'installation (par exemple : l'oubli de bibliothèques graphiques ou encore 
-l'oubli de l'installation d'Alt-Ergo). Si tout vous semble bon, vous pouvez 
-demander de l'aide sur divers forums.
+Si c'est le cas, tant mieux, sinon il faudra d'abord vérifier que rien n'a été
+oublié au cours de l'installation (par exemple : l'oubli de bibliothèques graphiques
+ou encore l'oubli de l'installation d'Alt-Ergo). Si tout semble correct, divers forum
+pourront fournir de l'aide.
+
+[[attention]]
+| L'interface graphique de Frama-C ne permet pas l'édition du code source
+
+[[information]]
+| Pour les daltoniens, il est possible de lancer Frama-C avec un mode où les 
+| pastilles de couleurs sont remplacées :
+| ```bash
+| $ frama-c-gui -gui-theme colorblind
+| ```
 
 # (Bonus) Installation de prouveurs supplémentaires
 
-Cette partie est purement optionnelle, rien de ce qui est ici ne vous sera 
-complètement nécessaire pendant le tutoriel. Cependant, si vous commencez à 
-vous intéresser vraiment à la preuve, il est possible que vous touchiez à un
- moment ou un autre les limites du prouveur pré-intégré Alt-Ergo et que vous 
- ayez besoin d'outil plus puissants.
+Cette partie est purement optionnelle, rien de ce qui est ici ne sera 
+complètement nécessaire pendant le tutoriel. Cependant, si lorsque l'on commence à 
+s'intéresser vraiment à la preuve, il est possible que de toucher assez rapidement
+aux limites du prouveur pré-intégré Alt-Ergo et d'avoir besoin d'outils plus 
+puissants.
 
 ## Coq
 
 Coq, développé par l'organisme de recherche Inria, est un assistant de 
-preuve. C'est-à-dire que vous écrivez vous-même les preuves dans un 
+preuve. C'est-à-dire que nous écrivons nous-même les preuves dans un 
 langage dédié et la plateforme se charge de vérifier (par typage) que 
 cette preuve est valide. 
 
 Pourquoi aurait-on besoin d'un tel outil ? Il se peut parfois que les 
-propriétés que vous voulez prouver soit trop complexe pour un prouveur 
+propriétés que nous voulons prouver soient trop complexes pour un prouveur 
 automatique, typiquement lorsqu'elles nécessitent des raisonnements par
 induction avec des choix minutieux à chaque étape. Auquel cas, WP pourra 
-générer des obligations de preuve traduites en Coq et vous laisser écrire 
+générer des obligations de preuve traduites en Coq et nous laisser écrire 
 la preuve en question.
 
-Si vous voulez apprendre à utiliser Coq, 
+Pour apprendre à utiliser Coq, 
 [ce tutoriel](http://www.cis.upenn.edu/~bcpierce/sf/current/index.html) 
 est très bon.
 
 [[information]]
-| Si vous installez Frama-C par l'intermédiaire de votre gestionnaire de 
+| Si Frama-C est installé par l'intermédiaire de votre gestionnaire de 
 | paquets, il peut arriver que celui-ci aie directement intégré Coq.
 
 Pour plus d'informations à propos de Coq et de son installation, voir par 
@@ -251,7 +265,7 @@ WP.
 [[attention]]
 | À ma connaissance, il n'est pas possible (ou vraiment pas facile) d'installer
 | Why3 sous Windows.
-| L'auteur ne saurait être tenu responsable de blessures que vous pourriez subir
+| L'auteur ne saurait être tenu responsable de blessures que subies
 | pendant une telle opération.
 
 Why3 est une plateforme pour la preuve déductive développée par le LRI à Orsay. 
@@ -263,11 +277,10 @@ d'utiliser ce dernier pour dialoguer avec un certain nombre de prouveurs
 automatiques.
 
 Pour plus d'informations sur Why3 c'est [sur son site](http://why3.lri.fr/) que 
-ça se passe. Si vous avez installé Opam, Why3 est disponible par son 
-intermédiaire. Sinon, vous pouvez aller voir la procédure d'installation 
-proposée.
+ça se passe. Si Opam est installé, Why3 est disponible par son 
+intermédiaire. Sinon, il y a une procédure d'installation proposée.
 
-Vous pouvez retrouver sur ce même site 
+Nous pouvons retrouver sur ce même site 
 [la liste des prouveurs](http://why3.lri.fr/#provers) qu'il supporte.
 Il est vivement conseillé d'avoir [Z3](https://github.com/Z3Prover/z3/wiki),
 développé par Microsoft Research, et [CVC4](http://cvc4.cs.nyu.edu/web/),
@@ -275,7 +288,7 @@ développé par des personnes de divers organisme de recherche (New York
 University, University of Iowa, Google, CEA LIST). Ces deux prouveurs sont très
 efficaces et relativement complémentaires.
 
-Pour utiliser les prouveurs en question, référez-vous à la partie sur Coq pour
-la sélection d'un prouveur différent d'Alt-Ergo. À noter qu'il faudra peut-être
-que vous demandiez la détection des prouveurs fraîchement installé avec le 
+Pour utiliser les prouveurs en question, la procédure est expliquée dans la partie
+sur Coq pour la sélection d'un prouveur différent d'Alt-Ergo. À noter qu'il faudra
+peut-être que demander la détection des prouveurs fraîchement installé avec le 
 bouton "Provers" puis "Detect Provers" dans la fenêtre qui s'ouvre.

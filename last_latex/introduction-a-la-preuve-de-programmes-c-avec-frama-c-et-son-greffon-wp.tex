@@ -71,7 +71,7 @@
 \newcommand{\NormalTok}[1]{{#1}}
 \usepackage{longtable,booktabs}
 \usepackage{graphicx}
-% Redefine \includegraphics[scale=0.5] so that, unless explicit options are
+% Redefine \includegraphics so that, unless explicit options are
 % given, the image width will not exceed the width of the page.
 % Images get their normal width if they fit onto the page, but
 % are scaled down if they would overflow the margins.
@@ -98,7 +98,7 @@
 \fi
 \hypersetup{breaklinks=true,
             bookmarks=true,
-            pdfauthor={24 février 2017},
+            pdfauthor={03 avril 2017},
             pdftitle={INTRODUCTION À LA PREUVE DE PROGRAMMES C AVEC FRAMA-C ET SON GREFFON WP},
             colorlinks=true,
             citecolor=ocre,
@@ -117,7 +117,6 @@
 \else
   \usepackage[francais]{babel}
 \fi
-
 
 \usepackage{tcolorbox}
 \tcbuselibrary{skins,breakable}
@@ -162,7 +161,7 @@
 \begin{titlepage}
 \title{\color{white}{INTRODUCTION À LA PREUVE DE PROGRAMMES C AVEC FRAMA-C ET SON GREFFON WP}}
 \author{\color{ocre}{Allan Blanchard}}
-\date{\color{white}{$ $\\24 février 2017}}
+\date{\color{white}{$ $\\3 avril 2017}}
 \end{titlepage}
 
 \begin{document}
@@ -248,7 +247,6 @@ programmes.
   \item \href{https://zestedesavoir.com/membres/voir/Vayel/}{Vayel}
   \end{itemize}
 \end{zdsblock}
-
 
 \chapter{La preuve de programmes et notre outil pour ce tutoriel :
 Frama-C}\label{la-preuve-de-programmes-et-notre-outil-pour-ce-tutoriel-frama-c}
@@ -641,7 +639,7 @@ sensiblement la même que sous Linux, mais :
 paquets}\label{via-les-gestionnaires-de-paquets}
 
 Sous Debian, Ubuntu et Fedora, il existe des paquets pour Frama-C. Dans
-ce cas, il vous suffit de taper une ligne de commande comme celle-ci :
+ce cas, il suffit de taper une ligne de commande comme celle-ci :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -654,8 +652,8 @@ dernière version. En soi ce n'est pas très gênant car il n'y a pas de
 nouvelle version de Frama-C tous les deux mois, mais il est tout de même
 bon de le savoir.
 
-Vous pouvez maintenant vous rendre à la sous section \og{}Vérifier
-l'installation\fg{}.
+Pour vérifier l'installation, c'est dans la sous-section \og{}Vérifier
+l'installation\fg{} que les informations sont données.
 
 \paragraph{Via opam}\label{via-opam}
 
@@ -688,20 +686,20 @@ Enfin, du côté d'Opam, il reste à installer Frama-C et Alt-Ergo.
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Vous pouvez maintenant vous rendre à la sous section \og{}Vérifier
-l'installation\fg{}.
+Pour vérifier l'installation, c'est dans la sous-section \og{}Vérifier
+l'installation\fg{} que les informations sont données.
 
 \paragraph{\texorpdfstring{Via compilation
 \og{}manuelle\fg{}}{Via compilation manuelle}}\label{via-compilation-manuelle}
 
-Pour installer Frama-C via compilation manuelle, vous avez besoin des
-paquets indiqués dans la section Opam (mis à part Opam lui-même bien
-sûr). Il vous faut également une version récente d'Ocaml et de son
+Pour installer Frama-C via compilation manuelle, les paquets indiqués
+dans la section Opam sont nécessaires (mis à part Opam lui-même bien
+sûr). Il faut également une version récente d'Ocaml et de son
 compilateur (y compris vers code natif).
 
-Décompressez l'archive disponible ici :
-\url{http://frama-c.com/download.html} (Source distribution). Déplacez
-vous dans l'archive et tapez la commande :
+Après décompression de l'archive disponible ici :
+\url{http://frama-c.com/download.html} (Source distribution). Il faut se
+rendre dans le dossier et exécuter la commande :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -709,8 +707,8 @@ vous dans l'archive et tapez la commande :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Vous pouvez maintenant vous rendre à la sous section \og{}Vérifier
-l'installation\fg{}.
+Pour vérifier l'installation, c'est dans la sous-section \og{}Vérifier
+l'installation\fg{} que les informations sont données.
 
 \subsubsection{OSX}\label{osx}
 
@@ -756,8 +754,8 @@ Frama-C et prouveur Alt-Ergo :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Vous pouvez maintenant vous rendre à la sous section \og{}Vérifier
-l'installation\fg{}.
+Pour vérifier l'installation, c'est dans la sous-section \og{}Vérifier
+l'installation\fg{} que les informations sont données.
 
 \subsubsection{Windows}\label{windows}
 
@@ -772,13 +770,13 @@ Les instructions d'installation se trouvent ici :
 
 Le lancement de Frama-C se fera par l'intermédiaire de cygwin.
 
-Vous pouvez maintenant vous rendre à la sous section \og{}Vérifier
-l'installation\fg{}.
+Pour vérifier l'installation, c'est dans la sous-section \og{}Vérifier
+l'installation\fg{} que les informations sont données.
 
 \subsection{Vérifier l'installation}\label{vuxe9rifier-linstallation}
 
-Pour vérifier votre installation, copiez ce code très simple dans un
-fichier \og{}main.c\fg{} :
+Pour vérifier votre installation, nous allons utiliser ce code très
+simple dans un fichier \og{}main.c\fg{} :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -807,8 +805,8 @@ fichier \og{}main.c\fg{} :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Ensuite, rendez-vous avec un terminal dans le dossier où vous avez créé
-ce fichier et tapez la commande suivante dans votre terminal :
+Ensuite, depuis un terminal, dans le dossier où ce fichier a été créé,
+nous pouvons lancer Frama-C avec la commande suivante :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -827,7 +825,7 @@ La fenêtre présentée en figure~\ref{fig:install-1} devrait s'ouvrir.
 
 En cliquant sur \texttt{main.c} dans le volet latéral gauche pour le
 sélectionner, vous devriez voir le contenu du fichier \texttt{main.c}
-modifié et des pastilles vertes sur différentes lignes comme ceci
+modifié et des pastilles vertes sur différentes lignes comme
 illustré par la figure~\ref{fig:install-2}.
 
 \begin{figure}[htbp]
@@ -837,42 +835,57 @@ illustré par la figure~\ref{fig:install-2}.
 \label{fig:install-2}
 \end{figure}
 
-Si c'est le cas, tant mieux, sinon vérifiez d'abord que vous n'avez rien
-raté de l'installation (par exemple : l'oubli de bibliothèques
-graphiques ou encore l'oubli de l'installation d'Alt-Ergo). Si tout vous
-semble bon, vous pouvez demander de l'aide sur divers forums.
+Si c'est le cas, tant mieux, sinon il faudra d'abord vérifier que rien
+n'a été oublié au cours de l'installation (par exemple : l'oubli de
+bibliothèques graphiques ou encore l'oubli de l'installation
+d'Alt-Ergo). Si tout semble correct, divers forum pourront fournir de
+l'aide.
 
+\begin{zdsalertblock}{Attention}
+  L'interface graphique de Frama-C ne permet pas l'édition du code source
+\end{zdsalertblock}
+
+\begin{zdsblock}{Information}
+  Pour les daltoniens, il est possible de lancer Frama-C avec un mode où
+  les pastilles de couleurs sont remplacées :
+  \begin{footnotesize}\begin{Shaded}
+      \begin{Highlighting}[]
+        \KeywordTok{$} \KeywordTok{frama-c-gui} \KeywordTok{-gui-theme} \KeywordTok{colorblind} \KeywordTok{fichier.c}
+      \end{Highlighting}
+  \end{Shaded}\end{footnotesize}
+\end{zdsblock}
+  
 \subsection{(Bonus) Installation de prouveurs
 supplémentaires}\label{bonus-installation-de-prouveurs-suppluxe9mentaires}
 
-Cette partie est purement optionnelle, rien de ce qui est ici ne vous
-sera complètement nécessaire pendant le tutoriel. Cependant, si vous
-commencez à vous intéresser vraiment à la preuve, il est possible que
-vous touchiez à un moment ou un autre les limites du prouveur
-pré-intégré Alt-Ergo et que vous ayez besoin d'outil plus puissants.
+Cette partie est purement optionnelle, rien de ce qui est ici ne sera
+complètement nécessaire pendant le tutoriel. Cependant, lorsque l'on
+commence à s'intéresser vraiment à la preuve, il est possible de
+toucher assez rapidement aux limites du prouveur pré-intégré Alt-Ergo et
+d'avoir besoin d'outils plus puissants.
 
 \subsubsection{Coq}\label{coq}
 
 Coq, développé par l'organisme de recherche Inria, est un assistant de
-preuve. C'est-à-dire que vous écrivez vous-même les preuves dans un
+preuve. C'est-à-dire que nous écrivons nous-même les preuves dans un
 langage dédié et la plateforme se charge de vérifier (par typage) que
 cette preuve est valide.
 
 Pourquoi aurait-on besoin d'un tel outil ? Il se peut parfois que les
-propriétés que vous voulez prouver soit trop complexe pour un prouveur
-automatique, typiquement lorsqu'elles nécessitent des raisonnements par
-induction avec des choix minutieux à chaque étape. Auquel cas, WP pourra
-générer des obligations de preuve traduites en Coq et vous laisser
-écrire la preuve en question.
+propriétés que nous voulons prouver soient trop complexes pour un
+prouveur automatique, typiquement lorsqu'elles nécessitent des
+raisonnements par induction avec des choix minutieux à chaque étape.
+Auquel cas, WP pourra générer des obligations de preuve traduites en Coq
+et nous laisser écrire la preuve en question.
 
-Si vous voulez apprendre à utiliser Coq,
+Pour apprendre à utiliser Coq,
 \href{http://www.cis.upenn.edu/~bcpierce/sf/current/index.html}{ce
 tutoriel} est très bon.
 
 \begin{zdsblock}{Information}
-Si vous installez Frama-C par
-l'intermédiaire de votre gestionnaire de paquets, il peut
-arriver que celui-ci aie directement intégré Coq.
+Si Frama-C est installé par
+l'intermédiaire du gestionnaire de paquets, il peut
+arriver que celui-ci ait directement intégré Coq.
 \end{zdsblock}
 
 Pour plus d'informations à propos de Coq et de son installation, voir
@@ -912,11 +925,10 @@ preuve vers le langage de Why3 et d'utiliser ce dernier pour dialoguer
 avec un certain nombre de prouveurs automatiques.
 
 Pour plus d'informations sur Why3 c'est \href{http://why3.lri.fr/}{sur
-son site} que ça se passe. Si vous avez installé Opam, Why3 est
-disponible par son intermédiaire. Sinon, vous pouvez aller voir la
-procédure d'installation proposée.
+son site} que ça se passe. Si Opam est installé, Why3 est disponible par
+son intermédiaire. Sinon, il y a une procédure d'installation proposée.
 
-Vous pouvez retrouver sur ce même site
+Nous pouvons retrouver sur ce même site
 \href{http://why3.lri.fr/\#provers}{la liste des prouveurs} qu'il
 supporte. Il est vivement conseillé d'avoir
 \href{https://github.com/Z3Prover/z3/wiki}{Z3}, développé par Microsoft
@@ -925,9 +937,9 @@ personnes de divers organisme de recherche (New York University,
 University of Iowa, Google, CEA LIST). Ces deux prouveurs sont très
 efficaces et relativement complémentaires.
 
-Pour utiliser les prouveurs en question, référez-vous à la partie sur
-Coq pour la sélection d'un prouveur différent d'Alt-Ergo. À noter qu'il
-faudra peut-être que vous demandiez la détection des prouveurs
+Pour utiliser les prouveurs en question, la procédure est expliquée dans
+la partie sur Coq pour la sélection d'un prouveur différent d'Alt-Ergo.
+À noter qu'il faudra peut-être que demander la détection des prouveurs
 fraîchement installé avec le bouton \og{}Provers\fg{} puis \og{}Detect Provers\fg{}
 dans la fenêtre qui s'ouvre.
 
@@ -1017,7 +1029,9 @@ Notons bien le \texttt{@} à la suite du début du bloc de commentaire,
 c'est lui qui fait que ce bloc devient un bloc d'annotations pour
 Frama-C et pas un simple bloc de commentaires à ignorer.
 
-Maintenant, regardons comment sont exprimés les contrats.
+Maintenant, regardons comment sont exprimés les contrats, à commencer
+par la post-condition, puisque c'est ce que nous attendons en priorité
+de notre programme (nous nous intéresserons ensuite aux pré-conditions).
 
 \subsection{Post-condition}\label{post-condition}
 
@@ -1068,17 +1082,17 @@ Cette spécification est l'opportunité de présenter un connecteur logique
 très utile que propose ACSL mais qui n'est pas présent en C :
 l'implication \(A \Rightarrow B\), que l'on écrit en ACSL
 \texttt{A\ ==\textgreater{}\ B}. La table de vérité de l'implication est
-la suivante (\(\top\) = \texttt{true}, \(\bot\) = \texttt{false}) :
+la suivante :
 
-\begin{longtable}[]{@{}ccc@{}}
+\begin{longtable}[]{@{}lll@{}}
 \toprule
 \(A\) & \(B\) & \(A \Rightarrow B\)\tabularnewline
 \midrule
 \endhead
-\(\bot\) & \(\bot\) & \(\top\)\tabularnewline
-\(\bot\) & \(\top\) & \(\top\)\tabularnewline
-\(\top\) & \(\bot\) & \(\bot\)\tabularnewline
-\(\top\) & \(\top\) & \(\top\)\tabularnewline
+\(F\) & \(F\) & \(V\)\tabularnewline
+\(F\) & \(V\) & \(V\)\tabularnewline
+\(V\) & \(F\) & \(F\)\tabularnewline
+\(V\) & \(V\) & \(V\)\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -1098,14 +1112,14 @@ fausses toutes les deux (c'est donc la négation du ou-exclusif).
 
 \begin{zdsblock}{Information}
 \begin{longtable}[]{@{}ccccccc@{}}
-\toprule
+Trule
 \(A\) & \(B\) & \(\neg A\) & \(A \wedge B\) & \(A \vee B\) & \(A \Rightarrow B\) & \(A \Leftrightarrow B\)\tabularnewline
 \midrule
 \endhead
-\(\bot\) & \(\bot\) & \(\top\) & \(\bot\) & \(\bot\) & \(\top\) &\(\top\)\tabularnewline
-\(\bot\) & \(\top\) & \(\top\) & \(\bot\) & \(\top\) & \(\top\) &\(\bot\)\tabularnewline
-\(\top\) & \(\bot\) & \(\bot\) & \(\bot\) & \(\top\) & \(\bot\) &\(\bot\)\tabularnewline
-\(\top\) & \(\top\) & \(\bot\) & \(\top\) & \(\top\) & \(\top\) &\(\top\)\tabularnewline
+\(F\) & \(F\) & \(V\) & \(F\) & \(F\) & \(V\) &\(V\)\tabularnewline
+\(F\) & \(V\) & \(V\) & \(F\) & \(V\) & \(V\) &\(F\)\tabularnewline
+\(V\) & \(F\) & \(F\) & \(F\) & \(V\) & \(F\) &\(F\)\tabularnewline
+\(V\) & \(V\) & \(F\) & \(V\) & \(V\) & \(V\) &\(T\)\tabularnewline
 \bottomrule
 \end{longtable}
 \end{zdsblock}
@@ -1234,6 +1248,14 @@ parce que -\texttt{INT\_MIN} (\(-2^{31}\)) \textgreater{}
 \label{fig:2-1-1-abs-4}
 \end{figure}
 
+\begin{zdsblock}{Information}
+  Il est bon de noter que le risque de
+  dépassement est pour nous réel car nos machines (dont Frama-C
+  détecte la configuration) fonctionne en
+  \href{https://fr.wikipedia.org/wiki/Compl\%C3\%A9ment_\%C3\%A0_deux}{complément
+à deux} pour lequel le dépassement n'est pas défini par la norme C.
+\end{zdsblock}
+  
 Ici nous pouvons voir un autre type d'annotation ACSL. La ligne
 \texttt{//@\ assert\ propriete\ ;} nous permet de demander la
 vérification d'une propriété à un point particulier de programme. Ici,
@@ -1246,11 +1268,24 @@ couleur pour les pastilles : vert+marron et orange.
 
 La couleur vert + marron nous indique que la preuve a été effectué mais
 qu'elle dépend potentiellement de propriétés qui, elle, ne l'ont pas
-été. Si la preuve n'est pas recommencée intégralement par rapport à la
-preuve précédente, ces pastilles ont dû rester vertes car les preuves
-associées ont été réalisées avant l'introduction de la propriété nous
-assurant l'absence de runtime-error, et ne se sont donc pas reposées sur
-la connaissance de cette propriété puisqu'elle n'existait pas.
+été.
+
+Si la preuve n'est pas recommencée intégralement par rapport à la preuve
+précédente, ces pastilles ont dû rester vertes car les preuves associées
+ont été réalisées avant l'introduction de la propriété nous assurant
+l'absence de runtime-error, et ne se sont donc pas reposées sur la
+connaissance de cette propriété puisqu'elle n'existait pas.
+
+En effet, lorsque WP transmet une obligation de preuve à un prouveur
+automatique, il transmet (basiquement) deux types de propriétés : \(G\),
+le but, la propriété que l'on cherche à prouver, et \(S_1\) \ldots{}
+\(S_n\) les diverses suppositions que l'on peut faire à propos de l'état
+du programme au point où l'on cherche à vérifier \(G\). Cependant, il ne
+reçoit pas, en retour, quelles propriétés ont été utilisées par le
+prouveur pour valider \(G\). Donc si \(S_3\) fait partie des
+suppositions, et si WP n'a pas réussi à obtenir une preuve de \(S_3\),
+il indique que \(G\) est vraie, mais à condition seulement que l'on
+arrive un jour à prouver \(S_3\).
 
 La couleur orange nous signale qu'aucun prouveur n'a pu déterminer si la
 propriété est vérifiable. Les deux raisons peuvent être :
@@ -1266,8 +1301,8 @@ propriété est vérifiable. Les deux raisons peuvent être :
 \end{itemize}
 
 Dans le volet inférieur, nous pouvons sélectionner l'onglet \og{}WP
-Goals\fg{} (voir figure~\ref{fig:2-1-1-abs-5}),
-celui-ci nous affiche la liste des obligations de preuve et
+Goals\fg{} (voir figure~\ref{fig:2-1-1-abs-5}), celui-ci nous affiche la
+liste des obligations de preuve et
 pour chaque prouveur indique un petit logo si la preuve a été tentée et
 si elle a été réussie, échouée ou a rencontré un timeout (ici nous
 pouvons voir un essai avec Z3 sur le contrôle de la RTE pour montrer le
@@ -1343,9 +1378,10 @@ de la sémantique de C, ce qui rend le code souvent indigeste.
 Si nous retournons dans notre tableau des obligations de preuve (bouton
 encadré dans la capture d'écran précédente), nous pouvons donc voir que
 les hypothèses n'ont pas suffi aux prouveurs pour déterminer que la
-propriété est vraie (et nous l'avons dit : c'est normal), il nous faut
-donc ajouter une hypothèse supplémentaire pour garantir le bon
-fonctionnement de la fonction : une pré-condition d'appel.
+propriété \og{}absence de débordement\fg{} est vraie (et nous l'avons dit :
+c'est normal), il nous faut donc ajouter une hypothèse supplémentaire
+pour garantir le bon fonctionnement de la fonction : une pré-condition
+d'appel.
 
 \subsection{Pré-condition}\label{pruxe9-condition}
 
@@ -1407,10 +1443,22 @@ défini) :
 \end{Shaded}\end{footnotesize}
 
 \begin{zdsalertblock}{Attention}
-  La fenêtre de Frama-C ne permet pas
+  Rappel : la fenêtre de Frama-C ne permet pas
   l'édition du code source.
 \end{zdsalertblock}
 
+\begin{zdsblock}{Information}
+  Avec les versions de Frama-C NEON et plus anciennes, le pré-processing
+  des annotations n'était pas activé par défaut. Il faut donc lancer
+  Frama-C avec l'option \texttt{-pp-annot} :
+
+  \begin{footnotesize}\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{$} \KeywordTok{frama-c-gui} \KeywordTok{-pp-annot} \KeywordTok{file.c}
+      \end{Highlighting}
+  \end{Shaded}\end{footnotesize}
+\end{zdsblock}
+  
 Une fois le code source modifié de cette manière, un clic sur
 \og{}Reparse\fg{} et nous lançons à nouveau l'analyse. Cette fois, tout est
 validé pour WP, notre implémentation est prouvée (voir
@@ -1458,15 +1506,14 @@ calcul termine alors la post-condition est vérifiée.
 Si nous donnons à notre fonction une valeur qui viole ses
 pré-conditions, alors nous en déduisons que la post-condition est
 fausse. À partir de là, nous pouvons prouver tout ce que nous voulons
-car ce \og{}false\fg{} devient une pré-condition pour tout appel qui viendrait
+car ce \og{}false\fg{} devient une supposition pour tout appel qui viendrait
 ensuite. À partir de faux, nous prouvons tout ce que nous voulons, car
 si nous avons la preuve de \og{}faux\fg{} alors \og{}faux\fg{} est vrai, de même que
 \og{}vrai\fg{} est vrai. Donc tout est vrai.
 
 En prenant le programme modifié, nous pouvons d'ailleurs regarder les
 obligations de preuve générées par WP pour l'appel fautif et l'appel
-prouvé par conséquent
-(figures~\ref{fig:2-1-2-foo-2} et~\ref{fig:2-1-2-foo-3}).
+prouvé par conséquent (figures~\ref{fig:2-1-2-foo-2} et~\ref{fig:2-1-2-foo-3}).
 
 \begin{figure}[htbp]
 \centering
@@ -1496,8 +1543,10 @@ mettons les appels dans l'autre sens (\texttt{abs(a)} puis
 \texttt{abs(INT\_MIN)}), nous obtenons quand même une violation de la
 pré-condition sur le deuxième ? La réponse est simplement que
 \texttt{abs(a)} peut, ou ne peut pas, provoquer une erreur, alors que
-\texttt{abs(INT\_MIN)} provoque forcément l'erreur. Dans le premier cas,
-nous apprenons nécessairement \og{}faux\fg{}, pas dans le deuxième cas.
+\texttt{abs(INT\_MIN)} provoque forcément l'erreur. Donc si nous
+obtenons nécessairement une preuve de \og{}faux\fg{} avec un appel
+\texttt{abs(INT\_MIN)}, ce n'est pas le cas de l'appel \texttt{abs(a)}
+qui peut aussi ne pas échouer.
 
 Bien spécifier son programme est donc d'une importance cruciale.
 Typiquement, préciser un pré-condition fausse peut nous donner la
@@ -1519,12 +1568,33 @@ Si nous demandons à WP de prouver cette fonction. Il l'acceptera sans
 rechigner car la supposition que nous lui donnons en entrée est
 nécessairement fausse. Par contre, nous aurons bien du mal à lui donner
 une valeur en entrée qui respecte la pré-condition, nous pourrons donc
-nous en apercevoir.
+nous en apercevoir. En regardant pourquoi nous n'arrivons pas à
+transmettre une valeur valide en entrée.
 
 Certaines notions que nous verrons plus loin dans le tutoriel
 apporterons un risque encore plus grand de créer ce genre d'incohérence.
 Il faut donc toujours avoir une attention particulière pour ce que nous
 spécifions.
+
+\subsubsection{Trouver les bonnes
+pré-conditions}\label{trouver-les-bonnes-pruxe9-conditions}
+
+Trouver les bonnes pré-conditions à une fonction est parfois difficile.
+Le plus important est avant tout de déterminer ces pré-conditions sans
+prendre en compte le contenu de la fonction (au moins dans un premier
+temps) afin d'éviter de construire, par erreur, une spécification qui
+contiendrait le même bug qu'un code fautif, par exemple en prenant en
+compte une condition faussée. C'est pour cela que l'on souhaitera
+généralement que la personne qui développe le programme et la personne
+qui le spécifie formellement soient différentes (même si elles ont pu
+préalablement s'accorder sur une spécification textuelle par exemple).
+
+Une fois ces pré-conditions posées, alors seulement, nous nous
+intéressons aux spécifications dues au fait que nous sommes soumis aux
+contraintes de notre langage et notre matériel. Par exemple, la fonction
+valeur absolue n'a, au fond, pas vraiment de pré-condition à respecter,
+c'est la machine cible qui détermine qu'une condition supplémentaire
+doit être respectée en raison du complément à deux.
 
 \subsection{Quelques éléments sur l'usage de WP et
 Frama-C}\label{quelques-uxe9luxe9ments-sur-lusage-de-wp-et-frama-c}
@@ -1995,7 +2065,7 @@ deux disjoints. Ici, nous spécifierions :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Et cette fois, la preuve est effectuée, comme le montre la
+Et cette fois, la preuve est effectuée , comme le montre la
 figure~\ref{fig:2-2-2-incr_a_by_b-2}.
 
 \begin{figure}[htbp]
@@ -2004,6 +2074,13 @@ figure~\ref{fig:2-2-2-incr_a_by_b-2}.
 \caption{Résolution des problèmes d'aliasing}
 \label{fig:2-2-2-incr_a_by_b-2}
 \end{figure}
+
+Nous pouvons noter que nous ne nous intéressons pas ici à la preuve de
+l'absence d'erreur à l'exécution car ce n'est pas l'objet de cette
+section. Cependant, si cette fonction faisait partie d'un programme
+complet à vérifier, il faudrait définir le contexte dans lequel on
+souhaite l'utiliser et définir les pré-conditions qui nous garantissent
+l'absence de débordement en conséquence.
 
 \section{Comportements}\label{comportements}
 
@@ -2223,7 +2300,6 @@ bleues), comme illustré par la figure~\ref{fig:2-4-max_abs}.
 \label{fig:2-4-max_abs}
 \end{figure}
 
-
 Ces pastilles nous disent qu'en l'absence d'implémentation, les
 propriétés sont supposées vraies. Et c'est une des forces de la preuve
 déductive de programmes par rapport à certaines autres méthodes
@@ -2289,7 +2365,7 @@ contrôle}\label{instructions-basiques-et-structures-de-contruxf4le}
   concentrer sur l'utilisation de l'outil, l'introduction de ce
   chapitre et les deux premières sections (sur les instructions de base et
   \og{}le bonus stage\fg{}) sont dispensables. Si ce que nous avons
-  présenté jusqu'à maintenant vous a semblé ardu sur un plan
+  présenté jusqu'à maintenant a semblé ardu sur un plan
   formel, il est également possible de réserver l'introduction
   et ces deux sections pour une deuxième lecture.
   
@@ -3003,7 +3079,10 @@ revanche.
 \begin{zdsblock}{Information}
   À noter qu'une assertion
   inatteignable est toujours prouvée vraie de cette manière :
+  \begin{center}
   \includegraphics[scale=0.5]{3-3-goto_end.png}
+  \end{center}
+  
   Et c'est également le cas lorsque l'on sait
   trivialement qu'une instruction produit nécessairement une
   erreur d'exécution (par exemple en déréférençant la valeur
@@ -3753,6 +3832,7 @@ types machines.
 Comme les prédicats, elles peuvent recevoir divers labels et valeurs en
 paramètre.
 
+\newpage
 \subsection{Syntaxe}\label{syntaxe-1}
 
 Pour déclarer une fonction logique, l'écriture est la suivante :
@@ -4666,8 +4746,7 @@ Ceci est exprimé par le code suivant :
 \CommentTok{    }
 \CommentTok{    axiom transitive\{L1,L2,L3\}:}
 \CommentTok{      \textbackslash{}forall int* a, integer b,e ; }
-\CommentTok{        permutation\{L1,L2\}(a, b, e) && permutation\{L2,L3\}(a, b, e) ==>}
-\CommentTok{          permutation\{L1,L3\}(a, b, e);}
+\CommentTok{        permutation\{L1,L2\}(a, b, e) && permutation\{L2,L3\}(a, b, e) ==> permutation\{L1,L3\}(a, b, e);}
 \CommentTok{  \}}
 \CommentTok{*/}
 \end{Highlighting}
@@ -4831,7 +4910,7 @@ fonctionnement de cette axiomatique :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-\begin{zdssecretblock}{Solution}
+\begin{zdssecretblock}{Soltion}
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{/*@}
@@ -5064,10 +5143,10 @@ ans.
 Ces dernières années, les questions de sûreté et de sécurité sont
 devenus de plus en plus présentes et cruciales. Les méthodes formelles
 connaissent également de fortes évolutions et leurs apports pour ces
-questions sont très appréciés. Par exemple, vous trouverez derrière
-\href{http://sfm.seas.harvard.edu/report.html}{ce lien} un rapport d'une
-conférence sur la sécurité ayant rassemblé des acteurs du monde
-académique et industriel, dans lequel nous pouvons lire :
+questions sont très appréciés. Par exemple,
+\href{http://sfm.seas.harvard.edu/report.html}{ce lien} mène vers un
+rapport d'une conférence sur la sécurité ayant rassemblé des acteurs du
+monde académique et industriel, dans lequel nous pouvons lire :
 
 \begin{quote}
 Adoption of formal methods in various areas (including verification of
@@ -5099,7 +5178,6 @@ Formal Methods for Security, 2016
       sécurité sera toujours fragile.}
   \end{quote}
 \end{zdssecretblock}
-
 
 \chapter{Pour aller plus loin}\label{pour-aller-plus-loin}
 

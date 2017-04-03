@@ -3,7 +3,7 @@
 | lecteur souhaite se concentrer sur l'utilisation de l'outil, l'introduction de
 | ce chapitre et les deux premières sections (sur les instructions de base et "le 
 | bonus stage") sont dispensables. Si ce que nous avons présenté jusqu'à maintenant
-| vous a semblé ardu sur un plan formel, il est également possible de réserver 
+| a semblé ardu au lecteur sur un plan formel, il est également possible de réserver 
 | l'introduction et ces deux sections pour une deuxième lecture.
 | 
 | Les sections sur les boucles sont en revanches indispensables. Les éléments plus

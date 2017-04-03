@@ -82,8 +82,7 @@ différent dans 10 ans, 20 ans, 40 ans.
 Ces dernières années, les questions de sûreté et de sécurité sont devenus de
 plus en plus présentes et cruciales. Les méthodes formelles connaissent également
 de fortes évolutions et leurs apports pour ces questions sont très appréciés. 
-Par exemple, vous trouverez derrière 
-[ce lien](http://sfm.seas.harvard.edu/report.html)
+Par exemple, [ce lien](http://sfm.seas.harvard.edu/report.html) mène vers
 un rapport d'une conférence sur la sécurité ayant rassemblé des acteurs du monde
 académique et industriel, dans lequel nous pouvons lire :
 

@@ -35,7 +35,9 @@ Notons bien le `@` à la suite du début du bloc de commentaire, c'est lui qui
 fait que ce bloc devient un bloc d'annotations pour Frama-C et pas un simple 
 bloc de commentaires à ignorer.
 
-Maintenant, regardons comment sont exprimés les contrats.
+Maintenant, regardons comment sont exprimés les contrats, à commencer par la
+post-condition, puisque c'est ce que nous attendons en priorité de notre 
+programme (nous nous intéresserons ensuite aux pré-conditions).
 
 # Post-condition
 
@@ -83,12 +85,12 @@ l'implication $A \Rightarrow B$, que l'on écrit en ACSL ```A ==> B```.
 La table de vérité de l'implication est la suivante ($\top$ = `true`,
 $\bot$ = `false`) :
 
-  $A$  |   $B$  | $A \Rightarrow B$
--------|--------|---------
-$\bot$ | $\bot$ | $\top$
-$\bot$ | $\top$ | $\top$
-$\top$ | $\bot$ | $\bot$
-$\top$ | $\top$ | $\top$
+$A$ | $B$ | $A \Rightarrow B$
+----|-----|-------------------
+$F$ | $F$ | $V$
+$F$ | $V$ | $V$
+$V$ | $F$ | $F$
+$V$ | $V$ | $V$
 
 Ce qui veut dire qu'une implication $A \Rightarrow B$ est vraie dans deux cas : 
 soit $A$ est fausse (et dans ce cas, il ne faut pas se préoccuper de $B$), soit 
@@ -104,15 +106,15 @@ toutes les deux (c'est donc la négation du ou-exclusif).
 
 [[information]]
 | Profitons en pour rappeler l'ensemble des tables de vérités des opérateurs
-| usuels en logique du premier order ($\neg$ = `!`, $\wedge$ = `&&`,
+| usuels en logique du premier ordre ($\neg$ = `!`, $\wedge$ = `&&`,
 | $\vee$ = `||`) :
 |
-|   $A$  |   $B$  | $\neg A$ | $A \wedge B$ | $A \vee B$ | $A \Rightarrow B$ | $A \Leftrightarrow B$
-| -------|--------|----------|--------------|------------|-------------------|-----------------------
-| $\bot$ | $\bot$ | $\top$   | $\bot$       | $\bot$     | $\top$            | $\top$
-| $\bot$ | $\top$ | $\top$   | $\bot$       | $\top$     | $\top$            | $\bot$
-| $\top$ | $\bot$ | $\bot$   | $\bot$       | $\top$     | $\top$            | $\bot$
-| $\top$ | $\top$ | $\bot$   | $\top$       | $\top$     | $\bot$            | $\top$
+| $A$ | $B$ | $\neg A$ | $A \wedge B$ | $A \vee B$ | $A \Rightarrow B$ | $A \Leftrightarrow B$
+| ----|-----|----------|--------------|------------|-------------------|-----------------------
+| $F$ | $F$ | $V$      | $F$          | $F$        | $V$               | $V$
+| $F$ | $V$ | $V$      | $F$          | $V$        | $V$               | $F$
+| $V$ | $F$ | $F$      | $F$          | $V$        | $F$               | $F$
+| $V$ | $V$ | $F$      | $V$          | $V$        | $V$               | $V$
 
 Revenons à notre spécification. Quand nos fichiers commencent à être longs et 
 contenir beaucoup de spécifications, il peut être commode de nommer les 
@@ -204,6 +206,12 @@ que -```INT_MIN``` ($-2^{31}$) > ```INT_MAX``` ($2^{31}-1$).
 
 ![Preuve incomplète de ```abs```](https://zestedesavoir.com:443/media/galleries/2584/ec869f49-9193-4896-a490-9549f256a639.png)
 
+[[information]]
+| Il est bon de noter que le risque de dépassement est pour nous réel car nos
+| machines (dont Frama-C détecte la configuration) fonctionne en 
+| [complément à deux](https://fr.wikipedia.org/wiki/Compl%C3%A9ment_%C3%A0_deux)
+| pour lequel le dépassement n'est pas défini par la norme C.
+
 Ici nous pouvons voir un autre type d'annotation ACSL. La 
 ligne ```//@ assert propriete ;``` nous permet de demander la vérification 
 d'une propriété à un point particulier de programme. Ici, l'outil l'a 
@@ -215,12 +223,22 @@ Comme le montre cette capture d'écran, nous avons deux nouveaux codes couleur
 pour les pastilles : vert+marron et orange. 
 
 La couleur vert + marron nous indique que la preuve a été effectué mais 
-qu'elle dépend potentiellement de propriétés qui, elle, ne l'ont pas été. Si 
-la preuve n'est pas recommencée intégralement par rapport à la preuve 
+qu'elle dépend potentiellement de propriétés qui, elle, ne l'ont pas été. 
+
+Si  la preuve n'est pas recommencée intégralement par rapport à la preuve 
 précédente, ces pastilles ont dû rester vertes car les preuves associées ont
 été réalisées avant l'introduction de la propriété nous assurant l'absence 
 de runtime-error, et ne se sont donc pas reposées sur la connaissance de cette
 propriété puisqu'elle n'existait pas.
+
+En effet, lorsque WP transmet une obligation de preuve à un prouveur automatique,
+il transmet (basiquement) deux types de propriétés : $G$, le but, la propriété 
+que l'on cherche à prouver, et $S_1$ ... $S_n$ les diverses suppositions que l'on
+peut faire à propos de l'état du programme au point où l'on cherche à vérifier $G$.
+Cependant, il ne reçoit pas, en retour, quelles propriétés ont été utilisées par
+le prouveur pour valider $G$. Donc si $S_3$ fait partie des suppositions, et si
+WP n'a pas réussi à obtenir une preuve de $S_3$, il indique que $G$ est vraie, mais
+à condition seulement que l'on arrive un jour à prouver $S_3$.
 
 La couleur orange nous signale qu'aucun prouveur n'a pu déterminer si la 
 propriété est vérifiable. Les deux raisons peuvent être :
@@ -292,9 +310,9 @@ qui rend le code souvent indigeste.
 Si nous retournons dans notre tableau des obligations de preuve (bouton 
 encadré dans la capture d'écran précédente), nous pouvons donc voir que les 
 hypothèses n'ont pas suffi aux prouveurs pour déterminer que la propriété 
-est vraie (et nous l'avons dit : c'est normal), il nous faut donc ajouter 
-une hypothèse supplémentaire pour garantir le bon fonctionnement de la 
-fonction : une pré-condition d'appel.
+"absence de débordement" est vraie (et nous l'avons dit : c'est normal), il 
+nous faut donc ajouter une hypothèse supplémentaire pour garantir le bon 
+fonctionnement de la fonction : une pré-condition d'appel.
 
 # Pré-condition
 
@@ -347,7 +365,15 @@ int abs(int val){
 ```
 
 [[attention]]
-| La fenêtre de Frama-C ne permet pas l'édition du code source.
+| Rappel : la fenêtre de Frama-C ne permet pas l'édition du code source.
+
+[[information]]
+| Avec les versions de Frama-C NEON et plus anciennes, le pré-processing des
+| annotations n'était pas activé par défaut. Il faut donc lancer Frama-C avec
+| l'option `-pp-annot` :
+| ```bash
+| $ frama-c-gui -pp-annot file.c
+| ```
 
 Une fois le code source modifié de cette manière, un clic sur "Reparse" et 
 nous lançons à nouveau l'analyse. Cette fois, tout est validé pour WP, notre 
@@ -380,7 +406,7 @@ la post-condition est vérifiée.
 
 Si nous donnons à notre fonction une valeur qui viole ses pré-conditions, alors
 nous en déduisons que la post-condition est fausse. À partir de là, nous pouvons 
-prouver tout ce que nous voulons car ce "false" devient une pré-condition pour
+prouver tout ce que nous voulons car ce "false" devient une supposition pour
 tout appel qui viendrait ensuite. À partir de faux, nous prouvons tout ce que 
 nous voulons, car si nous avons la preuve de "faux" alors "faux" est vrai, de 
 même que "vrai" est vrai. Donc tout est vrai.
@@ -404,8 +430,9 @@ La deuxième partie de la question est alors : pourquoi lorsque nous mettons les
 appels dans l'autre sens (```abs(a)``` puis ```abs(INT_MIN)```), nous obtenons 
 quand même une violation de la pré-condition sur le deuxième ? La réponse est 
 simplement que ```abs(a)``` peut, ou ne peut pas, provoquer une erreur, alors 
-que ```abs(INT_MIN)``` provoque forcément l'erreur. Dans le premier cas, nous
-apprenons nécessairement "faux", pas dans le deuxième cas.
+que ```abs(INT_MIN)``` provoque forcément l'erreur. Donc si nous obtenons 
+nécessairement une preuve de "faux" avec un appel ```abs(INT_MIN)```, ce n'est
+pas le cas de l'appel ```abs(a)``` qui peut aussi ne pas échouer.
 
 Bien spécifier son programme est donc d'une importance cruciale. Typiquement, 
 préciser un pré-condition fausse peut nous donner la possibilité de prouver 
@@ -424,11 +451,29 @@ void foo(int a){
 Si nous demandons à WP de prouver cette fonction. Il l'acceptera sans rechigner
 car la supposition que nous lui donnons en entrée est nécessairement fausse. Par
 contre, nous aurons bien du mal à lui donner une valeur en entrée qui respecte la 
-pré-condition, nous pourrons donc nous en apercevoir.
+pré-condition, nous pourrons donc nous en apercevoir. En regardant pourquoi nous
+n'arrivons pas à transmettre une valeur valide en entrée. 
 
 Certaines notions que nous verrons plus loin dans le tutoriel apporterons un 
 risque encore plus grand de créer ce genre d'incohérence. Il faut donc toujours
 avoir une attention particulière pour ce que nous spécifions.
+
+## Trouver les bonnes pré-conditions
+
+Trouver les bonnes pré-conditions à une fonction est parfois difficile. Le plus
+important est avant tout de déterminer ces pré-conditions sans prendre en compte
+le contenu de la fonction (au moins dans un premier temps) afin d'éviter de 
+construire, par erreur, une spécification qui contiendrait le même bug qu'un code
+fautif, par exemple en prenant en compte une condition faussée. C'est pour cela que
+l'on souhaitera généralement que la personne qui développe le programme et la 
+personne qui le spécifie formellement soient différentes (même si elles ont pu
+préalablement s'accorder sur une spécification textuelle par exemple).
+
+Une fois ces pré-conditions posées, alors seulement, nous nous intéressons aux
+spécifications dues au fait que nous sommes soumis aux contraintes de notre langage
+et notre matériel. Par exemple, la fonction valeur absolue n'a, au fond, pas 
+vraiment de pré-condition à respecter, c'est la machine cible qui détermine qu'une
+condition supplémentaire doit être respectée en raison du complément à deux.
 
 # Quelques éléments sur l'usage de WP et Frama-C
 
