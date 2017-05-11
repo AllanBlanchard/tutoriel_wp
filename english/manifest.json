@@ -1,0 +1,154 @@
+{
+    "object": "container", 
+    "slug": "introduction-to-C-program-proof-using-frama-c-and-its-wp-plugin", 
+    "title": "Introduction to C program proof using Frama-C and its WP plugin", 
+    "introduction": "introduction.md", 
+    "conclusion": "conclusion.md", 
+    "children": [
+        {
+            "object": "container", 
+            "slug": "program-proof-and-our-tool-for-this-tutorial-frama-c", 
+            "title": "Program proof and our tool for this tutorial: Frama-C", 
+            "introduction": "program-proof-and-our-tool-for-this-tutorial-frama-c/introduction.md", 
+            "conclusion": "program-proof-and-our-tool-for-this-tutorial-frama-c/conclusion.md",
+            "children": [
+                {
+                    "object": "extract", 
+                    "slug": "program-proof", 
+                    "title": "Program proof", 
+                    "text": "program-proof-and-our-tool-for-this-tutorial-frama-c/program-proof.md"
+                }, 
+                {
+                    "object": "extract", 
+                    "slug": "frama-c", 
+                    "title": "Frama-C", 
+                    "text": "program-proof-and-our-tool-for-this-tutorial-frama-c/frama-c.md"
+                }
+            ]
+        }, 
+        {
+            "object": "container", 
+            "slug": "function-contract", 
+            "title": "Function contract", 
+            "introduction": "function-contract/introduction.md", 
+            "conclusion": "function-contract/conclusion.md", 
+            "children": [
+                {
+                    "object": "extract", 
+                    "slug": "contract-definition", 
+                    "title": "Contract definition", 
+                    "text": "function-contract/contract-definition.md"
+                }, 
+                {
+                    "object": "extract", 
+                    "slug": "well-specified-function", 
+                    "title": "Well specified function", 
+                    "text": "function-contract/well-specified-function.md"
+                }, 
+                {
+                    "object": "extract", 
+                    "slug": "behaviors", 
+                    "title": "Behaviors", 
+                    "text": "function-contract/behaviors.md"
+                }, 
+                {
+                    "object": "extract", 
+                    "slug": "wp-modularity", 
+                    "title": "WP Modularity", 
+                    "text": "function-contract/wp-modularity.md"
+                }
+            ]
+        }, 
+        {
+            "object": "container", 
+            "slug": "basic-instructions-and-control-structures", 
+            "title": "Basic instructions and control structures", 
+            "introduction": "basic-instructions-and-control-structures/introduction.md", 
+            "conclusion": "basic-instructions-and-control-structures/conclusion.md", 
+            "children": [
+                {
+                    "object": "extract", 
+                    "slug": "assignment-sequence-and-conditional", 
+                    "title": "Assignment, sequence and conditional", 
+                    "text": "basic-instructions-and-control-structures/assignment-sequence-and-conditional.md"
+                }, 
+                {
+                    "object": "extract", 
+                    "slug": "bonus-stage-consequence-and-constancy", 
+                    "title": "[Bonus Stage] Consequence and constancy", 
+                    "text": "basic-instructions-and-control-structures/bonus-stage-consequence-and-constancy.md"
+                }, 
+                {
+                    "object": "extract", 
+                    "slug": "loops", 
+                    "title": "Loops", 
+                    "text": "basic-instructions-and-control-structures/loops.md"
+                }, 
+                {
+                    "object": "extract", 
+                    "slug": "loops-examples", 
+                    "title": "Loops - Examples", 
+                    "text": "basic-instructions-and-control-structures/loops-examples.md"
+                }
+            ]
+        }, 
+        {
+            "object": "container", 
+            "slug": "acsl-properties", 
+            "title": "ACSL - Properties", 
+            "introduction": "acsl-properties/introduction.md", 
+            "conclusion": "acsl-properties/conclusion.md", 
+            "children": [
+                {
+                    "object": "extract", 
+                    "slug": "some-logical-types", 
+                    "title": "Some logical types", 
+                    "text": "acsl-properties/some-logical-types.md"
+                }, 
+                {
+                    "object": "extract", 
+                    "slug": "predicates", 
+                    "title": "Predicates", 
+                    "text": "acsl-properties/predicates.md"
+                }, 
+                {
+                    "object": "extract", 
+                    "slug": "logic-functions", 
+                    "title": "Logic functions", 
+                    "text": "acsl-properties/logic-functions.md"
+                }, 
+                {
+                    "object": "extract", 
+                    "slug": "lemmas", 
+                    "title": "Lemmas", 
+                    "text": "acsl-properties/lemmas.md"
+                }
+            ]
+        }, 
+        {
+            "object": "container", 
+            "slug": "acsl-logic-definitions-and-code", 
+            "title": "ACSL - Logic definitions and code", 
+            "introduction": "acsl-logic-definitions-and-code/introduction.md", 
+            "conclusion": "acsl-logic-definitions-and-code/conclusion.md", 
+            "children": [
+                {
+                    "object": "extract", 
+                    "slug": "axiomatic-definitions", 
+                    "title": "Axiomatic definitions", 
+                    "text": "acsl-logic-definitions-and-code/axiomatic-definitions.md"
+                }, 
+                {
+                    "object": "extract", 
+                    "slug": "ghost-code", 
+                    "title": "Ghost code", 
+                    "text": "acsl-logic-definitions-and-code/ghost-code.md"
+                }
+            ]
+        }
+    ], 
+    "version": 2, 
+    "description": "Introduction to C program specification and proof, using Frama-C, the ACSL and the WP plugin. Some theorical basics are provided", 
+    "type": "TUTORIAL", 
+    "licence": "CC BY-NC-SA"
+}

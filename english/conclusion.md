@@ -1,0 +1,183 @@
+> Voilà, c'est fini ...
+Source:[Jean-Louis Aubert, *Bleu Blanc Vert*, 1989]
+
+... pour cette introduction à la preuve de programmes avec Frama-C et WP.
+
+Tout au long de ce tutoriel, nous avons pu voir comment utiliser ces outils
+pour spécifier ce que nous attendons de nos programmes et vérifier que le code que
+nous avons produit correspond effectivement à la spécification que nous en 
+avons faite. Cette spécification passe par l'annotation de nos fonctions avec 
+le contrat qu'elle doit respecter, c'est-à-dire les propriétés que doivent
+respecter les entrées de la fonction pour garantir son bon fonctionnement et 
+les propriétés que celle-ci s'engage à assurer sur les sorties en retour.
+
+À partir de nos programmes spécifiés, WP est capable de produire un 
+raisonnement nous disant si oui, ou non, notre programme répond au besoin 
+exprimé. La forme de raisonnement utilisée étant complètement modulaire, elle 
+nous permet de prouver les fonctions une à une et de les composer. WP ne 
+comprend pas, à l'heure actuelle, l'allocation dynamique. Une fonction qui en 
+utiliserait ne pourrait donc pas être prouvée.
+
+Mais même sans cela, une large variété de fonctions n'ont pas besoin 
+d'effectuer d'allocation dynamique, travaillant donc sur des données déjà 
+allouées. Et ces fonctions peuvent ensuite être appelées avec l'assurance 
+qu'elles font correctement leur travail. Si nous ne voulons pas prouver le 
+code appelant, nous pouvons toujours écrire quelque chose comme cela :
+
+```c
+/*@
+  requires some_properties_on(a);
+  requires some_other_on(b);
+
+  assigns ...
+  ensures ...
+*/
+void ma_fonction(int* a, int b){
+  //je parle bien du "assert" de "assert.h"
+  assert(/*properties on a*/ && "must respect properties on a");  
+  assert(/*properties on b*/ && "must respect properties on b");
+}
+```
+
+Ce qui nous permet ainsi de bénéficier de la robustesse de notre fonction tout en
+ayant la possibilité de débugger un appel incorrect dans un code que nous ne 
+voulons ou pouvons pas prouver.
+
+Écrire les spécifications est parfois long voir fastidieux. Les constructions 
+de plus haut niveau d'ACSL (prédicats, fonctions logiques, axiomatisations) 
+permettent d'alléger un peu ce travail, de la même manière que nos langages de
+programmation nous permettent de définir des types englobant d'autres types et
+des fonctions appelant des fonctions, nous menant vers le programme final. Mais
+malgré cela, l'écriture de spécification dans un langage formel quel qu'il soit
+représente une tâche ardue.
+
+Cependant, cette étape de **formalisation** du besoin est **très importante**. 
+Concrètement, une telle formalisation est, à bien y réfléchir, un travail que 
+tout développeur devrait s'efforcer de faire. Et pas seulement quand il cherche 
+à prouver son programme. Même la production de tests pour une fonction 
+nécessite de bien comprendre son but si nous voulons tester ce qui est nécessaire 
+et uniquement ce qui est nécessaire. Et écrire les spécifications dans un 
+langage formel est une aide formidable (même si elle peut être frustrante, 
+reconnaissons le) pour avoir des spécifications claires.
+
+Les langages formels, proches des mathématiques, sont précis. Les mathématiques
+ont cela pour elles. Qu'y a-t-il de plus terrible que lire une spécification 
+écrite en langue naturelle pure beurre, avec toute sa panoplie de phrase à 
+rallonge, de verbes conjugués à la forme conditionnelle, de termes imprécis, 
+d'ambiguïtés, compilée dans des documents administratifs de centaines de pages,
+et dans laquelle nous devons chercher pour déterminer "bon alors cette fonction, 
+elle doit faire quoi ? Et qu'est ce qu'il faut valider à son sujet ?". 
+
+Les méthodes formelles ne sont, à l'heure actuelle, probablement pas assez 
+utilisées, parfois par méfiance, parfois par ignorance, parfois à cause de 
+préjugés datant des balbutiements des outils, il y a 20 ans. Nos outils
+évoluent, nos pratiques dans le développement changent, probablement plus
+vite que dans de nombreux autres domaines techniques. Ce serait probablement
+faire un raccourci bien trop rapide que dire que ces outils ne pourront 
+jamais être mis en œuvre quotidiennement. Après tout nous voyons chaque jour
+à quel point le développement est différent aujourd'hui par rapport à il y a
+10 ans, 20 ans, 40 ans. Et pouvons à peine imaginer à quel point il sera 
+différent dans 10 ans, 20 ans, 40 ans.
+
+Ces dernières années, les questions de sûreté et de sécurité sont devenus de
+plus en plus présentes et cruciales. Les méthodes formelles connaissent également
+de fortes évolutions et leurs apports pour ces questions sont très appréciés. 
+Par exemple, [ce lien](http://sfm.seas.harvard.edu/report.html) mène vers
+un rapport d'une conférence sur la sécurité ayant rassemblé des acteurs du monde
+académique et industriel, dans lequel nous pouvons lire :
+
+> Adoption of formal methods in various areas (including verification of hardware
+> and embedded systems, and analysis and testing of software) has dramatically 
+> improved the quality of computer systems.  We anticipate that formal methods 
+> can provide similar improvement in the security of computer systems.
+>
+> [...]
+>
+> **Without broad use of formal methods, security will always remain fragile.**
+Source:[Formal Methods for Security, 2016]
+
+[[secret]]
+| Traduction :
+| 
+| > L'adoption des méthodes formelles dans différents domaines (notamment la 
+| > vérification du matériel et des systèmes embarqués, et l'analyse et le test
+| > de logiciel) a fortement amélioré la qualité des systèmes informatiques. 
+| > Nous nous attendons à ce que les méthodes formelles puissent fournir des 
+| > améliorations similaires pour la sécurité des systèmes informatiques.
+| > 
+| > [...]
+| > 
+| > **Sans une utilisation plus large des méthodes formelles, la sécurité sera
+| > toujours fragile.**
+
+# Pour aller plus loin
+
+## Avec Frama-C
+
+Frama-C propose divers moyen d'analyser les programmes. Dans les outils les
+plus courants qui sont intéressants à connaître d'un point de vue vérification
+statique et dynamique pour l'évaluation du bon fonctionnement d'un programme :
+
+- l'analyse par interprétation abstraite avec 
+  [Value](http://frama-c.com/value.html),
+- la transformation d'annotation en vérification à l'exécution avec 
+  [E-ACSL](http://frama-c.com/eacsl.html).
+
+Le but de la première est de calculer les domaines des différentes variables à
+tous les points de programme. Quand nous connaissons précisément ces domaines,
+nous sommes capables de déterminer si ces variables peuvent provoquer des erreurs.
+Par contre cette analyse est effectuée sur la totalité du programme et pas 
+modulairement, elle est par ailleurs fortement dépendante du type de domaine 
+utilisé (nous n'entrerons pas plus dans les détails ici) et elle conserve moins
+bien les relations entre les variables. En compensation, elle est vraiment 
+complètement automatique (modulo les entrées du programme), il n'y a même pas
+besoin de poser des invariants de boucle ! La partie plus "manuelle" sera de
+déterminer si oui ou non les alarmes lèvent des vrais erreurs ou si ce sont de
+fausses alarmes.
+
+La seconde analyse permet de générer depuis un programme d'origine, un nouveau
+programme où les assertions sont transformées en vérification à l'exécution. Si
+les assertions échouent, le programme échoue. Si elles sont valides, le programme
+a le même comportement que s'il n'y avait pas d'assertions. Un exemple 
+d'utilisation est d'utiliser l'option ```-rte``` de Frama-C pour générer les 
+vérifications d'erreur d'exécution comme assertion et de générer le programme de 
+sortie qui va contenir les vérifications en question.
+
+Il existe divers autres greffons pour des tâches très différentes :
+
+- analyse d'impact de modifications,
+- analyse du flot de données pour le parcourir efficacement,
+- ...
+
+Et finalement, la dernière possibilité qui va motiver l'utilisation de Frama-C,
+c'est la possibilité de développer ses propres greffons d'analyse, à partir de
+l'API fournie au niveau du noyau. Beaucoup de tâches peuvent être réalisées par
+l'analyse du code source et Frama-C permet de forger différentes analyses.
+
+## Avec la preuve déductive
+
+Tout au long du tutoriel nous avons utilisé WP pour générer des obligations de 
+preuve à partir de programmes et de leurs spécifications. Par la suite nous avons
+utilisé des solveurs automatiques pour assurer que les propriétés en question sont
+bien vérifiées.
+
+Lorsque nous passons par d'autres solveurs que Alt-Ergo, le dialogue avec ceux-ci
+est assuré par une traduction vers le langage de Why3 qui va ensuite faire le pont
+avec les prouveurs automatiques. Mais ce n'est pas la seule manière d'utiliser 
+Why3. Celui-ci peut tout à fait être utilisé seul pour écrire et prouver des
+algorithmes. Il embarque notamment un ensemble de théories déjà présentes pour un
+certain nombre de structures de données.
+
+Il y a un certain nombre de preuves qui ne peuvent être déchargées par les 
+prouveurs automatiques. Dans ce genre de cas, nous devons nous rabattre sur de la 
+preuve interactive. WP comme Why3 peuvent extraire vers Coq, et il est très
+intéressant d'étudier ce langage, il peut par exemple servir à constituer des 
+bibliothèques de lemmes génériques et prouvés. À noter que Why3 peut également
+extraire ses obligations vers Isabelle ou PVS qui sont d'autres assistants de
+preuve.
+
+Finalement, il existe d'autres logiques de programmes, comme la logique de 
+séparation ou les logiques pour les programmes concurrents. Encore une fois ce
+sont des notions intéressantes à connaître, elles peuvent inspirer la manière de 
+spécifier pour nos preuves avec WP, pourraient donner lieu à de nouveaux greffons
+pour Frama-C. Bref, tout un monde de méthodes à explorer.
