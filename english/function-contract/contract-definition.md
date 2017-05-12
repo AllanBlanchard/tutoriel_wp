@@ -1,50 +1,50 @@
-Le principe d'un contrat de fonction est de poser les conditions selon 
-lesquelles la fonction va s'exécuter. C'est-à-dire ce que doit respecter 
-l'appelant pour que la fonction s'exécute correctement : la pré-condition, la
-notion de "s'exécute correctement" étant elle-même définie dans le contrat par
-la post-condition.
+The goal of a function contract is to state the conditions under which the
+function will execute. That is to say, what the caller must respect to
+ensure the function will correctly behave : the precondition, the notion
+of "correctly behave" being itself defined in the contract by the
+postcondition.
 
-Ces propriétés sont exprimées en langage ACSL, la syntaxe est relativement 
-simple pour qui a déjà fait du C puisqu'elle reprend la syntaxe des expressions
-booléennes du C. Cependant, elle ajoute également :
+These properties are expressed with ACSL, the syntax is relatively simple if
+one have already developed in C language since it shares most of the syntax
+of boolean expressions in C. However, it also provides :
 
-- certaines constructions et connecteurs logiques qui ne sont pas présents 
-  originellement en C pour faciliter l'écriture ;
-- des prédicats pré-implémentés pour exprimer des propriétés souvent utiles 
-  en C (par exemple : pointeur valide) ; 
-- ainsi que des types plus généraux que les types primitifs du C, 
-  typiquement les types entiers ou réels. 
+- some logic constructs and connectors that do not exists in C, to ease the
+  writing of specifications,
+- built-in predicates to express properties that are useful about C
+  programs (for example: a valid pointer),
+- as well as some primitive types for the logic that are more general than
+  primitive C types (for example: mathematical integer).
 
-Nous introduirons au fil du tutoriel les notations présentes dans le 
-langage ACSL.
+We will introduce along this tutorial a big part of the notations available
+in ACSL.
 
-Les spécifications ACSL sont introduites dans nos codes source par 
-l'intermédiaire d'annotations. Syntaxiquement, un contrat de fonction est 
-intégré dans les sources de la manière suivante :
+ACSL specifications are introduced in our source code using annotations.
+Syntactically, a function contract is integrated in the source code with
+this syntax:
 
 ```c
 /*@
-  //contrat
+  //contract
 */
 void foo(int bar){
 
 }
 ```
 
-Notons bien le `@` à la suite du début du bloc de commentaire, c'est lui qui 
-fait que ce bloc devient un bloc d'annotations pour Frama-C et pas un simple 
-bloc de commentaires à ignorer.
+Notice the `@` at the beginning of the comment block, this indicates to
+Frama-C that what follows are annotations and not a comment block that it
+should simply ignore.
 
-Maintenant, regardons comment sont exprimés les contrats, à commencer par la
-post-condition, puisque c'est ce que nous attendons en priorité de notre 
-programme (nous nous intéresserons ensuite aux pré-conditions).
+Now, let us have a look to the way we express contracts, starting with
+postconditions, since it is what we want our function to do (we will then
+look how we express preconditions).
 
-# Post-condition
+# Postcondition
 
-La post-condition d'une fonction est précisée avec la clause ```ensures```. 
-Nous allons travailler avec la fonction suivante qui donne la valeur absolue. 
-Un de ses post-conditions est que le résultat (que nous notons avec le 
-mot-clé ```\result```) est supérieur ou égal à 0.
+The postcondition of a function is introduced with the clause `ensures`.
+We will illustrate its use with the following function that returns the
+absolute value of an input. One of its postconditions is that the result
+(which is denoted with the keywork `\result`) is greater or equal to 0.
 
 ```c
 /*@
@@ -56,16 +56,16 @@ int abs(int val){
 }
 ```
 
-(Notons le ```;``` à la fin de la ligne de spécification comme en C).
+(Notice the `;` at the end of the line, exactly as we do in C).
 
-Mais ce n'est pas tout, il faut également spécifier le comportement général 
-attendu d'une fonction renvoyant la valeur absolue. À savoir : si la valeur
-est positive ou nulle, la fonction renvoie la même valeur, sinon elle renvoie 
-l'opposée de la valeur.
+But that is not the only property to verify, we also need to specify the
+general behavior of a function returning the absolute value. That is:
+if the value is positive or 0, the function returns the same value, else
+it returns the opposite of the value.
 
-Nous pouvons spécifier plusieurs post-conditions, soit en les composants avec 
-un ```&&``` comme en C, soit en introduisant une nouvelle clause ```ensures```, 
-comme illustré ci-dessous.
+We can specify multiple postconditions, first by combining them with a
+`&&` as we do in C, or by introducing a new `ensures` clause, as we
+illustrate here:
 
 ```c
 /*@
@@ -79,49 +79,46 @@ int abs(int val){
 }
 ```
 
-Cette spécification est l'opportunité de présenter un connecteur logique 
-très utile que propose ACSL mais qui n'est pas présent en C : 
-l'implication $A \Rightarrow B$, que l'on écrit en ACSL ```A ==> B```.
-La table de vérité de l'implication est la suivante ($\top$ = `true`,
-$\bot$ = `false`) :
+This specification is the opportunity to present a very useful logic
+connector provided by ACSL and that does not exists in C:
+the implication $A \Rightarrow B$, that is written `A ==> B` in ACSL.
+The truth table of the implication is the following:
 
 $A$ | $B$ | $A \Rightarrow B$
 ----|-----|-------------------
-$F$ | $F$ | $V$
-$F$ | $V$ | $V$
-$V$ | $F$ | $F$
-$V$ | $V$ | $V$
+$F$ | $F$ | $T$
+$F$ | $T$ | $T$
+$T$ | $F$ | $F$
+$T$ | $T$ | $T$
 
-Ce qui veut dire qu'une implication $A \Rightarrow B$ est vraie dans deux cas : 
-soit $A$ est fausse (et dans ce cas, il ne faut pas se préoccuper de $B$), soit 
-$A$ est vraie et alors $B$ doit être vraie aussi. L'idée étant finalement "je 
-veux savoir si dans le cas où $A$ est vrai, $B$ l'est aussi. Si $A$ est faux, 
-je considère que l'ensemble est vrai".
+That means that an implication $A \Rightarrow B$ is true in two cases:
+either $A$ is false (and in this case, we do not check the value of $B$), or
+$A$ is true and then $B$ must also be true. The idea finally being "I want to
+know if when $A$ is true, $B$ also is. If $A$ is false, I don't care, I
+consider that the complete formula is true".
 
-Sa cousine l'équivalence $A \Leftrightarrow B$ (écrite ```A <==> B``` en ACSL)
-est plus forte. C'est la conjonction de l'implication dans les deux sens :
-$(A \Rightarrow B) \wedge (B \Rightarrow A)$. Cette formule n'est vraie que
-dans deux cas : $A$ et $B$ sont vraies toutes les deux, ou fausses 
-toutes les deux (c'est donc la négation du ou-exclusif).
+Another available connector is the equivalence $A \Leftrightarrow B$ (written
+`A <==> B` in ACSL), and it is stronger. It is conjunction of the implication
+in both ways $(A \Rightarrow B) \wedge (B \Rightarrow A)$. This formula is
+true in only two cases: $A$ and $B$ are both ture, or false (it can be seen as
+the negation of the exclusive or).
 
 [[information]]
-| Profitons en pour rappeler l'ensemble des tables de vérités des opérateurs
-| usuels en logique du premier ordre ($\neg$ = `!`, $\wedge$ = `&&`,
-| $\vee$ = `||`) :
+| Let's give a quick reminder about all truth tables of usual logic connectors
+| in first order logic ($\neg$ = `!`, $\wedge$ = `&&`, $\vee$ = `||`) :
 |
 | $A$ | $B$ | $\neg A$ | $A \wedge B$ | $A \vee B$ | $A \Rightarrow B$ | $A \Leftrightarrow B$
 | ----|-----|----------|--------------|------------|-------------------|-----------------------
-| $F$ | $F$ | $V$      | $F$          | $F$        | $V$               | $V$
-| $F$ | $V$ | $V$      | $F$          | $V$        | $V$               | $F$
-| $V$ | $F$ | $F$      | $F$          | $V$        | $F$               | $F$
-| $V$ | $V$ | $F$      | $V$          | $V$        | $V$               | $V$
+| $F$ | $F$ | $T$      | $F$          | $F$        | $T$               | $T$
+| $F$ | $T$ | $T$      | $F$          | $T$        | $T$               | $F$
+| $T$ | $F$ | $F$      | $F$          | $T$        | $F$               | $F$
+| $T$ | $T$ | $F$      | $T$          | $T$        | $T$               | $T$
 
-Revenons à notre spécification. Quand nos fichiers commencent à être longs et 
-contenir beaucoup de spécifications, il peut être commode de nommer les 
-propriétés que nous souhaitons vérifier. Pour cela, nous indiquons un nom (les 
-espaces ne sont pas autorisées) suivi de ```:``` avant de mettre effectivement
-la propriété, il est possible de mettre plusieurs "étages" de noms pour 
-catégoriser nos propriétés. Par exemple nous pouvons écrire ceci :
+We can come back to our specification. As our files become longer and contains
+a lot of specifications, if can be useful to name the property we want to
+verify. So, in ACSL, we can specify a name (without spaces) followed by a `:`,
+before stating the property. It is possible to put multiples levels of names
+to categorize our properties. For example, we could write this:
 
 ```c
 /*@
@@ -135,190 +132,177 @@ int abs(int val){
 }
 ```
 
-Dans une large part du tutoriel, nous ne nommerons pas les éléments que nous 
-tenterons de prouver, les propriétés seront généralement relativement simples
-et peu nombreuses, les noms n'apporteraient pas beaucoup d'information.
+In most of this tutorial, we will not name the properties we want to prove,
+since they will be generally quite simple and we will not have too many of
+them, names would not give us much information.
 
-Nous pouvons copier/coller la fonction ```abs``` et sa spécification dans un 
-fichier abs.c et regarder avec Frama-C si l'implémentation est conforme à la 
-spécification.
-
-Pour cela, il faut lancer l'interface graphique de Frama-C (il est également 
-possible de se passer de l'interface graphique, cela ne sera pas présenté
-dans ce tutoriel) soit par cette commande :
+We can copy and paste the function `abs` and its specification in a file
+`abs.c` and use Frama-C to determine if the implementation is correct
+against the specification. We can start the GUI of Frama-C (it is also
+possible to use the command line interface of Frama-C but we will not use
+it during this tutorial) by this command line:
 
 ```bash
 $ frama-c-gui
 ```
 
-Soit en l'ouvrant depuis l'environnement graphique. 
+Or by opening it from the graphical environment. 
 
-Il est ensuite possible de cliquer sur le bouton "Create a new session from 
-existing C files", les fichiers à analyser peuvent être sélectionnés par
-double-clic, OK terminant la sélection. Par la suite, l'ajout d'autres 
-fichiers à la session s'effectue en cliquant sur Files > Source Files. 
+It is then possible to click on the button "Create a new session from 
+existing C files", files to analyze can be selected by double-clicking it,
+the OK button ending the selection. Then, adding other files will be done
+by clicking Files > Source Files.
 
-À noter également qu'il est possible de directement ouvrir le(s) fichier(s) 
-depuis la ligne de commande en le(s) passant en argument(s) de ```frama-c-gui```.
+Notice that it is also possible to directly open file(s) from the terminal
+command line passing them to Frama-C as parameter(s):
 
 ```bash
 $ frama-c-gui abs.c
 ```
 
-![Le volet latéral liste l’arbre des fichiers et des fonctions](https://zestedesavoir.com:443/media/galleries/2584/dab8888e-32fc-4856-bb87-4de884829822.png)
+![The side panel gives the files and functions tree](https://zestedesavoir.com:443/media/galleries/2584/dab8888e-32fc-4856-bb87-4de884829822.png)
 
-La fenêtre de Frama-C s'ouvre, dans le volet correspondant aux fichiers et aux
-fonctions, nous pouvons sélectionner la fonction ```abs```. 
-Aux différentes lignes ```ensures```, il y a un cercle bleu dans la marge, ils 
-indiquent qu'aucune vérification n'a été tentée pour ces lignes.
+The window of Frama-C opens and in the panel dedicated to files and functions,
+we can select the function `abs`. At each `ensures` line, there is a blue
+circle, it indicates that no verification has been attempted for these
+properties.
 
-Nous demandons la vérification que le code répond à la spécification en faisant 
-un clic droit sur le nom de la fonction et "Prove function annotations by WP" :
+We ask the verification of the code by right-clicking the name of the function
+and "Prove function annotations by WP":
 
-![Lancer la vérification de ```abs``` avec WP](https://zestedesavoir.com:443/media/galleries/2584/ed44f0d3-763f-423e-8a01-a9be7aace0d3.png)
+![Start the verification of ```abs``` with WP](https://zestedesavoir.com:443/media/galleries/2584/ed44f0d3-763f-423e-8a01-a9be7aace0d3.png)
 
-Nous pouvons voir que les cercles bleus deviennent des pastilles vertes, 
-indiquant que la spécification est bien assurée par le programme. Il est 
-possible de prouver les propriétés une à une en cliquant droit sur celles-ci 
-et pas sur le nom de la fonction.
+We can see that blue circles become green bullets, indicating that the
+specification is indeed ensured by the program. We can also prove properties
+one by one by right-clicking on them and not on the name of the function.
 
-Mais le code est-il vraiment sans erreur pour autant ? WP nous permet de nous 
-assurer que le code répond à la spécification, mais il ne fait pas de contrôle 
-d'erreur à l'exécution (RunTime Error : RTE). C'est le rôle d'un autre petit 
-plugin que nous allons utiliser ici et qui s'appelle sobrement RTE. Son but est
-d'ajouter des contrôles dans le programme pour les erreurs d'exécutions 
-possibles (débordements d'entiers, déréférencements de pointeurs invalides, 
-division par 0, etc). 
+But is our code really bug free ? WP gives us a way to ensure that a code
+respects a specification, but it does not check for runtime errors (RTE). This
+is provided by another plugin that we will use here and that is called RTE.
+Its goal is to add, in the program, some controls to ensure that the program
+cannot create runtime errors (integer overflow, invalid pointer dereferencing,
+0 division, etc).
 
-Pour activer ce contrôle, nous cochons la case montrée par cette capture (dans 
-le volet de WP). Il est également possible de demander à Frama-C d'ajouter ces 
-contrôles par un clic droit sur le nom de la fonction puis "Insert RTE guards".
+To active these controls, we check the box pointed by the screenshot (in the
+WP panel). We can also ask Frama-C to add them in a function by right-clicking
+on its name and then click "Insert RTE guards".
 
-![Activer la vérification des erreurs d'exécution](https://zestedesavoir.com:443/media/galleries/2584/bae7515e-8841-4a27-9253-e1bf26eb0d81.png)
+![Activate runtime error absence verification](https://zestedesavoir.com:443/media/galleries/2584/bae7515e-8841-4a27-9253-e1bf26eb0d81.png)
 
-Enfin nous relançons la vérification (nous pouvons également cliquer sur le 
-bouton "Reparse" de la barre d'outils, cela aura pour effet de supprimer les
-preuves déjà effectuées).
+Finally, we execute the verification again (we can also click on the
+"Reparse" button of the toolbar, it will deletes existing proofs).
 
-Nous pouvons alors voir alors que WP échoue à prouver  l'impossibilité de 
-débordement arithmétique sur le calcul de -val. Et c'est bien normal parce 
-que -```INT_MIN``` ($-2^{31}$) > ```INT_MAX``` ($2^{31}-1$).
+We can then see that WP fails to prove the absence of arithmetic underflow
+for the computation of `-val`. And, indeed, on our architectures,
+`-INT_MIN` ($-2^{31}$) > `INT_MAX` ($2^{31}-1$).
 
-![Preuve incomplète de ```abs```](https://zestedesavoir.com:443/media/galleries/2584/ec869f49-9193-4896-a490-9549f256a639.png)
+![Incomplete proof of ```abs```](https://zestedesavoir.com:443/media/galleries/2584/ec869f49-9193-4896-a490-9549f256a639.png)
 
 [[information]]
-| Il est bon de noter que le risque de dépassement est pour nous réel car nos
-| machines (dont Frama-C détecte la configuration) fonctionne en 
-| [complément à deux](https://fr.wikipedia.org/wiki/Compl%C3%A9ment_%C3%A0_deux)
-| pour lequel le dépassement n'est pas défini par la norme C.
+| We can notice that the underflow risk is real for us, since our computers
+| (for which the configuration is detected by Frama-C) use the
+| [Two's complement](https://en.wikipedia.org/wiki/Two%27s_complement)
+| implementation of integers, which do not defined the behavior of under and
+| overflows.
 
-Ici nous pouvons voir un autre type d'annotation ACSL. La 
-ligne ```//@ assert propriete ;``` nous permet de demander la vérification 
-d'une propriété à un point particulier de programme. Ici, l'outil l'a 
-insérée pour nous car il faut vérifier que le ```-val``` ne provoque pas de 
-débordement, mais il est également possible d'en ajouter manuellement dans 
-un code.
+Here, we can see another type of ACSL annotation. By the line
+`//@ assert property ;`, we can ask the verification of property at a
+particular program point. Here, RTE inserted for us, since we have to verify
+that `-val` does not produce an underflow, but we can also add such an
+assertion manually in the source code.
 
-Comme le montre cette capture d'écran, nous avons deux nouveaux codes couleur
-pour les pastilles : vert+marron et orange. 
+In this screenshot, we can see two new colors for our bullets: green+brown and
+orange.
 
-La couleur vert + marron nous indique que la preuve a été effectué mais 
-qu'elle dépend potentiellement de propriétés qui, elle, ne l'ont pas été. 
+The green+brown color indicates that the proof has been produced but she
+can depend on some properties that have not been verified.
 
-Si  la preuve n'est pas recommencée intégralement par rapport à la preuve 
-précédente, ces pastilles ont dû rester vertes car les preuves associées ont
-été réalisées avant l'introduction de la propriété nous assurant l'absence 
-de runtime-error, et ne se sont donc pas reposées sur la connaissance de cette
-propriété puisqu'elle n'existait pas.
+If the proof has not been entirely redone after adding the runtime error checks,
+these bullets must still be green. Indeed, the corresponding proofs have been
+realized without the knowledge of the property in the assertion, so they cannot
+rely on this unproved property.
 
-En effet, lorsque WP transmet une obligation de preuve à un prouveur automatique,
-il transmet (basiquement) deux types de propriétés : $G$, le but, la propriété 
-que l'on cherche à prouver, et $S_1$ ... $S_n$ les diverses suppositions que l'on
-peut faire à propos de l'état du programme au point où l'on cherche à vérifier $G$.
-Cependant, il ne reçoit pas, en retour, quelles propriétés ont été utilisées par
-le prouveur pour valider $G$. Donc si $S_3$ fait partie des suppositions, et si
-WP n'a pas réussi à obtenir une preuve de $S_3$, il indique que $G$ est vraie, mais
-à condition seulement que l'on arrive un jour à prouver $S_3$.
+When WP transmits a proof obligation to an automatic prover, it basically
+transmits two types of properties : $G$, the goal, the property that we want
+to prove, and $A_1$ ... $A_n$, the different assumptions we can have about
+the state of the memory at the program point where we want to verify $G$.
+However, it does not receive (in return) the properties that have been used
+by the prover to validate $G$. So, if $A_3$ is an assumption, and if WP did
+not succeed in getting a proof of $A_3$, it indicates that $G$ is true, but
+only if we succeed in proving $A_3$.
 
-La couleur orange nous signale qu'aucun prouveur n'a pu déterminer si la 
-propriété est vérifiable. Les deux raisons peuvent être :
+The orange color indicates that no prover could determine if the property
+is verified. There are two possibles reasons:
 
-- qu'il n'a pas assez d'information pour le déterminer ;
-- que malgré toutes ses recherches, il n'a pas pu trouver un résultat à 
-  temps. Auquel cas, il rencontre un timeout dont la durée est configurable 
-  dans le volet de WP.
+- the prover did not have enough information,
+- the prover did not have enough time to compute the proof and encountered
+  a timeout (which can be configured in the WP panel).
 
-Dans le volet inférieur, nous pouvons sélectionner l'onglet "WP Goals", 
-celui-ci nous affiche la liste des obligations de preuve et pour chaque 
-prouveur indique un petit logo si la preuve a été tentée et si elle a été 
-réussie, échouée ou a rencontré un timeout (ici nous pouvons voir un essai 
-avec Z3 sur le contrôle de la RTE pour montrer le logo des ciseaux 
-associé au timeout).
+In the bottom panel, we can select the "WP Goals" tab, it shows the list of
+proof obligations, and for each prover the result is symbolized by a logo
+that indicates if the proof has been tried and if it succeeded, failed or
+encountered a timeout (here we can see a try with Z3 where we had a timeout
+on the proof of absence of RTE).
 
-![Tableau des obligations de preuve de WP pour ```abs```](https://zestedesavoir.com:443/media/galleries/2584/d1c2dded-1e12-4cee-a575-7c990274f5c4.png)
+![Proof obligations panel of WP for `abs`](https://zestedesavoir.com:443/media/galleries/2584/d1c2dded-1e12-4cee-a575-7c990274f5c4.png)
 
-Le tableau est découpé comme suit, en première colonne nous avons le nom de la
-fonction où se trouve le but à prouver. En seconde colonne nous trouvons le nom
-du but. Ici par exemple notre post-condition nommée est estampillée 
-"Post-condition 'positive_value,function_result'", nous pouvons d'ailleurs noter
-que lorsqu'une propriété est sélectionnée dans le tableau, elle est également 
-sur-lignée dans le code source. Les propriétés non-nommées se voient assignées
-comme nom le type de propriété voulu. En troisième colonne, nous trouvons le 
-modèle mémoire utilisé pour la preuve, (nous n'en parlerons pas dans ce 
-tutoriel). Finalement, les dernières colonnes représentent les différents 
-prouveurs accessibles à WP.
+In the first column, we have the name of the function the proof obligation
+belongs to. The second column indicates the name of proof obligation. For
+example here, our postcondition is named
+"Post-condition 'positive_value,function_result'", we can notice that if
+we select a property in this list, it is also highlighted in the source code.
+Unnamed properties are automatically named by WP with the king of wanted
+property. In the third column, we see the memory model that is used for the
+proof, we will not talk about it in this tutorial. Finally, the last columns
+represent the different provers available through WP.
 
-Dans ces prouveurs, le premier élément de la colonne est Qed. Ce n'est pas
-à proprement parler un prouveur. En fait, si nous double-cliquons sur la 
-propriété "ne pas déborder" (surlignée en bleu dans la capture précédente), 
-nous pouvons voir ceci :
+In these provers, the first element is Qed. It is not really a prover. In
+fact, if we double-click on the property "absence of underflow"
+(highlight in blue in the last screenshot), we can see this:
 
-![Obligation de preuve associée à la vérification de débordement dans ```abs```](https://zestedesavoir.com:443/media/galleries/2584/cf50837e-a119-40f9-8c93-c2b0bb03a142.png)
+![Proof obligation associated to the verification of absence of underflow in `abs`](https://zestedesavoir.com:443/media/galleries/2584/cf50837e-a119-40f9-8c93-c2b0bb03a142.png)
 
-C'est l'obligation de preuve que génère WP par rapport à notre propriété et 
-notre programme, il n'est pas nécessaire de comprendre tout ce qui s'y passe, 
-juste d'avoir une idée globale. Elle contient (dans la partie "Assume") les 
-suppositions que nous avons pu donner et celles que WP a pu déduire des 
-instructions du programme. Elle contient également (dans la partie "Prove") 
-la propriété que nous souhaitons vérifier.
+This is the proof obligation generated by WP about our property and our
+program, we do need to understand everything here, but we can get the
+general idea. It contains (in the "Assume" part) the assumptions that we
+have specified and those that have been deduced by WP from the instructions
+of the program. It also contains (in the "Prove" part) the property that
+we want to verify.
 
-Que fait WP avec ces éléments ? En fait, il les transforme en une formule 
-logique puis demande aux différents prouveurs s'il est possible de la 
-satisfaire (de trouver pour chaque variable, une valeur qui rend la formule 
-vraie), cela détermine si la propriété est prouvable. Mais avant d'envoyer 
-cette formule aux prouveurs, WP utilise un module qui s'appelle Qed et qui est
-capable de faire différentes simplifications à son sujet. Parfois comme dans 
-le cas des autres propriétés de ```abs```, ces simplifications suffisent à 
-déterminer que la propriété est forcément vraie, auquel cas, nous ne faisons
-pas appel aux prouveurs.
+What does WP do using these properties ? In fact, it transformes them into
+a logic formula and then asks to different provers if it is possible to
+satisfy this formula (to find for each variable, a value that can make the
+formula true), and it determines if the property can be proved. But before
+sending the formula to provers, WP uses a module called Qed, which is able
+to perform different simplifications about it. Sometimes, as this is the
+case for the other properties about `abs`, these simplications are enough
+to determine that the property is true, in such a case, WP do not need the
+help of the automatic solvers.
 
-Lorsque les prouveurs automatiques ne parviennent pas à assurer que nos 
-propriétés sont bien vérifiées, il est parfois difficile de comprendre 
-pourquoi. En effet, les prouveurs ne sont généralement pas capables de nous 
-répondre autre chose que "oui", "non" ou "inconnu", ils ne sont pas capables
-d'extraire le "pourquoi" d'un "non" ou d'un "inconnu". Il existe des outils qui
-sont capables d'explorer les arbres de preuve pour en extraire ce type 
-d'information, Frama-C n'en possède pas à l'heure actuelle. La lecture des
-obligations de preuve peut parfois nous aider, mais cela demande un peu 
-d'habitude pour pouvoir les déchiffrer facilement. Finalement, le meilleur
-moyen de comprendre la raison d'un échec est d'effectuer la preuve de manière
-interactive avec Coq. En revanche, il faut déjà avoir une certaine habitude de
-ce langage pour ne pas être perdu devant les obligations de preuve générées par
-WP, étant donné que celles-ci encodent les éléments de la sémantique de C, ce 
-qui rend le code souvent indigeste.
+When automatic solvers cannot ensure that our properties are verified, it
+it sometimes hard to understand why. Indeed, provers are generally not able
+to answer something other thant "yes", "no" or "unknown", they are not able
+to extract the reason of a "no" or an "unknown". There exists tools that
+can explore a proof tree to extract this type of information, currently
+Frama-C do not provide such a tool. Reading proof obligations can sometimes
+be helpful, but it requires a bit of practice to be efficient. Finally, one
+of the best way to understand the reason why a proof fails is to try to do
+it interactively with Coq. However, it requires to be quite comfortable with
+this language to not being lost facing the proof obligations generated by
+WP, since these obligations need to encode some elements of the C semantics
+that can make them quite hard to read.
 
-Si nous retournons dans notre tableau des obligations de preuve (bouton 
-encadré dans la capture d'écran précédente), nous pouvons donc voir que les 
-hypothèses n'ont pas suffi aux prouveurs pour déterminer que la propriété 
-"absence de débordement" est vraie (et nous l'avons dit : c'est normal), il 
-nous faut donc ajouter une hypothèse supplémentaire pour garantir le bon 
-fonctionnement de la fonction : une pré-condition d'appel.
+If we go back to our view of proof obligations (see the squared bouton in
+the last screenshot), we can see that our hypotheses are not enough to
+determine that the property "absence of underflow" is true (which is
+indeed currently impossible), so we need to add some hypotheses to guarantee
+that our function will well-behave : a call precondition.
 
-# Pré-condition
+# Preconditon
 
-Les pré-conditions de fonctions sont introduites par la clause ```requires```,
-de la même manière qu'avec ```ensures```, nous pouvons composer nos 
-expressions logiques et mettre plusieurs pré-condition :
+Preconditions are introduced using `requires` clauses. As we could do with
+`ensures` clauses, we can compose logic expressions and specify multiple
+preconditions :
 
 ```c
 /*@
@@ -330,23 +314,21 @@ void foo(int a, int b){
 }
 ```
 
-Les pré-conditions sont des propriétés sur les entrées (et potentiellement sur
-des variables globales) qui seront supposées préalablement vraies lors de 
-l'analyse de la fonction. La preuve que celles-ci sont effectivement validées 
-n'interviendra qu'aux points où la fonction est appelée.
+Preconditions are properties about the input (and eventually about global
+variables) that we assume to be true when we analyze the function. We will
+verify that they are indeed true only at program points where the function
+is called.
 
-Dans ce petit exemple, nous pouvons également noter une petite différence avec 
-C dans l'écriture des expressions booléennes. Si nous voulons spécifier 
-que ```a``` se trouve entre 0 et 100, il n'y a pas besoin d'écrire ```0 <= a && a < 100```
-(c'est-à-dire en composant les deux comparaisons avec un ```&&```). Nous 
-pouvons simplement écrire ```0 <= a < 100``` et l'outil se chargera de faire
-la traduction nécessaire.
+In this small example, we can also notice a difference with C in the writing
+of boolean expressions. If we want to specify that `a` is between 0 and 100,
+we do not have to write `0 <= a && a < 100`, we can directly write
+`0 <= a < 100` and Frama-C will perform necessary translations.
 
-Si nous revenons à notre exemple de la valeur absolue, pour éviter le 
-débordement arithmétique, il suffit que la valeur de val soit strictement 
-supérieure à ```INT_MIN``` pour garantir que le débordement n'arrivera pas.
-Nous l'ajoutons donc comme pré-condition (à noter : il faut également
-inclure le header où ```INT_MIN``` est défini) :
+If we come back to our example about the absolute value, to avoid the
+arithmetic underflow, it is sufficient to state that `val` must be strictly
+greater than `INT_MIN` to guarantee that the underflow will never happen.
+We then add it as a precondition of the function (notice that it is also
+necessary to include the header where `INT_MIN` is defined):
 
 ```c
 #include <limits.h>
@@ -365,78 +347,73 @@ int abs(int val){
 ```
 
 [[attention]]
-| Rappel : la fenêtre de Frama-C ne permet pas l'édition du code source.
+| Reminder: The Frama-C GUI does not allow code source modification.
 
 [[information]]
-| Avec les versions de Frama-C NEON et plus anciennes, le pré-processing des
-| annotations n'était pas activé par défaut. Il faut donc lancer Frama-C avec
-| l'option `-pp-annot` :
+| For Frama-C NEON and older, the pre-processing of annotations is not
+| activated by default. We have to start Frama-C with the option `-pp-annot`:
 | ```bash
 | $ frama-c-gui -pp-annot file.c
 | ```
 
-Une fois le code source modifié de cette manière, un clic sur "Reparse" et 
-nous lançons à nouveau l'analyse. Cette fois, tout est validé pour WP, notre 
-implémentation est prouvée :
+Once we have modified the source code with our precondition, we click on
+"Reparse" and we can ask again to prove our program. This time, everythig
+is validated by WP, our implementation is proved:
 
-![Preuve de ```abs``` effectuée](https://zestedesavoir.com:443/media/galleries/2584/07785936-5148-406d-a432-5e88e4f25328.png)
+![Proof of `abs` performed](https://zestedesavoir.com:443/media/galleries/2584/07785936-5148-406d-a432-5e88e4f25328.png)
 
-Nous pouvons également vérifier qu'une fonction qui appellerait ```abs``` 
-respecte bien la pré-condition qu'elle impose :
+We can also verify that a function that would call `abs` correctly
+respects the required precondition:
 
 ```c
 void foo(int a){
    int b = abs(42);
    int c = abs(-42);
-   int d = abs(a);       // Faux : "a", vaut peut être INT_MIN
-   int e = abs(INT_MIN); // Faux : le paramètre doit être strictement supérieur à INT_MIN
+   int d = abs(a);       // False : "a" can be INT_MIN
+   int e = abs(INT_MIN); // False : the parameter must be strictly greater than INT_MIN
 }
 ```
 
-![Vérification du contrat à l'appel de ```abs```](https://zestedesavoir.com:443/media/galleries/2584/12a9ba65-5934-4d3e-bb52-d273d90fcf98.png)
+![Precondition checking when calling `abs`](https://zestedesavoir.com:443/media/galleries/2584/12a9ba65-5934-4d3e-bb52-d273d90fcf98.png)
 
-Pour modifier un peu l'exemple, nous pouvons essayer d'inverser les deux 
-dernières lignes. Auquel cas, nous pouvons voir que l'appel ```abs(a)```
-est validé par WP s'il se trouve après l'appel ```abs(INT_MIN)``` ! 
-Pourquoi ?
+We can modify this example by revering the last two instructions. If we
+do this, we can see that the call `abs(a)` is validated by WP if it is
+placed after the call `abs(INT_MIN)`! Why?
 
-Il faut bien garder en tête que le principe de la preuve déductive est de nous
-assurer que si les pré-conditions sont vérifiées et que le calcul termine alors
-la post-condition est vérifiée.
+We must keep in mind that the idea of the deductive proof is to ensure that
+if preconditions are verified, and if our computation terminates, then the
+post-conditon is verified.
 
-Si nous donnons à notre fonction une valeur qui viole ses pré-conditions, alors
-nous en déduisons que la post-condition est fausse. À partir de là, nous pouvons 
-prouver tout ce que nous voulons car ce "false" devient une supposition pour
-tout appel qui viendrait ensuite. À partir de faux, nous prouvons tout ce que 
-nous voulons, car si nous avons la preuve de "faux" alors "faux" est vrai, de 
-même que "vrai" est vrai. Donc tout est vrai.
+If we give a function that surely breaks the precondition, we can deduce that
+the postconditon is false. Knowing this, we can prove absolutely everything
+because this "false" becomes an assumption of every call that follows. Knowing
+false, we can prove everything, because if we have a proof of false, then false
+is true, as well as true is true. So everything is true.
 
-En prenant le programme modifié, nous pouvons d'ailleurs regarder les obligations
-de preuve générées par WP pour l'appel fautif et l'appel prouvé par conséquent :
+Taking our modified program, we can convince ourselves of this fact by looking
+at proof obligations generated by WP for the bad call and the subsequent call
+that becomes verified:
 
-![Obligation générée pour l'appel fautif](https://zestedesavoir.com:443/media/galleries/2584/997f0ae1-bd5a-45b5-a24f-56cbf934eb5f.png)
+![Generated proof obligation for the bad call](https://zestedesavoir.com:443/media/galleries/2584/997f0ae1-bd5a-45b5-a24f-56cbf934eb5f.png)
 
-![Obligation générée pour l'appel qui suit](https://zestedesavoir.com:443/media/galleries/2584/f81582b8-e822-47c5-9600-ee34b0d04a21.png)
+![Generated proof obligation for the call that follows](https://zestedesavoir.com:443/media/galleries/2584/f81582b8-e822-47c5-9600-ee34b0d04a21.png)
 
-Nous pouvons remarquer que pour les appels de fonctions, l'interface graphique
-nous surligne le chemin d'exécution suivi avant l'appel dont nous cherchons à 
-vérifier la pré-condition. Ensuite, si nous regardons l'appel ```abs(INT_MIN)```,
-nous pouvons remarquer qu'à force de simplifications, Qed a déduit que nous 
-cherchons à prouver "False". Conséquence logique, l'appel suivant ```abs(a)``` 
-reçoit dans ses suppositions "False". C'est pourquoi Qed est capable de déduire
-immédiatement "True". 
+We can notice that for function calls, the GUI highlights the execution path
+that leads to the call for which we want to verify the preconditon. Then, if
+we have a closer look to the call `abs(INT_MIN)`, we can notice that,
+simplifying, Qed deduced that we try to prove "False". Consequently, the next
+call `abs(a)` recieves in its assumptions the property "False". This is why
+Qed can immediately deduce "True".
 
-La deuxième partie de la question est alors : pourquoi lorsque nous mettons les 
-appels dans l'autre sens (```abs(a)``` puis ```abs(INT_MIN)```), nous obtenons 
-quand même une violation de la pré-condition sur le deuxième ? La réponse est 
-simplement que ```abs(a)``` peut, ou ne peut pas, provoquer une erreur, alors 
-que ```abs(INT_MIN)``` provoque forcément l'erreur. Donc si nous obtenons 
-nécessairement une preuve de "faux" avec un appel ```abs(INT_MIN)```, ce n'est
-pas le cas de l'appel ```abs(a)``` qui peut aussi ne pas échouer.
+The second part of the question is then: why our first version of the calling
+function (`abs(a)` and then `abs(INT_MIN)`) did not have the same behavior,
+indicating a proof failure on the second call. The answer is simply that the
+call `abs(a)` can, or not, produce an error, whereas `abs(INT_MIN)` necessarily
+leads to an error. So, while `abs(INT_MIN)` necessarily gives us the knowledge
+of "false", the call `abs(a)` does not, since it can succeed.
 
-Bien spécifier son programme est donc d'une importance cruciale. Typiquement, 
-préciser un pré-condition fausse peut nous donner la possibilité de prouver 
-FAUX :
+Produce a correct specification is then crucial. Typically, by stating false
+precondition, we can have the possibility to create a proof of false:
 
 ```c
 /*@
@@ -448,59 +425,55 @@ void foo(int a){
 }
 ```
 
-Si nous demandons à WP de prouver cette fonction. Il l'acceptera sans rechigner
-car la supposition que nous lui donnons en entrée est nécessairement fausse. Par
-contre, nous aurons bien du mal à lui donner une valeur en entrée qui respecte la 
-pré-condition, nous pourrons donc nous en apercevoir. En regardant pourquoi nous
-n'arrivons pas à transmettre une valeur valide en entrée. 
+If we ask WP to prove this function, it will accept it without a problem since
+the assumption we give in precondition is necessarily false. However, we will
+not be able to give an input that respects the precondition so we will be able
+to detect this problem by carefully reading what we have specified.
 
-Certaines notions que nous verrons plus loin dans le tutoriel apporterons un 
-risque encore plus grand de créer ce genre d'incohérence. Il faut donc toujours
-avoir une attention particulière pour ce que nous spécifions.
+Some notions we will see in this tutorial can expose us to the possibility to
+introduce subtle incoherencies. So, we must always be careful specifying a
+program.
 
-## Trouver les bonnes pré-conditions
+## Finding the right preconditons
 
-Trouver les bonnes pré-conditions à une fonction est parfois difficile. Le plus
-important est avant tout de déterminer ces pré-conditions sans prendre en compte
-le contenu de la fonction (au moins dans un premier temps) afin d'éviter de 
-construire, par erreur, une spécification qui contiendrait le même bug qu'un code
-fautif, par exemple en prenant en compte une condition faussée. C'est pour cela que
-l'on souhaitera généralement que la personne qui développe le programme et la 
-personne qui le spécifie formellement soient différentes (même si elles ont pu
-préalablement s'accorder sur une spécification textuelle par exemple).
+Finding the right preconditions for a function is sometimes hard. The most
+important idea is to determine these preconditions without taking in account
+the content of the function (at least, in a first step), in order to avoid
+building a specification that would contain the same bugs currently existing
+in the source code, for example taking in account an erroneous conditional
+structure. In fact, it is generally a good practice to work with someone else.
+One specifies the function and the other implements it (even if they
+previously agreed on a common textual specification).
 
-Une fois ces pré-conditions posées, alors seulement, nous nous intéressons aux
-spécifications dues au fait que nous sommes soumis aux contraintes de notre langage
-et notre matériel. Par exemple, la fonction valeur absolue n'a, au fond, pas 
-vraiment de pré-condition à respecter, c'est la machine cible qui détermine qu'une
-condition supplémentaire doit être respectée en raison du complément à deux.
+Once these precondition has been stated, then we work on the specifications
+that are due to the constraints of our language and our hardware. For example,
+the absolute value do not really have a precondition, this is our hardware
+that adds the condition we have given in precondition due to the two's
+complement on which it relies.
 
-# Quelques éléments sur l'usage de WP et Frama-C
+# Some elements about the use of WP and Frama-C
 
-Dans les deux sous-sections précédentes, nous avons vu maximum d'éléments à 
-propos de l'usage de la GUI pour lancer les preuves. En fait, il est possible 
-de demander immédiatement à WP d'effectuer les preuves pendant le lancement de 
-Frama-C avec la commande :
+In the two preceding sections, we have seen a lot of notions about the use
+of the GUI to start proofs. In fact, we can ask WP to immediately prove
+everything at Frama-C's startup with the option `-wp`:
 
 ```bash
 $ frama-c-gui file.c -wp
 ```
 
-Cela demande à WP d'immédiatement faire les calculs de plus faible pré-condition
-et de lancer les prouveurs les buts générés.
+Which will collect all properties to be proved inside `file.c`, generate all
+proof obligations and try to discharge them.
 
-Concernant les contrôles des RTE, il est généralement conseillé de commencer par
-vérifier le programme sans mettre les contrôles de RTE. Et ensuite seulement de
-générer les assertions correspondantes pour terminer la vérification avec WP. 
-Cela permet à WP de se "concentrer" dans un premier temps sur les propriétés 
-fonctionnelles sans avoir la connaissance de propriétés purement techniques dues
-à C, qui chargent inutilement la base de connaissances. Une nouvelle fois, il est
-possible de produire ce comportement directement depuis la ligne de commande en
-écrivant :
+About runtime-errors, it is generally advised to first verify the program
+without generating RTE assertions, and then to generate them to terminate the
+verification with WP. It allows WP to "focus" on the functional properties in
+a first step without having in its knowledge base purely technical properties,
+that are generally not useful for the proof of functional properties. Again,
+it is possible to directly produce this behavior using the command line:
 
 ```bash
 $ frama-c-gui file.c -wp -then -rte -wp
 ```
 
-"Lancer Frama-C avec WP, puis créer les assertions correspondant aux RTE, et 
-lancer à nouveau WP".
+"Start Frama-C with WP, then create assertions to verify the absence of RTE
+and start WP again".
