@@ -11,14 +11,19 @@ le cas où la valeur est négative.
 
 Les comportements nous servent à spécifier les différents cas pour les 
 post-conditions. Nous les introduisons avec le mot-clé ```behavior```. 
-Chaque comportement se voit attribuer un nom, les suppositions du cas que 
-nous traitons introduites par le mot clé ```assumes``` et la 
-post-condition associée. Finalement, nous pouvons également demander à WP
+Chaque comportement se voit attribué :
+
+- un nom ; 
+- les suppositions du cas que nous traitons, introduites par le mot 
+  clé ```assumes``` ;
+- la post-condition associée à ce comportement. 
+
+Finalement, nous pouvons également demander à WP
 de vérifier le fait que les comportements sont disjoints (pour garantir 
 le déterminisme) et complets.
 
 Les comportements sont disjoints si pour toute entrée de la fonction, elle ne
-correspond aux suppositions (assumes) que d'un seul comportement. Les 
+correspond aux suppositions (*assumes*) que d'un seul comportement. Les 
 comportements sont complets si les suppositions recouvrent bien tout le domaine
 des entrées.
 
@@ -49,21 +54,21 @@ int abs(int val){
 Pour comprendre ce que font précisément ```complete``` et ```disjoint```, il est utile
 d'expérimenter deux possibilités : 
 
-- remplacer la supposition de "pos" par ```val > 0``` auquel cas les 
+- remplacer la supposition de « pos » par ```val > 0``` auquel cas les 
   comportements seront disjoints mais incomplets (il nous manquera le cas 
-  ```val == 0```)
-- remplacer la supposition de "neg" par ```val <= 0``` auquel cas les 
+  ```val == 0```) ;
+- remplacer la supposition de « neg » par ```val <= 0``` auquel cas les 
   comportements seront complets mais non disjoints (le cas ```val == 0```) sera
   présent dans les deux comportements.
 
 [[attention]]
 | Même si ```assigns``` est une post-condition, à ma connaissance, il n'est pas 
-| possible de mettre des ```assigns``` pour chaque behavior. Si nous avons
+| possible de mettre des ```assigns``` pour chaque *behavior*. Si nous avons
 | besoin d'un tel cas, nous spécifions :
 |
-| - ```assigns``` avant les behavior (comme dans notre exemple) avec tout 
+| - ```assigns``` avant les *behavior* (comme dans notre exemple) avec tout 
 |   élément non-local susceptible d'être modifié, 
-| - en post-condition de chaque behavior les éléments qui ne sont finalement 
+| - en post-condition de chaque *behavior* les éléments qui ne sont finalement 
 |   pas modifiés en les indiquant égaux à leur ancienne (```\old```) valeur.
 
 Les comportements sont très utiles pour simplifier l'écriture de spécifications

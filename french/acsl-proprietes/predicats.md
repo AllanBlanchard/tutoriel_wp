@@ -8,7 +8,7 @@ doivent être pures, c'est-à-dire qu'elles ne peuvent pas produire d'effets de
 bords en modifiant des valeurs pointées par exemple.
 
 Ces prédicats peuvent prendre un certain nombre de paramètres. En plus de cela,
-ils peuvent également recevoir un certain nombre de labels (au sens C du terme) 
+ils peuvent également recevoir un certain nombre de *labels* (au sens C du terme) 
 qui vont permettre d'établir des relations entre divers points du code. 
 
 # Syntaxe
@@ -24,7 +24,7 @@ d'annotations. La syntaxe est la suivante :
 ```
 
 Nous pouvons par exemple définir le prédicat nous disant qu'un entier en mémoire n'a
-pas changé entre deux points particuliers de programme :
+pas changé entre deux points particuliers du programme :
 
 ```c
 /*@
@@ -35,14 +35,14 @@ pas changé entre deux points particuliers de programme :
 
 [[attention]]
 | Gardez bien en mémoire que le passage se fait, comme en C, par valeur. Nous ne
-| pouvons pas écrire ce prédicat en passant directement i :
+| pouvons pas écrire ce prédicat en passant directement `i` :
 | ```c
 | /*@
 |   predicate unchanged{L0, L1}(int i) =
 |     \at(i, L0) == \at(i, L1);
 |  */
 | ```
-| Car i est juste une copie de la variable reçue en paramètre.
+| Car `i` est juste une copie de la variable reçue en paramètre.
 
 Nous pouvons par exemple vérifier ce petit code :
 
@@ -64,7 +64,7 @@ même s'il subit une petite transformation syntaxique, le prédicat n'est pas
 déroulé par WP. Ce sera au prouveur de déterminer s'il veut raisonner avec.
 
 Comme nous l'avons dit plus tôt, une des utilités des prédicats et fonctions (que 
-nous verrons un peu plus tard) est de rendre plus lisible nos spécification et 
+nous verrons un peu plus tard) est de rendre plus lisible nos spécifications et 
 de les factoriser. Un exemple est d'écrire un prédicat pour la validité en 
 lecture/écriture d'un tableau sur une plage particulière. Cela nous évite d'avoir
 à réécrire l'expression en question qui est moins compréhensible au premier 
@@ -87,14 +87,14 @@ coup d’œil.
 int* search(int* array, size_t length, int element)
 ```
 
-Dans cette portion de spécification, le label pour les prédicats n'est pas 
+Dans cette portion de spécification, le *label* pour les prédicats n'est pas 
 précisé, ni pour leur création, ni pour leur utilisation. Pour la création, 
 Frama-C va automatiquement en ajouter un dans la définition du prédicat. 
-Pour l'appel, le label passé sera implicitement ```Here```. La non-déclaration
-du label dans la définition n'interdit pour autant pas de passer explicitement
-un label lors de l'appel.
+Pour l'appel, le *label* passé sera implicitement ```Here```. La non-déclaration
+du *label* dans la définition n'interdit pour autant pas de passer explicitement
+un *label* lors de l'appel.
 
-Bien entendu, les prédicats peuvent être déclarés dans des fichiers headers afin
+Bien entendu, les prédicats peuvent être déclarés dans des fichiers *headers* afin
 de produire une bibliothèque d'utilitaires de spécifications par exemple.
 
 # Abstraction
@@ -165,9 +165,11 @@ int  is_full(stack_int_t s);
 ```
 
 Ici la spécification n'exprime pas de propriétés fonctionnelles. Par exemple, 
-rien ne nous spécifie que lorsque nous faisons un push une valeur puis que nous
-demandons top, nous auront effectivement cette valeur. Mais elle nous donne 
-déjà tout ce dont nous avons besoin pour produire un code où à défaut d'avoir 
-exactement les résultats que nous attendons, nous ne pouvons pas avoir d'erreur
-d'exécution (à condition de poser une spécification correcte pour nos prédicats
-et de prouver les fonctions d'utilisation de la structure).
+rien ne nous spécifie que lorsque nous faisons un *push* d'une valeur puis que nous
+demandons *top*, nous auront effectivement cette valeur. Mais elle nous donne 
+déjà tout ce dont nous avons besoin pour produire un code où, à défaut d'avoir 
+exactement les résultats que nous attendons (des comportements tels que « si 
+j'empile une valeur $v$, l'appel à `top` renvoie la valeur $v$ », par exemple), nous
+ pouvons au moins garantir que nous n'avons pas d'erreur d'exécution (à condition 
+de poser une spécification correcte pour nos prédicats et de prouver les fonctions 
+d'utilisation de la structure).

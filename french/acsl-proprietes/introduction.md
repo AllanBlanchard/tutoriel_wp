@@ -5,7 +5,7 @@ nous n'allons pas les présenter un à un, le lecteur pourra se référer à
 [la documentation (ACSL implementation)](http://frama-c.com/download.html) 
 pour cela (à noter : tout n'est pas nécessairement supporté par WP).
 
-ACSL nous permet de faire plus que "simplement" spécifier notre code. Nous 
+ACSL nous permet de faire plus que « simplement » spécifier notre code. Nous 
 pouvons définir nos propres prédicats, fonctions, relations, etc. Le but est de
 pouvoir abstraire nos spécifications. Cela nous permet de les factoriser (par 
 exemple en définissant ce qu'est un tableau valide), ce qui a deux effets 

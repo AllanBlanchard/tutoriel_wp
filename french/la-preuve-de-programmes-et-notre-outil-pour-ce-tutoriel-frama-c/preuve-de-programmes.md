@@ -2,9 +2,9 @@
 
 Assurer qu'un programme a un comportement conforme à celui que nous attendons
 est souvent une tâche difficile. Plus en amont encore, il est déjà complexe 
-d'établir sur quel critère nous pouvons estimer que le programme "fonctionne" :
+d'établir sur quel critère nous pouvons estimer que le programme « fonctionne » :
 
-- les débutants "essayent" simplement leurs programmes et estiment qu'ils 
+- les débutants « essayent » simplement leurs programmes et estiment qu'ils 
   fonctionnent s'ils ne plantent pas,
 - les codeurs un peu plus habitués établissent quelques jeux de tests dont ils
   connaissent les résultats et comparent les sorties de leurs programmes,
@@ -15,7 +15,7 @@ d'établir sur quel critère nous pouvons estimer que le programme "fonctionne" 
   l'armement, passent par des certifications leur demandant de répondre à des 
   critères très stricts de codage et de couverture de code par les tests.
 
-Et bien sûr, il existe tous les "entre-deux" dans cette liste.
+Et bien sûr, il existe tous les « entre-deux » dans cette liste.
 
 Dans toutes ces manières de s'assurer qu'un programme fait ce qui est attendu, 
 il y a un mot qui revient souvent : *test*. Nous *essayons* des entrées de 
@@ -26,7 +26,7 @@ pouvons pas *tout* tester. Nous ne pouvons pas essayer *toutes* les
 combinaisons de *toutes* les entrées possibles du programme. Toute la 
 difficulté réside donc dans le fait de choisir les bons tests.
 
-Le but de la preuve de programme est de s'assurer que, quelle que soit l'entrée
+Le but de la preuve de programmes est de s'assurer que, quelle que soit l'entrée
 fournie au programme, si elle respecte la spécification, alors le programme 
 fera ce qui est attendu. Cependant, comme nous ne pouvons pas tout essayer, nous 
 allons établir formellement, mathématiquement, la preuve que le logiciel ne 
@@ -47,13 +47,13 @@ jamais pour montrer leur absence.
 
 Dans chaque nouvelle à propos d'attaque sur des systèmes informatiques, ou 
 des virus, ou des bugs provoquant des crashs, il y a toujours la remarque 
-séculaire "le programme inviolable/incassable/sans bugs n'existe pas". Et 
+séculaire « le programme inviolable/incassable/sans bugs n'existe pas ». Et 
 il s'avère généralement que bien qu'assez vraie, cette phrase soit assez 
 mal comprise.
 
 Outre la différence entre sûreté et sécurité (qui peut **vaguement** être 
 définie par la présence d'un élément malveillant dans l'histoire), nous ne 
-précisons pas ce que nous entendons par "sans bug". La création d'un logiciel
+précisons pas ce que nous entendons par « sans bug ». La création d'un logiciel
 fait toujours au moins intervenir deux étapes : la rédaction de ce qui est
 attendu sous la forme d'une spécification (souvent un cahier des charges) 
 et la réalisation du logiciel répondant à cette spécification. Et ce sont 
@@ -68,14 +68,14 @@ de formaliser la spécification sous une forme logique demande de comprendre
 exactement le besoin auquel nous devons répondre.
 
 Nous pourrions dire avec cynisme que la preuve nous montre finalement que 
-l'implémentation "ne contient aucun bugs de plus que la spécification". D'une 
-part, c'est un sacré pas en avant par rapport à "le test nous montre que 
-l'implémentation ne contient pas beaucoup plus de bugs que la spécification". 
+l'implémentation « ne contient aucun bugs de plus que la spécification ». D'une 
+part, c'est un sacré pas en avant par rapport à « le test nous montre que 
+l'implémentation ne contient pas beaucoup plus de bugs que la spécification ». 
 Et d'autre part, il existe également des techniques permettant d'analyser les 
 spécifications en quête d'erreurs ou de manquements. Par exemple, les techniques
-de Model Checking - vérification de modèles - permettent de construire un modèle
-abstrait à partir d'une spécification et de produire un ensemble d'état du 
-programme accessibles d'après le modèle. En caractérisant les états fautifs, nous
+de *Model Checking* - vérification de modèles - permettent de construire un modèle
+abstrait à partir d'une spécification et de produire un ensemble d'états du 
+programme accessible d'après le modèle. En caractérisant les états fautifs, nous
 sommes en mesure de déterminer si les états accessibles contiennent des états
 fautifs.
 
@@ -102,10 +102,10 @@ d'exécuter le code analysé. Il existe également des analyses dynamiques et
 formelles, comme de la génération automatique de tests ou encore des techniques de
 monitoring de code qui pourrons, par exemple, instrumenter un code source afin de
 vérifier à l'exécution que les allocations et désallocation de mémoire sont faites
-de manière sure.
+de manière sûre.
 
 Dans le cas des analyses statiques, le modèle utilisé peut être plus ou moins 
-abstrait selon la technique utilisée, c'est donc une approximation des états 
+abstrait selon la technique employée, c'est donc une approximation des états 
 possibles de notre programme. Plus l'approximation est précise, plus le modèle est
 concret, plus l'approximation est large, plus il est abstrait.
 
@@ -124,13 +124,13 @@ variable en secondes ? Plusieurs variables heures, minutes, secondes ?). Nous
 aurions donc bien du mal à spécifier des propriétés à propos de notre programme. 
 Nous pouvons ajouter des informations :
 
-- Etat arrêté à zéro : temps = 0s
-- Etat en marche : temps > 0s
-- Etat arrêté : temps > 0s
+- État arrêté à zéro : temps = 0s ;
+- État en marche : temps > 0s ;
+- État arrêté : temps > 0s.
 
 Ce qui nous donne déjà un modèle plus concret mais qui est toujours insuffisant 
-pour poser des questions intéressantes à propos de notre système comme : "est il 
-possible que dans l'état arrêté, le temps continue de s'écouler ?". Car nous
+pour poser des questions intéressantes à propos de notre système comme : « est il 
+possible que dans l'état arrêté, le temps continue de s'écouler ? ». Car nous
 n'avons pas modélisé l'écoulement du temps par le chronomètre.
 
 À l'inverse avec le code source du programme, nous avons un modèle concret du
@@ -165,7 +165,7 @@ un monde purement logique, mathématique. Le cadre logique qui nous intéresse
 ici, c'est la logique de Hoare adaptée pour le langage C et toutes ses 
 subtilités (qui rendent donc le modèle final très concret).
 
-[^binaires]: Il existe des analyses formelles s'intéressant à comprendre le 
+[^binaires]: Il existe des analyses formelles cherchant à comprendre le 
 fonctionnement des exécutables en code machine, par exemple pour comprendre ce
 que font des malwares ou pour détecter des failles de sécurité introduites lors
 de la compilation.
@@ -174,14 +174,14 @@ de la compilation.
 
 La logique de Hoare est une méthode de formalisation des programmes proposée 
 par Tony Hoare en 1969 dans un article intitulé *An Axiomatic Basis for 
-Computer Programming* (Une base axiomatique pour la programmation des 
+Computer Programming* (une base axiomatique pour la programmation des 
 ordinateurs). Cette méthode définit :
 
 - des axiomes, qui sont des propriétés que nous admettons, comme  
-  "l'action 'ne rien faire' ne change pas l'état du programme",
+  « l'action “ne rien faire” ne change pas l'état du programme »,
 - et des règles pour raisonner à propos des différentes possibilités de 
-  compositions d'actions, par exemple "l'action 'ne rien faire' puis 'faire 
-  l'action A' est équivalent à 'faire l'action A'".
+  compositions d'actions, par exemple « l'action “ne rien faire” puis “faire 
+  l'action A” est équivalent à “faire l'action A” ».
 
 Le comportement d'un programme est défini par ce que nous appelons les triplets
 de Hoare :
@@ -190,11 +190,11 @@ de Hoare :
 
 Où $P$ et $Q$ sont des prédicats, des formules logiques qui nous disent dans 
 quel état se trouve la mémoire traitée par le programme. $C$ est un ensemble de
-commandes définissant un programme. Cette écriture nous dit "si nous sommes 
+commandes définissant un programme. Cette écriture nous dit « si nous sommes 
 dans un état où $P$ est vrai, après exécution de $C$ et si $C$ termine, 
-alors $Q$ sera vrai pour le nouvel état du programme". Dis autrement, $P$ est 
+alors $Q$ sera vrai pour le nouvel état du programme ». Dis autrement, $P$ est 
 une pré-condition suffisante pour que $C$ nous amène à la post-condition $Q$. 
-Par exemple, le triplet correspondant à l'action "ne rien faire" (**skip**) 
+Par exemple, le triplet correspondant à l'action « ne rien faire » (**skip**) 
 est le suivant :
 
 -> $\{P\}$ **skip** $\{P\}$ <-
@@ -207,8 +207,8 @@ Il n'est pas nécessaire de les mémoriser ni même de comprendre toute la théo
 derrière mais il est toujours utile d'avoir au moins une vague idée du 
 fonctionnement de l'outil que nous utilisons ;) .
 
-Tout ceci nous donne les bases permettant de dire "voilà ce que fait cette 
-action" mais ne nous donne pas encore de matériel pour mécaniser la preuve. 
+Tout ceci nous donne les bases permettant de dire « voilà ce que fait cette 
+action » mais ne nous donne pas encore de matériel pour mécaniser la preuve. 
 L'outil que nous allons utiliser repose sur la technique de calcul de plus 
 faible pré-condition.
 
@@ -225,13 +225,13 @@ elle ne nous dit pas comment appliquer ces règles pour établir une preuve
 complète du programme.
 
 Dijkstra reformule la logique de Hoare en expliquant comment, dans le triplet 
-$\{P\}C\{Q\}$, l'instruction, ou le bloc d'instruction, $C$ transforme le 
-prédicat $P$, en $Q$. Cette forme est appelée "raisonnement vers l'avant" ou 
-*forward-reasonning*. Nous calculons à partir d'une pré-condition et d'une ou 
+$\{P\}C\{Q\}$, l'instruction, ou le bloc d'instructions, $C$ transforme le 
+prédicat $P$, en $Q$. Cette forme est appelée « raisonnement vers l'avant » ou 
+*forward-reasoning*. Nous calculons à partir d'une pré-condition et d'une ou 
 plusieurs instructions, la plus forte post-condition que nous pouvons
-atteindre. Informellement, en considérant ce qui est reçu en l'entrée, nous 
+atteindre. Informellement, en considérant ce qui est reçu en entrée, nous 
 calculons ce qui sera renvoyé au plus en sortie. Si la post-condition voulue
-est au moins aussi forte, alors nous avons prouvé qu'il n'y a pas de 
+est au plus aussi forte, alors nous avons prouvé qu'il n'y a pas de 
 comportements non-voulus.
 
 Par exemple :
@@ -246,8 +246,8 @@ a = 4;
 Pas de problème, 4 fait bien partie des valeurs acceptables pour a.
 
 La forme qui nous intéresse, le calcul de plus faible pré-condition, fonctionne
-dans le sens inverse, nous parlons de "raisonnement vers l'arrière" ou 
-*backward-reasonning*. À partir de la post-condition voulue et de 
+dans le sens inverse, nous parlons de « raisonnement vers l'arrière » ou 
+*backward-reasoning*. À partir de la post-condition voulue et de 
 l'instruction que nous traitons, nous allons trouver la pré-condition minimale
 qui nous assure ce fonctionnement. Si notre pré-condition réelle est au moins
 aussi forte, c'est-à-dire, qu'elle implique la plus faible pré-condition, alors

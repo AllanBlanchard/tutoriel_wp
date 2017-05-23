@@ -16,12 +16,12 @@ fois la boucle va s'exécuter et donc par conséquent, nous ne pouvons pas non
 plus savoir combien de fois les variables ont été modifiées.
 
 Nous allons donc procéder en raisonnant par induction. Nous devons trouver une
-propriété qui est vraie avant de commencer la boucle et qui si elle est vraie
-en début d'un tour de boucle, sera vraie à la fin (et donc par extension, au 
+propriété qui est vraie avant de commencer la boucle et qui, si elle est vraie
+au début d'un tour de boucle, sera vraie à la fin (et donc par extension, au 
 début du tour suivant).
 
 Ce type de propriété est appelé un invariant de boucle. Un invariant de boucle
-est une propriété qui doit est vraie avant et après chaque tour d'une boucle. 
+est une propriété qui doit être vraie avant et après chaque tour d'une boucle. 
 Par exemple, pour la boucle :
 
 ```c
@@ -38,7 +38,7 @@ dernier tour de la boucle qui met la valeur $i$ à $10$.
 Le raisonnement produit par l'outil pour vérifier un invariant $I$ sera donc :
 
 - vérifions que $I$ est vrai au début de la boucle (établissement),
-- vérifions que $I$ est vrai avant de commencer un tour, alors $I$ vrai après (préservation).
+- vérifions que $I$ est vrai avant de commencer un tour, auquel cas $I$ est vrai après (préservation).
 
 ## [Formel] Règle d'inférence
 
@@ -49,38 +49,53 @@ définie comme suit :
 
 Et le calcul de plus faible pré-condition est le suivant :
 
--> $wp(while (B) \{ S \}, Post) = I \wedge ((B \wedge I) \Rightarrow wp(S, I)) \wedge ((\neg B \wedge I) \Rightarrow Post)$ <-
+-> $wp(while (B) \{ c \}, Post) := I \wedge ((B \wedge I) \Rightarrow wp(c, I)) \wedge ((\neg B \wedge I) \Rightarrow Post)$ <-
 
 Détaillons cette formule :
 
 - (1) le premier $I$ correspond à l'établissement de l'invariant, c'est 
-  vulgairement la "pré-condition" de la boucle,
-- la deuxième partie de la conjonction ($(B \wedge I) \Rightarrow wp(S, I)$)
+  vulgairement la « pré-condition » de la boucle,
+- la deuxième partie de la conjonction ($(B \wedge I) \Rightarrow wp(c, I)$)
   correspond à la vérification du travail effectué par le corps de la boucle :
     - la pré-condition que nous connaissons du corps de la boucle (notons $KWP$, 
-      "Known WP") , c'est ($KWP = B \wedge I$). Soit le fait que nous sommes
+      « *Known WP* ») , c'est ($KWP = B \wedge I$). Soit le fait que nous sommes
       rentrés dedans ($B$ est vrai), et que l'invariant est respecté à ce moment
       ($I$, qui est vrai avant de commencer la boucle par 1, et dont veut 
       vérifier qu'il sera vraie en fin de bloc de la boucle (2)), 
     - (2) ce qu'il nous reste à vérifier c'est que $KWP$ implique la 
 	  pré-condition réelle\* du bloc de code de la boucle 
-          ($KWP \Rightarrow wp(S, Post)$). Ce que nous voulons en fin de bloc, 
+          ($KWP \Rightarrow wp(c, Post)$). Ce que nous voulons en fin de bloc, 
           c'est avoir maintenu l'invariant $I$ ($B$ n'est peut-être plus vrai en
           revanche). Donc 
-	  $KWP \Rightarrow wp(S, I)$, soit $(B \wedge I) \Rightarrow wp(S, I)$,
+	  $KWP \Rightarrow wp(c, I)$, soit $(B \wedge I) \Rightarrow wp(c, I)$,
     - \* cela correspond à une application de la règle de conséquence expliquée
       précédemment.
-- finalement la dernière partie ($(\neg B \wedge I) \Rightarrow Post$)
+- finalement, la dernière partie ($(\neg B \wedge I) \Rightarrow Post$)
   nous dit que le fait d'être sorti de la boucle ($\neg B$), tout en ayant 
   maintenu l'invariant $I$, doit impliquer la post-condition voulue pour la 
   boucle.
 
+Dans ce calcul, nous pouvons noter que la fonction $wp$ ne nous donne aucune
+indication sur le moyen d'obtenir l'invariant $I$. Nous allons donc devoir 
+spécifier manuellement de telles propriétés à propos de nos boucles.
+
 ## Retour à l'outil
 
 Il existe des outils capables d'inférer des invariants (pour peu qu'ils soient
-simples, les outils automatiques restent limités). Ce n'est pas le cas de WP. 
-Il nous faut donc écrire nos invariants à la main. Pour cela nous ajoutons les 
-annotations suivantes en début de boucle :
+simples, les outils automatiques restent limités). Ce n'est pas le cas de WP.
+Il nous faut donc écrire nos invariants à la main. Trouver et écrire les 
+invariants des boucles de nos programmes sera toujours la partie la plus difficile
+de notre travail lorsque nous chercherons à prouver des programmes. 
+
+En effet, si en l'absence de boucle, la fonction de calcul de plus faible 
+pré-condition peut nous fournir automatiquement les propriétés vérifiables de nos
+programmes, ce n'est pas le cas pour les invariants de boucle pour lesquels 
+nous n'avons pas accès à une procédure automatique de calcul. Nous devons donc 
+trouver et formuler correctement ces invariants, et selon l'algorithme, celui-ci
+peut parfois être très subtil.
+
+Pour indiquer un invariant à une boucle, nous ajoutons les annotations suivantes
+en début de boucle :
 
 ```c
 int main(){
@@ -106,13 +121,13 @@ pré-conditions sur les boucles est que lorsque l'on invalide la condition de la
 boucle, par la connaissance de l'invariant, on peut prouver la post-condition 
 (Formellement : $(\neg B \wedge I) \Rightarrow Post$).
 
-La post-condition de notre boucle est ```i == 30```. Et doit être impliquée par
+La post-condition de notre boucle est ```i == 30``` et doit être impliquée par
 $\neg$ ```i < 30``` $\wedge$ ```0 <= i <= 30```. Ici, cela fonctionne 
 bien : ```i >= 30 && 0 <= i <= 30 ==> i == 30```. Si l'invariant excluait 
 l'égalité à 30, la post-condition ne serait pas atteignable.
 
-Une nouvelle fois, nous pouvons jeter un œil à la liste des buts dans WP 
-Goals :
+Une nouvelle fois, nous pouvons jeter un œil à la liste des buts dans « *WP 
+Goals* » :
 
 ![Obligations générées pour prouver notre boucle](https://zestedesavoir.com:443/media/galleries/2584/3e2cfa83-cbf8-48fd-b716-9baf51a91ed3.png)
 
@@ -120,7 +135,7 @@ Nous remarquons bien que WP décompose la preuve de l'invariant en deux parties 
 l'établissement de l'invariant et sa préservation. WP produit exactement le 
 raisonnement décrit plus haut pour la preuve de l'assertion. Dans les versions
 récentes de Frama-C, Qed est devenu particulièrement puissant, et l'obligation de
-preuve générée ne le montre pas (affichant simplement "True"). En utilisant 
+preuve générée ne le montre pas (affichant simplement « *True* »). En utilisant 
 l'option ```-wp-no-simpl``` au lancement, nous pouvons quand même voir 
 l'obligation correspondante :
 
@@ -149,7 +164,7 @@ Voyons le résultat :
 
 Il semble que non. 
 
-# La clause "assigns" ... pour les boucles
+# La clause « assigns » ... pour les boucles
 
 En fait, à propos des boucles, WP ne considère vraiment *que* ce que lui 
 fournit l'utilisateur pour faire ses déductions. Et ici l'invariant ne nous dit
@@ -175,8 +190,8 @@ int main(){
 }
 ```
 
-Cette fois, nous pouvons établir la correction de la boucle. Par contre rien ne
-nous prouve sa terminaison. L'invariant de boucle n'est pas suffisant pour 
+Cette fois, nous pouvons établir la preuve de correction de la boucle. Par contre, 
+rien ne nous prouve sa terminaison. L'invariant de boucle n'est pas suffisant pour 
 effectuer une telle preuve. Par exemple, dans notre programme, si nous réécrivons 
 la boucle comme ceci :
 
@@ -191,16 +206,16 @@ while(i < 30){
 ```
 
 L'invariant est bien vérifié également, mais nous ne pourrons jamais prouver
-que la boucle termine : elle est infinie.
+que la boucle se termine : elle est infinie.
 
-# Preuve partielle et preuve totale - Variant de boucle
+# Correction partielle et correction totale - Variant de boucle
 
 En vérification déductive, il y a deux types de correction, la correction 
 partielle et la correction totale. Dans le premier cas, la formulation est 
-"si la pré-condition est validée et **si** le calcul termine, alors la 
-post-condition est validée". Dans le second cas, "si la pré-condition est 
-validée, alors le calcul termine et la post-condition est validée". WP 
-s'intéresse par défaut à de la preuve partielle :
+« si la pré-condition est validée et **si** le calcul termine, alors la 
+post-condition est validée ». Dans le second cas, « si la pré-condition est 
+validée, alors le calcul termine et la post-condition est validée ». WP 
+s'intéresse par défaut à de la preuve de correction partielle :
 
 ```c
 void foo(){
@@ -213,15 +228,16 @@ nous obtenons ceci :
 
 ![Preuve de faux par non-terminaison de boucle](https://zestedesavoir.com:443/media/galleries/2584/dba607cc-eb6e-4f8a-83b5-89f353981615.png)
 
-L'assertion "FAUX" est prouvée ! La raison est simple : la non-terminaison de
-la boucle est triviale. Comme le calcul ne termine pas et nous sommes en 
-correction partielle, nous prouve ce que nous voulons à la suite d'un calcul 
-non terminant. Si la non-terminaison est non-triviale, il y a peu de chances 
-que l'assertion soit prouvée en revanche.
-
+L'assertion « FAUX » est prouvée ! La raison est simple : la non-terminaison de
+la boucle est triviale : la condition de la boucle est « VRAI » et aucune instruction
+du bloc de la boucle ne permet d'en sortir puisque le bloc ne contient pas de code du
+tout. Comme nous sommes en correction partielle, et que le calcul ne termine pas, nous
+pouvons prouver n'importe quoi au sujet du code qui suit la partie non terminante. Si,
+en revanche, la non-terminaison est non-triviale, il y a peu de chances que l'assertion
+soit prouvée.
 
 [[information]]
-| À noter qu'une assertion inatteignable est toujours prouvée vraie de cette 
+| À noter qu'une assertion inatteignable est toujours prouvée comme vraie de cette 
 | manière :
 | ![Assertion que l'on saute par un Goto](https://zestedesavoir.com:443/media/galleries/2584/eafe5462-e97f-4b9b-8581-c8d9b4ecca5c.png)
 | 
@@ -267,6 +283,41 @@ assurer que la valeur est positive, et assurer qu'elle décroît strictement pen
 l'exécution de la boucle. Et si nous supprimons la ligne de code qui incrémente
 `i`, WP ne peut plus prouver que la valeur `30 - i` décroît strictement.
 
+Il est également bon de noter qu'être capable de donner un variant de boucle
+n'induit pas nécessairement d'être capable de donner le nombre exact d'itérations
+qui doivent encore être exécutées par la boucle, car nous n'avons pas toujours une
+connaissance aussi précise du comportement de notre programme. Nous pouvons par
+ exemple avoir un code comme celui-ci :
+
+```c
+#include <stddef.h>
+
+/*@
+  ensures min <= \result <= max;
+*/
+size_t random_between(size_t min, size_t max);
+
+void undetermined_loop(size_t bound){
+  /*@
+    loop invariant 0 <= i <= bound ;
+    loop assigns i;
+    loop variant i;
+   */
+  for(size_t i = bound; i > 0; ){
+    i -= random_between(1, i);
+  }
+}
+```
+
+Ici, à chaque tour de boucle, nous diminuons la valeur de la variable `i` par une
+valeur dont nous savons qu'elle se trouve entre 1 et `i`. Nous pouvons donc bien 
+assurer que la valeur de `i` est positive et décroît strictement, mais nous ne 
+pouvons pas dire combien de tours de boucles vont être réalisés pendant une 
+exécution.
+
+Le variant n'est donc bien qu'une borne supérieure sur le nombre d'itérations 
+de la boucle.
+
 # Lier la post-condition et l'invariant
 
 Supposons le programme spécifié suivant. Notre but est de prouver que le retour
@@ -307,10 +358,10 @@ int plus_dix(int a){
 
 En remontant les instructions depuis la post-condition, on conserve toujours les 
 informations à propos de `a`. À l'inverse, comme mentionné plus tôt, en dehors de
-la boucle WP ne considérera que les connaissances fournies par notre invariant. 
+la boucle WP ne considérera que les informations fournies par notre invariant. 
 Par conséquent, notre fonction `plus_dix` ne peut pas être prouvée en l'état : 
-l'invariant ne mentionne aucune connaissance à propos de `a`. Pour lier notre
-post-condition à l'invariant, il faut ajouter une telle connaissance. Par 
+l'invariant ne mentionne rien à propos de `a`. Pour lier notre
+post-condition à l'invariant, il faut ajouter une telle information. Par 
 exemple :
 
 ```c
@@ -332,7 +383,7 @@ int plus_dix(int a){
 ```
 
 [[information]]
-| Ce besoin peut semble être une contrainte très forte. Elle ne l'est en fait pas
+| Ce besoin peut apparaître comme une contrainte très forte. Il ne l'est en fait pas
 | tant que cela. Il existe des analyses fortement automatiques capables de 
 | calculer les invariants de boucles. Par exemple, sans spécifications, une 
 | interprétation abstraite calculera assez facilement `0 <= i <= 10` et 

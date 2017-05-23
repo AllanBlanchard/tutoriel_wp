@@ -4,10 +4,10 @@ pouvant être utilisées par les prouveurs pour faciliter leur travail.
 
 Toutes les techniques expliquées dans cette partie sont sûres, au sens où 
 elles ne permettent *a priori* pas de fausser la preuve avec des définitions 
-fausses ou contradictoire. En tout cas, si elles ont toutes été prouvées 
-correctes : tous les lemmes, toutes les pré-conditions aux points d'appels, 
-toutes les assertions, tous les invariants et variants, ainsi que toutes les 
-post-conditions.
+fausses ou contradictoires. En tous cas, si la spécification n'utilise que ce
+type de constructions et que chaque lemme, chaque pré-condition (aux points 
+d'appels), chaque post-condition, chaque assertion, chaque variant et chaque 
+invariant est correctement prouvé, le code est juste.
 
 Parfois ces constructions ne sont pas suffisantes pour exprimer toutes nos 
 propriétés ou pour prouver nos programmes. Les prochaines constructions que nous

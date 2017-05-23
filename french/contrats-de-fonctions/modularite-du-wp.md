@@ -3,7 +3,7 @@ fonctions et commencer à entrer dans les détails de fonctionnement de WP. Nous
 allons en profiter pour regarder comment se traduit le découpage de nos 
 programmes en fichiers lorsque nous voulons les spécifier et les prouver avec WP.
 
-Notre but sera de prouver la fonction ```max_abs``` qui renvoie les maximum 
+Notre but sera de prouver la fonction ```max_abs``` qui renvoie les maximums 
 entre les valeurs absolues de deux valeurs :
 
 ```c
@@ -115,7 +115,7 @@ réunies au moment de l'appel. Cela donne donc des preuves très modulaires et d
 des spécifications plus facilement réutilisables. Évidemment, si notre preuve 
 repose sur la spécification d'une autre fonction, cette fonction doit-elle même 
 être vérifiable pour que la preuve soit formellement complète. Mais nous pouvons
-également vouloir simplement vers confiance à une bibliothèque externe sans la
+également vouloir simplement faire confiance à une bibliothèque externe sans la
 prouver.
 
 Finalement, le lecteur pourra essayer de spécifier la fonction ```max_abs```.

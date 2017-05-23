@@ -1,8 +1,10 @@
 Le principe d'un contrat de fonction est de poser les conditions selon 
-lesquelles la fonction va s'exécuter. C'est-à-dire ce que doit respecter 
-l'appelant pour que la fonction s'exécute correctement : la pré-condition, la
-notion de "s'exécute correctement" étant elle-même définie dans le contrat par
-la post-condition.
+lesquelles la fonction va s'exécuter. C'est-à-dire : ce que doit respecter 
+le code appelant à propos des variables passées en paramètres et de l'état de
+la mémoire globale pour que la fonction s'exécute correctement, 
+**la pré-condition** ; et ce que s'engage à respecter la fonction en retour
+à propos de l'état de la mémoire et de la valeur de retour : 
+**la post-condition**.
 
 Ces propriétés sont exprimées en langage ACSL, la syntaxe est relativement 
 simple pour qui a déjà fait du C puisqu'elle reprend la syntaxe des expressions
@@ -42,8 +44,9 @@ programme (nous nous intéresserons ensuite aux pré-conditions).
 # Post-condition
 
 La post-condition d'une fonction est précisée avec la clause ```ensures```. 
-Nous allons travailler avec la fonction suivante qui donne la valeur absolue. 
-Un de ses post-conditions est que le résultat (que nous notons avec le 
+Nous allons travailler avec la fonction suivante qui donne la valeur absolue
+d'un entier reçu en entrée. 
+Une de ses post-conditions est que le résultat (que nous notons avec le 
 mot-clé ```\result```) est supérieur ou égal à 0.
 
 ```c
@@ -82,8 +85,7 @@ int abs(int val){
 Cette spécification est l'opportunité de présenter un connecteur logique 
 très utile que propose ACSL mais qui n'est pas présent en C : 
 l'implication $A \Rightarrow B$, que l'on écrit en ACSL ```A ==> B```.
-La table de vérité de l'implication est la suivante ($\top$ = `true`,
-$\bot$ = `false`) :
+La table de vérité de l'implication est la suivante :
 
 $A$ | $B$ | $A \Rightarrow B$
 ----|-----|-------------------
@@ -94,9 +96,9 @@ $V$ | $V$ | $V$
 
 Ce qui veut dire qu'une implication $A \Rightarrow B$ est vraie dans deux cas : 
 soit $A$ est fausse (et dans ce cas, il ne faut pas se préoccuper de $B$), soit 
-$A$ est vraie et alors $B$ doit être vraie aussi. L'idée étant finalement "je 
+$A$ est vraie et alors $B$ doit être vraie aussi. L'idée étant finalement « je 
 veux savoir si dans le cas où $A$ est vrai, $B$ l'est aussi. Si $A$ est faux, 
-je considère que l'ensemble est vrai".
+je considère que l'ensemble est vrai ».
 
 Sa cousine l'équivalence $A \Leftrightarrow B$ (écrite ```A <==> B``` en ACSL)
 est plus forte. C'est la conjonction de l'implication dans les deux sens :
@@ -120,7 +122,7 @@ Revenons à notre spécification. Quand nos fichiers commencent à être longs e
 contenir beaucoup de spécifications, il peut être commode de nommer les 
 propriétés que nous souhaitons vérifier. Pour cela, nous indiquons un nom (les 
 espaces ne sont pas autorisées) suivi de ```:``` avant de mettre effectivement
-la propriété, il est possible de mettre plusieurs "étages" de noms pour 
+la propriété, il est possible de mettre plusieurs « étages » de noms pour 
 catégoriser nos propriétés. Par exemple nous pouvons écrire ceci :
 
 ```c
@@ -153,8 +155,8 @@ $ frama-c-gui
 
 Soit en l'ouvrant depuis l'environnement graphique. 
 
-Il est ensuite possible de cliquer sur le bouton "Create a new session from 
-existing C files", les fichiers à analyser peuvent être sélectionnés par
+Il est ensuite possible de cliquer sur le bouton « *Create a new session from 
+existing C files* », les fichiers à analyser peuvent être sélectionnés par
 double-clic, OK terminant la sélection. Par la suite, l'ajout d'autres 
 fichiers à la session s'effectue en cliquant sur Files > Source Files. 
 
@@ -173,7 +175,7 @@ Aux différentes lignes ```ensures```, il y a un cercle bleu dans la marge, ils
 indiquent qu'aucune vérification n'a été tentée pour ces lignes.
 
 Nous demandons la vérification que le code répond à la spécification en faisant 
-un clic droit sur le nom de la fonction et "Prove function annotations by WP" :
+un clic droit sur le nom de la fonction et « *Prove function annotations by WP* » :
 
 ![Lancer la vérification de ```abs``` avec WP](https://zestedesavoir.com:443/media/galleries/2584/ed44f0d3-763f-423e-8a01-a9be7aace0d3.png)
 
@@ -192,12 +194,12 @@ division par 0, etc).
 
 Pour activer ce contrôle, nous cochons la case montrée par cette capture (dans 
 le volet de WP). Il est également possible de demander à Frama-C d'ajouter ces 
-contrôles par un clic droit sur le nom de la fonction puis "Insert RTE guards".
+contrôles par un clic droit sur le nom de la fonction puis « Insert RTE guards ».
 
 ![Activer la vérification des erreurs d'exécution](https://zestedesavoir.com:443/media/galleries/2584/bae7515e-8841-4a27-9253-e1bf26eb0d81.png)
 
 Enfin nous relançons la vérification (nous pouvons également cliquer sur le 
-bouton "Reparse" de la barre d'outils, cela aura pour effet de supprimer les
+bouton « *Reparse* » de la barre d'outils, cela aura pour effet de supprimer les
 preuves déjà effectuées).
 
 Nous pouvons alors voir alors que WP échoue à prouver  l'impossibilité de 
@@ -214,7 +216,7 @@ que -```INT_MIN``` ($-2^{31}$) > ```INT_MAX``` ($2^{31}-1$).
 
 Ici nous pouvons voir un autre type d'annotation ACSL. La 
 ligne ```//@ assert propriete ;``` nous permet de demander la vérification 
-d'une propriété à un point particulier de programme. Ici, l'outil l'a 
+d'une propriété à un point particulier du programme. Ici, l'outil l'a 
 insérée pour nous car il faut vérifier que le ```-val``` ne provoque pas de 
 débordement, mais il est également possible d'en ajouter manuellement dans 
 un code.
@@ -245,13 +247,13 @@ propriété est vérifiable. Les deux raisons peuvent être :
 
 - qu'il n'a pas assez d'information pour le déterminer ;
 - que malgré toutes ses recherches, il n'a pas pu trouver un résultat à 
-  temps. Auquel cas, il rencontre un timeout dont la durée est configurable 
+  temps. Auquel cas, il rencontre un *timeout* dont la durée est configurable 
   dans le volet de WP.
 
-Dans le volet inférieur, nous pouvons sélectionner l'onglet "WP Goals", 
+Dans le volet inférieur, nous pouvons sélectionner l'onglet « *WP Goals* », 
 celui-ci nous affiche la liste des obligations de preuve et pour chaque 
 prouveur indique un petit logo si la preuve a été tentée et si elle a été 
-réussie, échouée ou a rencontré un timeout (ici nous pouvons voir un essai 
+réussie, échouée ou a rencontré un *timeout* (ici nous pouvons voir un essai 
 avec Z3 sur le contrôle de la RTE pour montrer le logo des ciseaux 
 associé au timeout).
 
@@ -277,9 +279,9 @@ nous pouvons voir ceci :
 
 C'est l'obligation de preuve que génère WP par rapport à notre propriété et 
 notre programme, il n'est pas nécessaire de comprendre tout ce qui s'y passe, 
-juste d'avoir une idée globale. Elle contient (dans la partie "Assume") les 
+juste d'avoir une idée globale. Elle contient (dans la partie « *Assume* ») les 
 suppositions que nous avons pu donner et celles que WP a pu déduire des 
-instructions du programme. Elle contient également (dans la partie "Prove") 
+instructions du programme. Elle contient également (dans la partie « *Prove* ») 
 la propriété que nous souhaitons vérifier.
 
 Que fait WP avec ces éléments ? En fait, il les transforme en une formule 
@@ -295,8 +297,8 @@ pas appel aux prouveurs.
 Lorsque les prouveurs automatiques ne parviennent pas à assurer que nos 
 propriétés sont bien vérifiées, il est parfois difficile de comprendre 
 pourquoi. En effet, les prouveurs ne sont généralement pas capables de nous 
-répondre autre chose que "oui", "non" ou "inconnu", ils ne sont pas capables
-d'extraire le "pourquoi" d'un "non" ou d'un "inconnu". Il existe des outils qui
+répondre autre chose que « oui », « non » ou « inconnu », ils ne sont pas capables
+d'extraire le « pourquoi » d'un « non » ou d'un « inconnu ». Il existe des outils qui
 sont capables d'explorer les arbres de preuve pour en extraire ce type 
 d'information, Frama-C n'en possède pas à l'heure actuelle. La lecture des
 obligations de preuve peut parfois nous aider, mais cela demande un peu 
@@ -310,7 +312,7 @@ qui rend le code souvent indigeste.
 Si nous retournons dans notre tableau des obligations de preuve (bouton 
 encadré dans la capture d'écran précédente), nous pouvons donc voir que les 
 hypothèses n'ont pas suffi aux prouveurs pour déterminer que la propriété 
-"absence de débordement" est vraie (et nous l'avons dit : c'est normal), il 
+« absence de débordement » est vraie (et nous l'avons dit : c'est normal), il 
 nous faut donc ajouter une hypothèse supplémentaire pour garantir le bon 
 fonctionnement de la fonction : une pré-condition d'appel.
 
@@ -318,7 +320,7 @@ fonctionnement de la fonction : une pré-condition d'appel.
 
 Les pré-conditions de fonctions sont introduites par la clause ```requires```,
 de la même manière qu'avec ```ensures```, nous pouvons composer nos 
-expressions logiques et mettre plusieurs pré-condition :
+expressions logiques et mettre plusieurs pré-conditions :
 
 ```c
 /*@
@@ -375,7 +377,7 @@ int abs(int val){
 | $ frama-c-gui -pp-annot file.c
 | ```
 
-Une fois le code source modifié de cette manière, un clic sur "Reparse" et 
+Une fois le code source modifié de cette manière, un clic sur « *Reparse* » et 
 nous lançons à nouveau l'analyse. Cette fois, tout est validé pour WP, notre 
 implémentation est prouvée :
 
@@ -406,10 +408,10 @@ la post-condition est vérifiée.
 
 Si nous donnons à notre fonction une valeur qui viole ses pré-conditions, alors
 nous en déduisons que la post-condition est fausse. À partir de là, nous pouvons 
-prouver tout ce que nous voulons car ce "false" devient une supposition pour
+prouver tout ce que nous voulons car ce « false » devient une supposition pour
 tout appel qui viendrait ensuite. À partir de faux, nous prouvons tout ce que 
-nous voulons, car si nous avons la preuve de "faux" alors "faux" est vrai, de 
-même que "vrai" est vrai. Donc tout est vrai.
+nous voulons, car si nous avons la preuve de « faux » alors « faux » est vrai, de 
+même que « vrai » est vrai. Donc tout est vrai.
 
 En prenant le programme modifié, nous pouvons d'ailleurs regarder les obligations
 de preuve générées par WP pour l'appel fautif et l'appel prouvé par conséquent :
@@ -422,20 +424,20 @@ Nous pouvons remarquer que pour les appels de fonctions, l'interface graphique
 nous surligne le chemin d'exécution suivi avant l'appel dont nous cherchons à 
 vérifier la pré-condition. Ensuite, si nous regardons l'appel ```abs(INT_MIN)```,
 nous pouvons remarquer qu'à force de simplifications, Qed a déduit que nous 
-cherchons à prouver "False". Conséquence logique, l'appel suivant ```abs(a)``` 
-reçoit dans ses suppositions "False". C'est pourquoi Qed est capable de déduire
-immédiatement "True". 
+cherchons à prouver « False ». Conséquence logique, l'appel suivant ```abs(a)``` 
+reçoit dans ses suppositions « False ». C'est pourquoi Qed est capable de déduire
+immédiatement « True ». 
 
 La deuxième partie de la question est alors : pourquoi lorsque nous mettons les 
 appels dans l'autre sens (```abs(a)``` puis ```abs(INT_MIN)```), nous obtenons 
 quand même une violation de la pré-condition sur le deuxième ? La réponse est 
 simplement que ```abs(a)``` peut, ou ne peut pas, provoquer une erreur, alors 
 que ```abs(INT_MIN)``` provoque forcément l'erreur. Donc si nous obtenons 
-nécessairement une preuve de "faux" avec un appel ```abs(INT_MIN)```, ce n'est
+nécessairement une preuve de « faux » avec un appel ```abs(INT_MIN)```, ce n'est
 pas le cas de l'appel ```abs(a)``` qui peut aussi ne pas échouer.
 
 Bien spécifier son programme est donc d'une importance cruciale. Typiquement, 
-préciser un pré-condition fausse peut nous donner la possibilité de prouver 
+préciser une pré-condition fausse peut nous donner la possibilité de prouver 
 FAUX :
 
 ```c
@@ -477,22 +479,22 @@ condition supplémentaire doit être respectée en raison du complément à deux
 
 # Quelques éléments sur l'usage de WP et Frama-C
 
-Dans les deux sous-sections précédentes, nous avons vu maximum d'éléments à 
-propos de l'usage de la GUI pour lancer les preuves. En fait, il est possible 
-de demander immédiatement à WP d'effectuer les preuves pendant le lancement de 
-Frama-C avec la commande :
+Dans les deux sous-sections précédentes, nous avons vu un certain nombre 
+d'éléments à propos de l'usage de la GUI pour lancer les preuves. En fait, 
+il est possible de demander immédiatement à WP d'effectuer les preuves pendant
+le lancement de Frama-C avec la commande :
 
 ```bash
 $ frama-c-gui file.c -wp
 ```
 
 Cela demande à WP d'immédiatement faire les calculs de plus faible pré-condition
-et de lancer les prouveurs les buts générés.
+et de lancer les prouveurs sur les buts générés.
 
 Concernant les contrôles des RTE, il est généralement conseillé de commencer par
 vérifier le programme sans mettre les contrôles de RTE. Et ensuite seulement de
 générer les assertions correspondantes pour terminer la vérification avec WP. 
-Cela permet à WP de se "concentrer" dans un premier temps sur les propriétés 
+Cela permet à WP de se « concentrer » dans un premier temps sur les propriétés 
 fonctionnelles sans avoir la connaissance de propriétés purement techniques dues
 à C, qui chargent inutilement la base de connaissances. Une nouvelle fois, il est
 possible de produire ce comportement directement depuis la ligne de commande en
@@ -502,5 +504,5 @@ possible de produire ce comportement directement depuis la ligne de commande en
 $ frama-c-gui file.c -wp -then -rte -wp
 ```
 
-"Lancer Frama-C avec WP, puis créer les assertions correspondant aux RTE, et 
-lancer à nouveau WP".
+« Lancer Frama-C avec WP, puis créer les assertions correspondant aux RTE, et 
+lancer à nouveau WP ».

@@ -78,7 +78,7 @@ langage C, c'est bien la notion de pointeur. C'est une notion complexe et
 l'une des principales cause de bugs critiques dans les programmes, ils ont 
 donc droit à un traitement de faveur dans ACSL.
 
-Prenons par exemple une fonction swap pour les entiers :
+Prenons par exemple une fonction `swap` pour les entiers :
 
 ```c
 /*@
@@ -93,17 +93,17 @@ void swap(int* a, int* b){
 
 ## Historique des valeurs
 
-Ici, j'ai introduit une première fonction logique fournie de base par 
+Ici, nous introduisons une première fonction logique fournie de base par 
 ACSL : ```\old```, qui permet de parler de l'ancienne valeur d'un élément. 
-Ce que nous dit donc la spécification c'est "la fonction doit assurer que a 
+Ce que nous dit donc la spécification c'est « la fonction doit assurer que a 
 soit égal à l'ancienne valeur (au sens : la valeur avant l'appel) de b et 
-inversement".
+inversement ».
 
 La fonction ```\old``` ne peut être utilisée que dans la post-condition d'une
 fonction. Si nous avons besoin de ce type d'information ailleurs, nous 
-utilisons ```\at``` qui nous permet de statuer à propos de la valeur d'une 
-variable à un point donné. Elle reçoit deux paramètres. Le premier est la 
-variable (ou position mémoire) dont nous voulons obtenir la valeur et le 
+utilisons ```\at``` qui nous permet d'exprimer des propriétés à propos de la 
+valeur d'une variable à un point donné. Elle reçoit deux paramètres. Le premier 
+est la variable (ou position mémoire) dont nous voulons obtenir la valeur et le 
 second la position (sous la forme d'un label C) à laquelle nous voulons 
 contrôler la valeur en question.
 
@@ -147,9 +147,9 @@ montrer indispensable pour écrire des spécifications précises.
 
 ## Validité de pointeurs
 
-Si nous essayons de prouver le fonctionnement de swap (en activant
+Si nous essayons de prouver le fonctionnement de `swap` (en activant
 la vérification des RTE), notre post-condition est bien vérifiée mais WP nous 
-indique qu'il y a un certain nombre de possibilités de runtime-error. Ce qui 
+indique qu'il y a un certain nombre de possibilités de *runtime-error*. Ce qui 
 est normal, car nous n'avons pas précisé à WP que les pointeurs que nous
 recevons en entrée de fonction sont valides.
 
@@ -174,15 +174,15 @@ valides.
 
 Comme nous le verrons plus tard, ```\valid``` peut recevoir plus qu'un 
 pointeur en entrée. Par exemple, il est possible de lui transmettre une 
-expression de cette forme : ```\valid(p + (s .. e))``` qui voudra dire "pour
-tout i entre s et e (inclus), p+i est un pointeur valide", ce sera important 
+expression de cette forme : ```\valid(p + (s .. e))``` qui voudra dire « pour
+tout `i` entre `s` et `e` (inclus), `p+i` est un pointeur valide », ce sera important 
 notamment pour la gestion des tableaux dans les spécifications.
 
-Si nous nous intéressons aux assertions ajoutées par WP dans la fonction swap
+Si nous nous intéressons aux assertions ajoutées par WP dans la fonction `swap`
 avec la validation des RTEs, nous pouvons constater qu'il existe une variante
 de ```\valid``` sous le nom ```\valid_read```. Contrairement au premier, 
 celui-ci assure que le pointeur peut être déréférencé mais en lecture 
-seulement. Cette subtilité est due au fait qu'en C, le downcast de pointeur 
+seulement. Cette subtilité est due au fait qu'en C, le *downcast* de pointeur 
 vers un élément const est très facile à faire mais n'est pas forcément légal.
 
 Typiquement, dans le code suivant :
@@ -248,7 +248,7 @@ susceptibles d'être modifiés par la fonction.
 
 Par défaut, WP considère qu'une fonction a le droit de modifier n'importe quel
 élément en mémoire. Nous devons donc préciser ce qu'une fonction est en droit 
-de modifier. Par exemple pour la fonction swap :
+de modifier. Par exemple pour la fonction `swap` :
 
 ```c
 /*@
@@ -266,7 +266,7 @@ void swap(int* a, int* b){
 ```
 
 Si nous rejouons la preuve avec cette spécification, la fonction et les 
-assertions que nous avions demandées dans le main seront validées par WP.
+assertions que nous avions demandées dans le `main` seront validées par WP.
 
 Finalement, il peut arriver que nous voulions spécifier qu'une fonction ne 
 provoque pas d'effets de bords. Ce cas est précisé en donnant ```\nothing```
@@ -285,16 +285,16 @@ int max_ptr(int* a, int* b){
   return (*a > *b) ? *a : *b ;
 }
 ```
-Le lecteur pourra maintenant reprendre les exemples précédents y intégrer 
+Le lecteur pourra maintenant reprendre les exemples précédents pour y intégrer 
 la bonne clause ```assigns``` ;) .
 
 ## Séparation des zones de la mémoire
 
-Les pointeurs apportent le risque d'aliasing (plusieurs pointeurs ayant accès à
+Les pointeurs apportent le risque d'*aliasing* (plusieurs pointeurs ayant accès à
 la même zone de mémoire). Si dans certaines fonctions, cela ne pose pas de 
-problème, par exemple dans le cas où nous passons les deux mêmes pointeurs
-à notre fonction ```swap``` où la spécification est toujours vérifiée par le 
-code source. Dans d'autre cas, ce n'est pas si simple :
+problème (par exemple si nous passons deux pointeurs égaux
+à notre fonction ```swap```, la spécification est toujours vérifiée par le 
+code source), dans d'autre cas, ce n'est pas si simple :
 
 ```c
 #include <limits.h>
@@ -319,13 +319,13 @@ La raison est simplement que rien ne garantit que le pointeur ```a``` est bien
 différent du pointeur ```b```. Or, si les pointeurs sont égaux,
 
 - la propriété ```*a == \old(*a) + *b``` signifie en fait 
-   ```*a == \old(*a) + *a```, ce ne peut être vrai que si l'ancienne valeur 
+   ```*a == \old(*a) + *a```, ce qui ne peut être vrai que si l'ancienne valeur 
    pointée par ```a``` était 0, ce qu'on ne sait pas,
 - la propriété ```*b == \old(*b)``` n'est pas validée car potentiellement,
   nous la modifions.
 
 [[question]]
-| Pourquoi la clause assign est-elle validée ?
+| Pourquoi la clause `assign` est-elle validée ?
 |
 | C'est simplement dû au fait, qu'il n'y a bien que la zone mémoire pointée par
 | ```a``` qui est modifiée étant donné que si ```a != b``` nous ne modifions bien 

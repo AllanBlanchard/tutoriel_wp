@@ -43,7 +43,7 @@ Ce qui nous permet ainsi de bénéficier de la robustesse de notre fonction tout
 ayant la possibilité de débugger un appel incorrect dans un code que nous ne 
 voulons ou pouvons pas prouver.
 
-Écrire les spécifications est parfois long voir fastidieux. Les constructions 
+Écrire les spécifications est parfois long voire fastidieux. Les constructions 
 de plus haut niveau d'ACSL (prédicats, fonctions logiques, axiomatisations) 
 permettent d'alléger un peu ce travail, de la même manière que nos langages de
 programmation nous permettent de définir des types englobant d'autres types et
@@ -65,8 +65,8 @@ ont cela pour elles. Qu'y a-t-il de plus terrible que lire une spécification
 écrite en langue naturelle pure beurre, avec toute sa panoplie de phrase à 
 rallonge, de verbes conjugués à la forme conditionnelle, de termes imprécis, 
 d'ambiguïtés, compilée dans des documents administratifs de centaines de pages,
-et dans laquelle nous devons chercher pour déterminer "bon alors cette fonction, 
-elle doit faire quoi ? Et qu'est ce qu'il faut valider à son sujet ?". 
+et dans laquelle nous devons chercher pour déterminer « bon alors cette fonction, 
+elle doit faire quoi ? Et qu'est ce qu'il faut valider à son sujet ? ». 
 
 Les méthodes formelles ne sont, à l'heure actuelle, probablement pas assez 
 utilisées, parfois par méfiance, parfois par ignorance, parfois à cause de 
@@ -79,7 +79,7 @@ jamais être mis en œuvre quotidiennement. Après tout nous voyons chaque jour
 10 ans, 20 ans, 40 ans. Et pouvons à peine imaginer à quel point il sera 
 différent dans 10 ans, 20 ans, 40 ans.
 
-Ces dernières années, les questions de sûreté et de sécurité sont devenus de
+Ces dernières années, les questions de sûreté et de sécurité sont devenues de
 plus en plus présentes et cruciales. Les méthodes formelles connaissent également
 de fortes évolutions et leurs apports pour ces questions sont très appréciés. 
 Par exemple, [ce lien](http://sfm.seas.harvard.edu/report.html) mène vers
@@ -131,7 +131,7 @@ modulairement, elle est par ailleurs fortement dépendante du type de domaine
 utilisé (nous n'entrerons pas plus dans les détails ici) et elle conserve moins
 bien les relations entre les variables. En compensation, elle est vraiment 
 complètement automatique (modulo les entrées du programme), il n'y a même pas
-besoin de poser des invariants de boucle ! La partie plus "manuelle" sera de
+besoin de poser des invariants de boucle ! La partie plus « manuelle » sera de
 déterminer si oui ou non les alarmes lèvent des vrais erreurs ou si ce sont de
 fausses alarmes.
 
@@ -178,6 +178,7 @@ preuve.
 
 Finalement, il existe d'autres logiques de programmes, comme la logique de 
 séparation ou les logiques pour les programmes concurrents. Encore une fois ce
-sont des notions intéressantes à connaître, elles peuvent inspirer la manière de 
-spécifier pour nos preuves avec WP, pourraient donner lieu à de nouveaux greffons
-pour Frama-C. Bref, tout un monde de méthodes à explorer.
+sont des notions intéressantes à connaître, elles peuvent inspirer la manière dont
+nous spécifions nos programmes pour la preuve avec WP, elles pourraient également
+donner lieu à de nouveaux greffons pour Frama-C. Bref, tout un monde de méthodes à
+explorer.

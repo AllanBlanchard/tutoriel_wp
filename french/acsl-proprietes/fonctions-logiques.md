@@ -1,9 +1,9 @@
 Les fonctions logiques nous permettent de décrire des fonctions qui ne seront 
 utilisables que dans les spécifications. Cela nous permet, d'une part, de les 
-factoriser, et d'autre part de définir des opérations sur les types integer et 
-real qui ne peuvent pas déborder contrairement aux types machines.
+factoriser, et d'autre part de définir des opérations sur les types `integer` et 
+`real` qui ne peuvent pas déborder contrairement aux types machines.
 
-Comme les prédicats, elles peuvent recevoir divers labels et valeurs en 
+Comme les prédicats, elles peuvent recevoir divers *labels* et valeurs en 
 paramètre.
 
 # Syntaxe
@@ -17,8 +17,7 @@ Pour déclarer une fonction logique, l'écriture est la suivante :
 */
 ``` 
 
-Nous pouvons par exemple décrire une fonction affine générale du côté de
-la logique :
+Nous pouvons par exemple décrire une [fonction affine](https://fr.wikipedia.org/wiki/Fonction_affine) générale du côté de la logique :
 
 ```c
 /*@
@@ -41,10 +40,11 @@ int function(int x){
 
 ![Les débordements semblent pouvoir survenir](https://zestedesavoir.com:443/media/galleries/2584/e34ccc72-b7ea-46cf-9875-16c3d57262af.png)
 
-Le code est bien prouvé mais les contrôles d'overflow, eux, ne le sont pas. Nous 
-pouvons à nouveau définir des fonctions logiques générales pour avoir les bornes 
-calculées de côté de la logique en fonction des valeurs que nous donnons en 
-entrée. Ainsi qu'ajouter nos contrôles de bornes en pré-condition de fonction :
+Le code est bien prouvé mais les contrôles d'*overflow*, eux, ne le sont pas. Nous 
+pouvons à nouveau définir des fonctions logiques générales, qui vont, du point de 
+vue de la logique, nous fournir les bornes en fonction des valeurs que nous donnons
+en entrée. Cela nous permet ensuite d'ajouter nos contrôles de bornes en 
+pré-condition de fonction :
 
 ```c
 /*@
@@ -68,6 +68,11 @@ int function(int x){
   return 3*x + 4;
 }
 ```
+
+[[information]]
+| Notons que comme dans la spécification, les calculs sont effectués à l'aide 
+| d'entiers mathématiques, nous n'avons pas à nous préoccuper d'un quelconque
+| risque de débordement avec les calculs de `INT_MIN-b` ou `INT_MAX-b`.
 
 Et cette fois tout est prouvé. Évidemment, nous pourrions fixer ces valeurs en 
 dur chaque fois que nous avons besoin d'une nouvelle fonction affine du côté de
@@ -105,10 +110,10 @@ Sans contrôle de borne, cette fonction se prouve rapidement. Si nous ajoutons
 le contrôle des RTE, le vérification de débordement sur l'entier non-signé n'est
 pas ajoutée, car c'est un comportement déterminé d'après la norme C. Pour ajouter
 une assertion à ce point, nous pouvons demander à WP de générer ses propres 
-vérifications en faisant un clic droit sur la fonction puis "insert WP-safety 
-guards". Et dans ce cas, le nom débordemement n'est pas prouvé.
+vérifications en faisant un clic droit sur la fonction puis « insert WP-safety 
+guards ». Et dans ce cas, le non-débordemement n'est pas prouvé.
 
-Sur le type unsigned, le maximum que nous pouvons calculer est la factorielle de 
+Sur le type `unsigned`, le maximum que nous pouvons calculer est la factorielle de 
 12. Au-delà, cela produit un dépassement. Nous pouvons donc ajouter cette 
 pré-condition :
 
@@ -127,13 +132,13 @@ Si nous demandons la preuve avec cette entrée, Alt-ergo échouera pratiquement 
 coup sûr. En revanche, le prouveur Z3 produit la preuve en moins d'une seconde.
 Parce que dans ce cas précis, les heuristiques de Z3 considèrent que c'est une
 bonne idée de passer un peu plus de temps sur l'évaluation de la fonction. Nous
-pouvons par exemple changer la valeur maximale de "n" pour voir comment se 
-comporte les différents prouveurs. Avec un "n" maximal fixé à 9, Alt-ergo produit
+pouvons par exemple changer la valeur maximale de `n` pour voir comment se 
+comporte les différents prouveurs. Avec un `n` maximal fixé à 9, Alt-ergo produit
 la preuve en moins de 10 secondes, tandis que pour une valeur à 10, même une 
 minute ne suffit pas.
 
-Les fonctions logiques peuvent donc être définie récursivement mais sans astuces
+Les fonctions logiques peuvent donc être définies récursivement mais sans astuces
 supplémentaires, nous venons vite nous heurter au fait que les prouveurs vont au 
-choix devoir faire de l'évaluation, ou encore "raisonner" par induction, deux 
+choix devoir faire de l'évaluation, ou encore « raisonner » par induction, deux 
 tâches pour lesquelles ils ne sont pas du tout fait, ce qui limite nos 
 possibilités de preuve.

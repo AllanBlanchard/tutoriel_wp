@@ -21,7 +21,8 @@ du code C ainsi que la mention ```ghost```.
 Les seules règles que nous devons respecter dans un tel code est que nous ne 
 devons jamais écrire une portion de mémoire qui n'est pas elle-même définie dans
 du code fantôme et que le code en question doit terminer tout bloc qu'il ouvrirait.
-Mis à par cela, tout calcul peut être inséré tant qu'il n'écrit pas la mémoire. 
+Mis à par cela, tout calcul peut être inséré tant qu’il ne modifie *que* les variables
+du code fantôme.
 
 Voici quelques exemples pour la syntaxe de code fantôme :
 
@@ -59,15 +60,14 @@ Il faut donc faire très attention à ce que nous faisons avec du code fantôme.
 
 # Expliciter un état logique
 
-Le but du code ghost est de rendre explicite des informations généralement 
+Le but du code *ghost* est de rendre explicite des informations généralement 
 implicites. Par exemple, dans la section précédente, nous nous en sommes servi
 pour récupérer explicitement un état logique connu à un point de programme 
 donné. 
 
 Prenons maintenant un exemple plus poussé. Nous voulons par exemple prouver que
-la fonction suivante nous retourne la valeur maximale des sommes de sous 
-tableaux possibles d'un tableau donné. Un sous-tableau d'un tableau "a" est un
-sous-ensemble contigu de valeur de "a". Par exemple, pour un tableau ```{ 0 , 3 , -1 , 4 }```,
+la fonction suivante nous retourne la valeur maximale des sommes de sous-tableaux possibles d'un tableau donné. Un sous-tableau d'un tableau `a` est un
+sous-ensemble contigu de valeur de `a`. Par exemple, pour un tableau ```{ 0 , 3 , -1 , 4 }```,
 des exemples de sous tableaux peuvent être ```{}```, ```{ 0 }```, ```{ 3 , -1 }```
 , ```{ 0 , 3 , -1 , 4 }```, ... Notez que comme nous autorisons le tableau vide,
 la somme est toujours au moins égale à 0. Dans le tableau précédent, le sous 
@@ -97,7 +97,7 @@ axiomatique :
 }*/
 ```
 
-La correction est caché ici :
+La correction est cachée ici :
 
 [[secret]]
 | ```c
@@ -124,28 +124,30 @@ La spécification de notre fonction est la suivante :
 */
 ```
 
-Pour toute paire de bornes la valeur retournée doit être supérieure ou égale
-et il doit exister une paire telle que c'est égal. Par rapport à cette spécification,
+Pour toute paire de bornes, la valeur retournée par la fonction doit être 
+supérieure ou égale à la somme des éléments entre les bornes, et il doit exister 
+une paire de bornes, telle que la somme des éléments entre ces bornes est 
+exactement la valeur retournée par la fonction. Par rapport à cette spécification,
 si nous devons ajouter les invariants de boucles, nous nous apercevons rapidement 
 qu'il va nous manquer des informations. Nous avons besoin d'exprimer ce que sont
-les valeurs ```max``` et ```cur``` et quelles relations il existe entre elles,
+les valeurs ```max``` et ```cur``` et quelles relations existent entre elles,
 mais rien ne nous le permet !
 
 En substance, notre post-condition a besoin de savoir qu'il existe des 
 bornes ```low``` et ```high``` telles que la somme calculée correspond à ces bornes. 
 Or notre code, n'exprime rien de tel d'un point de vue logique et rien ne nous 
 permet *a priori* de faire cette liaison en utilisant des formulations logiques.
-Nous allons donc utiliser du code ghost pour conserver ces bornes et exprimer 
+Nous allons donc utiliser du code *ghost* pour conserver ces bornes et exprimer 
 l'invariant de notre boucle.
 
 Nous allons d'abord avoir besoin de 2 variables qui vont nous permettre de stocker
 les valeurs des bornes de la plage maximum, nous les appellerons ```low``` 
 et ```high```. Chaque fois que nous trouverons une plage où la somme est plus 
-élevée nous le mettrons à jour. Ces bornes correspondront donc à la somme indiquée
+élevée nous les mettrons à jour. Ces bornes correspondront donc à la somme indiquée
 par ```max```. Cela induit que nous avons encore besoin d'une autre paire de 
 bornes : celle correspondant à la variable de somme ```cur``` à partir de laquelle 
 nous pourrons construire les bornes de ```max```. Pour celle-ci, nous n'avons 
-besoin que d'ajouter une variable ghost : le minimum actuel ```cur_low```, la 
+besoin que d'ajouter une variable *ghost* : le minimum actuel ```cur_low```, la 
 borne supérieure de la somme actuelle étant indiquée par la variable ```i``` de la 
 boucle.
 

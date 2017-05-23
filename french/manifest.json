@@ -134,9 +134,9 @@
             "children": [
                 {
                     "object": "extract", 
-                    "slug": "axiomatiques", 
-                    "title": "Axiomatiques", 
-                    "text": "acsl-definitions-logiques-et-code/axiomatiques.md"
+                    "slug": "definitions-axiomatiques", 
+                    "title": "Définitions axiomatiques", 
+                    "text": "acsl-definitions-logiques-et-code/definitions-axiomatiques.md"
                 }, 
                 {
                     "object": "extract", 

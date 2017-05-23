@@ -1,5 +1,5 @@
-Les axiomes sont des propriétés dont nous statuons qu'elles sont vraies quelle 
-que soit la situation. C'est un moyen très pratique de statuer sur des notions 
+Les axiomes sont des propriétés dont nous énonçons qu'elles sont vraies quelle 
+que soit la situation. C'est un moyen très pratique d'énoncer des notions 
 complexes qui vont pouvoir rendre le processus très efficace en abstrayant 
 justement cette complexité. Évidemment, comme toute propriété exprimée comme un
 axiome est supposée vraie, il faut également faire très attention à ce que nous
@@ -44,7 +44,7 @@ Et nous pouvons voir que dans Frama-C, la propriété est bien supposée vraie :
 [[secret]]
 | Actuellement nos prouveurs automatiques n'ont pas la puissance nécessaire
 | pour calculer *la réponse à la grande question sur la vie, l'univers et le 
-| reste*. Qu'à cela ne tienne nous pouvons le statuer comme axiome ! Reste à
+| reste*. Qu'à cela ne tienne nous pouvons l'énoncer comme axiome ! Reste à
 | comprendre la question pour savoir où ce résultat peut-être utile ...
 |
 | ```c
@@ -81,7 +81,7 @@ manière dont nous avions ajouté un lemme sur la factorielle nous allons pouvoi
 directement exprimer l'induction dans l'axiomatique.
 
 L'idée est alors de ne pas définir directement la fonction ou le prédicat mais 
-plutôt de la déclarer puis de définir des axiomes spécifiant sont comportement.
+plutôt de la déclarer puis de définir des axiomes spécifiant son comportement.
 Si nous reprenons par exemple la factorielle, nous pouvons la définir 
 axiomatiquement de cette manière :
 
@@ -101,7 +101,7 @@ axiomatiquement de cette manière :
 
 Dans cette définition axiomatique, notre fonction n'a pas de corps. Son 
 comportement étant défini par les axiomes ensuite définis. Une petite subtilité
-est qu'il faut prendre garde au fait que si les axiomes statuent des propriétés
+est qu'il faut prendre garde au fait que si les axiomes énoncent des propriétés
 à propos du contenu d'une ou plusieurs zones mémoires pointées, il faut 
 spécifier ces zones mémoires en utilisant la notation ```reads``` au niveau de
 la déclaration. Si nous oublions une telle spécification, le prédicat, ou la 
@@ -169,7 +169,7 @@ n'a pas changé, alors la propriété est toujours vérifiée :
 ```
 
 Et d'énoncer une assertion pour spécifier ce qui n'a pas changé entre le début 
-du bloc de la boucle (marqué par le label `L` dans le code) et la fin (qui se
+du bloc de la boucle (marqué par le *label* `L` dans le code) et la fin (qui se
 trouve être `Here` puisque nous posons notre assertion à la fin) :
 
 ```c
@@ -228,7 +228,7 @@ les axiomes, ne nécessiteront plus de preuves qui allongeraient le processus
 complet. Seulement, en faisant cela **nous devons être extrêmement prudents**.
 En effet, la moindre hypothèse fausse introduite dans la base pourraient rendre
 tous nos raisonnements futiles. Notre raisonnement serait toujours correct, mais
-basé sur des connaissances fausses, il nous apprendrait plus rien de correct.
+basé sur des connaissances fausses, il ne nous apprendrait donc plus rien de correct.
 
 L'exemple le plus simple à produire est le suivant:
 
@@ -255,11 +255,11 @@ Et tout est prouvé, y compris que le déréférencement de l'adresse 0 est OK :
 
 Évidemment cet exemple est extrême, nous n'écririons pas un tel axiome. Le
 problème est qu'il est très facile d'écrire une axiomatique subtilement fausse
-lorsque nous exprimons des propriétés plus complexe, ou que nous commençons à
+lorsque nous exprimons des propriétés plus complexes, ou que nous commençons à
 poser des suppositions sur l'état global d'un système. 
 
-Quand nous commençons à faire créer de telles définitions, ajouter de temps en 
-temps une preuve ponctuelle de "false" dont nous voulons qu'elle échoue permet 
+Quand nous commençons à créer de telles définitions, ajouter de temps en 
+temps une preuve ponctuelle de « *false* » dont nous voulons qu'elle échoue permet 
 de s'assurer que notre définition n'est pas inconsistante. Mais cela ne fait pas 
 tout ! Si la subtilité qui crée le comportement faux est suffisamment cachée, les
 prouveurs peuvent avoir besoin de beaucoup d'informations autre que l'axiomatique
@@ -270,9 +270,9 @@ Notamment parce que par exemple, la mention des valeurs lues par une fonction
 ou un prédicat défini axiomatiquement est également importante pour la 
 consistance de l'axiomatique. En effet, comme mentionné précédemment, si nous
 n'exprimons pas les valeurs lues dans le cas de l'usage d'un pointeur, la 
-modification d'une valeur du tableau n'invalide pas une propriété de ce type
-d'un tableau par exemple. Dans un tel cas, la preuve passe mais l'axiome 
-n'exprimant pas le contenu, nous ne prouvons rien.
+modification d'une valeur du tableau n'invalide pas une propriété que l'on 
+connaitrait à propos du contenu du tableau par exemple. Dans un tel cas, la 
+preuve passe mais l'axiome n'exprimant pas le contenu, nous ne prouvons rien.
 
 Par exemple, si nous reprenons l'exemple de mise à zéro, nous pouvons modifier
 la définition de notre axiomatique en retirant la mention des valeurs dont 
@@ -312,8 +312,8 @@ Nous avons trois cas à gérer :
 
 - la plage de valeur concernée est vide : le nombre d'occurrences est 0 ;
 - la plage de valeur n'est pas vide et le dernier élément est celui recherché :
-  le nombre d'occurrences est le nombre d'occurrences dans la plage privée du 
-  dernier élément plus 1 ;
+  le nombre d'occurrences est : le nombre d'occurrences dans la plage actuelle que
+  l'on prive du dernier élément, plus 1 ;
 - la plage de valeur n'est pas vide et le dernier élément n'est pas celui 
   recherché : le nombre d'occurrences est le nombre d'occurrences dans la plage
   privée du dernier élément.
@@ -345,7 +345,7 @@ size_t occurrences_of(int value, int* in, size_t length){
 
 Une alternative au fait de spécifier que dans ce code ```result``` est au 
 maximum ```i``` est d'exprimer un lemme plus général à propos de la valeur
-du nombre d'occurrences, dont nous ne savons qu'elle est comprise entre 0 et 
+du nombre d'occurrences, dont nous savons qu'elle est comprise entre 0 et 
 la taille maximale de la plage de valeurs considérée :
 
 ```c
@@ -481,7 +481,7 @@ void fail_sort(int* a, size_t beg, size_t end){
 }
 ```
 
-En fait notre spécification oublie que tous les éléments qui étaient 
+En fait, notre spécification oublie que tous les éléments qui étaient 
 originellement présents dans le tableau à l'appel de la fonction doivent
 toujours être présents après l'exécution de notre fonction de tri. Dit
 autrement, notre fonction doit en fait produire la permutation triée des
@@ -554,8 +554,8 @@ void sort(int* a, size_t beg, size_t end){
 Cette fois, notre propriété est précisément définie, la preuve reste assez
 simple à faire passer, ne nécessitant que l'ajout d'une assertion que le bloc
 de la fonction n'effectue qu'un échange des valeurs dans le tableau (et donnant
-ainsi la transition vers la permutation suivante du tableau. Pour définir cette
+ainsi la transition vers la permutation suivante du tableau). Pour définir cette
 notion d'échange, nous utilisons une annotation particulière (à la ligne 16),
-introduite par le mot-clé ```ghost```. Ici, le but est d'introduire un label 
+introduite par le mot-clé ```ghost```. Ici, le but est d'introduire un *label* 
 fictif dans le code qui est uniquement visible d'un point de vue spécification.
 C'est l'objet de la prochaine section.

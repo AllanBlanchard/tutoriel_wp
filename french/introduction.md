@@ -2,7 +2,7 @@
 | Le choix de certains exemples et d'une partie de l'organisation dans le présent 
 | tutoriel est le même que celui du 
 | [tutoriel présenté à TAP 2013](http://www.spacios.eu/TAP2013/keynotes.html) 
-| par Nikolai Kosmatov, Virgile Prevosto et Julien Signoles du CEA LIST du fait de
+| par Nikolai Kosmatov, Virgile Prevosto et Julien Signoles du CEA List du fait de
 | son cheminement didactique. Il contient également des exemples tirés de 
 | *[ACSL By Example](http://www.dcc.fc.up.pt/~nam/aulas/0910/vfs/teoricas/acsl-by-example-4_2_1.pdf)* 
 | de Jochen Burghardt, Jens Gerlach, Kerstin Hartig, Hans Pohl et Juan Soto du 
@@ -37,19 +37,19 @@ ferroviaire, armement, ...) où il est apprécié pour ses performances, sa
 maturité technologique et la prévisibilité de sa compilation.
 
 Dans ce genre de cas, les besoins de couverture par le test deviennent 
-colossaux. Et, plus encore, la question "avons-nous suffisamment testé ?" 
+colossaux. Et, plus encore, la question « avons-nous suffisamment testé ? » 
 devient une question à laquelle il est de plus en plus difficile de répondre.
 C'est là qu'intervient la preuve de programme. Plutôt que tester toutes les 
-entrées possibles et (in)imaginables, nous allons prouver "mathématiquement" 
+entrées possibles et (in)imaginables, nous allons prouver « mathématiquement »
 qu'aucun problème ne peut apparaître à l'exécution.
 
 L'objet de ce tutoriel est d'utiliser Frama-C, un logiciel développé au 
-CEA LIST, et WP, son greffon de preuve déductive, pour s'initier à la preuve 
+CEA List, et WP, son greffon de preuve déductive, pour s'initier à la preuve 
 de programmes C. Au delà de l'usage de l'outil en lui-même, le but de ce tutoriel
 est de convaincre que nous pouvons de plus en plus souvent toucher du 
 doigt l'idée qu'il est possible d'écrire des programmes sans erreurs de 
 programmation, mais également de sensibiliser à des notions simples 
-permettant de mieux comprendre et mieux écrire les programmes.
+permettant de mieux comprendre et de mieux écrire les programmes.
 
 [[information]]
 | Merci aux différents bêta-testeurs pour leurs remarques constructives :
@@ -58,3 +58,8 @@ permettant de mieux comprendre et mieux écrire les programmes.
 | III - 3 - 4 a honteusement été copié d'un de ses posts).
 | - [barockobamo](https://zestedesavoir.com/membres/voir/barockobamo/)
 | - [Vayel](https://zestedesavoir.com/membres/voir/Vayel/)
+|
+| Ainsi qu'aux validateurs qui ont encore permis d'améliorer la qualité de ce tutoriel :
+|
+| - [Taurre](https://zestedesavoir.com/membres/voir/Taurre/) (oui, encore lui)
+| - [Saroupille](https://zestedesavoir.com/membres/voir/Saroupille/)
