@@ -98,7 +98,7 @@
 \fi
 \hypersetup{breaklinks=true,
             bookmarks=true,
-            pdfauthor={03 avril 2017},
+            pdfauthor={23 mai 2017},
             pdftitle={INTRODUCTION À LA PREUVE DE PROGRAMMES C AVEC FRAMA-C ET SON GREFFON WP},
             colorlinks=true,
             citecolor=ocre,
@@ -161,7 +161,7 @@
 \begin{titlepage}
 \title{\color{white}{INTRODUCTION À LA PREUVE DE PROGRAMMES C AVEC FRAMA-C ET SON GREFFON WP}}
 \author{\color{ocre}{Allan Blanchard}}
-\date{\color{white}{$ $\\3 avril 2017}}
+\date{\color{white}{$ $\\23 mai 2017}}
 \end{titlepage}
 
 \graphicspath{{../../resources/}}
@@ -222,21 +222,21 @@ ses performances, sa maturité technologique et la prévisibilité de sa
 compilation.
 
 Dans ce genre de cas, les besoins de couverture par le test deviennent
-colossaux. Et, plus encore, la question \og{}avons-nous suffisamment testé
-?\fg{} devient une question à laquelle il est de plus en plus difficile de
+colossaux. Et, plus encore, la question « avons-nous suffisamment testé
+? » devient une question à laquelle il est de plus en plus difficile de
 répondre. C'est là qu'intervient la preuve de programme. Plutôt que
 tester toutes les entrées possibles et (in)imaginables, nous allons
-prouver \og{}mathématiquement\fg{} qu'aucun problème ne peut apparaître à
+prouver « mathématiquement » qu'aucun problème ne peut apparaître à
 l'exécution.
 
 L'objet de ce tutoriel est d'utiliser Frama-C, un logiciel développé au
-CEA LIST, et WP, son greffon de preuve déductive, pour s'initier à la
+CEA List, et WP, son greffon de preuve déductive, pour s'initier à la
 preuve de programmes C. Au delà de l'usage de l'outil en lui-même, le
 but de ce tutoriel est de convaincre que nous pouvons de plus en plus
 souvent toucher du doigt l'idée qu'il est possible d'écrire des
 programmes sans erreurs de programmation, mais également de sensibiliser
-à des notions simples permettant de mieux comprendre et mieux écrire les
-programmes.
+à des notions simples permettant de mieux comprendre et de mieux écrire
+les programmes.
 
 \begin{zdsblock}{Information}
   Merci aux différents bêta-testeurs
@@ -248,6 +248,13 @@ programmes.
   \item \href{https://zestedesavoir.com/membres/voir/barockobamo/}{barockobamo}
   \item \href{https://zestedesavoir.com/membres/voir/Vayel/}{Vayel}
   \end{itemize}
+   Ainsi qu'aux validateurs qui ont encore permis
+   d'améliorer la qualité de ce tutoriel :
+   \begin{itemize}
+   \item \href{https://zestedesavoir.com/membres/voir/Taurre/}{Taurre} (oui,
+     encore lui)
+   \item \href{https://zestedesavoir.com/membres/voir/Saroupille/}{Saroupille}
+   \end{itemize}
 \end{zdsblock}
 
 \chapter{La preuve de programmes et notre outil pour ce tutoriel :
@@ -268,12 +275,12 @@ logiciels}\label{assurer-la-conformituxe9-des-logiciels}
 Assurer qu'un programme a un comportement conforme à celui que nous
 attendons est souvent une tâche difficile. Plus en amont encore, il est
 déjà complexe d'établir sur quel critère nous pouvons estimer que le
-programme \og{}fonctionne\fg{} :
+programme « fonctionne » :
 
 \begin{itemize}
 \tightlist
 \item
-  les débutants \og{}essayent\fg{} simplement leurs programmes et estiment
+  les débutants « essayent » simplement leurs programmes et estiment
   qu'ils fonctionnent s'ils ne plantent pas,
 \item
   les codeurs un peu plus habitués établissent quelques jeux de tests
@@ -291,7 +298,7 @@ programme \og{}fonctionne\fg{} :
   couverture de code par les tests.
 \end{itemize}
 
-Et bien sûr, il existe tous les \og{}entre-deux\fg{} dans cette liste.
+Et bien sûr, il existe tous les « entre-deux » dans cette liste.
 
 Dans toutes ces manières de s'assurer qu'un programme fait ce qui est
 attendu, il y a un mot qui revient souvent : \emph{test}. Nous
@@ -303,7 +310,7 @@ pas \emph{tout} tester. Nous ne pouvons pas essayer \emph{toutes} les
 combinaisons de \emph{toutes} les entrées possibles du programme. Toute
 la difficulté réside donc dans le fait de choisir les bons tests.
 
-Le but de la preuve de programme est de s'assurer que, quelle que soit
+Le but de la preuve de programmes est de s'assurer que, quelle que soit
 l'entrée fournie au programme, si elle respecte la spécification, alors
 le programme fera ce qui est attendu. Cependant, comme nous ne pouvons
 pas tout essayer, nous allons établir formellement, mathématiquement, la
@@ -326,14 +333,14 @@ bug}\label{le-graal-du-logiciel-sans-bug}
 
 Dans chaque nouvelle à propos d'attaque sur des systèmes informatiques,
 ou des virus, ou des bugs provoquant des crashs, il y a toujours la
-remarque séculaire \og{}le programme inviolable/incassable/sans bugs
-n'existe pas\fg{}. Et il s'avère généralement que bien qu'assez vraie,
+remarque séculaire « le programme inviolable/incassable/sans bugs
+n'existe pas ». Et il s'avère généralement que bien qu'assez vraie,
 cette phrase soit assez mal comprise.
 
 Outre la différence entre sûreté et sécurité (qui peut
 \textbf{vaguement} être définie par la présence d'un élément malveillant
-dans l'histoire), nous ne précisons pas ce que nous entendons par \og{}sans
-bug\fg{}. La création d'un logiciel fait toujours au moins intervenir deux
+dans l'histoire), nous ne précisons pas ce que nous entendons par « sans
+bug ». La création d'un logiciel fait toujours au moins intervenir deux
 étapes : la rédaction de ce qui est attendu sous la forme d'une
 spécification (souvent un cahier des charges) et la réalisation du
 logiciel répondant à cette spécification. Et ce sont également les deux
@@ -349,15 +356,15 @@ spécification sous une forme logique demande de comprendre exactement le
 besoin auquel nous devons répondre.
 
 Nous pourrions dire avec cynisme que la preuve nous montre finalement
-que l'implémentation \og{}ne contient aucun bugs de plus que la
-spécification\fg{}. D'une part, c'est un sacré pas en avant par rapport à
-\og{}le test nous montre que l'implémentation ne contient pas beaucoup plus
-de bugs que la spécification\fg{}. Et d'autre part, il existe également des
+que l'implémentation « ne contient aucun bugs de plus que la
+spécification ». D'une part, c'est un sacré pas en avant par rapport à «
+le test nous montre que l'implémentation ne contient pas beaucoup plus
+de bugs que la spécification ». Et d'autre part, il existe également des
 techniques permettant d'analyser les spécifications en quête d'erreurs
-ou de manquements. Par exemple, les techniques de Model Checking -
-vérification de modèles - permettent de construire un modèle abstrait à
-partir d'une spécification et de produire un ensemble d'état du
-programme accessibles d'après le modèle. En caractérisant les états
+ou de manquements. Par exemple, les techniques de \emph{Model Checking}
+- vérification de modèles - permettent de construire un modèle abstrait
+à partir d'une spécification et de produire un ensemble d'états du
+programme accessible d'après le modèle. En caractérisant les états
 fautifs, nous sommes en mesure de déterminer si les états accessibles
 contiennent des états fautifs.
 
@@ -387,22 +394,24 @@ le test de programme nécessite d'exécuter le code analysé. Il existe
 automatique de tests ou encore des techniques de monitoring de code qui
 pourrons, par exemple, instrumenter un code source afin de vérifier à
 l'exécution que les allocations et désallocation de mémoire sont faites
-de manière sure.
+de manière sûre.
 
 Dans le cas des analyses statiques, le modèle utilisé peut être plus ou
-moins abstrait selon la technique utilisée, c'est donc une approximation
+moins abstrait selon la technique employée, c'est donc une approximation
 des états possibles de notre programme. Plus l'approximation est
 précise, plus le modèle est concret, plus l'approximation est large,
 plus il est abstrait.
 
 Pour illustrer la différence entre modèle concret et abstrait, nous
 pouvons prendre l'exemple d'un chronomètre simple. Une modélisation très
-abstraite du comportement de notre chronomètre est la suivante :
+abstraite du comportement de notre chronomètre est la suivante est
+présentée dans la figure~\ref{fig:1-1-chrono}.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[scale=0.5]{1-1-model.png}
 \caption{Modélisation très abstraite d'un chronomètre}
+\label{fig:1-1-chrono}
 \end{figure}
 
 Nous avons bien une modélisation du comportement de notre chronomètre
@@ -418,17 +427,17 @@ ajouter des informations :
 \begin{itemize}
 \tightlist
 \item
-  Etat arrêté à zéro : temps = 0s
+  État arrêté à zéro : temps = 0s ;
 \item
-  Etat en marche : temps \textgreater{} 0s
+  État en marche : temps \textgreater{} 0s ;
 \item
-  Etat arrêté : temps \textgreater{} 0s
+  État arrêté : temps \textgreater{} 0s.
 \end{itemize}
 
 Ce qui nous donne déjà un modèle plus concret mais qui est toujours
 insuffisant pour poser des questions intéressantes à propos de notre
-système comme : \og{}est il possible que dans l'état arrêté, le temps
-continue de s'écouler ?\fg{}. Car nous n'avons pas modélisé l'écoulement du
+système comme : « est il possible que dans l'état arrêté, le temps
+continue de s'écouler ? ». Car nous n'avons pas modélisé l'écoulement du
 temps par le chronomètre.
 
 À l'inverse avec le code source du programme, nous avons un modèle
@@ -447,10 +456,10 @@ Notre diagramme est compréhensible en un coup d'oeil, le code demande un
 peu plus de temps, quant à l'exécutable \ldots{} Toute personne qui a
 déjà ouvert par erreur un exécutable avec un éditeur de texte sait que
 ce n'est pas très agréable à lire dans son ensemble\footnote{Il existe
-  des analyses formelles s'intéressant à comprendre le fonctionnement
-  des exécutables en code machine, par exemple pour comprendre ce que
-  font des malwares ou pour détecter des failles de sécurité introduites
-  lors de la compilation.}.
+  des analyses formelles cherchant à comprendre le fonctionnement des
+  exécutables en code machine, par exemple pour comprendre ce que font
+  des malwares ou pour détecter des failles de sécurité introduites lors
+  de la compilation.}.
 
 Lorsque nous créons une abstraction d'un système, nous l'approximons,
 pour limiter la quantité d'informations que nous avons à son sujet et
@@ -475,18 +484,18 @@ très concret).
 
 La logique de Hoare est une méthode de formalisation des programmes
 proposée par Tony Hoare en 1969 dans un article intitulé \emph{An
-Axiomatic Basis for Computer Programming} (Une base axiomatique pour la
+Axiomatic Basis for Computer Programming} (une base axiomatique pour la
 programmation des ordinateurs). Cette méthode définit :
 
 \begin{itemize}
 \tightlist
 \item
   des axiomes, qui sont des propriétés que nous admettons, comme\\
-  \og{}l'action `ne rien faire' ne change pas l'état du programme\fg{},
+  « l'action ``ne rien faire'' ne change pas l'état du programme »,
 \item
   et des règles pour raisonner à propos des différentes possibilités de
-  compositions d'actions, par exemple \og{}l'action `ne rien faire' puis
-  `faire l'action A' est équivalent à `faire l'action A'\,\fg{}.
+  compositions d'actions, par exemple « l'action ``ne rien faire'' puis
+  ``faire l'action A'' est équivalent à ``faire l'action A'' ».
 \end{itemize}
 
 Le comportement d'un programme est défini par ce que nous appelons les
@@ -497,11 +506,11 @@ triplets de Hoare :
 Où \(P\) et \(Q\) sont des prédicats, des formules logiques qui nous
 disent dans quel état se trouve la mémoire traitée par le programme.
 \(C\) est un ensemble de commandes définissant un programme. Cette
-écriture nous dit \og{}si nous sommes dans un état où \(P\) est vrai, après
+écriture nous dit « si nous sommes dans un état où \(P\) est vrai, après
 exécution de \(C\) et si \(C\) termine, alors \(Q\) sera vrai pour le
-nouvel état du programme\fg{}. Dis autrement, \(P\) est une pré-condition
+nouvel état du programme ». Dis autrement, \(P\) est une pré-condition
 suffisante pour que \(C\) nous amène à la post-condition \(Q\). Par
-exemple, le triplet correspondant à l'action \og{}ne rien faire\fg{}
+exemple, le triplet correspondant à l'action « ne rien faire »
 (\textbf{skip}) est le suivant :
 
 \begin{center} \(\{P\}\) \textbf{skip} \(\{P\}\) \end{center}
@@ -516,8 +525,8 @@ comprendre toute la théorie derrière mais il est toujours utile d'avoir
 au moins une vague idée du fonctionnement de l'outil que nous utilisons
 ;) .
 
-Tout ceci nous donne les bases permettant de dire \og{}voilà ce que fait
-cette action\fg{} mais ne nous donne pas encore de matériel pour mécaniser
+Tout ceci nous donne les bases permettant de dire « voilà ce que fait
+cette action » mais ne nous donne pas encore de matériel pour mécaniser
 la preuve. L'outil que nous allons utiliser repose sur la technique de
 calcul de plus faible pré-condition.
 
@@ -536,15 +545,15 @@ actions d'un programme. Mais elle ne nous dit pas comment appliquer ces
 règles pour établir une preuve complète du programme.
 
 Dijkstra reformule la logique de Hoare en expliquant comment, dans le
-triplet \(\{P\}C\{Q\}\), l'instruction, ou le bloc d'instruction, \(C\)
-transforme le prédicat \(P\), en \(Q\). Cette forme est appelée
-\og{}raisonnement vers l'avant\fg{} ou \emph{forward-reasonning}. Nous
-calculons à partir d'une pré-condition et d'une ou plusieurs
-instructions, la plus forte post-condition que nous pouvons atteindre.
-Informellement, en considérant ce qui est reçu en l'entrée, nous
-calculons ce qui sera renvoyé au plus en sortie. Si la post-condition
-voulue est au moins aussi forte, alors nous avons prouvé qu'il n'y a pas
-de comportements non-voulus.
+triplet \(\{P\}C\{Q\}\), l'instruction, ou le bloc d'instructions, \(C\)
+transforme le prédicat \(P\), en \(Q\). Cette forme est appelée «
+raisonnement vers l'avant » ou \emph{forward-reasoning}. Nous calculons
+à partir d'une pré-condition et d'une ou plusieurs instructions, la plus
+forte post-condition que nous pouvons atteindre. Informellement, en
+considérant ce qui est reçu en entrée, nous calculons ce qui sera
+renvoyé au plus en sortie. Si la post-condition voulue est au plus aussi
+forte, alors nous avons prouvé qu'il n'y a pas de comportements
+non-voulus.
 
 Par exemple :
 
@@ -560,8 +569,8 @@ Par exemple :
 Pas de problème, 4 fait bien partie des valeurs acceptables pour a.
 
 La forme qui nous intéresse, le calcul de plus faible pré-condition,
-fonctionne dans le sens inverse, nous parlons de \og{}raisonnement vers
-l'arrière\fg{} ou \emph{backward-reasonning}. À partir de la post-condition
+fonctionne dans le sens inverse, nous parlons de « raisonnement vers
+l'arrière » ou \emph{backward-reasoning}. À partir de la post-condition
 voulue et de l'instruction que nous traitons, nous allons trouver la
 pré-condition minimale qui nous assure ce fonctionnement. Si notre
 pré-condition réelle est au moins aussi forte, c'est-à-dire, qu'elle
@@ -586,16 +595,16 @@ que nous utilisons. Et nos outils, parlons-en justement.
 \subsection{Frama-C ? WP ?}\label{frama-c-wp}
 
 Frama-C (pour FRAmework for Modular Analysis of C code) est une
-plate-forme dédiée à l'analyse de programmes C créée par le CEA LIST et
-l'Inria. Elle est basée sur une architecture modulaire permettant
+plate-forme dédiée à l'analyse de programmes C créée par le CEA List et
+Inria. Elle est basée sur une architecture modulaire permettant
 l'utilisation de divers plugins avec ou sans collaborations. Les plugins
 fournis par défaut comprennent diverses analyses statiques (sans
 exécution du code analysé), dynamiques (avec exécution du code), ou
 combinant les deux.
 
 Frama-C nous fournit également un langage de spécification appelé ACSL
-(\og{}Axel\fg{}) pour ANSI C Specification Language et qui va nous permettre
-d'exprimer les propriétés que nous souhaitons vérifier sur nos
+(« Axel ») pour \emph{ANSI C Specification Language} et qui va nous
+permettre d'exprimer les propriétés que nous souhaitons vérifier sur nos
 programmes. Ces propriétés seront écrites sous forme d'annotations dans
 les commentaires. Pour les personnes qui auraient déjà utilisé Doxygen,
 ça y ressemble beaucoup, sauf que tout sera écrit sous forme de formules
@@ -603,12 +612,12 @@ logiques. Tout au long de ce tutoriel, nous allons beaucoup parler
 d'ACSL donc nous ne nous étendrons pas plus à son sujet ici.
 
 L'analyse que nous allons utiliser ici est fournie par un plugin appelé
-WP pour Weakest Precondition, elle implémente la technique dont j'ai
-parlé plus tôt : à partir des annotations ACSL et du code source, le
-plugin génère ce que nous appelons des obligations de preuves, qui sont
-des formules logiques dont nous devons vérifier la satisfiabilité. Cette
-vérification peut être faite de manière manuelle ou automatique, ici
-nous n'utiliserons que des outils automatiques.
+WP pour \emph{Weakest Precondition}, elle implémente la technique dont
+nous avons parlé plus tôt : à partir des annotations ACSL et du code
+source, le plugin génère ce que nous appelons des obligations de
+preuves, qui sont des formules logiques dont nous devons vérifier la
+satisfiabilité. Cette vérification peut être faite de manière manuelle
+ou automatique, ici nous n'utiliserons que des outils automatiques.
 
 Nous allons en l'occurrence utiliser un solveur de formules SMT
 (\href{https://fr.wikipedia.org/wiki/Satisfiability_modulo_theories}{statisfiabilité
@@ -635,13 +644,15 @@ sensiblement la même que sous Linux, mais :
   \end{itemize}
 \end{zdsalertblock}
 
+\clearpage
+
 \subsubsection{Linux}\label{linux}
 
 \paragraph{Via les gestionnaires de
 paquets}\label{via-les-gestionnaires-de-paquets}
 
 Sous Debian, Ubuntu et Fedora, il existe des paquets pour Frama-C. Dans
-ce cas, il suffit de taper une ligne de commande comme celle-ci :
+ce cas, il suffit de taper cette ligne de commande :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -649,13 +660,12 @@ ce cas, il suffit de taper une ligne de commande comme celle-ci :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Par contre, ces dépôts ne sont pas systématiquement à jour de la
-dernière version. En soi ce n'est pas très gênant car il n'y a pas de
-nouvelle version de Frama-C tous les deux mois, mais il est tout de même
-bon de le savoir.
+Par contre, ces dépôts ne sont pas systématiquement à jour. En soi, ce
+n'est pas très gênant car il n'y a pas de nouvelle version de Frama-C
+tous les deux mois, mais il est tout de même bon de le savoir.
 
-Pour vérifier l'installation, c'est dans la sous-section \og{}Vérifier
-l'installation\fg{} que les informations sont données.
+Pour vérifier l'installation, c'est dans la sous-section « Vérifier
+l'installation » que les informations sont données.
 
 \paragraph{Via opam}\label{via-opam}
 
@@ -664,7 +674,7 @@ paquets pour les bibliothèques et applications OCaml.
 
 D'abord Opam doit être installé et configuré sur votre distribution
 (voir leur documentation). Ensuite, il faut également que quelques
-paquets de votre distribution soit présent préalablement à
+paquets de votre distribution soit présents préalablement à
 l'installation de Frama-C :
 
 \begin{itemize}
@@ -688,11 +698,10 @@ Enfin, du côté d'Opam, il reste à installer Frama-C et Alt-Ergo.
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Pour vérifier l'installation, c'est dans la sous-section \og{}Vérifier
-l'installation\fg{} que les informations sont données.
+Pour vérifier l'installation, c'est dans la sous-section « Vérifier
+l'installation » que les informations sont données.
 
-\paragraph{\texorpdfstring{Via compilation
-\og{}manuelle\fg{}}{Via compilation manuelle}}\label{via-compilation-manuelle}
+\paragraph{Via compilation « manuelle »}\label{via-compilation-manuelle}
 
 Pour installer Frama-C via compilation manuelle, les paquets indiqués
 dans la section Opam sont nécessaires (mis à part Opam lui-même bien
@@ -709,13 +718,13 @@ rendre dans le dossier et exécuter la commande :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Pour vérifier l'installation, c'est dans la sous-section \og{}Vérifier
-l'installation\fg{} que les informations sont données.
+Pour vérifier l'installation, c'est dans la sous-section « Vérifier
+l'installation » que les informations sont données.
 
 \subsubsection{OSX}\label{osx}
 
 L'installation sur OSX passe par Homebrew et Opam. L'auteur n'ayant
-personnellement pas d'OSX, voici un honteux paraphrasage du guide
+personnellement pas d'OSX, voici une honteuse paraphrase du guide
 d'installation de Frama-C pour OSX.
 
 Pour les utilitaires d'installation et de configuration :
@@ -756,8 +765,8 @@ Frama-C et prouveur Alt-Ergo :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Pour vérifier l'installation, c'est dans la sous-section \og{}Vérifier
-l'installation\fg{} que les informations sont données.
+Pour vérifier l'installation, c'est dans la sous-section « Vérifier
+l'installation » que les informations sont données.
 
 \subsubsection{Windows}\label{windows}
 
@@ -772,14 +781,16 @@ Les instructions d'installation se trouvent ici :
 
 Le lancement de Frama-C se fera par l'intermédiaire de cygwin.
 
-Pour vérifier l'installation, c'est dans la sous-section \og{}Vérifier
-l'installation\fg{} que les informations sont données.
+Pour vérifier l'installation, c'est dans la sous-section « Vérifier
+l'installation » que les informations sont données.
 
 \subsection{Vérifier l'installation}\label{vuxe9rifier-linstallation}
 
-Pour vérifier votre installation, nous allons utiliser ce code très
-simple dans un fichier \og{}main.c\fg{} :
+Pour vérifier votre installation, nous allons utiliser le code très
+simple présenté en figure~\ref{fig:2-2-3-simple} dans un fichier « main.c » :
 
+\begin{figure}
+  \centering
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{/*@}
@@ -806,6 +817,9 @@ simple dans un fichier \og{}main.c\fg{} :
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
+\caption{Code pour la vérification de l'installation}
+\label{fig:2-2-3-simple}
+\end{figure}
 
 Ensuite, depuis un terminal, dans le dossier où ce fichier a été créé,
 nous pouvons lancer Frama-C avec la commande suivante :
@@ -826,7 +840,7 @@ La fenêtre présentée en figure~\ref{fig:install-1} devrait s'ouvrir.
 \end{figure}
 
 En cliquant sur \texttt{main.c} dans le volet latéral gauche pour le
-sélectionner, vous devriez voir le contenu du fichier \texttt{main.c}
+sélectionner, nous pouvons voir le contenu du fichier \texttt{main.c}
 modifié et des pastilles vertes sur différentes lignes comme
 illustré par la figure~\ref{fig:install-2}.
 
@@ -840,8 +854,8 @@ illustré par la figure~\ref{fig:install-2}.
 Si c'est le cas, tant mieux, sinon il faudra d'abord vérifier que rien
 n'a été oublié au cours de l'installation (par exemple : l'oubli de
 bibliothèques graphiques ou encore l'oubli de l'installation
-d'Alt-Ergo). Si tout semble correct, divers forum pourront fournir de
-l'aide.
+d'Alt-Ergo). Si tout semble correct, divers forum pourront vous fournir
+de l'aide.
 
 \begin{zdsalertblock}{Attention}
   L'interface graphique de Frama-C ne permet pas l'édition du code source
@@ -856,21 +870,21 @@ l'aide.
       \end{Highlighting}
   \end{Shaded}\end{footnotesize}
 \end{zdsblock}
-  
+
 \subsection{(Bonus) Installation de prouveurs
 supplémentaires}\label{bonus-installation-de-prouveurs-suppluxe9mentaires}
 
 Cette partie est purement optionnelle, rien de ce qui est ici ne sera
 complètement nécessaire pendant le tutoriel. Cependant, lorsque l'on
-commence à s'intéresser vraiment à la preuve, il est possible de
-toucher assez rapidement aux limites du prouveur pré-intégré Alt-Ergo et
-d'avoir besoin d'outils plus puissants.
+commence à s'intéresser vraiment à la preuve, il est possible de toucher
+assez rapidement aux limites du prouveur pré-intégré Alt-Ergo et d'avoir
+besoin d'outils plus puissants.
 
 \subsubsection{Coq}\label{coq}
 
 Coq, développé par l'organisme de recherche Inria, est un assistant de
 preuve. C'est-à-dire que nous écrivons nous-même les preuves dans un
-langage dédié et la plateforme se charge de vérifier (par typage) que
+langage dédié, et la plateforme se charge de vérifier (par typage) que
 cette preuve est valide.
 
 Pourquoi aurait-on besoin d'un tel outil ? Il se peut parfois que les
@@ -894,7 +908,7 @@ Pour plus d'informations à propos de Coq et de son installation, voir
 par ici : \href{https://coq.inria.fr/}{The Coq Proof Assistant}.
 
 Pour utiliser Coq lors d'une preuve dans Frama-C, il faudra le
-sélectionner par l'intermédiaire du paneau latéral à gauche, dans la
+sélectionner par l'intermédiaire du panneau latéral à gauche, dans la
 partie qui concerne WP (voir figure~\ref{fig:select-coq}).
 
 \begin{figure}[htbp]
@@ -905,18 +919,18 @@ partie qui concerne WP (voir figure~\ref{fig:select-coq}).
 \end{figure}
 
 \begin{zdsblock}{Information}
-  Je ne sais absolument pas si cette procédure est suffisante pour Windows.
+  Nous n'avons pas expérimenté cette procédure sous Windows.
 \end{zdsblock}
-
+  
 \subsubsection{Why3}\label{why3}
 
 \begin{zdsalertblock}{Attention}
-  À ma connaissance, il n'est pas
-  possible (ou vraiment pas facile) d'installer Why3 sous
+  À la connaissance de l'auteur, il n'est
+  pas possible (ou vraiment pas facile) d'installer Why3 sous
   Windows. L'auteur ne saurait être tenu responsable de
-  blessures que vous pourriez subir pendant une telle
-  opération.
+  blessures subies pendant une telle opération.
 \end{zdsalertblock}
+
 
 Why3 est une plateforme pour la preuve déductive développée par le LRI à
 Orsay. Elle embarque en outre un langage de programmation et de
@@ -935,14 +949,14 @@ Nous pouvons retrouver sur ce même site
 supporte. Il est vivement conseillé d'avoir
 \href{https://github.com/Z3Prover/z3/wiki}{Z3}, développé par Microsoft
 Research, et \href{http://cvc4.cs.nyu.edu/web/}{CVC4}, développé par des
-personnes de divers organisme de recherche (New York University,
-University of Iowa, Google, CEA LIST). Ces deux prouveurs sont très
+personnes de divers organismes de recherche (New York University,
+University of Iowa, Google, CEA List). Ces deux prouveurs sont très
 efficaces et relativement complémentaires.
 
 Pour utiliser les prouveurs en question, la procédure est expliquée dans
 la partie sur Coq pour la sélection d'un prouveur différent d'Alt-Ergo.
-À noter qu'il faudra peut-être que demander la détection des prouveurs
-fraîchement installé avec le bouton \og{}Provers\fg{} puis \og{}Detect Provers\fg{}
+À noter qu'il faudra peut-être demander la détection des prouveurs
+fraîchement installé avec le bouton « Provers » puis « Detect Provers »
 dans la fenêtre qui s'ouvre.
 
 Voilà. Nos outils sont installés et prêts à fonctionner.
@@ -986,10 +1000,12 @@ chaque fonction.
 \section{Définition d'un contrat}\label{duxe9finition-dun-contrat}
 
 Le principe d'un contrat de fonction est de poser les conditions selon
-lesquelles la fonction va s'exécuter. C'est-à-dire ce que doit respecter
-l'appelant pour que la fonction s'exécute correctement : la
-pré-condition, la notion de \og{}s'exécute correctement\fg{} étant elle-même
-définie dans le contrat par la post-condition.
+lesquelles la fonction va s'exécuter. C'est-à-dire : ce que doit
+respecter le code appelant à propos des variables passées en paramètres
+et de l'état de la mémoire globale pour que la fonction s'exécute
+correctement, \textbf{la pré-condition} ; et ce que s'engage à respecter
+la fonction en retour à propos de l'état de la mémoire et de la valeur
+de retour : \textbf{la post-condition}.
 
 Ces propriétés sont exprimées en langage ACSL, la syntaxe est
 relativement simple pour qui a déjà fait du C puisqu'elle reprend la
@@ -1016,6 +1032,8 @@ Les spécifications ACSL sont introduites dans nos codes source par
 l'intermédiaire d'annotations. Syntaxiquement, un contrat de fonction
 est intégré dans les sources de la manière suivante :
 
+
+
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{/*@}
@@ -1039,9 +1057,9 @@ de notre programme (nous nous intéresserons ensuite aux pré-conditions).
 
 La post-condition d'une fonction est précisée avec la clause
 \texttt{ensures}. Nous allons travailler avec la fonction suivante qui
-donne la valeur absolue. Un de ses post-conditions est que le résultat
-(que nous notons avec le mot-clé \texttt{\textbackslash{}result}) est
-supérieur ou égal à 0.
+donne la valeur absolue d'un entier reçu en entrée. Une de ses
+post-conditions est que le résultat (que nous notons avec le mot-clé
+\texttt{\textbackslash{}result}) est supérieur ou égal à 0.
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -1101,9 +1119,9 @@ la suivante :
 Ce qui veut dire qu'une implication \(A \Rightarrow B\) est vraie dans
 deux cas : soit \(A\) est fausse (et dans ce cas, il ne faut pas se
 préoccuper de \(B\)), soit \(A\) est vraie et alors \(B\) doit être
-vraie aussi. L'idée étant finalement \og{}je veux savoir si dans le cas où
+vraie aussi. L'idée étant finalement « je veux savoir si dans le cas où
 \(A\) est vrai, \(B\) l'est aussi. Si \(A\) est faux, je considère que
-l'ensemble est vrai\fg{}.
+l'ensemble est vrai ».
 
 Sa cousine l'équivalence \(A \Leftrightarrow B\) (écrite
 \texttt{A\ \textless{}==\textgreater{}\ B} en ACSL) est plus forte.
@@ -1114,7 +1132,6 @@ fausses toutes les deux (c'est donc la négation du ou-exclusif).
 
 \begin{zdsblock}{Information}
 \begin{longtable}[]{@{}ccccccc@{}}
-Trule
 \(A\) & \(B\) & \(\neg A\) & \(A \wedge B\) & \(A \vee B\) & \(A \Rightarrow B\) & \(A \Leftrightarrow B\)\tabularnewline
 \midrule
 \endhead
@@ -1131,7 +1148,7 @@ longs et contenir beaucoup de spécifications, il peut être commode de
 nommer les propriétés que nous souhaitons vérifier. Pour cela, nous
 indiquons un nom (les espaces ne sont pas autorisées) suivi de
 \texttt{:} avant de mettre effectivement la propriété, il est possible
-de mettre plusieurs \og{}étages\fg{} de noms pour catégoriser nos propriétés.
+de mettre plusieurs « étages » de noms pour catégoriser nos propriétés.
 Par exemple nous pouvons écrire ceci :
 
 \begin{footnotesize}\begin{Shaded}
@@ -1169,8 +1186,8 @@ pas présenté dans ce tutoriel) soit par cette commande :
 
 Soit en l'ouvrant depuis l'environnement graphique.
 
-Il est ensuite possible de cliquer sur le bouton \og{}Create a new session
-from existing C files\fg{}, les fichiers à analyser peuvent être
+Il est ensuite possible de cliquer sur le bouton « \emph{Create a new
+session from existing C files} », les fichiers à analyser peuvent être
 sélectionnés par double-clic, OK terminant la sélection. Par la suite,
 l'ajout d'autres fichiers à la session s'effectue en cliquant sur Files
 \textgreater{} Source Files.
@@ -1199,8 +1216,8 @@ marge, ils indiquent qu'aucune vérification n'a été tentée pour ces
 lignes (voir figure~\ref{fig:2-1-1-abs-1}).
 
 Nous demandons la vérification que le code répond à la spécification en
-faisant un clic droit sur le nom de la fonction et \og{}Prove function
-annotations by WP\fg{} (voir figure~\ref{fig:2-1-1-abs-2}).
+faisant un clic droit sur le nom de la fonction et « \emph{Prove
+function annotations by WP} » (voir figure~\ref{fig:2-1-1-abs-2}).
 
 \begin{figure}[htbp]
 \centering
@@ -1225,7 +1242,7 @@ déréférencements de pointeurs invalides, division par 0, etc).
 Pour activer ce contrôle, nous cochons la case montrée par cette capture
 (dans le volet de WP). Il est également possible de demander à Frama-C
 d'ajouter ces contrôles par un clic droit sur le nom de la fonction puis
-\og{}Insert RTE guards\fg{} (voir figure~\ref{fig:2-1-1-abs-3}).
+« Insert RTE guards » (voir figure~\ref{fig:2-1-1-abs-3}).
 
 \begin{figure}[htbp]
 \centering
@@ -1235,8 +1252,8 @@ d'ajouter ces contrôles par un clic droit sur le nom de la fonction puis
 \end{figure}
 
 Enfin nous relançons la vérification (nous pouvons également cliquer sur
-le bouton \og{}Reparse\fg{} de la barre d'outils, cela aura pour effet de
-supprimer les preuves déjà effectuées).
+le bouton « \emph{Reparse} » de la barre d'outils, cela aura pour effet
+de supprimer les preuves déjà effectuées).
 
 Nous pouvons alors voir alors que WP échoue à prouver l'impossibilité de
 débordement arithmétique sur le calcul de -val. Et c'est bien normal
@@ -1257,10 +1274,10 @@ parce que -\texttt{INT\_MIN} (\(-2^{31}\)) \textgreater{}
   \href{https://fr.wikipedia.org/wiki/Compl\%C3\%A9ment_\%C3\%A0_deux}{complément
 à deux} pour lequel le dépassement n'est pas défini par la norme C.
 \end{zdsblock}
-  
+
 Ici nous pouvons voir un autre type d'annotation ACSL. La ligne
 \texttt{//@\ assert\ propriete\ ;} nous permet de demander la
-vérification d'une propriété à un point particulier de programme. Ici,
+vérification d'une propriété à un point particulier du programme. Ici,
 l'outil l'a insérée pour nous car il faut vérifier que le \texttt{-val}
 ne provoque pas de débordement, mais il est également possible d'en
 ajouter manuellement dans un code.
@@ -1298,17 +1315,17 @@ propriété est vérifiable. Les deux raisons peuvent être :
   qu'il n'a pas assez d'information pour le déterminer ;
 \item
   que malgré toutes ses recherches, il n'a pas pu trouver un résultat à
-  temps. Auquel cas, il rencontre un timeout dont la durée est
+  temps. Auquel cas, il rencontre un \emph{timeout} dont la durée est
   configurable dans le volet de WP.
 \end{itemize}
 
-Dans le volet inférieur, nous pouvons sélectionner l'onglet \og{}WP
-Goals\fg{} (voir figure~\ref{fig:2-1-1-abs-5}), celui-ci nous affiche la
+Dans le volet inférieur, nous pouvons sélectionner l'onglet « \emph{WP
+  Goals} » (voir figure~\ref{fig:2-1-1-abs-5}), celui-ci nous affiche la
 liste des obligations de preuve et
 pour chaque prouveur indique un petit logo si la preuve a été tentée et
-si elle a été réussie, échouée ou a rencontré un timeout (ici nous
-pouvons voir un essai avec Z3 sur le contrôle de la RTE pour montrer le
-logo des ciseaux associé au timeout).
+si elle a été réussie, échouée ou a rencontré un \emph{timeout} (ici
+nous pouvons voir un essai avec Z3 sur le contrôle de la RTE pour
+montrer le logo des ciseaux associé au timeout).
 
 \begin{figure}[htbp]
 \centering
@@ -1320,7 +1337,7 @@ logo des ciseaux associé au timeout).
 Le tableau est découpé comme suit, en première colonne nous avons le nom
 de la fonction où se trouve le but à prouver. En seconde colonne nous
 trouvons le nom du but. Ici par exemple notre post-condition nommée est
-estampillée \og{}Post-condition `positive\_value,function\_result'\,\fg{},
+estampillée ``Post-condition `positive\_value,function\_result'\,'',
 nous pouvons d'ailleurs noter que lorsqu'une propriété est sélectionnée
 dans le tableau, elle est également sur-lignée dans le code source. Les
 propriétés non-nommées se voient assignées comme nom le type de
@@ -1331,7 +1348,7 @@ accessibles à WP.
 
 Dans ces prouveurs, le premier élément de la colonne est Qed. Ce n'est
 pas à proprement parler un prouveur. En fait, si nous double-cliquons
-sur la propriété \og{}ne pas déborder\fg{} (surlignée en bleu dans la capture
+sur la propriété ``ne pas déborder'' (surlignée en bleu dans la capture
 précédente), nous pouvons voir l'obligation correspondante (voir
 figure~\ref{fig:2-1-1-abs-6}).
 
@@ -1343,12 +1360,14 @@ dans \texttt{abs}}
 \label{fig:2-1-1-abs-6}
 \end{figure}
 
+
 C'est l'obligation de preuve que génère WP par rapport à notre propriété
 et notre programme, il n'est pas nécessaire de comprendre tout ce qui
 s'y passe, juste d'avoir une idée globale. Elle contient (dans la partie
-\og{}Assume\fg{}) les suppositions que nous avons pu donner et celles que WP a
-pu déduire des instructions du programme. Elle contient également (dans
-la partie \og{}Prove\fg{}) la propriété que nous souhaitons vérifier.
+« \emph{Assume} ») les suppositions que nous avons pu donner et celles
+que WP a pu déduire des instructions du programme. Elle contient
+également (dans la partie « \emph{Prove} ») la propriété que nous
+souhaitons vérifier.
 
 Que fait WP avec ces éléments ? En fait, il les transforme en une
 formule logique puis demande aux différents prouveurs s'il est possible
@@ -1364,23 +1383,23 @@ prouveurs.
 Lorsque les prouveurs automatiques ne parviennent pas à assurer que nos
 propriétés sont bien vérifiées, il est parfois difficile de comprendre
 pourquoi. En effet, les prouveurs ne sont généralement pas capables de
-nous répondre autre chose que \og{}oui\fg{}, \og{}non\fg{} ou \og{}inconnu\fg{}, ils ne
-sont pas capables d'extraire le \og{}pourquoi\fg{} d'un \og{}non\fg{} ou d'un
-\og{}inconnu\fg{}. Il existe des outils qui sont capables d'explorer les
-arbres de preuve pour en extraire ce type d'information, Frama-C n'en
-possède pas à l'heure actuelle. La lecture des obligations de preuve
-peut parfois nous aider, mais cela demande un peu d'habitude pour
-pouvoir les déchiffrer facilement. Finalement, le meilleur moyen de
-comprendre la raison d'un échec est d'effectuer la preuve de manière
-interactive avec Coq. En revanche, il faut déjà avoir une certaine
-habitude de ce langage pour ne pas être perdu devant les obligations de
-preuve générées par WP, étant donné que celles-ci encodent les éléments
-de la sémantique de C, ce qui rend le code souvent indigeste.
+nous répondre autre chose que « oui », « non » ou « inconnu », ils ne
+sont pas capables d'extraire le « pourquoi » d'un « non » ou d'un «
+inconnu ». Il existe des outils qui sont capables d'explorer les arbres
+de preuve pour en extraire ce type d'information, Frama-C n'en possède
+pas à l'heure actuelle. La lecture des obligations de preuve peut
+parfois nous aider, mais cela demande un peu d'habitude pour pouvoir les
+déchiffrer facilement. Finalement, le meilleur moyen de comprendre la
+raison d'un échec est d'effectuer la preuve de manière interactive avec
+Coq. En revanche, il faut déjà avoir une certaine habitude de ce langage
+pour ne pas être perdu devant les obligations de preuve générées par WP,
+étant donné que celles-ci encodent les éléments de la sémantique de C,
+ce qui rend le code souvent indigeste.
 
 Si nous retournons dans notre tableau des obligations de preuve (bouton
 encadré dans la capture d'écran précédente), nous pouvons donc voir que
 les hypothèses n'ont pas suffi aux prouveurs pour déterminer que la
-propriété \og{}absence de débordement\fg{} est vraie (et nous l'avons dit :
+propriété « absence de débordement » est vraie (et nous l'avons dit :
 c'est normal), il nous faut donc ajouter une hypothèse supplémentaire
 pour garantir le bon fonctionnement de la fonction : une pré-condition
 d'appel.
@@ -1390,7 +1409,7 @@ d'appel.
 Les pré-conditions de fonctions sont introduites par la clause
 \texttt{requires}, de la même manière qu'avec \texttt{ensures}, nous
 pouvons composer nos expressions logiques et mettre plusieurs
-pré-condition :
+pré-conditions :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -1460,10 +1479,10 @@ défini) :
       \end{Highlighting}
   \end{Shaded}\end{footnotesize}
 \end{zdsblock}
-  
-Une fois le code source modifié de cette manière, un clic sur
-\og{}Reparse\fg{} et nous lançons à nouveau l'analyse. Cette fois, tout est
-validé pour WP, notre implémentation est prouvée (voir
+
+Une fois le code source modifié de cette manière, un clic sur «
+\emph{Reparse} » et nous lançons à nouveau l'analyse. Cette fois, tout
+est validé pour WP, notre implémentation est prouvée (voir
 figure~\ref{fig:2-1-2-abs-1}).
 
 \begin{figure}[htbp]
@@ -1472,6 +1491,8 @@ figure~\ref{fig:2-1-2-abs-1}).
 \caption{Preuve de \texttt{abs} effectuée}
 \label{fig:2-1-2-abs-1}
 \end{figure}
+
+\clearpage
 
 Nous pouvons également vérifier qu'une fonction qui appellerait
 \texttt{abs} respecte bien la pré-condition qu'elle impose :
@@ -1508,10 +1529,10 @@ calcul termine alors la post-condition est vérifiée.
 Si nous donnons à notre fonction une valeur qui viole ses
 pré-conditions, alors nous en déduisons que la post-condition est
 fausse. À partir de là, nous pouvons prouver tout ce que nous voulons
-car ce \og{}false\fg{} devient une supposition pour tout appel qui viendrait
+car ce « false » devient une supposition pour tout appel qui viendrait
 ensuite. À partir de faux, nous prouvons tout ce que nous voulons, car
-si nous avons la preuve de \og{}faux\fg{} alors \og{}faux\fg{} est vrai, de même que
-\og{}vrai\fg{} est vrai. Donc tout est vrai.
+si nous avons la preuve de « faux » alors « faux » est vrai, de même que
+« vrai » est vrai. Donc tout est vrai.
 
 En prenant le programme modifié, nous pouvons d'ailleurs regarder les
 obligations de preuve générées par WP pour l'appel fautif et l'appel
@@ -1535,10 +1556,10 @@ Nous pouvons remarquer que pour les appels de fonctions, l'interface
 graphique nous surligne le chemin d'exécution suivi avant l'appel dont
 nous cherchons à vérifier la pré-condition. Ensuite, si nous regardons
 l'appel \texttt{abs(INT\_MIN)}, nous pouvons remarquer qu'à force de
-simplifications, Qed a déduit que nous cherchons à prouver \og{}False\fg{}.
+simplifications, Qed a déduit que nous cherchons à prouver « False ».
 Conséquence logique, l'appel suivant \texttt{abs(a)} reçoit dans ses
-suppositions \og{}False\fg{}. C'est pourquoi Qed est capable de déduire
-immédiatement \og{}True\fg{}.
+suppositions « False ». C'est pourquoi Qed est capable de déduire
+immédiatement « True ».
 
 La deuxième partie de la question est alors : pourquoi lorsque nous
 mettons les appels dans l'autre sens (\texttt{abs(a)} puis
@@ -1546,12 +1567,12 @@ mettons les appels dans l'autre sens (\texttt{abs(a)} puis
 pré-condition sur le deuxième ? La réponse est simplement que
 \texttt{abs(a)} peut, ou ne peut pas, provoquer une erreur, alors que
 \texttt{abs(INT\_MIN)} provoque forcément l'erreur. Donc si nous
-obtenons nécessairement une preuve de \og{}faux\fg{} avec un appel
+obtenons nécessairement une preuve de « faux » avec un appel
 \texttt{abs(INT\_MIN)}, ce n'est pas le cas de l'appel \texttt{abs(a)}
 qui peut aussi ne pas échouer.
 
 Bien spécifier son programme est donc d'une importance cruciale.
-Typiquement, préciser un pré-condition fausse peut nous donner la
+Typiquement, préciser une pré-condition fausse peut nous donner la
 possibilité de prouver FAUX :
 
 \begin{footnotesize}\begin{Shaded}
@@ -1601,7 +1622,7 @@ doit être respectée en raison du complément à deux.
 \subsection{Quelques éléments sur l'usage de WP et
 Frama-C}\label{quelques-uxe9luxe9ments-sur-lusage-de-wp-et-frama-c}
 
-Dans les deux sous-sections précédentes, nous avons vu maximum
+Dans les deux sous-sections précédentes, nous avons vu un certain nombre
 d'éléments à propos de l'usage de la GUI pour lancer les preuves. En
 fait, il est possible de demander immédiatement à WP d'effectuer les
 preuves pendant le lancement de Frama-C avec la commande :
@@ -1613,12 +1634,12 @@ preuves pendant le lancement de Frama-C avec la commande :
 \end{Shaded}\end{footnotesize}
 
 Cela demande à WP d'immédiatement faire les calculs de plus faible
-pré-condition et de lancer les prouveurs les buts générés.
+pré-condition et de lancer les prouveurs sur les buts générés.
 
 Concernant les contrôles des RTE, il est généralement conseillé de
 commencer par vérifier le programme sans mettre les contrôles de RTE. Et
 ensuite seulement de générer les assertions correspondantes pour
-terminer la vérification avec WP. Cela permet à WP de se \og{}concentrer\fg{}
+terminer la vérification avec WP. Cela permet à WP de se « concentrer »
 dans un premier temps sur les propriétés fonctionnelles sans avoir la
 connaissance de propriétés purement techniques dues à C, qui chargent
 inutilement la base de connaissances. Une nouvelle fois, il est possible
@@ -1631,8 +1652,8 @@ de produire ce comportement directement depuis la ligne de commande en
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-\og{}Lancer Frama-C avec WP, puis créer les assertions correspondant aux
-RTE, et lancer à nouveau WP\fg{}.
+« Lancer Frama-C avec WP, puis créer les assertions correspondant aux
+RTE, et lancer à nouveau WP ».
 
 \section{De l'importance d'une bonne
 spécification}\label{de-limportance-dune-bonne-spuxe9cification}
@@ -1729,7 +1750,9 @@ langage C, c'est bien la notion de pointeur. C'est une notion complexe
 et l'une des principales cause de bugs critiques dans les programmes,
 ils ont donc droit à un traitement de faveur dans ACSL.
 
-Prenons par exemple une fonction swap pour les entiers :
+Prenons par exemple une fonction \texttt{swap} pour les entiers.
+
+\clearpage
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -1746,20 +1769,20 @@ Prenons par exemple une fonction swap pour les entiers :
 
 \subsubsection{Historique des valeurs}\label{historique-des-valeurs}
 
-Ici, j'ai introduit une première fonction logique fournie de base par
+Ici, nous introduisons une première fonction logique fournie de base par
 ACSL : \texttt{\textbackslash{}old}, qui permet de parler de l'ancienne
-valeur d'un élément. Ce que nous dit donc la spécification c'est \og{}la
+valeur d'un élément. Ce que nous dit donc la spécification c'est « la
 fonction doit assurer que a soit égal à l'ancienne valeur (au sens : la
-valeur avant l'appel) de b et inversement\fg{}.
+valeur avant l'appel) de b et inversement~».
 
 La fonction \texttt{\textbackslash{}old} ne peut être utilisée que dans
 la post-condition d'une fonction. Si nous avons besoin de ce type
 d'information ailleurs, nous utilisons \texttt{\textbackslash{}at} qui
-nous permet de statuer à propos de la valeur d'une variable à un point
-donné. Elle reçoit deux paramètres. Le premier est la variable (ou
-position mémoire) dont nous voulons obtenir la valeur et le second la
-position (sous la forme d'un label C) à laquelle nous voulons contrôler
-la valeur en question.
+nous permet d'exprimer des propriétés à propos de la valeur d'une
+variable à un point donné. Elle reçoit deux paramètres. Le premier est
+la variable (ou position mémoire) dont nous voulons obtenir la valeur et
+le second la position (sous la forme d'un label C) à laquelle nous
+voulons contrôler la valeur en question.
 
 Par exemple, nous pourrions écrire :
 
@@ -1817,11 +1840,12 @@ spécifications précises.
 
 \subsubsection{Validité de pointeurs}\label{validituxe9-de-pointeurs}
 
-Si nous essayons de prouver le fonctionnement de swap (en activant la
-vérification des RTE), notre post-condition est bien vérifiée mais WP
-nous indique qu'il y a un certain nombre de possibilités de
-runtime-error. Ce qui est normal, car nous n'avons pas précisé à WP que
-les pointeurs que nous recevons en entrée de fonction sont valides.
+Si nous essayons de prouver le fonctionnement de \texttt{swap} (en
+activant la vérification des RTE), notre post-condition est bien
+vérifiée mais WP nous indique qu'il y a un certain nombre de
+possibilités de \emph{runtime-error}. Ce qui est normal, car nous
+n'avons pas précisé à WP que les pointeurs que nous recevons en entrée
+de fonction sont valides.
 
 Pour ajouter cette précision, nous allons utiliser le prédicat
 \texttt{\textbackslash{}valid} qui reçoit un pointeur en entrée :
@@ -1847,18 +1871,19 @@ soient valides.
 Comme nous le verrons plus tard, \texttt{\textbackslash{}valid} peut
 recevoir plus qu'un pointeur en entrée. Par exemple, il est possible de
 lui transmettre une expression de cette forme :
-\texttt{\textbackslash{}valid(p\ +\ (s\ ..\ e))} qui voudra dire \og{}pour
-tout i entre s et e (inclus), p+i est un pointeur valide\fg{}, ce sera
-important notamment pour la gestion des tableaux dans les
-spécifications.
+\texttt{\textbackslash{}valid(p\ +\ (s\ ..\ e))} qui voudra dire « pour
+tout \texttt{i} entre \texttt{s} et \texttt{e} (inclus), \texttt{p+i}
+est un pointeur valide », ce sera important notamment pour la gestion
+des tableaux dans les spécifications.
 
 Si nous nous intéressons aux assertions ajoutées par WP dans la fonction
-swap avec la validation des RTEs, nous pouvons constater qu'il existe
-une variante de \texttt{\textbackslash{}valid} sous le nom
+\texttt{swap} avec la validation des RTEs, nous pouvons constater qu'il
+existe une variante de \texttt{\textbackslash{}valid} sous le nom
 \texttt{\textbackslash{}valid\_read}. Contrairement au premier, celui-ci
 assure que le pointeur peut être déréférencé mais en lecture seulement.
-Cette subtilité est due au fait qu'en C, le downcast de pointeur vers un
-élément const est très facile à faire mais n'est pas forcément légal.
+Cette subtilité est due au fait qu'en C, le \emph{downcast} de pointeur
+vers un élément const est très facile à faire mais n'est pas forcément
+légal.
 
 Typiquement, dans le code suivant :
 
@@ -1938,7 +1963,10 @@ modifiés par la fonction.
 
 Par défaut, WP considère qu'une fonction a le droit de modifier
 n'importe quel élément en mémoire. Nous devons donc préciser ce qu'une
-fonction est en droit de modifier. Par exemple pour la fonction swap :
+fonction est en droit de modifier. Par exemple pour la fonction
+\texttt{swap} :
+
+\clearpage
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -1958,8 +1986,8 @@ fonction est en droit de modifier. Par exemple pour la fonction swap :
 \end{Shaded}\end{footnotesize}
 
 Si nous rejouons la preuve avec cette spécification, la fonction et les
-assertions que nous avions demandées dans le main seront validées par
-WP.
+assertions que nous avions demandées dans le \texttt{main} seront
+validées par WP.
 
 Finalement, il peut arriver que nous voulions spécifier qu'une fonction
 ne provoque pas d'effets de bords. Ce cas est précisé en donnant
@@ -1981,18 +2009,19 @@ ne provoque pas d'effets de bords. Ce cas est précisé en donnant
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Le lecteur pourra maintenant reprendre les exemples précédents y
+Le lecteur pourra maintenant reprendre les exemples précédents pour y
 intégrer la bonne clause \texttt{assigns} ;) .
 
 \subsubsection{Séparation des zones de la
 mémoire}\label{suxe9paration-des-zones-de-la-muxe9moire}
 
-Les pointeurs apportent le risque d'aliasing (plusieurs pointeurs ayant
-accès à la même zone de mémoire). Si dans certaines fonctions, cela ne
-pose pas de problème, par exemple dans le cas où nous passons les deux
-mêmes pointeurs à notre fonction \texttt{swap} où la spécification est
-toujours vérifiée par le code source. Dans d'autre cas, ce n'est pas si
-simple :
+Les pointeurs apportent le risque d'\emph{aliasing} (plusieurs pointeurs
+ayant accès à la même zone de mémoire). Si dans certaines fonctions,
+cela ne pose pas de problème (par exemple si nous passons deux pointeurs
+égaux à notre fonction \texttt{swap}, la spécification est toujours
+vérifiée par le code source), dans d'autre cas, ce n'est pas si simple :
+
+
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -2028,9 +2057,9 @@ est bien différent du pointeur \texttt{b}. Or, si les pointeurs sont
 \tightlist
 \item
   la propriété \texttt{*a\ ==\ \textbackslash{}old(*a)\ +\ *b} signifie
-  en fait \texttt{*a\ ==\ \textbackslash{}old(*a)\ +\ *a}, ce ne peut
-  être vrai que si l'ancienne valeur pointée par \texttt{a} était 0, ce
-  qu'on ne sait pas,
+  en fait \texttt{*a\ ==\ \textbackslash{}old(*a)\ +\ *a}, ce qui ne
+  peut être vrai que si l'ancienne valeur pointée par \texttt{a} était
+  0, ce qu'on ne sait pas,
 \item
   la propriété \texttt{*b\ ==\ \textbackslash{}old(*b)} n'est pas
   validée car potentiellement, nous la modifions.
@@ -2067,7 +2096,7 @@ deux disjoints. Ici, nous spécifierions :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Et cette fois, la preuve est effectuée , comme le montre la
+Et cette fois, la preuve est effectuée, comme le montre la
 figure~\ref{fig:2-2-2-incr_a_by_b-2}.
 
 \begin{figure}[htbp]
@@ -2099,16 +2128,29 @@ positive et le cas où la valeur est négative.
 
 Les comportements nous servent à spécifier les différents cas pour les
 post-conditions. Nous les introduisons avec le mot-clé
-\texttt{behavior}. Chaque comportement se voit attribuer un nom, les
-suppositions du cas que nous traitons introduites par le mot clé
-\texttt{assumes} et la post-condition associée. Finalement, nous pouvons
-également demander à WP de vérifier le fait que les comportements sont
-disjoints (pour garantir le déterminisme) et complets.
+\texttt{behavior}. Chaque comportement se voit attribué :
+
+\begin{itemize}
+\tightlist
+\item
+  un nom ;
+\item
+  les suppositions du cas que nous traitons, introduites par le mot clé
+  \texttt{assumes} ;
+\item
+  la post-condition associée à ce comportement.
+\end{itemize}
+
+Finalement, nous pouvons également demander à WP de vérifier le fait que
+les comportements sont disjoints (pour garantir le déterminisme) et
+complets.
 
 Les comportements sont disjoints si pour toute entrée de la fonction,
-elle ne correspond aux suppositions (assumes) que d'un seul
+elle ne correspond aux suppositions (\emph{assumes}) que d'un seul
 comportement. Les comportements sont complets si les suppositions
 recouvrent bien tout le domaine des entrées.
+
+
 
 Par exemple pour \texttt{abs} :
 
@@ -2142,12 +2184,12 @@ Pour comprendre ce que font précisément \texttt{complete} et
 \begin{itemize}
 \tightlist
 \item
-  remplacer la supposition de \og{}pos\fg{} par
+  remplacer la supposition de « pos » par
   \texttt{val\ \textgreater{}\ 0} auquel cas les comportements seront
   disjoints mais incomplets (il nous manquera le cas
-  \texttt{val\ ==\ 0})
+  \texttt{val\ ==\ 0}) ;
 \item
-  remplacer la supposition de \og{}neg\fg{} par \texttt{val\ \textless{}=\ 0}
+  remplacer la supposition de « neg » par \texttt{val\ \textless{}=\ 0}
   auquel cas les comportements seront complets mais non disjoints (le
   cas \texttt{val\ ==\ 0}) sera présent dans les deux comportements.
 \end{itemize}
@@ -2186,7 +2228,7 @@ traduit le découpage de nos programmes en fichiers lorsque nous voulons
 les spécifier et les prouver avec WP.
 
 Notre but sera de prouver la fonction \texttt{max\_abs} qui renvoie les
-maximum entre les valeurs absolues de deux valeurs :
+maximums entre les valeurs absolues de deux valeurs :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -2201,10 +2243,11 @@ maximum entre les valeurs absolues de deux valeurs :
 
 Commençons par (sur-)découper nos précédentes fonctions en couples
 headers/source pour \texttt{abs} et \texttt{max}. Cela donne pour
-\texttt{abs} :
+\texttt{abs} les fichiers présentés en figures~\ref{fig:3-4-hd} et
+\ref{fig:3-4-src}.
 
-Fichier abs.h :
-
+\begin{figure}
+  \centering
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{#ifndef _ABS}
@@ -2232,9 +2275,12 @@ Fichier abs.h :
 \CommentTok{#endif}
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
+\caption{Header pour \texttt{abs}}
+\label{fig:3-4-hd}
+\end{figure}
 
-Fichier abs.c
-
+\begin{figure}
+  \centering
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{#include "abs.h"}
@@ -2245,6 +2291,9 @@ Fichier abs.c
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
+\caption{Sources pour \texttt{abs}}
+\label{fig:3-4-src}
+\end{figure}
 
 Nous découpons en mettant le contrat de la fonction dans le header. Le
 but de ceci est de pouvoir, lorsque nous aurons besoin de la fonction
@@ -2259,8 +2308,11 @@ commande) avec Frama-C et remarquer que la spécification est bien
 associée à la fonction et que nous pouvons la prouver.
 
 Maintenant, nous pouvons préparer le terrain pour la fonction
-\texttt{max\_abs}. Dans notre header :
+\texttt{max\_abs} avec le header présenté en figure~\ref{fig:3-4-hd2}
+accompagné de son fichier source en figure~\ref{fig:3-4-src2}.
 
+\begin{figure}
+  \centering
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{#ifndef _MAX_ABS}
@@ -2271,9 +2323,12 @@ Maintenant, nous pouvons préparer le terrain pour la fonction
 \CommentTok{#endif}
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
+\caption{Header pour \texttt{max\_abs}}
+\label{fig:3-4-hd2}
+\end{figure}
 
-Et dans le source :
-
+\begin{figure}
+  \centering
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{#include "max_abs.h"}
@@ -2288,6 +2343,9 @@ Et dans le source :
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
+\caption{Sources pour \texttt{max\_abs}}
+\label{fig:3-4-src2}
+\end{figure}
 
 Et ouvrir ce dernier fichier dans Frama-C. Si nous regardons le panneau
 latéral, nous pouvons voir que les fichiers header que nous avons inclus
@@ -2316,7 +2374,7 @@ preuves très modulaires et donc des spécifications plus facilement
 réutilisables. Évidemment, si notre preuve repose sur la spécification
 d'une autre fonction, cette fonction doit-elle même être vérifiable pour
 que la preuve soit formellement complète. Mais nous pouvons également
-vouloir simplement vers confiance à une bibliothèque externe sans la
+vouloir simplement faire confiance à une bibliothèque externe sans la
 prouver.
 
 Finalement, le lecteur pourra essayer de spécifier la fonction
@@ -2375,7 +2433,7 @@ contrôle}\label{instructions-basiques-et-structures-de-contruxf4le}
   éléments plus formels de ces sections seront signalés.
 \end{zdsblock}
 
-Pour chaque notion en programmation C, Nous associerons la règle
+Pour chaque notion en programmation C, nous associerons la règle
 d'inférence qui lui correspond, la règle utilisée de calcul de plus
 faible pré-conditions qui la régit, et des exemples d'utilisation. Pas
 forcément dans cet ordre et avec plus ou moins de liaison avec l'outil.
@@ -2399,7 +2457,7 @@ vraies. Quand il n'y a pas de prémisses :
 Alors, il n'y a rien à assurer pour conclure que \(C\) est vraie.
 
 Inversement, pour prouver qu'une certaine prémisse est vraie, il peut
-etre nécessaire d'utiliser une autre règle d'inférence, ce qui nous
+être nécessaire d'utiliser une autre règle d'inférence, ce qui nous
 donnerait quelque chose comme :
 
 \begin{center}
@@ -2414,22 +2472,79 @@ manipulées seront généralement des triplets de Hoare.
 
 Revenons sur la notion de triplet de Hoare :
 
-\begin{center} \(\{ P \} C \{ Q \}\) \end{center}
+\begin{center} \(\{ P \}\quad C\quad \{ Q \}\) \end{center}
 
-Nous l'avons vu en début de tutoriel, ce que nous propose Dijkstra,
-c'est un moyen de calculer à partir d'une post-condition \(Q\) et d'une
-commande ou d'une liste de commandes \(C\), la pré-condition minimale
-assurant \(Q\) après \(C\). Plus formellement, l'idée est la suivante :
+Nous l'avons vu en début de tutoriel, ce triplet nous exprime que si
+avant l'exécution de \(C\), la propriété \(P\) est vraie, et si \(C\)
+termine, alors la propriété \(Q\) est vraie. Par exemple, si nous
+reprenons notre programme de calcul de la valeur absolue (légèrement
+modifié):
 
-\begin{center} \(\{\ wp(C,Q)\ \} C \{ Q \}\) \end{center}
+\begin{footnotesize}\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{/*@}
+\CommentTok{  ensures \textbackslash{}result >= 0;}
+\CommentTok{  ensures (val >= 0 ==> \textbackslash{}result == val ) && (val <  0 ==> \textbackslash{}result == -val);}
+\CommentTok{*/}
+\DataTypeTok{int} \NormalTok{abs(}\DataTypeTok{int} \NormalTok{val)\{}
+  \DataTypeTok{int} \NormalTok{res;}
+  \KeywordTok{if}\NormalTok{(val < }\DecValTok{0}\NormalTok{) res = - val;}
+  \KeywordTok{else}        \NormalTok{res = val;}
 
-Nous pouvons considérer que \(wp\) est une fonction qui, à une
-post-condition voulue et un programme ou une instruction, nous associe
-la plus faible pré-condition qui permet de l'assurer. Nous utiliserons
-donc cette notation pour définir le calcul correspondant à une/des
-instructions :
+  \KeywordTok{return} \NormalTok{res;}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}\end{footnotesize}
 
-\(wp(Instruction(s), Post) = WeakestPrecondition\)
+Ce que nous dit Hoare, est que pour prouver notre programme, les
+propriétés entre accolades dans ce programme doivent être vérifiées
+(j'ai omis une des deux post-conditions pour alléger la lecture) :
+
+\begin{footnotesize}\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{int} \NormalTok{abs(}\DataTypeTok{int} \NormalTok{val)\{}
+  \DataTypeTok{int} \NormalTok{res;}
+\CommentTok{// \{ P \}}
+  \KeywordTok{if}\NormalTok{(val < }\DecValTok{0}\NormalTok{)\{}
+\CommentTok{// \{  (val < 0) && P \}}
+    \NormalTok{res = - val;}
+\CommentTok{// \{ \textbackslash{}at(val, Pre) >= 0 ==> res == val && \textbackslash{}at(val, Pre) < 0 ==> res == -val \}}
+  \NormalTok{\} }\KeywordTok{else} \NormalTok{\{}
+\CommentTok{// \{ !(val < 0) && P \}}
+    \NormalTok{res = val;}
+\CommentTok{// \{ \textbackslash{}at(val, Pre) >= 0 ==> res == val && \textbackslash{}at(val, Pre) < 0 ==> res == -val \}}
+  \NormalTok{\}}
+\CommentTok{// \{ \textbackslash{}at(val, Pre) >= 0 ==> res == val && \textbackslash{}at(val, Pre) < 0 ==> res == -val \}}
+
+  \KeywordTok{return} \NormalTok{res;}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}\end{footnotesize}
+
+Cependant, Hoare ne nous dit pas comment nous pouvons obtenir
+automatiquement la propriété \texttt{P} de ce programme. Ce que nous
+propose Dijkstra, c'est donc un moyen de calculer, à partir d'une
+post-condition \(Q\) et d'une commande ou d'une liste de commandes
+\(C\), la pré-condition minimale assurant \(Q\) après \(C\). Nous
+pourrions donc, dans le programme précédent, calculer la propriété
+\texttt{P} qui nous donne les garanties voulues.
+
+Nous allons tout au long de cette partie présenter les différents cas de
+la fonction \(wp\) qui, à une post-condition voulue et un programme ou
+une instruction, nous associe la plus faible pré-condition qui permet de
+l'assurer. Nous utiliserons cette notation pour définir le calcul
+correspondant à une/des instructions :
+
+\(wp(Instruction(s), Post) := WeakestPrecondition\)
+
+\clearpage
+
+Et la fonction \(wp\) est telle qu'elle nous garantit que le triplet de
+Hoare :
+
+\begin{center} \(\{\ wp(C,Q)\ \}\quad C\quad \{ Q \}\) \end{center}
+
+est effectivement un triplet valide.
 
 Nous utiliserons souvent des assertions ACSL pour présenter les notions
 à venir :
@@ -2440,42 +2555,101 @@ Nous utiliserons souvent des assertions ACSL pour présenter les notions
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
+Ces assertions correspondent en fait à des étapes intermédiaires
+possibles pour les propriétés indiquées dans nos triplets de Hoare. Nous
+pouvons par exemple reprendre le programme précédent et remplacer nos
+commentaires par les assertions ACSL correspondantes (j'ai omis
+\texttt{P} car sa valeur est en fait simplement « vrai ») :
+
+\begin{footnotesize}\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{int} \NormalTok{abs(}\DataTypeTok{int} \NormalTok{val)\{}
+  \DataTypeTok{int} \NormalTok{res;}
+  \KeywordTok{if}\NormalTok{(val < }\DecValTok{0}\NormalTok{)\{}
+    \CommentTok{//@ assert val < 0 ;}
+    \NormalTok{res = - val;}
+    \CommentTok{//@ assert \textbackslash{}at(val, Pre) >= 0 ==> res == val &&}
+    \CommentTok{           \textbackslash{}at(val, Pre) < 0 ==> res == -val ;}
+  \NormalTok{\} }\KeywordTok{else} \NormalTok{\{}
+    \CommentTok{//@ assert !(val < 0) ;}
+    \NormalTok{res = val;}
+    \CommentTok{//@ assert \textbackslash{}at(val, Pre) >= 0 ==> res == val &&}
+    \CommentTok{           \textbackslash{}at(val, Pre) < 0 ==> res == -val ;}
+  \NormalTok{\}}
+  \CommentTok{//@ assert \textbackslash{}at(val, Pre) >= 0 ==> res == val &&}
+  \CommentTok{           \textbackslash{}at(val, Pre) < 0 ==> res == -val ;}
+
+  \KeywordTok{return} \NormalTok{res;}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}\end{footnotesize}
+
 \section{Affectation, séquence et
 conditionnelle}\label{affectation-suxe9quence-et-conditionnelle}
 
 \subsection{Affectation}\label{affectation}
 
 L'affectation est l'opération la plus basique que l'on puisse avoir dans
-un langage (mise à part l'opération \og{}ne rien faire\fg{} qui manque
+un langage (mise à part l'opération « ne rien faire » qui manque
 singulièrement d'intérêt). Le calcul de plus faible pré-condition
 associé est le suivant :
 
-\begin{center} \(wp(x = E , Post) = Post[x \leftarrow E]\) \end{center}
+\begin{center} \(wp(x = E , Post) := Post[x \leftarrow E]\)
+\end{center}
 
-Où la notation \(P[x \leftarrow E]\) signifie \og{}la propriété \(P\) où
-\(x\) est remplacé par \(E\)\fg{}. Ce qui correspond ici à \og{}la
-post-condition \(Post\) où \(x\) a été remplacé par \(E\)\fg{}. Dans
+Où la notation \(P[x \leftarrow E]\) signifie « la propriété \(P\) où
+\(x\) est remplacé par \(E\) ». Ce qui correspond ici à « la
+post-condition \(Post\) où \(x\) a été remplacé par \(E\) ». Dans
 l'idée, pour que la formule en post-condition d'une affectation de \(x\)
 à \(E\) soit vraie, il faut qu'elle soit vraie en remplaçant chaque
 occurrence de \(x\) dans la formule par \(E\). Par exemple :
 
-\begin{center} \(\{P\}\quad x = 43*c \quad \{ x = 258 \}\) \end{center}
+\begin{footnotesize}\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// \{ P \}}
+\NormalTok{x = }\DecValTok{43} \NormalTok{* c ;}
+\CommentTok{// \{ x = 258 \}}
+\end{Highlighting}
+\end{Shaded}\end{footnotesize}
 
 \begin{center} \(P = wp(x = 43*c , \{x = 258\}) = \{43*c = 258\}\)
 \end{center}
 
-Ce qui finalement nous donnerait cette écriture :
+La fonction \(wp\) nous permet donc de calculer la plus faible
+pré-condition de l'opération (\(\{43*c = 258\}\)), ce que l'on peut
+réécrire sous la forme d'un triplet de Hoare :
 
-\begin{center} \(\{43*c = 258\}\quad x = 43*c\quad \{ x = 258 \}\)
-\end{center}
+\begin{footnotesize}\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// \{ 43*c = 258 \}}
+\NormalTok{x = }\DecValTok{43} \NormalTok{* c ;}
+\CommentTok{// \{ x = 258 \}}
+\end{Highlighting}
+\end{Shaded}\end{footnotesize}
 
 Pour calculer la pré-condition de l'affectation, nous avons remplacé
 chaque occurrence de \(x\) dans la post-condition, par la valeur
-\(E = 43*c\) affectée. Nous pourrions alors déduire qu'avant exécution c
-doit valoir 6.
+\(E = 43*c\) affectée. Si notre programme était de la forme:
 
-La règle d'inférence prenant en compte le calcul de plus faible
-pré-condition est donc la suivante :
+\begin{footnotesize}\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{int} \NormalTok{c = }\DecValTok{6} \NormalTok{;}
+\CommentTok{// \{ 43*c = 258 \}}
+\NormalTok{x = }\DecValTok{43} \NormalTok{* c ;}
+\CommentTok{// \{ x = 258 \}}
+\end{Highlighting}
+\end{Shaded}\end{footnotesize}
+
+Nous pourrions alors fournir la formule « \(43*6 = 258\) » à notre
+prouveur automatique afin qu'il détermine si cette formule peut
+effectivement être satisfaite. Ce à quoi il répondrait évidemment « oui
+» puisque cette propriété est très simple à vérifier. En revanche, si
+nous avions donné la valeur 7 pour \texttt{c}, le prouveur nous
+répondrait que non, une telle formule n'est pas vraie.
+
+Nous pouvons donc écrire la règle d'inférence pour le triplet de Hoare
+de l'affectation, où l'on prend en compte le calcul de plus faible
+pré-condition :
 
 \begin{center}
 \(\dfrac{}{\{Q[x \leftarrow E] \}\quad x = E \quad\{ Q \}}\)
@@ -2522,22 +2696,28 @@ première instruction soit compatible avec la pré-condition demandée par
 la deuxième et que ce processus puisse se répéter pour la troisième
 instruction, etc.
 
-Nous associons la règle d'inférence suivante à cette idée :
+La règle d'inférence correspondant à cette idée, utilisant les triplets
+de Hoare est la suivante:
 
 \begin{center}
 \(\dfrac{\{P\}\quad S1 \quad \{R\} \ \ \ \{R\}\quad S2 \quad \{Q\}}{\{P\}\quad S1 ;\ S2 \quad \{Q\}}\)
 \end{center}
 
-Pour vérifier que la séquence d'instruction \(S1;\ S2\) (NB : Où \(S1\)
-et \(S2\) peuvent elles-mêmes être des séquences d'instruction), nous
+Pour vérifier que la séquence d'instructions \(S1;\ S2\) (NB : où \(S1\)
+et \(S2\) peuvent elles-mêmes être des séquences d'instructions), nous
 passons par une propriété intermédiaire qui est à la fois la
-pré-condition de \(S2\) et la post-condition de \(S1\). Le calcul de
-plus faible pré-condition nous dit simplement que cette propriété
-intermédiaire est trouvée par calcul de pré-condition de la deuxième
-instruction. La plus faible pré-condition de l'ensemble étant donc
-déterminée comme ceci :
+pré-condition de \(S2\) et la post-condition de \(S1\). Cependant, rien
+ne nous indique pour l'instant comment obtenir les propriétés \(P\) et
+\(R\).
 
-\begin{center} \(wp(S1;\ S2 , Post) = wp(S1, wp(S2, Post) )\)
+Le calcul de plus faible pré-condition \(wp\) nous dit simplement que la
+propriété intermédiaire \(R\) est trouvée par calcul de plus faible
+pré-condition de la deuxième instruction. Et que la propriété \(P\) est
+trouvée en calculant la plus faible pré-condition de la première
+instruction. La plus faible pré-condition de notre liste d'instruction
+est donc déterminée comme ceci :
+
+\begin{center} \(wp(S1;\ S2 , Post) := wp(S1, wp(S2, Post) )\)
 \end{center}
 
 Le plugin WP de Frama-C fait ce calcul pour nous, c'est pour cela que
@@ -2564,9 +2744,9 @@ code.
 Notons que lorsque nous avons plus de deux instructions, nous pouvons
 simplement considérer que la dernière instruction est la seconde
 instruction de notre règle et que toutes les instructions qui la précède
-forme la première \og{}instruction\fg{}. De cette manière nous remontons bien
-les instructions une à une dans notre raisonnement, par exemple avec le
-programme précédent :
+forment la première « instruction ». De cette manière nous remontons
+bien les instructions une à une dans notre raisonnement, par exemple
+avec le programme précédent :
 
 \begin{center}
 \begin{tabular}{ccc}
@@ -2595,7 +2775,7 @@ pré-condition, à ceci près que chacune des branches aura une information
 supplémentaire : le fait que la condition était vraie dans un cas et
 fausse dans l'autre.
 
-Comme avec la séquence d'instruction, nous aurons donc deux points à
+Comme avec la séquence d'instructions, nous aurons donc deux points à
 vérifier (pour éviter de confondre les accolades, j'utilise la syntaxe
 \(if\ B\ then\ S1\ else\ S2\)) :
 
@@ -2603,16 +2783,17 @@ vérifier (pour éviter de confondre les accolades, j'utilise la syntaxe
 \(\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad S2\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad S2 \quad \{Q\}}\)
 \end{center}
 
-Nos deux prémisses sont donc la vérification que lorque nous avons la
+Nos deux prémisses sont donc la vérification que lorsque nous avons la
 pré-condition et que nous passons dans la branche \texttt{if}, nous
 atteignons bien la post-condition, et que lorsque nous avons la
 pré-condition et que nous passons dans la branche \texttt{else}, nous
 obtenons bien également la post-condition.
 
-Le calcul de pré-condition correspondant est le suivant :
+Le calcul de pré-condition de \(wp\) pour la conditionnelle est le
+suivant :
 
 \begin{center}
-\(wp(if\ B\ then\ S1\ else\ S2 , Post) = (B \Rightarrow wp(S1, Post)) \wedge (\neg B \Rightarrow wp(S2, Post))\)
+\(wp(if\ B\ then\ S1\ else\ S2 , Post) := (B \Rightarrow wp(S1, Post)) \wedge (\neg B \Rightarrow wp(S2, Post))\)
 \end{center}
 
 À savoir que \(B\) doit impliquer la pré-condition la plus faible de
@@ -2625,7 +2806,7 @@ vide}{Bloc else vide}}\label{bloc-else-vide}
 
 En suivant cette définition, si le \texttt{else} ne fait rien, alors la
 règle d'inférence est de la forme suivante, en remplaçant \(S2\) par une
-instruction \og{}ne rien faire\fg{}.
+instruction « ne rien faire ».
 
 \begin{center}
 \(\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad skip\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad skip \quad \{Q\}}\)
@@ -2638,7 +2819,7 @@ Le triplet pour le \texttt{else} est :
 
 Ce qui veut dire que nous devons avoir :
 
-\begin{center} \(Pre \wedge \neg B \Rightarrow Q\) \end{center}
+\begin{center} \(P \wedge \neg B \Rightarrow Q\) \end{center}
 
 En résumé, si la condition du \texttt{if} est fausse, cela veut dire que
 la post-condition de l'instruction conditionnelle globale est déjà
@@ -2666,7 +2847,7 @@ Soit :
 
 \(wp(if \neg (c \in [0;15])\ then\ c := 0, \{c \in [0;15]\})\)
 
-\(= (\neg (c \in [0;15])\Rightarrow wp(c := 0, \{c \in [0;15]\})) \wedge (c \in [0;15]\Rightarrow wp(skip, \{c \in [0;15]\}))\)
+\(:= (\neg (c \in [0;15])\Rightarrow wp(c := 0, \{c \in [0;15]\})) \wedge (c \in [0;15]\Rightarrow wp(skip, \{c \in [0;15]\}))\)
 
 \(= (\neg (c \in [0;15]) \Rightarrow 0 \in [0;15]) \wedge (c \in [0;15] \Rightarrow c \in [0;15])\)
 
@@ -2675,61 +2856,20 @@ Soit :
 La formule est bien vérifiable : quelle que soit l'évaluation de
 \(\neg (c \in [0;15])\) l'implication sera vraie.
 
-\subsubsection{Relation avec l'arbre de preuve et
-modularité.}\label{relation-avec-larbre-de-preuve-et-modularituxe9.}
-
-Si l'on remplace dans notre règle d'inférence, les occurrences de \(P\)
-par le calcule de plus faible pré-condition correspondant \(Q\), nous
-obtenons (en notant l'instruction conditionnelle complète \(c\)) :
-
-\begin{center}
-\(\dfrac{\{wp(c,Q) \wedge B\}\quad S1\quad \{Q\} \quad \quad \{wp(c,Q) \wedge \neg B\}\quad S2\quad \{Q\}}{\{wp(c,Q)\}\quad c\quad \{Q\}}\)\end{center}
-
-Or si l'on prend l'arbre de preuve qui correspond par exemple à \(S1\)
-(c'est similaire pour \(S2\)) et que nous y faisons le remplacement de
-\(wp(c,Q)\), nous obtenons :
-
-\begin{center}
-\(\{ (B \Rightarrow wp(S1,Q)) \wedge (\neg B \Rightarrow wp(S2,Q)) \wedge B \} \quad S1 \quad \{Q\}\)
-\end{center}
-
-Ce qui n'est pas très modulaire : nous devons parler du calcul de plus
-faible pré-condition de \(S2\) dans la preuve qui correspond à \(S1\).
-En fait, en simplifiant la formule nous obtenons :
-
-\begin{center} \(\{ wp(S1,Q) \wedge B \} \quad S1 \quad \{Q\}\)
-\end{center}
-
-Or, \(wp(S1,Q) \wedge B \Rightarrow wp(S1,Q)\). Et nous allons voir dans
-la section suivante une règle d'inférence, la règle de conséquence, qui
-nous permet de construire l'arbre de déduction suivant :
-
-\begin{center}
-\(\dfrac{wp(S1,Q) \wedge B \Rightarrow wp(S1,Q)\quad\quad\{ wp(S1,Q) \} \quad S1 \quad \{Q\}}{\{ wp(S1,Q) \wedge B \} \quad S1 \quad \{Q\}}\)
-\end{center}
-
-Nous laissant à prouver :
-
-\begin{center} \(\{ wp(S1,Q) \} \quad S1 \quad \{Q\}\) \end{center}
-
-qui est bien le calcul de plus pré-condition de \(S1\), ne nécessitant
-alors plus de raisonner à propos de la pré-condition de \(S2\) qui nous
-ennuyait.
-
 \section{{[}Bonus Stage{]} Conséquence et
 constance}\label{bonus-stage-consuxe9quence-et-constance}
 
 \subsection{Règle de conséquence}\label{ruxe8gle-de-consuxe9quence}
 
-Parfois, il peut être utile pour la preuve d'affaiblir une
-post-condition ou de renforcer une pré-condition. Si la première sera
+Parfois, il peut être utile pour la preuve de renforcer une
+post-condition ou d'affaiblir une pré-condition. Si la première sera
 souvent établie par nos soins pour faciliter le travail du prouveur, la
 seconde est plus souvent vérifiée par l'outil à l'issu du calcul de plus
 faible pré-condition.
 
 La règle d'inférence en logique de Hoare est la suivante :
 
-\begin{center}\(\dfrac{P \Rightarrow SP \quad \{SP\}\quad c\quad \{WQ\} \quad WQ \Rightarrow Q}{\{P\}\quad c \quad \{Q\}}\)\end{center}
+\begin{center}\(\dfrac{P \Rightarrow WP \quad \{WP\}\quad c\quad \{SQ\} \quad SQ \Rightarrow Q}{\{P\}\quad c \quad \{Q\}}\)\end{center}
 
 (Nous noterons que les prémisses, ici, ne sont pas seulement des
 triplets de Hoare mais également des formules à vérifier)
@@ -2737,16 +2877,63 @@ triplets de Hoare mais également des formules à vérifier)
 Par exemple, si notre post-condition est trop complexe, elle risque de
 générer une plus faible pré-condition trop compliquée et de rendre le
 calcul des prouveurs difficile. Nous pouvons alors créer une
-post-condition intermédiaire \(WQ\), plus simple, mais plus restreinte
+post-condition intermédiaire \(SQ\), plus simple, mais plus restreinte
 et impliquant la vraie post-condition. C'est la partie
-\(WQ \Rightarrow Q\).
+\(SQ \Rightarrow Q\).
 
 Inversement, le calcul de pré-condition générera généralement une
 formule compliquée et souvent plus faible que la pré-condition que nous
 souhaitons accepter en entrée. Dans ce cas, c'est notre outil qui
 s'occupera de vérifier l'implication entre ce que nous voulons et ce qui
 est nécessaire pour que notre code soit valide. C'est la partie
-\(P \Rightarrow SP\).
+\(P \Rightarrow WP\).
+
+Nous pouvons par exemple illustrer cela avec le code qui suit. Notons
+bien qu'ici, le code pourrait tout à fait être prouvé par
+l'intermédiaire de WP sans ajouter des affaiblissements et renforcements
+de propriétés car le code est très simple, il s'agit juste d'illustrer
+la règle de conséquences.
+
+\begin{footnotesize}\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{/*@}
+\CommentTok{  requires P: 2 <= a <= 8;}
+\CommentTok{  ensures  Q: 0 <= \textbackslash{}result <= 100 ;}
+\CommentTok{  assigns  \textbackslash{}nothing ;}
+\CommentTok{*/}
+\DataTypeTok{int} \NormalTok{constrained_times_10(}\DataTypeTok{int} \NormalTok{a)\{}
+  \CommentTok{//@ assert P_imply_WP: 2 <= a <= 8 ==> 1 <= a <= 9 ;}
+  \CommentTok{//@ assert WP:         1 <= a <= 9 ;}
+
+  \DataTypeTok{int} \NormalTok{res = a * }\DecValTok{10}\NormalTok{;}
+
+  \CommentTok{//@ assert SQ:         10 <= res <= 90 ;}
+  \CommentTok{//@ assert SQ_imply_Q: 10 <= res <= 90 ==> 0 <= res <= 100 ;}
+
+  \KeywordTok{return} \NormalTok{res;}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}\end{footnotesize}
+
+(À noter ici : nous avons omis les contrôles de débordement d'entiers).
+
+Ici, nous voulons avoir un résultat compris entre 0 et 100. Mais nous
+savons que le code ne produira pas un résultat sortant des bornes 10 à
+90. Donc nous renforçons la post-condition avec une assertion que
+\texttt{res}, le résultat, est compris entre 0 et 90 à la fin. Le calcul
+de plus faible pré-condition, sur cette propriété, et avec l'affectation
+\texttt{res\ =\ 10*a} nous produit une plus faible pré-condition
+\texttt{1\ \textless{}=\ a\ \textless{}=\ 9} et nous savons finalement
+que \texttt{2\ \textless{}=\ a\ \textless{}=\ 8} nous donne cette
+garantie.
+
+Quand une preuve a du mal à être réalisée sur un code plus complexe,
+écrire des assertions produisant des post-conditions plus fortes mais
+qui forment des formules plus simples peut souvent nous aider. Notons
+que dans le code précédent, les lignes \texttt{P\_imply\_WP} et
+\texttt{SQ\_imply\_Q} ne sont jamais utiles car c'est le raisonnement
+par défaut produit par WP, elles sont juste présentes pour
+l'illustration.
 
 \subsection{Règle de constance}\label{ruxe8gle-de-constance}
 
@@ -2766,9 +2953,106 @@ La règle d'inférence qui définit ce raisonnement est la suivante :
 \end{center}
 
 Où \(c\) ne modifie aucune variable entrant en jeu dans \(R\). Ce qui
-nous dit : \og{}pour vérifier le triplet, débarrassons nous des parties de
+nous dit : « pour vérifier le triplet, débarrassons nous des parties de
 la formule qui concerne des variables qui ne sont pas manipulées par
-\(c\) et prouvons le nouveau triplet\fg{}.
+\(c\) et prouvons le nouveau triplet ». Cependant, il faut prendre garde
+à ne pas supprimer trop d'informations, au risque de ne plus pouvoir
+prouver nos propriétés.
+
+Par exemple, nous pouvons imaginer le code suivant (une nouvelle fois,
+nous omettons les contrôles de débordements au niveau des entiers) :
+
+\begin{footnotesize}\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{/*@}
+\CommentTok{  requires a > -99 ;}
+\CommentTok{  requires b > 100 ;}
+\CommentTok{  ensures  \textbackslash{}result > 0 ;}
+\CommentTok{  assigns  \textbackslash{}nothing ;}
+\CommentTok{*/}
+\DataTypeTok{int} \NormalTok{foo(}\DataTypeTok{int} \NormalTok{a, }\DataTypeTok{int} \NormalTok{b)\{}
+  \KeywordTok{if}\NormalTok{(a >= }\DecValTok{0}\NormalTok{)\{}
+    \NormalTok{a++ ;}
+  \NormalTok{\} }\KeywordTok{else} \NormalTok{\{}
+    \NormalTok{a += b ;}
+  \NormalTok{\}}
+  \KeywordTok{return} \NormalTok{a ;}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}\end{footnotesize}
+
+Si nous regardons le code du bloc \texttt{if}, il ne fait pas intervenir
+la variable \texttt{b}, donc nous pouvons omettre complètement les
+propriétés à propos de \texttt{b} pour réaliser la preuve que \texttt{a}
+sera bien supérieur à 0 après l'exécution du bloc :
+
+\begin{footnotesize}\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{/*@}
+\CommentTok{  requires a > -99 ;}
+\CommentTok{  requires b > 100 ;}
+\CommentTok{  ensures  \textbackslash{}result > 0 ;}
+\CommentTok{  assigns  \textbackslash{}nothing ;}
+\CommentTok{*/}
+\DataTypeTok{int} \NormalTok{foo(}\DataTypeTok{int} \NormalTok{a, }\DataTypeTok{int} \NormalTok{b)\{}
+  \KeywordTok{if}\NormalTok{(a >= }\DecValTok{0}\NormalTok{)\{}
+    \CommentTok{//@ assert a >= 0; //et rien à propos de b}
+    \NormalTok{a++ ;}
+  \NormalTok{\} }\KeywordTok{else} \NormalTok{\{}
+    \NormalTok{a += b ;}
+  \NormalTok{\}}
+  \KeywordTok{return} \NormalTok{a ;}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}\end{footnotesize}
+
+En revanche, dans le bloc \texttt{else}, même si \texttt{b} n'est pas
+modifiée, établir des propriétés seulement à propos de \texttt{a}
+rendrait notre preuve impossible (en tant qu'humains). Le code serait :
+
+\begin{footnotesize}\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{/*@}
+\CommentTok{  requires a > -99 ;}
+\CommentTok{  requires b > 100 ;}
+\CommentTok{  ensures  \textbackslash{}result > 0 ;}
+\CommentTok{  assigns  \textbackslash{}nothing ;}
+\CommentTok{*/}
+\DataTypeTok{int} \NormalTok{foo(}\DataTypeTok{int} \NormalTok{a, }\DataTypeTok{int} \NormalTok{b)\{}
+  \KeywordTok{if}\NormalTok{(a >= }\DecValTok{0}\NormalTok{)\{}
+    \CommentTok{//@ assert a >= 0; // et rien à propos de b}
+    \NormalTok{a++ ;}
+  \NormalTok{\} }\KeywordTok{else} \NormalTok{\{}
+    \CommentTok{//@ assert a < 0 && a > -99 ; // et rien à propos de b}
+    \NormalTok{a += b ;}
+  \NormalTok{\}}
+  \KeywordTok{return} \NormalTok{a ;}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}\end{footnotesize}
+
+Dans le bloc \texttt{else}, n'ayant que connaissance du fait que
+\texttt{a} est compris entre -99 et 0, et ne sachant rien à propos de
+\texttt{b}, nous pourrions difficilement savoir si le calcul
+\texttt{a\ +=\ b} produit une valeur supérieure strict à 0 pour
+\texttt{a}.
+
+Naturellement ici, WP prouvera la fonction sans problème, puisqu'il
+transporte de lui-même les propriétés qui lui sont nécessaires pour la
+preuve. En fait, l'analyse des variables qui sont nécessaires ou non (et
+l'application, par conséquent de la règle de constance) est réalisée
+directement par WP.
+
+Notons finalement que la règle de constance est une instance de la règle
+de conséquence :
+
+\begin{center}\(\dfrac{P \wedge R \Rightarrow P \quad \{P\}\quad c\quad \{Q\} \quad Q \Rightarrow Q \wedge R}{\{P \wedge R\}\quad c\quad \{Q \wedge R\}}\)
+\end{center}
+
+Si les variables de \(R\) n'ont pas été modifiées par l'opération (qui
+par contre, modifie les variables de \(P\) pour former \(Q\)), alors
+effectivement \(P \wedge R \Rightarrow P\) et
+\(Q \Rightarrow Q \wedge R\).
 
 \section{Les boucles}\label{les-boucles}
 
@@ -2793,12 +3077,12 @@ nous ne pouvons pas non plus savoir combien de fois les variables ont
 été modifiées.
 
 Nous allons donc procéder en raisonnant par induction. Nous devons
-trouver une propriété qui est vraie avant de commencer la boucle et qui
-si elle est vraie en début d'un tour de boucle, sera vraie à la fin (et
+trouver une propriété qui est vraie avant de commencer la boucle et qui,
+si elle est vraie au début d'un tour de boucle, sera vraie à la fin (et
 donc par extension, au début du tour suivant).
 
 Ce type de propriété est appelé un invariant de boucle. Un invariant de
-boucle est une propriété qui doit est vraie avant et après chaque tour
+boucle est une propriété qui doit être vraie avant et après chaque tour
 d'une boucle. Par exemple, pour la boucle :
 
 \begin{footnotesize}\begin{Shaded}
@@ -2823,8 +3107,8 @@ sera donc :
 \item
   vérifions que \(I\) est vrai au début de la boucle (établissement),
 \item
-  vérifions que \(I\) est vrai avant de commencer un tour, alors \(I\)
-  vrai après (préservation).
+  vérifions que \(I\) est vrai avant de commencer un tour, auquel cas
+  \(I\) est vrai après (préservation).
 \end{itemize}
 
 \subsubsection{{[}Formel{]} Règle
@@ -2840,7 +3124,7 @@ boucle est définie comme suit :
 Et le calcul de plus faible pré-condition est le suivant :
 
 \begin{center}
-\(wp(while (B) \{ S \}, Post) = I \wedge ((B \wedge I) \Rightarrow wp(S, I)) \wedge ((\neg B \wedge I) \Rightarrow Post)\)
+\(wp(while (B) \{ c \}, Post) := I \wedge ((B \wedge I) \Rightarrow wp(c, I)) \wedge ((\neg B \wedge I) \Rightarrow Post)\)
 \end{center}
 
 Détaillons cette formule :
@@ -2852,21 +3136,21 @@ Détaillons cette formule :
   \tightlist
   \item
     le premier \(I\) correspond à l'établissement de l'invariant, c'est
-    vulgairement la \og{}pré-condition\fg{} de la boucle,
+    vulgairement la « pré-condition » de la boucle,
   \end{enumerate}
 \item
   la deuxième partie de la conjonction
-  (\((B \wedge I) \Rightarrow wp(S, I)\)) correspond à la vérification
+  (\((B \wedge I) \Rightarrow wp(c, I)\)) correspond à la vérification
   du travail effectué par le corps de la boucle :
 
   \begin{itemize}
   \item
     la pré-condition que nous connaissons du corps de la boucle (notons
-    \(KWP\), \og{}Known WP\fg{}) , c'est (\(KWP = B \wedge I\)). Soit le fait
-    que nous sommes rentrés dedans (\(B\) est vrai), et que l'invariant
-    est respecté à ce moment (\(I\), qui est vrai avant de commencer la
-    boucle par 1, et dont veut vérifier qu'il sera vraie en fin de bloc
-    de la boucle (2)),
+    \(KWP\), « \emph{Known WP} ») , c'est (\(KWP = B \wedge I\)). Soit
+    le fait que nous sommes rentrés dedans (\(B\) est vrai), et que
+    l'invariant est respecté à ce moment (\(I\), qui est vrai avant de
+    commencer la boucle par 1, et dont veut vérifier qu'il sera vraie en
+    fin de bloc de la boucle (2)),
   \item
     \begin{enumerate}
     \def\labelenumi{(\arabic{enumi})}
@@ -2875,29 +3159,47 @@ Détaillons cette formule :
     \item
       ce qu'il nous reste à vérifier c'est que \(KWP\) implique la
       pré-condition réelle* du bloc de code de la boucle
-      (\(KWP \Rightarrow wp(S, Post)\)). Ce que nous voulons en fin de
+      (\(KWP \Rightarrow wp(c, Post)\)). Ce que nous voulons en fin de
       bloc, c'est avoir maintenu l'invariant \(I\) (\(B\) n'est
       peut-être plus vrai en revanche). Donc
-      \(KWP \Rightarrow wp(S, I)\), soit
-      \((B \wedge I) \Rightarrow wp(S, I)\),
+      \(KWP \Rightarrow wp(c, I)\), soit
+      \((B \wedge I) \Rightarrow wp(c, I)\),
     \end{enumerate}
   \item
     * cela correspond à une application de la règle de conséquence
     expliquée précédemment.
   \end{itemize}
 \item
-  finalement la dernière partie (\((\neg B \wedge I) \Rightarrow Post\))
-  nous dit que le fait d'être sorti de la boucle (\(\neg B\)), tout en
-  ayant maintenu l'invariant \(I\), doit impliquer la post-condition
-  voulue pour la boucle.
+  finalement, la dernière partie
+  (\((\neg B \wedge I) \Rightarrow Post\)) nous dit que le fait d'être
+  sorti de la boucle (\(\neg B\)), tout en ayant maintenu l'invariant
+  \(I\), doit impliquer la post-condition voulue pour la boucle.
 \end{itemize}
+
+Dans ce calcul, nous pouvons noter que la fonction \(wp\) ne nous donne
+aucune indication sur le moyen d'obtenir l'invariant \(I\). Nous allons
+donc devoir spécifier manuellement de telles propriétés à propos de nos
+boucles.
 
 \subsubsection{Retour à l'outil}\label{retour-uxe0-loutil}
 
 Il existe des outils capables d'inférer des invariants (pour peu qu'ils
 soient simples, les outils automatiques restent limités). Ce n'est pas
-le cas de WP. Il nous faut donc écrire nos invariants à la main. Pour
-cela nous ajoutons les annotations suivantes en début de boucle :
+le cas de WP. Il nous faut donc écrire nos invariants à la main. Trouver
+et écrire les invariants des boucles de nos programmes sera toujours la
+partie la plus difficile de notre travail lorsque nous chercherons à
+prouver des programmes.
+
+En effet, si en l'absence de boucle, la fonction de calcul de plus
+faible pré-condition peut nous fournir automatiquement les propriétés
+vérifiables de nos programmes, ce n'est pas le cas pour les invariants
+de boucle pour lesquels nous n'avons pas accès à une procédure
+automatique de calcul. Nous devons donc trouver et formuler correctement
+ces invariants, et selon l'algorithme, celui-ci peut parfois être très
+subtil.
+
+Pour indiquer un invariant à une boucle, nous ajoutons les annotations
+suivantes en début de boucle :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -2927,7 +3229,7 @@ est que lorsque l'on invalide la condition de la boucle, par la
 connaissance de l'invariant, on peut prouver la post-condition
 (Formellement : \((\neg B \wedge I) \Rightarrow Post\)).
 
-La post-condition de notre boucle est \texttt{i\ ==\ 30}. Et doit être
+La post-condition de notre boucle est \texttt{i\ ==\ 30} et doit être
 impliquée par \(\neg\) \texttt{i\ \textless{}\ 30} \(\wedge\)
 \texttt{0\ \textless{}=\ i\ \textless{}=\ 30}. Ici, cela fonctionne bien
 :
@@ -2935,8 +3237,8 @@ impliquée par \(\neg\) \texttt{i\ \textless{}\ 30} \(\wedge\)
 Si l'invariant excluait l'égalité à 30, la post-condition ne serait pas
 atteignable.
 
-Une nouvelle fois, nous pouvons jeter un œil à la liste des buts dans WP
-Goals (montrée dans la figure~\ref{fig:3-3-1-i_30-1}).
+Une nouvelle fois, nous pouvons jeter un œil à la liste des buts dans «
+\emph{WP Goals} » (montrée dans la figure~\ref{fig:3-3-1-i_30-1}).
 
 \begin{figure}[htbp]
 \centering
@@ -2950,7 +3252,7 @@ parties : l'établissement de l'invariant et sa préservation. WP produit
 exactement le raisonnement décrit plus haut pour la preuve de
 l'assertion. Dans les versions récentes de Frama-C, Qed est devenu
 particulièrement puissant, et l'obligation de preuve générée ne le
-montre pas (affichant simplement \og{}True\fg{}). En utilisant l'option
+montre pas (affichant simplement « \emph{True} »). En utilisant l'option
 \texttt{-wp-no-simpl} au lancement, nous pouvons quand même voir
 l'obligation correspondante (montrée dans la figure~\ref{fig:3-3-end_loop}).
 
@@ -2991,8 +3293,8 @@ Mais notre spécification est-elle suffisante ?
 
 Il semble que non (voir figure~\ref{fig:3-3-loop-side-effect}).
 
-\subsection{\texorpdfstring{La clause \og{}assigns\fg{} \ldots{} pour les
-boucles}{La clause assigns \ldots{} pour les boucles}}\label{la-clause-assigns-pour-les-boucles}
+\subsection{La clause « assigns » \ldots{} pour les
+boucles}\label{la-clause-assigns-pour-les-boucles}
 
 En fait, à propos des boucles, WP ne considère vraiment \emph{que} ce
 que lui fournit l'utilisateur pour faire ses déductions. Et ici
@@ -3021,10 +3323,10 @@ Toute autre variable est considérée invariante. Par exemple :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Cette fois, nous pouvons établir la correction de la boucle. Par contre
-rien ne nous prouve sa terminaison. L'invariant de boucle n'est pas
-suffisant pour effectuer une telle preuve. Par exemple, dans notre
-programme, si nous réécrivons la boucle comme ceci :
+Cette fois, nous pouvons établir la preuve de correction de la boucle.
+Par contre, rien ne nous prouve sa terminaison. L'invariant de boucle
+n'est pas suffisant pour effectuer une telle preuve. Par exemple, dans
+notre programme, si nous réécrivons la boucle comme ceci :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -3039,18 +3341,18 @@ programme, si nous réécrivons la boucle comme ceci :
 \end{Shaded}\end{footnotesize}
 
 L'invariant est bien vérifié également, mais nous ne pourrons jamais
-prouver que la boucle termine : elle est infinie.
+prouver que la boucle se termine : elle est infinie.
 
-\subsection{Preuve partielle et preuve totale - Variant de
-boucle}\label{preuve-partielle-et-preuve-totale---variant-de-boucle}
+\subsection{Correction partielle et correction totale - Variant de
+boucle}\label{correction-partielle-et-correction-totale---variant-de-boucle}
 
 En vérification déductive, il y a deux types de correction, la
 correction partielle et la correction totale. Dans le premier cas, la
-formulation est \og{}si la pré-condition est validée et \textbf{si} le
-calcul termine, alors la post-condition est validée\fg{}. Dans le second
-cas, \og{}si la pré-condition est validée, alors le calcul termine et la
-post-condition est validée\fg{}. WP s'intéresse par défaut à de la preuve
-partielle :
+formulation est « si la pré-condition est validée et \textbf{si} le
+calcul termine, alors la post-condition est validée ». Dans le second
+cas, « si la pré-condition est validée, alors le calcul termine et la
+post-condition est validée ». WP s'intéresse par défaut à de la preuve
+de correction partielle :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -3071,12 +3373,14 @@ RTE, nous obtenons le résultat présenté en figure~\ref{fig:3-3-infini}.
 \label{fig:3-3-infini}
 \end{figure}
 
-L'assertion \og{}FAUX\fg{} est prouvée ! La raison est simple : la
-non-terminaison de la boucle est triviale. Comme le calcul ne termine
-pas et nous sommes en correction partielle, nous prouve ce que nous
-voulons à la suite d'un calcul non terminant. Si la non-terminaison est
-non-triviale, il y a peu de chances que l'assertion soit prouvée en
-revanche.
+L'assertion « FAUX » est prouvée ! La raison est simple : la
+non-terminaison de la boucle est triviale : la condition de la boucle
+est « VRAI » et aucune instruction du bloc de la boucle ne permet d'en
+sortir puisque le bloc ne contient pas de code du tout. Comme nous
+sommes en correction partielle, et que le calcul ne termine pas, nous
+pouvons prouver n'importe quoi au sujet du code qui suit la partie non
+terminante. Si, en revanche, la non-terminaison est non-triviale, il y a
+peu de chances que l'assertion soit prouvée.
 
 \begin{zdsblock}{Information}
   À noter qu'une assertion
@@ -3099,6 +3403,8 @@ par la boucle et donnant une borne supérieure sur le nombre d'itérations
 restant à effectuer à un tour de la boucle. C'est donc une expression
 supérieure à 0 et strictement décroissante d'un tour de boucle à l'autre
 (cela sera également vérifié par induction par WP).
+
+
 
 Si nous reprenons notre programme précédent, nous pouvons ajouter le
 variant de cette façon :
@@ -3139,6 +3445,44 @@ décroît strictement pendant l'exécution de la boucle. Et si nous
 supprimons la ligne de code qui incrémente \texttt{i}, WP ne peut plus
 prouver que la valeur \texttt{30\ -\ i} décroît strictement.
 
+Il est également bon de noter qu'être capable de donner un variant de
+boucle n'induit pas nécessairement d'être capable de donner le nombre
+exact d'itérations qui doivent encore être exécutées par la boucle, car
+nous n'avons pas toujours une connaissance aussi précise du comportement
+de notre programme. Nous pouvons par exemple avoir un code comme
+celui-ci :
+
+\begin{footnotesize}\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#include <stddef.h>}
+
+\CommentTok{/*@}
+\CommentTok{  ensures min <= \textbackslash{}result <= max;}
+\CommentTok{*/}
+\NormalTok{size_t random_between(size_t min, size_t max);}
+
+\DataTypeTok{void} \NormalTok{undetermined_loop(size_t bound)\{}
+  \CommentTok{/*@}
+\CommentTok{    loop invariant 0 <= i <= bound ;}
+\CommentTok{    loop assigns i;}
+\CommentTok{    loop variant i;}
+\CommentTok{   */}
+  \KeywordTok{for}\NormalTok{(size_t i = bound; i > }\DecValTok{0}\NormalTok{; )\{}
+    \NormalTok{i -= random_between(}\DecValTok{1}\NormalTok{, i);}
+  \NormalTok{\}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}\end{footnotesize}
+
+Ici, à chaque tour de boucle, nous diminuons la valeur de la variable
+\texttt{i} par une valeur dont nous savons qu'elle se trouve entre 1 et
+\texttt{i}. Nous pouvons donc bien assurer que la valeur de \texttt{i}
+est positive et décroît strictement, mais nous ne pouvons pas dire
+combien de tours de boucles vont être réalisés pendant une exécution.
+
+Le variant n'est donc bien qu'une borne supérieure sur le nombre
+d'itérations de la boucle.
+
 \subsection{Lier la post-condition et
 l'invariant}\label{lier-la-post-condition-et-linvariant}
 
@@ -3165,6 +3509,8 @@ nous avons ajouté 10.
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
+\clearpage
+
 Le calcul de plus faibles pré-conditions ne permet pas de sortir de la
 boucle des informations qui ne font pas partie de l'invariant. Dans un
 programme comme :
@@ -3187,11 +3533,11 @@ programme comme :
 En remontant les instructions depuis la post-condition, on conserve
 toujours les informations à propos de \texttt{a}. À l'inverse, comme
 mentionné plus tôt, en dehors de la boucle WP ne considérera que les
-connaissances fournies par notre invariant. Par conséquent, notre
+informations fournies par notre invariant. Par conséquent, notre
 fonction \texttt{plus\_dix} ne peut pas être prouvée en l'état :
-l'invariant ne mentionne aucune connaissance à propos de \texttt{a}.
-Pour lier notre post-condition à l'invariant, il faut ajouter une telle
-connaissance. Par exemple :
+l'invariant ne mentionne rien à propos de \texttt{a}. Pour lier notre
+post-condition à l'invariant, il faut ajouter une telle information. Par
+exemple :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -3213,7 +3559,7 @@ connaissance. Par exemple :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-\begin{zdsblock}
+\begin{zdsblock}{Remarque}
   Ce besoin peut semble être une
   contrainte très forte. Elle ne l'est en fait pas tant que
   cela. Il existe des analyses fortement automatiques capables de
@@ -3235,7 +3581,7 @@ read-only}\label{exemple-avec-un-tableau-read-only}
 S'il y a une structure de données que nous traitons avec les boucles
 c'est bien le tableau. C'est une bonne base d'exemples pour les boucles
 car ils permettent rapidement de présenter des invariants intéressants
-et surtout, il va permettre d'introduire des constructions très
+et surtout, ils vont nous permettre d'introduire des constructions très
 importantes d'ACSL.
 
 Prenons par exemple la fonction qui cherche une valeur dans un tableau :
@@ -3299,24 +3645,30 @@ utiles, à savoir \texttt{\textbackslash{}forall} (\(\forall\)) et
 \texttt{\textbackslash{}exists} (\(\exists\)), les quantificateurs de la
 logique. Le premier nous servant à annoncer que pour tout élément, la
 propriété suivante est vraie. Le second pour annoncer qu'il existe un
-élément tel que la propriété est vraie. Si nous commentons les deux
-lignes en questions, nous pouvons les lire de cette façon :
+élément tel que la propriété est vraie.
+
+\clearpage
+
+Si nous commentons les deux lignes en questions, nous pouvons les lire
+de cette façon :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{/*@}
-\CommentTok{//pour tout "off" de type "size_t", tel que SI "off" est compris entre 0 et "length"}
-\CommentTok{//                                 ALORS la case "off" de "a" est différente de "element"}
+\CommentTok{//pour tout "off" de type "size_t", }
+\CommentTok{//                tel que SI "off" est compris entre 0 et "length"}
+\CommentTok{//                ALORS la case "off" de "a" est différente de "element"}
 \CommentTok{\textbackslash{}forall size_t off ; 0 <= off < length ==> a[off] != element;}
 
-\CommentTok{//il existe "off" de type "size_t", tel que "off" soit compris entre 0 et "length"}
-\CommentTok{//                                 ET que la case "off" de "a" vaille "element"}
+\CommentTok{//il existe "off" de type "size_t", }
+\CommentTok{//                tel que "off" soit compris entre 0 et "length"}
+\CommentTok{//                ET que la case "off" de "a" vaille "element"}
 \CommentTok{\textbackslash{}exists size_t off ; 0 <= off < length && a[off] == element;}
 \CommentTok{*/}
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Si nous devions résumer leur utilisation, nous voudrions dire que sur un
+Si nous devions résumer leur utilisation, nous pourrions dire que sur un
 certain ensemble d'éléments, une propriété est vraie, soit à propos d'au
 moins l'un d'eux, soit à propos de la totalité d'entre eux. Un schéma
 qui reviendra typiquement dans ce cas est que nous restreindrons cet
@@ -3331,8 +3683,8 @@ Avec
 la restriction (\texttt{p}) est suivie par une implication. Pour tout
 élément, s'il respecte une première propriété (\texttt{p}), alors
 vérifier la seconde propriété \texttt{q}. Si nous mettions un ET comme
-pour le \og{}il existe\fg{} que nous expliquerons ensuite, cela voudrait dire
-que nous voulons que tout élément respecte à la fois les deux
+pour le « il existe » (que nous expliquerons ensuite), cela voudrait
+dire que nous voulons que tout élément respecte à la fois les deux
 propriétés. Parfois, cela peut être ce que nous voulons exprimer, mais
 cela ne correspond alors plus à l'idée de restreindre un ensemble dont
 nous voulons montrer une propriété particulière.
@@ -3341,11 +3693,11 @@ Avec \texttt{\textbackslash{}exists\ type\ a\ ;\ p(a)\ \&\&\ q(a)}, la
 restriction (\texttt{p}) est suivie par une conjonction, nous voulons
 qu'il existe un élément tel que cet élément est dans un certain état
 (défini par \texttt{p}), tout en respectant l'autre propriété
-\texttt{q}. Si nous mettions une implication comme pour le \og{}pour
-tout\fg{}, alors une telle expression devient toujours vraie à moins que p
-soit une tautologie ! Pourquoi ? Existe-t-il \og{}a\fg{} tel que p(a) implique
-q(a) ? Prenons n'importe quel \og{}a\fg{} tel que p(a) est faux, l'implication
-devient vraie.
+\texttt{q}. Si nous mettions une implication comme pour le « pour tout
+», alors une telle expression devient toujours vraie à moins que
+\texttt{p} soit une tautologie ! Pourquoi ? Existe-t-il « a » tel que
+p(a) implique q(a) ? Prenons n'importe quel « a » tel que p(a) est faux,
+l'implication devient vraie.
 
 Cette partie de l'invariant mérite une attention particulière :
 
@@ -3357,12 +3709,12 @@ Cette partie de l'invariant mérite une attention particulière :
 
 En effet, c'est la partie qui définit l'action de notre boucle, elle
 indique à WP ce que la boucle va faire (ou apprendre dans le cas
-présent) tout au long de son exécution. Ici en l'occurrence, cet formule
-nous dit qu'à chaque tour, nous savons que pour toute case entre 0 et la
-prochaine que nous allons visiter \texttt{i} (exclue), elle stocke une
-valeur différente de l'élément recherché.
+présent) tout au long de son exécution. Ici en l'occurrence, cette
+formule nous dit qu'à chaque tour, nous savons que pour toute case entre
+0 et la prochaine que nous allons visiter (\texttt{i} exclue), elle
+stocke une valeur différente de l'élément recherché.
 
-Le but WP associé à la préservation de cet invariant est un peu
+Le but de WP associé à la préservation de cet invariant est un peu
 compliqué, il n'est pour nous pas très intéressant de se pencher dessus.
 En revanche, la preuve de l'établissement de cet invariant est
 intéressante (voir figure~\ref{fig:3-4-trivial}).
@@ -3388,9 +3740,9 @@ l'invariant :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-\og{}Pour tout j, supérieur ou égal à 0 et inférieur strict à 0\fg{}, cette
-partie est nécessairement fausse. Notre implication est nécessairement
-vraie.
+« Pour tout j, supérieur ou égal à 0 et inférieur strict à 0 », cette
+partie est nécessairement fausse. Notre implication est donc
+nécessairement vraie.
 
 \subsection{Exemples avec tableaux
 mutables}\label{exemples-avec-tableaux-mutables}
@@ -3401,8 +3753,11 @@ sélective.
 
 \subsubsection{Remise à zéro}\label{remise-uxe0-zuxe9ro}
 
-Regardons la fonction effectuant la remise à zéro d'un tableau.
+Regardons la fonction effectuant la remise à zéro d'un tableau (voir
+figure~\ref{fig:4-4-2-1-raz}).
 
+\begin{figure}[htbp]
+  \centering
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{#include <stddef.h>}
@@ -3424,24 +3779,29 @@ Regardons la fonction effectuant la remise à zéro d'un tableau.
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
+\caption{Fonction de remise à zéro d'un tableau}
+\label{fig:4-4-2-1-raz}
+\end{figure}
 
 Les seules parties sur lesquelles nous pouvons nous attacher ici sont
 les \texttt{assigns} de la fonction et de la boucle. À nouveau, nous
-pouvons utiliser a notation \texttt{n\ ..\ m} pour indiquer les parties
+pouvons utiliser la notation \texttt{n\ ..\ m} pour indiquer les parties
 du tableau qui sont modifiées.
 
 \subsubsection{Chercher et remplacer}\label{chercher-et-remplacer}
 
-Le dernier exemple qui nous intéresse est l'algorithme chercher et
-remplacer. C'est donc un algorithme qui va sélectivement modifier des
+Le dernier exemple qui nous intéresse est l'algorithme « chercher et
+remplacer ». C'est donc un algorithme qui va sélectivement modifier des
 valeurs dans une certaine plage d'adresses. Il est toujours un peu
-difficile de guider l'outil dans ce genre de cas car nous devons garder
-\og{}en mémoire\fg{}, ce qui est modifié et ce qui ne l'est pas et que
-l'induction repose sur ce fait.
+difficile de guider l'outil dans ce genre de cas car, d'une part, nous
+devons garder « en mémoire » ce qui est modifié et ce qui ne l'est pas
+et, d'autre part, parce que l'induction repose sur ce fait.
 
 À titre d'exemple, la première spécification que nous pouvons réaliser
-pour cette fonction ressemblerait à ceci :
+pour cette fonction est présentée dans la figure~\ref{fig:4-4-2-2-sar}.
 
+\begin{figure}[htbp]
+  \centering
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{#include <stddef.h>}
@@ -3471,12 +3831,16 @@ pour cette fonction ressemblerait à ceci :
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
+\caption{Fonction chercher et remplacer dans un tableau}
+\label{fig:4-4-2-2-sar}
+\end{figure}
 
-Nous utilisons la fonction logique \texttt{\textbackslash{}at} dont nous
-avons déjà expliqué le fonctionnement plus tôt. Si nous regardons
-l'utilisation qui en est faite ici, nous voyons que dans l'invariant de
-boucle, nous cherchons à établir une relation entre les anciennes
-valeurs du tableau et leurs potentielles nouvelles valeurs :
+Nous utilisons la fonction logique
+\texttt{\textbackslash{}at(v,\ Label)} qui nous donne la valeur de la
+variable \texttt{v} au point de programme \texttt{Label}. Si nous
+regardons l'utilisation qui en est faite ici, nous voyons que dans
+l'invariant de boucle, nous cherchons à établir une relation entre les
+anciennes valeurs du tableau et leurs potentielles nouvelles valeurs :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -3491,12 +3855,12 @@ valeurs du tableau et leurs potentielles nouvelles valeurs :
 
 Pour tout élément que nous avons visité, s'il valait la valeur qui doit
 être remplacée, alors il vaut la nouvelle valeur, sinon il n'a pas
-changé. En fait si nous essayons de prouver l'invariant, WP n'y parvient
-pas. Dans ce genre de cas, le plus simple est encore d'ajouter diverses
-assertions exprimant les propriétés intermédiaires que nous nous
-attendons à voir facilement prouvées et impliquant l'invariant. En fait,
-nous nous apercevons rapidement que WP n'arrive pas à maintenir le fait
-que nous n'avons pas encore modifié la fin du tableau :
+changé. En fait, si nous essayons de prouver l'invariant, WP n'y
+parvient pas. Dans ce genre de cas, le plus simple est encore d'ajouter
+diverses assertions exprimant les propriétés intermédiaires que nous
+nous attendons à voir facilement prouvées et impliquant l'invariant. En
+fait, nous nous apercevons rapidement que WP n'arrive pas à maintenir le
+fait que nous n'avons pas encore modifié la fin du tableau :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -3556,20 +3920,20 @@ boucle :
 notamment dépendantes de boucles, il va y avoir une part de tâtonnement
 pour comprendre ce qui manque au prouveur pour réussir la preuve.
 
-Ce qui peut lui manquer, c'est des hypothèses. Dans ce type de cas, nous
-pouvons tenter d'ajouter des assertions au code pour guider le prouveur.
-Avec de l'expérience, nous pouvons regarder le contenu des obligations
-de preuve ou tenter de commencer la preuve avec Coq pour voir si la
-preuve semble réalisable. Parfois le prouveur manque juste de temps,
-auquel cas, il suffit d'augmenter (parfois beaucoup) la durée du
-timeout. Finalement, la propriété peut également être hors de portée du
-prouveur. Auquel cas, il faudra écrire une preuve à la main avec un
-prouveur interactif.
+Ce qui peut lui manquer, ce sont des hypothèses. Dans ce type de cas,
+nous pouvons tenter d'ajouter des assertions au code pour guider le
+prouveur. Avec de l'expérience, nous pouvons regarder le contenu des
+obligations de preuve ou tenter de commencer la preuve avec Coq pour
+voir si la preuve semble réalisable. Parfois le prouveur manque juste de
+temps, auquel cas, il suffit d'augmenter (parfois de beaucoup) la durée
+du \emph{timeout}. Finalement, la propriété peut également être hors de
+portée du prouveur. Auquel cas, il faudra écrire une preuve à la main
+avec un prouveur interactif.
 
 Enfin, il reste le cas où l'implémentation est effectivement fausse, et
 dans ce cas, il faut la corriger. Et c'est là que nous utiliserons
 plutôt le test que la preuve, car le test permet de prouver la présence
-d'un bug ;) .
+d'un bug. ;)
 
 Dans cette partie nous avons pu voir comment se traduisent les
 affectations et les structures de contrôle d'un point de vue logique.
@@ -3597,7 +3961,7 @@ n'allons pas les présenter un à un, le lecteur pourra se référer à
 implementation)} pour cela (à noter : tout n'est pas nécessairement
 supporté par WP).
 
-ACSL nous permet de faire plus que \og{}simplement\fg{} spécifier notre code.
+ACSL nous permet de faire plus que « simplement » spécifier notre code.
 Nous pouvons définir nos propres prédicats, fonctions, relations, etc.
 Le but est de pouvoir abstraire nos spécifications. Cela nous permet de
 les factoriser (par exemple en définissant ce qu'est un tableau valide),
@@ -3609,11 +3973,13 @@ faciliter la preuve de nouveaux programmes.
 \section{Types primitifs
 supplémentaires}\label{types-primitifs-suppluxe9mentaires}
 
-ACSL nous propose deux types qui vont permettre d'être d'écrire des
+ACSL nous propose deux types qui vont nous permettre d'écrire des
 propriétés ou des fonctions sans avoir à se préoccuper des contraintes
 dues à la taille en mémoire des types primitifs du C. Ces types sont
-\texttt{integer} et \texttt{real}. Qui représente respectivement les
-vrais entiers et les \og{}aussi vrai que possible\fg{} réels.
+\texttt{integer} et \texttt{real}, qui représentent respectivement les
+entiers mathématiques et les réels mathématiques (pour ces derniers, la
+modélisation est aussi proche que possible de la réalité, mais la notion
+de réel ne peut pas être parfaitement représentée).
 
 Par la suite, nous utiliserons souvent des entiers à la place des
 classiques \texttt{ìnt} du C. La raison est simplement que beaucoup de
@@ -3622,10 +3988,10 @@ cette fois) en entrée.
 
 En revanche, nous ne parlerons pas de \texttt{real} VS
 \texttt{float/double}, parce que cela induirait que nous parlions de
-preuve de programmes avec du calcul en virgule flottante. Et nous ne
-parlerons pas de preuve de programmes impliquant du calcul en virgule
-flottante. Par contre, ce tutoriel en cours d'écriture en parle :
-\href{https://zestedesavoir.com/forums/sujet/4157/effectuer-des-calculs-numeriques-precis/}{Effectuer
+preuve de programmes avec du calcul en virgule flottante et que nous
+n'en parlerons pas ici. Par contre, ce tutoriel en cours d'écriture en
+parle :
+\href{https://zestedesavoir.com/forums/sujet/4157/effectuer-des-calculs-numeriques-precis/}{effectuer
 des calculs numériques précis}.
 
 \section{Prédicats}\label{pruxe9dicats}
@@ -3641,9 +4007,9 @@ pures, c'est-à-dire qu'elles ne peuvent pas produire d'effets de bords
 en modifiant des valeurs pointées par exemple.
 
 Ces prédicats peuvent prendre un certain nombre de paramètres. En plus
-de cela, ils peuvent également recevoir un certain nombre de labels (au
-sens C du terme) qui vont permettre d'établir des relations entre divers
-points du code.
+de cela, ils peuvent également recevoir un certain nombre de
+\emph{labels} (au sens C du terme) qui vont permettre d'établir des
+relations entre divers points du code.
 
 \subsection{Syntaxe}\label{syntaxe}
 
@@ -3653,14 +4019,14 @@ d'annotations. La syntaxe est la suivante :
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{/*@}
-\CommentTok{  predicate nom_du_predicat \{ Label0, Label1, ..., LabelN \}(type0 arg0, type1 arg1, ..., typeN argN) =}
+\CommentTok{  predicate nom_predicat \{ Lbl0, Lbl1, ..., LblN \}(type0 arg0, type1 arg1, ..., typeN argN) =}
 \CommentTok{    //une relation logique entre toutes ces choses.}
 \CommentTok{*/}
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
 Nous pouvons par exemple définir le prédicat nous disant qu'un entier en
-mémoire n'a pas changé entre deux points particuliers de programme :
+mémoire n'a pas changé entre deux points particuliers du programme :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -3710,7 +4076,7 @@ raisonner avec.
 
 Comme nous l'avons dit plus tôt, une des utilités des prédicats et
 fonctions (que nous verrons un peu plus tard) est de rendre plus lisible
-nos spécification et de les factoriser. Un exemple est d'écrire un
+nos spécifications et de les factoriser. Un exemple est d'écrire un
 prédicat pour la validité en lecture/écriture d'un tableau sur une plage
 particulière. Cela nous évite d'avoir à réécrire l'expression en
 question qui est moins compréhensible au premier coup d'œil.
@@ -3734,15 +4100,16 @@ question qui est moins compréhensible au premier coup d'œil.
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Dans cette portion de spécification, le label pour les prédicats n'est
-pas précisé, ni pour leur création, ni pour leur utilisation. Pour la
-création, Frama-C va automatiquement en ajouter un dans la définition du
-prédicat. Pour l'appel, le label passé sera implicitement \texttt{Here}.
-La non-déclaration du label dans la définition n'interdit pour autant
-pas de passer explicitement un label lors de l'appel.
+Dans cette portion de spécification, le \emph{label} pour les prédicats
+n'est pas précisé, ni pour leur création, ni pour leur utilisation. Pour
+la création, Frama-C va automatiquement en ajouter un dans la définition
+du prédicat. Pour l'appel, le \emph{label} passé sera implicitement
+\texttt{Here}. La non-déclaration du \emph{label} dans la définition
+n'interdit pour autant pas de passer explicitement un \emph{label} lors
+de l'appel.
 
 Bien entendu, les prédicats peuvent être déclarés dans des fichiers
-headers afin de produire une bibliothèque d'utilitaires de
+\emph{headers} afin de produire une bibliothèque d'utilitaires de
 spécifications par exemple.
 
 \subsection{Abstraction}\label{abstraction}
@@ -3815,26 +4182,29 @@ d'une pile de taille limitée. Et cela donnerait quelque chose comme :
 \end{Shaded}\end{footnotesize}
 
 Ici la spécification n'exprime pas de propriétés fonctionnelles. Par
-exemple, rien ne nous spécifie que lorsque nous faisons un push une
-valeur puis que nous demandons top, nous auront effectivement cette
-valeur. Mais elle nous donne déjà tout ce dont nous avons besoin pour
-produire un code où à défaut d'avoir exactement les résultats que nous
-attendons, nous ne pouvons pas avoir d'erreur d'exécution (à condition
-de poser une spécification correcte pour nos prédicats et de prouver les
-fonctions d'utilisation de la structure).
+exemple, rien ne nous spécifie que lorsque nous faisons un \emph{push}
+d'une valeur puis que nous demandons \emph{top}, nous auront
+effectivement cette valeur. Mais elle nous donne déjà tout ce dont nous
+avons besoin pour produire un code où, à défaut d'avoir exactement les
+résultats que nous attendons (des comportements tels que « si j'empile
+une valeur \(v\), l'appel à \texttt{top} renvoie la valeur \(v\) », par
+exemple), nous pouvons au moins garantir que nous n'avons pas d'erreur
+d'exécution (à condition de poser une spécification correcte pour nos
+prédicats et de prouver les fonctions d'utilisation de la structure).
 
 \section{Fonctions logiques}\label{fonctions-logiques}
 
 Les fonctions logiques nous permettent de décrire des fonctions qui ne
 seront utilisables que dans les spécifications. Cela nous permet, d'une
 part, de les factoriser, et d'autre part de définir des opérations sur
-les types integer et real qui ne peuvent pas déborder contrairement aux
-types machines.
+les types \texttt{integer} et \texttt{real} qui ne peuvent pas déborder
+contrairement aux types machines.
 
-Comme les prédicats, elles peuvent recevoir divers labels et valeurs en
-paramètre.
+Comme les prédicats, elles peuvent recevoir divers \emph{labels} et
+valeurs en paramètre.
 
-\newpage
+\clearpage
+
 \subsection{Syntaxe}\label{syntaxe-1}
 
 Pour déclarer une fonction logique, l'écriture est la suivante :
@@ -3848,8 +4218,9 @@ Pour déclarer une fonction logique, l'écriture est la suivante :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Nous pouvons par exemple décrire une fonction affine générale du côté de
-la logique :
+Nous pouvons par exemple décrire une
+\href{https://fr.wikipedia.org/wiki/Fonction_affine}{fonction affine}
+générale du côté de la logique :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -3881,11 +4252,13 @@ Elle peut nous servir à prouver le code de la fonction suivante :
 \label{fig:4-3-affine-1}
 \end{figure}
 
-Le code est bien prouvé mais les contrôles d'overflow, eux, ne le sont
-pas (voir figure~\ref{fig:4-3-affine-1}). Nous pouvons à nouveau définir
-des fonctions logiques générales pour avoir les bornes calculées de côté
-de la logique en fonction des valeurs que nous donnons en entrée. Ainsi
-qu'ajouter nos contrôles de bornes en pré-condition de fonction :
+Le code est bien prouvé mais les contrôles d'\emph{overflow}, eux, ne le
+sont pas (voir figure~\ref{fig:4-3-affine-1}). Nous pouvons à nouveau
+définir des fonctions logiques
+générales, qui vont, du point de vue de la logique, nous fournir les
+bornes en fonction des valeurs que nous donnons en entrée. Cela nous
+permet ensuite d'ajouter nos contrôles de bornes en pré-condition de
+fonction :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -3911,6 +4284,13 @@ qu'ajouter nos contrôles de bornes en pré-condition de fonction :
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
+
+\begin{zdsblock}{Information}
+  Notons que comme dans la spécification, les calculs sont effectués à
+  l'aide d'entiers mathématiques, nous n'avons pas à nous préoccuper d'un
+  quelconque risque de débordement avec les calculs de \texttt{INT\_MIN-b}
+  ou \texttt{INT\_MAX-b}.
+\end{zdsblock}
 
 Et cette fois tout est prouvé. Évidemment, nous pourrions fixer ces
 valeurs en dur chaque fois que nous avons besoin d'une nouvelle fonction
@@ -3953,12 +4333,14 @@ ajoutons le contrôle des RTE, le vérification de débordement sur
 l'entier non-signé n'est pas ajoutée, car c'est un comportement
 déterminé d'après la norme C. Pour ajouter une assertion à ce point,
 nous pouvons demander à WP de générer ses propres vérifications en
-faisant un clic droit sur la fonction puis \og{}insert WP-safety guards\fg{}.
-Et dans ce cas, le nom débordemement n'est pas prouvé.
+faisant un clic droit sur la fonction puis « insert WP-safety guards ».
+Et dans ce cas, le non-débordemement n'est pas prouvé.
 
-Sur le type unsigned, le maximum que nous pouvons calculer est la
-factorielle de 12. Au-delà, cela produit un dépassement. Nous pouvons
+Sur le type \texttt{unsigned}, le maximum que nous pouvons calculer est
+la factorielle de 12. Au-delà, cela produit un dépassement. Nous pouvons
 donc ajouter cette pré-condition :
+
+\clearpage
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -3978,15 +4360,15 @@ pratiquement à coup sûr. En revanche, le prouveur Z3 produit la preuve
 en moins d'une seconde. Parce que dans ce cas précis, les heuristiques
 de Z3 considèrent que c'est une bonne idée de passer un peu plus de
 temps sur l'évaluation de la fonction. Nous pouvons par exemple changer
-la valeur maximale de \og{}n\fg{} pour voir comment se comporte les différents
-prouveurs. Avec un \og{}n\fg{} maximal fixé à 9, Alt-ergo produit la preuve en
-moins de 10 secondes, tandis que pour une valeur à 10, même une minute
-ne suffit pas.
+la valeur maximale de \texttt{n} pour voir comment se comporte les
+différents prouveurs. Avec un \texttt{n} maximal fixé à 9, Alt-ergo
+produit la preuve en moins de 10 secondes, tandis que pour une valeur à
+10, même une minute ne suffit pas.
 
-Les fonctions logiques peuvent donc être définie récursivement mais sans
-astuces supplémentaires, nous venons vite nous heurter au fait que les
-prouveurs vont au choix devoir faire de l'évaluation, ou encore
-\og{}raisonner\fg{} par induction, deux tâches pour lesquelles ils ne sont pas
+Les fonctions logiques peuvent donc être définies récursivement mais
+sans astuces supplémentaires, nous venons vite nous heurter au fait que
+les prouveurs vont au choix devoir faire de l'évaluation, ou encore «
+raisonner » par induction, deux tâches pour lesquelles ils ne sont pas
 du tout fait, ce qui limite nos possibilités de preuve.
 
 \section{Lemmes}\label{lemmes}
@@ -4017,9 +4399,9 @@ syntaxe utilisée est la suivante :
 \end{Shaded}\end{footnotesize}
 
 Cette fois les propriétés que nous voulons exprimer ne dépendent pas de
-paramètres reçus (hors de nos labels bien sûr). Ces propriétés seront
-donc exprimées sur des variables quantifiées. Par exemple, nous pouvons
-poser ce lemme qui est vrai, même s'il est trivial :
+paramètres reçus (hors de nos \emph{labels} bien sûr). Ces propriétés
+seront donc exprimées sur des variables quantifiées. Par exemple, nous
+pouvons poser ce lemme qui est vrai, même s'il est trivial :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -4095,8 +4477,8 @@ Si nous ne renseignons pas les lemmes mentionnés plus tôt, il y a peu de
 chances qu'Alt-ergo réussisse à produire la preuve que \texttt{fmin} est
 inférieur à \texttt{fmax}. Avec ces lemmes présents en revanche, il y
 parvient sans problème car cette propriété est une simple instance du
-lemme \texttt{ax\_b\_monotonic\_pos}, la preuve étant ainsi trivial car
-notre lemme nous statue cette propriété comme étant vraie.
+lemme \texttt{ax\_b\_monotonic\_pos}, la preuve étant ainsi triviale car
+notre lemme nous énonce cette propriété comme étant vraie.
 
 Dans cette partie, nous avons vu les constructions de ACSL qui nous
 permettent de factoriser un peu nos spécifications et d'exprimer des
@@ -4105,10 +4487,11 @@ faciliter leur travail.
 
 Toutes les techniques expliquées dans cette partie sont sûres, au sens
 où elles ne permettent \emph{a priori} pas de fausser la preuve avec des
-définitions fausses ou contradictoire. En tout cas, si elles ont toutes
-été prouvées correctes : tous les lemmes, toutes les pré-conditions aux
-points d'appels, toutes les assertions, tous les invariants et variants,
-ainsi que toutes les post-conditions.
+définitions fausses ou contradictoires. En tous cas, si la spécification
+n'utilise que ce type de constructions et que chaque lemme, chaque
+pré-condition (aux points d'appels), chaque post-condition, chaque
+assertion, chaque variant et chaque invariant est correctement prouvé,
+le code est juste.
 
 Parfois ces constructions ne sont pas suffisantes pour exprimer toutes
 nos propriétés ou pour prouver nos programmes. Les prochaines
@@ -4131,28 +4514,28 @@ Dans cette partie nous allons voir deux notions importantes d'ACSL :
 \end{itemize}
 
 Dans certaines configurations, ces deux notions sont absolument
-nécessaire pour faciliter le processus de spécification et de preuve.
+nécessaires pour faciliter le processus de spécification et de preuve.
 Soit en forçant l'abstraction de certaines propriétés, soit en
-explicitant des informations qui sont autrement implicite et plus
-difficile à prouver.
+explicitant des informations qui sont autrement implicites et plus
+difficiles à prouver.
 
 Le risque de ces deux notions est qu'elles peuvent rendre notre preuve
 inutile si nous faisons une erreur dans leur usage. La première en nous
 autorisant à introduire des hypothèses fausses ou des définitions trop
 imprécises. La seconde en nous ouvrant le risque de modifier le
-programme vérifié \ldots{} nous faisant ainsi prouver un autre programme
-que celui que nous voulons prouver.
+programme vérifié, nous faisant ainsi prouver un autre programme que
+celui que nous voulons prouver.
 
-\section{Axiomatiques}\label{axiomatiques}
+\section{Définitions axiomatiques}\label{duxe9finitions-axiomatiques}
 
-Les axiomes sont des propriétés dont nous statuons qu'elles sont vraies
-quelle que soit la situation. C'est un moyen très pratique de statuer
-sur des notions complexes qui vont pouvoir rendre le processus très
-efficace en abstrayant justement cette complexité. Évidemment, comme
-toute propriété exprimée comme un axiome est supposée vraie, il faut
-également faire très attention à ce que nous définissons car si nous
-introduisons une propriété fausse dans les notions que nous supposons
-vraies alors \ldots{} nous saurons tout prouver, même ce qui est faux.
+Les axiomes sont des propriétés dont nous énonçons qu'elles sont vraies
+quelle que soit la situation. C'est un moyen très pratique d'énoncer des
+notions complexes qui vont pouvoir rendre le processus très efficace en
+abstrayant justement cette complexité. Évidemment, comme toute propriété
+exprimée comme un axiome est supposée vraie, il faut également faire
+très attention à ce que nous définissons car si nous introduisons une
+propriété fausse dans les notions que nous supposons vraies alors
+\ldots{} nous saurons tout prouver, même ce qui est faux.
 
 \subsection{Syntaxe}\label{syntaxe-3}
 
@@ -4218,8 +4601,7 @@ vraie (voir figure~\ref{fig:5-1-1-fst-axiom}).
 \CommentTokAlt{}
 \CommentTokAlt{*/}
 \end{Highlighting}
-    \end{Shaded}
-  \end{footnotesize}
+    \end{Shaded}\end{footnotesize}
 \end{zdssecretblock}
 
 \subsubsection{Lien avec la notion de
@@ -4249,7 +4631,7 @@ l'axiomatique.
 
 L'idée est alors de ne pas définir directement la fonction ou le
 prédicat mais plutôt de la déclarer puis de définir des axiomes
-spécifiant sont comportement. Si nous reprenons par exemple la
+spécifiant son comportement. Si nous reprenons par exemple la
 factorielle, nous pouvons la définir axiomatiquement de cette manière :
 
 \begin{footnotesize}\begin{Shaded}
@@ -4271,7 +4653,7 @@ factorielle, nous pouvons la définir axiomatiquement de cette manière :
 Dans cette définition axiomatique, notre fonction n'a pas de corps. Son
 comportement étant défini par les axiomes ensuite définis. Une petite
 subtilité est qu'il faut prendre garde au fait que si les axiomes
-statuent des propriétés à propos du contenu d'une ou plusieurs zones
+énoncent des propriétés à propos du contenu d'une ou plusieurs zones
 mémoires pointées, il faut spécifier ces zones mémoires en utilisant la
 notation \texttt{reads} au niveau de la déclaration. Si nous oublions
 une telle spécification, le prédicat, ou la fonction, sera considéré
@@ -4346,9 +4728,9 @@ alors la propriété est toujours vérifiée :
 \end{Shaded}\end{footnotesize}
 
 Et d'énoncer une assertion pour spécifier ce qui n'a pas changé entre le
-début du bloc de la boucle (marqué par le label \texttt{L} dans le code)
-et la fin (qui se trouve être \texttt{Here} puisque nous posons notre
-assertion à la fin) :
+début du bloc de la boucle (marqué par le \emph{label} \texttt{L} dans
+le code) et la fin (qui se trouve être \texttt{Here} puisque nous posons
+notre assertion à la fin) :
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -4418,8 +4800,8 @@ qui allongeraient le processus complet. Seulement, en faisant cela
 \textbf{nous devons être extrêmement prudents}. En effet, la moindre
 hypothèse fausse introduite dans la base pourraient rendre tous nos
 raisonnements futiles. Notre raisonnement serait toujours correct, mais
-basé sur des connaissances fausses, il nous apprendrait plus rien de
-correct.
+basé sur des connaissances fausses, il ne nous apprendrait donc plus
+rien de correct.
 
 L'exemple le plus simple à produire est le suivant:
 
@@ -4454,12 +4836,12 @@ valable (voir figure~\ref{fig:false-axiom}).
 
 Évidemment cet exemple est extrême, nous n'écririons pas un tel axiome.
 Le problème est qu'il est très facile d'écrire une axiomatique
-subtilement fausse lorsque nous exprimons des propriétés plus complexe,
+subtilement fausse lorsque nous exprimons des propriétés plus complexes,
 ou que nous commençons à poser des suppositions sur l'état global d'un
 système.
 
-Quand nous commençons à faire créer de telles définitions, ajouter de
-temps en temps une preuve ponctuelle de \og{}false\fg{} dont nous voulons
+Quand nous commençons à créer de telles définitions, ajouter de temps en
+temps une preuve ponctuelle de « \emph{false} » dont nous voulons
 qu'elle échoue permet de s'assurer que notre définition n'est pas
 inconsistante. Mais cela ne fait pas tout ! Si la subtilité qui crée le
 comportement faux est suffisamment cachée, les prouveurs peuvent avoir
@@ -4472,9 +4854,9 @@ fonction ou un prédicat défini axiomatiquement est également importante
 pour la consistance de l'axiomatique. En effet, comme mentionné
 précédemment, si nous n'exprimons pas les valeurs lues dans le cas de
 l'usage d'un pointeur, la modification d'une valeur du tableau
-n'invalide pas une propriété de ce type d'un tableau par exemple. Dans
-un tel cas, la preuve passe mais l'axiome n'exprimant pas le contenu,
-nous ne prouvons rien.
+n'invalide pas une propriété que l'on connaitrait à propos du contenu du
+tableau par exemple. Dans un tel cas, la preuve passe mais l'axiome
+n'exprimant pas le contenu, nous ne prouvons rien.
 
 Par exemple, si nous reprenons l'exemple de mise à zéro, nous pouvons
 modifier la définition de notre axiomatique en retirant la mention des
@@ -4523,8 +4905,8 @@ Nous avons trois cas à gérer :
   ;
 \item
   la plage de valeur n'est pas vide et le dernier élément est celui
-  recherché : le nombre d'occurrences est le nombre d'occurrences dans
-  la plage privée du dernier élément plus 1 ;
+  recherché : le nombre d'occurrences est : le nombre d'occurrences dans
+  la plage actuelle que l'on prive du dernier élément, plus 1 ;
 \item
   la plage de valeur n'est pas vide et le dernier élément n'est pas
   celui recherché : le nombre d'occurrences est le nombre d'occurrences
@@ -4560,7 +4942,7 @@ comportement et la prouver :
 
 Une alternative au fait de spécifier que dans ce code \texttt{result}
 est au maximum \texttt{i} est d'exprimer un lemme plus général à propos
-de la valeur du nombre d'occurrences, dont nous ne savons qu'elle est
+de la valeur du nombre d'occurrences, dont nous savons qu'elle est
 comprise entre 0 et la taille maximale de la plage de valeurs considérée
 :
 
@@ -4656,8 +5038,10 @@ illustration intéressant de l'usage des axiomatiques.
 \end{zdssecretblock}
 
 En effet, une erreur commune que nous pourrions faire dans le cas de la
-preuve du tri est de poser cette spécification (qui est vraie !) :
+preuve du tri est de poser la spécification (qui est vraie !) illustrée
+en figure~\ref{fig:6-1-5-insuff}.
 
+\begin{figure}
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{/*@}
@@ -4680,13 +5064,18 @@ preuve du tri est de poser cette spécification (qui est vraie !) :
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
+\caption{Spécification insuffisante de \texttt{sort}}
+\label{fig:6-1-5-insuff}
+\end{figure}
 
 \textbf{Cette spécification est vraie}. Mais si nous nous rappelons la
 partie concernant les spécifications, nous nous devons d'exprimer
 précisément ce que nous attendons. Avec la spécification actuelle, nous
 ne prouvons pas toutes les propriétés nécessaires d'un tri ! Par
-exemple, cette fonction remplit pleinement la spécification :
+exemple, la fonction de la figure~\ref{fig:6-1-5-sort-faux}
+remplit pleinement la spécification.
 
+\begin{figure}
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{/*@}
@@ -4709,8 +5098,11 @@ exemple, cette fonction remplit pleinement la spécification :
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
+\caption{Fonction remplissant la spécification de la figure~\ref{fig:6-1-5-insuff}}
+\label{fig:6-1-5-sort-faux}
+\end{figure}
 
-En fait notre spécification oublie que tous les éléments qui étaient
+En fait, notre spécification oublie que tous les éléments qui étaient
 originellement présents dans le tableau à l'appel de la fonction doivent
 toujours être présents après l'exécution de notre fonction de tri. Dit
 autrement, notre fonction doit en fait produire la permutation triée des
@@ -4788,11 +5180,11 @@ Cette fois, notre propriété est précisément définie, la preuve reste
 assez simple à faire passer, ne nécessitant que l'ajout d'une assertion
 que le bloc de la fonction n'effectue qu'un échange des valeurs dans le
 tableau (et donnant ainsi la transition vers la permutation suivante du
-tableau. Pour définir cette notion d'échange, nous utilisons une
+tableau). Pour définir cette notion d'échange, nous utilisons une
 annotation particulière (à la ligne 16), introduite par le mot-clé
-\texttt{ghost}. Ici, le but est d'introduire un label fictif dans le
-code qui est uniquement visible d'un point de vue spécification. C'est
-l'objet de la prochaine section.
+\texttt{ghost}. Ici, le but est d'introduire un \emph{label} fictif dans
+le code qui est uniquement visible d'un point de vue spécification.
+C'est l'objet de la prochaine section.
 
 \section{Code Fantôme}\label{code-fantuxf4me}
 
@@ -4822,7 +5214,8 @@ Les seules règles que nous devons respecter dans un tel code est que
 nous ne devons jamais écrire une portion de mémoire qui n'est pas
 elle-même définie dans du code fantôme et que le code en question doit
 terminer tout bloc qu'il ouvrirait. Mis à par cela, tout calcul peut
-être inséré tant qu'il n'écrit pas la mémoire.
+être inséré tant qu'il ne modifie \emph{que} les variables du code
+fantôme.
 
 Voici quelques exemples pour la syntaxe de code fantôme :
 
@@ -4867,22 +5260,23 @@ fantôme.
 \subsection{Expliciter un état
 logique}\label{expliciter-un-uxe9tat-logique}
 
-Le but du code ghost est de rendre explicite des informations
+Le but du code \emph{ghost} est de rendre explicite des informations
 généralement implicites. Par exemple, dans la section précédente, nous
 nous en sommes servi pour récupérer explicitement un état logique connu
 à un point de programme donné.
 
 Prenons maintenant un exemple plus poussé. Nous voulons par exemple
 prouver que la fonction suivante nous retourne la valeur maximale des
-sommes de sous tableaux possibles d'un tableau donné. Un sous-tableau
-d'un tableau \og{}a\fg{} est un sous-ensemble contigu de valeur de \og{}a\fg{}. Par
-exemple, pour un tableau \texttt{\{\ 0\ ,\ 3\ ,\ -1\ ,\ 4\ \}}, des
-exemples de sous tableaux peuvent être \texttt{\{\}},
-\texttt{\{\ 0\ \}}, \texttt{\{\ 3\ ,\ -1\ \}} ,
-\texttt{\{\ 0\ ,\ 3\ ,\ -1\ ,\ 4\ \}}, \ldots{} Notez que comme nous
-autorisons le tableau vide, la somme est toujours au moins égale à 0.
-Dans le tableau précédent, le sous tableau de valeur maximale est
-\texttt{\{\ 3\ ,\ -1\ ,\ 4\ \}}, la fonction renverra donc 6.
+sommes de sous-tableaux possibles d'un tableau donné. Un sous-tableau
+d'un tableau \texttt{a} est un sous-ensemble contigu de valeur de
+\texttt{a}. Par exemple, pour un tableau
+\texttt{\{\ 0\ ,\ 3\ ,\ -1\ ,\ 4\ \}}, des exemples de sous tableaux
+peuvent être \texttt{\{\}}, \texttt{\{\ 0\ \}},
+\texttt{\{\ 3\ ,\ -1\ \}} , \texttt{\{\ 0\ ,\ 3\ ,\ -1\ ,\ 4\ \}},
+\ldots{} Notez que comme nous autorisons le tableau vide, la somme est
+toujours au moins égale à 0. Dans le tableau précédent, le sous tableau
+de valeur maximale est \texttt{\{\ 3\ ,\ -1\ ,\ 4\ \}}, la fonction
+renverra donc 6.
 
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
@@ -4912,7 +5306,7 @@ fonctionnement de cette axiomatique :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-\begin{zdssecretblock}{Soltion}
+\begin{zdssecretblock}{Solution}
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{/*@}
@@ -4930,6 +5324,8 @@ fonctionnement de cette axiomatique :
 \end{Shaded}\end{footnotesize}
 \end{zdssecretblock}
 
+\clearpage
+
 La spécification de notre fonction est la suivante :
 
 \begin{footnotesize}\begin{Shaded}
@@ -4943,34 +5339,38 @@ La spécification de notre fonction est la suivante :
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
 
-Pour toute paire de bornes la valeur retournée doit être supérieure ou
-égale et il doit exister une paire telle que c'est égal. Par rapport à
-cette spécification, si nous devons ajouter les invariants de boucles,
-nous nous apercevons rapidement qu'il va nous manquer des informations.
-Nous avons besoin d'exprimer ce que sont les valeurs \texttt{max} et
-\texttt{cur} et quelles relations il existe entre elles, mais rien ne
-nous le permet !
+Pour toute paire de bornes, la valeur retournée par la fonction doit
+être supérieure ou égale à la somme des éléments entre les bornes, et il
+doit exister une paire de bornes, telle que la somme des éléments entre
+ces bornes est exactement la valeur retournée par la fonction. Par
+rapport à cette spécification, si nous devons ajouter les invariants de
+boucles, nous nous apercevons rapidement qu'il va nous manquer des
+informations. Nous avons besoin d'exprimer ce que sont les valeurs
+\texttt{max} et \texttt{cur} et quelles relations existent entre elles,
+mais rien ne nous le permet !
 
 En substance, notre post-condition a besoin de savoir qu'il existe des
 bornes \texttt{low} et \texttt{high} telles que la somme calculée
 correspond à ces bornes. Or notre code, n'exprime rien de tel d'un point
 de vue logique et rien ne nous permet \emph{a priori} de faire cette
 liaison en utilisant des formulations logiques. Nous allons donc
-utiliser du code ghost pour conserver ces bornes et exprimer l'invariant
-de notre boucle.
+utiliser du code \emph{ghost} pour conserver ces bornes et exprimer
+l'invariant de notre boucle.
 
 Nous allons d'abord avoir besoin de 2 variables qui vont nous permettre
 de stocker les valeurs des bornes de la plage maximum, nous les
 appellerons \texttt{low} et \texttt{high}. Chaque fois que nous
-trouverons une plage où la somme est plus élevée nous le mettrons à
+trouverons une plage où la somme est plus élevée nous les mettrons à
 jour. Ces bornes correspondront donc à la somme indiquée par
 \texttt{max}. Cela induit que nous avons encore besoin d'une autre paire
 de bornes : celle correspondant à la variable de somme \texttt{cur} à
 partir de laquelle nous pourrons construire les bornes de \texttt{max}.
-Pour celle-ci, nous n'avons besoin que d'ajouter une variable ghost : le
-minimum actuel \texttt{cur\_low}, la borne supérieure de la somme
-actuelle étant indiquée par la variable \texttt{i} de la boucle.
+Pour celle-ci, nous n'avons besoin que d'ajouter une variable
+\emph{ghost} : le minimum actuel \texttt{cur\_low}, la borne supérieure
+de la somme actuelle étant indiquée par la variable \texttt{i} de la
+boucle. Le code spécifié est présenté dans la figure~\ref{fig:6-2-2-maxsub}.
 
+\begin{figure}
 \begin{footnotesize}\begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{/*@ }
@@ -5012,6 +5412,9 @@ actuelle étant indiquée par la variable \texttt{i} de la boucle.
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}\end{footnotesize}
+\caption{Fonction \texttt{max\_sub\_array} spécifiée}
+\label{fig:6-2-2-maxsub}
+\end{figure}
 
 L'invariant \texttt{BOUNDS} exprime comment sont ordonnées les
 différentes bornes pendant le calcul. L'invariant \texttt{REL} exprime
@@ -5049,9 +5452,8 @@ travail.
 \chapter{Conclusion}\label{conclusion}
 
 \begin{quote}
-  Voilà, c'est fini \ldots{}
-
-  Jean-Louis Aubert, \emph{Bleu Blanc Vert}, 1989
+Voilà, c'est fini \ldots{} Source:{[}Jean-Louis Aubert, \emph{Bleu Blanc
+Vert}, 1989{]}
 \end{quote}
 
 \ldots{} pour cette introduction à la preuve de programmes avec Frama-C
@@ -5102,7 +5504,7 @@ Ce qui nous permet ainsi de bénéficier de la robustesse de notre
 fonction tout en ayant la possibilité de débugger un appel incorrect
 dans un code que nous ne voulons ou pouvons pas prouver.
 
-Écrire les spécifications est parfois long voir fastidieux. Les
+Écrire les spécifications est parfois long voire fastidieux. Les
 constructions de plus haut niveau d'ACSL (prédicats, fonctions logiques,
 axiomatisations) permettent d'alléger un peu ce travail, de la même
 manière que nos langages de programmation nous permettent de définir des
@@ -5127,8 +5529,8 @@ une spécification écrite en langue naturelle pure beurre, avec toute sa
 panoplie de phrase à rallonge, de verbes conjugués à la forme
 conditionnelle, de termes imprécis, d'ambiguïtés, compilée dans des
 documents administratifs de centaines de pages, et dans laquelle nous
-devons chercher pour déterminer \og{}bon alors cette fonction, elle doit
-faire quoi ? Et qu'est ce qu'il faut valider à son sujet ?\fg{}.
+devons chercher pour déterminer « bon alors cette fonction, elle doit
+faire quoi ? Et qu'est ce qu'il faut valider à son sujet ? ».
 
 Les méthodes formelles ne sont, à l'heure actuelle, probablement pas
 assez utilisées, parfois par méfiance, parfois par ignorance, parfois à
@@ -5143,7 +5545,7 @@ peine imaginer à quel point il sera différent dans 10 ans, 20 ans, 40
 ans.
 
 Ces dernières années, les questions de sûreté et de sécurité sont
-devenus de plus en plus présentes et cruciales. Les méthodes formelles
+devenues de plus en plus présentes et cruciales. Les méthodes formelles
 connaissent également de fortes évolutions et leurs apports pour ces
 questions sont très appréciés. Par exemple,
 \href{http://sfm.seas.harvard.edu/report.html}{ce lien} mène vers un
@@ -5160,9 +5562,7 @@ computer systems.
 {[}\ldots{}{]}
 
 \textbf{Without broad use of formal methods, security will always remain
-  fragile.}
-
-Formal Methods for Security, 2016
+fragile.} Source:{[}Formal Methods for Security, 2016{]}
 \end{quote}
 
 \begin{zdssecretblock}{Traduction}
@@ -5209,9 +5609,9 @@ par ailleurs fortement dépendante du type de domaine utilisé (nous
 n'entrerons pas plus dans les détails ici) et elle conserve moins bien
 les relations entre les variables. En compensation, elle est vraiment
 complètement automatique (modulo les entrées du programme), il n'y a
-même pas besoin de poser des invariants de boucle ! La partie plus
-\og{}manuelle\fg{} sera de déterminer si oui ou non les alarmes lèvent des
-vrais erreurs ou si ce sont de fausses alarmes.
+même pas besoin de poser des invariants de boucle ! La partie plus «
+manuelle » sera de déterminer si oui ou non les alarmes lèvent des vrais
+erreurs ou si ce sont de fausses alarmes.
 
 La seconde analyse permet de générer depuis un programme d'origine, un
 nouveau programme où les assertions sont transformées en vérification à
@@ -5266,8 +5666,8 @@ Isabelle ou PVS qui sont d'autres assistants de preuve.
 Finalement, il existe d'autres logiques de programmes, comme la logique
 de séparation ou les logiques pour les programmes concurrents. Encore
 une fois ce sont des notions intéressantes à connaître, elles peuvent
-inspirer la manière de spécifier pour nos preuves avec WP, pourraient
-donner lieu à de nouveaux greffons pour Frama-C. Bref, tout un monde de
-méthodes à explorer.
+inspirer la manière dont nous spécifions nos programmes pour la preuve
+avec WP, elles pourraient également donner lieu à de nouveaux greffons
+pour Frama-C. Bref, tout un monde de méthodes à explorer.
 
 \end{document}

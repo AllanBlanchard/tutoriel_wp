@@ -1,14 +1,12 @@
-# Bien traduire ce qui est attendu
+# Correctly write what we expect
 
-C'est certainement notre tâche la plus difficile. En soi, la programmation est
-déjà un effort consistant à écrire des algorithmes qui répondent à notre 
-besoin. La spécification nous demande également de faire ce travail, la 
-différence est que nous ne nous occupons plus de préciser la manière de répondre
-au besoin mais le besoin lui-même. Pour prouver que la réalisation implémente 
-bien ce que nous attendons, il faut donc être capable de décrire précisément le
-besoin.
+This is certainly the hardest part of our work. Programming is already an effort
+that consists in writing algorithms that correctly respond to our need. 
+Specifying request the same kind of work, except that we do not try to precise
+*how* we respond to the need but *what* is exactly our need. To prove that our
+code implements what we need, we must be able to describe exactly what we need.
 
-Changeons d'exemple et spécifions la fonction suivante :
+From now, we will use an other example with the `max` function:
 
 ```c
 int max(int a, int b){
@@ -16,8 +14,8 @@ int max(int a, int b){
 }
 ```
 
-Le lecteur pourra écrire et prouver sa spécification. Pour la suite, nous 
-travaillerons avec celle-ci :
+The reader could write and prove their own specification. We will start using
+this one:
 
 ```c
 /*@
@@ -28,9 +26,8 @@ int max(int a, int b){
 }
 ```
 
-Si nous donnons ce code à WP, il accepte sans problème de prouver la fonction. 
-Pour autant cette spécification est-elle juste ? Nous pouvons par exemple 
-essayer de voir si ce code est validé :
+If we ask WP to prove this code, it will succeed without any problem. However,
+is our specification really correct ? We can try to prove this calling code:
 
 ```c
 void foo(){
@@ -42,9 +39,9 @@ void foo(){
 }
 ```
 
-La réponse est non. En fait, nous pouvons aller plus loin en modifiant le corps 
-de la fonction ```max``` et remarquer que le code suivant est également valide 
-quant à la spécification :
+There, it will fail. In fact, we can go further by modifying the body of the
+`max` function and notice that the following code is also correct with respect
+to the specification:
 
 ```c
 #include <limits.h>
@@ -57,9 +54,9 @@ int max(int a, int b){
 }
 ```
 
-Notre spécification est trop permissive. Il faut que nous soyons plus précis.
-Nous attendons du résultat non seulement qu'il soit supérieur ou égal à nos 
-deux paramètres mais également qu'il soit exactement l'un des deux :
+Our specification is too much permissive. We have to be more precise. We
+expect the result, not only to be greater or equal to both parameters, but
+also that the result is one of them:
 
 ```c
 /*@
@@ -71,14 +68,14 @@ int max(int a, int b){
 }
 ```
 
-# Pointeurs
+# Pointers
 
-S'il y a une notion à laquelle nous sommes confrontés en permanence en 
-langage C, c'est bien la notion de pointeur. C'est une notion complexe et 
-l'une des principales cause de bugs critiques dans les programmes, ils ont 
-donc droit à un traitement de faveur dans ACSL.
+If there is one notion that we permently have to confront with in C language,
+this is definitely the notion of pointer. Pointers are quite hard to
+manipulate correctly, and they still are the main source of critical bugs in
+programs, so they benefit of a preferential treatment in ACSL.
 
-Prenons par exemple une fonction swap pour les entiers :
+We can illustrate with a swap function for C integers:
 
 ```c
 /*@
@@ -91,23 +88,21 @@ void swap(int* a, int* b){
 }
 ```
 
-## Historique des valeurs
+## History of values
 
-Ici, j'ai introduit une première fonction logique fournie de base par 
-ACSL : ```\old```, qui permet de parler de l'ancienne valeur d'un élément. 
-Ce que nous dit donc la spécification c'est "la fonction doit assurer que a 
-soit égal à l'ancienne valeur (au sens : la valeur avant l'appel) de b et 
-inversement".
+Here, we introduce a first logic builtin function of ACSL: `old`, that allows
+us to get the old value of a given element. So, our specification defines
+that the function must ensure that after the call, the value of `a` is the
+old (that is to say, before the call) value of `b` and conversely.
 
-La fonction ```\old``` ne peut être utilisée que dans la post-condition d'une
-fonction. Si nous avons besoin de ce type d'information ailleurs, nous 
-utilisons ```\at``` qui nous permet de statuer à propos de la valeur d'une 
-variable à un point donné. Elle reçoit deux paramètres. Le premier est la 
-variable (ou position mémoire) dont nous voulons obtenir la valeur et le 
-second la position (sous la forme d'un label C) à laquelle nous voulons 
-contrôler la valeur en question.
+The '\old` function can only be used in the post-condition of a function. If
+we need this type of information somewhere else, we will use `at` that allows
+us to express that we want the value of a variable at a particular program
+point. This function recieves two parameters. The first one is the variable
+(or memory location) for which we want to get its value and the second one is
+the program point (as a C label) that we want to consider.
 
-Par exemple, nous pourrions écrire :
+For example, we could write:
 
 ```c
   int a = 42;
@@ -117,35 +112,34 @@ Par exemple, nous pourrions écrire :
   //@assert a == 45 && \at(a, Label_a) == 42;
 ```
 
-En plus des labels que nous pouvons nous-mêmes créer. Il existe 6 labels 
-qu'ACSL nous propose par défaut, mais tous ne sont pas supportés par WP :
+Of course, we can use any C label in our code, but we also have 6 builtins
+labels defined by ACSL that can be used, however WP does not support all
+of them currently:
 
-- ```Pre```/```Old``` : valeur avant l'appel de la fonction,
-- ```Post``` : valeur après l'appel de la fonction,
-- ```LoopEntry``` : valeur en début de boucle (pas encore supporté),
-- ```LoopCurrent``` : valeur en début du pas actuel de la boucle (pas encore
-  supporté),
-- ```Here``` : valeur au point d'appel.
+- ```Pre```/```Old``` : value before function call,
+- ```Post``` : value after function call,
+- ```LoopEntry``` : value at loop entry (not supported yet),
+- ```LoopCurrent``` : value at the beginning of the current step of the loop
+  (not supported yet),
+- ```Here``` : value at the current program point.
 
 [[information]]
-| Le comportement de ```Here``` est en fait le comportement par défaut lorsque
-| nous parlons de la valeur d'une variable. Son utilisation avec ```\at``` nous 
-| servira généralement à s'assurer de l'absence d’ambiguïté lorsque nous parlons
-| de divers points de programme dans la même expression.
+| The behavior of `Here` is in fact the default behavior when we consider a
+| variable. Its use with `at` with generally let us ensure that what we write
+| is not ambigous, and is more readable, when we express properties about
+| values at different program points in the same expression.
 
-À la différence de ```\old```, qui ne peut être utilisée que dans les 
-post-conditions de contrats de fonction, ```\at``` peut être utilisée partout.
-En revanche, tous les points de programme ne sont pas accessibles selon le type
-d'annotation que nous sommes en train d'écrire. ```Old``` et ```Post``` ne sont 
-disponibles que dans les post-conditions d'un contrat, ```Pre``` et ```Here```
-sont disponibles partout. ```LoopEntry``` et ```LoopCurrent``` ne sont 
-disponibles que dans le contexte de boucles (dont nous parlerons plus loin dans
-le tutoriel).
+Whereas `\old` can only be used in function post-conditions, `\at` can be used
+anywhere. However, we cannot use any program point with respect to the type
+annotation we are writing. `Old` and `Post` are only available in function
+post-conditions, `Pre` and `Here` are available everywhere. `LoopEntry` and
+`LoopCurrent` are only available in the context of loops (which we will detail
+later in this tutorial).
 
-Pour le moment, nous n'utiliserons pas ```\at```, mais elle peut rapidement se
-montrer indispensable pour écrire des spécifications précises.
+For the moment, we will not need `\at` but it can often be useful, if not
+essential, when we want to make our specification precise.
 
-## Validité de pointeurs
+## Pointers validity
 
 Si nous essayons de prouver le fonctionnement de swap (en activant
 la vérification des RTE), notre post-condition est bien vérifiée mais WP nous 
