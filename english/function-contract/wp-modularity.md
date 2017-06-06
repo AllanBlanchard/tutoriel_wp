@@ -1,10 +1,10 @@
-Pour terminer cette partie nous allons parler de la composition des appels de
-fonctions et commencer à entrer dans les détails de fonctionnement de WP. Nous
-allons en profiter pour regarder comment se traduit le découpage de nos 
-programmes en fichiers lorsque nous voulons les spécifier et les prouver avec WP.
+The end of this part will be dedicated to function call composition, where we
+will start to have a closer look to WP. We will also have a look to the way
+we can split our programs in different files when we want to prove them using
+WP.
 
-Notre but sera de prouver la fonction ```max_abs``` qui renvoie les maximum 
-entre les valeurs absolues de deux valeurs :
+Our goal will be to prove the `max_abs` function, that return the maximum
+absolute value of two values:
 
 ```c
 int max_abs(int a, int b){
@@ -15,8 +15,8 @@ int max_abs(int a, int b){
 }
 ```
 
-Commençons par (sur-)découper nos précédentes fonctions en couples 
-headers/source pour ```abs``` et ```max```. Cela donne pour ```abs``` :
+Let us start by (over-)splitting the function we already proved in pairs
+header/source for `abs` and `max`. For `abs`, we have:
 
 Fichier abs.h :
 
@@ -57,20 +57,18 @@ int abs(int val){
 }
 ```
 
-Nous découpons en mettant le contrat de la fonction dans le header. Le but de
-ceci est de pouvoir, lorsque nous aurons besoin de la fonction dans un autre 
-fichier, importer la spécification en même temps que la déclaration de 
-celle-ci. En effet, WP en aura besoin pour montrer que les appels à cette 
-fonction sont valides.
+We can notice that we put our function contract inside the header file. The
+goal is to be able to import the specification at the same time than the
+declaration when we need it in another file. Indeed, WP will need it to be
+able to prove that the precondition of the function is verified when we call
+it.
 
-Nous pouvons créer un fichier sous le même formatage pour la fonction ```max```.
-Dans les deux cas, nous pouvons ré-ouvrir le fichier source (pas besoin de 
-spécifier les fichiers headers dans la ligne de commande) avec Frama-C et 
-remarquer que la spécification est bien associée à la fonction et que nous
-pouvons la prouver.
+We can create a file using the same format for the `max` function. In both
+cases, we can open the source file (we do not need to specify header files
+in the command line) with Frama-C and notivce that the specification is indeed
+associated to the function and that we prove it.
 
-Maintenant, nous pouvons préparer le terrain pour la fonction ```max_abs```. 
-Dans notre header :
+Now, we can prepare our header file for the `max_abs` function:
 
 ```c
 #ifndef _MAX_ABS
@@ -81,7 +79,7 @@ int max_abs(int a, int b);
 #endif
 ```
 
-Et dans le source :
+And in the source file:
 
 ```c
 #include "max_abs.h"
@@ -96,32 +94,31 @@ int max_abs(int a, int b){
 }
 ```
 
-Et ouvrir ce dernier fichier dans Frama-C. Si nous regardons le panneau latéral, 
-nous pouvons voir que les fichiers header que nous avons inclus dans le fichier 
-```abs_max.c``` y apparaissent et que les contrats de fonction sont décorés avec des 
-pastilles particulières (vertes et bleues) :
+We can open the source file in Frama-C. If we look at the side panel, we can
+see that the header files we have included in `abs_max` correctly appear and
+if we look at the function contracts for them, we can see some blue and green
+bullets:
 
-![Le contrat de ```max``` est valide par hypothèse](https://zestedesavoir.com:443/media/galleries/2584/792fb2f6-435f-43ff-adc7-a981ae56f44a.png)
+![The contract of `max` is assumed to be valid](https://zestedesavoir.com:443/media/galleries/2584/792fb2f6-435f-43ff-adc7-a981ae56f44a.png)
 
-Ces pastilles nous disent qu'en l'absence d'implémentation, les propriétés sont
-supposées vraies. Et c'est une des forces de la preuve déductive de programmes 
-par rapport à certaines autres méthodes formelles, les fonctions sont vérifiées
-en isolation les unes des autres. 
+These bullets indicate that, since we do not have the implementation, they are
+assumed to be true. It is an important strength of the deductive proof of
+programs compared to some other formal methods: function are verified isolated
+from each other.
 
-En dehors de la fonction, sa spécification est considérée comme étant 
-vérifiée : nous ne cherchons pas à reprouver que la fonction fait bien son travail
-à chaque appel, nous nous contenterons de vérifier que les pré-conditions sont 
-réunies au moment de l'appel. Cela donne donc des preuves très modulaires et donc 
-des spécifications plus facilement réutilisables. Évidemment, si notre preuve 
-repose sur la spécification d'une autre fonction, cette fonction doit-elle même 
-être vérifiable pour que la preuve soit formellement complète. Mais nous pouvons
-également vouloir simplement vers confiance à une bibliothèque externe sans la
-prouver.
+When we are not currently performing the proof of a function, its specification
+is considered to be correct: we do not try to prove it when we are proving another
+function, we will only verify that the precondition is correctly established when
+we call it. It provides very modular proofs and specifications that are therefore
+more reusable. Of course, if our proof rely on the specification of another
+function, it must be provable to ensure that the proof of the program is complete.
+But, we can also consider that we are trusting a function that comes from an
+external library that we do not want to prove (or for which we do not even have
+the source code).
 
-Finalement, le lecteur pourra essayer de spécifier la fonction ```max_abs```.
+The careful reader could specify and prove the `max_abs` function.
 
-La spécification peut ressembler à ceci (j'ai mis l'implémentation avec pour
-rappel) :
+A solution is provided there (the implementation is also recalled):
 
 ```c
 /*@
