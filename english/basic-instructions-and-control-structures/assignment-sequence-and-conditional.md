@@ -1,16 +1,18 @@
-# Affectation
+# Assignment
 
-L'affectation est l'opération la plus basique que l'on puisse avoir dans un 
-langage (mise à part l'opération « ne rien faire » qui manque singulièrement 
-d'intérêt). Le calcul de plus faible pré-condition associé est le suivant : 
+Assignment is the most basic operation one can have in language (leaving aside
+the "do nothing" operation that isn't particular interesting).
+The weakest preconddition calculus associates the following computation to an
+assignement operation;
 
 -> $wp(x = E , Post) := Post[x \leftarrow E]$ <-
 
-Où la notation $P[x \leftarrow E]$ signifie « la propriété $P$ où $x$ est remplacé
-par $E$ ». Ce qui correspond ici à « la post-condition $Post$ où $x$ a été
-remplacé par $E$ ». Dans l'idée, pour que la formule en post-condition d'une 
-affectation de $x$ à $E$ soit vraie, il faut qu'elle soit vraie en remplaçant 
-chaque occurrence de $x$ dans la formule par $E$. Par exemple :
+Here the notation $P[x \leftarrow E]$ means "the property $P$ where $x$ is
+replaced by $E$". In our case this corresponds to "the postcondition $Post$
+where $x$ is replaced by $E$".
+The idea is that the postcondition of an assignment of $E$ to $x$ can
+only be true if replacing all occurrences of $x$ in the formula by $E$ is true.
+For example:
 
 ```c
 // { P }
@@ -20,9 +22,9 @@ x = 43 * c ;
 
 -> $P = wp(x = 43*c , \{x = 258\}) = \{43*c = 258\}$ <-
 
-La fonction $wp$ nous permet donc de calculer la plus faible pré-condition de
-l'opération ($\{43*c = 258\}$), ce que l'on peut réécrire sous la forme d'un
-triplet de Hoare :
+The function $wp$ allows us to compute as weakest precondition of the
+the assignment the formula $\{43*c = 258\}$, thus obtaining the following
+Hoare triple:
 
 ```c
 // { 43*c = 258 }
@@ -30,9 +32,9 @@ x = 43 * c ;
 // { x = 258 }
 ```
 
-Pour calculer la pré-condition de l'affectation, nous avons remplacé chaque 
-occurrence de $x$ dans la post-condition, par la valeur $E = 43*c$ affectée.
-Si notre programme était de la forme:
+In order to compute the precondition of the assignment we have replaced each
+occurrence of $x$ in the postcondition by the assigned value $E = 43*c$.
+If our programme were of the form:
 
 ```c
 int c = 6 ;
@@ -41,24 +43,24 @@ x = 43 * c ;
 // { x = 258 }
 ```
 
-Nous pourrions alors fournir la formule « $43*6 = 258$ » à notre prouveur automatique
-afin qu'il détermine si cette formule peut effectivement être satisfaite. Ce à quoi
-il répondrait évidemment « oui » puisque cette propriété est très simple à vérifier.
-En revanche, si nous avions donné la valeur 7 pour `c`, le prouveur nous répondrait
-que non, une telle formule n'est pas vraie.
+we could submit the formula " $43*6 = 258$ " to our automatic prover in order
+to determine whether it is really valid. The answer would of course be "yes"
+because the property is easy to verify. If we had, however, given the value
+7 to the variable `c` the prover's reply would be "no" since the formula
+$43*7 = 258$ is not true.
 
-Nous pouvons donc écrire la règle d'inférence pour le triplet de Hoare de 
+Nous pouvons donc écrire la règle d'inférence pour le triplet de Hoare de
 l'affectation, où l'on prend en compte le calcul de plus faible pré-condition :
 
 -> $\dfrac{}{\{Q[x \leftarrow E] \}\quad x = E \quad\{ Q \}}$ <-
 
 Nous noterons qu'il n'y a pas de prémisse à vérifier. Cela veut-il dire que le
-triplet est nécessairement vrai ? Oui. Mais cela ne dit pas si la pré-condition 
-est respectée par le programme où se trouve l'instruction, ni que cette 
+triplet est nécessairement vrai ? Oui. Mais cela ne dit pas si la pré-condition
+est respectée par le programme où se trouve l'instruction, ni que cette
 pré-condition est possible. C'est ce travail qu'effectuent ensuite les prouveurs
 automatiques.
 
-Par exemple, nous pouvons demander la vérification de la ligne suivante avec 
+Par exemple, nous pouvons demander la vérification de la ligne suivante avec
 Frama-C :
 
 ```c
@@ -66,40 +68,40 @@ int a = 42;
 //@ assert a == 42;
 ```
 
-Ce qui est, bien entendu, prouvé directement par Qed car c'est une simple 
+Ce qui est, bien entendu, prouvé directement par Qed car c'est une simple
 application de la règle de l'affectation.
 
 [[information]]
 | Notons que d'après la norme C, l'opération d'affectation est une expression
-| et non une instruction. C'est ce qui nous permet par exemple d'écrire 
+| et non une instruction. C'est ce qui nous permet par exemple d'écrire
 | `if( (a = foo()) == 42)`. Dans Frama-C, une affectation sera toujous une
-| instruction. En effet, si une affectation est présente au sein d'une 
+| instruction. En effet, si une affectation est présente au sein d'une
 | expression plus complexe, le module de création de l'arbre de syntaxe abstraite
-| du programme analysé effectue une étape de normalisation qui crée 
+| du programme analysé effectue une étape de normalisation qui crée
 | systématiquement une instruction séparée.
 
 # Séquence d'instructions
 
-Pour qu'une instruction soit valide, il faut que sa pré-condition nous 
-permette, par cette instruction, de passer à la post-condition voulue. 
-Maintenant, nous avons besoin d'enchaîner ce processus d'une 
+Pour qu'une instruction soit valide, il faut que sa pré-condition nous
+permette, par cette instruction, de passer à la post-condition voulue.
+Maintenant, nous avons besoin d'enchaîner ce processus d'une
 instruction à une autre. L'idée est alors que la post-condition assurée par la
-première instruction soit compatible avec la pré-condition demandée par la 
-deuxième et que ce processus puisse se répéter pour la troisième instruction, 
+première instruction soit compatible avec la pré-condition demandée par la
+deuxième et que ce processus puisse se répéter pour la troisième instruction,
 etc.
 
-La règle d'inférence correspondant à cette idée, utilisant les triplets de 
+La règle d'inférence correspondant à cette idée, utilisant les triplets de
 Hoare est la suivante:
 
 -> $\dfrac{\{P\}\quad S1 \quad \{R\} \ \ \ \{R\}\quad S2 \quad \{Q\}}{\{P\}\quad S1 ;\ S2 \quad \{Q\}}$ <-
 
-Pour vérifier que la séquence d'instructions $S1;\ S2$ (NB : où $S1$ et $S2$ 
-peuvent elles-mêmes être des séquences d'instructions), nous passons par une 
-propriété intermédiaire qui est à la fois la pré-condition de $S2$ et la 
-post-condition de $S1$. Cependant, rien ne nous indique pour l'instant 
+Pour vérifier que la séquence d'instructions $S1;\ S2$ (NB : où $S1$ et $S2$
+peuvent elles-mêmes être des séquences d'instructions), nous passons par une
+propriété intermédiaire qui est à la fois la pré-condition de $S2$ et la
+post-condition de $S1$. Cependant, rien ne nous indique pour l'instant
 comment obtenir les propriétés $P$ et $R$.
 
-Le calcul de plus faible pré-condition $wp$ nous dit simplement que la 
+Le calcul de plus faible pré-condition $wp$ nous dit simplement que la
 propriété intermédiaire $R$ est trouvée par calcul de plus faible pré-condition
 de la deuxième instruction. Et que la propriété $P$ est trouvée en calculant la
 plus faible pré-condition de la première instruction. La plus faible pré-condition
@@ -107,8 +109,8 @@ de notre liste d'instruction est donc déterminée comme ceci :
 
 -> $wp(S1;\ S2 , Post) := wp(S1, wp(S2, Post) )$ <-
 
-Le plugin WP de Frama-C fait ce calcul pour nous, c'est pour cela que nous 
-n'avons pas besoin d'écrire les assertions entre chaque ligne de code. 
+Le plugin WP de Frama-C fait ce calcul pour nous, c'est pour cela que nous
+n'avons pas besoin d'écrire les assertions entre chaque ligne de code.
 
 ```c
 int main(){
@@ -127,7 +129,7 @@ int main(){
 
 Notons que lorsque nous avons plus de deux instructions, nous pouvons simplement
 considérer que la dernière instruction est la seconde instruction de notre règle
-et que toutes les instructions qui la précède forment la première « instruction ». 
+et que toutes les instructions qui la précède forment la première « instruction ».
 De cette manière nous remontons bien les instructions une à une dans notre
 raisonnement, par exemple avec le programme précédent :
 
@@ -140,26 +142,26 @@ raisonnement, par exemple avec le programme précédent :
 +------------------------------------------------------------------------------------------------------------------------------------------+
 
 Nous pouvons par calcul de plus faibles pré-conditions construire la propriété
-$Q_{-1}$ à partir de $Q$ et $i_3$, ce qui nous permet de déduire $Q_{-2}$, à 
+$Q_{-1}$ à partir de $Q$ et $i_3$, ce qui nous permet de déduire $Q_{-2}$, à
 partir de $Q_{-1}$ et $i_2$ et finalement $P$ avec $Q_{-2}$ et $i_1$.
 
-Nous pouvons maintenant vérifier des programmes comprenant plusieurs 
+Nous pouvons maintenant vérifier des programmes comprenant plusieurs
 instructions, il est temps d'y ajouter un peu de structure.
 
 # Règle de la conditionnelle
 
 Pour qu'un branchement conditionnel soit valide, il faut que la post-condition
-soit atteignable par les deux banches, depuis la même pré-condition, à ceci 
-près que chacune des branches aura une information supplémentaire : le fait 
+soit atteignable par les deux banches, depuis la même pré-condition, à ceci
+près que chacune des branches aura une information supplémentaire : le fait
 que la condition était vraie dans un cas et fausse dans l'autre.
 
 Comme avec la séquence d'instructions, nous aurons donc deux points à vérifier
-(pour éviter de confondre les accolades, j'utilise la syntaxe 
+(pour éviter de confondre les accolades, j'utilise la syntaxe
 $if\ B\ then\ S1\ else\ S2$) :
 
 -> $\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad S2\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad S2 \quad \{Q\}}$ <-
 
-Nos deux prémisses sont donc la vérification que lorsque nous avons la 
+Nos deux prémisses sont donc la vérification que lorsque nous avons la
 pré-condition et que nous passons dans la branche `if`, nous atteignons bien la
 post-condition, et que lorsque nous avons la pré-condition et que nous passons
 dans la branche `else`, nous obtenons bien également la post-condition.
@@ -168,8 +170,8 @@ Le calcul de pré-condition de $wp$ pour la conditionnelle est le suivant :
 
 -> $wp(if\ B\ then\ S1\ else\ S2 , Post) := (B \Rightarrow wp(S1, Post)) \wedge (\neg B \Rightarrow wp(S2, Post))$ <-
 
-À savoir que $B$ doit impliquer la pré-condition la plus faible de $S1$, pour 
-pouvoir l'exécuter sans erreur vers la post-condition, et que $\neg B$ doit 
+À savoir que $B$ doit impliquer la pré-condition la plus faible de $S1$, pour
+pouvoir l'exécuter sans erreur vers la post-condition, et que $\neg B$ doit
 impliquer la pré-condition la plus faible de $S2$ (pour la même raison).
 
 ## Bloc `else` vide
@@ -188,11 +190,11 @@ Ce qui veut dire que nous devons avoir :
 
 -> $P \wedge \neg B \Rightarrow Q$ <-
 
-En résumé, si la condition du `if` est fausse, cela veut dire que la 
-post-condition de l'instruction conditionnelle globale est déjà vérifiée avant de 
+En résumé, si la condition du `if` est fausse, cela veut dire que la
+post-condition de l'instruction conditionnelle globale est déjà vérifiée avant de
 rentrer dans le `else` (puisqu'il ne fait rien).
 
-Par exemple, nous pourrions vouloir remettre une configuration $c$ à une valeur 
+Par exemple, nous pourrions vouloir remettre une configuration $c$ à une valeur
 par défaut si elle a mal été configurée par un utilisateur du programme :
 
 ```c
