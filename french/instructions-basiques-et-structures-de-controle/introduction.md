@@ -1,60 +1,56 @@
 [[information]]
-| This part is more formal than what we have seen so far.
-| If the reader wishes to concentrate on the usage of the tool,
-| he can skip the introduction and the first two sections
-| (about the basic instructions and the bonus training) of this chapter.
-| If what we presented so far has been difficult for the reader *(sur un plan formel)*,
-| it is well possible to reserve the introduction and the two sections for a later reading.
-| The sections on loops, however, are indispensable.
-| We will highlight the more formal parts of these sections.
+| Cette partie est plus formelle que ce nous avons vu jusqu'à maintenant. Si le 
+| lecteur souhaite se concentrer sur l'utilisation de l'outil, l'introduction de
+| ce chapitre et les deux premières sections (sur les instructions de base et « le 
+| bonus stage ») sont dispensables. Si ce que nous avons présenté jusqu'à maintenant
+| a semblé ardu au lecteur sur un plan formel, il est également possible de réserver 
+| l'introduction et ces deux sections pour une deuxième lecture.
+| 
+| Les sections sur les boucles sont en revanches indispensables. Les éléments plus
+| formels de ces sections seront signalés.
 
-We will associate with every C programming construct
-- the corresponding inference rule together,
-- its governing rule from the weakest precondition calculus and
-- examples that show its usage.
+Pour chaque notion en programmation C, nous associerons la règle d'inférence qui 
+lui correspond, la règle utilisée de calcul de plus faible pré-conditions qui la 
+régit, et des exemples d'utilisation. Pas forcément dans cet ordre et avec plus ou 
+moins de liaison avec l'outil. Les premiers points seront plus focalisés sur la
+théorie que sur l'utilisation car ce sont les plus simples, au fur et à mesure,
+nous nous concentrerons de plus en plus sur l'outil, en particulier quand nous 
+attaquerons le point concernant les boucles.
 
-Not necessarily in that order and sometimes only with a loose connection to the
-tool. Since the first rules are quite simple we will discuss them in a fairly
-theoretical manner.
-Later on, however, our presentation will rely more and more on the tool,
-in particular when we begin dealing with loops.
+# Règle d'inférence
 
-# Inference rules
-
-An inference rule is of the form
+Une règle d'inférence est de la forme :
 
 -> $\dfrac{P_1 \quad ... \quad P_n}{C}$ <-
 
-and means that in order to assure that the conclusion C is true, first the truth
-of the premises $P_1$, ..., and $P_n$ has to be established.
-In case that the rule has no premises
+Et signifie que pour assurer que la conclusion $C$ est vraie, il faut d'abord
+savoir que les prémisses $P_1$, ..., et $P_n$ sont vraies. Quand il n'y a
+pas de prémisses :
 
 -> $\dfrac{}{\quad C \quad}$ <-
 
-then nothing has to be assured in order to conclude the truth of $C$.
+Alors, il n'y a rien à assurer pour conclure que $C$ est vraie.
 
-On the hand, in order to prove that a certain premise is true, it might be
-necessary to employ other inference rules which would lead to something
-like this:
+Inversement, pour prouver qu'une certaine prémisse est vraie, il peut être nécessaire 
+d'utiliser une autre règle d'inférence, ce qui nous donnerait quelque
+chose comme :
 
 -> $\dfrac{\dfrac{}{\quad P_1\quad} \quad \dfrac{P_{n_1}\quad P_{n_2}}{P_n}}{C}$ <-
 
-This way a we obtain step by step the *deduction tree* of our reasoning.
-In our case, the premises and conclusions under consideration will in general be
-*Hoare triples*.
+Ce qui nous construit progressivement l'arbre de déduction de notre raisonnement.
+Dans notre raisonnement, les prémisses et conclusions manipulées seront 
+généralement des triplets de Hoare.
 
+# Triplet de Hoare
 
-# Hoare triples
-
-We are now returning to concept of a Hoare triple:
+Revenons sur la notion de triplet de Hoare :
 
 -> $\{ P \}\quad  C\quad \{ Q \}$ <-
 
-In the beginning of this tutorial we have seen that this triple expresses
-the following: If the property $P$ holds before the execution of $C$ and
-if $C$ terminates, then the property $Q$ holds too.
-For example, if we take up again our (slightly modified) programme for the
-computation of the absolute value:
+Nous l'avons vu en début de tutoriel, ce triplet nous exprime que si avant 
+l'exécution de $C$, la propriété $P$ est vraie, et si $C$ termine, alors la
+propriété $Q$ est vraie. Par exemple, si nous reprenons notre programme de
+calcul de la valeur absolue (légèrement modifié):
 
 ```c
 /*@
@@ -70,10 +66,9 @@ int abs(int val){
 }
 ```
 
-The rules of Hoare logic tell us that in order to show that our programme
-satisfies its contract we have to verify the properties shown in the braces.
-(We have omitted one postcondition in order to simplify the presentation.)
-
+Ce que nous dit Hoare, est que pour prouver notre programme, les propriétés
+entre accolades dans ce programme doivent être vérifiées (j'ai omis une des
+deux post-conditions pour alléger la lecture) :
 
 ```c
 int abs(int val){
@@ -94,41 +89,38 @@ int abs(int val){
 }
 ```
 
-Yet, Hoare logic does not tell us how we can automatically obtain the property
-`P` of our program `abs`.
-Dijkstra's *weakest-precondition calculus*, on the other hand, allows us
-to compute from a given postcondition $Q$ and a code snippet $C$ the
-minimal precondition $P$ that ensures $Q$ after the execution of $C$.
-We are thus in a position to determine for our example `abs` the desired
-property `P`.
+Cependant, Hoare ne nous dit pas comment nous pouvons obtenir automatiquement la 
+propriété `P` de ce programme. Ce que nous propose Dijkstra, c'est donc un moyen
+de calculer, à partir d'une post-condition $Q$ et d'une commande ou d'une liste de 
+commandes $C$, la pré-condition minimale assurant $Q$ après $C$. Nous pourrions 
+donc, dans le programme précédent, calculer la propriété `P` qui nous donne les
+garanties voulues.
 
-In this chapter we present the different cases of the function $wp$ which,
-starting from a given postcondition and a programme (or statement),
-computes the *weakest* precondition that allows us to establish the validity
-of the postcondition.
-We will use the following notation to define the computation that corresponds
-to one ore several statements:
+Nous allons tout au long de cette partie présenter les différents cas de la 
+fonction $wp$ qui, à une post-condition voulue et un programme ou une instruction,
+nous associe la plus faible pré-condition qui permet de l'assurer. Nous utiliserons
+cette notation pour définir le calcul correspondant à une/des instructions :
 
 $wp(Instruction(s), Post) := WeakestPrecondition$
 
-The function $w$ will guarantee that the Hoare triple
+Et la fonction $wp$ est telle qu'elle nous garantit que le triplet de Hoare :
 
 -> $\{\ wp(C,Q)\ \}\quad C\quad \{ Q \}$ <-
 
-really is a valid triple.
+est effectivement un triplet valide. 
 
-We will thereby often use ACSL assertions in order to represent the upcoming
-concepts:
+Nous utiliserons souvent des assertions ACSL pour présenter les notions à 
+venir :
 
 ```c
-//@ assert my_property;
+//@ assert ma_propriete ;
 ```
 
-These assertions correspond in fact to possible intermediate steps for the
-properties in our Hoare triples.
-We can, for example, replace the properties of our function `abs`
-by corresponding ACSL assertions (we have omitted here the property `P`
-because it is just `true`):
+Ces assertions correspondent en fait à des étapes intermédiaires possibles pour
+les propriétés indiquées dans nos triplets de Hoare. Nous pouvons par exemple
+reprendre le programme précédent et remplacer nos commentaires par les assertions
+ACSL correspondantes (j'ai omis `P` car sa valeur est en fait simplement
+« vrai ») :
 
 ```c
 int abs(int val){
