@@ -3,18 +3,20 @@
 | If the reader wishes to concentrate on the usage of the tool,
 | he can skip the introduction and the first two sections
 | (about the basic instructions and the bonus training) of this chapter.
-| If what we presented so far has been difficult for the reader *(sur un plan formel)*,
+| If what we presented so far has been difficult for the reader
+| from a formal point of view,
 | it is well possible to reserve the introduction and the two sections for a later reading.
 | The sections on loops, however, are indispensable.
 | We will highlight the more formal parts of these sections.
 
 We will associate with every C programming construct
+
 - the corresponding inference rule together,
 - its governing rule from the weakest precondition calculus and
 - examples that show its usage.
 
 Not necessarily in that order and sometimes only with a loose connection to the
-tool. Since the first rules are quite simple we will discuss them in a fairly
+tool. Since the first rules are quite simple, we will discuss them in a fairly
 theoretical manner.
 Later on, however, our presentation will rely more and more on the tool,
 in particular when we begin dealing with loops.
@@ -33,13 +35,13 @@ In case that the rule has no premises
 
 then nothing has to be assured in order to conclude the truth of $C$.
 
-On the hand, in order to prove that a certain premise is true, it might be
-necessary to employ other inference rules which would lead to something
+On the other hand, in order to prove that a certain premise is true, it might
+be necessary to employ other inference rules which would lead to something
 like this:
 
 -> $\dfrac{\dfrac{}{\quad P_1\quad} \quad \dfrac{P_{n_1}\quad P_{n_2}}{P_n}}{C}$ <-
 
-This way a we obtain step by step the *deduction tree* of our reasoning.
+This way, we obtain step by step the *deduction tree* of our reasoning.
 In our case, the premises and conclusions under consideration will in general be
 *Hoare triples*.
 
@@ -51,9 +53,9 @@ We are now returning to concept of a Hoare triple:
 -> $\{ P \}\quad  C\quad \{ Q \}$ <-
 
 In the beginning of this tutorial we have seen that this triple expresses
-the following: If the property $P$ holds before the execution of $C$ and
+the following: if the property $P$ holds before the execution of $C$ and
 if $C$ terminates, then the property $Q$ holds too.
-For example, if we take up again our (slightly modified) programme for the
+For example, if we take up again our (slightly modified) program for the
 computation of the absolute value:
 
 ```c
@@ -70,7 +72,7 @@ int abs(int val){
 }
 ```
 
-The rules of Hoare logic tell us that in order to show that our programme
+The rules of Hoare logic tell us that in order to show that our program
 satisfies its contract we have to verify the properties shown in the braces.
 (We have omitted one postcondition in order to simplify the presentation.)
 
@@ -111,7 +113,7 @@ to one ore several statements:
 
 $wp(Instruction(s), Post) := WeakestPrecondition$
 
-The function $w$ will guarantee that the Hoare triple
+The function $wp$ will guarantee that the Hoare triple
 
 -> $\{\ wp(C,Q)\ \}\quad C\quad \{ Q \}$ <-
 
