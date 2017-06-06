@@ -1,10 +1,8 @@
-Pendant cette partie, nous avons vu comment spécifier les fonctions par 
-l'intermédiaire de leurs contrats, à savoir leurs pré et post-conditions, ainsi
-que quelques fonctionnalités offertes par ACSL pour exprimer ces propriétés. 
-Nous avons également vu pourquoi il est important d'être précis dans la 
-spécification et comment l'introduction des comportements nous permet de ne pas
-surcharger l'écriture pour autant.
+During this part of the tutorial, we have studied how we can specify functions
+using contracts, composed of a pre and a post-condition, as well as some
+features ACSL provides to express those properties. We have also seen why it
+is important to be precise when we specify and how the introduction of behaviors
+can help us to avoid overloading our writting.
 
-En revanche, nous n'avons pas encore vu un point important : la spécification 
-des boucles. Avant d'entamer cette partie, nous devrions regarder plus 
-précisément comment fonctionne l'outil WP.
+However, we do not have studied one important point: the specification of loops.
+Before that, we could have a closer look to the way WP works.
