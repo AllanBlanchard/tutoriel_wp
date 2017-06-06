@@ -141,14 +141,14 @@ essential, when we want to make our specification precise.
 
 ## Pointers validity
 
-Si nous essayons de prouver le fonctionnement de swap (en activant
-la vérification des RTE), notre post-condition est bien vérifiée mais WP nous 
-indique qu'il y a un certain nombre de possibilités de runtime-error. Ce qui 
-est normal, car nous n'avons pas précisé à WP que les pointeurs que nous
-recevons en entrée de fonction sont valides.
+If we try to prove that the swap function is correct (comprising RTE
+verification), our post-condition is indeed verified but WP failed to prove
+some possibilities of runtime-error, since we perform access to some pointers
+that we did not indicate to be valid pointers in the precondition of the
+function.
 
-Pour ajouter cette précision, nous allons utiliser le prédicat ```\valid``` qui
-reçoit un pointeur en entrée :
+We can express that the dereferencing of a pointer is valid using the `\valid`
+predicate of ACSL which recieves the pointer in input:
 
 ```c
 /*@
@@ -162,15 +162,14 @@ void swap(int* a, int* b){
 }
 ```
 
-À partir de là, les déréférencements qui sont effectués par la suite sont 
-acceptés car la fonction demande à ce que les pointeurs d'entrée soient 
-valides.
+Once we have specified that the pointers we recieve in input are valid,
+dereferencing is assured to not produce undefined behaviors.
 
-Comme nous le verrons plus tard, ```\valid``` peut recevoir plus qu'un 
-pointeur en entrée. Par exemple, il est possible de lui transmettre une 
-expression de cette forme : ```\valid(p + (s .. e))``` qui voudra dire "pour
-tout i entre s et e (inclus), p+i est un pointeur valide", ce sera important 
-notamment pour la gestion des tableaux dans les spécifications.
+As we will see later in this tutorial, `\valid` can take more than one pointer
+in parameter. For example, we can give it an expression such as:
+`valid(p + (s .. e))` which means "forall `i` between included `s` and `e`, 
+`p+i` is a valid pointer. This kind of expression will be extremely useful
+when we will specify properties about arrays in specifications.
 
 Si nous nous intéressons aux assertions ajoutées par WP dans la fonction swap
 avec la validation des RTEs, nous pouvons constater qu'il existe une variante
