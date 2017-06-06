@@ -1,31 +1,54 @@
 # Affectation
 
 L'affectation est l'opération la plus basique que l'on puisse avoir dans un 
-langage (mise à part l'opération "ne rien faire" qui manque singulièrement 
+langage (mise à part l'opération « ne rien faire » qui manque singulièrement 
 d'intérêt). Le calcul de plus faible pré-condition associé est le suivant : 
 
--> $wp(x = E , Post) = Post[x \leftarrow E]$ <-
+-> $wp(x = E , Post) := Post[x \leftarrow E]$ <-
 
-Où la notation $P[x \leftarrow E]$ signifie "la propriété $P$ où $x$ est remplacé
-par $E$". Ce qui correspond ici à "la post-condition $Post$ où $x$ a été
-remplacé par $E$". Dans l'idée, pour que la formule en post-condition d'une 
+Où la notation $P[x \leftarrow E]$ signifie « la propriété $P$ où $x$ est remplacé
+par $E$ ». Ce qui correspond ici à « la post-condition $Post$ où $x$ a été
+remplacé par $E$ ». Dans l'idée, pour que la formule en post-condition d'une 
 affectation de $x$ à $E$ soit vraie, il faut qu'elle soit vraie en remplaçant 
 chaque occurrence de $x$ dans la formule par $E$. Par exemple :
 
--> $\{P\}\quad x = 43*c \quad \{ x = 258 \}$ <-
+```c
+// { P }
+x = 43 * c ;
+// { x = 258 }
+```
 
 -> $P = wp(x = 43*c , \{x = 258\}) = \{43*c = 258\}$ <-
 
-Ce qui finalement nous donnerait cette écriture : 
+La fonction $wp$ nous permet donc de calculer la plus faible pré-condition de
+l'opération ($\{43*c = 258\}$), ce que l'on peut réécrire sous la forme d'un
+triplet de Hoare :
 
--> $\{43*c = 258\}\quad x = 43*c\quad \{ x = 258 \}$ <-
+```c
+// { 43*c = 258 }
+x = 43 * c ;
+// { x = 258 }
+```
 
 Pour calculer la pré-condition de l'affectation, nous avons remplacé chaque 
 occurrence de $x$ dans la post-condition, par la valeur $E = 43*c$ affectée.
-Nous pourrions alors déduire qu'avant exécution c doit valoir 6.
+Si notre programme était de la forme:
 
-La règle d'inférence prenant en compte le calcul de plus faible pré-condition
-est donc la suivante :
+```c
+int c = 6 ;
+// { 43*c = 258 }
+x = 43 * c ;
+// { x = 258 }
+```
+
+Nous pourrions alors fournir la formule « $43*6 = 258$ » à notre prouveur automatique
+afin qu'il détermine si cette formule peut effectivement être satisfaite. Ce à quoi
+il répondrait évidemment « oui » puisque cette propriété est très simple à vérifier.
+En revanche, si nous avions donné la valeur 7 pour `c`, le prouveur nous répondrait
+que non, une telle formule n'est pas vraie.
+
+Nous pouvons donc écrire la règle d'inférence pour le triplet de Hoare de 
+l'affectation, où l'on prend en compte le calcul de plus faible pré-condition :
 
 -> $\dfrac{}{\{Q[x \leftarrow E] \}\quad x = E \quad\{ Q \}}$ <-
 
@@ -65,19 +88,24 @@ première instruction soit compatible avec la pré-condition demandée par la
 deuxième et que ce processus puisse se répéter pour la troisième instruction, 
 etc.
 
-Nous associons la règle d'inférence suivante à cette idée :
+La règle d'inférence correspondant à cette idée, utilisant les triplets de 
+Hoare est la suivante:
 
 -> $\dfrac{\{P\}\quad S1 \quad \{R\} \ \ \ \{R\}\quad S2 \quad \{Q\}}{\{P\}\quad S1 ;\ S2 \quad \{Q\}}$ <-
 
-Pour vérifier que la séquence d'instruction $S1;\ S2$ (NB : Où $S1$ et $S2$ 
-peuvent elles-mêmes être des séquences d'instruction), nous passons par une 
+Pour vérifier que la séquence d'instructions $S1;\ S2$ (NB : où $S1$ et $S2$ 
+peuvent elles-mêmes être des séquences d'instructions), nous passons par une 
 propriété intermédiaire qui est à la fois la pré-condition de $S2$ et la 
-post-condition de $S1$. Le calcul de plus faible pré-condition nous dit 
-simplement que cette propriété intermédiaire est trouvée par calcul de 
-pré-condition de la deuxième instruction. La plus faible pré-condition de 
-l'ensemble étant donc déterminée comme ceci :
+post-condition de $S1$. Cependant, rien ne nous indique pour l'instant 
+comment obtenir les propriétés $P$ et $R$.
 
--> $wp(S1;\ S2 , Post) = wp(S1, wp(S2, Post) )$ <-
+Le calcul de plus faible pré-condition $wp$ nous dit simplement que la 
+propriété intermédiaire $R$ est trouvée par calcul de plus faible pré-condition
+de la deuxième instruction. Et que la propriété $P$ est trouvée en calculant la
+plus faible pré-condition de la première instruction. La plus faible pré-condition
+de notre liste d'instruction est donc déterminée comme ceci :
+
+-> $wp(S1;\ S2 , Post) := wp(S1, wp(S2, Post) )$ <-
 
 Le plugin WP de Frama-C fait ce calcul pour nous, c'est pour cela que nous 
 n'avons pas besoin d'écrire les assertions entre chaque ligne de code. 
@@ -99,7 +127,7 @@ int main(){
 
 Notons que lorsque nous avons plus de deux instructions, nous pouvons simplement
 considérer que la dernière instruction est la seconde instruction de notre règle
-et que toutes les instructions qui la précède forme la première "instruction". 
+et que toutes les instructions qui la précède forment la première « instruction ». 
 De cette manière nous remontons bien les instructions une à une dans notre
 raisonnement, par exemple avec le programme précédent :
 
@@ -125,20 +153,20 @@ soit atteignable par les deux banches, depuis la même pré-condition, à ceci
 près que chacune des branches aura une information supplémentaire : le fait 
 que la condition était vraie dans un cas et fausse dans l'autre.
 
-Comme avec la séquence d'instruction, nous aurons donc deux points à vérifier
+Comme avec la séquence d'instructions, nous aurons donc deux points à vérifier
 (pour éviter de confondre les accolades, j'utilise la syntaxe 
 $if\ B\ then\ S1\ else\ S2$) :
 
 -> $\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad S2\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad S2 \quad \{Q\}}$ <-
 
-Nos deux prémisses sont donc la vérification que lorque nous avons la 
+Nos deux prémisses sont donc la vérification que lorsque nous avons la 
 pré-condition et que nous passons dans la branche `if`, nous atteignons bien la
 post-condition, et que lorsque nous avons la pré-condition et que nous passons
 dans la branche `else`, nous obtenons bien également la post-condition.
 
-Le calcul de pré-condition correspondant est le suivant :
+Le calcul de pré-condition de $wp$ pour la conditionnelle est le suivant :
 
--> $wp(if\ B\ then\ S1\ else\ S2 , Post) = (B \Rightarrow wp(S1, Post)) \wedge (\neg B \Rightarrow wp(S2, Post))$ <-
+-> $wp(if\ B\ then\ S1\ else\ S2 , Post) := (B \Rightarrow wp(S1, Post)) \wedge (\neg B \Rightarrow wp(S2, Post))$ <-
 
 À savoir que $B$ doit impliquer la pré-condition la plus faible de $S1$, pour 
 pouvoir l'exécuter sans erreur vers la post-condition, et que $\neg B$ doit 
@@ -148,7 +176,7 @@ impliquer la pré-condition la plus faible de $S2$ (pour la même raison).
 
 En suivant cette définition, si le ```else``` ne fait rien, alors la règle
 d'inférence est de la forme suivante, en remplaçant $S2$ par une instruction
-"ne rien faire".
+« ne rien faire ».
 
 -> $\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad skip\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad skip \quad \{Q\}}$ <-
 
@@ -158,7 +186,7 @@ Le triplet pour le ```else``` est :
 
 Ce qui veut dire que nous devons avoir :
 
--> $Pre \wedge \neg B \Rightarrow Q$ <-
+-> $P \wedge \neg B \Rightarrow Q$ <-
 
 En résumé, si la condition du `if` est fausse, cela veut dire que la 
 post-condition de l'instruction conditionnelle globale est déjà vérifiée avant de 
@@ -182,44 +210,10 @@ Soit :
 
 $wp(if \neg (c \in [0;15])\ then\ c := 0, \{c \in [0;15]\})$
 
-$= (\neg (c \in [0;15])\Rightarrow wp(c := 0, \{c \in [0;15]\})) \wedge (c \in [0;15]\Rightarrow wp(skip, \{c \in [0;15]\}))$
+$:= (\neg (c \in [0;15])\Rightarrow wp(c := 0, \{c \in [0;15]\})) \wedge (c \in [0;15]\Rightarrow wp(skip, \{c \in [0;15]\}))$
 
 $= (\neg (c \in [0;15]) \Rightarrow 0 \in [0;15]) \wedge (c \in [0;15] \Rightarrow c \in [0;15])$
 
 $= (\neg (c \in [0;15]) \Rightarrow true) \wedge true$
 
 La formule est bien vérifiable : quelle que soit l'évaluation de $\neg (c \in [0;15])$ l'implication sera vraie.
-
-## Relation avec l'arbre de preuve et modularité.
-
-Si l'on remplace dans notre règle d'inférence, les occurrences de $P$ par le
-calcule de plus faible pré-condition correspondant $Q$, nous obtenons (en notant
-l'instruction conditionnelle complète $c$) :
-
--> $\dfrac{\{wp(c,Q) \wedge B\}\quad S1\quad \{Q\} \quad \quad \{wp(c,Q) \wedge \neg B\}\quad S2\quad \{Q\}}{\{wp(c,Q)\}\quad c\quad \{Q\}}$<-
-
-Or si l'on prend l'arbre de preuve qui correspond par exemple à $S1$ (c'est 
-similaire pour $S2$) et que nous y faisons le remplacement de $wp(c,Q)$, nous 
-obtenons :
-
--> $\{ (B \Rightarrow wp(S1,Q)) \wedge (\neg B \Rightarrow wp(S2,Q)) \wedge B \} \quad S1 \quad \{Q\}$ <-
-
-Ce qui n'est pas très modulaire : nous devons parler du calcul de plus faible
-pré-condition de $S2$ dans la preuve qui correspond à $S1$. En fait, en 
-simplifiant la formule nous obtenons :
-
--> $\{ wp(S1,Q) \wedge B \} \quad S1 \quad \{Q\}$ <-
-
-Or, $wp(S1,Q) \wedge B \Rightarrow wp(S1,Q)$. Et nous allons voir dans la section
-suivante une règle d'inférence, la règle de conséquence, qui nous permet de 
-construire l'arbre de déduction suivant :
-
--> $\dfrac{wp(S1,Q) \wedge B \Rightarrow wp(S1,Q)\quad\quad\{ wp(S1,Q) \} \quad S1 \quad \{Q\}}{\{ wp(S1,Q) \wedge B \} \quad S1 \quad \{Q\}}$ <-
-
-Nous laissant à prouver :
-
--> $\{ wp(S1,Q) \} \quad S1 \quad \{Q\}$ <-
-
-qui est bien le calcul de plus pré-condition de $S1$, ne nécessitant alors plus
-de raisonner à propos de la pré-condition de $S2$ qui nous ennuyait.
-

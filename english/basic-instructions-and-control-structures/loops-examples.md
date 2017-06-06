@@ -2,7 +2,7 @@
 
 S'il y a une structure de données que nous traitons avec les boucles c'est bien
 le tableau. C'est une bonne base d'exemples pour les boucles car ils permettent
-rapidement de présenter des invariants intéressants et surtout, il va 
+rapidement de présenter des invariants intéressants et surtout, ils vont nous 
 permettre d'introduire des constructions très importantes d'ACSL.
 
 Prenons par exemple la fonction qui cherche une valeur dans un tableau :
@@ -72,7 +72,7 @@ questions, nous pouvons les lire de cette façon :
 */
 ```
 
-Si nous devions résumer leur utilisation, nous voudrions dire que sur un certain
+Si nous devions résumer leur utilisation, nous pourrions dire que sur un certain
 ensemble d'éléments, une propriété est vraie, soit à propos d'au moins l'un
 d'eux, soit à propos de la totalité d'entre eux. Un schéma qui reviendra 
 typiquement dans ce cas est que nous restreindrons cet ensemble à travers une
@@ -83,7 +83,7 @@ différence fondamentale entre l'usage de ```exists``` et celui de ```forall```*
 Avec ```\forall type a ; p(a) ==> q(a)```, la restriction (```p```) est suivie
 par une implication. Pour tout élément, s'il respecte une première propriété 
 (```p```), alors vérifier la seconde propriété ```q```. Si nous mettions un ET
-comme pour le "il existe" que nous expliquerons ensuite, cela voudrait dire que 
+comme pour le « il existe » (que nous expliquerons ensuite), cela voudrait dire que 
 nous voulons que tout élément respecte à la fois les deux propriétés. Parfois, 
 cela peut être ce que nous voulons exprimer, mais cela ne correspond alors plus 
 à l'idée de restreindre un ensemble dont nous voulons montrer une propriété 
@@ -92,10 +92,10 @@ particulière.
 Avec ```\exists type a ; p(a) && q(a)```, la restriction (```p```) est suivie
 par une conjonction, nous voulons qu'il existe un élément tel que cet élément 
 est dans un certain état (défini par ```p```), tout en respectant l'autre 
-propriété ```q```. Si nous mettions une implication comme pour le "pour tout", 
-alors une telle expression devient toujours vraie à moins que p soit une 
-tautologie ! Pourquoi ? Existe-t-il "a" tel que p(a) implique q(a) ? Prenons 
-n'importe quel "a" tel que p(a) est faux, l'implication devient vraie.
+propriété ```q```. Si nous mettions une implication comme pour le « pour tout », 
+alors une telle expression devient toujours vraie à moins que `p` soit une 
+tautologie ! Pourquoi ? Existe-t-il « a » tel que p(a) implique q(a) ? Prenons 
+n'importe quel « a » tel que p(a) est faux, l'implication devient vraie.
 
 Cette partie de l'invariant mérite une attention particulière :
 
@@ -105,11 +105,10 @@ Cette partie de l'invariant mérite une attention particulière :
 
 En effet, c'est la partie qui définit l'action de notre boucle, elle indique à
 WP ce que la boucle va faire (ou apprendre dans le cas présent) tout au long de
-son exécution. Ici en l'occurrence, cet formule nous dit qu'à chaque tour, nous 
-savons que pour toute case entre 0 et la prochaine que nous allons visiter ```i``` 
-(exclue), elle stocke une valeur différente de l'élément recherché.
+son exécution. Ici en l'occurrence, cette formule nous dit qu'à chaque tour, nous 
+savons que pour toute case entre 0 et la prochaine que nous allons visiter (```i``` exclue), elle stocke une valeur différente de l'élément recherché.
 
-Le but WP associé à la préservation de cet invariant est un peu compliqué, il
+Le but de WP associé à la préservation de cet invariant est un peu compliqué, il
 n'est pour nous pas très intéressant de se pencher dessus. En revanche, la 
 preuve de l'établissement de cet invariant est intéressante :
 
@@ -126,8 +125,8 @@ de l'invariant :
 //@ loop invariant \forall size_t j; 0 <= j < 0 ==> array[j] != element;
 ```
 
-"Pour tout j, supérieur ou égal à 0 et inférieur strict à 0", cette partie est
-nécessairement fausse. Notre implication est nécessairement vraie.
+« Pour tout j, supérieur ou égal à 0 et inférieur strict à 0 », cette partie est
+nécessairement fausse. Notre implication est donc nécessairement vraie.
 
 # Exemples avec tableaux mutables
 
@@ -160,16 +159,16 @@ void raz(int* array, size_t length){
 
 Les seules parties sur lesquelles nous pouvons nous attacher ici sont 
 les ```assigns``` de la fonction et de la boucle. À nouveau, nous pouvons
-utiliser  a notation ```n .. m``` pour indiquer les parties du tableau 
+utiliser la notation ```n .. m``` pour indiquer les parties du tableau 
 qui sont modifiées.
 
 ## Chercher et remplacer
 
-Le dernier exemple qui nous intéresse est l'algorithme chercher et remplacer. 
+Le dernier exemple qui nous intéresse est l'algorithme « chercher et remplacer ». 
 C'est donc un algorithme qui va sélectivement modifier des valeurs dans une 
 certaine plage d'adresses. Il est toujours un peu difficile de guider l'outil 
-dans ce genre de cas car nous devons garder "en mémoire", ce qui est modifié 
-et ce qui ne l'est pas et que l'induction repose sur ce fait.
+dans ce genre de cas car, d'une part, nous devons garder « en mémoire » ce qui est modifié 
+et ce qui ne l'est pas et, d'autre part, parce que l'induction repose sur ce fait.
 
 À titre d'exemple, la première spécification que nous pouvons réaliser pour 
 cette fonction ressemblerait à ceci :
@@ -202,11 +201,11 @@ void search_and_replace(int* array, size_t length, int old, int new){
 }
 ```
 
-Nous utilisons la fonction logique ```\at``` dont nous avons déjà expliqué le 
-fonctionnement plus tôt. Si nous regardons l'utilisation qui en est faite ici,
-nous voyons que dans l'invariant de boucle, nous cherchons à établir une relation 
-entre les anciennes valeurs du tableau et leurs potentielles nouvelles 
-valeurs :
+Nous utilisons la fonction logique ```\at(v, Label)``` qui nous donne la valeur de
+la variable `v` au point de programme `Label`. Si nous regardons l'utilisation qui
+en est faite ici, nous voyons que dans l'invariant de boucle, nous cherchons à 
+établir une relation entre les anciennes valeurs du tableau et leurs potentielles 
+nouvelles valeurs :
 
 ```c
 /*@
@@ -218,8 +217,7 @@ valeurs :
 ```
 
 Pour tout élément que nous avons visité, s'il valait la valeur qui doit être
-remplacée, alors il vaut la nouvelle valeur, sinon il n'a pas changé. En fait
-si nous essayons de prouver l'invariant, WP n'y parvient pas. Dans ce genre de 
+remplacée, alors il vaut la nouvelle valeur, sinon il n'a pas changé. En fait, si nous essayons de prouver l'invariant, WP n'y parvient pas. Dans ce genre de 
 cas, le plus simple est encore d'ajouter diverses assertions exprimant les 
 propriétés intermédiaires que nous nous attendons à voir facilement prouvées 
 et impliquant l'invariant. En fait, nous nous apercevons rapidement que WP 
@@ -277,15 +275,15 @@ for(size_t i = 0; i < length; ++i){
 notamment dépendantes de boucles, il va y avoir une part de tâtonnement pour
 comprendre ce qui manque au prouveur pour réussir la preuve. 
 
-Ce qui peut lui manquer, c'est des hypothèses. Dans ce type de cas, nous
+Ce qui peut lui manquer, ce sont des hypothèses. Dans ce type de cas, nous
 pouvons tenter d'ajouter des assertions au code pour guider le prouveur. Avec
 de l'expérience, nous pouvons regarder le contenu des obligations de preuve ou 
 tenter de commencer la preuve avec Coq pour voir si la preuve semble réalisable. 
 Parfois le prouveur manque juste de temps, auquel cas, il suffit d'augmenter 
-(parfois beaucoup) la durée du timeout. Finalement, la propriété peut 
+(parfois de beaucoup) la durée du *timeout*. Finalement, la propriété peut 
 également être hors de portée du prouveur. Auquel cas, il faudra écrire une
 preuve à la main avec un prouveur interactif.
 
 Enfin, il reste le cas où l'implémentation est effectivement fausse, et dans ce
 cas, il faut la corriger. Et c'est là que nous utiliserons plutôt le test que la
-preuve, car le test permet de prouver la présence d'un bug ;) .
+preuve, car le test permet de prouver la présence d'un bug. ;)
