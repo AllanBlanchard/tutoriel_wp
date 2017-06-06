@@ -281,13 +281,12 @@ int max_ptr(int* a, int* b){
 The careful reader will now be able to take back the examples we presented
 until now to integrate the right `assigns` clause.
 
-## Séparation des zones de la mémoire
+## Memory location separation
 
-Les pointeurs apportent le risque d'aliasing (plusieurs pointeurs ayant accès à
-la même zone de mémoire). Si dans certaines fonctions, cela ne pose pas de 
-problème, par exemple dans le cas où nous passons les deux mêmes pointeurs
-à notre fonction ```swap``` où la spécification est toujours vérifiée par le 
-code source. Dans d'autre cas, ce n'est pas si simple :
+Pointers bring the risk of aliasing (multiple pointers can have access to the
+same memory location). For some functions, it will not cause any problem, for
+example when we give two identical pointers to the `swap` function, the 
+specification is still verified. However, sometimes it is not that simple:
 
 ```c
 #include <limits.h>
@@ -303,32 +302,30 @@ void incr_a_by_b(int* a, int const* b){
 }
 ```
 
-Si nous demandons à WP de prouver cette fonction, nous obtenons le 
-résultat suivant :
+If we ask WP to prove this function, we get the following result:
 
-![Échec de preuve : risque d'aliasing](https://zestedesavoir.com:443/media/galleries/2584/9cd9f343-986a-4271-95a7-a35df114d8bd.png)
+![Proof failure: potential aliasing](https://zestedesavoir.com:443/media/galleries/2584/9cd9f343-986a-4271-95a7-a35df114d8bd.png)
 
-La raison est simplement que rien ne garantit que le pointeur ```a``` est bien
-différent du pointeur ```b```. Or, si les pointeurs sont égaux,
+The reason is simply that we do not have any guarantee that the pointer `a`
+is different of the pointer `b`. Now, if these pointers are the same,
 
-- la propriété ```*a == \old(*a) + *b``` signifie en fait 
-   ```*a == \old(*a) + *a```, ce ne peut être vrai que si l'ancienne valeur 
-   pointée par ```a``` était 0, ce qu'on ne sait pas,
-- la propriété ```*b == \old(*b)``` n'est pas validée car potentiellement,
-  nous la modifions.
+- the property `*a == \old(*a) + *b` in fact means `*a == \old(*a) + *a`
+  which can only be true if the old value pointed by `a` was $0$, and we
+  do not have such a requirement,
+- the property `*b == \old(*b)` is not validated because we potentially 
+  modify this memory location.
 
 [[question]]
-| Pourquoi la clause assign est-elle validée ?
+| Why is the `assign` clause validated ?
 |
-| C'est simplement dû au fait, qu'il n'y a bien que la zone mémoire pointée par
-| ```a``` qui est modifiée étant donné que si ```a != b``` nous ne modifions bien 
-| que cette zone et que si ```a == b```, il n'y a toujours que cette zone, et 
-| pas une autre.
+| The reason is simply that `a` is indeed the only modified memory location.
+| If `a != b`, we only modify the location pointed by `a`, and if `a == b`,
+| that is still the case: `b` is not another location.
 
-Pour assurer que les pointeurs sont bien sur des zones séparées de mémoire, 
-ACSL nous offre le prédicat ```\separated(p1, ..., pn)``` qui reçoit en entrée 
-un certain nombre de pointeurs et qui va nous assurer qu'ils sont deux à deux 
-disjoints. Ici, nous spécifierions :
+In order to ensure that pointers address separated memory locations, ACSL
+gives use the predicate `\separated(p1, ...,pn)` that recieves in parameter
+a set of pointers and that ensures that these pointers are non-overlapping.
+Here, we specify:
 
 ```c
 #include <limits.h>
@@ -345,12 +342,11 @@ void incr_a_by_b(int* a, int const* b){
 }
 ```
 
-Et cette fois, la preuve est effectuée :
+And this time, the function is verified:
 
-![Résolution des problèmes d'aliasing](https://zestedesavoir.com:443/media/galleries/2584/dcca986e-e819-4320-a481-7c924635f8bb.png)
+![Solved aliasing problems](https://zestedesavoir.com:443/media/galleries/2584/dcca986e-e819-4320-a481-7c924635f8bb.png)
 
-Nous pouvons noter que nous ne nous intéressons pas ici à la preuve de 
-l'absence d'erreur à l'exécution car ce n'est pas l'objet de cette section.
-Cependant, si cette fonction faisait partie d'un programme complet à vérifier,
-il faudrait définir le contexte dans lequel on souhaite l'utiliser et définir
-les pré-conditions qui nous garantissent l'absence de débordement en conséquence.
+We can notice that we do not consider the arithmetic overflow here, as we
+do not focus on this question in this section. However, if this function was
+part of a complete program, it would be necessary to define the context of
+use of this function and the precondition guaranteeing the absence of overflow.
