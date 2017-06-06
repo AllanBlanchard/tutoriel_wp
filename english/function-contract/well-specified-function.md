@@ -171,14 +171,14 @@ in parameter. For example, we can give it an expression such as:
 `p+i` is a valid pointer. This kind of expression will be extremely useful
 when we will specify properties about arrays in specifications.
 
-Si nous nous intéressons aux assertions ajoutées par WP dans la fonction swap
-avec la validation des RTEs, nous pouvons constater qu'il existe une variante
-de ```\valid``` sous le nom ```\valid_read```. Contrairement au premier, 
-celui-ci assure que le pointeur peut être déréférencé mais en lecture 
-seulement. Cette subtilité est due au fait qu'en C, le downcast de pointeur 
-vers un élément const est très facile à faire mais n'est pas forcément légal.
+If we have a closer look to the assertions that WP adds in the swap function
+comprising RTE verification, we can notice that there exists another version 
+of the `\valid` predicate, denoted `\valid_read`. As opposed to `valid`, the
+predicate `\valid_read` indicates that a pointer can be dereferenced, but only
+to read the pointed memory. This subtlety is due to the C language, where the
+downcast of a const pointer is easy to write but is not necessarily legal.
 
-Typiquement, dans le code suivant :
+Typically, in this code:
 
 ```c
 /*@ requires \valid(p); */
@@ -193,22 +193,21 @@ int main(){
 }
 ```
 
-Le déréférencement de ```p``` est valide, pourtant la pré-condition de ```unref```
-ne sera pas validée par WP car le déréférencement de l'adresse de ```value``` 
-n'est légal qu'en lecture. Un accès en écriture sera un comportement 
-indéterminé. Dans un tel cas, nous pouvons préciser que dans ```unref```, le 
-pointeur ```p``` doit être nécessairement ```\valid_read``` et pas ```\valid```.
+Dereferencing `p` is valid, however the precondition of `unref` will not be
+verified by WP since dereferencing `value` is only legal for a read-access. A
+write access will result in an undefined behavior. In such a case, we can 
+specify that the pointer `p` must be `\valid_read` and not `\valid`.
 
-## Effets de bord
+## Side effects
 
-Notre fonction ```swap``` est bien prouvable au regard de sa spécification et
-de ses potentielles erreurs à l'exécution, mais est-elle pour autant 
-suffisamment spécifiée ? Pour voir cela, nous pouvons modifier légèrement le code
-de cette façon (nous utilisons ```assert``` pour analyser des propriétés 
-ponctuelles) :
+Our `swap` function is provable with regard to the specification and potential
+runtime errors, but is it however enough specified ? We can slightly modify our
+code to check this (we use `assert` to verify some properties at some particular
+points):
+
 
 ```c
-int h = 42; //nous ajoutons une variable globale
+int h = 42; //we add a global variable
 
 /*@
   requires \valid(a) && \valid(b);
@@ -229,19 +228,19 @@ int main(){
   //@ assert h == 42;
 }
 ```
-Le résultat n'est pas vraiment celui escompté :
 
-![Échec de preuve sur une globale non concernée par l'appel à ```swap```](https://zestedesavoir.com:443/media/galleries/2584/1aeddaba-4761-4d30-b499-b99f8815a6da.png)
+The result is not exactly what we expect:
 
-En effet, nous n'avons pas spécifié les effets de bords autorisés pour notre
-fonction. Pour spécifier les effets de bords, nous utilisons la clause ```assigns```
-qui fait partie des post-conditions de la fonction. Elle nous permet de spécifier 
-quels éléments **non locaux** (on vérifie bien des effets de bord), sont 
-susceptibles d'être modifiés par la fonction.
+![Proof failure on the property of a global variable which is not modified by `swap`](https://zestedesavoir.com:443/media/galleries/2584/1aeddaba-4761-4d30-b499-b99f8815a6da.png)
 
-Par défaut, WP considère qu'une fonction a le droit de modifier n'importe quel
-élément en mémoire. Nous devons donc préciser ce qu'une fonction est en droit 
-de modifier. Par exemple pour la fonction swap :
+Indeed, we did not specify the allowed side effects for our function. In order
+to specify side effects, we use an `assign` clause which is part of the postcondtion
+of a function. It allows us to specify which **non local** elements (we verify side
+effects) can be modified during the execution of the function.
+
+By default, WP considers that a function can modify everything in the memory.
+So, we have to specify what can be modified by a function. For example, our 
+`swap` function will be specified like this:
 
 ```c
 /*@
@@ -258,12 +257,12 @@ void swap(int* a, int* b){
 }
 ```
 
-Si nous rejouons la preuve avec cette spécification, la fonction et les 
-assertions que nous avions demandées dans le main seront validées par WP.
+If we ask WP to proved the function with this specification, it will be
+validated (including with the variable added in the previous source code).
 
-Finalement, il peut arriver que nous voulions spécifier qu'une fonction ne 
-provoque pas d'effets de bords. Ce cas est précisé en donnant ```\nothing```
-à ```assigns``` :
+Finally, we sometimes want to specify that a function is side effect free.
+We specify this by giving `\nothing` to `assigns`:
+
 
 ```c
 /*@
@@ -278,8 +277,9 @@ int max_ptr(int* a, int* b){
   return (*a > *b) ? *a : *b ;
 }
 ```
-Le lecteur pourra maintenant reprendre les exemples précédents y intégrer 
-la bonne clause ```assigns``` ;) .
+
+The careful reader will now be able to take back the examples we presented
+until now to integrate the right `assigns` clause.
 
 ## Séparation des zones de la mémoire
 
