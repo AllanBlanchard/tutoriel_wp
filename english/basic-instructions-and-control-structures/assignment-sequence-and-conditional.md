@@ -2,8 +2,8 @@
 
 Assignment is the most basic operation one can have in language (leaving aside
 the "do nothing" operation that isn't particular interesting).
-The weakest preconddition calculus associates the following computation to an
-assignement operation;
+The weakest precondition calculus associates the following computation to an
+assignment operation;
 
 -> $wp(x = E , Post) := Post[x \leftarrow E]$ <-
 
@@ -54,33 +54,30 @@ inference rule for the Hoare triple of an assignment as
 
 -> $\dfrac{}{\{Q[x \leftarrow E] \}\quad x = E \quad\{ Q \}}$ <-
 
+We note that there is no precondition to verify. Does this mean that the triple
+is necessarily true? Yes. However, it does not mean that the precondition is
+respected by the programme to which the assignment belongs or that the
+precondition is at all possible. Here the automatic provers come into play.
 
-
-Nous noterons qu'il n'y a pas de prémisse à vérifier. Cela veut-il dire que le
-triplet est nécessairement vrai ? Oui. Mais cela ne dit pas si la pré-condition
-est respectée par le programme où se trouve l'instruction, ni que cette
-pré-condition est possible. C'est ce travail qu'effectuent ensuite les prouveurs
-automatiques.
-
-Par exemple, nous pouvons demander la vérification de la ligne suivante avec
-Frama-C :
+For example, we can ask Frama-C to verify the following line
 
 ```c
 int a = 42;
 //@ assert a == 42;
 ```
 
-Ce qui est, bien entendu, prouvé directement par Qed car c'est une simple
-application de la règle de l'affectation.
+which is, of course, directly proven by Qed, since it is a simple applications
+of the assignment rule.
 
 [[information]]
-| Notons que d'après la norme C, l'opération d'affectation est une expression
-| et non une instruction. C'est ce qui nous permet par exemple d'écrire
-| `if( (a = foo()) == 42)`. Dans Frama-C, une affectation sera toujous une
-| instruction. En effet, si une affectation est présente au sein d'une
-| expression plus complexe, le module de création de l'arbre de syntaxe abstraite
-| du programme analysé effectue une étape de normalisation qui crée
-| systématiquement une instruction séparée.
+| We remark that according to the C standard, an assignment is in fact an
+| expression. This allows us, for example, to write `if( (a = foo()) == 42)`.
+| In Frama-C, an assignment will always be treated as a statement. Indeed,
+| if an assignment occurs within a larger expression, then the Frama-C
+| kernel (???), while building the abstract syntax tree, systematically
+| performs a *normalization step* that produces a separate assignment
+| statement.
+
 
 # Séquence d'instructions
 
