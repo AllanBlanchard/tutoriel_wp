@@ -22,7 +22,7 @@ utilisée est la suivante :
 ```
 
 Cette fois les propriétés que nous voulons exprimer ne dépendent pas de 
-paramètres reçus (hors de nos labels bien sûr). Ces propriétés seront donc 
+paramètres reçus (hors de nos *labels* bien sûr). Ces propriétés seront donc 
 exprimées sur des variables quantifiées. Par exemple, nous pouvons poser ce 
 lemme qui est vrai, même s'il est trivial :
 
@@ -93,4 +93,4 @@ Si nous ne renseignons pas les lemmes mentionnés plus tôt, il y a peu de chanc
 qu'Alt-ergo réussisse à produire la preuve que ```fmin``` est inférieur à ```fmax```.
 Avec ces lemmes présents en revanche, il y parvient sans problème car cette 
 propriété est une simple instance du lemme ```ax_b_monotonic_pos```, la preuve 
-étant ainsi trivial car notre lemme nous statue cette propriété comme étant vraie.
+étant ainsi triviale car notre lemme nous énonce cette propriété comme étant vraie.
