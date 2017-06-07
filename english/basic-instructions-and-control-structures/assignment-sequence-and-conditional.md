@@ -49,10 +49,12 @@ because the property is easy to verify. If we had, however, given the value
 7 to the variable `c` the prover's reply would be "no" since the formula
 $43*7 = 258$ is not true.
 
-Nous pouvons donc écrire la règle d'inférence pour le triplet de Hoare de
-l'affectation, où l'on prend en compte le calcul de plus faible pré-condition :
+Taking into account the weakest precondition calculus, we can now write the
+inference rule for the Hoare triple of an assignment as
 
 -> $\dfrac{}{\{Q[x \leftarrow E] \}\quad x = E \quad\{ Q \}}$ <-
+
+
 
 Nous noterons qu'il n'y a pas de prémisse à vérifier. Cela veut-il dire que le
 triplet est nécessairement vrai ? Oui. Mais cela ne dit pas si la pré-condition
