@@ -171,14 +171,14 @@ in parameter. For example, we can give it an expression such as:
 `p+i` is a valid pointer. This kind of expression will be extremely useful
 when we will specify properties about arrays in specifications.
 
-Si nous nous intéressons aux assertions ajoutées par WP dans la fonction swap
-avec la validation des RTEs, nous pouvons constater qu'il existe une variante
-de ```\valid``` sous le nom ```\valid_read```. Contrairement au premier, 
-celui-ci assure que le pointeur peut être déréférencé mais en lecture 
-seulement. Cette subtilité est due au fait qu'en C, le downcast de pointeur 
-vers un élément const est très facile à faire mais n'est pas forcément légal.
+If we have a closer look to the assertions that WP adds in the swap function
+comprising RTE verification, we can notice that there exists another version 
+of the `\valid` predicate, denoted `\valid_read`. As opposed to `valid`, the
+predicate `\valid_read` indicates that a pointer can be dereferenced, but only
+to read the pointed memory. This subtlety is due to the C language, where the
+downcast of a const pointer is easy to write but is not necessarily legal.
 
-Typiquement, dans le code suivant :
+Typically, in this code:
 
 ```c
 /*@ requires \valid(p); */
@@ -193,22 +193,21 @@ int main(){
 }
 ```
 
-Le déréférencement de ```p``` est valide, pourtant la pré-condition de ```unref```
-ne sera pas validée par WP car le déréférencement de l'adresse de ```value``` 
-n'est légal qu'en lecture. Un accès en écriture sera un comportement 
-indéterminé. Dans un tel cas, nous pouvons préciser que dans ```unref```, le 
-pointeur ```p``` doit être nécessairement ```\valid_read``` et pas ```\valid```.
+Dereferencing `p` is valid, however the precondition of `unref` will not be
+verified by WP since dereferencing `value` is only legal for a read-access. A
+write access will result in an undefined behavior. In such a case, we can 
+specify that the pointer `p` must be `\valid_read` and not `\valid`.
 
-## Effets de bord
+## Side effects
 
-Notre fonction ```swap``` est bien prouvable au regard de sa spécification et
-de ses potentielles erreurs à l'exécution, mais est-elle pour autant 
-suffisamment spécifiée ? Pour voir cela, nous pouvons modifier légèrement le code
-de cette façon (nous utilisons ```assert``` pour analyser des propriétés 
-ponctuelles) :
+Our `swap` function is provable with regard to the specification and potential
+runtime errors, but is it however enough specified ? We can slightly modify our
+code to check this (we use `assert` to verify some properties at some particular
+points):
+
 
 ```c
-int h = 42; //nous ajoutons une variable globale
+int h = 42; //we add a global variable
 
 /*@
   requires \valid(a) && \valid(b);
@@ -229,19 +228,19 @@ int main(){
   //@ assert h == 42;
 }
 ```
-Le résultat n'est pas vraiment celui escompté :
 
-![Échec de preuve sur une globale non concernée par l'appel à ```swap```](https://zestedesavoir.com:443/media/galleries/2584/1aeddaba-4761-4d30-b499-b99f8815a6da.png)
+The result is not exactly what we expect:
 
-En effet, nous n'avons pas spécifié les effets de bords autorisés pour notre
-fonction. Pour spécifier les effets de bords, nous utilisons la clause ```assigns```
-qui fait partie des post-conditions de la fonction. Elle nous permet de spécifier 
-quels éléments **non locaux** (on vérifie bien des effets de bord), sont 
-susceptibles d'être modifiés par la fonction.
+![Proof failure on the property of a global variable which is not modified by `swap`](https://zestedesavoir.com:443/media/galleries/2584/1aeddaba-4761-4d30-b499-b99f8815a6da.png)
 
-Par défaut, WP considère qu'une fonction a le droit de modifier n'importe quel
-élément en mémoire. Nous devons donc préciser ce qu'une fonction est en droit 
-de modifier. Par exemple pour la fonction swap :
+Indeed, we did not specify the allowed side effects for our function. In order
+to specify side effects, we use an `assign` clause which is part of the postcondtion
+of a function. It allows us to specify which **non local** elements (we verify side
+effects) can be modified during the execution of the function.
+
+By default, WP considers that a function can modify everything in the memory.
+So, we have to specify what can be modified by a function. For example, our 
+`swap` function will be specified like this:
 
 ```c
 /*@
@@ -258,12 +257,12 @@ void swap(int* a, int* b){
 }
 ```
 
-Si nous rejouons la preuve avec cette spécification, la fonction et les 
-assertions que nous avions demandées dans le main seront validées par WP.
+If we ask WP to proved the function with this specification, it will be
+validated (including with the variable added in the previous source code).
 
-Finalement, il peut arriver que nous voulions spécifier qu'une fonction ne 
-provoque pas d'effets de bords. Ce cas est précisé en donnant ```\nothing```
-à ```assigns``` :
+Finally, we sometimes want to specify that a function is side effect free.
+We specify this by giving `\nothing` to `assigns`:
+
 
 ```c
 /*@
@@ -278,16 +277,16 @@ int max_ptr(int* a, int* b){
   return (*a > *b) ? *a : *b ;
 }
 ```
-Le lecteur pourra maintenant reprendre les exemples précédents y intégrer 
-la bonne clause ```assigns``` ;) .
 
-## Séparation des zones de la mémoire
+The careful reader will now be able to take back the examples we presented
+until now to integrate the right `assigns` clause.
 
-Les pointeurs apportent le risque d'aliasing (plusieurs pointeurs ayant accès à
-la même zone de mémoire). Si dans certaines fonctions, cela ne pose pas de 
-problème, par exemple dans le cas où nous passons les deux mêmes pointeurs
-à notre fonction ```swap``` où la spécification est toujours vérifiée par le 
-code source. Dans d'autre cas, ce n'est pas si simple :
+## Memory location separation
+
+Pointers bring the risk of aliasing (multiple pointers can have access to the
+same memory location). For some functions, it will not cause any problem, for
+example when we give two identical pointers to the `swap` function, the 
+specification is still verified. However, sometimes it is not that simple:
 
 ```c
 #include <limits.h>
@@ -303,32 +302,30 @@ void incr_a_by_b(int* a, int const* b){
 }
 ```
 
-Si nous demandons à WP de prouver cette fonction, nous obtenons le 
-résultat suivant :
+If we ask WP to prove this function, we get the following result:
 
-![Échec de preuve : risque d'aliasing](https://zestedesavoir.com:443/media/galleries/2584/9cd9f343-986a-4271-95a7-a35df114d8bd.png)
+![Proof failure: potential aliasing](https://zestedesavoir.com:443/media/galleries/2584/9cd9f343-986a-4271-95a7-a35df114d8bd.png)
 
-La raison est simplement que rien ne garantit que le pointeur ```a``` est bien
-différent du pointeur ```b```. Or, si les pointeurs sont égaux,
+The reason is simply that we do not have any guarantee that the pointer `a`
+is different of the pointer `b`. Now, if these pointers are the same,
 
-- la propriété ```*a == \old(*a) + *b``` signifie en fait 
-   ```*a == \old(*a) + *a```, ce ne peut être vrai que si l'ancienne valeur 
-   pointée par ```a``` était 0, ce qu'on ne sait pas,
-- la propriété ```*b == \old(*b)``` n'est pas validée car potentiellement,
-  nous la modifions.
+- the property `*a == \old(*a) + *b` in fact means `*a == \old(*a) + *a`
+  which can only be true if the old value pointed by `a` was $0$, and we
+  do not have such a requirement,
+- the property `*b == \old(*b)` is not validated because we potentially 
+  modify this memory location.
 
 [[question]]
-| Pourquoi la clause assign est-elle validée ?
+| Why is the `assign` clause validated ?
 |
-| C'est simplement dû au fait, qu'il n'y a bien que la zone mémoire pointée par
-| ```a``` qui est modifiée étant donné que si ```a != b``` nous ne modifions bien 
-| que cette zone et que si ```a == b```, il n'y a toujours que cette zone, et 
-| pas une autre.
+| The reason is simply that `a` is indeed the only modified memory location.
+| If `a != b`, we only modify the location pointed by `a`, and if `a == b`,
+| that is still the case: `b` is not another location.
 
-Pour assurer que les pointeurs sont bien sur des zones séparées de mémoire, 
-ACSL nous offre le prédicat ```\separated(p1, ..., pn)``` qui reçoit en entrée 
-un certain nombre de pointeurs et qui va nous assurer qu'ils sont deux à deux 
-disjoints. Ici, nous spécifierions :
+In order to ensure that pointers address separated memory locations, ACSL
+gives use the predicate `\separated(p1, ...,pn)` that recieves in parameter
+a set of pointers and that ensures that these pointers are non-overlapping.
+Here, we specify:
 
 ```c
 #include <limits.h>
@@ -345,12 +342,11 @@ void incr_a_by_b(int* a, int const* b){
 }
 ```
 
-Et cette fois, la preuve est effectuée :
+And this time, the function is verified:
 
-![Résolution des problèmes d'aliasing](https://zestedesavoir.com:443/media/galleries/2584/dcca986e-e819-4320-a481-7c924635f8bb.png)
+![Solved aliasing problems](https://zestedesavoir.com:443/media/galleries/2584/dcca986e-e819-4320-a481-7c924635f8bb.png)
 
-Nous pouvons noter que nous ne nous intéressons pas ici à la preuve de 
-l'absence d'erreur à l'exécution car ce n'est pas l'objet de cette section.
-Cependant, si cette fonction faisait partie d'un programme complet à vérifier,
-il faudrait définir le contexte dans lequel on souhaite l'utiliser et définir
-les pré-conditions qui nous garantissent l'absence de débordement en conséquence.
+We can notice that we do not consider the arithmetic overflow here, as we
+do not focus on this question in this section. However, if this function was
+part of a complete program, it would be necessary to define the context of
+use of this function and the precondition guaranteeing the absence of overflow.

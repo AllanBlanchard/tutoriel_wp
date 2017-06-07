@@ -1,28 +1,25 @@
-Il peut arriver qu'une fonction ait divers comportements potentiellement très
-différents en fonction de l'entrée. Un cas typique est la réception d'un 
-pointeur vers une ressource optionnelle : si le pointeur est ```NULL```, nous 
-aurons un certain comportement et un comportement complètement différent s'il ne 
-l'est pas.
+Sometimes, a function can have different behaviors that can be quite different
+depending on the input. Typically, a function can recieve a pointer to an
+optional resource: if the pointer is `NULL`, we will have a certain behavior,
+which will be different of the behavior expected when the pointer is not `NULL`.
 
-Nous avons déjà vu une fonction qui avait des comportements différents, la 
-fonction ```abs```. Nous allons la reprendre comme exemple. Les deux 
-comportements que nous pouvons isoler sont le cas où la valeur est positive et
-le cas où la valeur est négative.
+We have already seen a function that have different behaviors: the `abs`
+function. We will use it again to illustrate behaviors. We have two behaviors
+for the `abs` function: either the input is positive or it is negative.
 
-Les comportements nous servent à spécifier les différents cas pour les 
-post-conditions. Nous les introduisons avec le mot-clé ```behavior```. 
-Chaque comportement se voit attribuer un nom, les suppositions du cas que 
-nous traitons introduites par le mot clé ```assumes``` et la 
-post-condition associée. Finalement, nous pouvons également demander à WP
-de vérifier le fait que les comportements sont disjoints (pour garantir 
-le déterminisme) et complets.
+Behaviors allow us to specify the different cases for postconditions.
+We introduce them using the `behavior` keyword. Each behavior will have a
+name, the assumptions we have for the given case introduced with the clause
+`assumes` and the associated postcondition.  Finally, we can ask WP to verify
+that behaviors are disjoint (to guarantee determinism) and complete.
 
-Les comportements sont disjoints si pour toute entrée de la fonction, elle ne
-correspond aux suppositions (assumes) que d'un seul comportement. Les 
-comportements sont complets si les suppositions recouvrent bien tout le domaine
-des entrées.
+Behaviors are disjoint if for any (valid) input of the function, it
+corresponds to the assumption (`assumes`) of a single behavior. Behaviors
+are complete if any (valid) input of the function corresponds to at least
+one behavior.
 
-Par exemple pour ```abs``` :
+For example, for `abs` we have :
+
 
 ```c
 /*@
@@ -46,32 +43,29 @@ int abs(int val){
 }
 ```
 
-Pour comprendre ce que font précisément ```complete``` et ```disjoint```, il est utile
-d'expérimenter deux possibilités : 
+It can be useful to experiment two possibilities to understand the exact
+meaning of `complete` and `disjoint`:
 
-- remplacer la supposition de "pos" par ```val > 0``` auquel cas les 
-  comportements seront disjoints mais incomplets (il nous manquera le cas 
-  ```val == 0```)
-- remplacer la supposition de "neg" par ```val <= 0``` auquel cas les 
-  comportements seront complets mais non disjoints (le cas ```val == 0```) sera
-  présent dans les deux comportements.
+- replace the assumption of `pos` with `val > 0`, in this case, behaviors
+  will be disjoint but incomplete (we will miss `val == 0`),
+- replace the assumption of `neg` with `val <= 0`, in this case, behaviors
+  will be complete but not disjoint (we will have two assumption corresponding
+  to `val == 0`.
 
 [[attention]]
-| Même si ```assigns``` est une post-condition, à ma connaissance, il n'est pas 
-| possible de mettre des ```assigns``` pour chaque behavior. Si nous avons
-| besoin d'un tel cas, nous spécifions :
+| Even if `assigns` is a postcondition, it is to our knowledge not possible to
+| indicate different `assigns` to each behaviors. If we need to specify this,
+| we will:
 |
-| - ```assigns``` avant les behavior (comme dans notre exemple) avec tout 
-|   élément non-local susceptible d'être modifié, 
-| - en post-condition de chaque behavior les éléments qui ne sont finalement 
-|   pas modifiés en les indiquant égaux à leur ancienne (```\old```) valeur.
+| - put our `assigns` before the behaviors (as we have done in our example)
+|   with all potentially modified non-local element,
+| - add in post-condition of each behaviors the elements that are in fact
+|   not modified by indicating there new value to be equal to the `\old` one.
 
-Les comportements sont très utiles pour simplifier l'écriture de spécifications
-quand les fonctions ont des effets très différents en fonction de leurs 
-entrées. Sans eux, les spécifications passent systématiquement par des 
-implications traduisant la même idée mais dont l'écriture et la lecture sont 
-plus difficiles (nous sommes susceptibles d'introduire des erreurs). 
+Behaviors are useful to simplify the writing of specifications when functions
+can jave very different behaviors depending on their input. Without them,
+specification would be defined using implications expressing the same idea
+but harder to write and read (which would be error-prone).
 
-D'autre part, la traduction de la complétude et de la disjonction devraient 
-être écrites manuellement, ce qui serait fastidieux et une nouvelle fois source
-d'erreurs.
+On the other hand, the translation of completness and disjointness would be
+necessarily written by hand which would be tedious and again error-prone.
