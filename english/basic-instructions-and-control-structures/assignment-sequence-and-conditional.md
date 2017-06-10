@@ -133,12 +133,6 @@ second statement of our rule and all the preceeding ones as first statement.
 This way we traverse step by step backwards the statements in our reasoning.
 With the previous programme this looks like:
 
-Notons que lorsque nous avons plus de deux instructions, nous pouvons simplement
-considérer que la dernière instruction est la seconde instruction de notre règle
-et que toutes les instructions qui la précède forment la première « instruction ».
-De cette manière nous remontons bien les instructions une à une dans notre
-raisonnement, par exemple avec le programme précédent :
-
 +-------------------------------------------+------------------------------------------------+---------------------------------------------+
 | -> $\{P\}\quad i_1 ; \quad \{Q_{-2}\}$ <- | -> $\{Q_{-2}\}\quad i_2 ; \quad \{Q_{-1}\}$ <- |                                             |
 +-------------------------------------------+------------------------------------------------+---------------------------------------------+
@@ -155,27 +149,28 @@ Finnaly, $P$ can be determined from $Q_{-2}$ and $i_1$.
 Now that we can verify programmes that consists of several statements it
 is time to add some structure to them.
 
-# Règle de la conditionnelle
+# Conditional rule
 
-Pour qu'un branchement conditionnel soit valide, il faut que la post-condition
-soit atteignable par les deux banches, depuis la même pré-condition, à ceci
-près que chacune des branches aura une information supplémentaire : le fait
-que la condition était vraie dans un cas et fausse dans l'autre.
+For a conditional statement to be true, one must be able to reach the
+postconditionthrough both branches.
+Of course, for both branches the same precondition (of the conditional
+statement) must hold. In addition we have that in the if-branch
+the condition is true while in the else-branch it is false.
 
-Comme avec la séquence d'instructions, nous aurons donc deux points à vérifier
-(pour éviter de confondre les accolades, j'utilise la syntaxe
-$if\ B\ then\ S1\ else\ S2$) :
+We therefore have, as in the case of composed statements, two facts to verify
+(in order to avoid confusion we are using here the syntax
+$if\ B\ then\ S1\ else\ S2$):
 
 -> $\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad S2\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad S2 \quad \{Q\}}$ <-
 
-Nos deux prémisses sont donc la vérification que lorsque nous avons la
-pré-condition et que nous passons dans la branche `if`, nous atteignons bien la
-post-condition, et que lorsque nous avons la pré-condition et que nous passons
-dans la branche `else`, nous obtenons bien également la post-condition.
+Our two premises are therefore that we can both in the if-branch and the
+else-branch reach the postcondition from the precondition.
 
-Le calcul de pré-condition de $wp$ pour la conditionnelle est le suivant :
+The result of the weakest-precondition calculus for a conditional statement
+reads as follows:
 
 -> $wp(if\ B\ then\ S1\ else\ S2 , Post) := (B \Rightarrow wp(S1, Post)) \wedge (\neg B \Rightarrow wp(S2, Post))$ <-
+
 
 À savoir que $B$ doit impliquer la pré-condition la plus faible de $S1$, pour
 pouvoir l'exécuter sans erreur vers la post-condition, et que $\neg B$ doit
