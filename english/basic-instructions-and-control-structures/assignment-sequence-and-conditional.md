@@ -126,7 +126,12 @@ int main(){
 }
 ```
 
-## Arbre de preuve
+## Proof tree
+
+When we have more than two statements, we can consider the last statement as
+second statement of our rule and all the preceeding ones as first statement.
+This way we traverse step by step backwards the statements in our reasoning.
+With the previous programme this looks like:
 
 Notons que lorsque nous avons plus de deux instructions, nous pouvons simplement
 considérer que la dernière instruction est la seconde instruction de notre règle
@@ -142,12 +147,13 @@ raisonnement, par exemple avec le programme précédent :
 | -> $\{P\}\quad i_1 ; \quad i_2 ; \quad i_3 ; \quad \{ Q \}$ <-                                                                           |
 +------------------------------------------------------------------------------------------------------------------------------------------+
 
-Nous pouvons par calcul de plus faibles pré-conditions construire la propriété
-$Q_{-1}$ à partir de $Q$ et $i_3$, ce qui nous permet de déduire $Q_{-2}$, à
-partir de $Q_{-1}$ et $i_2$ et finalement $P$ avec $Q_{-2}$ et $i_1$.
+The weakest-precondition calculus allows us to construct the property $Q_{-1}$
+starting from the property $Q$ and statement $i_3$ which in turn enables us
+to derive the property $Q_{-2}$ from the property $Q_{-1}$ eand statement $i_2$.
+Finnaly, $P$ can be determined from $Q_{-2}$ and $i_1$.
 
-Nous pouvons maintenant vérifier des programmes comprenant plusieurs
-instructions, il est temps d'y ajouter un peu de structure.
+Now that we can verify programmes that consists of several statements it
+is time to add some structure to them.
 
 # Règle de la conditionnelle
 
