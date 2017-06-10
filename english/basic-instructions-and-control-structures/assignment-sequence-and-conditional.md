@@ -79,37 +79,39 @@ of the assignment rule.
 | statement.
 
 
-# Séquence d'instructions
+# Composition of statements
 
-Pour qu'une instruction soit valide, il faut que sa pré-condition nous
-permette, par cette instruction, de passer à la post-condition voulue.
-Maintenant, nous avons besoin d'enchaîner ce processus d'une
-instruction à une autre. L'idée est alors que la post-condition assurée par la
-première instruction soit compatible avec la pré-condition demandée par la
-deuxième et que ce processus puisse se répéter pour la troisième instruction,
-etc.
+For a statement to be valid, its precondition must allow us by means of
+executing the said statement to reach the desired postconditon.
+Now we would like to execute several statements one after another.
+Here the idea is that the postcondition of the first statement is compatible
+with the required precondition of the second statement and so on for the third
+statement.
 
-La règle d'inférence correspondant à cette idée, utilisant les triplets de
-Hoare est la suivante:
+The inference rule that corresponds to this idea utilises the following
+Hoare triples:
+
 
 -> $\dfrac{\{P\}\quad S1 \quad \{R\} \ \ \ \{R\}\quad S2 \quad \{Q\}}{\{P\}\quad S1 ;\ S2 \quad \{Q\}}$ <-
 
-Pour vérifier que la séquence d'instructions $S1;\ S2$ (NB : où $S1$ et $S2$
-peuvent elles-mêmes être des séquences d'instructions), nous passons par une
-propriété intermédiaire qui est à la fois la pré-condition de $S2$ et la
-post-condition de $S1$. Cependant, rien ne nous indique pour l'instant
-comment obtenir les propriétés $P$ et $R$.
+In order to verify the composed statement $S1;\ S2$ we rely on an
+intermediate property $R$ that is at the same time the postcondition of $S1$
+and the precondition of $S2$. (Please note that $S1$ and $S2$ are not necessarily
+simple statements; they themselves can be composed statements.)
+The problem is, however, that nothing indicates us how to determine the
+properties $P$ and $R$.
 
-Le calcul de plus faible pré-condition $wp$ nous dit simplement que la
-propriété intermédiaire $R$ est trouvée par calcul de plus faible pré-condition
-de la deuxième instruction. Et que la propriété $P$ est trouvée en calculant la
-plus faible pré-condition de la première instruction. La plus faible pré-condition
-de notre liste d'instruction est donc déterminée comme ceci :
+The weakest-precondition calculus now says us that the intermediate property $R$
+can be computed as the weakest precondition of the second statement. The
+property $P$, on the other hand, then is computed as the weakest precondition
+of the first statement. In other words, the weakest precondition of the composed
+statement $S1; S2$ is determined as follows:
 
 -> $wp(S1;\ S2 , Post) := wp(S1, wp(S2, Post) )$ <-
 
-Le plugin WP de Frama-C fait ce calcul pour nous, c'est pour cela que nous
-n'avons pas besoin d'écrire les assertions entre chaque ligne de code.
+The WP plugin of Frama-C performs all these computations for us.
+Thus, we do not have to write the intermediate properties as ACSL assertions
+between the lines of codes.
 
 ```c
 int main(){
