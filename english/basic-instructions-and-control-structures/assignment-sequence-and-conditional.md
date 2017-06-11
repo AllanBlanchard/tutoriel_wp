@@ -175,41 +175,42 @@ This means that the condition $B$ has to imply the weakest precondition of $S1$
 in order to safely arrive at the postcondition.
 Analogously, the negation of $B$ must imply the weakest precondition of $S2$.
 
-## Bloc `else` vide
+## Empty else-branch
 
-En suivant cette définition, si le ```else``` ne fait rien, alors la règle
-d'inférence est de la forme suivante, en remplaçant $S2$ par une instruction
-« ne rien faire ».
+Following this definition we obtain for case of an empty else-branch the
+following rule by simply replacing the statement $S2$ by the empty statement
+`skip`.
+
 
 -> $\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad skip\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad skip \quad \{Q\}}$ <-
 
-Le triplet pour le ```else``` est :
+The triple for `else` is:
 
 -> $\{P \wedge \neg B\}\quad skip\quad \{Q\}$ <-
 
-Ce qui veut dire que nous devons avoir :
+which means that we need to ensure:
 
 -> $P \wedge \neg B \Rightarrow Q$ <-
 
-En résumé, si la condition du `if` est fausse, cela veut dire que la
-post-condition de l'instruction conditionnelle globale est déjà vérifiée avant de
-rentrer dans le `else` (puisqu'il ne fait rien).
+In short, if the condition $B$ of `if` is false, this means that the
+postcondition of the complete conditional statement is already established
+before entering the else-branch (since it does not do anything).
 
-Par exemple, nous pourrions vouloir remettre une configuration $c$ à une valeur
-par défaut si elle a mal été configurée par un utilisateur du programme :
+As an example, we consider the following code snippet where we reset a variable
+$c$ to a default value in case it had not been properly initialized by the user.
 
 ```c
 int c;
 
-// ... du code ...
+// ... some code ...
 
 if(c < 0 || c > 15){
-  x = 0;
+  c = 0;
 }
 //@ assert 0 <= c <= 15;
 ```
 
-Soit :
+Let
 
 $wp(if \neg (c \in [0;15])\ then\ c := 0, \{c \in [0;15]\})$
 
@@ -219,4 +220,5 @@ $= (\neg (c \in [0;15]) \Rightarrow 0 \in [0;15]) \wedge (c \in [0;15] \Rightarr
 
 $= (\neg (c \in [0;15]) \Rightarrow true) \wedge true$
 
-La formule est bien vérifiable : quelle que soit l'évaluation de $\neg (c \in [0;15])$ l'implication sera vraie.
+The property can be verified: independent of the evaluation of
+$\neg (c \in [0;15])$, the implication will hold.
