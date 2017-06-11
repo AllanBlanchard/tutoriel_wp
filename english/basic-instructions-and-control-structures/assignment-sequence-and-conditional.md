@@ -82,13 +82,13 @@ of the assignment rule.
 # Composition of statements
 
 For a statement to be valid, its precondition must allow us by means of
-executing the said statement to reach the desired postconditon.
+executing the said statement to reach the desired postcondition.
 Now we would like to execute several statements one after another.
 Here the idea is that the postcondition of the first statement is compatible
 with the required precondition of the second statement and so on for the third
 statement.
 
-The inference rule that corresponds to this idea utilises the following
+The inference rule that corresponds to this idea utilizes the following
 Hoare triples:
 
 
@@ -129,7 +129,7 @@ int main(){
 ## Proof tree
 
 When we have more than two statements, we can consider the last statement as
-second statement of our rule and all the preceeding ones as first statement.
+second statement of our rule and all the preceding ones as first statement.
 This way we traverse step by step backwards the statements in our reasoning.
 With the previous programme this looks like:
 
@@ -143,8 +143,8 @@ With the previous programme this looks like:
 
 The weakest-precondition calculus allows us to construct the property $Q_{-1}$
 starting from the property $Q$ and statement $i_3$ which in turn enables us
-to derive the property $Q_{-2}$ from the property $Q_{-1}$ eand statement $i_2$.
-Finnaly, $P$ can be determined from $Q_{-2}$ and $i_1$.
+to derive the property $Q_{-2}$ from the property $Q_{-1}$ and statement $i_2$.
+Finally, $P$ can be determined from $Q_{-2}$ and $i_1$.
 
 Now that we can verify programmes that consists of several statements it
 is time to add some structure to them.
@@ -152,7 +152,7 @@ is time to add some structure to them.
 # Conditional rule
 
 For a conditional statement to be true, one must be able to reach the
-postconditionthrough both branches.
+postcondition through both branches.
 Of course, for both branches the same precondition (of the conditional
 statement) must hold. In addition we have that in the if-branch
 the condition is true while in the else-branch it is false.
@@ -171,10 +171,9 @@ reads as follows:
 
 -> $wp(if\ B\ then\ S1\ else\ S2 , Post) := (B \Rightarrow wp(S1, Post)) \wedge (\neg B \Rightarrow wp(S2, Post))$ <-
 
-
-À savoir que $B$ doit impliquer la pré-condition la plus faible de $S1$, pour
-pouvoir l'exécuter sans erreur vers la post-condition, et que $\neg B$ doit
-impliquer la pré-condition la plus faible de $S2$ (pour la même raison).
+This means that the condition $B$ has to imply the weakest precondition of $S1$
+in order to safely arrive at the postcondition.
+Analogously, the negation of $B$ must imply the weakest precondition of $S2$.
 
 ## Bloc `else` vide
 
