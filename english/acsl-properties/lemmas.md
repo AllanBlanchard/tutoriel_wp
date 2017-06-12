@@ -1,18 +1,16 @@
-Les lemmes sont des propriétés générales à propos des prédicats ou encore des 
-fonctions. Une fois ces propriétés exprimées, la preuve peut être réalisée une 
-fois et la propriété en question pourra être utilisée par les prouveurs, leur 
-permettant ainsi de ne pas reproduire les étapes de preuve nécessaires à chaque
-fois qu'une propriété équivalente intervient dans une preuve plus longue sur 
-une propriété plus précise.
+Lemmas are general properties about predicates or functions. Once these
+properties are expressed, their proof can be performed (one time) and the
+provers will then be able to use this result to perform other proofs without
+requiring to perform again all steps needed to perform the original proof if
+it appears in a much longer proof about an other property.
 
-Les lemmes peuvent par exemple nous permettre d'exprimer des propriétés à 
-propos des fonctions récursives pour que les preuves les faisant intervenir 
-nécessitent moins de travail pour les prouveurs.
+For example, lemmas allow us to express properties about recursive functions
+in order to get easier proofs when we are interested in proving properties
+that use such functions.
 
-# Syntaxe
+# Syntax
 
-Une nouvelle fois, nous les introduisons à l'aide d'annotations ACSL. La syntaxe
-utilisée est la suivante :
+Again, we introduce lemmas using ACSL annotations. The syntax is following:
 
 ```c
 /*@
@@ -21,10 +19,11 @@ utilisée est la suivante :
 */
 ```
 
-Cette fois les propriétés que nous voulons exprimer ne dépendent pas de 
-paramètres reçus (hors de nos *labels* bien sûr). Ces propriétés seront donc 
-exprimées sur des variables quantifiées. Par exemple, nous pouvons poser ce 
-lemme qui est vrai, même s'il est trivial :
+This time, the properties we want to express to depend on recieved parameters
+(except for labels). So we will express these properties on universally
+quantified variables. For example, we can state this lemma, which is true,
+even if it is trivial:
+
 
 ```c
 /*@
@@ -33,13 +32,13 @@ lemme qui est vrai, même s'il est trivial :
 */
 ```
 
-Cette preuve peut être effectuée en utilisant WP. La propriété est bien sûr 
-trivialement prouvée par Qed.
+This proof can be performed using WP. The property is, of course, proved
+using only Qed.
 
-# Exemple : propriété fonction affine
+# Exampel : properties about affine functions
 
-Nous pouvons par exemple reprendre nos fonctions affines et exprimer quelques 
-propriétés intéressantes à leur sujet :
+We can come back to our affine functions and express some interesting
+properties about them:
 
 ```c
 /* @
@@ -55,9 +54,9 @@ propriétés intéressantes à leur sujet :
 */
 ```
 
-Pour ces preuves, il est fort possible qu'Alt-ergo ne parvienne pas à les 
-décharger. Dans ce cas, le prouveur Z3 devrait, lui, y arriver. Nous pouvons 
-ensuite construire cet exemple de code :
+For these proofs, Alt-ergo, will probably not be able to discharge generated
+goals. In this case, Z3 will certainly perform it. We can then write some
+code examples:
 
 ```c
 /*@
@@ -89,8 +88,8 @@ void foo(int a, int x, int y){
 }
 ```
 
-Si nous ne renseignons pas les lemmes mentionnés plus tôt, il y a peu de chances 
-qu'Alt-ergo réussisse à produire la preuve que ```fmin``` est inférieur à ```fmax```.
-Avec ces lemmes présents en revanche, il y parvient sans problème car cette 
-propriété est une simple instance du lemme ```ax_b_monotonic_pos```, la preuve 
-étant ainsi triviale car notre lemme nous énonce cette propriété comme étant vraie.
+If we do not give the lemmas provided ealier, Alt-ergo will not be able to prove
+the proof that `fmin` is lesser or equal to `fmax`. With the lemmas it is however
+very easy for it since the property is the simply an instance of the lemma
+`ax_monotonic_pos`, the proof is then trivial as our lemme is considered to be
+true when are not currently proving it.
