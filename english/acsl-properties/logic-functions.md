@@ -1,23 +1,22 @@
-Les fonctions logiques nous permettent de décrire des fonctions qui ne seront 
-utilisables que dans les spécifications. Cela nous permet, d'une part, de les 
-factoriser, et d'autre part de définir des opérations sur les types `integer` et 
-`real` qui ne peuvent pas déborder contrairement aux types machines.
+Logic functions are meant to describe functions that can only be used in
+specifications. It allows us, first, to factor those specifications and, second,
+to define some operations on `integer` or `real` with the guarantee that they
+cannot overflow since they are mathematical types.
 
-Comme les prédicats, elles peuvent recevoir divers *labels* et valeurs en 
-paramètre.
+Like predicates, they can recieve different labels and values in parameter.
 
-# Syntaxe
+# Syntax
 
-Pour déclarer une fonction logique, l'écriture est la suivante :
+To define a logic function, the syntax is the following:
 
 ```c
 /*@
-  logic type_retour ma_fonction{ Label0, ..., LabelN }( type0 arg0, ..., typeN argN ) =
-    formule mettant en jeu les arguments ;
+  logic return_type my_function{ Label0, ..., LabelN }( type0 arg0, ..., typeN argN ) =
+    formula using the arguments ;
 */
 ``` 
 
-Nous pouvons par exemple décrire une [fonction affine](https://fr.wikipedia.org/wiki/Fonction_affine) générale du côté de la logique :
+We can for example define a mathematical [affine function](https://fr.wikipedia.org/wiki/Fonction_affine) using a logic function:
 
 ```c
 /*@
@@ -26,7 +25,7 @@ Nous pouvons par exemple décrire une [fonction affine](https://fr.wikipedia.org
 */
 ```
 
-Elle peut nous servir à prouver le code de la fonction suivante :
+And it can be used to prove the source code of the following function:
 
 ```c
 /*@ 
@@ -38,13 +37,12 @@ int function(int x){
 }
 ```
 
-![Les débordements semblent pouvoir survenir](https://zestedesavoir.com:443/media/galleries/2584/e34ccc72-b7ea-46cf-9875-16c3d57262af.png)
+![Some overflows seem to be possible](https://zestedesavoir.com:443/media/galleries/2584/e34ccc72-b7ea-46cf-9875-16c3d57262af.png)
 
-Le code est bien prouvé mais les contrôles d'*overflow*, eux, ne le sont pas. Nous 
-pouvons à nouveau définir des fonctions logiques générales, qui vont, du point de 
-vue de la logique, nous fournir les bornes en fonction des valeurs que nous donnons
-en entrée. Cela nous permet ensuite d'ajouter nos contrôles de bornes en 
-pré-condition de fonction :
+This code is indeed proved but some runtime-errors seems to be possible. We can
+again define some mathematical logic function, that will, from a logic point of
+view, provide the bounds of the affine function according to the machine type we
+use? It allows us to then add our bound checking in preconditon or the function.
 
 ```c
 /*@
@@ -70,27 +68,26 @@ int function(int x){
 ```
 
 [[information]]
-| Notons que comme dans la spécification, les calculs sont effectués à l'aide 
-| d'entiers mathématiques, nous n'avons pas à nous préoccuper d'un quelconque
-| risque de débordement avec les calculs de `INT_MIN-b` ou `INT_MAX-b`.
+| Note that, as in specifications, computations are done using mathematical
+| integers, we then do not need to care about some overflow risk with the
+| computation or `INT_MIN-b` or `INT_MAX-b`.
 
-Et cette fois tout est prouvé. Évidemment, nous pourrions fixer ces valeurs en 
-dur chaque fois que nous avons besoin d'une nouvelle fonction affine du côté de
-la logique mais en posant ces fonctions, nous obtenons directement ces valeurs 
-sans avoir besoin de les calculer nous même, ce qui est assez confortable.
+Once these specifications are provided, everything is fine. Of course, we could
+provide manually these bounds everytime we create an affine logic function.
+But, by creating these bound computation function, we directly get a way to
+compute them automatically which is quite comfortable.
 
-# Récursivité et limites
+# Recursivity and limits of logic functions
 
-Les fonctions logiques peuvent être définie récursivement. Cependant, une telle
-définition va très rapidement montrer ses limites pour la preuve. En effet, 
-pendant les manipulations des prouveurs automatiques sur les propriétés 
-logiques, si l'usage d'une telle fonction est présente, elle devra être évaluée,
-or les prouveurs ne sont pas conçus pour faire ce genre d'évaluation qui se 
-révélera donc généralement très coûteuse, produisant alors des temps de preuve
-trop longs menant à des *timeouts*. 
+Logic functions can be recursively defined. However, such an approach will
+rapidly show some limits in their use for program proof. Indeed, when automatic
+solver will reason on such logic properties, if such a function is met, it will
+be necessary to evaluate it, and SMT solvers are not meant to be efficient for
+this task, which will be generally costly, producing to long proof resolution
+and eventually timeouts.
 
-Exemple concret, nous pouvons définir la fonction factorielle, dans la logique
-et en C :
+We can have a concrete example with the factorial function, using logic and
+using C language:
 
 ```c
 /*@
@@ -106,16 +103,15 @@ unsigned facto(unsigned n){
 }
 ```
 
-Sans contrôle de borne, cette fonction se prouve rapidement. Si nous ajoutons
-le contrôle des RTE, le vérification de débordement sur l'entier non-signé n'est
-pas ajoutée, car c'est un comportement déterminé d'après la norme C. Pour ajouter
-une assertion à ce point, nous pouvons demander à WP de générer ses propres 
-vérifications en faisant un clic droit sur la fonction puis « insert WP-safety 
-guards ». Et dans ce cas, le non-débordemement n'est pas prouvé.
+Without checking overflows, this function is easy and fast to prove. If we add
+runtime error checking, the overflow on unsigned integers is not added, since it
+is specified by the C norm (and is then a defined behavior). If we want to add
+an assertion at this point, we can ask WP to generate its own bound checking by
+right-clicking on the function and then asking "insert WP-safety guards". And in
+this cas, an overflow is not proved to be absent.
 
-Sur le type `unsigned`, le maximum que nous pouvons calculer est la factorielle de 
-12. Au-delà, cela produit un dépassement. Nous pouvons donc ajouter cette 
-pré-condition :
+On `unsigned`, the maximum value for which we can compute factorial is 12. If
+we go further, it overflows. We can then add this preconditon:
 
 ```c
 /*@ 
@@ -128,17 +124,15 @@ unsigned facto(unsigned n){
 }
 ```
 
-Si nous demandons la preuve avec cette entrée, Alt-ergo échouera pratiquement à 
-coup sûr. En revanche, le prouveur Z3 produit la preuve en moins d'une seconde.
-Parce que dans ce cas précis, les heuristiques de Z3 considèrent que c'est une
-bonne idée de passer un peu plus de temps sur l'évaluation de la fonction. Nous
-pouvons par exemple changer la valeur maximale de `n` pour voir comment se 
-comporte les différents prouveurs. Avec un `n` maximal fixé à 9, Alt-ergo produit
-la preuve en moins de 10 secondes, tandis que pour une valeur à 10, même une 
-minute ne suffit pas.
+If we ask for a proof on this input, Alt-ergo will probably fail, whereas Z3 can
+compute the proof in less than a second. The reason is that in this case, the
+heuritics that are used by Z3 consider that it is good idea to spend a bit more
+of time on the evaluation of the function. We can for example change the maximum
+value of `n` to see how the different provers behave. With a `n` fixed to 9,
+Alt-ergo produces a proof in less than 10 seconds, whereas with a value of 10,
+even a minute is not enough.
 
-Les fonctions logiques peuvent donc être définies récursivement mais sans astuces
-supplémentaires, nous venons vite nous heurter au fait que les prouveurs vont au 
-choix devoir faire de l'évaluation, ou encore « raisonner » par induction, deux 
-tâches pour lesquelles ils ne sont pas du tout fait, ce qui limite nos 
-possibilités de preuve.
+Logic functions can then be defined recursively but without some more help, we
+are rapidly limited by the fact that provers will need to perform evaluation or
+to "reason" by induction, two tasks for which they are not efficient, which will
+limit our possibility for program proofs.
