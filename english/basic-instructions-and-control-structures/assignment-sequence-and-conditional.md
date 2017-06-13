@@ -34,7 +34,7 @@ x = 43 * c ;
 
 In order to compute the precondition of the assignment we have replaced each
 occurrence of $x$ in the postcondition by the assigned value $E = 43*c$.
-If our programme were of the form:
+If our program were of the form:
 
 ```c
 int c = 6 ;
@@ -56,7 +56,7 @@ inference rule for the Hoare triple of an assignment as
 
 We note that there is no precondition to verify. Does this mean that the triple
 is necessarily true? Yes. However, it does not mean that the precondition is
-respected by the programme to which the assignment belongs or that the
+respected by the program to which the assignment belongs or that the
 precondition is at all possible. Here the automatic provers come into play.
 
 For example, we can ask Frama-C to verify the following line
@@ -131,7 +131,7 @@ int main(){
 When we have more than two statements, we can consider the last statement as
 second statement of our rule and all the preceding ones as first statement.
 This way we traverse step by step backwards the statements in our reasoning.
-With the previous programme this looks like:
+With the previous program this looks like:
 
 +-------------------------------------------+------------------------------------------------+---------------------------------------------+
 | -> $\{P\}\quad i_1 ; \quad \{Q_{-2}\}$ <- | -> $\{Q_{-2}\}\quad i_2 ; \quad \{Q_{-1}\}$ <- |                                             |
@@ -146,7 +146,7 @@ starting from the property $Q$ and statement $i_3$ which in turn enables us
 to derive the property $Q_{-2}$ from the property $Q_{-1}$ and statement $i_2$.
 Finally, $P$ can be determined from $Q_{-2}$ and $i_1$.
 
-Now that we can verify programmes that consists of several statements it
+Now that we can verify programs that consists of several statements it
 is time to add some structure to them.
 
 # Conditional rule
