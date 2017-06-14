@@ -76,9 +76,7 @@ est toujours supposé vrai.
 
 Les définitions axiomatiques de fonctions ou de prédicats récursifs sont 
 particulièrement utiles car elles vont permettre d'empêcher les prouveurs de 
-dérouler la récursion quand c'est possible, notamment parce que justement, à la
-manière dont nous avions ajouté un lemme sur la factorielle nous allons pouvoir
-directement exprimer l'induction dans l'axiomatique.
+dérouler la récursion quand c'est possible.
 
 L'idée est alors de ne pas définir directement la fonction ou le prédicat mais 
 plutôt de la déclarer puis de définir des axiomes spécifiant son comportement.
