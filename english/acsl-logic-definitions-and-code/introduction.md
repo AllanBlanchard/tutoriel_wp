@@ -1,15 +1,16 @@
-Dans cette partie nous allons voir deux notions importantes d'ACSL :
+In this part of the tutorial, we will present two important notions of ACSL:
 
-- les définitions axiomatiques,
-- le code fantôme.
+- axiomatic definitions,
+- ghost code.
 
-Dans certaines configurations, ces deux notions sont absolument nécessaire pour
-faciliter le processus de spécification et de preuve. Soit en forçant 
-l'abstraction de certaines propriétés, soit en explicitant des informations qui
-sont autrement implicite et plus difficile à prouver.
+In some cases, this two notions are absolutely needed to ease the process of
+specification and, more importantly, proof. On one hand by forcing some
+properties to be more abstract when an explicit modeling involve to much
+computation during proof, on the other hand by forcing some properties to be
+explictely modeled since they are harder to reason with when they are implicit.
 
-Le risque de ces deux notions est qu'elles peuvent rendre notre preuve inutile si
-nous faisons une erreur dans leur usage. La première en nous autorisant à 
-introduire des hypothèses fausses ou des définitions trop imprécises. La seconde
-en nous ouvrant le risque de modifier le programme vérifié ... nous faisant 
-ainsi prouver un autre programme que celui que nous voulons prouver.
+Using this two notions, we expose ourselves to make our proof irrelevant if we
+make mistakes writing specification with it. The first one allows us to introduce
+"false" in our assumptions, or to write imprecise definitions. The second one
+opens the risk to silently modify the verified program ... making us prove an
+other program, which is not the one we want to prove.
