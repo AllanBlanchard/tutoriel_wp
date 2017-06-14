@@ -98,7 +98,9 @@ axiomatiquement de cette manière :
 ```
 
 Dans cette définition axiomatique, notre fonction n'a pas de corps. Son 
-comportement étant défini par les axiomes ensuite définis. Une petite subtilité
+comportement étant défini par les axiomes ensuite définis.
+
+Une petite subtilité
 est qu'il faut prendre garde au fait que si les axiomes énoncent des propriétés
 à propos du contenu d'une ou plusieurs zones mémoires pointées, il faut 
 spécifier ces zones mémoires en utilisant la notation ```reads``` au niveau de
