@@ -1,28 +1,28 @@
 > Voilà, c'est fini ...
 Source:[Jean-Louis Aubert, *Bleu Blanc Vert*, 1989]
 
-... pour cette introduction à la preuve de programmes avec Frama-C et WP.
+... for this introduction to the proof of C programs using Frama-C and WP.
 
-Tout au long de ce tutoriel, nous avons pu voir comment utiliser ces outils
-pour spécifier ce que nous attendons de nos programmes et vérifier que le code que
-nous avons produit correspond effectivement à la spécification que nous en 
-avons faite. Cette spécification passe par l'annotation de nos fonctions avec 
-le contrat qu'elle doit respecter, c'est-à-dire les propriétés que doivent
-respecter les entrées de la fonction pour garantir son bon fonctionnement et 
-les propriétés que celle-ci s'engage à assurer sur les sorties en retour.
+Along this tutorial, we have seen how we can use these tools to specify what
+we except of our programs and verify that the source code we have produced
+indeed corresponds to the specification we have provided. This specification
+is provided using annotations of our functions that includes the contract they
+must respect. These contracts are properties required about the input to ensure
+that the function will correctly work, which is specified by properties about
+the output of the function.
 
-À partir de nos programmes spécifiés, WP est capable de produire un 
-raisonnement nous disant si oui, ou non, notre programme répond au besoin 
-exprimé. La forme de raisonnement utilisée étant complètement modulaire, elle 
-nous permet de prouver les fonctions une à une et de les composer. WP ne 
-comprend pas, à l'heure actuelle, l'allocation dynamique. Une fonction qui en 
-utiliserait ne pourrait donc pas être prouvée.
+Starting from specified programs, WP is able to produce the weakest
+precondition of our programs, provided what we want in postcondition, and to
+ask some provers if the specified precondition is compatible with the computed
+one. The reasoning is completely modular, which allows to prove function in
+isolation from each other and to compose the results. WP cannot currently
+work with dynamic allocation. A function that would use it could not be proved.
 
-Mais même sans cela, une large variété de fonctions n'ont pas besoin 
-d'effectuer d'allocation dynamique, travaillant donc sur des données déjà 
-allouées. Et ces fonctions peuvent ensuite être appelées avec l'assurance 
-qu'elles font correctement leur travail. Si nous ne voulons pas prouver le 
-code appelant, nous pouvons toujours écrire quelque chose comme cela :
+However, even without dynamic allocation, a lot of function can be proved since
+they work with data-structures that are already allocated. And these functions
+can then be called with the certainty that they perform a correct job. If we
+cannot or do not want to prove calling code, we can still write something like
+this:
 
 ```c
 /*@
@@ -33,58 +33,54 @@ code appelant, nous pouvons toujours écrire quelque chose comme cela :
   ensures ...
 */
 void ma_fonction(int* a, int b){
-  //je parle bien du "assert" de "assert.h"
+  //this is indeed the "assert" defined in "assert.h"
   assert(/*properties on a*/ && "must respect properties on a");  
   assert(/*properties on b*/ && "must respect properties on b");
 }
 ```
 
-Ce qui nous permet ainsi de bénéficier de la robustesse de notre fonction tout en
-ayant la possibilité de débugger un appel incorrect dans un code que nous ne 
-voulons ou pouvons pas prouver.
+Which allows us to benefit from the robustness of our function having the
+possibility to debug and incorrect call in a source code that we cannot or
+do want to prove.
 
-Écrire les spécifications est parfois long voir fastidieux. Les constructions 
-de plus haut niveau d'ACSL (prédicats, fonctions logiques, axiomatisations) 
-permettent d'alléger un peu ce travail, de la même manière que nos langages de
-programmation nous permettent de définir des types englobant d'autres types et
-des fonctions appelant des fonctions, nous menant vers le programme final. Mais
-malgré cela, l'écriture de spécification dans un langage formel quel qu'il soit
-représente une tâche ardue.
+Writing specifications is sometimes long or tedious. Higher-level features
+of ACSL (predicates, logic functions, axiomatizations) allow us to lighten
+this work, as well as our programming languages allow us to define types
+containing other types, functions call functions, bringing us to the final
+program. But, despite this, write specification in a formal language, no
+matter which one, is generally a hard task.
 
-Cependant, cette étape de **formalisation** du besoin est **très importante**. 
-Concrètement, une telle formalisation est, à bien y réfléchir, un travail que 
-tout développeur devrait s'efforcer de faire. Et pas seulement quand il cherche 
-à prouver son programme. Même la production de tests pour une fonction 
-nécessite de bien comprendre son but si nous voulons tester ce qui est nécessaire 
-et uniquement ce qui est nécessaire. Et écrire les spécifications dans un 
-langage formel est une aide formidable (même si elle peut être frustrante, 
-reconnaissons le) pour avoir des spécifications claires.
+However, this **formalization** of our need is **crucial**. Concretely, such
+a formalization is a work every developer should do. And not only in order
+to prove a program. Even the definition of tests for a function requires to
+correctly understand its goal if we want to test what is necessary and only
+what is necessary. And writing specification in a formal language is
+incredibly useful (even if it can be sometimes frustrating) to get a clear
+specification.
 
-Les langages formels, proches des mathématiques, sont précis. Les mathématiques
-ont cela pour elles. Qu'y a-t-il de plus terrible que lire une spécification 
-écrite en langue naturelle pure beurre, avec toute sa panoplie de phrase à 
-rallonge, de verbes conjugués à la forme conditionnelle, de termes imprécis, 
-d'ambiguïtés, compilée dans des documents administratifs de centaines de pages,
-et dans laquelle nous devons chercher pour déterminer "bon alors cette fonction, 
-elle doit faire quoi ? Et qu'est ce qu'il faut valider à son sujet ?". 
+Formal languages, that are close to mathematics, are precise. Mathematics have
+this: they are precise. What is more terrible that reading a specification
+written in a natural language, with complex sentences, using conditional forms,
+imprecise terms, ambiguities, compiled in administrative documents composed of
+hundreds of pages, and where we need to determine, "so, what this function is
+supposed to do ? And have I to validate about it ?".
 
-Les méthodes formelles ne sont, à l'heure actuelle, probablement pas assez 
-utilisées, parfois par méfiance, parfois par ignorance, parfois à cause de 
-préjugés datant des balbutiements des outils, il y a 20 ans. Nos outils
-évoluent, nos pratiques dans le développement changent, probablement plus
-vite que dans de nombreux autres domaines techniques. Ce serait probablement
-faire un raccourci bien trop rapide que dire que ces outils ne pourront 
-jamais être mis en œuvre quotidiennement. Après tout nous voyons chaque jour
-à quel point le développement est différent aujourd'hui par rapport à il y a
-10 ans, 20 ans, 40 ans. Et pouvons à peine imaginer à quel point il sera 
-différent dans 10 ans, 20 ans, 40 ans.
+Formal methods are probably not enough used currently. Sometimes because of
+mistrust, sometimes because of ignorance, sometimes becuase of prejudices
+based on ideas born at the begining of the tools, 20 years ago. Our tools
+evolve, the way we develop change, probably faster than in any other technical
+domain. Saying that these tools could never be used for real life programs
+would certainly be a too big shortcut. After all, we see everyday how much
+development is different from what it were 10 years, 20 years, 40 years ago
+and can barely imagine how much it will be different in 10 years, 20 years,
+40 years.
 
-Ces dernières années, les questions de sûreté et de sécurité sont devenus de
-plus en plus présentes et cruciales. Les méthodes formelles connaissent également
-de fortes évolutions et leurs apports pour ces questions sont très appréciés. 
-Par exemple, [ce lien](http://sfm.seas.harvard.edu/report.html) mène vers
-un rapport d'une conférence sur la sécurité ayant rassemblé des acteurs du monde
-académique et industriel, dans lequel nous pouvons lire :
+During the past few years, safety and security questions have become more and
+more actual and crucial. Formal methods also progressed a lot, and the
+improvement they bring for these questions are greatly appreciated. For example,
+this [hyperlink](http://sfm.seas.harvard.edu/report.html) brings to the report
+of a conference about security that brought together people from academic and
+industrial world, in which we can read:
 
 > Adoption of formal methods in various areas (including verification of hardware
 > and embedded systems, and analysis and testing of software) has dramatically 
@@ -96,88 +92,71 @@ académique et industriel, dans lequel nous pouvons lire :
 > **Without broad use of formal methods, security will always remain fragile.**
 Source:[Formal Methods for Security, 2016]
 
-[[secret]]
-| Traduction :
-| 
-| > L'adoption des méthodes formelles dans différents domaines (notamment la 
-| > vérification du matériel et des systèmes embarqués, et l'analyse et le test
-| > de logiciel) a fortement amélioré la qualité des systèmes informatiques. 
-| > Nous nous attendons à ce que les méthodes formelles puissent fournir des 
-| > améliorations similaires pour la sécurité des systèmes informatiques.
-| > 
-| > [...]
-| > 
-| > **Sans une utilisation plus large des méthodes formelles, la sécurité sera
-| > toujours fragile.**
+# Going further
 
-# Pour aller plus loin
+## With Frama-C
 
-## Avec Frama-C
+Frama-C provides different ways to analyse programs. In these tools, the most
+commonly used and interesting to know from a static and dynamic verification
+point of view are certainly those ones:
 
-Frama-C propose divers moyen d'analyser les programmes. Dans les outils les
-plus courants qui sont intéressants à connaître d'un point de vue vérification
-statique et dynamique pour l'évaluation du bon fonctionnement d'un programme :
-
-- l'analyse par interprétation abstraite avec 
-  [Value](http://frama-c.com/value.html),
-- la transformation d'annotation en vérification à l'exécution avec 
+- abstract interpretation analysis using [EVA](http://frama-c.com/value.html),
+- the transformation of annotation into runtime verification using
   [E-ACSL](http://frama-c.com/eacsl.html).
 
-Le but de la première est de calculer les domaines des différentes variables à
-tous les points de programme. Quand nous connaissons précisément ces domaines,
-nous sommes capables de déterminer si ces variables peuvent provoquer des erreurs.
-Par contre cette analyse est effectuée sur la totalité du programme et pas 
-modulairement, elle est par ailleurs fortement dépendante du type de domaine 
-utilisé (nous n'entrerons pas plus dans les détails ici) et elle conserve moins
-bien les relations entre les variables. En compensation, elle est vraiment 
-complètement automatique (modulo les entrées du programme), il n'y a même pas
-besoin de poser des invariants de boucle ! La partie plus "manuelle" sera de
-déterminer si oui ou non les alarmes lèvent des vrais erreurs ou si ce sont de
-fausses alarmes.
+The goal of the first one is to compute the domain of the different variables at
+each program point. When we precisely know these domains, we can determine if
+these variables can produce errors when they are used. However this analysis is
+executed on the whole program and not modularly, it is also stongly dependent of
+the type of domain we use (we will not enter into details here) and it is not
+so good at keeping the relations between variables. On the other side, it is
+really completely automatic, we do not even need to give loop invariant ! The
+most manual part of the work is to determine whether or not an alarm is a true
+error or a false positive.
 
-La seconde analyse permet de générer depuis un programme d'origine, un nouveau
-programme où les assertions sont transformées en vérification à l'exécution. Si
-les assertions échouent, le programme échoue. Si elles sont valides, le programme
-a le même comportement que s'il n'y avait pas d'assertions. Un exemple 
-d'utilisation est d'utiliser l'option ```-rte``` de Frama-C pour générer les 
-vérifications d'erreur d'exécution comme assertion et de générer le programme de 
-sortie qui va contenir les vérifications en question.
+The second analysis allows to generate from an original program, a new program
+where the assertions are transformed into runtime verifications. If these
+assertions fail, the program fails. If they are valid, the program have the same
+behavior it would have without the assertions. An example of use is to generate
+the verification of absence of runtime errors as assertions using `-rte` and
+then to use E-ACSL to generate the program containing the runtime verification
+that these assertions do not fail.
 
-Il existe divers autres greffons pour des tâches très différentes :
+There exists different other plugins for very different tasks:
 
-- analyse d'impact de modifications,
-- analyse du flot de données pour le parcourir efficacement,
+- impact analysis of a modification,
+- data-flow analysis to visit it efficiently,
 - ...
 
-Et finalement, la dernière possibilité qui va motiver l'utilisation de Frama-C,
-c'est la possibilité de développer ses propres greffons d'analyse, à partir de
-l'API fournie au niveau du noyau. Beaucoup de tâches peuvent être réalisées par
-l'analyse du code source et Frama-C permet de forger différentes analyses.
+Finally, a last possibility that will motivate the use of Frama-C is the ability
+to develop their own analysis plugins using the API provided by the Frama-C
+kernel. A lot of tasks can be realized by the analysis of the source code and
+Frama-C allows to build different analyses.
 
-## Avec la preuve déductive
+## With deductive proof
 
-Tout au long du tutoriel nous avons utilisé WP pour générer des obligations de 
-preuve à partir de programmes et de leurs spécifications. Par la suite nous avons
-utilisé des solveurs automatiques pour assurer que les propriétés en question sont
-bien vérifiées.
+Along this tutorial we used WP to generate proof obligation starting from
+programs with their specification. Next we have used automatic solvers to assure
+that these properties were indeed verified.
 
-Lorsque nous passons par d'autres solveurs que Alt-Ergo, le dialogue avec ceux-ci
-est assuré par une traduction vers le langage de Why3 qui va ensuite faire le pont
-avec les prouveurs automatiques. Mais ce n'est pas la seule manière d'utiliser 
-Why3. Celui-ci peut tout à fait être utilisé seul pour écrire et prouver des
-algorithmes. Il embarque notamment un ensemble de théories déjà présentes pour un
-certain nombre de structures de données.
+When we use other solvers than Alt-Ergo and Coq, the communication with this
+solver in provided by a translation to the Why3 language that will next be used
+to bridge the gap to automatic solvers. But this is not the only way to use Why3.
+It can also be used itself to write programs and prove them. It especially
+provides a set of theories for some common data structures.
 
-Il y a un certain nombre de preuves qui ne peuvent être déchargées par les 
-prouveurs automatiques. Dans ce genre de cas, nous devons nous rabattre sur de la 
-preuve interactive. WP comme Why3 peuvent extraire vers Coq, et il est très
-intéressant d'étudier ce langage, il peut par exemple servir à constituer des 
-bibliothèques de lemmes génériques et prouvés. À noter que Why3 peut également
-extraire ses obligations vers Isabelle ou PVS qui sont d'autres assistants de
-preuve.
+There is some proofs that cannot be discharged by automatic solvers. In such a
+case, we have to provide these proofs interactively. WP, like Why3, can extract
+its goals to Coq, and it is very interesting to study this language. In the
+context of Frama-C, we produce lemmas libraries already proved that we can reuse.
+But Coq can also be used for many different tasks, including programming. Note
+that Why3 can also extract its proof obligations to Isabelle or PVS that are
+also proof assistants.
 
-Finalement, il existe d'autres logiques de programmes, comme la logique de 
-séparation ou les logiques pour les programmes concurrents. Encore une fois ce
-sont des notions intéressantes à connaître, elles peuvent inspirer la manière de 
-spécifier pour nos preuves avec WP, pourraient donner lieu à de nouveaux greffons
-pour Frama-C. Bref, tout un monde de méthodes à explorer.
+Finally, there exists other program logics, for example separation logic or
+concurrent program logics. Again this notion are interesting to know in the
+context of Frama-C: if we cannot directly use them, they can inspire the way
+we specify our program in Frama-C for the proof with WP. They could also be
+implemented into new plugins to Frama-C.
+
+A whole new world of methods to explore.
