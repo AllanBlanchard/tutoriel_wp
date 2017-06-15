@@ -1,30 +1,28 @@
-Derrière ce titre faisant penser à un scénario de film d'action se cache en fait
-un moyen d'enrichir la spécification avec des informations sous la forme de code
-en langage C. Ici, l'idée va être d'ajouter des variables et du code source qui
-n'interviendra pas dans le programme réel mais permettant de créer des états 
-logiques qui ne seront visibles que depuis la preuve. Par cet intermédiaire, 
-nous pouvons rendre explicites des propriétés logiques qui étaient auparavant
-implicites.
+Behind this title, that seems to be an action movie, we find in fact a way to
+enrich our specification with information expressed as regular C code. Here, the
+idea is to add variables and source code that will not be part of the actual
+program but will model logic states that will only be visible from a proof point
+of view. Using it, we can make explicit some logic properties that were
+previsouly only known implicitely.
 
-# Syntaxe
+# Syntax
 
-Le code fantôme est ajouté par l'intermédiaire d'annotations qui vont contenir 
-du code C ainsi que la mention ```ghost```. 
+Ghost code is added using annotations that will contains C code introduced
+using the `ghost` keyword:
 
 ```c
 /*@
   ghost
-  // code en langage C
+  // C source code
 */
 ```
 
-Les seules règles que nous devons respecter dans un tel code est que nous ne 
-devons jamais écrire une portion de mémoire qui n'est pas elle-même définie dans
-du code fantôme et que le code en question doit terminer tout bloc qu'il
-ouvrirait. Mis à par cela, tout calcul peut être inséré tant qu’il ne modifie
-*que* les variables du code fantôme.
+The only rules we have to respect in such a code, is that we cannot write a
+memory block that is not itself defined in ghost code, and that the code must
+close any block it would open. Apart of this, any computation can be inserted
+provided it *only* modifies ghost variables.
 
-Voici quelques exemples pour la syntaxe de code fantôme :
+Here are some examples of ghost code:
 
 ```c
 //@ ghost int ghost_glob_var = 0;
@@ -41,12 +39,12 @@ void foo(int a){
 }
 ```
 
-Il faut être très prudent lorsque nous produisons ce genre de code. En effet, 
-aucune vérification n'est effectuée pour s'assurer que nous n'écrivons pas dans
-la mémoire globale par erreur. Ce problème étant comme la vérification elle-même, 
-un problème indécidable, une telle analyse serait un travail de preuve à part 
-entière. Par exemple, ce code est accepté en entrée de Frama-C, alors qu'il 
-modifie manifestement l'état de la mémoire du programme :
+We must again be careful using ghost code. Indeed, the tool will not perform
+any verification to ensure that we do not write in the memory of the program by
+mistake. This problem begin, in fact, an undecidable problem, this analysis would
+be require a proof by itself. For example, this code is allowed in input of
+Frama-C even if it explicitely modifies the state of the program we want to
+verify:
 
 ```c
 int a;
@@ -56,24 +54,22 @@ void foo(){
 }
 ```
 
-Il faut donc faire très attention à ce que nous faisons avec du code fantôme.
+We then need to be really careful about we are doing using ghost code (by
+making it simple).
 
-# Expliciter un état logique
+# Make a logical state explicit
 
-Le but du code ghost est de rendre explicite des informations généralement 
-implicites. Par exemple, dans la section précédente, nous nous en sommes servi
-pour récupérer explicitement un état logique connu à un point de programme 
-donné. 
+The goal of ghost code is to make explicit informations that are without them
+implicit. For example, in the previous section, we used it to get an explicit
+logic state known at a particular point of the program.
 
-Prenons maintenant un exemple plus poussé. Nous voulons par exemple prouver que
-la fonction suivante nous retourne la valeur maximale des sommes de
-sous-tableaux possibles d'un tableau donné. Un sous-tableau d'un tableau `a` est
-un sous-ensemble contigu de valeur de `a`. Par exemple, pour un tableau
-```{ 0 , 3 , -1 , 4 }```, des exemples de sous tableaux peuvent être ```{}```,
-```{ 0 }```, ```{ 3 , -1 }```, ```{ 0 , 3 , -1 , 4 }```, ... Notez que comme
-nous autorisons le tableau vide, la somme est toujours au moins égale à 0. Dans
-le tableau précédent, le sous-tableau de valeur maximale est
-```{ 3 , -1 , 4 }```, la fonction renverra donc 6.
+Let us take a more complex example. Here, we want to prove that the following
+function returns the value of the maximal sum of subarrays of a given array.
+A subarray of an array `a` is a contiguous subset of values of `a`. For example,
+for an array `{ 0 , 3 , -1 , 4 }`, some subarrays can be `{}`, `{ 0 }`,
+`{ 3 , -1 }`, `{ 0 , 3 , -1 , 4 }`, ... Note that as we allow empty arrays for
+subarrays, the sum is minimally 0. In the previous array, the subarray with
+the maximal sum is `{ 3 , -1 , 4 }`, the function would then return 6.
 
 ```c
 int max_subarray(int *a, size_t len) {
@@ -88,10 +84,9 @@ int max_subarray(int *a, size_t len) {
 }
 ```
 
-Pour spécifier la fonction précédente, nous allons avoir besoin d'exprimer 
-axiomatiquement la somme. Ce n'est pas très complexe, et le lecteur pourra
-s'exercer en exprimant les axiomes nécessaires au bon fonctionnement de cette 
-axiomatique :
+In order to specify the previous function, we will need an axiomatic defintion
+about sum. This is not too much complex, the careful reader can express the
+needed axioms as an exercise:
 
 ```c
 /*@ axiomatic Sum {
@@ -99,7 +94,7 @@ axiomatique :
 }*/
 ```
 
-La correction est cachée ici :
+Some correct axioms are hidden there:
 
 [[secret]]
 | ```c
@@ -115,7 +110,7 @@ La correction est cachée ici :
 | */
 | ```
 
-La spécification de notre fonction est la suivante :
+The specifiction of the function is the following:
 
 ```c
 /*@ 
@@ -126,32 +121,28 @@ La spécification de notre fonction est la suivante :
 */
 ```
 
-Pour toute paire de bornes, la valeur retournée par la fonction doit être 
-supérieure ou égale à la somme des éléments entre les bornes, et il doit exister
-une paire de bornes, telle que la somme des éléments entre ces bornes est 
-exactement la valeur retournée par la fonction. Par rapport à cette
-spécification, si nous devons ajouter les invariants de boucles, nous nous
-apercevons rapidement qu'il va nous manquer des informations. Nous avons besoin
-d'exprimer ce que sont les valeurs ```max``` et ```cur``` et quelles relations
-existent entre elles, mais rien ne nous le permet !
+For any bounds, the value returned by the function must be greater or equal to
+the sum of the elements between these bounds, and there must exist some bounds
+such that the returned value is exactly the sum of the elements between these
+bounds. About this specification, when we want to add the loop invariant, we
+will realize that we miss some information. We to express what are the values
+`max` and `cur` and what are the relations between them, but we cannot do it !
 
-En substance, notre post-condition a besoin de savoir qu'il existe des 
-bornes ```low``` et ```high``` telles que la somme calculée correspond à ces bornes. 
-Or notre code, n'exprime rien de tel d'un point de vue logique et rien ne nous 
-permet *a priori* de faire cette liaison en utilisant des formulations logiques.
-Nous allons donc utiliser du code ghost pour conserver ces bornes et exprimer 
-l'invariant de notre boucle.
+Basically, our postcondition needs to know that there exists some bounds `low`
+and `high` such that the computed sum corresponds to these bounds. However, in
+our code, we do not have anything that express it from a logic point of view,
+and we cannot *a priori* make the link between this logical formalization. We
+will then use ghost code to record these bounds and express the loop invariant.
 
-Nous allons d'abord avoir besoin de 2 variables qui vont nous permettre de
-stocker les valeurs des bornes de la plage maximum, nous les appellerons `low` 
-et ```high```. Chaque fois que nous trouverons une plage où la somme est plus 
-élevée nous les mettrons à jour. Ces bornes correspondront donc à la somme
-indiquée par `max`. Cela induit que nous avons encore besoin d'une autre paire
-de bornes : celle correspondant à la variable de somme ```cur``` à partir de
-laquelle nous pourrons construire les bornes de ```max```. Pour celle-ci, nous
-n'avons besoin que d'ajouter une variable ghost : le minimum actuel `cur_low`,
-la borne supérieure de la somme actuelle étant indiquée par la variable `i` de
-la boucle.
+We will first need two variables that will allow us to record the bounds of
+the maximum sum range, we will call them `low` and `high`. Everytime we will
+find a range where the sum is greater than the current one, we will update our
+ghost variables. This bounds will then corresponds to the sum currently stored
+by `max`. That induces that we need other bounds: the ones that corresponds 
+to the sum store by the variable `cur` from which we will build the bounds
+corresponding to `max`. For these bounds, we will only add a single ghost
+variable: the current low bound `cur_low`, the high bound being the variable
+`i` of the loop.
 
 ```c
 /*@ 
@@ -193,21 +184,20 @@ int max_subarray(int *a, size_t len) {
 }
 ```
 
-L'invariant ```BOUNDS``` exprime comment sont ordonnées les différentes bornes 
-pendant le calcul. L'invariant ```REL``` exprime ce que signifient les 
-valeurs ```cur``` et ```max``` par rapport à ces bornes. Finalement, 
-l'invariant ```POST``` permet de faire le lien entre les invariants précédents 
-et la post-condition de la fonction.
+The invariant `BOUNDS` expresses how the different bounds are ordered during the
+computation. The invariant `REL` expresses what the variables `cur` and `max`
+mean depending on the bounds. Finally, the invariant `POST` allows us to create
+a link between the invariants and the postcondition of the function.
 
-Le lecteur pourra vérifier que cette fonction est effectivement prouvée sans la
-vérification des RTE. Si nous ajoutons également le contrôle des RTE, nous pouvons
-voir que le calcul de la somme indique un dépassement possible sur les entiers.
+The reader can verify that this function is indeed correctly proved without RTE
+verification. If we add RTE verification, the overflow on the variable `cur`,
+that is the sum, seems to be possible (and it is indeed the case).
 
-Ici, nous ne chercherons pas à le corriger car ce n'est pas l'objet de l'exemple.
-Le moyen de prouver cela dépend en fait fortement du contexte dans lequel on 
-utilise la fonction. Une possibilité est de restreindre fortement le contrat en
-imposant des propriétés à propos des valeurs et de la taille du tableau. Par 
-exemple : nous pourrions imposer une taille maximale et des bornes fortes pour
-chacune des cellules. Une autre possibilité est d'ajouter une valeur d'erreur
-en cas de dépassement (par exemple $-1$), et de spécifier qu'en cas de 
-dépassement, c'est cette valeur qui est renvoyée.
+Here, we will not try to fix this because it is not the topic of this example.
+The way we can prove the absence of RTE here strongly depends on the context
+where we use this function. A possibility is stongly restrict the contract,
+forcing some properties about values and the size of the array. For example,
+we could strongly limit the maximal size of the array and strong bounds on
+each value of the different cells. An other possibility would be to add an
+error value in case of overflow ($-1$ for example), and to specify that when
+an overflow is produced, this value is returned.
