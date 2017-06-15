@@ -1,19 +1,17 @@
-Les axiomes sont des propriétés dont nous énonçons qu'elles sont vraies quelle 
-que soit la situation. C'est un moyen très pratique d'énoncer des notions 
-complexes qui vont pouvoir rendre le processus très efficace en abstrayant 
-justement cette complexité. Évidemment, comme toute propriété exprimée comme un
-axiome est supposée vraie, il faut également faire très attention à ce que nous
-définissons car si nous introduisons une propriété fausse dans les notions que 
-nous supposons vraies alors ... nous saurons tout prouver, même ce qui est faux.
+Axioms are properties we state to be true no matter the situation. It is a good
+way to enounce complex properties that will allow the proof process to be more
+efficient by abstracting their complexity. Of course, as any property expressed
+as an axiom is assumed to be true, we have to be very careful when we use them
+to defined properties: if we introduce a false property in our assumptions,
+"false" becomes "true" and we can then prove anything.
 
-# Syntaxe
+# Syntax
 
-Pour introduire une définition axiomatique, nous utilisons la syntaxe suivante :
-
+Axiomatic definitions are introduced using this syntax:
 ```c
 /*@
   axiomatic Name_of_the_axiomatic_definition {
-    // ici nous pouvons définir ou déclarer des fonctions et prédicats
+    // here we can define or declare functions and predicates
 
     axiom axiom_name { Label0, ..., LabelN }:
       // property ;
@@ -21,12 +19,12 @@ Pour introduire une définition axiomatique, nous utilisons la syntaxe suivante 
     axiom other_axiom_name { Label0, ..., LabelM }:
       // property ;
 
-    // ... nous pouvons en mettre autant que nous voulons
+    // ... we can put as many axioms we need
   }
 */
 ```
 
-Nous pouvons par exemple définir cette axiomatique :
+For example, we can write this axiomatic block:
 
 ```c
 /*@
@@ -37,15 +35,17 @@ Nous pouvons par exemple définir cette axiomatique :
 */
 ```
 
-Et nous pouvons voir que dans Frama-C, la propriété est bien supposée vraie :
+And we can see that in Frama-C, this property is actually assumed to be true:
 
-![Premier axiome, supposé vrai par Frama-C](/media/galleries/2584/8cd93c4d-dead-4fa9-a4ba-d9759d0e8bde.png)
+
+![First axiom, assumed to be true by Frama-C](/media/galleries/2584/8cd93c4d-dead-4fa9-a4ba-d9759d0e8bde.png)
 
 [[secret]]
-| Actuellement nos prouveurs automatiques n'ont pas la puissance nécessaire
-| pour calculer *la réponse à la grande question sur la vie, l'univers et le 
-| reste*. Qu'à cela ne tienne nous pouvons l'énoncer comme axiome ! Reste à
-| comprendre la question pour savoir où ce résultat peut-être utile ...
+| Currently, our automatic solvers are not powerful enough to compute *the
+| Answer to the Ultimate Question of Life, the Universe, and Everything*.
+| We can help them by stating it as an axiom ! Now, we just have to
+| understand the question to determine in which case this result can be
+| useful ...
 |
 | ```c
 | /*@
@@ -58,32 +58,29 @@ Et nous pouvons voir que dans Frama-C, la propriété est bien supposée vraie :
 | */
 | ```
 
-## Lien avec la notion de lemme
+## Link with lemmas
 
-Les lemmes et les axiomes vont nous permettre d'exprimer les mêmes types de 
-propriétés, à savoir des propriétés exprimées sur des variables quantifiées (et
-éventuellement des variables globales, mais cela reste assez rare puisqu'il est
-difficile de trouver une propriété qui soit globalement vraie à leur sujet tout
-en étant intéressante). Outre ce point commun, il faut également savoir que 
-comme les axiomes, en dehors de leur définition, les lemmes sont considérés 
-vrais par WP. 
+Lemmas and axioms allows to express the same types of properties. Namely,
+properties expressed about quantified variables (and possibly global variables,
+but it is quite rare since it often difficult to find a global property about
+such variables being both true an interesting). Apart this first common point,
+we can also notice that when we are not considering the definition of the
+lemma itself, lemmas are assumed to be true by WP exactly as axioms are.
 
-La seule différence entre lemme et axiome du point de vue de la preuve est donc
-que nous devrons fournir une preuve que le premier est valide alors que l'axiome
-est toujours supposé vrai.
+The only difference between lemmas and axioms from a proof point of view is
+that we must provide a proof that each lemma is true, whereas an axiom is
+always assumed to be true.
 
-# Définition de fonctions ou prédicats récursifs
+# Recursive function or predicate definitions
 
-Les définitions axiomatiques de fonctions ou de prédicats récursifs sont 
-particulièrement utiles car elles vont permettre d'empêcher les prouveurs de 
-dérouler la récursion quand c'est possible, notamment parce que justement, à la
-manière dont nous avions ajouté un lemme sur la factorielle nous allons pouvoir
-directement exprimer l'induction dans l'axiomatique.
+Axiomatic definition of recursive functions and predicates are particularly
+useful since they will prevent provers to unroll the recursion when is is
+possible.
 
-L'idée est alors de ne pas définir directement la fonction ou le prédicat mais 
-plutôt de la déclarer puis de définir des axiomes spécifiant son comportement.
-Si nous reprenons par exemple la factorielle, nous pouvons la définir 
-axiomatiquement de cette manière :
+The idea is then not to define directly the function or the predicate but
+to declare it and then to define axioms that will specify its behavior. If
+we come back to the factorial function, we can define it axiomatically as
+follows:
 
 ```c
 /*@
@@ -99,18 +96,20 @@ axiomatiquement de cette manière :
 */
 ```
 
-Dans cette définition axiomatique, notre fonction n'a pas de corps. Son 
-comportement étant défini par les axiomes ensuite définis. Une petite subtilité
-est qu'il faut prendre garde au fait que si les axiomes énoncent des propriétés
-à propos du contenu d'une ou plusieurs zones mémoires pointées, il faut 
-spécifier ces zones mémoires en utilisant la notation ```reads``` au niveau de
-la déclaration. Si nous oublions une telle spécification, le prédicat, ou la 
-fonction, sera considéré comme énoncé à propos du pointeur et non à propos de la
-zone mémoire pointée. Une modification de celle-ci n'entraînera donc pas 
-l'invalidation d'une propriété connue axiomatiquement.
+In this axiomatic definition, our fonction do not have a body. Its behavior is
+only defined by the axioms we have stated about it.
 
-Si par exemple, nous voulons définir qu'un tableau ne contient que des 0, nous
-pouvons le faire de cette façon :
+A small subtility is that we must take care about the fact that if some axioms
+state properties about the content of some pointed memory cells, we have to
+specify considered memory blocks using the `reads` notation in the declaration.
+If we omit such a specification, the predicate or function will be considered
+to be stated about the recieved pointers and not about pointer memory blocks.
+So, if the code modifies the content of an array for which we had proven that
+the predicate or function give some result, this result will not be considered
+to be potentially different.
+
+If, for example, we want to define that an array only contains 0s, we have to
+write it as follows:
 
 ```c
 /*@
@@ -127,8 +126,8 @@ pouvons le faire de cette façon :
 */
 ```
 
-Et nous pouvons à nouveau prouver notre fonction de remise à zéro avec cette
-nouvelle définition :
+And we can again prove that our memset to 0 is correct with this new
+definition:
 
 ```c
 #include <stddef.h>
@@ -150,12 +149,13 @@ void raz(int* array, size_t length){
 }
 ```
 
-Selon votre version de Frama-C et de vos prouveurs automatiques, la preuve de 
-préservation de l'invariant peut échouer. Une raison à cela est que le prouveur ne
-parvient pas à garder l'information que ce qui précède la cellule en cours de
-traitement par la boucle est toujours à 0. Nous pouvons ajouter un lemme dans
-notre base de connaissance, expliquant que si l'ensemble des valeurs d'un tableau
-n'a pas changé, alors la propriété est toujours vérifiée :
+Depending on the Frama-C or automatic solvers versions, the proof of the
+preservetion of the invariant could fail. A reason to this fail is the fact that
+the prover forget that cells preceding the one we are currently processing
+are actually still set to 0. We can add a lemma in our knowledge base, stating
+that if a set of values of an array did not change between two program points,
+the first one being a point where the property "zeroed" is verified, then the
+property is still verified at the second program point.
 
 ```c
 /*@
@@ -168,9 +168,9 @@ n'a pas changé, alors la propriété est toujours vérifiée :
 */
 ```
 
-Et d'énoncer une assertion pour spécifier ce qui n'a pas changé entre le début 
-du bloc de la boucle (marqué par le *label* `L` dans le code) et la fin (qui se
-trouve être `Here` puisque nous posons notre assertion à la fin) :
+Then we can add an assertion to specify what did not change between the begining
+of the loop block (pointed by the label `L` in the code) and the end (which is
+`Here` since we state the property at the end):
 
 ```c
 for(size_t i = 0; i < length; ++i){
@@ -180,13 +180,13 @@ for(size_t i = 0; i < length; ++i){
 }
 ```
 
-À noter que dans cette nouvelle version du code, la propriété énoncée par notre
-lemme n'est pas prouvée par les solveurs automatiques, qui ne savent pas raisonner
-pas induction. Pour les curieux, la (très simple) preuve en Coq est ci-dessous :
+Note that in this new version of the code, the property stated by our lemma is
+not proved using automatic solver, that cannot reason by induction. If the reader
+is curious, the (quite simple) Coq proof can be found there:
 
 [[secret]]
 | ```coq
-| (* Généré par WP *)
+| (* Generated by WP *)
 | Definition P_same_elems (Mint_0 : farray addr Z) (Mint_1 : farray addr Z)
 |     (a : addr) (b : Z) (e : Z) : Prop :=
 |     forall (i : Z), let a_1 := (shift_sint32 a i%Z) in ((b <= i)%Z) ->
@@ -194,43 +194,44 @@ pas induction. Pour les curieux, la (très simple) preuve en Coq est ci-dessous 
 | Goal
 |   forall (i_1 i : Z), forall (t_1 t : farray addr Z), forall (a : addr),
 |     ((P_zeroed t a i_1%Z i%Z)) -> ((P_same_elems t_1 t a i_1%Z i%Z)) -> ((P_zeroed t_1 a i_1%Z i%Z)).
-| (* Notre preuve *)
+| (* Our proof *)
 | Proof.
 |   intros b e.
-|   (* par induction sur la distance entre b et e *)
+|   (* by induction on the distance between b and e *)
 |   induction e using Z_induction with (m := b) ; intros mem_l2 mem_l1 a Hz_l1 Hsame.
-|   (* cas de base : Axiome "empty" *)
+|   (* Base case: "empty axiom" *)
 |   + apply A_A_all_zeros.Q_zeroed_empty ; assumption.
 |   + replace (e + 1) with (1 + e) in * ; try omega.
-|     (* on utilise l'axiome range *)
+|     (* we use range axiom *)
 |     rewrite A_A_all_zeros.Q_zeroed_range in * ; intros Hinf.
 |     apply Hz_l1 in Hinf ; clear Hz_l1 ; inversion_clear Hinf as [Hlast Hothers].
 |     split.
-|     (* sous plage de Hsame *)
+|     (* sub range considered by Hsame *)
 |     - rewrite Hsame ; try assumption ; omega.
-|     (* hypothèse d'induction *)
+|     (* induction hypotheses *)
 |     - apply IHe with (t := mem_l1) ; try assumption.
 |       * unfold P_same_elems ; intros ; apply Hsame ; omega.
 | Qed.
 | ```
 
-Dans le cas présent, utiliser une axiomatique est contre-productif : notre
-propriété est très facilement exprimable en logique du premier ordre comme
-nous l'avons déjà fait précédemment. Les axiomatiques sont faites pour écrire
-des définitions qui ne sont pas simples à exprimer dans le formalisme de base
-d'ACSL. Mais il est mieux de commencer avec un exemple facile à lire. 
+In this case study, using an axiomatic definition is not efficient: our
+property can be perfectly expressed using the basic constructs of the first
+order logic as we did before. Axiomatic definitions are meant to be used to
+write definitions that are not easy to express using the basic formalism
+provided by ACSL. It is here used to illustrate their use with a simple
+example.
 
-# Consistance
+# Consistancy
 
-En ajoutant des axiomes à notre base de connaissances, nous pouvons produire des
-preuves plus complexes car certaines parties de cette preuve, mentionnées par 
-les axiomes, ne nécessiteront plus de preuves qui allongeraient le processus 
-complet. Seulement, en faisant cela **nous devons être extrêmement prudents**.
-En effet, la moindre hypothèse fausse introduite dans la base pourraient rendre
-tous nos raisonnements futiles. Notre raisonnement serait toujours correct, mais
-basé sur des connaissances fausses, il ne nous apprendrait donc plus rien de correct.
+By adding axioms to our knowledge base, we can produce more complex proofs since
+some part of these proofs, expressed by axioms, do need anymore to be proved
+(they are already specified to be true) shortening the proof process. However,
+using axiomatic definitions, **we must be extremely careful**. Indeed, even a
+small error could introduce false in the knowledge base, making our whole
+reasoning futile. Our reasoning would still be correct, but relying on false
+knowledge, it would only learn incorrect things.
 
-L'exemple le plus simple à produire est le suivant:
+The simplest example is the following:
 
 ```c
 /*@
@@ -249,41 +250,40 @@ int main(){
 }
 ```
 
-Et tout est prouvé, y compris que le déréférencement de l'adresse 0 est OK :
+And everything is proved, comprising the fact that the dereferencing of 0
+is valid:
 
-![Preuve de tout un tas de choses fausses](https://zestedesavoir.com:443/media/galleries/2584/8bb12c3f-5da7-4f44-a889-fa5df0ab8e7a.png)
+![Different false things proved to be true](https://zestedesavoir.com:443/media/galleries/2584/8bb12c3f-5da7-4f44-a889-fa5df0ab8e7a.png)
 
-Évidemment cet exemple est extrême, nous n'écririons pas un tel axiome. Le
-problème est qu'il est très facile d'écrire une axiomatique subtilement fausse
-lorsque nous exprimons des propriétés plus complexes, ou que nous commençons à
-poser des suppositions sur l'état global d'un système. 
+Of course, this example is extreme, we would write such an axiom. The problem
+is in fact that it is really easy to write an axiomatic definition that is
+subtely false when we express more complex properties, or adding assumptions
+about the global state of the system.
 
-Quand nous commençons à créer de telles définitions, ajouter de temps en 
-temps une preuve ponctuelle de « *false* » dont nous voulons qu'elle échoue permet 
-de s'assurer que notre définition n'est pas inconsistante. Mais cela ne fait pas 
-tout ! Si la subtilité qui crée le comportement faux est suffisamment cachée, les
-prouveurs peuvent avoir besoin de beaucoup d'informations autre que l'axiomatique
-elle-même pour être menés jusqu'à l'inconsistance, donc il faut toujours être 
-vigilant !
+When we start to create axiomatic definitions, it is worth adding assertions
+or postconditions requiring a proof of false that we exppect to fail to ensure
+that the definition is not inconsistent. However, it is often not enough ! If
+the subtlety that creates the inconsistency is enough hard to find, provers
+could need a lot of informations other than the axiomatic definition itself to
+be able to find and use the inconsistency, we then need to always be careful !
 
-Notamment parce que par exemple, la mention des valeurs lues par une fonction
-ou un prédicat défini axiomatiquement est également importante pour la 
-consistance de l'axiomatique. En effet, comme mentionné précédemment, si nous
-n'exprimons pas les valeurs lues dans le cas de l'usage d'un pointeur, la 
-modification d'une valeur du tableau n'invalide pas une propriété que l'on 
-connaitrait à propos du contenu du tableau par exemple. Dans un tel cas, la 
-preuve passe mais l'axiome n'exprimant pas le contenu, nous ne prouvons rien.
+More specifically, specifying the values read by a function or a predicate is
+important for the consistency of an axiomatic definition. Indeed, as previsouly
+explained, if we do not specify what is read when a pointer is recieved, an
+update of a value inside the array do not invalidate a property known about the
+content of the array. In such a case, the proof is performed but since the
+axiom do not talk about the content of the array, we do not prove anything.
 
-Par exemple, si nous reprenons l'exemple de mise à zéro, nous pouvons modifier
-la définition de notre axiomatique en retirant la mention des valeurs dont 
-dépendent le prédicat : ```reads a[b .. e-1]```. La preuve passera toujours
-mais n'exprimera plus rien à propos du contenu des tableaux considérés.
+For example, in the function that memset an array to 0, if we modify the
+axiomatic definition, removing the specification of the values that are read
+by the predicate (```reads a[b .. e-1]```), the proof will still be performed,
+but will not prove anything about the content of the arryas.
 
-# Exemple : comptage de valeurs
+# Example: counting occurences of a value
 
-Dans cet exemple, nous cherchons à prouver qu'un algorithme compte bien les 
-occurrences d'une valeur dans un tableau. Nous commençons par définir 
-axiomatiquement la notion de comptage dans un tableau :
+In this example, we want to prove that an algorithm actually counts the
+occurrences of a value inside an array. We start by axiomatically define
+what is the number of occurrences of a value inside an array:
 
 ```c
 /*@
@@ -308,18 +308,18 @@ axiomatiquement la notion de comptage dans un tableau :
 */
 ```
 
-Nous avons trois cas à gérer : 
+We have three different cases:
 
-- la plage de valeur concernée est vide : le nombre d'occurrences est 0 ;
-- la plage de valeur n'est pas vide et le dernier élément est celui recherché :
-  le nombre d'occurrences est : le nombre d'occurrences dans la plage actuelle que
-  l'on prive du dernier élément, plus 1 ;
-- la plage de valeur n'est pas vide et le dernier élément n'est pas celui 
-  recherché : le nombre d'occurrences est le nombre d'occurrences dans la plage
-  privée du dernier élément.
+- the considered range of values is empty: the number of occurrences is 0,
+- the considered range of values is not empty and the last element is the one we
+  are searching: the number of occurrences is the number of occurrences in the
+  current range without the last element, plus 1,
+- the considered range of values is not empty and the last element is not the one
+  we are searching: the number of occurrences is the number of occurrences in the
+  current range without the last element.
 
-Par la suite, nous pouvons écrire la fonction C exprimant ce comportement et la
-prouver :
+Then, we can write the C function that computes the number of occurrences of a
+value inside an array and prove it:
 
 ```c
 /*@
@@ -343,10 +343,10 @@ size_t occurrences_of(int value, int* in, size_t length){
 }
 ```
 
-Une alternative au fait de spécifier que dans ce code ```result``` est au 
-maximum ```i``` est d'exprimer un lemme plus général à propos de la valeur
-du nombre d'occurrences, dont nous savons qu'elle est comprise entre 0 et 
-la taille maximale de la plage de valeurs considérée :
+An alternative way to specify, in this code, that `result` is at most `i`,
+is to express a more general lemma about the number of occurrences of a
+value inside an array, since we know that it is comprised between 0 and the
+size of maximum considered range of values:
 
 ```c
 /*@
@@ -356,17 +356,16 @@ lemma l_occurrences_of_range{L}:
 */
 ```
 
-La preuve de ce lemme ne pourra pas être déchargée par un solveur automatique. Il
-faudra faire cette preuve interactivement avec Coq par exemple. Exprimer des 
-lemmes généraux prouvés manuellement est souvent une bonne manière d'ajouter des
-outils aux prouveurs pour manipuler plus efficacement les axiomatiques, sans 
-ajouter formellement d'axiomes qui augmenteraient nos chances d'introduire des
-erreurs. Ici, nous devrons quand même réaliser les preuves des propriétés 
-mentionnées.
+An automatic solver cannot discharge this lemma. It would be necessary to prove
+it interactively using Coq, for example. By expressing, generic manually proved
+lemmas, we can often add useful tools to provers to manipulate more efficiently
+our axiomatic definitions, without directly adding new axioms that would augment
+the chances to introduce errors. Here, we still have to realize the proof of the
+lemma to have a complete proof.
 
-# Exemple : le tri
+# Example: sort
 
-Nous allons prouver un simple tri par sélection :
+We will prove a simple selection sort:
 
 ```c
 size_t min_idx_in(int* a, size_t beg, size_t end){
@@ -388,11 +387,10 @@ void sort(int* a, size_t beg, size_t end){
 }
 ```
 
-Le lecteur pourra s'exercer en spécifiant et en prouvant les fonctions de 
-recherche de minimum et d'échange de valeur. Nous cachons la correction 
-ci-dessous et allons nous concentrer plutôt sur la spécification et la preuve de
-la fonction de tri qui sont une illustration intéressant de l'usage des
-axiomatiques.
+The reader can exercize by specifying and proving the search of the minimum and
+the swap function. We hide there a correct version of these specification and
+code, we will focus on the specification and the proof of the sort function that
+is a interesting use case for axiomatic definitions.
 
 [[secret]]
 | ```c
@@ -429,9 +427,9 @@ axiomatiques.
 |   int tmp = *p; *p = *q; *q = tmp;
 | }
 | ```
- 
-En effet, une erreur commune que nous pourrions faire dans le cas de la preuve 
-du tri est de poser cette spécification (qui est vraie !) :
+
+Indeed, a common error we could do, trying to prove a sort function, would
+be to write this specification (which is true !):
 
 ```c
 /*@
@@ -454,11 +452,11 @@ void sort(int* a, size_t beg, size_t end){
 }
 ```
 
-**Cette spécification est vraie**. Mais si nous nous rappelons la 
-partie concernant les spécifications, nous nous devons d'exprimer précisément ce
-que nous attendons. Avec la spécification actuelle, nous ne prouvons pas toutes
-les propriétés nécessaires d'un tri ! Par exemple, cette fonction remplit 
-pleinement la spécification :
+**This specification is true**. But if we recall correctly the part of the
+tutorial about specifications, we have to *precisely* express what we expect of
+the program. With this specification, we do not prove all required properties
+expected for a sort function. For example, this function correctly answers to
+the specification:
 
 ```c
 /*@
@@ -481,22 +479,20 @@ void fail_sort(int* a, size_t beg, size_t end){
 }
 ```
 
-En fait, notre spécification oublie que tous les éléments qui étaient 
-originellement présents dans le tableau à l'appel de la fonction doivent
-toujours être présents après l'exécution de notre fonction de tri. Dit
-autrement, notre fonction doit en fait produire la permutation triée des
-valeurs du tableau. 
+Our specification do not express the fact that all elements initially found
+inside the array must still be found inside the array after executing the
+sort function. That is to say: the sort function produces a sorted permutation
+of the original array.
 
-Une propriété comme la définition de ce qu'est une permutation s'exprime 
-extrêmement bien par l'utilisation d'une axiomatique. En effet, pour déterminer
-qu'un tableau est la permutation d'un autre, les cas sont très limités. 
-Premièrement, le tableau est une permutation de lui-même, puis l'échange de
-deux valeurs sans changer les autres est également une permutation, et 
-finalement si nous créons la permutation $p_2$ d'une permutation $p_1$, puis que 
-nous créons la permutation $p_3$ de $p_2$, alors par transitivité $p_3$ est une
-permutation de $p_1$.
+Defining the notion of permutation is easily done using an axiomatic definition.
+Indeed, to determine that an array is the permutation of an other one, we can
+limit us to a few cases. First, the array is a permutation of itself, then
+swapping to values of the array produces a new permutation if we do not change
+anything else. And finally if we create the permutation $p_2$ of $p_1$, and then
+the permutation $p_3$ of $p_2$, then by transivity $p_3$ is a permutation of
+$p_1$.
 
-Ceci est exprimé par le code suivant :
+The corresponding axiomatic definition is the following:
 
 ```c
 /*@
@@ -523,9 +519,9 @@ Ceci est exprimé par le code suivant :
 */
 ```
 
-Nous spécifions alors que notre tri nous crée la permutation triée du tableau
-d'origine et nous pouvons prouver l'ensemble en complétant l'invariant de la
-fonction :
+We can then specify that our sort function produces the sorted permutation of
+the original array and we can then prove it by providing the invariant of the
+function:
 
 ```c
 /*@
@@ -551,11 +547,11 @@ void sort(int* a, size_t beg, size_t end){
 }
 ```
 
-Cette fois, notre propriété est précisément définie, la preuve reste assez
-simple à faire passer, ne nécessitant que l'ajout d'une assertion que le bloc
-de la fonction n'effectue qu'un échange des valeurs dans le tableau (et donnant
-ainsi la transition vers la permutation suivante du tableau). Pour définir cette
-notion d'échange, nous utilisons une annotation particulière (à la ligne 16),
-introduite par le mot-clé ```ghost```. Ici, le but est d'introduire un *label* 
-fictif dans le code qui est uniquement visible d'un point de vue spécification.
-C'est l'objet de la prochaine section.
+This time, our property is precisely defined, the proof relatively easy to
+produce, only requiring to add an assertion in the block of the loop to state
+that it only performs a swap of values inside the array (and then giving
+the transition to the next permutation). To define this swap notion, we use
+a particular annotation (at line 16), introduced using the keyword `ghost`.
+Here, the goal is to introduce a label in the code that in fact do not exists
+from the program point of view, and is only visible from a specification point
+of view. This is the topic of the next section.
