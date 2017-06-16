@@ -19,7 +19,9 @@ enough confident to say that a program correctly works :
 In all these ways to ensure that a program produces only what we expect it
 to produce, a word appears to be common : *test*. We *try* different inputs
 in order to isolate cases that are problematic. We provide inputs that we
-*estimate to be representative* of the actual use of the program and we
+*estimate to be representative* of the actual use of the program (note that
+unexpected use case are often not considered whereas there are generally the
+most dangerous ones) and we
 verify that the results we get are correct. But we cannot test *everything*.
 We cannot try *every* combinations of *every* possible inputs of a program.
 It is then quite hard to choose good tests.
@@ -46,7 +48,7 @@ this sentence is quite true, it is a bit misunderstood.
 
 Apart from the difference between safety and security (that we can very
 vaguely define by the existence of a malicious entity), we do not really
-define what we means by "bug-free". Creating software always rely on at
+define what we mean by "bug-free". Creating software always rely on at
 least two steps : we establish a specification of what expect from the
 program and then we produce the source code of the program that must
 respects this specification. Both of these steps can lead to the introduction
@@ -54,7 +56,7 @@ of errors.
 
 In this tutorial, we will show how we can prove that an implementation verify
 a given specification. But what are the arguments of program proof, compared
-to program testing. First, the proof is complete, it cannot forget some corner
+to program testing? First, the proof is complete, it cannot forget some corner
 case if the behavior is specified (program test cannot be complete,
 exhaustivity would be far too costly). Then, the obligation to formally
 specify with a logic formulation requires to exactly understand what we have
@@ -73,23 +75,23 @@ determine if reachable states are error states.
 # A bit of context
 
 Formal methods, as we name them, allow in computer science to rigorously,
-mathematically reason about programs. There exist a lot of formal methods that
+mathematically, reason about programs. There exist a lot of formal methods that
 can take place at different levels from program design to implementation,
 analysis and validation, and for all system that allow to manipulate information.
 
 Here, we will focus on a method that allows to formally verify that our programs
 have only correct behaviors. We will use tools that are able to analyze a source
 code and to determine whether a program correctly implements what we want to
-express. The analyzer we will use if a static analysis, that we can oppose to
-dynamic analysis.
+express. The analyzer we will use provides a static analysis, that we can oppose
+to dynamic analysis.
 
 In static analysis, the analyzed program is not executed, we reason on a
 mathematical model of the states it can reach during its execution. On the
-opposite, dynamic analysis such as program testing, require to execute the
-analyzed source code. Note that there exist dynamic formal methods, for example
-automatic test generation, or code monitoring techniques that allows to instrument
-a source code to verify some properties about it during execution (correct memory
-use, for example).
+opposite, dynamic analyses such as program testing, require to execute the
+analyzed source code. Note that there exist formal dynamic analysis methods, for
+example automatic test generation, or code monitoring techniques that allows to
+instrument a source code to verify some properties about it during execution
+(correct memory use, for example).
 
 Talking about static analyses, the model we use can be more or less abstract
 depending on the techniques, it is always an approximation of possible states of
@@ -105,40 +107,40 @@ could be the following one :
 We have a model of the behavior of our chronometer with the different states
 it can reach according to the different actions we can perform. However, we do
 not have modeled how these states are depicted inside the program (is this a
-C enumeration ? a particular program point in the source code ?), nor are is
+C enumeration ? a particular program point in the source code ?), nor how is
 modeled the time computation (a single variable ? multiple ones ?). It would
 then be difficult to specify properties about our program. We could add some
-information :
+information:
 
 - State stopped at 0 : time = 0s
 - State running : time > 0s
 - State stopped : time > 0s
 
 Which gives us a more concrete model but that is still not enough precise to
-ask interesting questions like : "is it possible to be in the state stopped and
+ask interesting questions like: "is it possible to be in the state stopped and
 that time is still updated ?", as we do not model how the time measurement is
 updated by the chronometer.
 
 On the opposite, with the source code of the program, we have a concret model
-of the chronometer. The source code express the behavior of the chronometer
+of the chronometer. The source code expresses the behavior of the chronometer
 since it will allow us to produce the executable. But this is still not the
-more concrete model! For example, the executable in machine code form, that we
-obtain after compilation, is far more concrete than our program.
+more concrete model! For example, the executable in machine code format, that
+we obtain after compilation, is far more concrete than our program.
 
 The more a model is concrete, the more it precisely describes the behavior of
 our program. The source code more precisely describes the behavior than our
 diagram, but it is less precise than the machine code. However, the more the
 model is precise, the more it is difficult to have a global view of the defined
 behavior. Our diagram is understandable in a blink of an eye, the source code
-requires more time, as for the executable ... Every single person that has
+requires more time, and for the executable ... Every single person that has
 already opened an executable with a text editor by error knows that it is not
 really pleasant to read[^binary].
 
 When we create an abstraction of a system, we approximate it, in order to
 limit the quantity of knowledge we have about it and ease our reasoning.
 A constraint we must respect, if we want our analysis to be correct, is to
-never under-approximate behaviors : we would risk to remove a behavior that
-contains an error. On the opposite, if we over-approximate, we add executions
+never under-approximate behaviors: we would risk to remove a behavior that
+contains an error. However, when we over-approximate it, we can add executions
 that cannot happen, and if we add to many of them, we could not be able to
 prove our program is correct, since some of them could be faulty executions.
 
@@ -155,7 +157,7 @@ compilation.
 
 # Hoare triples
 
-Hoare logic is program formalization method proposed by Tony Hoare in 1969
+Hoare logic is a program formalization method proposed by Tony Hoare in 1969
 in a paper entitled *An Axiomatic Basis for Computer Programming*. This method
 defines :
 
@@ -171,10 +173,10 @@ The behavior of the program is defined by what we call "Hoare triples" :
 
 Where $P$ and $Q$ are predicates, logic formulas that express properties about
 the memory at particular program points. $C$ is a list of instructions that
-defines the program. This syntax express the following idea : "if we are in a
-state where $P$ is verified, after executing $C$ and if $C$ terminates, then
-$Q$ is verified for the new state of the execution". Put another way, $P$ is
-a sufficient precondition to ensure that $C$ will bring us to the
+defines the program. This syntax expresses the following idea : "if we are in 
+a state where $P$ is verified, after executing $C$ and if $C$ terminates, then
+$Q$ is verified for the new state of the execution". Put in another way, $P$
+is a sufficient precondition to ensure that $C$ will bring us to the
 postcondition $Q$. For example, the Hoare triples that corresponds to the
 skip action is the following one:
 
@@ -183,13 +185,15 @@ skip action is the following one:
 When we do nothing, the postcondition is the precondition.
 
 Along this tutorial, we will present the semantics of different program
-constructs (conditional blocks, loops, etc) using Hoare logic. It is not
-necessary to memorize them nor to understand all the theoretical background,
-but it is still useful to have some ideas about the way our tool works.
+constructs (conditional blocks, loops, etc) using Hoare logic. So, we will
+not enter into details now since we will work on it later. It is not
+necessary to memorize these notions nor to understand all the theoretical
+background, but it is still useful to have some ideas about the way our
+tool works.
 
 All of this gives us the basics that allows us to say "here is what this
-action does" but it does not give us anything to mechanize proof. The tool
-we will use rely on technique called weakest precondition calculus.
+action does" but it does not give us anything to mechanize a proof. The tool
+we will use rely on a technique called weakest precondition calculus.
 
 # Weakest precondition calculus
 
@@ -220,7 +224,7 @@ a = 4;
 //wanted postcondition     : 0 <= a <= 30
 ```
 
-Ok, 4 is an acceptable value for `a`.
+Ok, 4 is an allowed value for `a`.
 
 The form of predicate transformer semantics which we are interested in
 works the opposite way, we speak about *backward-reasoning*. From the wanted
@@ -237,5 +241,5 @@ What is the weakest precondition to validate the postcondition $\{x = 42\}$ ?
 The rule will define that $P$ is $\{$a$=42\}$.
 
 For now, let us forget about it, we will come back to these notions as we
-use them in this tutorial to understand how our tools work. And our tools,
-let us talk about them.
+use them in this tutorial to understand how our tools work. So now, we can
+have a look to these tools.

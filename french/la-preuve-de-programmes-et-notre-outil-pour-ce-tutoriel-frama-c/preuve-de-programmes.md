@@ -20,7 +20,9 @@ Et bien sûr, il existe tous les « entre-deux » dans cette liste.
 Dans toutes ces manières de s'assurer qu'un programme fait ce qui est attendu, 
 il y a un mot qui revient souvent : *test*. Nous *essayons* des entrées de 
 programme dans le but d'isoler des cas qui poseraient problème. Nous fournissons
-des entrées *estimées représentatives* de l'utilisation réelle du programme et 
+des entrées *estimées représentatives* de l'utilisation réelle du programme
+(laissant souvent de côté les usages non prévus, qui sont souvent les plus
+dangereux) et 
 nous nous assurons que les résultats attendus sont conformes. Mais nous ne 
 pouvons pas *tout* tester. Nous ne pouvons pas essayer *toutes* les 
 combinaisons de *toutes* les entrées possibles du programme. Toute la 
@@ -203,9 +205,11 @@ Quand nous ne faisons rien, la post-condition est la même que la pré-condition
 
 Tout au long de ce tutoriel, nous verrons la sémantique de diverses 
 constructions (blocs conditionnels, boucles, etc ...) dans la logique de Hoare.
-Il n'est pas nécessaire de les mémoriser ni même de comprendre toute la théorie 
-derrière mais il est toujours utile d'avoir au moins une vague idée du 
-fonctionnement de l'outil que nous utilisons ;) .
+Nous n'allons donc pas tout de suite rentrer dans ces détails puisque nous en
+aurons l'occasion plus tard. Il n'est pas nécessaire de mémoriser ces notions
+ni même de comprendre toute la théorie derrière mais il est toujours utile
+d'avoir au moins une vague idée du fonctionnement de l'outil que nous
+utilisons ;) .
 
 Tout ceci nous donne les bases permettant de dire « voilà ce que fait cette 
 action » mais ne nous donne pas encore de matériel pour mécaniser la preuve. 

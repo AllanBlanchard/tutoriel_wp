@@ -6,19 +6,19 @@ Frama-C (FRAmework for Modular Analysis of C code) is a platform dedicated
 to the analysis of C programs created by the CEA List and Inria. It is based
 on a modular architectures allowing to use different (collaborating or not)
 plugins. The default plugins comprises different static analyses (that do not
-executed source code), dynamic analyses (that requires code execution), or
+execute source code), dynamic analyses (that requires code execution), or
 combining both.
 
 Frama-C provides a specification language called ACSL ("Axel") for ANSI C
 Specification Language and that allows us to express the properties we want
-to verify adout our programs. These properties will be written using code
-annotations in comments sections. If one have already used Doxygen, it is
+to verify about our programs. These properties will be written using code
+annotations in comments sections. If one has already used Doxygen, it is
 quite similar, except that we write logic formulas and not text. During this
 tutorial, we will extensively write ASCL code, so let us just skip this for
 now.
 
 The analysis we will use is provided by the WP plugin (for Weakest Precondition),
-it implements the technique we presented earlier : from ACSL annotations and
+it implements the technique we presented earlier: from ACSL annotations and
 the source code, the plugin generates what we call proof goals, that are logic
 formulas that are then verified to be satisfiable or not. This verification can
 be performed manually or automatically, here we use automatic tools.
@@ -53,7 +53,7 @@ apt-get/yum install frama-c
 ```
 
 However, these repositories are not necessarily up to date with the last
-version of Frama-C. That is not a big problem since there is not new versions
+version of Frama-C. This is not a big problem since there is not new versions
 of Frama-C every day, but it still important to know it.
 
 Go to the section "Verify installation" to perform some tests about your
@@ -85,7 +85,7 @@ installation.
 
 ### Via "manual" compilation
 
-The package we have listed in the Opam section are required (of course, Opam
+The packages we have listed in the Opam section are required (of course, Opam
 itself is not). It requires a recent version of Ocaml and its compiler
 (including compiler to native code).
 
@@ -102,7 +102,7 @@ installation.
 ## OSX
 
 On OSX, the use of Homebrew and Opam is recommended to install Frama-C.
-The author do not use OSX, so here is an awful copy and paste of the
+The author do not use OSX, so here is a shameful copy and paste of the
 installation guide of Frama-C for OSX.
 
 General Mac OS tools for OCaml:
@@ -202,7 +202,7 @@ like this:
 ![Verify installation 2](https://zestedesavoir.com:443/media/galleries/2584/8e6fc038-29e5-479f-affd-9040454dc3aa.png)
 
 [[attention]]
-| The graphical user interface of Frama-C do not allow source code edition
+| The graphical user interface of Frama-C does not allow source code edition
 
 [[information]]
 | For color blinds, it is possible to start Frama-C with another theme where
@@ -216,11 +216,11 @@ like this:
 This part is optional, nothing in this section should be particularly useful
 *in the tutorial*. However, when we start to be interested in proving more
 complex programs, it is often possible to reach the limits of Alt-Ergo, which
-is basically available, and to need some other provers.
+is basically available, and we would thus need some other provers.
 
 ## Coq
 
-Coq, which is developed by Inria, is proof assistant. Basically, we write
+Coq, which is developed by Inria, is a proof assistant. Basically, we write
 the proofs ourselves in a dedicated language and the platform verify (using
 typing) that the proof is actually a valid proof.
 
@@ -230,8 +230,8 @@ when they requires careful inductive reasoning with precise choices at each
 step. In this situation, WP allows us to generate proof goals translated in
 Coq language, and to write the proof ourselves.
 
-To learn Coq, we would recommend this tutorial:
-[ce tutoriel](http://www.cis.upenn.edu/~bcpierce/sf/current/index.html).
+To learn Coq, we would recommend
+[this tutorial](http://www.cis.upenn.edu/~bcpierce/sf/current/index.html).
 
 [[information]]
 | If Frama-C has been installed using the package manager of a Linux
@@ -258,15 +258,15 @@ using the left side panel, in the WP part:
 
 Why3 is deductive proof platform developed by the LRI in Orsay. It provides
 a programming language and a specification language, as well as a module that
-allow to interact with a wide choice of automatic and interactive provers.
+allows to interact with a wide variety of automatic and interactive provers.
 This point is the one that interest us here. WP can translate its proof
 goals to the Why3 language and then use Why3 to interact with solvers.
 
-The [Why3 website](http://why3.lri.fr/) provide all information about it.
+The [Why3 website](http://why3.lri.fr/) provides all information about it.
 If Opam is installed, Why3 is available using it, else, there is an another
 installation procedure.
 
-On thus website, we can find the list of
+On this website, we can find the list of
 [supported provers](http://why3.lri.fr/#provers). We recommend to install
 [Z3](https://github.com/Z3Prover/z3/wiki) which is developed by Microsoft
 Research, and [CVC4](http://cvc4.cs.nyu.edu/web/) which is developed by many
