@@ -46,9 +46,19 @@ programming error, but also to sensitize to simple notions that allows to
 better understand and write programs.
 
 [[information]]
-| Merci aux différents bêta-testeurs pour leurs remarques constructives :
+| Many thanks to the different bêta-testers for their constructives feedback:
 | 
-| - [Taurre](https://zestedesavoir.com/membres/voir/Taurre/) (l'exemple en section 
-| III - 3 - 4 a honteusement été copié d'un de ses posts).
+| - [Taurre](https://zestedesavoir.com/membres/voir/Taurre/) (the example in
+| the section III - 3 - 4 has been shamefully ripped off from one of his
+| posts)
 | - [barockobamo](https://zestedesavoir.com/membres/voir/barockobamo/)
 | - [Vayel](https://zestedesavoir.com/membres/voir/Vayel/)
+|
+| I thank ZesteDeSavoir validators who helped me improve again the quality of
+| this tutorial:
+|
+| - [Taurre](https://zestedesavoir.com/membres/voir/Taurre/) (again)
+| - [Saroupille](https://zestedesavoir.com/membres/voir/Saroupille/)
+|
+| Finally, many thanks to Jens Gerlach for his help during the translation of
+| this tutorial from french to english.

@@ -63,3 +63,6 @@ permettant de mieux comprendre et de mieux écrire les programmes.
 |
 | - [Taurre](https://zestedesavoir.com/membres/voir/Taurre/) (oui, encore lui)
 | - [Saroupille](https://zestedesavoir.com/membres/voir/Saroupille/)
+|
+| Finalement, un grand merci à Jens Gerlach pour son aide lors de la traduction
+| anglaise du tutoriel.
