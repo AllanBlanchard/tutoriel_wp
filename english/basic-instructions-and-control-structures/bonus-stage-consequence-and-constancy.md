@@ -63,28 +63,27 @@ verify, postconditions. Note that in the previous code, the lines `P_imply_WP`
 and` SQ_imply_Q` are never used because this is the default reasoning of WP.
 They are just here for illustrating the rule.
 
-# Règle de constance
+# Constant rule (???)
 
-Certaines séquences d'instructions peuvent concerner et faire intervenir des
-variables différentes. Ainsi, il peut arriver que nous initialisions et manipulions
-un certain nombre de variables, que nous commencions à utiliser certaines d'entre
-elles, puis que nous les délaissions au profit d'autres pendant un temps. Quand un
-tel cas apparaît, nous avons envie que l'outil ne se préoccupe que des variables
-qui sont susceptibles d'être modifiées pour avoir des propriétés les plus légères
-possibles.
+Certain sequences of instructions may concern and involve different variables.
+Thus, we may initialize and manipulate a certain number of variables, begin to
+use some of them for a time, before using other variables.
+When this happens, we want our tool to be concerned only with variables that
+are susceptible to change in order to obtain the simplest possible properties.
 
-La règle d'inférence qui définit ce raisonnement est la suivante :
+The rule of inference that defines this reasoning is the following:
 
 -> $\dfrac{\{P\}\quad c\quad \{Q\}}{\{P \wedge R\}\quad c\quad \{Q \wedge R\}}$ <-
 
-Où $c$ ne modifie aucune variable entrant en jeu dans $R$. Ce qui nous dit : « pour
-vérifier le triplet, débarrassons nous des parties de la formule qui concerne des
-variables qui ne sont pas manipulées par $c$ et prouvons le nouveau triplet ».
-Cependant, il faut prendre garde à ne pas supprimer trop d'informations, au risque
-de ne plus pouvoir prouver nos propriétés.
+where $c$ does not modify any input variable in $R$.
+In other words: "To check the triple, let's get rid of the parts of the formula
+that involves variables that are not influence by $c$ and prove the new triple."
+However, we must be careful not to delete too much information, since this could
+mean that we are not able to prove our properties.
 
-Par exemple, nous pouvons imaginer le code suivant (une nouvelle fois, nous omettons
-les contrôles de débordements au niveau des entiers) :
+As an example,let us consider the following code (here gain, we ignore
+potential integer overflows):
+
 
 ```c
 /*@
@@ -103,9 +102,9 @@ int foo(int a, int b){
 }
 ```
 
-Si nous regardons le code du bloc `if`, il ne fait pas intervenir la variable
-`b`, donc nous pouvons omettre complètement les propriétés à propos de  `b` pour
-réaliser la preuve que `a` sera bien supérieur à 0 après l'exécution du bloc :
+If we look at the code of the `if` block, we notice that it does not use the
+variable `b`. Thus, we can completely omit the properties about `b` in order to
+prove that `a` will be strictly greater than 0 after the execution of the block:
 
 ```c
 /*@
@@ -116,7 +115,7 @@ réaliser la preuve que `a` sera bien supérieur à 0 après l'exécution du blo
 */
 int foo(int a, int b){
   if(a >= 0){
-    //@ assert a >= 0; //et rien à propos de b
+    //@ assert a >= 0; // no mentioning of b
     a++ ;
   } else {
     a += b ;
@@ -125,9 +124,9 @@ int foo(int a, int b){
 }
 ```
 
-En revanche, dans le bloc `else`, même si `b` n'est pas modifiée, établir
-des propriétés seulement à propos de `a` rendrait notre preuve impossible (en
-tant qu'humains). Le code serait :
+On the other hand, in the `else` block, even if `b` were not modified,
+formulating properties only about `a` would make our proof impossible (???as humans???).
+The code would be:
 
 ```c
 /*@
@@ -138,31 +137,31 @@ tant qu'humains). Le code serait :
 */
 int foo(int a, int b){
   if(a >= 0){
-    //@ assert a >= 0; // et rien à propos de b
+    //@ assert a >= 0; // no mentioning of b
     a++ ;
   } else {
-    //@ assert a < 0 && a > -99 ; // et rien à propos de b
+    //@ assert a < 0 && a > -99 ; // no mentioning of b
     a += b ;
   }
   return a ;
 }
 ```
 
-Dans le bloc `else`, n'ayant que connaissance du fait que `a` est compris
-entre -99 et 0, et ne sachant rien à propos de `b`, nous pourrions
-difficilement savoir si le calcul `a += b` produit une valeur supérieure
-strict à 0 pour `a`.
+In the `else` block, knowing that` a` lies between -99 and 0, but knowing
+nothing about `b`, we could hardly know if the operation `a + = b` produces a
+result that is greater than 0.
 
-Naturellement ici, WP prouvera la fonction sans problème, puisqu'il transporte
-de lui-même les propriétés qui lui sont nécessaires pour la preuve. En fait,
-l'analyse des variables qui sont nécessaires ou non (et l'application, par
-conséquent de la règle de constance) est réalisée directement par WP.
+The WP plug-in will, of course, prove the function without problems, since it
+produces by itself the properties that are necessary for the proof.
+In fact, the analysis which variables are necessary or not (and, consequently,
+the application of the constant rule) is conducted directly by WP.
 
-Notons finalement que la règle de constance est une instance de la règle de
-conséquence :
+Let us finally remark that the constant rule is an instance of the consequence
+rule:
 
 ->$\dfrac{P \wedge R \Rightarrow P \quad \{P\}\quad c\quad \{Q\} \quad Q \Rightarrow Q \wedge R}{\{P \wedge R\}\quad c\quad \{Q \wedge R\}}$ <-
 
-Si les variables de $R$ n'ont pas été modifiées par l'opération (qui par contre,
-modifie les variables de $P$ pour former $Q$), alors effectivement
-$P \wedge R \Rightarrow P$ et $Q \Rightarrow Q \wedge R$.
+If the variables of $R$ have not been modified by the operation
+(which, on the other hand, may modify the variables of $P$ to produce $Q$),
+then the properties $P \ wedge R \ Rightarrow P$ and
+$Q \ Rightarrow Q \ wedge R$ hold.
