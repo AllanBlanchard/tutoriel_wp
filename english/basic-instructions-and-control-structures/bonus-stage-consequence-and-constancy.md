@@ -63,7 +63,7 @@ verify, postconditions. Note that in the previous code, the lines `P_imply_WP`
 and` SQ_imply_Q` are never used because this is the default reasoning of WP.
 They are just here for illustrating the rule.
 
-# Constant rule (???)
+# Constancy rule
 
 Certain sequences of instructions may concern and involve different variables.
 Thus, we may initialize and manipulate a certain number of variables, begin to
@@ -125,8 +125,8 @@ int foo(int a, int b){
 ```
 
 On the other hand, in the `else` block, even if `b` were not modified,
-formulating properties only about `a` would make our proof impossible (???as humans???).
-The code would be:
+formulating properties only about `a` would render a proof impossible
+for humans. The code would be:
 
 ```c
 /*@
@@ -154,9 +154,9 @@ result that is greater than 0.
 The WP plug-in will, of course, prove the function without problems, since it
 produces by itself the properties that are necessary for the proof.
 In fact, the analysis which variables are necessary or not (and, consequently,
-the application of the constant rule) is conducted directly by WP.
+the application of the constancy rule) is conducted directly by WP.
 
-Let us finally remark that the constant rule is an instance of the consequence
+Let us finally remark that the constancy rule is an instance of the consequence
 rule:
 
 ->$\dfrac{P \wedge R \Rightarrow P \quad \{P\}\quad c\quad \{Q\} \quad Q \Rightarrow Q \wedge R}{\{P \wedge R\}\quad c\quad \{Q \wedge R\}}$ <-
