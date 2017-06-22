@@ -1,33 +1,34 @@
-# Règle de conséquence
+# Consequence rule
 
-Parfois, il peut être utile pour la preuve de renforcer une post-condition ou 
-d'affaiblir une pré-condition. Si la première sera souvent établie par nos soins
-pour faciliter le travail du prouveur, la seconde est plus souvent vérifiée 
-par l'outil à l'issu du calcul de plus faible pré-condition.
+It can sometimes be useful to strengthen a postcondition or
+to weaken a precondition.
+If the former will often be established by us to facilitate the work of the
+prover, the second is more often verified by the tool as the result of computing
+the weakest precondition.
 
-La règle d'inférence en logique de Hoare est la suivante :
+The inference rule of Hoare logic is the following:
 
 ->$\dfrac{P \Rightarrow WP \quad \{WP\}\quad c\quad \{SQ\} \quad SQ \Rightarrow Q}{\{P\}\quad c \quad \{Q\}}$<-
 
-(Nous noterons que les prémisses, ici, ne sont pas seulement des triplets de
-Hoare mais également des formules à vérifier)
+(We remark that the premises here are not only Hoare triples but also formulas
+to verify.)
 
-Par exemple, si notre post-condition est trop complexe, elle risque de générer
-une plus faible pré-condition trop compliquée et de rendre le calcul des 
-prouveurs difficile. Nous pouvons alors créer une post-condition intermédiaire
-$SQ$, plus simple, mais plus restreinte et impliquant la vraie post-condition. 
-C'est la partie $SQ \Rightarrow Q$.
+For example, if our post-condition is too complex, it may generate a weaker
+precondition that is, however, too complicated, thus making the work of provers
+more difficult. We can then create a simpler intermediate postcondition $SQ$,
+that is, however, stricter and implies the real postcondition.
+This is the part $SQ \Rightarrow Q$.
 
-Inversement, le calcul de pré-condition générera généralement une formule 
-compliquée et souvent plus faible que la pré-condition que nous souhaitons
-accepter en entrée. Dans ce cas, c'est notre outil qui s'occupera de vérifier 
-l'implication entre ce que nous voulons et ce qui est nécessaire pour que notre
-code soit valide. C'est la partie $P \Rightarrow WP$.
+Conversely, the calculation of the precondition will usually generate a
+complicated and often weaker formula than the precondition we want to accept as
+input. In this case, it is our tool that will check the implication between
+what we want and what is necessary for our code to be valid.
+Th is is the part $P \Rightarrow WP$.
 
-Nous pouvons par exemple illustrer cela avec le code qui suit. Notons bien qu'ici,
-le code pourrait tout à fait être prouvé par l'intermédiaire de WP sans ajouter des
-affaiblissements et renforcements de propriétés car le code est très simple, il 
-s'agit juste d'illustrer la règle de conséquences.
+We can illustrate this with the following code. Note that here the code could
+be proved by WP without the weakening and strengthening of properties because
+the code is very simple, it is just to illustrate the rule of consequence.
+
 
 ```c
 /*@
@@ -47,44 +48,42 @@ int constrained_times_10(int a){
   return res;
 }
 ```
+(Note: We have omitted here the control of integer overflow.)
 
-(À noter ici : nous avons omis les contrôles de débordement d'entiers).
+Here we want to have a result between 0 and 100. But we know that the code will
+not produce a result outside the bounds of 10 and 90. So we strengthen the
+postcondition with an assertion that at the end `res`, the result, is between
+0 and 90. The calculation of the weakest precondition of this property together
+with the assignment `res = 10 * a` yields a weaker precondition `1 <= a <= 9`
+and we know that `2 < = a <= 8` gives us the desired guarantee.
 
-Ici, nous voulons avoir un résultat compris entre 0 et 100. Mais nous savons que
-le code ne produira pas un résultat sortant des bornes 10 à 90. Donc nous 
-renforçons la post-condition avec une assertion que `res`, le résultat, est compris
-entre 0 et 90 à la fin. Le calcul de plus faible pré-condition, sur cette propriété,
-et avec l'affectation `res = 10*a` nous produit une plus faible pré-condition 
-`1 <= a <= 9` et nous savons finalement que `2 <= a <= 8` nous donne cette garantie.
+When there are difficulties to carry out a proof on more complex code, then it
+is often helpful to write assertions that produce stronger, yet easier to
+verify, postconditions. Note that in the previous code, the lines `P_imply_WP`
+and` SQ_imply_Q` are never used because this is the default reasoning of WP.
+They are just here for illustrating the rule.
 
-Quand une preuve a du mal à être réalisée sur un code plus complexe, écrire des
-assertions produisant des post-conditions plus fortes mais qui forment des formules
-plus simples peut souvent nous aider. Notons que dans le code précédent, les lignes
-`P_imply_WP` et `SQ_imply_Q` ne sont jamais utiles car c'est le raisonnement par
-défaut produit par WP, elles sont juste présentes pour l'illustration.
+# Constancy rule
 
-# Règle de constance
+Certain sequences of instructions may concern and involve different variables.
+Thus, we may initialize and manipulate a certain number of variables, begin to
+use some of them for a time, before using other variables.
+When this happens, we want our tool to be concerned only with variables that
+are susceptible to change in order to obtain the simplest possible properties.
 
-Certaines séquences d'instructions peuvent concerner et faire intervenir des 
-variables différentes. Ainsi, il peut arriver que nous initialisions et manipulions
-un certain nombre de variables, que nous commencions à utiliser certaines d'entre 
-elles, puis que nous les délaissions au profit d'autres pendant un temps. Quand un
-tel cas apparaît, nous avons envie que l'outil ne se préoccupe que des variables 
-qui sont susceptibles d'être modifiées pour avoir des propriétés les plus légères 
-possibles.
-
-La règle d'inférence qui définit ce raisonnement est la suivante :
+The rule of inference that defines this reasoning is the following:
 
 -> $\dfrac{\{P\}\quad c\quad \{Q\}}{\{P \wedge R\}\quad c\quad \{Q \wedge R\}}$ <-
 
-Où $c$ ne modifie aucune variable entrant en jeu dans $R$. Ce qui nous dit : « pour 
-vérifier le triplet, débarrassons nous des parties de la formule qui concerne des
-variables qui ne sont pas manipulées par $c$ et prouvons le nouveau triplet ». 
-Cependant, il faut prendre garde à ne pas supprimer trop d'informations, au risque
-de ne plus pouvoir prouver nos propriétés.
+where $c$ does not modify any input variable in $R$.
+In other words: "To check the triple, let's get rid of the parts of the formula
+that involves variables that are not influence by $c$ and prove the new triple."
+However, we must be careful not to delete too much information, since this could
+mean that we are not able to prove our properties.
 
-Par exemple, nous pouvons imaginer le code suivant (une nouvelle fois, nous omettons
-les contrôles de débordements au niveau des entiers) :
+As an example,let us consider the following code (here gain, we ignore
+potential integer overflows):
+
 
 ```c
 /*@
@@ -103,9 +102,9 @@ int foo(int a, int b){
 }
 ```
 
-Si nous regardons le code du bloc `if`, il ne fait pas intervenir la variable
-`b`, donc nous pouvons omettre complètement les propriétés à propos de  `b` pour
-réaliser la preuve que `a` sera bien supérieur à 0 après l'exécution du bloc :
+If we look at the code of the `if` block, we notice that it does not use the
+variable `b`. Thus, we can completely omit the properties about `b` in order to
+prove that `a` will be strictly greater than 0 after the execution of the block:
 
 ```c
 /*@
@@ -116,7 +115,7 @@ réaliser la preuve que `a` sera bien supérieur à 0 après l'exécution du blo
 */
 int foo(int a, int b){
   if(a >= 0){
-    //@ assert a >= 0; //et rien à propos de b
+    //@ assert a >= 0; // no mentioning of b
     a++ ;
   } else {
     a += b ;
@@ -125,9 +124,9 @@ int foo(int a, int b){
 }
 ```
 
-En revanche, dans le bloc `else`, même si `b` n'est pas modifiée, établir
-des propriétés seulement à propos de `a` rendrait notre preuve impossible (en
-tant qu'humains). Le code serait :
+On the other hand, in the `else` block, even if `b` were not modified,
+formulating properties only about `a` would render a proof impossible
+for humans. The code would be:
 
 ```c
 /*@
@@ -138,31 +137,31 @@ tant qu'humains). Le code serait :
 */
 int foo(int a, int b){
   if(a >= 0){
-    //@ assert a >= 0; // et rien à propos de b
+    //@ assert a >= 0; // no mentioning of b
     a++ ;
   } else {
-    //@ assert a < 0 && a > -99 ; // et rien à propos de b
+    //@ assert a < 0 && a > -99 ; // no mentioning of b
     a += b ;
   }
   return a ;
 }
 ```
 
-Dans le bloc `else`, n'ayant que connaissance du fait que `a` est compris
-entre -99 et 0, et ne sachant rien à propos de `b`, nous pourrions 
-difficilement savoir si le calcul `a += b` produit une valeur supérieure
-strict à 0 pour `a`.
+In the `else` block, knowing that` a` lies between -99 and 0, but knowing
+nothing about `b`, we could hardly know if the operation `a + = b` produces a
+result that is greater than 0.
 
-Naturellement ici, WP prouvera la fonction sans problème, puisqu'il transporte
-de lui-même les propriétés qui lui sont nécessaires pour la preuve. En fait,
-l'analyse des variables qui sont nécessaires ou non (et l'application, par 
-conséquent de la règle de constance) est réalisée directement par WP.
+The WP plug-in will, of course, prove the function without problems, since it
+produces by itself the properties that are necessary for the proof.
+In fact, the analysis which variables are necessary or not (and, consequently,
+the application of the constancy rule) is conducted directly by WP.
 
-Notons finalement que la règle de constance est une instance de la règle de 
-conséquence :
+Let us finally remark that the constancy rule is an instance of the consequence
+rule:
 
 ->$\dfrac{P \wedge R \Rightarrow P \quad \{P\}\quad c\quad \{Q\} \quad Q \Rightarrow Q \wedge R}{\{P \wedge R\}\quad c\quad \{Q \wedge R\}}$ <-
 
-Si les variables de $R$ n'ont pas été modifiées par l'opération (qui par contre, 
-modifie les variables de $P$ pour former $Q$), alors effectivement 
-$P \wedge R \Rightarrow P$ et $Q \Rightarrow Q \wedge R$.
+If the variables of $R$ have not been modified by the operation
+(which, on the other hand, may modify the variables of $P$ to produce $Q$),
+then the properties $P \ wedge R \ Rightarrow P$ and
+$Q \ Rightarrow Q \ wedge R$ hold.
