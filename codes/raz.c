@@ -7,7 +7,7 @@
 
     axiom zeroed_range{L}:
       \forall int* a, integer b, e; b < e ==>
-        zeroed{L}(a,b,e) && a[e] == 0 <==> zeroed{L}(a,b,e+1);
+        zeroed{L}(a,b,e-1) && a[e-1] == 0 <==> zeroed{L}(a,b,e);
 
   }
 */

@@ -11,13 +11,13 @@
 
     axiom occurrences_positive_range_with_element{L}:
       \forall int v, int* in, integer from, to;
-        (from < to+1 && in[to] == v) ==>
-      l_occurrences_of(v,in,from,to+1) == 1+l_occurrences_of(v,in,from,to);
+        (from < to && in[to-1] == v) ==>
+      l_occurrences_of(v,in,from,to) == 1+l_occurrences_of(v,in,from,to-1);
 
     axiom occurrences_positive_range_without_element{L}:
       \forall int v, int* in, integer from, to;
-        (from < to+1 && in[to] != v) ==>
-      l_occurrences_of(v,in,from,to+1) == l_occurrences_of(v,in,from,to);
+        (from < to && in[to-1] != v) ==>
+      l_occurrences_of(v,in,from,to) == l_occurrences_of(v,in,from,to-1);
   }
 */
 

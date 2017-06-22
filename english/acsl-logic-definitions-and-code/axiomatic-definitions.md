@@ -120,8 +120,8 @@ write it as follows:
       \forall int* a, integer b, e; b >= e ==> zeroed{L}(a,b,e);
 
     axiom zeroed_range{L}:
-      \forall int* a, integer b, e; b < e+1 ==>
-        zeroed{L}(a,b,e+1) <==> (zeroed{L}(a,b,e) && a[e] == 0);
+      \forall int* a, integer b, e; b < e ==>
+        zeroed{L}(a,b,e-1) && a[e-1] == 0 <==> zeroed{L}(a,b,e);
   }
 */
 ```
@@ -294,16 +294,16 @@ what is the number of occurrences of a value inside an array:
     axiom occurrences_empty_range{L}:
       \forall int v, int* in, integer from, to;
         from >= to ==> l_occurrences_of{L}(v, in, from, to) == 0;
-	
+
     axiom occurrences_positive_range_with_element{L}:
       \forall int v, int* in, integer from, to;
-        (from < to+1 && in[to] == v) ==>
-	  l_occurrences_of(v,in,from,to+1) == 1+l_occurrences_of(v,in,from,to);
+        (from < to && in[to-1] == v) ==>
+      l_occurrences_of(v,in,from,to) == 1+l_occurrences_of(v,in,from,to-1);
 
     axiom occurrences_positive_range_without_element{L}:
       \forall int v, int* in, integer from, to;
-        (from < to+1 && in[to] != v) ==>
-	  l_occurrences_of(v,in,from,to+1) == l_occurrences_of(v,in,from,to);
+        (from < to && in[to-1] != v) ==>
+      l_occurrences_of(v,in,from,to) == l_occurrences_of(v,in,from,to-1);
   }
 */
 ```
