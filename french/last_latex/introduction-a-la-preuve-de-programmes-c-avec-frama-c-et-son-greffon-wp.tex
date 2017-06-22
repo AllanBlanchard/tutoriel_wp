@@ -161,7 +161,7 @@
 \begin{titlepage}
 \title{\color{white}{INTRODUCTION À LA PREUVE DE PROGRAMMES C AVEC FRAMA-C ET SON GREFFON WP}}
 \author{\color{ocre}{Allan Blanchard}}
-\date{\color{white}{$ $\\23 mai 2017}}
+\date{\color{white}{$ $\\22 juin 2017}}
 \end{titlepage}
 
 \graphicspath{{../../resources/}}
@@ -186,7 +186,7 @@ partie de l'organisation dans le présent tutoriel est le même
     TAP 2013} par Nikolai Kosmatov, Virgile Prevosto et Julien
 Signoles du CEA LIST du fait de son cheminement didactique.
 Il contient également des exemples tirés de
-\emph{\href{http://www.dcc.fc.up.pt/~nam/aulas/0910/vfs/teoricas/acsl-by-example-4_2_1.pdf}{ACSL
+\emph{\href{http://www.fokus.fraunhofer.de/download/acsl_by_example}{ACSL
 By Example}} de Jochen Burghardt, Jens Gerlach, Kerstin
 Hartig, Hans Pohl et Juan Soto du Fraunhofer. Le reste vient
 de mon expérience personnelle avec Frama-C et WP.
@@ -255,6 +255,9 @@ les programmes.
      encore lui)
    \item \href{https://zestedesavoir.com/membres/voir/Saroupille/}{Saroupille}
    \end{itemize}
+   Finalement, un grand merci à Jens Gerlach pour son aide lors de la traduction
+   anglaise du tutoriel.
+
 \end{zdsblock}
 
 \chapter{La preuve de programmes et notre outil pour ce tutoriel :
@@ -304,7 +307,9 @@ Dans toutes ces manières de s'assurer qu'un programme fait ce qui est
 attendu, il y a un mot qui revient souvent : \emph{test}. Nous
 \emph{essayons} des entrées de programme dans le but d'isoler des cas
 qui poseraient problème. Nous fournissons des entrées \emph{estimées
-représentatives} de l'utilisation réelle du programme et nous nous
+représentatives} de l'utilisation réelle du programme (laissant souvent
+de côté les usages non prévus, qui sont souvent les plus dangereux) 
+et nous nous
 assurons que les résultats attendus sont conformes. Mais nous ne pouvons
 pas \emph{tout} tester. Nous ne pouvons pas essayer \emph{toutes} les
 combinaisons de \emph{toutes} les entrées possibles du programme. Toute
@@ -322,7 +327,7 @@ différence entre test et preuve :
 
 \begin{quote}
 Program testing can be used to show the presence of bugs, but never to
-show their absence! Source: Dijkstra
+show their absence! \hfill {[}Dijkstra{]}
 \end{quote}
 
 Le test de programme peut-être utilisé pour montrer la présence de bugs
@@ -520,10 +525,12 @@ pré-condition.
 
 Tout au long de ce tutoriel, nous verrons la sémantique de diverses
 constructions (blocs conditionnels, boucles, etc \ldots{}) dans la
-logique de Hoare. Il n'est pas nécessaire de les mémoriser ni même de
-comprendre toute la théorie derrière mais il est toujours utile d'avoir
-au moins une vague idée du fonctionnement de l'outil que nous utilisons
-;) .
+logique de Hoare. Nous n'allons donc pas tout de suite rentrer dans
+ces détails puisque nous en aurons l'occasion plus tard. Il n'est pas
+nécessaire de mémoriser ces notions ni même de comprendre toute la
+théorie derrière mais il est toujours utile d'avoir au moins une vague
+idée du fonctionnement de l'outil que nous utilisons ;) .
+
 
 Tout ceci nous donne les bases permettant de dire « voilà ce que fait
 cette action » mais ne nous donne pas encore de matériel pour mécaniser
@@ -2837,7 +2844,7 @@ programme :
 \CommentTok{// ... du code ...}
 
 \KeywordTok{if}\NormalTok{(c < }\DecValTok{0} \NormalTok{|| c > }\DecValTok{15}\NormalTok{)\{}
-  \NormalTok{x = }\DecValTok{0}\NormalTok{;}
+  \NormalTok{c = }\DecValTok{0}\NormalTok{;}
 \NormalTok{\}}
 \CommentTok{//@ assert 0 <= c <= 15;}
 \end{Highlighting}
@@ -4624,10 +4631,7 @@ récursifs}\label{duxe9finition-de-fonctions-ou-pruxe9dicats-ruxe9cursifs}
 
 Les définitions axiomatiques de fonctions ou de prédicats récursifs sont
 particulièrement utiles car elles vont permettre d'empêcher les
-prouveurs de dérouler la récursion quand c'est possible, notamment parce
-que justement, à la manière dont nous avions ajouté un lemme sur la
-factorielle nous allons pouvoir directement exprimer l'induction dans
-l'axiomatique.
+prouveurs de dérouler la récursion quand c'est possible.
 
 L'idée est alors de ne pas définir directement la fonction ou le
 prédicat mais plutôt de la déclarer puis de définir des axiomes
@@ -4651,7 +4655,9 @@ factorielle, nous pouvons la définir axiomatiquement de cette manière :
 \end{Shaded}\end{footnotesize}
 
 Dans cette définition axiomatique, notre fonction n'a pas de corps. Son
-comportement étant défini par les axiomes ensuite définis. Une petite
+comportement étant défini par les axiomes ensuite définis.
+
+Une petite
 subtilité est qu'il faut prendre garde au fait que si les axiomes
 énoncent des propriétés à propos du contenu d'une ou plusieurs zones
 mémoires pointées, il faut spécifier ces zones mémoires en utilisant la
@@ -4674,8 +4680,8 @@ Si par exemple, nous voulons définir qu'un tableau ne contient que des
 \CommentTok{      \textbackslash{}forall int* a, integer b, e; b >= e ==> zeroed\{L\}(a,b,e);}
 
 \CommentTok{    axiom zeroed_range\{L\}:}
-\CommentTok{      \textbackslash{}forall int* a, integer b, e; b < e+1 ==>}
-\CommentTok{        zeroed\{L\}(a,b,e+1) <==> (zeroed\{L\}(a,b,e) && a[e] == 0);}
+\CommentTok{      \textbackslash{}forall int* a, integer b, e; b < e ==>}
+\CommentTok{        (zeroed\{L\}(a,b,e-1) && a[e-1] == 0) <==> zeroed\{L\}(a,b,e);}
 \CommentTok{  \}}
 \CommentTok{*/}
 \end{Highlighting}
@@ -4884,13 +4890,13 @@ définir axiomatiquement la notion de comptage dans un tableau :
 \CommentTok{    }
 \CommentTok{    axiom occurrences_positive_range_with_element\{L\}:}
 \CommentTok{      \textbackslash{}forall int v, int* in, integer from, to;}
-\CommentTok{        (from < to+1 && in[to] == v) ==>}
-\CommentTok{      l_occurrences_of(v,in,from,to+1) == 1+l_occurrences_of(v,in,from,to);}
+\CommentTok{        (from < to && in[to-1] == v) ==>}
+\CommentTok{      l_occurrences_of(v,in,from,to) == 1+l_occurrences_of(v,in,from,to-1);}
 
 \CommentTok{    axiom occurrences_positive_range_without_element\{L\}:}
 \CommentTok{      \textbackslash{}forall int v, int* in, integer from, to;}
-\CommentTok{        (from < to+1 && in[to] != v) ==>}
-\CommentTok{      l_occurrences_of(v,in,from,to+1) == l_occurrences_of(v,in,from,to);}
+\CommentTok{        (from < to && in[to-1] != v) ==>}
+\CommentTok{      l_occurrences_of(v,in,from,to) == l_occurrences_of(v,in,from,to-1);}
 \CommentTok{  \}}
 \CommentTok{*/}
 \end{Highlighting}
@@ -5452,7 +5458,7 @@ travail.
 \chapter{Conclusion}\label{conclusion}
 
 \begin{quote}
-Voilà, c'est fini \ldots{} Source:{[}Jean-Louis Aubert, \emph{Bleu Blanc
+Voilà, c'est fini \ldots{} \hfill {[}Jean-Louis Aubert, \emph{Bleu Blanc
 Vert}, 1989{]}
 \end{quote}
 
