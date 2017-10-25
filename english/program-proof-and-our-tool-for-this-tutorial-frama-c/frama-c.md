@@ -1,6 +1,6 @@
 ->![](http://frama-c.com/modern/framac.gif)<-
 
-# Frama-C ? WP ?
+# Frama-C? WP?
 
 Frama-C (FRAmework for Modular Analysis of C code) is a platform dedicated
 to the analysis of C programs created by the CEA List and Inria. It is based
@@ -12,7 +12,7 @@ combining both.
 Frama-C provides a specification language called ACSL ("Axel") for ANSI C
 Specification Language and that allows us to express the properties we want
 to verify about our programs. These properties will be written using code
-annotations in comments sections. If one has already used Doxygen, it is
+annotations in comment sections. If one has already used Doxygen, it is
 quite similar, except that we write logic formulas and not text. During this
 tutorial, we will extensively write ASCL code, so let us just skip this for
 now.
@@ -20,13 +20,13 @@ now.
 The analysis we will use is provided by the WP plugin (for Weakest Precondition),
 it implements the technique we presented earlier: from ACSL annotations and
 the source code, the plugin generates what we call proof goals, that are logic
-formulas that are then verified to be satisfiable or not. This verification can
+formulas that must be verified to be satisfiable or not. This verification can
 be performed manually or automatically, here we use automatic tools.
 
 We will use a SMT solver 
 ([statisfiability modulo theory](https://en.wikipedia.org/wiki/Satisfiability_modulo_theories),
 we will not detailed how it works). This solver is  
-[Alt-Ergo](http://alt-ergo.lri.fr/), initially developed by the
+[Alt-Ergo](http://alt-ergo.lri.fr/), that was initially developed by the
 Laboratoire de Recherche en Informatique d'Orsay, and is today maintained and
 updated by OCamlPro.
 
@@ -46,10 +46,11 @@ equivalent to the one we could have on Linux but:
 ### Using package managers
 
 Under Debian, Ubuntu and Fedora, there exist packages for Frama-C. In such a
-case, it is enough to type a command like :
+case, it is enough to type a command like:
 
 ```bash
-apt-get/yum install frama-c
+apt install frama-c # Debian-like
+yum install frama-c # Fedora
 ```
 
 However, these repositories are not necessarily up to date with the last
@@ -76,8 +77,8 @@ Frama-C:
 Once it is done, we can install Frama-C and Alt-Ergo.
 
 ```bash
-opam install frama-c
 opam install alt-ergo
+opam install frama-c
 ```
 
 Go to the section "Verify installation" to perform some tests about your
@@ -145,7 +146,7 @@ Currently, the installation of Frama-C for Windows requires Cygwin and an
 experimental version of Opam for Cygwin. So we need to install both as well
 as the MinGW Ocaml compiler.
 
-Installation instructions can be found there :
+Installation instructions can be found there:
 
 [Frama-C - Windows](https://bts.frama-c.com/dokuwiki/doku.php?id=mantis:frama-c:compiling_from_source)
 
@@ -224,7 +225,7 @@ Coq, which is developed by Inria, is a proof assistant. Basically, we write
 the proofs ourselves in a dedicated language and the platform verify (using
 typing) that the proof is actually a valid proof.
 
-Why would we need such a tool ? Sometimes, the properties we want to prove
+Why would we need such a tool? Sometimes, the properties we want to prove
 can be too complex to be solved automatically by SMT solvers, typically
 when they requires careful inductive reasoning with precise choices at each
 step. In this situation, WP allows us to generate proof goals translated in
