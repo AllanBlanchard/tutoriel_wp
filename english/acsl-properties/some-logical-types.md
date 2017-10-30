@@ -4,7 +4,7 @@ of primitive C types in memory. These types are `integer` and `real`, which
 respectively represent mathematical integers and reals (that are modeled to be
 as near the reality we can, but this notion cannot be perfectly handled).
 
-From now, we will ofter use integers instead of classical C `int`s. The reason
+From now, we will often use integers instead of classical C `int`s. The reason
 is simply that a lot of properties and definitions are true regardless the size
 of the machine integer we have in input.
 

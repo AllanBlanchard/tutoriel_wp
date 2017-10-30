@@ -19,10 +19,10 @@ Again, we introduce lemmas using ACSL annotations. The syntax is following:
 */
 ```
 
-This time, the properties we want to express to depend on recieved parameters
-(except for labels). So we will express these properties on universally
-quantified variables. For example, we can state this lemma, which is true,
-even if it is trivial:
+This time, the properties we want to express do not depend on received
+parameters (except for labels). So we will express these properties on
+universally quantified variables. For example, we can state this lemma,
+which is true, even if it is trivial:
 
 
 ```c
@@ -35,9 +35,9 @@ even if it is trivial:
 This proof can be performed using WP. The property is, of course, proved
 using only Qed.
 
-# Exampel : properties about affine functions
+# Example: properties about linear functions
 
-We can come back to our affine functions and express some interesting
+We can come back to our linear functions and express some interesting
 properties about them:
 
 ```c
@@ -88,8 +88,8 @@ void foo(int a, int x, int y){
 }
 ```
 
-If we do not give the lemmas provided ealier, Alt-ergo will not be able to prove
+If we do not give the lemmas provided earlier, Alt-ergo will not be able to prove
 the proof that `fmin` is lesser or equal to `fmax`. With the lemmas it is however
 very easy for it since the property is the simply an instance of the lemma
-`ax_monotonic_pos`, the proof is then trivial as our lemme is considered to be
+`ax_monotonic_pos`, the proof is then trivial as our lemma is considered to be
 true when are not currently proving it.

@@ -3,7 +3,7 @@ specifications. It allows us, first, to factor those specifications and, second,
 to define some operations on `integer` or `real` with the guarantee that they
 cannot overflow since they are mathematical types.
 
-Like predicates, they can recieve different labels and values in parameter.
+Like predicates, they can receive different labels and values in parameter.
 
 # Syntax
 
@@ -16,7 +16,7 @@ To define a logic function, the syntax is the following:
 */
 ``` 
 
-We can for example define a mathematical [affine function](https://fr.wikipedia.org/wiki/Fonction_affine) using a logic function:
+We can for example define a mathematical [linear function](https://en.wikipedia.org/wiki/Linear_function_(calculus)) using a logic function:
 
 ```c
 /*@
@@ -72,19 +72,19 @@ int function(int x){
 | integers, we then do not need to care about some overflow risk with the
 | computation or `INT_MIN-b` or `INT_MAX-b`.
 
-Once these specifications are provided, everything is fine. Of course, we could
-provide manually these bounds everytime we create an affine logic function.
+Once this specification is provided, everything is fine. Of course, we could
+provide manually these bounds every time we create an linear logic function.
 But, by creating these bound computation function, we directly get a way to
 compute them automatically which is quite comfortable.
 
-# Recursivity and limits of logic functions
+# Recursive functions and limits of logic functions
 
-Logic functions can be recursively defined. However, such an approach will
-rapidly show some limits in their use for program proof. Indeed, when automatic
-solver will reason on such logic properties, if such a function is met, it will
-be necessary to evaluate it, and SMT solvers are not meant to be efficient for
-this task, which will be generally costly, producing to long proof resolution
-and eventually timeouts.
+Logic functions (as well as predicates) can be recursively defined. However,
+such an approach will rapidly show some limits in their use for program proof.
+Indeed, when automatic solver will reason on such logic properties, if such a
+function is met, it will be necessary to evaluate it, and SMT solvers are not
+meant to be efficient for this task, which will be generally costly, producing
+to long proof resolution and eventually timeouts.
 
 We can have a concrete example with the factorial function, using logic and
 using C language:
@@ -104,11 +104,12 @@ unsigned facto(unsigned n){
 ```
 
 Without checking overflows, this function is easy and fast to prove. If we add
-runtime error checking, the overflow on unsigned integers is not added, since it
-is specified by the C norm (and is then a defined behavior). If we want to add
-an assertion at this point, we can ask WP to generate its own bound checking by
-right-clicking on the function and then asking "insert WP-safety guards". And in
-this cas, an overflow is not proved to be absent.
+runtime error checking, RTE does not add any assertion to check the absence of
+overflow on unsigned integers, since it is specified by the C norm (and is then
+a defined behavior). If we want to add an assertion at this point, we can ask
+WP to generate its own bound checking by right-clicking on the function and then
+asking "insert WP-safety guards". And in this case, an overflow is not proved to
+be absent.
 
 On `unsigned`, the maximum value for which we can compute factorial is 12. If
 we go further, it overflows. We can then add this preconditon:
@@ -126,10 +127,10 @@ unsigned facto(unsigned n){
 
 If we ask for a proof on this input, Alt-ergo will probably fail, whereas Z3 can
 compute the proof in less than a second. The reason is that in this case, the
-heuritics that are used by Z3 consider that it is good idea to spend a bit more
-of time on the evaluation of the function. We can for example change the maximum
-value of `n` to see how the different provers behave. With a `n` fixed to 9,
-Alt-ergo produces a proof in less than 10 seconds, whereas with a value of 10,
+heuristics that are used by Z3 consider that it is a good idea to spend a bit
+more of time on the evaluation of the function. We can for example change the
+maximum value of `n` to see how the different provers behave. With a `n` fixed to
+9, Alt-ergo produces a proof in less than 10 seconds, whereas with a value of 10,
 even a minute is not enough.
 
 Logic functions can then be defined recursively but without some more help, we
