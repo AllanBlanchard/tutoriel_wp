@@ -105,7 +105,7 @@ We are thus in a position to determine for our example `abs` the desired
 property `P`.
 
 In this chapter we present the different cases of the function $wp$ which,
-starting from a given postcondition and a programme (or statement),
+starting from a given postcondition and a program (or statement),
 computes the *weakest* precondition that allows us to establish the validity
 of the postcondition.
 We will use the following notation to define the computation that corresponds

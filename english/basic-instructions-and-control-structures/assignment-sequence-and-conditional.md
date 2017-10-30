@@ -1,7 +1,7 @@
 # Assignment
 
 Assignment is the most basic operation one can have in language (leaving aside
-the "do nothing" operation that isn't particular interesting).
+the "do nothing" operation that is not particularly interesting).
 The weakest precondition calculus associates the following computation to an
 assignment operation;
 
@@ -74,7 +74,7 @@ of the assignment rule.
 | expression. This allows us, for example, to write `if( (a = foo()) == 42)`.
 | In Frama-C, an assignment will always be treated as a statement. Indeed,
 | if an assignment occurs within a larger expression, then the Frama-C
-| kernel (???), while building the abstract syntax tree, systematically
+| kernel, while building the abstract syntax tree, systematically
 | performs a *normalization step* that produces a separate assignment
 | statement.
 
