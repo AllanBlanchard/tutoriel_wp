@@ -1,5 +1,5 @@
 Axioms are properties we state to be true no matter the situation. It is a good
-way to enounce complex properties that will allow the proof process to be more
+way to state complex properties that will allow the proof process to be more
 efficient by abstracting their complexity. Of course, as any property expressed
 as an axiom is assumed to be true, we have to be very careful when we use them
 to defined properties: if we introduce a false property in our assumptions,
@@ -43,7 +43,7 @@ And we can see that in Frama-C, this property is actually assumed to be true:
 [[secret]]
 | Currently, our automatic solvers are not powerful enough to compute *the
 | Answer to the Ultimate Question of Life, the Universe, and Everything*.
-| We can help them by stating it as an axiom ! Now, we just have to
+| We can help them by stating it as an axiom! Now, we just have to
 | understand the question to determine in which case this result can be
 | useful ...
 |
@@ -62,8 +62,8 @@ And we can see that in Frama-C, this property is actually assumed to be true:
 
 Lemmas and axioms allows to express the same types of properties. Namely,
 properties expressed about quantified variables (and possibly global variables,
-but it is quite rare since it often difficult to find a global property about
-such variables being both true an interesting). Apart this first common point,
+but it is quite rare since it is often difficult to find a global property about
+such variables being both true and interesting). Apart this first common point,
 we can also notice that when we are not considering the definition of the
 lemma itself, lemmas are assumed to be true by WP exactly as axioms are.
 
@@ -96,14 +96,14 @@ follows:
 */
 ```
 
-In this axiomatic definition, our fonction do not have a body. Its behavior is
+In this axiomatic definition, our function do not have a body. Its behavior is
 only defined by the axioms we have stated about it.
 
-A small subtility is that we must take care about the fact that if some axioms
+A small subtlety is that we must take care about the fact that if some axioms
 state properties about the content of some pointed memory cells, we have to
 specify considered memory blocks using the `reads` notation in the declaration.
 If we omit such a specification, the predicate or function will be considered
-to be stated about the recieved pointers and not about pointer memory blocks.
+to be stated about the received pointers and not about pointer memory blocks.
 So, if the code modifies the content of an array for which we had proven that
 the predicate or function give some result, this result will not be considered
 to be potentially different.
@@ -137,7 +137,7 @@ definition:
   assigns  array[0 .. length-1];
   ensures  zeroed(array,0,length);
 */
-void raz(int* array, size_t length){
+void memset0(int* array, size_t length){
   /*@
     loop invariant 0 <= i <= length;
     loop invariant zeroed(array,0,i);
@@ -150,7 +150,7 @@ void raz(int* array, size_t length){
 ```
 
 Depending on the Frama-C or automatic solvers versions, the proof of the
-preservetion of the invariant could fail. A reason to this fail is the fact that
+preservation of the invariant could fail. A reason to this fail is the fact that
 the prover forget that cells preceding the one we are currently processing
 are actually still set to 0. We can add a lemma in our knowledge base, stating
 that if a set of values of an array did not change between two program points,
@@ -163,12 +163,12 @@ property is still verified at the second program point.
     \forall integer i; b <= i < e ==> \at(a[i],L1) == \at(a[i],L2);
 
   lemma no_changes{L1,L2}:
-  \forall int* a, integer b, e;
-  same_elems{L1,L2}(a,b,e) ==> zeroed{L1}(a,b,e) ==> zeroed{L2}(a,b,e);
+    \forall int* a, integer b, e;
+      same_elems{L1,L2}(a,b,e) ==> zeroed{L1}(a,b,e) ==> zeroed{L2}(a,b,e);
 */
 ```
 
-Then we can add an assertion to specify what did not change between the begining
+Then we can add an assertion to specify what did not change between the beginning
 of the loop block (pointed by the label `L` in the code) and the end (which is
 `Here` since we state the property at the end):
 
@@ -221,10 +221,10 @@ write definitions that are not easy to express using the basic formalism
 provided by ACSL. It is here used to illustrate their use with a simple
 example.
 
-# Consistancy
+# Consistency
 
 By adding axioms to our knowledge base, we can produce more complex proofs since
-some part of these proofs, expressed by axioms, do need anymore to be proved
+some part of these proofs, expressed by axioms, do not need to be proved anymore
 (they are already specified to be true) shortening the proof process. However,
 using axiomatic definitions, **we must be extremely careful**. Indeed, even a
 small error could introduce false in the knowledge base, making our whole
@@ -241,7 +241,7 @@ The simplest example is the following:
 */
 
 int main(){
-  // Exemples de propriétés prouvées
+  // Examples of proven properties
 
   //@ assert \false;
   //@ assert \forall integer x; x > x;
@@ -255,21 +255,21 @@ is valid:
 
 ![Different false things proved to be true](https://zestedesavoir.com:443/media/galleries/2584/8bb12c3f-5da7-4f44-a889-fa5df0ab8e7a.png)
 
-Of course, this example is extreme, we would write such an axiom. The problem
-is in fact that it is really easy to write an axiomatic definition that is
-subtely false when we express more complex properties, or adding assumptions
-about the global state of the system.
+Of course, this example is extreme, we would not write such an axiom. The
+problem is in fact that it is really easy to write an axiomatic definition
+that is subtly false when we express more complex properties, or adding
+assumptions about the global state of the system.
 
 When we start to create axiomatic definitions, it is worth adding assertions
-or postconditions requiring a proof of false that we exppect to fail to ensure
-that the definition is not inconsistent. However, it is often not enough ! If
-the subtlety that creates the inconsistency is enough hard to find, provers
-could need a lot of informations other than the axiomatic definition itself to
-be able to find and use the inconsistency, we then need to always be careful !
+or postconditions requiring a proof of false that we expect to fail to ensure
+that the definition is not inconsistent. However, it is often not enough! If
+the subtlety that creates the inconsistency is hard enough to find, provers
+could need a lot of information other than the axiomatic definition itself to
+be able to find and use the inconsistency, we then need to always be careful!
 
 More specifically, specifying the values read by a function or a predicate is
-important for the consistency of an axiomatic definition. Indeed, as previsouly
-explained, if we do not specify what is read when a pointer is recieved, an
+important for the consistency of an axiomatic definition. Indeed, as previously
+explained, if we do not specify what is read when a pointer is received, an
 update of a value inside the array do not invalidate a property known about the
 content of the array. In such a case, the proof is performed but since the
 axiom do not talk about the content of the array, we do not prove anything.
@@ -277,9 +277,9 @@ axiom do not talk about the content of the array, we do not prove anything.
 For example, in the function that memset an array to 0, if we modify the
 axiomatic definition, removing the specification of the values that are read
 by the predicate (```reads a[b .. e-1]```), the proof will still be performed,
-but will not prove anything about the content of the arryas.
+but will not prove anything about the content of the arrays.
 
-# Example: counting occurences of a value
+# Example: counting occurrences of a value
 
 In this example, we want to prove that an algorithm actually counts the
 occurrences of a value inside an array. We start by axiomatically define
@@ -387,7 +387,7 @@ void sort(int* a, size_t beg, size_t end){
 }
 ```
 
-The reader can exercize by specifying and proving the search of the minimum and
+The reader can exercise by specifying and proving the search of the minimum and
 the swap function. We hide there a correct version of these specification and
 code, we will focus on the specification and the proof of the sort function that
 is a interesting use case for axiomatic definitions.
@@ -444,7 +444,7 @@ be to write this specification (which is true !):
   ensures sorted(a, beg, end);
 */
 void sort(int* a, size_t beg, size_t end){
-  /*@ //annotation de l'invariant */
+  /*@ //invariant */
   for(size_t i = beg ; i < end ; ++i){
     size_t imin = min_idx_in(a, i, end);
     swap(&a[i], &a[imin]);
@@ -479,7 +479,7 @@ void fail_sort(int* a, size_t beg, size_t end){
 }
 ```
 
-Our specification do not express the fact that all elements initially found
+Our specification does not express the fact that all elements initially found
 inside the array must still be found inside the array after executing the
 sort function. That is to say: the sort function produces a sorted permutation
 of the original array.
@@ -489,7 +489,7 @@ Indeed, to determine that an array is the permutation of an other one, we can
 limit us to a few cases. First, the array is a permutation of itself, then
 swapping to values of the array produces a new permutation if we do not change
 anything else. And finally if we create the permutation $p_2$ of $p_1$, and then
-the permutation $p_3$ of $p_2$, then by transivity $p_3$ is a permutation of
+the permutation $p_3$ of $p_2$, then by transitivity $p_3$ is a permutation of
 $p_1$.
 
 The corresponding axiomatic definition is the following:
@@ -547,11 +547,11 @@ void sort(int* a, size_t beg, size_t end){
 }
 ```
 
-This time, our property is precisely defined, the proof relatively easy to
+This time, our property is precisely defined, the proof is relatively easy to
 produce, only requiring to add an assertion in the block of the loop to state
 that it only performs a swap of values inside the array (and then giving
 the transition to the next permutation). To define this swap notion, we use
 a particular annotation (at line 16), introduced using the keyword `ghost`.
-Here, the goal is to introduce a label in the code that in fact do not exists
+Here, the goal is to introduce a label in the code that in fact does not exists
 from the program point of view, and is only visible from a specification point
 of view. This is the topic of the next section.

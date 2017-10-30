@@ -3,7 +3,7 @@ enrich our specification with information expressed as regular C code. Here, the
 idea is to add variables and source code that will not be part of the actual
 program but will model logic states that will only be visible from a proof point
 of view. Using it, we can make explicit some logic properties that were
-previsouly only known implicitely.
+previously only known implicitly.
 
 # Syntax
 
@@ -41,9 +41,9 @@ void foo(int a){
 
 We must again be careful using ghost code. Indeed, the tool will not perform
 any verification to ensure that we do not write in the memory of the program by
-mistake. This problem begin, in fact, an undecidable problem, this analysis would
-be require a proof by itself. For example, this code is allowed in input of
-Frama-C even if it explicitely modifies the state of the program we want to
+mistake. This problem being, in fact, an undecidable problem, this analysis would
+require a proof by itself. For example, this code is allowed in input of
+Frama-C even if it explicitly modifies the state of the program we want to
 verify:
 
 ```c
@@ -59,16 +59,16 @@ making it simple).
 
 # Make a logical state explicit
 
-The goal of ghost code is to make explicit informations that are without them
-implicit. For example, in the previous section, we used it to get an explicit
-logic state known at a particular point of the program.
+The goal of ghost code is to make explicit some information that are without
+them implicit. For example, in the previous section, we used it to get an
+explicit logic state known at a particular point of the program.
 
 Let us take a more complex example. Here, we want to prove that the following
 function returns the value of the maximal sum of subarrays of a given array.
 A subarray of an array `a` is a contiguous subset of values of `a`. For example,
 for an array `{ 0 , 3 , -1 , 4 }`, some subarrays can be `{}`, `{ 0 }`,
 `{ 3 , -1 }`, `{ 0 , 3 , -1 , 4 }`, ... Note that as we allow empty arrays for
-subarrays, the sum is minimally 0. In the previous array, the subarray with
+subarrays, the sum is at least 0. In the previous array, the subarray with
 the maximal sum is `{ 3 , -1 , 4 }`, the function would then return 6.
 
 ```c
@@ -84,7 +84,7 @@ int max_subarray(int *a, size_t len) {
 }
 ```
 
-In order to specify the previous function, we will need an axiomatic defintion
+In order to specify the previous function, we will need an axiomatic definition
 about sum. This is not too much complex, the careful reader can express the
 needed axioms as an exercise:
 
@@ -110,7 +110,7 @@ Some correct axioms are hidden there:
 | */
 | ```
 
-The specifiction of the function is the following:
+The specification of the function is the following:
 
 ```c
 /*@ 
@@ -125,8 +125,9 @@ For any bounds, the value returned by the function must be greater or equal to
 the sum of the elements between these bounds, and there must exist some bounds
 such that the returned value is exactly the sum of the elements between these
 bounds. About this specification, when we want to add the loop invariant, we
-will realize that we miss some information. We to express what are the values
-`max` and `cur` and what are the relations between them, but we cannot do it !
+will realize that we miss some information. We want to express what are the
+values `max` and `cur` and what are the relations between them, but we cannot
+do it!
 
 Basically, our postcondition needs to know that there exists some bounds `low`
 and `high` such that the computed sum corresponds to these bounds. However, in
@@ -135,7 +136,7 @@ and we cannot *a priori* make the link between this logical formalization. We
 will then use ghost code to record these bounds and express the loop invariant.
 
 We will first need two variables that will allow us to record the bounds of
-the maximum sum range, we will call them `low` and `high`. Everytime we will
+the maximum sum range, we will call them `low` and `high`. Every time we will
 find a range where the sum is greater than the current one, we will update our
 ghost variables. This bounds will then corresponds to the sum currently stored
 by `max`. That induces that we need other bounds: the ones that corresponds 
@@ -187,7 +188,7 @@ int max_subarray(int *a, size_t len) {
 The invariant `BOUNDS` expresses how the different bounds are ordered during the
 computation. The invariant `REL` expresses what the variables `cur` and `max`
 mean depending on the bounds. Finally, the invariant `POST` allows us to create
-a link between the invariants and the postcondition of the function.
+a link between the invariant and the postcondition of the function.
 
 The reader can verify that this function is indeed correctly proved without RTE
 verification. If we add RTE verification, the overflow on the variable `cur`,
@@ -195,7 +196,7 @@ that is the sum, seems to be possible (and it is indeed the case).
 
 Here, we will not try to fix this because it is not the topic of this example.
 The way we can prove the absence of RTE here strongly depends on the context
-where we use this function. A possibility is stongly restrict the contract,
+where we use this function. A possibility is to strongly restrict the contract,
 forcing some properties about values and the size of the array. For example,
 we could strongly limit the maximal size of the array and strong bounds on
 each value of the different cells. An other possibility would be to add an
