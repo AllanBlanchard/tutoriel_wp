@@ -95,9 +95,9 @@ void swap(int* a, int* b){
 
 Ici, nous introduisons une première fonction logique fournie de base par 
 ACSL : ```\old```, qui permet de parler de l'ancienne valeur d'un élément. 
-Ce que nous dit donc la spécification c'est « la fonction doit assurer que a 
-soit égal à l'ancienne valeur (au sens : la valeur avant l'appel) de b et 
-inversement ».
+Ce que nous dit donc la spécification c'est « la fonction doit assurer que
+`*a` soit égal à l'ancienne valeur (au sens : la valeur avant l'appel) de `*b`
+et inversement ».
 
 La fonction ```\old``` ne peut être utilisée que dans la post-condition d'une
 fonction. Si nous avons besoin de ce type d'information ailleurs, nous 
