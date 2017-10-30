@@ -2,11 +2,11 @@
 
 This is certainly the hardest part of our work. Programming is already an effort
 that consists in writing algorithms that correctly respond to our need. 
-Specifying request the same kind of work, except that we do not try to precise
+Specifying request the same kind of work, except that we do not try to express
 *how* we respond to the need but *what* is exactly our need. To prove that our
 code implements what we need, we must be able to describe exactly what we need.
 
-From now, we will use an other example with the `max` function:
+From now, we will use an other example, the `max` function:
 
 ```c
 int max(int a, int b){
@@ -27,7 +27,7 @@ int max(int a, int b){
 ```
 
 If we ask WP to prove this code, it will succeed without any problem. However,
-is our specification really correct ? We can try to prove this calling code:
+is our specification really correct? We can try to prove this calling code:
 
 ```c
 void foo(){
@@ -54,8 +54,8 @@ int max(int a, int b){
 }
 ```
 
-Our specification is too much permissive. We have to be more precise. We
-expect the result, not only to be greater or equal to both parameters, but
+Our specification is too permissive. We have to be more precise. We do not
+only expect the result to be greater or equal to both parameters, but
 also that the result is one of them:
 
 ```c
@@ -70,7 +70,7 @@ int max(int a, int b){
 
 # Pointers
 
-If there is one notion that we permently have to confront with in C language,
+If there is one notion that we permanently have to confront with in C language,
 this is definitely the notion of pointer. Pointers are quite hard to
 manipulate correctly, and they still are the main source of critical bugs in
 programs, so they benefit of a preferential treatment in ACSL.
@@ -88,17 +88,17 @@ void swap(int* a, int* b){
 }
 ```
 
-## History of values
+## History of values in memory
 
-Here, we introduce a first logic builtin function of ACSL: `old`, that allows
+Here, we introduce a first built-in logic function of ACSL: `old`, that allows
 us to get the old value of a given element. So, our specification defines
-that the function must ensure that after the call, the value of `a` is the
-old (that is to say, before the call) value of `b` and conversely.
+that the function must ensure that after the call, the value of `*a` is the
+old (that is to say, before the call) value of `*b` and conversely.
 
-The '\old` function can only be used in the post-condition of a function. If
+The `\old` function can only be used in the post-condition of a function. If
 we need this type of information somewhere else, we will use `at` that allows
 us to express that we want the value of a variable at a particular program
-point. This function recieves two parameters. The first one is the variable
+point. This function receives two parameters. The first one is the variable
 (or memory location) for which we want to get its value and the second one is
 the program point (as a C label) that we want to consider.
 
@@ -112,7 +112,7 @@ For example, we could write:
   //@assert a == 45 && \at(a, Label_a) == 42;
 ```
 
-Of course, we can use any C label in our code, but we also have 6 builtins
+Of course, we can use any C label in our code, but we also have 6 built-in
 labels defined by ACSL that can be used, however WP does not support all
 of them currently:
 
@@ -125,8 +125,8 @@ of them currently:
 
 [[information]]
 | The behavior of `Here` is in fact the default behavior when we consider a
-| variable. Its use with `at` with generally let us ensure that what we write
-| is not ambigous, and is more readable, when we express properties about
+| variable. Its use with `at` will generally let us ensure that what we write
+| is not ambiguous, and is more readable, when we express properties about
 | values at different program points in the same expression.
 
 Whereas `\old` can only be used in function post-conditions, `\at` can be used
@@ -136,7 +136,7 @@ post-conditions, `Pre` and `Here` are available everywhere. `LoopEntry` and
 `LoopCurrent` are only available in the context of loops (which we will detail
 later in this tutorial).
 
-For the moment, we will not need `\at` but it can often be useful, if not
+At the moment, we will not need `\at` but it can often be useful, if not
 essential, when we want to make our specification precise.
 
 ## Pointers validity
@@ -148,7 +148,7 @@ that we did not indicate to be valid pointers in the precondition of the
 function.
 
 We can express that the dereferencing of a pointer is valid using the `\valid`
-predicate of ACSL which recieves the pointer in input:
+predicate of ACSL which receives the pointer in input:
 
 ```c
 /*@
@@ -162,12 +162,12 @@ void swap(int* a, int* b){
 }
 ```
 
-Once we have specified that the pointers we recieve in input are valid,
+Once we have specified that the pointers we receive in input are valid,
 dereferencing is assured to not produce undefined behaviors.
 
 As we will see later in this tutorial, `\valid` can take more than one pointer
 in parameter. For example, we can give it an expression such as:
-`valid(p + (s .. e))` which means "forall `i` between included `s` and `e`, 
+`valid(p + (s .. e))` which means "for all `i` between included `s` and `e`, 
 `p+i` is a valid pointer. This kind of expression will be extremely useful
 when we will specify properties about arrays in specifications.
 
@@ -201,7 +201,7 @@ specify that the pointer `p` must be `\valid_read` and not `\valid`.
 ## Side effects
 
 Our `swap` function is provable with regard to the specification and potential
-runtime errors, but is it however enough specified ? We can slightly modify our
+runtime errors, but is it however specified enough? We can slightly modify our
 code to check this (we use `assert` to verify some properties at some particular
 points):
 
@@ -234,9 +234,10 @@ The result is not exactly what we expect:
 ![Proof failure on the property of a global variable which is not modified by `swap`](https://zestedesavoir.com:443/media/galleries/2584/1aeddaba-4761-4d30-b499-b99f8815a6da.png)
 
 Indeed, we did not specify the allowed side effects for our function. In order
-to specify side effects, we use an `assign` clause which is part of the postcondtion
-of a function. It allows us to specify which **non local** elements (we verify side
-effects) can be modified during the execution of the function.
+to specify side effects, we use an `assign` clause which is part of the 
+postcondition of a function. It allows us to specify which **non local** 
+elements (we verify side effects) can be modified during the execution of the 
+function.
 
 By default, WP considers that a function can modify everything in the memory.
 So, we have to specify what can be modified by a function. For example, our 
@@ -257,7 +258,7 @@ void swap(int* a, int* b){
 }
 ```
 
-If we ask WP to proved the function with this specification, it will be
+If we ask WP to prove the function with this specification, it will be
 validated (including with the variable added in the previous source code).
 
 Finally, we sometimes want to specify that a function is side effect free.
@@ -323,7 +324,7 @@ is different of the pointer `b`. Now, if these pointers are the same,
 | that is still the case: `b` is not another location.
 
 In order to ensure that pointers address separated memory locations, ACSL
-gives use the predicate `\separated(p1, ...,pn)` that recieves in parameter
+gives use the predicate `\separated(p1, ...,pn)` that receives in parameter
 a set of pointers and that ensures that these pointers are non-overlapping.
 Here, we specify:
 

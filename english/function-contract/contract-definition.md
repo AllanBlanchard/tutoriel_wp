@@ -1,12 +1,12 @@
 The goal of a function contract is to state the conditions under which the
-function will execute. That is to say, what the caller must respect to
-ensure the function will correctly behave : the precondition, the notion
+function will execute. That is to say, what the function expect from the
+caller to ensure that it will correctly behave: the precondition, the notion
 of "correctly behave" being itself defined in the contract by the
 postcondition.
 
 These properties are expressed with ACSL, the syntax is relatively simple if
 one have already developed in C language since it shares most of the syntax
-of boolean expressions in C. However, it also provides :
+of boolean expressions in C. However, it also provides:
 
 - some logic constructs and connectors that do not exists in C, to ease the
   writing of specifications,
@@ -15,7 +15,7 @@ of boolean expressions in C. However, it also provides :
 - as well as some primitive types for the logic that are more general than
   primitive C types (for example: mathematical integer).
 
-We will introduce along this tutorial a big part of the notations available
+We will introduce along this tutorial a large part of the notations available
 in ACSL.
 
 ACSL specifications are introduced in our source code using annotations.
@@ -36,8 +36,8 @@ Frama-C that what follows are annotations and not a comment block that it
 should simply ignore.
 
 Now, let us have a look to the way we express contracts, starting with
-postconditions, since it is what we want our function to do (we will then
-look how we express preconditions).
+postconditions, since it is what we want our function to do (we will later
+see how to express precondition).
 
 # Postcondition
 
@@ -58,8 +58,8 @@ int abs(int val){
 
 (Notice the `;` at the end of the line, exactly as we do in C).
 
-But that is not the only property to verify, we also need to specify the
-general behavior of a function returning the absolute value. That is:
+But that it is not the only property to verify, we also need to specify
+the general behavior of a function returning the absolute value. That is:
 if the value is positive or 0, the function returns the same value, else
 it returns the opposite of the value.
 
@@ -80,7 +80,7 @@ int abs(int val){
 ```
 
 This specification is the opportunity to present a very useful logic
-connector provided by ACSL and that does not exists in C:
+connector provided by ACSL and that does not exist in C:
 the implication $A \Rightarrow B$, that is written `A ==> B` in ACSL.
 The truth table of the implication is the following:
 
@@ -115,9 +115,9 @@ the negation of the exclusive or).
 | $T$ | $T$ | $F$      | $T$          | $T$        | $T$               | $T$
 
 We can come back to our specification. As our files become longer and contains
-a lot of specifications, if can be useful to name the property we want to
+a lot of specifications, if can be useful to name the properties we want to
 verify. So, in ACSL, we can specify a name (without spaces) followed by a `:`,
-before stating the property. It is possible to put multiples levels of names
+before stating the property. It is possible to put multiple levels of names
 to categorize our properties. For example, we could write this:
 
 ```c
@@ -140,7 +140,7 @@ We can copy and paste the function `abs` and its specification in a file
 `abs.c` and use Frama-C to determine if the implementation is correct
 against the specification. We can start the GUI of Frama-C (it is also
 possible to use the command line interface of Frama-C but we will not use
-it during this tutorial) by this command line:
+it during this tutorial) by using this command line:
 
 ```bash
 $ frama-c-gui
@@ -163,7 +163,7 @@ $ frama-c-gui abs.c
 ![The side panel gives the files and functions tree](https://zestedesavoir.com:443/media/galleries/2584/dab8888e-32fc-4856-bb87-4de884829822.png)
 
 The window of Frama-C opens and in the panel dedicated to files and functions,
-we can select the function `abs`. At each `ensures` line, there is a blue
+we can select the function `abs`. At each `ensures` line, we can see a blue
 circle, it indicates that no verification has been attempted for these
 properties.
 
@@ -199,8 +199,8 @@ for the computation of `-val`. And, indeed, on our architectures,
 ![Incomplete proof of ```abs```](https://zestedesavoir.com:443/media/galleries/2584/ec869f49-9193-4896-a490-9549f256a639.png)
 
 [[information]]
-| We can notice that the underflow risk is real for us, since our computers
-| (for which the configuration is detected by Frama-C) use the
+| We can notice that there exists an actual underflow risk, since our
+| computers (for which the configuration is detected by Frama-C) use the
 | [Two's complement](https://en.wikipedia.org/wiki/Two%27s_complement)
 | implementation of integers, which do not defined the behavior of under and
 | overflows.
@@ -214,7 +214,7 @@ assertion manually in the source code.
 In this screenshot, we can see two new colors for our bullets: green+brown and
 orange.
 
-The green+brown color indicates that the proof has been produced but she
+The green+brown color indicates that the proof has been produced but it
 can depend on some properties that have not been verified.
 
 If the proof has not been entirely redone after adding the runtime error checks,
@@ -251,7 +251,7 @@ belongs to. The second column indicates the name of proof obligation. For
 example here, our postcondition is named
 "Post-condition 'positive_value,function_result'", we can notice that if
 we select a property in this list, it is also highlighted in the source code.
-Unnamed properties are automatically named by WP with the king of wanted
+Unnamed properties are automatically named by WP with the kind of wanted
 property. In the third column, we see the memory model that is used for the
 proof, we will not talk about it in this tutorial. Finally, the last columns
 represent the different provers available through WP.
@@ -269,19 +269,19 @@ have specified and those that have been deduced by WP from the instructions
 of the program. It also contains (in the "Prove" part) the property that
 we want to verify.
 
-What does WP do using these properties ? In fact, it transformes them into
+What does WP do using these properties ? In fact, it transforms them into
 a logic formula and then asks to different provers if it is possible to
 satisfy this formula (to find for each variable, a value that can make the
 formula true), and it determines if the property can be proved. But before
 sending the formula to provers, WP uses a module called Qed, which is able
 to perform different simplifications about it. Sometimes, as this is the
-case for the other properties about `abs`, these simplications are enough
+case for the other properties about `abs`, these simplifications are enough
 to determine that the property is true, in such a case, WP do not need the
 help of the automatic solvers.
 
 When automatic solvers cannot ensure that our properties are verified, it
 it sometimes hard to understand why. Indeed, provers are generally not able
-to answer something other thant "yes", "no" or "unknown", they are not able
+to answer something other than "yes", "no" or "unknown", they are not able
 to extract the reason of a "no" or an "unknown". There exists tools that
 can explore a proof tree to extract this type of information, currently
 Frama-C do not provide such a tool. Reading proof obligations can sometimes
@@ -292,17 +292,17 @@ this language to not being lost facing the proof obligations generated by
 WP, since these obligations need to encode some elements of the C semantics
 that can make them quite hard to read.
 
-If we go back to our view of proof obligations (see the squared bouton in
+If we go back to our view of proof obligations (see the squared button in
 the last screenshot), we can see that our hypotheses are not enough to
 determine that the property "absence of underflow" is true (which is
 indeed currently impossible), so we need to add some hypotheses to guarantee
-that our function will well-behave : a call precondition.
+that our function will well-behave: a call precondition.
 
 # Preconditon
 
 Preconditions are introduced using `requires` clauses. As we could do with
 `ensures` clauses, we can compose logic expressions and specify multiple
-preconditions :
+preconditions:
 
 ```c
 /*@
@@ -357,7 +357,7 @@ int abs(int val){
 | ```
 
 Once we have modified the source code with our precondition, we click on
-"Reparse" and we can ask again to prove our program. This time, everythig
+"Reparse" and we can ask again to prove our program. This time, everything
 is validated by WP, our implementation is proved:
 
 ![Proof of `abs` performed](https://zestedesavoir.com:443/media/galleries/2584/07785936-5148-406d-a432-5e88e4f25328.png)
@@ -402,12 +402,12 @@ We can notice that for function calls, the GUI highlights the execution path
 that leads to the call for which we want to verify the preconditon. Then, if
 we have a closer look to the call `abs(INT_MIN)`, we can notice that,
 simplifying, Qed deduced that we try to prove "False". Consequently, the next
-call `abs(a)` recieves in its assumptions the property "False". This is why
+call `abs(a)` receives in its assumptions the property "False". This is why
 Qed can immediately deduce "True".
 
 The second part of the question is then: why our first version of the calling
 function (`abs(a)` and then `abs(INT_MIN)`) did not have the same behavior,
-indicating a proof failure on the second call. The answer is simply that the
+indicating a proof failure on the second call? The answer is simply that the
 call `abs(a)` can, or not, produce an error, whereas `abs(INT_MIN)` necessarily
 leads to an error. So, while `abs(INT_MIN)` necessarily gives us the knowledge
 of "false", the call `abs(a)` does not, since it can succeed.
@@ -431,10 +431,10 @@ not be able to give an input that respects the precondition so we will be able
 to detect this problem by carefully reading what we have specified.
 
 Some notions we will see in this tutorial can expose us to the possibility to
-introduce subtle incoherencies. So, we must always be careful specifying a
+introduce subtle incoherence. So, we must always be careful specifying a
 program.
 
-## Finding the right preconditons
+## Finding the right preconditions
 
 Finding the right preconditions for a function is sometimes hard. The most
 important idea is to determine these preconditions without taking in account

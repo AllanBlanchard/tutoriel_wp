@@ -18,7 +18,7 @@ int max_abs(int a, int b){
 Let us start by (over-)splitting the function we already proved in pairs
 header/source for `abs` and `max`. For `abs`, we have:
 
-Fichier abs.h :
+File: abs.h
 
 ```c
 #ifndef _ABS
@@ -46,7 +46,7 @@ int abs(int val);
 #endif
 ```
 
-Fichier abs.c
+File: abs.c
 
 ```c
 #include "abs.h"
@@ -65,7 +65,7 @@ it.
 
 We can create a file using the same format for the `max` function. In both
 cases, we can open the source file (we do not need to specify header files
-in the command line) with Frama-C and notivce that the specification is indeed
+in the command line) with Frama-C and notice that the specification is indeed
 associated to the function and that we prove it.
 
 Now, we can prepare our header file for the `max_abs` function:
@@ -112,13 +112,13 @@ function, we will only verify that the precondition is correctly established whe
 we call it. It provides very modular proofs and specifications that are therefore
 more reusable. Of course, if our proof rely on the specification of another
 function, it must be provable to ensure that the proof of the program is complete.
-But, we can also consider that we are trusting a function that comes from an
-external library that we do not want to prove (or for which we do not even have
-the source code).
+But, we can also consider that we trust a function that comes from an external
+library that we do not want to prove (or for which we do not even have the source
+code).
 
 The careful reader could specify and prove the `max_abs` function.
 
-A solution is provided there (the implementation is also recalled):
+A solution is provided there (we also add the implementation as a reminder):
 
 ```c
 /*@
