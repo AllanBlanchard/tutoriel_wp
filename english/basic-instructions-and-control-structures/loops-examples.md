@@ -1,11 +1,12 @@
-# Exemple avec un tableau read-only
+# Examples with read-only arrays
 
-S'il y a une structure de données que nous traitons avec les boucles c'est bien
-le tableau. C'est une bonne base d'exemples pour les boucles car ils permettent
-rapidement de présenter des invariants intéressants et surtout, ils vont nous 
-permettre d'introduire des constructions très importantes d'ACSL.
+Array is the most common data structure when we are working with loops. It is
+then a good example base to exercise with loops, and these examples allow to
+rapidly show interesting invariant and will allow us to introduce some
+important ACSL constructs.
 
-Prenons par exemple la fonction qui cherche une valeur dans un tableau :
+We can for example use the search function that allows to find a value inside
+an array:
 
 ```c
 #include <stddef.h>
@@ -39,63 +40,60 @@ int* search(int* array, size_t length, int element){
   return NULL;
 }
 ```
-Cet exemple est suffisamment fourni pour introduire des notations importantes.
 
-D'abord, comme nous l'avons déjà mentionné, le prédicat ```\valid_read``` (de 
-même que ```\valid```) nous permet de spécifier non seulement la validité d'une 
-adresse en lecture mais également celle de tout un ensemble d'adresses 
-contiguës. C'est la notation que nous avons utilisée dans cette expression :
+There are enough ideas inside this example to introduce some important syntax.
+
+First, as we previously presented, the `\valid_read` predicate (as well as
+`\valid`) allows us to specify not only the validity of read-only address but
+also to state that a range of contiguous adresses are valid. It is expressed
+using this expression:
 
 ```c
 //@ requires \valid_read(a + (0 .. length-1));
 ```
 
-Cette pré-condition nous atteste que les adresses a+0, a+1 ..., a+length-1 sont
-valides en lecture.
+This precondition states that all addresses a+0, a+1, ..., a+length-1 are
+valid read-only locations.
 
-Nous avons également introduit deux notations qui vont nous être très utiles, à 
-savoir ```\forall``` ($\forall$) et ```\exists``` ($\exists$), les 
-quantificateurs de la logique. Le premier nous servant à annoncer que pour tout
-élément, la propriété suivante est vraie. Le second pour annoncer qu'il existe
-un élément tel que la propriété est vraie. Si nous commentons les deux lignes en 
-questions, nous pouvons les lire de cette façon :
+We also introduced two notations that are used almost all the time in ACSL,
+the keywords `\forall` ($\forall$) and `\exists` ($\exists$), the universal
+logic quantifiers. The first allows to state that for any element, some
+property is true, the second allows to say that there exists some element such
+that the property is true. If we comment a little bit the corresponding lines
+in our specification, we can read them this way:
 
 ```c
 /*@
-//pour tout "off" de type "size_t", tel que SI "off" est compris entre 0 et "length"
-//                                 ALORS la case "off" de "a" est différente de "element"
+// for all "off" of type "size_t", such that IF "off" is comprised between 0 and "length"
+//                                 THEN the cell "off" in "a" is different of "element"
 \forall size_t off ; 0 <= off < length ==> a[off] != element;
 
-//il existe "off" de type "size_t", tel que "off" soit compris entre 0 et "length"
-//                                 ET que la case "off" de "a" vaille "element"
+// there exists "off" of type "size_t", such that "off" is comprise between 0 and "length"
+//                                      AND the cell "off" in "a" equals to "element"
 \exists size_t off ; 0 <= off < length && a[off] == element;
 */
 ```
 
-Si nous devions résumer leur utilisation, nous pourrions dire que sur un certain
-ensemble d'éléments, une propriété est vraie, soit à propos d'au moins l'un
-d'eux, soit à propos de la totalité d'entre eux. Un schéma qui reviendra 
-typiquement dans ce cas est que nous restreindrons cet ensemble à travers une
-première propriété (ici : ```0 <= off < length```) puis nous voudrons prouver la
-propriété réelle qui nous intéresse à propos d'eux. **Mais il y a une 
-différence fondamentale entre l'usage de ```exists``` et celui de ```forall```**.
+If we want to sum up the use of these keyword, we would say that on a range of
+values, a property is true, either about at least one of them or about all of
+them. A common scheme is to constraint this set using another property
+(here: `0 <= off < length`) and to prove the actual interesting property on this
+smaller set. **But using `exists` and `forall` is fundamentally different**.
 
-Avec ```\forall type a ; p(a) ==> q(a)```, la restriction (```p```) est suivie
-par une implication. Pour tout élément, s'il respecte une première propriété 
-(```p```), alors vérifier la seconde propriété ```q```. Si nous mettions un ET
-comme pour le « il existe » (que nous expliquerons ensuite), cela voudrait dire que 
-nous voulons que tout élément respecte à la fois les deux propriétés. Parfois, 
-cela peut être ce que nous voulons exprimer, mais cela ne correspond alors plus 
-à l'idée de restreindre un ensemble dont nous voulons montrer une propriété 
-particulière.
+With `\forall type a ; p(a) ==> q(a)`, the constraint `p` is followed by an
+implication. For all element, if a first property `p` is verified about it, then
+we have to verify the second property `q`. If we use a conjunction, as we do for
+"exists" (that we will later explain), that would mean that all element verify
+both `p` and `q`. Sometimes, it could be what we want to express, but it would
+then not correspond anymore to the idea of contraining a set for which we want
+to verify some other property.
 
-Avec ```\exists type a ; p(a) && q(a)```, la restriction (```p```) est suivie
-par une conjonction, nous voulons qu'il existe un élément tel que cet élément 
-est dans un certain état (défini par ```p```), tout en respectant l'autre 
-propriété ```q```. Si nous mettions une implication comme pour le « pour tout », 
-alors une telle expression devient toujours vraie à moins que `p` soit une 
-tautologie ! Pourquoi ? Existe-t-il « a » tel que p(a) implique q(a) ? Prenons 
-n'importe quel « a » tel que p(a) est faux, l'implication devient vraie.
+With `\exists type a ; p(a) && q(a)`, the constraint `p` is followed by a
+conjunfction. We say there exists an element such that it satisfies the property
+`p` at the same time it also satisfies `q`. If we use an implication, as we do
+for "forall", such an expression will always be true if `p` is not a tautologie!
+Why? Is there a "a" such that p(a) implies q(a) ? Let us take a "a" such that
+p(a) is false, the implication is true.
 
 Cette partie de l'invariant mérite une attention particulière :
 
