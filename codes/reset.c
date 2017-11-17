@@ -29,7 +29,7 @@
   assigns  array[0 .. length-1];
   ensures  zeroed(array,0,length);
 */
-void raz(int* array, size_t length){
+void reset(int* array, size_t length){
   /*@
     loop invariant 0 <= i <= length;
     loop invariant zeroed(array,0,i);
