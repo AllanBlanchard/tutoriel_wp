@@ -38,7 +38,7 @@ dernier tour de la boucle qui met la valeur $i$ à $10$.
 Le raisonnement produit par l'outil pour vérifier un invariant $I$ sera donc :
 
 - vérifions que $I$ est vrai au début de la boucle (établissement),
-- vérifions que $I$ est vrai avant de commencer un tour, auquel cas $I$ est vrai après (préservation).
+- vérifions que si $I$ est vrai avant de commencer un tour, alors $I$ est vrai après (préservation).
 
 ## [Formel] Règle d'inférence
 
@@ -57,10 +57,10 @@ Détaillons cette formule :
   vulgairement la « pré-condition » de la boucle,
 - la deuxième partie de la conjonction ($(B \wedge I) \Rightarrow wp(c, I)$)
   correspond à la vérification du travail effectué par le corps de la boucle :
-    - la pré-condition que nous connaissons du corps de la boucle (notons $KWP$, 
-      « *Known WP* ») , c'est ($KWP = B \wedge I$). Soit le fait que nous sommes
+    - la pré-condition que nous connaissons du corps de la boucle (notons $KWP$,
+      « *Known WP* ») est ($KWP = B \wedge I$). Soit le fait que nous sommes
       rentrés dedans ($B$ est vrai), et que l'invariant est respecté à ce moment
-      ($I$, qui est vrai avant de commencer la boucle par 1, et dont veut 
+      ($I$, qui est vrai avant de commencer la boucle par (1), et dont veut 
       vérifier qu'il sera vraie en fin de bloc de la boucle (2)), 
     - (2) ce qu'il nous reste à vérifier c'est que $KWP$ implique la 
 	  pré-condition réelle\* du bloc de code de la boucle 
@@ -356,11 +356,11 @@ int plus_dix(int a){
 }
 ```
 
-En remontant les instructions depuis la post-condition, on conserve toujours les 
-informations à propos de `a`. À l'inverse, comme mentionné plus tôt, en dehors de
-la boucle WP ne considérera que les informations fournies par notre invariant. 
-Par conséquent, notre fonction `plus_dix` ne peut pas être prouvée en l'état : 
-l'invariant ne mentionne rien à propos de `a`. Pour lier notre
+En remontant les instructions depuis la post-condition, on conserve toujours les
+informations à propos de `a`. À l'inverse, comme mentionné plus tôt, en dehors
+de la boucle WP, ne considérera que les informations fournies par notre
+invariant. Par conséquent, notre fonction `plus_dix` ne peut pas être prouvée
+en l'état : l'invariant ne mentionne rien à propos de `a`. Pour lier notre
 post-condition à l'invariant, il faut ajouter une telle information. Par 
 exemple :
 
