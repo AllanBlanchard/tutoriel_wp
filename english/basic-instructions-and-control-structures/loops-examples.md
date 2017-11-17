@@ -45,7 +45,7 @@ There are enough ideas inside this example to introduce some important syntax.
 
 First, as we previously presented, the `\valid_read` predicate (as well as
 `\valid`) allows us to specify not only the validity of read-only address but
-also to state that a range of contiguous adresses are valid. It is expressed
+also to state that a range of contiguous addresses is valid. It is expressed
 using this expression:
 
 ```c
@@ -85,55 +85,53 @@ implication. For all element, if a first property `p` is verified about it, then
 we have to verify the second property `q`. If we use a conjunction, as we do for
 "exists" (that we will later explain), that would mean that all element verify
 both `p` and `q`. Sometimes, it could be what we want to express, but it would
-then not correspond anymore to the idea of contraining a set for which we want
+then not correspond anymore to the idea of constraining a set for which we want
 to verify some other property.
 
 With `\exists type a ; p(a) && q(a)`, the constraint `p` is followed by a
-conjunfction. We say there exists an element such that it satisfies the property
+conjunction. We say there exists an element such that it satisfies the property
 `p` at the same time it also satisfies `q`. If we use an implication, as we do
-for "forall", such an expression will always be true if `p` is not a tautologie!
+for "forall", such an expression will always be true if `p` is not a tautology!
 Why? Is there a "a" such that p(a) implies q(a) ? Let us take a "a" such that
 p(a) is false, the implication is true.
 
-Cette partie de l'invariant mérite une attention particulière :
+This part of the invariant deserves a particular attention:
 
 ```c
 //@ loop invariant \forall size_t j; 0 <= j < i ==> array[j] != element;
 ```
 
-En effet, c'est la partie qui définit l'action de notre boucle, elle indique à
-WP ce que la boucle va faire (ou apprendre dans le cas présent) tout au long de
-son exécution. Ici en l'occurrence, cette formule nous dit qu'à chaque tour, nous 
-savons que pour toute case entre 0 et la prochaine que nous allons visiter (```i``` exclue), elle stocke une valeur différente de l'élément recherché.
+Indeed, it defines the treatment performed by our loop, it indicates to WP what
+happens inside the loop (or more precisely: what we learn) along the execution.
+Here, this formula indicates that at each iteration of the loop, we know that
+for each memory location between 0 and the next location to visit
+(`i` excluded), the memory location contains a value different of the element we
+are looking for.
 
-Le but de WP associé à la préservation de cet invariant est un peu compliqué, il
-n'est pour nous pas très intéressant de se pencher dessus. En revanche, la 
-preuve de l'établissement de cet invariant est intéressante :
+The proof obligation associated to the preservation of this invariant is a bit
+complex and it is not really interesting to precisely look at it, on the
+contrary, the proof that the invariant is established before executing the loop
+is interesting:
 
-![But trivial](https://zestedesavoir.com:443/media/galleries/2584/eda30413-2d95-4d0a-ab5c-f36a356ad516.png)
+![Trivial goal](https://zestedesavoir.com:443/media/galleries/2584/eda30413-2d95-4d0a-ab5c-f36a356ad516.png)
 
-Nous pouvons constater que cette propriété, pourtant complexe, est prouvée par 
-Qed sans aucun problème. Si nous regardons sur quelles parties du programme la 
-preuve se base, nous pouvons voir l'instruction ```i = 0``` surlignée, et c'est 
-bien la dernière instruction que nous effectuons sur ```i``` avant de commencer
-la boucle. Et donc effectivement, si nous faisons le remplacement dans la formule 
-de l'invariant :
+We note that this property, while quite complex, is proved easily proved by
+Qed. If we look at the parts of the programs on which the proof relies, we can
+see that the instruction `i = 0` is highlighted and this is, indeed, the last
+instruction executed on `i` before we start the loop. And consequently if we
+replace the value of `i` by 0 inside the formula of the invariant, we get:
 
-```c
-//@ loop invariant \forall size_t j; 0 <= j < 0 ==> array[j] != element;
-```
+" For all j, greater or equal to 0 and strictly lower than 0 ", this part of the
+formula is necessarily false, our implication is then necessarily true.
 
-« Pour tout j, supérieur ou égal à 0 et inférieur strict à 0 », cette partie est
-nécessairement fausse. Notre implication est donc nécessairement vraie.
+# Examples with mutable arrays
 
-# Exemples avec tableaux mutables
+Let us present two examples with mutation of arrays. One with a mutation of all
+memory locations, the other with selective modifications.
 
-Nous allons voir deux exemples avec la manipulation de tableaux en mutation. 
-L'un avec une modification totale, l'autre en modification sélective.
+## Reset
 
-## Remise à zéro
-
-Regardons la fonction effectuant la remise à zéro d'un tableau.
+Let us have a look to the function that resets an array of integer to 0.
 
 ```c
 #include <stddef.h>
@@ -143,7 +141,7 @@ Regardons la fonction effectuant la remise à zéro d'un tableau.
   assigns  array[0 .. length-1];
   ensures  \forall size_t i; 0 <= i < length ==> array[i] == 0;
 */
-void raz(int* array, size_t length){
+void reset(int* array, size_t length){
   /*@
     loop invariant 0 <= i <= length;
     loop invariant \forall size_t j; 0 <= j < i ==> array[j] == 0;
@@ -155,21 +153,20 @@ void raz(int* array, size_t length){
 }
 ```
 
-Les seules parties sur lesquelles nous pouvons nous attacher ici sont 
-les ```assigns``` de la fonction et de la boucle. À nouveau, nous pouvons
-utiliser la notation ```n .. m``` pour indiquer les parties du tableau 
-qui sont modifiées.
+Let us just highlight the function and loop assign clauses. Again, we can
+use the notation `n .. m` to indicate which parts of the array are modified.
 
-## Chercher et remplacer
+## Search and replace
 
-Le dernier exemple qui nous intéresse est l'algorithme « chercher et remplacer ». 
-C'est donc un algorithme qui va sélectivement modifier des valeurs dans une 
-certaine plage d'adresses. Il est toujours un peu difficile de guider l'outil 
-dans ce genre de cas car, d'une part, nous devons garder « en mémoire » ce qui est modifié 
-et ce qui ne l'est pas et, d'autre part, parce que l'induction repose sur ce fait.
+The last example we will detail to illustrate the proof of functions with
+loops is the algorithm "search and replace". This algorithms will selectively
+modify values in a range of memory locations. It is generally harder to guide
+the tool in such a case, because on one hand we must keep track of what is
+modified and what is not, and on the other hand, the induction relies on this
+fact.
 
-À titre d'exemple, la première spécification que nous pouvons réaliser pour 
-cette fonction ressemblerait à ceci :
+As an example, the first specification we can write for this function would
+look like this:
 
 ```c
 #include <stddef.h>
@@ -199,11 +196,10 @@ void search_and_replace(int* array, size_t length, int old, int new){
 }
 ```
 
-Nous utilisons la fonction logique ```\at(v, Label)``` qui nous donne la valeur de
-la variable `v` au point de programme `Label`. Si nous regardons l'utilisation qui
-en est faite ici, nous voyons que dans l'invariant de boucle, nous cherchons à 
-établir une relation entre les anciennes valeurs du tableau et leurs potentielles 
-nouvelles valeurs :
+We use the logic function '\at(v, Label)` that gives us the value of the
+variable `v` at the program point `Label`.  If we look at the usage of this
+function here, we see that in the invariant we try to establish a relation
+between the old values of the array and the potentially new values:
 
 ```c
 /*@
@@ -214,22 +210,22 @@ nouvelles valeurs :
 */
 ```
 
-Pour tout élément que nous avons visité, s'il valait la valeur qui doit être
-remplacée, alors il vaut la nouvelle valeur, sinon il n'a pas changé. En fait, si nous essayons de prouver l'invariant, WP n'y parvient pas. Dans ce genre de 
-cas, le plus simple est encore d'ajouter diverses assertions exprimant les 
-propriétés intermédiaires que nous nous attendons à voir facilement prouvées 
-et impliquant l'invariant. En fait, nous nous apercevons rapidement que WP 
-n'arrive pas à maintenir le fait que nous n'avons pas encore modifié la fin du 
-tableau :
+For memory location, if it contained the value that must be replaced, then it
+now contains the new value, else the value remains unchanged. In fact, if we try
+to prove this invariant with WP, it fails. In such a case, the simpler method is
+to add different assertions that will express the different intermediate
+properties using assertions, that we expect to be easily proved and that implies
+the invariant. Here, we can easily notice that WP do not succeed in maintaining
+the knowledge that we have not modified the end of the array yet:
 
 ```c
 for(size_t i = 0; i < length; ++i){
-    //@assert array[i] == \at(array[i], Pre); // échec de preuve
+    //@assert array[i] == \at(array[i], Pre); // proof failure
     if(array[i] == old) array[i] = new;
 }
 ```
 
-Nous pouvons donc ajouter cette information comme invariant :
+We can add this information as an invariant:
 
 ```c
 /*@
@@ -239,7 +235,7 @@ Nous pouvons donc ajouter cette information comme invariant :
   loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) != old 
                    ==> array[j] == \at(array[j], Pre);
 
-  //La fin du tableau n'a pas été modifiée :
+  // The end of the array remains the same:
   loop invariant \forall size_t j; i <= j < length
                      ==> array[j] == \at(array[j], Pre);
   loop assigns i, array[0 .. length-1];
@@ -250,11 +246,12 @@ for(size_t i = 0; i < length; ++i){
 }
 ```
 
-Et cette fois, la preuve passera. À noter que si nous tentons la preuve 
-directement avec la vérification des RTE, il est possible qu'Alt-Ergo n'y
-parvienne pas (CVC4 décharge l'ensemble sans problème). Dans ce cas, nous
-pouvons faire séparément les deux preuves (sans, puis avec RTE) ou encore 
-ajouter des assertions permettant de guider la preuve dans la boucle :
+And this time the proof will succeed. Note that if we try to prove this
+invariant directly with the verification of the absence of RTE, Alt-Ergo
+may not succeed (CVC4 succeeds without problem). In this case, we can launch
+these proofs separately (first without, and then with the absence of RTE
+checking) or else add assertions that allows to guide the proof inside the
+loop:
 
 ```c
 for(size_t i = 0; i < length; ++i){
@@ -269,19 +266,18 @@ for(size_t i = 0; i < length; ++i){
 }
 ```
 
-À mesure que nous cherchons à prouver des propriétés plus compliquées et 
-notamment dépendantes de boucles, il va y avoir une part de tâtonnement pour
-comprendre ce qui manque au prouveur pour réussir la preuve. 
+As we will try to prove more complex properties, particularly when programs
+involve loops, there will be a part of "trial and error" in order to
+understand what the provers miss to establish the proof.
 
-Ce qui peut lui manquer, ce sont des hypothèses. Dans ce type de cas, nous
-pouvons tenter d'ajouter des assertions au code pour guider le prouveur. Avec
-de l'expérience, nous pouvons regarder le contenu des obligations de preuve ou 
-tenter de commencer la preuve avec Coq pour voir si la preuve semble réalisable. 
-Parfois le prouveur manque juste de temps, auquel cas, il suffit d'augmenter 
-(parfois de beaucoup) la durée du *timeout*. Finalement, la propriété peut 
-également être hors de portée du prouveur. Auquel cas, il faudra écrire une
-preuve à la main avec un prouveur interactif.
+It can miss hypotheses. In this case, we can try to add assertions to guide the
+prover. With some experience, we can read the content of the proof obligations
+or try to perform the proof with the Coq interactive prover to see whether the
+proof seems to be possible. Sometimes, the prover just need more time, in such a
+case, we can (sometimes a lot) augment the timeout value. Of course, the
+property can be too hard for the prover, and in this case, we will have to write
+the proof ourselves with an interactive prover.
 
-Enfin, il reste le cas où l'implémentation est effectivement fausse, et dans ce
-cas, il faut la corriger. Et c'est là que nous utiliserons plutôt le test que la
-preuve, car le test permet de prouver la présence d'un bug. ;)
+Finally, the implementation can be indeed incorrect, and in this case we have to
+fix it. Here, we will use test and not proof, because a test allows us to prove
+the presence of a bug and to analyze this bug.

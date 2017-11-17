@@ -126,7 +126,7 @@ write it as follows:
 */
 ```
 
-And we can again prove that our memset to 0 is correct with this new
+And we can again prove that our reset to 0 is correct with this new
 definition:
 
 ```c
@@ -137,7 +137,7 @@ definition:
   assigns  array[0 .. length-1];
   ensures  zeroed(array,0,length);
 */
-void memset0(int* array, size_t length){
+void reset(int* array, size_t length){
   /*@
     loop invariant 0 <= i <= length;
     loop invariant zeroed(array,0,i);
@@ -274,7 +274,7 @@ update of a value inside the array do not invalidate a property known about the
 content of the array. In such a case, the proof is performed but since the
 axiom do not talk about the content of the array, we do not prove anything.
 
-For example, in the function that memset an array to 0, if we modify the
+For example, in the function that resets an array to 0, if we modify the
 axiomatic definition, removing the specification of the values that are read
 by the predicate (```reads a[b .. e-1]```), the proof will still be performed,
 but will not prove anything about the content of the arrays.
