@@ -61,4 +61,4 @@ better understand and write programs.
 | - [Saroupille](https://zestedesavoir.com/membres/voir/Saroupille/)
 |
 | Finally, many thanks to Jens Gerlach for his help during the translation of
-| this tutorial from french to english.
+| this tutorial from French to English.
