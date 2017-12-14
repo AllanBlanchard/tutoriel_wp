@@ -178,6 +178,16 @@
 }
 \chapter{Introduction}\label{introduction}
 
+\begin{zdsblock}{License}
+  Ce document est distribué sous License Creative Commons BY-NC-SA V4.0.
+  Vous pouvez trouver les termes exacts à cette adresse:
+  \href{https://creativecommons.org/licenses/by-nc-sa/4.0/}
+       {https://creativecommons.org/licenses/by-nc-sa/4.0/}
+  \begin{center}
+    \includegraphics[width=.3\textwidth]{cc-by-nc-sa.png}
+  \end{center}
+\end{zdsblock}
+
 \begin{zdsblock}{Information}
 Le choix de certain exemples et d'une
 partie de l'organisation dans le présent tutoriel est le même
@@ -186,7 +196,7 @@ partie de l'organisation dans le présent tutoriel est le même
     TAP 2013} par Nikolai Kosmatov, Virgile Prevosto et Julien
 Signoles du CEA LIST du fait de son cheminement didactique.
 Il contient également des exemples tirés de
-\emph{\href{http://www.fokus.fraunhofer.de/download/acsl_by_example}{ACSL
+\emph{\href{http://www.fokus.fraunhofer.de/download/acsl_by_example.pdf}{ACSL
 By Example}} de Jochen Burghardt, Jens Gerlach, Kerstin
 Hartig, Hans Pohl et Juan Soto du Fraunhofer. Le reste vient
 de mon expérience personnelle avec Frama-C et WP.
@@ -1138,6 +1148,9 @@ vraie que dans deux cas : \(A\) et \(B\) sont vraies toutes les deux, ou
 fausses toutes les deux (c'est donc la négation du ou-exclusif).
 
 \begin{zdsblock}{Information}
+  Profitons en pour rappeler l'ensemble des tables de vérités des opérateurs
+  usuels en logique du premier ordre (\(\neg\) = \texttt{!},
+  \(\wedge\) = \texttt{\&\&}, \(\vee\) = \texttt{\textbar{}\textbar{}}) :
 \begin{longtable}[]{@{}ccccccc@{}}
 \(A\) & \(B\) & \(\neg A\) & \(A \wedge B\) & \(A \vee B\) & \(A \Rightarrow B\) & \(A \Leftrightarrow B\)\tabularnewline
 \midrule
@@ -5568,7 +5581,7 @@ computer systems.
 {[}\ldots{}{]}
 
 \textbf{Without broad use of formal methods, security will always remain
-fragile.} Source:{[}Formal Methods for Security, 2016{]}
+fragile.} \hfill{[}Formal Methods for Security, 2016{]}
 \end{quote}
 
 \begin{zdssecretblock}{Traduction}
