@@ -4,7 +4,7 @@
 | [tutoriel présenté à TAP 2013](http://www.spacios.eu/TAP2013/keynotes.html) 
 | par Nikolai Kosmatov, Virgile Prevosto et Julien Signoles du CEA List du fait de
 | son cheminement didactique. Il contient également des exemples tirés de 
-| *[ACSL By Example](http://www.fokus.fraunhofer.de/download/acsl_by_example)* 
+| *[ACSL By Example](https://github.com/fraunhoferfokus/acsl-by-example)* 
 | de Jochen Burghardt, Jens Gerlach, Kerstin Hartig, Hans Pohl et Juan Soto du 
 | Fraunhofer. Le reste vient de mon expérience personnelle avec Frama-C et WP.
 | 

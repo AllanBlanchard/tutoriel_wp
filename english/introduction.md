@@ -3,7 +3,7 @@
 | to the ones used in the [TAP 2013 tutorial](http://www.spacios.eu/TAP2013/keynotes.html)
 | by Nikolai Kosmatov, Virgile Prevosto and Julien Signoles of the CEA LIST,
 | since it is quite didactic. It also contains examples taken from 
-| *[ACSL By Example](http://www.fokus.fraunhofer.de/download/acsl_by_example)* 
+| *[ACSL By Example](https://github.com/fraunhoferfokus/acsl-by-example)* 
 | by Jochen Burghardt, Jens Gerlach, Kerstin Hartig, Hans Pohl and Juan Soto 
 | from the Fraunhofer. The remaining ideas come from my personal experience with
 | Frama-C and WP.
