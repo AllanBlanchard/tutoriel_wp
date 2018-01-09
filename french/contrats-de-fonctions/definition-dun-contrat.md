@@ -255,7 +255,9 @@ celui-ci nous affiche la liste des obligations de preuve et pour chaque
 prouveur indique un petit logo si la preuve a été tentée et si elle a été 
 réussie, échouée ou a rencontré un *timeout* (ici nous pouvons voir un essai 
 avec Z3 sur le contrôle de la RTE pour montrer le logo des ciseaux 
-associé au timeout).
+associé au timeout). Pour voir la totalité des obligations de preuves, il
+faut s'assurer que "All Results" est bien sélectionné dans le champ encadré
+dans la capture.
 
 ![Tableau des obligations de preuve de WP pour ```abs```](https://zestedesavoir.com:443/media/galleries/2584/d1c2dded-1e12-4cee-a575-7c990274f5c4.png)
 
@@ -273,7 +275,8 @@ prouveurs accessibles à WP.
 Dans ces prouveurs, le premier élément de la colonne est Qed. Ce n'est pas
 à proprement parler un prouveur. En fait, si nous double-cliquons sur la 
 propriété "ne pas déborder" (surlignée en bleu dans la capture précédente), 
-nous pouvons voir ceci :
+nous pouvons voir ceci (si ce n'est pas le cas, il faut s'assurer que
+"Raw obligation" est bien sélectionné dans le champ encadré en bleu) :
 
 ![Obligation de preuve associée à la vérification de débordement dans ```abs```](https://zestedesavoir.com:443/media/galleries/2584/cf50837e-a119-40f9-8c93-c2b0bb03a142.png)
 
@@ -310,11 +313,11 @@ WP, étant donné que celles-ci encodent les éléments de la sémantique de C, 
 qui rend le code souvent indigeste.
 
 Si nous retournons dans notre tableau des obligations de preuve (bouton 
-encadré dans la capture d'écran précédente), nous pouvons donc voir que les 
-hypothèses n'ont pas suffi aux prouveurs pour déterminer que la propriété 
-« absence de débordement » est vraie (et nous l'avons dit : c'est normal), il 
-nous faut donc ajouter une hypothèse supplémentaire pour garantir le bon 
-fonctionnement de la fonction : une pré-condition d'appel.
+encadré en rouge dans la capture d'écran précédente), nous pouvons donc voir
+que les hypothèses n'ont pas suffi aux prouveurs pour déterminer que la
+propriété  « absence de débordement » est vraie (et nous l'avons dit : c'est
+normal), il nous faut donc ajouter une hypothèse supplémentaire pour garantir
+le bon fonctionnement de la fonction : une pré-condition d'appel.
 
 # Pré-condition
 
