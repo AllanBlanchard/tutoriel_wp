@@ -132,6 +132,12 @@
             "introduction": "acsl-logic-definitions-and-code/introduction.md", 
             "conclusion": "acsl-logic-definitions-and-code/conclusion.md", 
             "children": [
+		{
+		    "object": "extract",
+		    "slug": "inductive-predicates"
+		    "title": "Inductive predicates"
+		    "text": "acsl-logic-definitions-and-code/inductive-predicates.md"
+		},
                 {
                     "object": "extract", 
                     "slug": "axiomatic-definitions", 
