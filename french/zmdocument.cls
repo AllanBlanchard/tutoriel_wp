@@ -378,6 +378,34 @@
    coltitle=defaultColor
 }
 
+\DeclareTCBInputListing{\CodeBlockInput}{O{1} O{last line of input} m m}{%
+   enlarge top initially by=5mm,
+   enlarge bottom finally by=1mm,
+   boxrule=0.5pt,
+   breakable,
+   colback=codeBackgroundColor,
+   coltext=defaultColor,
+   colframe=ZdSBoxBorderSpoiler,
+   arc=0.0pt,
+   listing engine=minted,
+   listing only,
+   minted style=colorful,
+   minted language=#3,
+   listing file=#4,
+   minted options={
+     firstline=#1,
+     lastline=#2,
+     numbersep=3mm
+   }, % Removed: highlightlines={#2}
+   enhanced,
+   overlay={\begin{tcbclipinterior}\fill[lineNumberSeparatorCodeColor] ([xshift=8mm-0.5pt]frame.south west)
+   rectangle ([xshift=8mm]frame.north west);\end{tcbclipinterior}},
+   left=8mm,
+   attach boxed title to bottom center,
+   boxed title style={empty,boxrule=0.5mm},
+   coltitle=defaultColor
+}
+
 \DeclareTotalTCBox{\CodeInline}{m}{%
    verbatim,
    enlarge top initially by=0mm,
