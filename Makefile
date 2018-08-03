@@ -1,9 +1,7 @@
 all:
-	lualatex -draftmode -shell-escape -interaction=nonstopmode main.tex
-	lualatex -draftmode -shell-escape -interaction=nonstopmode main.tex
-	makeglossaries main
-	lualatex -shell-escape -interaction=nonstopmode main.tex
+	cd french ; make ; cd ..
+#	cd english ; make ; cd ..
 
 clean:
-	rm -rf *.aux *.glg *.glo *.gls *.ist *.listing
-	rm -rf *.pdf *.log *.out *.thm *.toc _minted-main
+	cd french ; make clean ; cd ..
+#	cd english ; make clean ; cd ..

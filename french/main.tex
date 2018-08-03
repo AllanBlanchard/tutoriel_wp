@@ -1,14 +1,16 @@
 \documentclass[middle]{zmdocument}
-
 \usepackage{blindtext}
+
 \title{Introduction à la preuve de programmes C avec Frama-C et son greffon WP}
 \author{Allan Blanchard}
-\logo{resources/frama-c-logo.png}
-\editorLogo{resources/zds.svg}
 \authorlink{https://allan-blanchard.fr}
-\licence[resources/by-nc-sa.svg]{CC BY-NC-SA}{}
+\logo{../resources/frama-c-logo.png}
+\editorLogo{../resources/zds.svg}
+\licence[../resources/by-nc-sa.svg]{CC BY-NC-SA}{}
 
+\graphicspath{{../resources/}}
 \smileysPath{/home/allan/Documents/softs/zds-site/dist/smileys}
+
 \makeglossaries
 
 \begin{document}
@@ -275,7 +277,7 @@ comportement de notre chronomètre est la suivante :
 
 
 
-\image{resources/1-1-model.png}[Modélisation très abstraite d'un chronomètre]
+\image{1-1-model.png}[Modélisation très abstraite d'un chronomètre]
 
 
 Nous avons bien une modélisation du comportement de notre chronomètre avec 
@@ -502,7 +504,7 @@ nous utilisons. Et nos outils, parlons-en justement.
 
 
 \begin{center}
-\image{resources/frama-c.png}
+\image{frama-c.png}
 
 
 \end{center}
@@ -796,7 +798,7 @@ Cette fenêtre devrait s'ouvrir.
 
 
 
-\image{resources/1-2-verif_install-1.png}[Vérification installation 1]
+\image{1-2-verif_install-1.png}[Vérification installation 1]
 
 
 En cliquant sur \CodeInline{main.c} dans le volet latéral gauche pour le sélectionner,
@@ -805,7 +807,7 @@ vertes sur différentes lignes comme ceci :
 
 
 
-\image{resources/1-2-verif_install-2.png}[Vérification installation 2]
+\image{1-2-verif_install-2.png}[Vérification installation 2]
 
 
 Si c'est le cas, tant mieux, sinon il faudra d'abord vérifier que rien n'a été
@@ -883,7 +885,7 @@ WP.
 
 
 
-\image{resources/1-2-select-coq.png}[Sélectionner l'assistant de preuve Coq]
+\image{1-2-select-coq.png}[Sélectionner l'assistant de preuve Coq]
 
 
 \begin{Information}
@@ -1216,7 +1218,7 @@ $ frama-c-gui abs.c
 
 
 
-\image{resources/2-1-1-abs-1.png}[Le volet latéral liste l’arbre des fichiers et des fonctions]
+\image{2-1-1-abs-1.png}[Le volet latéral liste l’arbre des fichiers et des fonctions]
 
 
 La fenêtre de Frama-C s'ouvre, dans le volet correspondant aux fichiers et aux
@@ -1231,7 +1233,7 @@ un clic droit sur le nom de la fonction et « \textit{Prove function annotations
 
 
 
-\image{resources/2-1-1-abs-2.png}[Lancer la vérification de ```abs``` avec WP]
+\image{2-1-1-abs-2.png}[Lancer la vérification de ```abs``` avec WP]
 
 
 Nous pouvons voir que les cercles bleus deviennent des pastilles vertes, 
@@ -1257,7 +1259,7 @@ contrôles par un clic droit sur le nom de la fonction puis « Insert RTE guards
 
 
 
-\image{resources/2-1-1-abs-3.png}[Activer la vérification des erreurs d'exécution]
+\image{2-1-1-abs-3.png}[Activer la vérification des erreurs d'exécution]
 
 
 Enfin nous relançons la vérification (nous pouvons également cliquer sur le 
@@ -1272,7 +1274,7 @@ que -\CodeInline{INT\_MIN} ($-2^{31}$) > \CodeInline{INT\_MAX} ($2^{31}-1$).
 
 
 
-\image{resources/2-1-1-abs-4.png}[Preuve incomplète de ```abs```]
+\image{2-1-1-abs-4.png}[Preuve incomplète de ```abs```]
 
 
 \begin{Information}
@@ -1345,7 +1347,7 @@ dans la capture.
 
 
 
-\image{resources/2-1-1-abs-5.png}[Tableau des obligations de preuve de WP pour ```abs```]
+\image{2-1-1-abs-5.png}[Tableau des obligations de preuve de WP pour ```abs```]
 
 
 Le tableau est découpé comme suit, en première colonne nous avons le nom de la
@@ -1369,7 +1371,7 @@ nous pouvons voir ceci (si ce n'est pas le cas, il faut s'assurer que
 
 
 
-\image{resources/2-1-1-abs-6.png}[Obligation de preuve associée à la vérification de débordement dans ```abs```]
+\image{2-1-1-abs-6.png}[Obligation de preuve associée à la vérification de débordement dans ```abs```]
 
 
 C'est l'obligation de preuve que génère WP par rapport à notre propriété et 
@@ -1504,7 +1506,7 @@ implémentation est prouvée :
 
 
 
-\image{resources/2-1-2-abs-1.png}[Preuve de ```abs``` effectuée]
+\image{2-1-2-abs-1.png}[Preuve de ```abs``` effectuée]
 
 
 Nous pouvons également vérifier qu'une fonction qui appellerait \CodeInline{abs} 
@@ -1523,7 +1525,7 @@ void foo(int a){
 
 
 
-\image{resources/2-1-2-foo-1.png}[Vérification du contrat à l'appel de ```abs```]
+\image{2-1-2-foo-1.png}[Vérification du contrat à l'appel de ```abs```]
 
 
 Pour modifier un peu l'exemple, nous pouvons essayer d'inverser les deux 
@@ -1553,10 +1555,10 @@ de preuve générées par WP pour l'appel fautif et l'appel prouvé par conséqu
 
 
 
-\image{resources/2-1-2-foo-2.png}[Obligation générée pour l'appel fautif]
+\image{2-1-2-foo-2.png}[Obligation générée pour l'appel fautif]
 
 
-\image{resources/2-1-2-foo-3.png}[Obligation générée pour l'appel qui suit]
+\image{2-1-2-foo-3.png}[Obligation générée pour l'appel qui suit]
 
 
 Nous pouvons remarquer que pour les appels de fonctions, l'interface graphique
@@ -1996,7 +1998,7 @@ Le résultat n'est pas vraiment celui escompté :
 
 
 
-\image{resources/2-2-2-swap-1.png}[Échec de preuve sur une globale non concernée par l'appel à ```swap```]
+\image{2-2-2-swap-1.png}[Échec de preuve sur une globale non concernée par l'appel à ```swap```]
 
 
 En effet, nous n'avons pas spécifié les effets de bords autorisés pour notre
@@ -2094,7 +2096,7 @@ résultat suivant :
 
 
 
-\image{resources/2-2-2-incr_a_by_b-1.png}[Échec de preuve : risque d'aliasing]
+\image{2-2-2-incr_a_by_b-1.png}[Échec de preuve : risque d'aliasing]
 
 
 La raison est simplement que rien ne garantit que le pointeur \CodeInline{a} est bien
@@ -2149,7 +2151,7 @@ Et cette fois, la preuve est effectuée :
 
 
 
-\image{resources/2-2-2-incr_a_by_b-2.png}[Résolution des problèmes d'aliasing]
+\image{2-2-2-incr_a_by_b-2.png}[Résolution des problèmes d'aliasing]
 
 
 Nous pouvons noter que nous ne nous intéressons pas ici à la preuve de 
@@ -2412,7 +2414,7 @@ pastilles particulières (vertes et bleues) :
 
 
 
-\image{resources/2-4-max_abs.png}[Le contrat de ```max``` est valide par hypothèse]
+\image{2-4-max_abs.png}[Le contrat de ```max``` est valide par hypothèse]
 
 
 Ces pastilles nous disent qu'en l'absence d'implémentation, les propriétés sont
@@ -3507,7 +3509,7 @@ Goals} » :
 
 
 
-\image{resources/3-3-1-i_30-1.png}[Obligations générées pour prouver notre boucle]
+\image{3-3-1-i_30-1.png}[Obligations générées pour prouver notre boucle]
 
 
 Nous remarquons bien que WP décompose la preuve de l'invariant en deux parties : 
@@ -3520,7 +3522,7 @@ l'obligation correspondante :
 
 
 
-\image{resources/3-3-1-i_30-2.png}[Preuve de l'assertion par connaissance de l'invariant et l'invalidation de la condition de boucle]
+\image{3-3-1-i_30-2.png}[Preuve de l'assertion par connaissance de l'invariant et l'invalidation de la condition de boucle]
 
 
 Mais notre spécification est-elle suffisante ?
@@ -3549,7 +3551,7 @@ Voyons le résultat :
 
 
 
-\image{resources/3-3-boucle-effet-bord.png}[Encore des effets de bord]
+\image{3-3-boucle-effet-bord.png}[Encore des effets de bord]
 
 
 Il semble que non.
@@ -3637,7 +3639,7 @@ nous obtenons ceci :
 
 
 
-\image{resources/3-3-infinite.png}[Preuve de faux par non-terminaison de boucle]
+\image{3-3-infinite.png}[Preuve de faux par non-terminaison de boucle]
 
 
 L'assertion « FAUX » est prouvée ! La raison est simple : la non-terminaison de
@@ -3653,7 +3655,7 @@ soit prouvée.
 \begin{Information}
 À noter qu'une assertion inatteignable est toujours prouvée comme vraie de cette 
 manière :
-\inlineImage{resources/3-3-goto_end.png}
+\inlineImage{3-3-goto_end.png}
 
 Et c'est également le cas lorsque l'on sait trivialement qu'une instruction
 produit nécessairement une erreur d'exécution (par exemple en déréférençant 
@@ -3700,7 +3702,7 @@ Une nouvelle fois nous pouvons regarder les buts générés :
 
 
 
-\image{resources/3-3-boucle_complete.png}[Notre simple boucle complètement spécifiée et prouvée]
+\image{3-3-boucle_complete.png}[Notre simple boucle complètement spécifiée et prouvée]
 
 
 Le variant nous génère bien deux obligations au niveau de la vérification : 
@@ -3993,7 +3995,7 @@ preuve de l'établissement de cet invariant est intéressante :
 
 
 
-\image{resources/3-4-trivial-establishment.png}[But trivial]
+\image{3-4-trivial-establishment.png}[But trivial]
 
 
 Nous pouvons constater que cette propriété, pourtant complexe, est prouvée par 
@@ -4561,7 +4563,7 @@ int function(int x){
 
 
 
-\image{resources/4-3-affine-1.png}[Les débordements semblent pouvoir survenir]
+\image{4-3-affine-1.png}[Les débordements semblent pouvoir survenir]
 
 
 Le code est bien prouvé mais les contrôles d'\textit{overflow}, eux, ne le sont pas. Nous 
@@ -4931,7 +4933,7 @@ Et nous pouvons voir que dans Frama-C, la propriété est bien supposée vraie :
 
 
 
-\image{resources/5-1-1-premier-axiome.png}[Premier axiome, supposé vrai par Frama-C]
+\image{5-1-1-premier-axiome.png}[Premier axiome, supposé vrai par Frama-C]
 
 
 \begin{Spoiler}
@@ -5193,7 +5195,7 @@ Et tout est prouvé, y compris que le déréférencement de l'adresse 0 est OK :
 
 
 
-\image{resources/false_axiom.png}[Preuve de tout un tas de choses fausses]
+\image{false_axiom.png}[Preuve de tout un tas de choses fausses]
 
 
 Évidemment cet exemple est extrême, nous n'écririons pas un tel axiome. Le
