@@ -1,0 +1,64 @@
+From the beginning of this tutorial, we have used different predicates
+and logic functions provided by ACSL: \CodeInline{\textbackslash{}valid},
+\CodeInline{\textbackslash{}valid\_read}, \CodeInline{\textbackslash{}separated},
+\CodeInline{\textbackslash{}old} et \CodeInline{\textbackslash{}at}. There are others
+built-in predicates but we will not present them all, the reader can refer to
+\externalLink{the documentation (ACSL implementation)}{http://frama-c.com/download.html}
+(note that everything is not necessarily supported by WP).
+
+
+
+ACSL allows us to do something more than ``just'' specify our code using
+existing predicates and functions. We can define our own predicates,
+functions, relations, etc. Doing this, we can have more abstract
+specifications. It also allows us to factor specifications (for example
+defining what is a valid array), which have two pleasant consequences:
+our specifications are more readable and more understandable, and we can
+reuse existing proofs to ease the proof of new programs.
+
+
+
+\levelTwoTitle{Some logical types}
+
+\input{acsl-properties/some-logical-types}
+
+
+\levelTwoTitle{Predicates}
+
+\input{acsl-properties/predicates}
+
+
+\levelTwoTitle{Logic functions}
+
+\input{acsl-properties/functions}
+
+
+\levelTwoTitle{Lemmas}
+
+\input{acsl-properties/lemmas}
+
+\horizontalLine
+
+In this part of the tutorial, we have seen different ACSL construct that
+allow us to factor our specifications and to express general properties
+that can be used by our solver to easy their work.
+
+
+
+
+All techniques we have talk about are safe, since they do not \emph{a
+priori} allow us to write false or contradictory specifications. At
+least if the specification only use such logic constructions and if
+every lemma, precondition (at call site), every postcondition,
+assertion, variant and invariant is correctly proved, the code is
+correct.
+
+
+
+
+However, sometimes, such constructions are not enough to express all
+properties we want to express about our programs. The next constructions
+we will see give us some new possibilities about it, but it will be
+necessary to be really careful using them since an error would allow us
+to introduction false assumptions or silently modify the program we are
+verifying.

@@ -1,0 +1,172 @@
+The end of this part will be dedicated to function call composition,
+where we will start to have a closer look to WP. We will also have a
+look to the way we can split our programs in different files when we
+want to prove them using WP.
+
+Our goal will be to prove the \CodeInline{max\_abs} function, that return
+the maximum absolute value of two values:
+
+
+
+\begin{CodeBlock}{c}
+int max_abs(int a, int b){
+  int abs_a = abs(a);
+  int abs_b = abs(b);
+
+  return max(abs_a, abs_b);
+}
+\end{CodeBlock}
+
+
+Let us start by (over-)splitting the function we already proved in pairs
+header/source for \CodeInline{abs} and \CodeInline{max}. We will obtain, for
+\CodeInline{abs}:
+
+
+
+File abs.h :
+
+
+
+\begin{CodeBlock}{c}
+###ifndef _ABS
+#define _ABS
+
+###include <limits.h>
+
+/*@
+  requires val > INT_MIN;
+  assigns  \nothing;
+
+  behavior pos:
+    assumes 0 <= val;
+    ensures \result == val;
+  
+  behavior neg:
+    assumes val < 0;
+    ensures \result == -val;
+ 
+  complete behaviors;
+  disjoint behaviors;
+*/
+int abs(int val);
+
+###endif
+\end{CodeBlock}
+
+
+
+File abs.c
+
+
+
+\begin{CodeBlock}{c}
+###include "abs.h"
+
+int abs(int val){
+  if(val < 0) return -val;
+  return val;
+}
+\end{CodeBlock}
+
+
+
+We can notice that we put our function contract inside the header file.
+The goal is to be able to import the specification at the same time than
+the declaration when we need it in another file. Indeed, WP will need it
+to be able to prove that the precondition of the function is verified
+when we call it.
+
+We can create a file using the same format for the \texttt{max}
+function. In both cases, we can open the source file (we do not need to
+specify header files in the command line) with Frama-C and notice that
+the specification is indeed associated to the function and that we prove
+it.
+
+
+Now, we can prepare our files for the \texttt{max\_abs} function with
+the header:
+
+
+\begin{CodeBlock}{c}
+###ifndef _MAX_ABS
+#define _MAX_ABS
+
+int max_abs(int a, int b);
+
+###endif
+\end{CodeBlock}
+
+
+
+And its source file:
+
+
+
+\begin{CodeBlock}{c}
+###include "max_abs.h"
+#include "max.h"
+###include "abs.h"
+
+int max_abs(int a, int b){
+  int abs_a = abs(a);
+  int abs_b = abs(b);
+
+  return max(abs_a, abs_b);
+}
+\end{CodeBlock}
+
+
+
+We can open the source file in Frama-C. If we look at the side panel, we
+can see that the header files we have included in \texttt{abs\_max}
+correctly appear and if we look at the function contracts for them, we
+can see some blue and green bullets:
+
+
+
+\image{2-4-max_abs.png}[The contract of \CodeInline{max} is assumed to be valid]
+
+
+These bullets indicate that, since we do not have the implementation,
+they are assumed to be true. It is an important strength of the
+deductive proof of programs compared to some other formal methods:
+function are verified isolated from each other.
+
+When we are not currently performing the proof of a function, its
+specification is considered to be correct: we do not try to prove it
+when we are proving another function, we will only verify that the
+precondition is correctly established when we call it. It provides very
+modular proofs and specifications that are therefore more reusable. Of
+course, if our proof rely on the specification of another function, it
+must be provable to ensure that the proof of the program is complete.
+But, we can also consider that we trust a function that comes from an
+external library that we do not want to prove (or for which we do not
+even have the source code).
+
+The careful reader could specify and prove the \CodeInline{max\_abs}
+function.
+
+A solution is provided there (we also add the implementation as a
+reminder):
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  requires a > INT_MIN;
+  requires b > INT_MIN;
+
+  assigns \nothing;
+
+  ensures \result >= 0;
+  ensures \result >= a && \result >= -a && \result >= b && \result >= -b;
+  ensures \result == a || \result == -a || \result == b || \result == -b;
+*/
+int abs_max(int a, int b){
+  int abs_a = abs(a);
+  int abs_b = abs(b);
+
+  return max(abs_a, abs_b);
+}
+\end{CodeBlock}

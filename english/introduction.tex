@@ -1,0 +1,94 @@
+\begin{Warning}
+  Please note that this document is the very first English version of the
+  tutorial. If you find some errors, please do not hesitate to contribute at:
+
+  \externalLink{https://github.com/AllanBlanchard/tutoriel\_wp}{https://github.com/AllanBlanchard/tutoriel_wp}
+
+  Please use the markdown files, the LaTeX file being generated from them.
+\end{Warning}
+
+
+\begin{Information}
+  In this tutorial, some examples and some elements of organization are
+  similar to the ones used in the 
+  \externalLink{TAP 2013 tutorial}{http://www.spacios.eu/TAP2013/keynotes.html} 
+  by Nikolai Kosmatov, Virgile Prevosto and Julien
+  Signoles of the CEA LIST, since it is quite didactic. It also
+  contains examples taken from
+  \textit{\externalLink{ACSL By Example}{http://www.fokus.fraunhofer.de/download/acsl\_by\_example}}
+  by Jochen Burghardt, Jens Gerlach, Kerstin Hartig, Hans Pohl and Juan
+  Soto from the Fraunhofer. The remaining ideas come from my personal
+  experience with Frama-C and WP. The only requirement to this tutorial
+  is to have a basic knowledge of the C language, and at least to
+  be familiar with the notion of pointer.
+\end{Information}
+
+
+Despite its old age, C is still a widely used programming language.
+Indeed, no other language can pretend to be available on so many
+different (hardware and software) platforms, its low-level orientation
+and the amount of time invested in the optimization of its compilers
+allows to generate very light and efficient machine code (if the code
+allows it of course), and that there are a lot of experts in C language,
+which is an important knowledge base.
+
+
+Furthermore, a lot of systems rely on a huge amount of code historically
+written in C, that needs to be maintained and sometimes fixed, as it
+would be far too costly to rewrite these systems.
+
+
+But anyone who has already developed with C also know that it is very
+hard to perfectly master this language. There are numerous reasons, but
+ambiguities in the ISO C, and the fact that it is extremely permissive,
+especially about memory management, make the development of robust C
+program very hard, even for an experienced programmer.
+
+
+
+However, the C language is often chosen for critical systems (avionics,
+railway, armament, \ldots{}) where it is appreciated for its good
+performances, its technological maturity and the predictability of its
+compilation.
+
+
+
+In such cases, the needs in term of code covering by tests become
+important. The question ``is our software tested enough?'' becomes a
+question to which it is very hard to answer. Program proof can help us.
+Rather than test all possible and (un)imaginable inputs to the program,
+we will \emph{mathematically} prove that there cannot be any problem at
+runtime.
+
+
+
+The goal of this tutorial is to use Frama-C, a tool developed at the CEA
+LIST, and WP, its deductive proof plugin, to learn the basics about C
+program proof. More than the use of the tool itself, the goal of this
+tutorial is to convince that it is more and more possible to write
+programs without any programming error, but also to sensitize to simple
+notions that allows to better understand and write programs.
+
+
+
+\begin{Information}
+  Many thanks to the different beta-testers for their constructives
+  feedback:
+
+\begin{itemize}
+\item \externalLink{Taurre}{https://zestedesavoir.com/membres/voir/Taurre/} (the
+    example in the section III - 3 - 4 has been shamefully ripped
+    off from one of his posts)
+\item \externalLink{barockobamo}{https://zestedesavoir.com/membres/voir/barockobamo/}
+\item \externalLink{Vayel}{https://zestedesavoir.com/membres/voir/Vayel/}
+\end{itemize}
+  I thank ZesteDeSavoir validators who helped me improve again the quality of
+  this tutorial:
+
+\begin{itemize}
+\item \externalLink{Taurre}{https://zestedesavoir.com/membres/voir/Taurre/} (oui, encore lui)
+\item \externalLink{Saroupille}{https://zestedesavoir.com/membres/voir/Saroupille/}
+\end{itemize}
+  Finally, many thanks to Jens Gerlach for his help during the translation of
+  this tutorial from French to English.
+\end{Information}

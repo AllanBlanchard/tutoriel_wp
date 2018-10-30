@@ -1,0 +1,529 @@
+Les boucles ont besoin d'un traitement de faveur dans la vérification déductive
+de programmes. Ce sont les seules structures de contrôle qui vont nécessiter un
+travail conséquent de notre part. Nous ne pouvons pas y échapper car sans les 
+boucles nous pouvons difficilement prouver des programmes intéressants.
+
+
+
+Avant de s'intéresser à la spécification des boucles, il est légitime de se 
+poser la question suivante : pourquoi les boucles sont-elles compliquées ?
+
+
+
+\levelThreeTitle{Induction et invariance}
+
+
+La nature des boucles rend leur analyse difficile. Lorsque nous faisons nos 
+raisonnements arrières, il nous faut une règle capable de dire à partir de la
+post-condition quelle est la pré-condition d'une certaine séquence 
+d'instructions. Problème : nous ne pouvons \textit{a priori} pas déduire combien de 
+fois la boucle va s'exécuter et donc par conséquent, nous ne pouvons pas non 
+plus savoir combien de fois les variables ont été modifiées.
+
+
+
+Nous allons donc procéder en raisonnant par induction. Nous devons trouver une
+propriété qui est vraie avant de commencer la boucle et qui, si elle est vraie
+au début d'un tour de boucle, sera vraie à la fin (et donc par extension, au 
+début du tour suivant).
+
+
+
+Ce type de propriété est appelé un invariant de boucle. Un invariant de boucle
+est une propriété qui doit être vraie avant et après chaque tour d'une boucle. 
+Par exemple, pour la boucle :
+
+
+
+\begin{CodeBlock}{c}
+for(int i = 0 ; i < 10 ; ++i){ /* */ }
+\end{CodeBlock}
+
+
+
+La propriété $0 <= i <= 10$ est un invariant de la boucle. La propriété 
+$-42 <= i <= 42$ est également un invariant de la boucle (qui est nettement
+plus imprécis néanmoins). La propriété $0 < i <= 10$ n'est pas un invariant,
+elle n'est pas vraie à l'entrée de la boucle. La propriété $0 <= i < 10$ 
+\textbf{n'est pas un invariant de la boucle}, elle n'est pas vraie à la fin du 
+dernier tour de la boucle qui met la valeur $i$ à $10$.
+
+
+
+Le raisonnement produit par l'outil pour vérifier un invariant $I$ sera donc :
+
+
+
+\begin{itemize}
+\item vérifions que $I$ est vrai au début de la boucle (établissement),
+\item vérifions que si $I$ est vrai avant de commencer un tour, alors $I$ est vrai après (préservation).
+\end{itemize}
+
+
+\levelFourTitle{Formel - Règle d'inférence}
+
+
+En notant l'invariant $I$, la règle d'inférence correspondant à la boucle est 
+définie comme suit :
+
+
+
+
+\begin{center}
+$\dfrac{\{I \wedge B \}\ c\ \{I\}}{\{I\}\ while(B)\{c\}\ \{I \wedge \neg B\}}$
+
+
+\end{center}
+
+
+Et le calcul de plus faible pré-condition est le suivant :
+
+
+
+
+\begin{center}
+$wp(while (B) \{ c \}, Post) := I \wedge ((B \wedge I) \Rightarrow wp(c, I)) \wedge ((\neg B \wedge I) \Rightarrow Post)$
+
+
+\end{center}
+
+
+Détaillons cette formule :
+
+
+
+\begin{itemize}
+\item (1) le premier $I$ correspond à l'établissement de l'invariant, c'est 
+vulgairement la « pré-condition » de la boucle,
+\item la deuxième partie de la conjonction ($(B \wedge I) \Rightarrow wp(c, I)$)
+correspond à la vérification du travail effectué par le corps de la boucle :
+
+\begin{itemize}
+\item la pré-condition que nous connaissons du corps de la boucle (notons $KWP$,
+« \textit{Known WP} ») est ($KWP = B \wedge I$). Soit le fait que nous sommes
+rentrés dedans ($B$ est vrai), et que l'invariant est respecté à ce moment
+($I$, qui est vrai avant de commencer la boucle par (1), et dont veut 
+vérifier qu'il sera vraie en fin de bloc de la boucle (2)),
+\item (2) ce qu'il nous reste à vérifier c'est que $KWP$ implique la 
+pré-condition réelle* du bloc de code de la boucle 
+  ($KWP \Rightarrow wp(c, Post)$). Ce que nous voulons en fin de bloc, 
+  c'est avoir maintenu l'invariant $I$ ($B$ n'est peut-être plus vrai en
+  revanche). Donc 
+$KWP \Rightarrow wp(c, I)$, soit $(B \wedge I) \Rightarrow wp(c, I)$,
+\item * cela correspond à une application de la règle de conséquence expliquée
+précédemment.
+\end{itemize}
+\item finalement, la dernière partie ($(\neg B \wedge I) \Rightarrow Post$)
+nous dit que le fait d'être sorti de la boucle ($\neg B$), tout en ayant 
+maintenu l'invariant $I$, doit impliquer la post-condition voulue pour la 
+boucle.
+\end{itemize}
+
+
+Dans ce calcul, nous pouvons noter que la fonction $wp$ ne nous donne aucune
+indication sur le moyen d'obtenir l'invariant $I$. Nous allons donc devoir 
+spécifier manuellement de telles propriétés à propos de nos boucles.
+
+
+
+\levelFourTitle{Retour à l'outil}
+
+
+Il existe des outils capables d'inférer des invariants (pour peu qu'ils soient
+simples, les outils automatiques restent limités). Ce n'est pas le cas de WP.
+Il nous faut donc écrire nos invariants à la main. Trouver et écrire les 
+invariants des boucles de nos programmes sera toujours la partie la plus difficile
+de notre travail lorsque nous chercherons à prouver des programmes.
+
+
+
+En effet, si en l'absence de boucle, la fonction de calcul de plus faible 
+pré-condition peut nous fournir automatiquement les propriétés vérifiables de nos
+programmes, ce n'est pas le cas pour les invariants de boucle pour lesquels 
+nous n'avons pas accès à une procédure automatique de calcul. Nous devons donc 
+trouver et formuler correctement ces invariants, et selon l'algorithme, celui-ci
+peut parfois être très subtil.
+
+
+
+Pour indiquer un invariant à une boucle, nous ajoutons les annotations suivantes
+en début de boucle :
+
+
+
+\begin{CodeBlock}{c}
+int main(){
+  int i = 0;
+  
+  /*@
+    loop invariant 0 <= i <= 30;
+  */
+  while(i < 30){
+    ++i;
+  }
+  //@assert i == 30;
+}
+\end{CodeBlock}
+
+
+
+\begin{Warning}
+\textbf{RAPPEL} : L'invariant est bien : i \textbf{<=} 30 !
+\end{Warning}
+
+
+Pourquoi ? Parce que tout au long de la boucle \CodeInline{i} sera bien compris entre
+0 et 30 \textbf{inclus}. 30 est même la valeur qui nous permettra de sortir de la 
+boucle. Plus encore, une des propriétés demandées par le calcul de plus faible
+pré-conditions sur les boucles est que lorsque l'on invalide la condition de la
+boucle, par la connaissance de l'invariant, on peut prouver la post-condition 
+(Formellement : $(\neg B \wedge I) \Rightarrow Post$).
+
+
+
+La post-condition de notre boucle est \CodeInline{i == 30} et doit être impliquée par
+$\neg$ \CodeInline{i < 30} $\wedge$ \CodeInline{0 <= i <= 30}. Ici, cela fonctionne 
+bien : \CodeInline{i >= 30 \&\& 0 <= i <= 30 ==> i == 30}. Si l'invariant excluait 
+l'égalité à 30, la post-condition ne serait pas atteignable.
+
+
+
+Une nouvelle fois, nous pouvons jeter un œil à la liste des buts dans « \textit{WP 
+Goals} » :
+
+
+
+\image{3-3-1-i_30-1.png}[Obligations générées pour prouver notre boucle]
+
+
+Nous remarquons bien que WP décompose la preuve de l'invariant en deux parties : 
+l'établissement de l'invariant et sa préservation. WP produit exactement le 
+raisonnement décrit plus haut pour la preuve de l'assertion. Dans les versions
+récentes de Frama-C, Qed est devenu particulièrement puissant, et l'obligation de
+preuve générée ne le montre pas (affichant simplement « \textit{True} »). En utilisant 
+l'option \CodeInline{-wp-no-simpl} au lancement, nous pouvons quand même voir 
+l'obligation correspondante :
+
+
+
+\image{3-3-1-i_30-2.png}[Preuve de l'assertion par connaissance de l'invariant et l'invalidation de la condition de boucle]
+
+
+Mais notre spécification est-elle suffisante ?
+
+
+
+\begin{CodeBlock}{c}
+int main(){
+  int i = 0;
+  int h = 42;
+  
+  /*@
+    loop invariant 0 <= i <= 30;
+  */
+  while(i < 30){
+    ++i;
+  }
+  //@assert i == 30;
+  //@assert h == 42;
+}
+\end{CodeBlock}
+
+
+
+Voyons le résultat :
+
+
+
+\image{3-3-boucle-effet-bord.png}[Encore des effets de bord]
+
+
+Il semble que non.
+
+
+
+\levelThreeTitle{La clause « assigns » ... pour les boucles}
+
+
+En fait, à propos des boucles, WP ne considère vraiment \textit{que} ce que lui 
+fournit l'utilisateur pour faire ses déductions. Et ici l'invariant ne nous dit
+rien à propos de l'évolution de la valeur de \CodeInline{h}. Nous pourrions signaler 
+l'invariance de toute variable du programme mais ce serait beaucoup d'efforts. 
+ACSL nous propose plus simplement d'ajouter des annotations \CodeInline{assigns} pour 
+les boucles. Toute autre variable est considérée invariante. Par exemple :
+
+
+
+\begin{CodeBlock}{c}
+int main(){
+  int i = 0;
+  int h = 42;
+  
+  /*@
+    loop invariant 0 <= i <= 30;
+    loop assigns i;
+  */
+  while(i < 30){
+    ++i;
+  }
+  //@assert i == 30;
+  //@assert h == 42;
+}
+\end{CodeBlock}
+
+
+
+Cette fois, nous pouvons établir la preuve de correction de la boucle. Par contre, 
+rien ne nous prouve sa terminaison. L'invariant de boucle n'est pas suffisant pour 
+effectuer une telle preuve. Par exemple, dans notre programme, si nous réécrivons 
+la boucle comme ceci :
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  loop invariant 0 <= i <= 30;
+  loop assigns i;
+*/
+while(i < 30){
+   
+}
+\end{CodeBlock}
+
+
+
+L'invariant est bien vérifié également, mais nous ne pourrons jamais prouver
+que la boucle se termine : elle est infinie.
+
+
+
+\levelThreeTitle{Correction partielle et correction totale - Variant de boucle}
+
+
+En vérification déductive, il y a deux types de correction, la correction 
+partielle et la correction totale. Dans le premier cas, la formulation est 
+« si la pré-condition est validée et \textbf{si} le calcul termine, alors la 
+post-condition est validée ». Dans le second cas, « si la pré-condition est 
+validée, alors le calcul termine et la post-condition est validée ». WP 
+s'intéresse par défaut à de la preuve de correction partielle :
+
+
+
+\begin{CodeBlock}{c}
+void foo(){
+  while(1){}
+  //assert \false;
+}
+\end{CodeBlock}
+
+
+
+Si nous demandons la vérification de ce code en activant le contrôle de RTE,
+nous obtenons ceci :
+
+
+
+\image{3-3-infinite.png}[Preuve de faux par non-terminaison de boucle]
+
+
+L'assertion « FAUX » est prouvée ! La raison est simple : la non-terminaison de
+la boucle est triviale : la condition de la boucle est « VRAI » et aucune instruction
+du bloc de la boucle ne permet d'en sortir puisque le bloc ne contient pas de code du
+tout. Comme nous sommes en correction partielle, et que le calcul ne termine pas, nous
+pouvons prouver n'importe quoi au sujet du code qui suit la partie non terminante. Si,
+en revanche, la non-terminaison est non-triviale, il y a peu de chances que l'assertion
+soit prouvée.
+
+
+
+\begin{Information}
+À noter qu'une assertion inatteignable est toujours prouvée comme vraie de cette 
+manière :
+\inlineImage{3-3-goto_end.png}
+
+Et c'est également le cas lorsque l'on sait trivialement qu'une instruction
+produit nécessairement une erreur d'exécution (par exemple en déréférençant 
+la valeur \CodeInline{NULL}), comme nous avions déjà pu le constater avec l'exemple
+de l'appel à \CodeInline{abs} avec la valeur \CodeInline{INT\_MIN}.
+\end{Information}
+
+
+Pour prouver la terminaison d'une boucle, nous utilisons la notion de variant de 
+boucle. Le variant de boucle n'est pas une propriété mais une valeur. C'est une 
+expression faisant intervenir des éléments modifiés par la boucle et donnant une
+borne supérieure sur le nombre d'itérations restant à effectuer à un tour de la
+boucle. C'est donc une expression supérieure à 0 et strictement décroissante d'un 
+tour de boucle à l'autre (cela sera également vérifié par induction par WP).
+
+
+
+Si nous reprenons notre programme précédent, nous pouvons ajouter le variant
+de cette façon :
+
+
+
+\begin{CodeBlock}{c}
+int main(){
+  int i = 0;
+  int h = 42;
+  
+  /*@
+    loop invariant 0 <= i <= 30;
+    loop assigns i;
+    loop variant 30 - i;
+  */
+  while(i < 30){
+    ++i;
+  }
+  //@assert i == 30;
+  //@assert h == 42;
+}
+\end{CodeBlock}
+
+
+
+Une nouvelle fois nous pouvons regarder les buts générés :
+
+
+
+\image{3-3-boucle_complete.png}[Notre simple boucle complètement spécifiée et prouvée]
+
+
+Le variant nous génère bien deux obligations au niveau de la vérification : 
+assurer que la valeur est positive, et assurer qu'elle décroît strictement pendant
+l'exécution de la boucle. Et si nous supprimons la ligne de code qui incrémente
+\CodeInline{i}, WP ne peut plus prouver que la valeur \CodeInline{30 - i} décroît strictement.
+
+
+
+Il est également bon de noter qu'être capable de donner un variant de boucle
+n'induit pas nécessairement d'être capable de donner le nombre exact d'itérations
+qui doivent encore être exécutées par la boucle, car nous n'avons pas toujours une
+connaissance aussi précise du comportement de notre programme. Nous pouvons par
+ exemple avoir un code comme celui-ci :
+
+
+
+\begin{CodeBlock}{c}
+###include <stddef.h>
+
+/*@
+  ensures min <= \result <= max;
+*/
+size_t random_between(size_t min, size_t max);
+
+void undetermined_loop(size_t bound){
+  /*@
+    loop invariant 0 <= i <= bound ;
+    loop assigns i;
+    loop variant i;
+   */
+  for(size_t i = bound; i > 0; ){
+    i -= random_between(1, i);
+  }
+}
+\end{CodeBlock}
+
+
+
+Ici, à chaque tour de boucle, nous diminuons la valeur de la variable \CodeInline{i} par une
+valeur dont nous savons qu'elle se trouve entre 1 et \CodeInline{i}. Nous pouvons donc bien 
+assurer que la valeur de \CodeInline{i} est positive et décroît strictement, mais nous ne 
+pouvons pas dire combien de tours de boucles vont être réalisés pendant une 
+exécution.
+
+
+
+Le variant n'est donc bien qu'une borne supérieure sur le nombre d'itérations 
+de la boucle.
+
+
+
+\levelThreeTitle{Lier la post-condition et l'invariant}
+
+
+Supposons le programme spécifié suivant. Notre but est de prouver que le retour
+de cette fonction est l'ancienne valeur de \CodeInline{a} à laquelle nous avons ajouté 10.
+
+
+
+\begin{CodeBlock}{c}
+/*@
+    ensures \result == \old(a) + 10;
+*/
+int plus_dix(int a){
+    /*@
+        loop invariant 0 <= i <= 10;
+        loop assigns i, a;
+        loop variant 10 - i;
+    */
+    for (int i = 0; i < 10; ++i)
+        ++a;
+
+    return a;
+}
+\end{CodeBlock}
+
+
+
+Le calcul de plus faibles pré-conditions ne permet pas de sortir de la boucle des
+informations qui ne font pas partie de l'invariant. Dans un programme comme :
+
+
+
+\begin{CodeBlock}{c}
+/*@
+    ensures \result == \old(a) + 10;
+*/
+int plus_dix(int a){
+    ++a;
+    ++a;
+    ++a;
+    //...
+    return a;
+}
+\end{CodeBlock}
+
+
+
+En remontant les instructions depuis la post-condition, on conserve toujours les
+informations à propos de \CodeInline{a}. À l'inverse, comme mentionné plus tôt, en dehors
+de la boucle WP, ne considérera que les informations fournies par notre
+invariant. Par conséquent, notre fonction \CodeInline{plus\_dix} ne peut pas être prouvée
+en l'état : l'invariant ne mentionne rien à propos de \CodeInline{a}. Pour lier notre
+post-condition à l'invariant, il faut ajouter une telle information. Par 
+exemple :
+
+
+
+\begin{CodeBlock}{c}
+/*@
+    ensures \result == \old(a) + 10;
+*/
+int plus_dix(int a){
+    /*@
+        loop invariant 0 <= i <= 10;
+        loop invariant a = \old(a) + i; //< AJOUT
+        loop assigns i, a;
+        loop variant 10 - i;
+    */
+    for (int i = 0; i < 10; ++i)
+        ++a;
+
+    return a;
+}
+\end{CodeBlock}
+
+
+
+\begin{Information}
+Ce besoin peut apparaître comme une contrainte très forte. Il ne l'est en fait pas
+tant que cela. Il existe des analyses fortement automatiques capables de 
+calculer les invariants de boucles. Par exemple, sans spécifications, une 
+interprétation abstraite calculera assez facilement \CodeInline{0 <= i <= 10} et 
+\CodeInline{\textbackslash{}old(a) <= a <= \textbackslash{}old(a)+10}. En revanche, il est souvent bien plus difficile
+de calculer les relations qui existent entre des variables différentes qui 
+évoluent dans le même programme, par exemple l'égalité mentionnée par notre 
+invariant ajouté.
+\end{Information}
+
