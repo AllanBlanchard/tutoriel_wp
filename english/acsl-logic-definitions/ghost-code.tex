@@ -99,18 +99,7 @@ the function would then return 6.
 
 
 
-\begin{CodeBlock}{c}
-int max_subarray(int *a, size_t len) {
-  int max = 0;
-  int cur = 0;
-  for(size_t i = 0; i < len; i++) {
-    cur += a[i];
-    if (cur < 0)   cur = 0;
-    if (cur > max) max = cur;
-  }
-  return max;
-}
-\end{CodeBlock}
+\CodeBlockInput[3]{c}{max_subarray-0.c}
 
 
 
@@ -120,11 +109,7 @@ can express the needed axioms as an exercise:
 
 
 
-\begin{CodeBlock}{c}
-/*@ axiomatic Sum {
-  logic integer sum(int *array, integer begin, integer end) reads a[begin..(end-1)];
-}*/
-\end{CodeBlock}
+\CodeBlockInput[3][5]{c}{max_subarray-1.c}
 
 
 
@@ -133,18 +118,7 @@ Some correct axioms are hidden there:
 
 
 \begin{Spoiler}
-\begin{CodeBlock}{c}
-/*@
-  axiomatic Sum_array{
-    logic integer sum(int* array, integer begin, integer end) reads array[begin .. (end-1)];
-   
-    axiom empty: 
-      \forall int* a, integer b, e; b >= e ==> sum(a,b,e) == 0;
-    axiom range:
-      \forall int* a, integer b, e; b < e ==> sum(a,b,e) == sum(a,b,e-1)+a[e-1];
-  }
-*/
-\end{CodeBlock}
+  \CodeBlockInput[3][12]{c}{max_subarray-1.c}
 \end{Spoiler}
 
 
@@ -152,14 +126,7 @@ The specification of the function is the following:
 
 
 
-\begin{CodeBlock}{c}
-/*@ 
-  requires \valid(a+(0..len-1));
-  assigns \nothing;
-  ensures \forall integer l, h;  0 <= l <= h <= len ==> sum(a,l,h) <= \result;
-  ensures \exists integer l, h;  0 <= l <= h <= len &&  sum(a,l,h) == \result;
-*/
-\end{CodeBlock}
+\CodeBlockInput[14][19]{c}{max_subarray-1.c}
 
 
 
@@ -191,45 +158,7 @@ bound being the variable \CodeInline{i} of the loop.
 
 
 
-\begin{CodeBlock}{c}
-/*@ 
-  requires \valid(a+(0..len-1));
-  assigns \nothing;
-  ensures \forall integer l, h;  0 <= l <= h <= len ==> sum(a,l,h) <= \result;
-  ensures \exists integer l, h;  0 <= l <= h <= len &&  sum(a,l,h) == \result;
-*/
-int max_subarray(int *a, size_t len) {
-  int max = 0;
-  int cur = 0;
-  //@ ghost size_t cur_low = 0; 
-  //@ ghost size_t low = 0;
-  //@ ghost size_t high = 0; 
-
-  /*@ 
-    loop invariant BOUNDS: low <= high <= i <= len && cur_low <= i;
-    
-    loop invariant REL :   cur == sum(a,cur_low,i) <= max == sum(a,low,high);
-    loop invariant POST:   \forall integer l;    0 <= l <= i      ==> sum(a,l,i) <= cur;
-    loop invariant POST:   \forall integer l, h; 0 <= l <= h <= i ==> sum(a,l,h) <= max;
-   
-    loop assigns i, cur, max, cur_low, low, high;
-    loop variant len - i; 
-  */
-  for(size_t i = 0; i < len; i++) {
-    cur += a[i];
-    if (cur < 0) {
-      cur = 0;
-      /*@ ghost cur_low = i+1; */
-    }
-    if (cur > max) {
-      max = cur;
-      /*@ ghost low = cur_low; */
-      /*@ ghost high = i+1; */
-    }
-  }
-  return max;
-}
-\end{CodeBlock}
+\CodeBlockInput[14][50]{c}{max_subarray-1.c}
 
 
 

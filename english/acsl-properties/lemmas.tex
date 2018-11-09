@@ -60,19 +60,7 @@ properties about them:
 
 
 
-\begin{CodeBlock}{c}
-/* @
-  lemma ax_b_monotonic_neg:
-    \forall integer a, b, i, j ;
-      a <  0 ==> i <= j ==> ax_b(a, i, b) >= ax_b(a, j, b);
-  lemma ax_b_monotonic_pos:
-    \forall integer a, b, i, j ;
-      a >  0 ==> i <= j ==> ax_b(a, i, b) <= ax_b(a, j, b);
-  lemma ax_b_monotonic_nul:
-    \forall integer a, b, i, j ;
-      a == 0 ==> ax_b(a, i, b) == ax_b(a, j, b);
-*/
-\end{CodeBlock}
+\CodeBlockInput[20][30]{c}{affine-0.c}
 
 
 
@@ -82,35 +70,7 @@ write some code examples:
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  requires a > 0;
-  requires limit_int_min_ax_b(a,4) < x < limit_int_max_ax_b(a,4);
-  assigns \nothing ;
-  ensures \result == ax_b(a,x,4);
-*/
-int function(int a, int x){
-  return a*x + 4;
-}
-
-/*@ 
-  requires a > 0;
-  requires limit_int_min_ax_b(a,4) < x < limit_int_max_ax_b(a,4) ;
-  requires limit_int_min_ax_b(a,4) < y < limit_int_max_ax_b(a,4) ;
-  assigns \nothing ;
-*/
-void foo(int a, int x, int y){
-  int fmin, fmax;
-  if(x < y){
-    fmin = function(a,x);
-    fmax = function(a,y);
-  } else {
-    fmin = function(a,y);
-    fmax = function(a,x);
-  }
-  //@assert fmin <= fmax;
-}
-\end{CodeBlock}
+\CodeBlockInput[32][57]{c}{affine-0.c}
 
 
 

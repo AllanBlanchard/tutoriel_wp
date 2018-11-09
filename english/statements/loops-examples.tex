@@ -12,38 +12,7 @@ We can for example use the search function that allows to find a value
 inside an array:
 
 
-\begin{CodeBlock}{c}
-###include <stddef.h>
-
-/*@
-  requires 0 < length;
-  requires \valid_read(array + (0 .. length-1));
-  
-  assigns  \nothing;
-
-  behavior in:
-    assumes \exists size_t off ; 0 <= off < length && array[off] == element;
-    ensures array <= \result < array+length && *\result == element;
-
-  behavior notin:
-    assumes \forall size_t off ; 0 <= off < length ==> array[off] != element;
-    ensures \result == NULL;
-
-  disjoint behaviors;
-  complete behaviors;
-*/
-int* search(int* array, size_t length, int element){
-  /*@
-    loop invariant 0 <= i <= length;
-    loop invariant \forall size_t j; 0 <= j < i ==> array[j] != element;
-    loop assigns i;
-    loop variant length-i;
-  */ 
-  for(size_t i = 0; i < length; i++)
-    if(array[i] == element) return &array[i];
-  return NULL;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{search.c}
 
 
 
@@ -153,7 +122,7 @@ executing the loop is interesting:
 
 
 
-\image{3-4-trivial-establishment.png}[Trivial goal]
+\image{trivial.png}[Trivial goal]
 
 
 We note that this property, while quite complex, is proved easily proved
@@ -192,25 +161,7 @@ Let us have a look to the function that resets an array of integer to 0.
 
 
 
-\begin{CodeBlock}{c}
-#include <stddef.h>
-
-/*@
-  requires \valid(array + (0 .. length-1));
-  assigns  array[0 .. length-1];
-  ensures  \forall size_t i; 0 <= i < length ==> array[i] == 0;
-*/
-void reset(int* array, size_t length){
-  /*@
-    loop invariant 0 <= i <= length;
-    loop invariant \forall size_t j; 0 <= j < i ==> array[j] == 0;
-    loop assigns i, array[0 .. length-1];
-    loop variant length-i;
-  */
-  for(size_t i = 0; i < length; ++i)
-    array[i] = 0;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{reset.c}
 
 
 
@@ -235,33 +186,7 @@ could be this one:
 
 
 
-\begin{CodeBlock}{c}
-###include <stddef.h>
-
-/*@
-  requires \valid(array + (0 .. length-1));
-  assigns array[0 .. length-1];
-
-  ensures \forall size_t i; 0 <= i < length && \old(array[i]) == old
-             ==> array[i] == new;
-  ensures \forall size_t i; 0 <= i < length && \old(array[i]) != old 
-             ==> array[i] == \old(array[i]);
-*/
-void search_and_replace(int* array, size_t length, int old, int new){
-  /*@
-    loop invariant 0 <= i <= length;
-    loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) == old 
-                     ==> array[j] == new;
-    loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) != old 
-                     ==> array[j] == \at(array[j], Pre);
-    loop assigns i, array[0 .. length-1];
-    loop variant length-i;
-  */
-  for(size_t i = 0; i < length; ++i){
-    if(array[i] == old) array[i] = new;
-  }
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{search_and_replace-0.c}
 
 
 
@@ -308,24 +233,7 @@ We can add this information as an invariant:
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  loop invariant 0 <= i <= length;
-  loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) == old 
-                   ==> array[j] == new;
-  loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) != old 
-                   ==> array[j] == \at(array[j], Pre);
-
-  //La fin du tableau n'a pas été modifiée :
-  loop invariant \forall size_t j; i <= j < length
-                     ==> array[j] == \at(array[j], Pre);
-  loop assigns i, array[0 .. length-1];
-  loop variant length-i;
-*/
-for(size_t i = 0; i < length; ++i){
-  if(array[i] == old) array[i] = new;
-}
-\end{CodeBlock}
+\CodeBlockInput[13][26]{c}{search_and_replace-1.c}
 
 
 
@@ -338,18 +246,7 @@ inside the loop:
 
 
 
-\begin{CodeBlock}{c}
-for(size_t i = 0; i < length; ++i){
-  if(array[i] == old) array[i] = new;
-
-  /*@ assert \forall size_t j; i < j < length 
-               ==> array[j] == \at(array[j], Pre);                      */
-  /*@ assert \forall size_t j; 0 <= j <= i && \at(array[j], Pre) == old 
-               ==> array[j] == new;                                     */
-  /*@ assert \forall size_t j; 0 <= j <= i && \at(array[j], Pre) != old 
-               ==> array[j] == \at(array[j], Pre);                      */    
-}
-\end{CodeBlock}
+\CodeBlockInput[24][33]{c}{search_and_replace-2.c}
 
 
 

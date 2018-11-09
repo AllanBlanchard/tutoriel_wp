@@ -1,8 +1,10 @@
+FILE=main.tex
+
 all:
-	lualatex -draftmode -shell-escape -interaction=nonstopmode main.tex
-	lualatex -draftmode -shell-escape -interaction=nonstopmode main.tex
+	lualatex -draftmode -shell-escape ${FILE}
+	lualatex -draftmode -shell-escape ${FILE}
 	makeglossaries main
-	lualatex -shell-escape -interaction=nonstopmode main.tex
+	lualatex -shell-escape ${FILE}
 
 clean:
 	rm -rf *.aux *.glg *.glo *.gls *.ist *.listing

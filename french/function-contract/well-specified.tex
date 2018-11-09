@@ -15,11 +15,7 @@ Changeons d'exemple et spécifions la fonction suivante :
 
 
 
-\begin{CodeBlock}{c}
-int max(int a, int b){
-  return (a > b) ? a : b;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{max-0.c}
 
 
 
@@ -28,14 +24,7 @@ travaillerons avec celle-ci :
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  ensures \result >= a && \result >= b;
-*/
-int max(int a, int b){
-  return (a > b) ? a : b;
-}
-\end{CodeBlock}
+\CodeBlockInput[1][6]{c}{max-1.c}
 
 
 
@@ -45,15 +34,7 @@ essayer de voir si ce code est validé :
 
 
 
-\begin{CodeBlock}{c}
-void foo(){
-  int a = 42;
-  int b = 37;
-  int c = max(a,b);
-
-  //@assert c == 42;
-}
-\end{CodeBlock}
+\CodeBlockInput[8][14]{c}{max-1.c}
 
 
 
@@ -63,16 +44,8 @@ quant à la spécification :
 
 
 
-\begin{CodeBlock}{c}
-###include <limits.h>
+\CodeBlockInput[1][8]{c}{max-2.c}
 
-/*@
-  ensures \result >= a && \result >= b;
-*/
-int max(int a, int b){
-  return INT_MAX;
-}
-\end{CodeBlock}
 
 
 
@@ -82,15 +55,8 @@ deux paramètres mais également qu'il soit exactement l'un des deux :
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  ensures \result >= a && \result >= b;
-  ensures \result == a || \result == b;
-*/
-int max(int a, int b){
-  return (a > b) ? a : b;
-}
-\end{CodeBlock}
+\CodeBlockInput[1][7]{c}{max-3.c}
+
 
 
 
@@ -108,16 +74,7 @@ Prenons par exemple une fonction \CodeInline{swap} pour les entiers :
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  ensures *a == \old(*b) && *b == \old(*a);
-*/
-void swap(int* a, int* b){
-  int tmp = *a;
-  *a = *b;
-  *b = tmp;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{swap-0.c}
 
 
 
@@ -146,13 +103,7 @@ Par exemple, nous pourrions écrire :
 
 
 
-\begin{CodeBlock}{c}
-  int a = 42;
- Label_a:
-  a = 45;
-
-  //@assert a == 45 && \at(a, Label_a) == 42;
-\end{CodeBlock}
+\CodeBlockInput[2][6]{c}{at.c}
 
 
 
@@ -211,17 +162,7 @@ reçoit un pointeur en entrée :
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  requires \valid(a) && \valid(b);
-  ensures  *a == \old(*b) && *b == \old(*a);
-*/
-void swap(int* a, int* b){
-  int tmp = *a;
-  *a = *b;
-  *b = tmp;
-}
-\end{CodeBlock}
+\CodeBlockInput[3][11]{c}{swap-1.c}
 
 
 
@@ -252,18 +193,7 @@ Typiquement, dans le code suivant :
 
 
 
-\begin{CodeBlock}{c}
-/*@ requires \valid(p); */
-int unref(int* p){
-  return *p;
-}
-
-int const value = 42;
-
-int main(){
-  int i = unref(&value);
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{unref.c}
 
 
 
@@ -286,28 +216,7 @@ ponctuelles) :
 
 
 
-\begin{CodeBlock}{c}
-int h = 42; //nous ajoutons une variable globale
-
-/*@
-  requires \valid(a) && \valid(b);
-  ensures  *a == \old(*b) && *b == \old(*a);
-*/
-void swap(int* a, int* b){
-  int tmp = *a;
-  *a = *b;
-  *b = tmp;
-}
-
-int main(){
-  int a = 37;
-  int b = 91;
-
-  //@ assert h == 42;
-  swap(&a, &b);
-  //@ assert h == 42;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{swap-1.c}
 
 
 
@@ -315,7 +224,7 @@ Le résultat n'est pas vraiment celui escompté :
 
 
 
-\image{2-2-2-swap-1.png}[Échec de preuve sur une globale non concernée par l'appel à ```swap```]
+\image{2-swap-1.png}[Échec de preuve sur une globale non concernée par l'appel à ```swap```]
 
 
 En effet, nous n'avons pas spécifié les effets de bords autorisés pour notre
@@ -332,20 +241,7 @@ de modifier. Par exemple pour la fonction \CodeInline{swap} :
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  requires \valid(a) && \valid(b);
- 
-  assigns *a, *b;
-
-  ensures  *a == \old(*b) && *b == \old(*a);
-*/
-void swap(int* a, int* b){
-  int tmp = *a;
-  *a = *b;
-  *b = tmp;
-}
-\end{CodeBlock}
+\CodeBlockInput[3][14]{c}{swap-2.c}
 
 
 
@@ -360,19 +256,7 @@ provoque pas d'effets de bords. Ce cas est précisé en donnant \CodeInline{\tex
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  requires \valid_read(a) && \valid_read(b);
-
-  assigns  \nothing;
-
-  ensures \result == *a || \result == *b;
-  ensures \result >= *a && \result >= *b;
-*/
-int max_ptr(int* a, int* b){
-  return (*a > *b) ? *a : *b ;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{max_ptr.c}
 
 
 
@@ -392,19 +276,7 @@ code source), dans d'autre cas, ce n'est pas si simple :
 
 
 
-\begin{CodeBlock}{c}
-###include <limits.h>
-
-/*@
-  requires \valid(a) && \valid_read(b);
-  assigns  *a;
-  ensures  *a == \old(*a)+ *b;
-  ensures  *b == \old(*b);
-*/
-void incr_a_by_b(int* a, int const* b){
-  *a += *b;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{incr_a_by_b-0.c}
 
 
 
@@ -413,7 +285,7 @@ résultat suivant :
 
 
 
-\image{2-2-2-incr_a_by_b-1.png}[Échec de preuve : risque d'aliasing]
+\image{2-incr_a_by_b-1.png}[Échec de preuve : risque d'aliasing]
 
 
 La raison est simplement que rien ne garantit que le pointeur \CodeInline{a} est bien
@@ -447,20 +319,7 @@ disjoints. Ici, nous spécifierions :
 
 
 
-\begin{CodeBlock}{c}
-###include <limits.h>
-
-/*@
-  requires \valid(a) && \valid_read(b);
-  requires \separated(a, b);
-  assigns  *a;
-  ensures  *a == \old(*a)+ *b;
-  ensures  *b == \old(*b);
-*/
-void incr_a_by_b(int* a, int const* b){
-  *a += *b;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{incr_a_by_b-1.c}
 
 
 
@@ -468,7 +327,7 @@ Et cette fois, la preuve est effectuée :
 
 
 
-\image{2-2-2-incr_a_by_b-2.png}[Résolution des problèmes d'aliasing]
+\image{2-incr_a_by_b-2.png}[Résolution des problèmes d'aliasing]
 
 
 Nous pouvons noter que nous ne nous intéressons pas ici à la preuve de 

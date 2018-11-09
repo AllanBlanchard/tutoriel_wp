@@ -71,15 +71,8 @@ is that the result (which is denoted with the keyword
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  ensures \result >= 0;
-*/
-int abs(int val){
-  if(val < 0) return -val;
-  return val;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{abs-1.c}
+
 
 
 (Notice the \CodeInline{;} at the end of the line, exactly as we do in C).
@@ -95,17 +88,8 @@ clause, as we illustrate here:
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  ensures \result >= 0;
-  ensures (val >= 0 ==> \result == val ) && 
-          (val <  0 ==> \result == -val);
-*/
-int abs(int val){
-  if(val < 0) return -val;
-  return val;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{abs-2.c}
+
 
 
 
@@ -173,17 +157,7 @@ properties. For example, we could write this:
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  ensures positive_value: function_result: \result >= 0;
-  ensures (val >= 0 ==> \result == val) && 
-          (val < 0 ==> \result == -val);
-*/
-int abs(int val){
-  if(val < 0) return -val;
-  return val;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{abs-3.c}
 
 
 
@@ -227,7 +201,7 @@ $ frama-c-gui abs.c
 
 
 
-\image{2-1-1-abs-1.png}[The side panel gives the files and functions tree]
+\image{1-abs-1.png}[The side panel gives the files and functions tree]
 
 
 The window of Frama-C opens and in the panel dedicated to files and
@@ -242,7 +216,7 @@ function and ``Prove function annotations by WP'':
 
 
 
-\image{2-1-1-abs-2.png}[Start the verification of \texttt{abs} with WP]
+\image{1-abs-2.png}[Start the verification of \texttt{abs} with WP]
 
 
 We can see that blue circles become green bullets, indicating that the
@@ -267,7 +241,7 @@ right-clicking on its name and then click ``Insert RTE guards''.
 
 
 
-\image{2-1-1-abs-3.png}[Activate runtime error absence verification]
+\image{1-abs-3.png}[Activate runtime error absence verification]
 
 
 Finally, we execute the verification again (we can also click on the
@@ -279,7 +253,7 @@ architectures, -\CodeInline{INT\_MIN} ($-2^{31}$) > \CodeInline{INT\_MAX} ($2^{3
 
 
 
-\image{2-1-1-abs-4.png}[Incomplete proof of \texttt{abs}]
+\image{1-abs-4.png}[Incomplete proof of \texttt{abs}]
 
 
 \begin{Information}
@@ -343,7 +317,7 @@ succeeded, failed or encountered a timeout (here we can see a try with
 Z3 where we had a timeout on the proof of absence of RTE).
 
 
-\image{2-1-1-abs-5.png}[Proof obligations panel of WP for \CodeInline{abs}]
+\image{1-abs-5.png}[Proof obligations panel of WP for \CodeInline{abs}]
 
 
 In the first column, we have the name of the function the proof
@@ -366,7 +340,7 @@ proof obligation:
 
 
 
-\image{2-1-1-abs-6.png}[Proof obligation associated to the verification of absence of
+\image{1-abs-6.png}[Proof obligation associated to the verification of absence of
   underflow in \CodeInline{abs}]
 
 
@@ -462,21 +436,7 @@ function (notice that it is also necessary to include the header where
 
 
 
-\begin{CodeBlock}{c}
-#include <limits.h>
-
-/*@
-  requires INT_MIN < val;
-
-  ensures \result >= 0;
-  ensures (val >= 0 ==> \result == val) && 
-          (val < 0 ==> \result == -val);
-*/
-int abs(int val){
-  if(val < 0) return -val;
-  return val;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{abs-4.c}
 
 
 
@@ -502,7 +462,7 @@ everything is validated by WP, our implementation is proved:
 
 
 
-\image{2-1-2-abs-1.png}[Proof of \texttt{abs} performed]
+\image{2-abs-1.png}[Proof of \texttt{abs} performed]
 
 
 We can also verify that a function that would call \CodeInline{abs}
@@ -521,7 +481,7 @@ void foo(int a){
 
 
 
-\image{2-1-2-foo-1.png}[Precondition checking when calling \CodeInline{abs}]
+\image{2-foo-1.png}[Precondition checking when calling \CodeInline{abs}]
 
 
 We can modify this example by revering the last two instructions. If we
@@ -551,10 +511,10 @@ subsequent call that becomes verified:
 
 
 
-\image{2-1-2-foo-2.png}[Generated proof obligation for the bad call]
+\image{2-foo-2.png}[Generated proof obligation for the bad call]
 
 
-\image{2-1-2-foo-3.png}[Generated proof obligation for the call that follows]
+\image{2-foo-3.png}[Generated proof obligation for the call that follows]
 
 
 We can notice that for function calls, the GUI highlights the execution

@@ -13,11 +13,7 @@ From now, we will use an other example, the \texttt{max} function:
 
 
 
-\begin{CodeBlock}{c}
-int max(int a, int b){
-  return (a > b) ? a : b;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{max-0.c}
 
 
 
@@ -26,14 +22,7 @@ using this one:
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  ensures \result >= a && \result >= b;
-*/
-int max(int a, int b){
-  return (a > b) ? a : b;
-}
-\end{CodeBlock}
+\CodeBlockInput[1][6]{c}{max-1.c}
 
 
 
@@ -43,15 +32,7 @@ calling code:
 
 
 
-\begin{CodeBlock}{c}
-void foo(){
-  int a = 42;
-  int b = 37;
-  int c = max(a,b);
-
-  //@assert c == 42;
-}
-\end{CodeBlock}
+\CodeBlockInput[8][14]{c}{max-1.c}
 
 
 
@@ -61,16 +42,7 @@ correct with respect to the specification:
 
 
 
-\begin{CodeBlock}{c}
-###include <limits.h>
-
-/*@
-  ensures \result >= a && \result >= b;
-*/
-int max(int a, int b){
-  return INT_MAX;
-}
-\end{CodeBlock}
+\CodeBlockInput[1][8]{c}{max-2.c}
 
 
 
@@ -80,15 +52,7 @@ but also that the result is one of them:
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  ensures \result >= a && \result >= b;
-  ensures \result == a || \result == b;
-*/
-int max(int a, int b){
-  return (a > b) ? a : b;
-}
-\end{CodeBlock}
+\CodeBlockInput[1][7]{c}{max-3.c}
 
 
 
@@ -105,16 +69,7 @@ We can illustrate with a swap function for C integers:
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  ensures *a == \old(*b) && *b == \old(*a);
-*/
-void swap(int* a, int* b){
-  int tmp = *a;
-  *a = *b;
-  *b = tmp;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{swap-0.c}
 
 
 
@@ -139,13 +94,7 @@ For example, we could write:
 
 
 
-\begin{CodeBlock}{c}
-  int a = 42;
- Label_a:
-  a = 45;
-
-  //@assert a == 45 && \at(a, Label_a) == 42;
-\end{CodeBlock}
+\CodeBlockInput[2][6]{c}{at.c}
 
 
 
@@ -206,17 +155,7 @@ pointer in input:
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  requires \valid(a) && \valid(b);
-  ensures  *a == \old(*b) && *b == \old(*a);
-*/
-void swap(int* a, int* b){
-  int tmp = *a;
-  *a = *b;
-  *b = tmp;
-}
-\end{CodeBlock}
+\CodeBlockInput[3][11]{c}{swap-1.c}
 
 
 
@@ -249,18 +188,8 @@ to write but is not necessarily legal.
 Typically, in this code:
 
 
-\begin{CodeBlock}{c}
-/*@ requires \valid(p); */
-int unref(int* p){
-  return *p;
-}
 
-int const value = 42;
-
-int main(){
-  int i = unref(&value);
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{unref.c}
 
 
 
@@ -283,28 +212,7 @@ some properties at some particular points):
 
 
 
-\begin{CodeBlock}{c}
-int h = 42; //we add a global variable
-
-/*@
-  requires \valid(a) && \valid(b);
-  ensures  *a == \old(*b) && *b == \old(*a);
-*/
-void swap(int* a, int* b){
-  int tmp = *a;
-  *a = *b;
-  *b = tmp;
-}
-
-int main(){
-  int a = 37;
-  int b = 91;
-
-  //@ assert h == 42;
-  swap(&a, &b);
-  //@ assert h == 42;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{swap-1.c}
 
 
 
@@ -312,7 +220,7 @@ The result is not exactly what we expect:
 
 
 
-\image{2-2-2-swap-1.png}[Proof failure on the property of a global variable which is not
+\image{2-swap-1.png}[Proof failure on the property of a global variable which is not
   modified by \texttt{swap}]
 
 
@@ -330,20 +238,7 @@ example, our \CodeInline{swap} function will be specified like this:
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  requires \valid(a) && \valid(b);
- 
-  assigns *a, *b;
-
-  ensures  *a == \old(*b) && *b == \old(*a);
-*/
-void swap(int* a, int* b){
-  int tmp = *a;
-  *a = *b;
-  *b = tmp;
-}
-\end{CodeBlock}
+\CodeBlockInput[3][14]{c}{swap-2.c}
 
 
 
@@ -359,19 +254,7 @@ free. We specify this by giving \CodeInline{\textbackslash{}nothing} to
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  requires \valid_read(a) && \valid_read(b);
-
-  assigns  \nothing;
-
-  ensures \result == *a || \result == *b;
-  ensures \result >= *a && \result >= *b;
-*/
-int max_ptr(int* a, int* b){
-  return (*a > *b) ? *a : *b ;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{max_ptr.c}
 
 
 
@@ -391,19 +274,7 @@ sometimes it is not that simple:
 
 
 
-\begin{CodeBlock}{c}
-#include <limits.h>
-
-/*@
-  requires \valid(a) && \valid_read(b);
-  assigns  *a;
-  ensures  *a == \old(*a)+ *b;
-  ensures  *b == \old(*b);
-*/
-void incr_a_by_b(int* a, int const* b){
-  *a += *b;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{incr_a_by_b-0.c}
 
 
 
@@ -411,7 +282,7 @@ If we ask WP to prove this function, we get the following result:
 
 
 
-\image{2-2-2-incr_a_by_b-1.png}[Proof failure: potential aliasing]
+\image{2-incr_a_by_b-1.png}[Proof failure: potential aliasing]
 
 
 The reason is simply that we do not have any guarantee that the pointer
@@ -449,20 +320,7 @@ non-overlapping. Here, we specify:
 
 
 
-\begin{CodeBlock}{c}
-#include <limits.h>
-
-/*@
-  requires \valid(a) && \valid_read(b);
-  requires \separated(a, b);
-  assigns  *a;
-  ensures  *a == \old(*a)+ *b;
-  ensures  *b == \old(*b);
-*/
-void incr_a_by_b(int* a, int const* b){
-  *a += *b;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{incr_a_by_b-1.c}
 
 
 
@@ -470,7 +328,7 @@ And this time, the function is verified:
 
 
 
-\image{2-2-2-incr_a_by_b-2.png}[Solved aliasing problems]
+\image{2-incr_a_by_b-2.png}[Solved aliasing problems]
 
 
 We can notice that we do not consider the arithmetic overflow here, as

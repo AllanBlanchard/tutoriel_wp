@@ -1,8 +1,6 @@
 
 \begin{center}
 \image{frama-c.png}
-
-
 \end{center}
 
 
@@ -269,30 +267,7 @@ we will use this simple code:
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  requires \valid(a) && \valid(b);
-  assigns *a, *b;
-  ensures *a == \old(*b);
-  ensures *b == \old(*a);
-*/
-void swap(int* a, int* b){
-  int tmp = *a;
-  *a = *b;
-  *b = tmp;
-}
-
-int main(){
-  int a = 42;
-  int b = 37;
-
-  swap(&a, &b);
-
-  //@ assert a == 37 && b == 42;
-
-  return 0;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{verify.c}
 
 
 
@@ -311,7 +286,7 @@ This window should appear.
 
 
 
-\image{1-2-verif_install-1.png}[Verify installation 1]
+\image{verif_install-1.png}[Verify installation 1]
 
 
 Clicking \CodeInline{main.c} in the left side panel to select it, we can see
@@ -320,7 +295,7 @@ lines as illustrated as follows:
 
 
 
-\image{1-2-verif_install-2.png}[Verify installation 2]
+\image{verif_install-2.png}[Verify installation 2]
 
 
 
@@ -390,7 +365,7 @@ using the left side panel, in the WP part:
 
 
 
-\image{1-2-select-coq.png}[Select the Coq proof assistant]
+\image{select_coq.png}[Select the Coq proof assistant]
 
 
 \begin{Information}

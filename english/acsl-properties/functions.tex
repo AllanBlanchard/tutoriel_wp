@@ -29,12 +29,7 @@ We can for example define a mathematical \externalLink{linear function}{https://
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  logic integer ax_b(integer a, integer x, integer b) =
-    a * x + b;
-*/
-\end{CodeBlock}
+\CodeBlockInput[1][4]{c}{affine-0.c}
 
 
 
@@ -42,19 +37,11 @@ And it can be used to prove the source code of the following function:
 
 
 
-\begin{CodeBlock}{c}
-/*@ 
-  assigns \nothing ;
-  ensures \result == ax_b(3,x,4); 
-*/
-int function(int x){
-  return 3*x + 4;
-}
-\end{CodeBlock}
+\CodeBlockInput[6][12]{c}{affine-0.c}
 
 
 
-\image{4-3-affine-1.png}[Some overflows seem to be possible]
+\image{affine-1.png}[Some overflows seem to be possible]
 
 
 This code is indeed proved but some runtime-errors seems to be possible.
@@ -64,28 +51,7 @@ to the machine type we use? It allows us to then add our bound checking
 in preconditon or the function.
 
 
-\begin{CodeBlock}{c}
-/*@
-  logic integer limit_int_min_ax_b(integer a, integer b) =
-    (a == 0) ? (b > 0) ? INT_MIN : INT_MIN-b :
-    (a <  0) ? (INT_MAX-b)/a :
-               (INT_MIN-b)/a ;
-
-  logic integer limit_int_max_ax_b(integer a, integer b) =
-    (a == 0) ? (b > 0) ? INT_MAX-b : INT_MAX :
-    (a <  0) ? (INT_MIN-b)/a :
-               (INT_MAX-b)/a ;
-*/
-
-/*@
-  requires limit_int_min_ax_b(3,4) < x < limit_int_max_ax_b(3,4);
-  assigns \nothing ;
-  ensures \result == ax_b(3,x,4);
-*/
-int function(int x){
-  return 3*x + 4;
-}
-\end{CodeBlock}
+\CodeBlockInput[8][27]{c}{affine-1.c}
 
 
 
@@ -119,19 +85,7 @@ and using C language:
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  logic integer factorial(integer n) = (n <= 0) ? 1 : n * factorial(n-1);
-*/
-
-/*@ 
-  assigns \nothing ;
-  ensures \result == factorial(n) ; 
-*/
-unsigned facto(unsigned n){
-  return (n == 0) ? 1 : n * facto(n-1);
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{facto-0.c}
 
 
 
@@ -152,16 +106,7 @@ preconditon:
 
 
 
-\begin{CodeBlock}{c}
-/*@ 
-  requires n <= 12 ;
-  assigns \nothing ;
-  ensures \result == factorial(n) ; 
-*/
-unsigned facto(unsigned n){
-  return (n == 0) ? 1 : n * facto(n-1);
-}
-\end{CodeBlock}
+\CodeBlockInput[5][12]{c}{facto-1.c}
 
 
 

@@ -152,19 +152,7 @@ before the loop:
 
 
 
-\begin{CodeBlock}{c}
-int main(){
-  int i = 0;
-  
-  /*@
-    loop invariant 0 <= i <= 30;
-  */
-  while(i < 30){
-    ++i;
-  }
-  //@assert i == 30;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{first_loop-1.c}
 
 
 
@@ -194,7 +182,7 @@ Goals'':
 
 
 
-\image{3-3-1-i_30-1.png}[Proof obligations generated to verify our loop]
+\image{i_30-1.png}[Proof obligations generated to verify our loop]
 
 
 We note that WP produces two different proof obligations: the
@@ -207,7 +195,7 @@ start, we can however see these details:
 
 
 
-\image{3-3-1-i_30-2.png}[Proof of the assertion, knowing the invariant and the
+\image{i_30-2.png}[Proof of the assertion, knowing the invariant and the
   invalidation of the loop condition]
 
 
@@ -215,21 +203,7 @@ But is our specification precise enough?
 
 
 
-\begin{CodeBlock}{c}
-int main(){
-  int i = 0;
-  int h = 42;
-  
-  /*@
-    loop invariant 0 <= i <= 30;
-  */
-  while(i < 30){
-    ++i;
-  }
-  //@assert i == 30;
-  //@assert h == 42;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{first_loop-2.c}
 
 
 
@@ -237,7 +211,7 @@ And the result is:
 
 
 
-\image{3-3-boucle-effet-bord.png}[Encore des effets de bord]
+\image{i_30-3.png}[Side effects, again]
 
 
 It seems not.
@@ -257,22 +231,7 @@ to keep its old value. For example:
 
 
 
-\begin{CodeBlock}{c}
-int main(){
-  int i = 0;
-  int h = 42;
-  
-  /*@
-    loop invariant 0 <= i <= 30;
-    loop assigns i;
-  */
-  while(i < 30){
-    ++i;
-  }
-  //@assert i == 30;
-  //@assert h == 42;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{first_loop-3.c}
 
 
 
@@ -313,12 +272,7 @@ valid''. By default, WP considers only partial correctness:
 
 
 
-\begin{CodeBlock}{c}
-void foo(){
-  while(1){}
-  //assert \false;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{infinite.c}
 
 
 
@@ -327,7 +281,7 @@ RTE, we get this result:
 
 
 
-\image{3-3-infinite.png}[Proof of false by non termination]
+\image{infinite.png}[Proof of false by non termination]
 
 
 The assertion ``False'' is proved! For a very simple reason: since the
@@ -342,7 +296,7 @@ the assertion will probably not be proved.
 
 \begin{Information}
   Note that an (provably) unreachable assertion is always proved to be true:
-  \inlineImage{3-3-goto_end.png}
+  \inlineImage{goto_end.png}
   And this is also the case when we trivially know that an instruction
   produces a runtime error (for example dereferencing \CodeInline{NULL}), or
   inserting ``False'' in post-condition as we have already seen with
@@ -364,23 +318,7 @@ syntax:
 
 
 
-\begin{CodeBlock}{c}
-int main(){
-  int i = 0;
-  int h = 42;
-  
-  /*@
-    loop invariant 0 <= i <= 30;
-    loop assigns i;
-    loop variant 30 - i;
-  */
-  while(i < 30){
-    ++i;
-  }
-  //@assert i == 30;
-  //@assert h == 42;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{first_loop-4.c}
 
 
 
@@ -388,7 +326,7 @@ Again, we can have a look to the generated proof obligations:
 
 
 
-\image{3-3-boucle_complete.png}[Our loop entirely specified and proved]
+\image{i_30-4.png}[Our loop entirely specified and proved]
 
 
 The loop variant generates two proof obligations: verify that the value
@@ -405,25 +343,8 @@ this one:
 
 
 
-\begin{CodeBlock}{c}
-###include <stddef.h>
+\CodeBlockInput{c}{random_loop.c}
 
-/*@
-  ensures min <= \result <= max;
-*/
-size_t random_between(size_t min, size_t max);
-
-void undetermined_loop(size_t bound){
-  /*@
-    loop invariant 0 <= i <= bound ;
-    loop assigns i;
-    loop variant i;
-   */
-  for(size_t i = bound; i > 0; ){
-    i -= random_between(1, i);
-  }
-}
-\end{CodeBlock}
 
 
 Here, at each iteration, we decrease the value of the variable
@@ -447,22 +368,7 @@ that this function returns the old value of \texttt{a} plus 10.
 
 
 
-\begin{CodeBlock}{c}
-/*@
-    ensures \result == \old(a) + 10;
-*/
-int plus_dix(int a){
-    /*@
-        loop invariant 0 <= i <= 10;
-        loop assigns i, a;
-        loop variant 10 - i;
-    */
-    for (int i = 0; i < 10; ++i)
-        ++a;
-
-    return a;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{add_ten-0.c}
 
 
 
@@ -475,7 +381,7 @@ that is not part of the loop invariant. In a code like:
 /*@
     ensures \result == \old(a) + 10;
 */
-int plus_dix(int a){
+int add_ten(int a){
     ++a;
     ++a;
     ++a;
@@ -495,23 +401,7 @@ invariant, we have to add this knowledge. See, for example:
 
 
 
-\begin{CodeBlock}{c}
-/*@
-    ensures \result == \old(a) + 10;
-*/
-int plus_dix(int a){
-    /*@
-        loop invariant 0 <= i <= 10;
-        loop invariant a = \old(a) + i; //< ADDED
-        loop assigns i, a;
-        loop variant 10 - i;
-    */
-    for (int i = 0; i < 10; ++i)
-        ++a;
-
-    return a;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{add_ten-1.c}
 
 
 

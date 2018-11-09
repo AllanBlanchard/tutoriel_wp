@@ -245,6 +245,33 @@
    \automark[chapter]{part}
 }
 
+%%% INPUT
+
+\newcommand{\levelOneFile}{}
+
+\newenvironment{levelOne}[2]{
+  \levelOneTitle{#1}
+  \renewcommand{\levelOneFile}{#2}
+  \input{#2}
+}{
+  \renewcommand{\levelOneFile}{}
+}
+
+\newcommand{\levelTwoFile}{}
+\newenvironment{levelTwo}[2]{
+  \ifthenelse{\isempty{#1}}{}{\levelTwoTitle{#1}}
+  \renewcommand{\levelTwoFile}{#2}
+  \input{\levelOneFile/#2}
+}{
+  \renewcommand{\levelTwoFile}{}
+}
+
+\newcommand{\currentInput}{\levelOneFile/\levelTwoFile}
+%%   \ifthenelse{\isempty{\levelTwoFile}}
+%%              {\levelOneFile}
+%%              {\levelOneFile/\levelTwoFile}
+%% }
+
 %%% PROCESSING
 \ProcessOptions
 
@@ -391,7 +418,7 @@
    listing only,
    minted style=colorful,
    minted language=#3,
-   listing file=#4,
+   listing file=../code/\currentInput/#4,
    minted options={
      firstline=#1,
      lastline=#2,
@@ -593,12 +620,15 @@
 %%% IMAGES
 \NewDocumentCommand{\image}{mo}{%
    \begin{center}
-      \includegraphics[max size={\textwidth}{0.9\textheight}, keepaspectratio]{#1}
-      \IfValueT{#2}{\captionof{figure}{#2}}
+     \includegraphics[max size={\textwidth}{0.9\textheight}, keepaspectratio]
+                     {\currentInput/#1}
+                     \IfValueT{#2}{\captionof{figure}{#2}}
    \end{center}
 }
 
-\newcommand{\inlineImage}[1]{\includegraphics[max size={\textwidth}{\textheight}, keepaspectratio]{#1}}
+\newcommand{\inlineImage}[1]{
+  \includegraphics[max size={\textwidth}{\textheight}, keepaspectratio]{\currentInput/#1}
+}
 
 %%% SMILEYS
 \def\@smileysPath{./smileys}

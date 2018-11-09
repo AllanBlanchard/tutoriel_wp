@@ -102,19 +102,7 @@ program for the computation of the absolute value:
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  ensures \result >= 0;
-  ensures (val >= 0 ==> \result == val ) && (val <  0 ==> \result == -val);
-*/
-int abs(int val){
-  int res;
-  if(val < 0) res = - val;
-  else        res = val;
-
-  return res;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{abs-1.c}
 
 
 
@@ -125,24 +113,7 @@ presentation.)
 
 
 
-\begin{CodeBlock}{c}
-int abs(int val){
-  int res;
-// { P }
-  if(val < 0){
-// {  (val < 0) && P }
-    res = - val;
-// { \at(val, Pre) >= 0 ==> res == val && \at(val, Pre) < 0 ==> res == -val }
-  } else {
-// { !(val < 0) && P }
-    res = val;
-// { \at(val, Pre) >= 0 ==> res == val && \at(val, Pre) < 0 ==> res == -val }
-  }
-// { \at(val, Pre) >= 0 ==> res == val && \at(val, Pre) < 0 ==> res == -val }
-
-  return res;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{abs-2.c}
 
 
 
@@ -204,20 +175,4 @@ properties of our function \CodeInline{abs} by corresponding ACSL assertions
 
 
 
-\begin{CodeBlock}{c}
-int abs(int val){
-  int res;
-  if(val < 0){
-    //@ assert val < 0 ;
-    res = - val;
-    //@ assert \at(val, Pre) >= 0 ==> res == val && \at(val, Pre) < 0 ==> res == -val ;
-  } else {
-    //@ assert !(val < 0) ;
-    res = val;
-    //@ assert \at(val, Pre) >= 0 ==> res == val && \at(val, Pre) < 0 ==> res == -val ;
-  }
-  //@ assert \at(val, Pre) >= 0 ==> res == val && \at(val, Pre) < 0 ==> res == -val ;
-
-  return res;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{abs-3.c}

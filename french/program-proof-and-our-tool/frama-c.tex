@@ -2,8 +2,6 @@
 
 \begin{center}
 \image{frama-c.png}
-
-
 \end{center}
 
 
@@ -252,32 +250,7 @@ Pour vérifier votre installation, nous allons utiliser ce code très simple dan
 fichier « main.c » :
 
 
-
-\begin{CodeBlock}{c}
-/*@
-  requires \valid(a) && \valid(b);
-  assigns *a, *b;
-  ensures *a == \old(*b);
-  ensures *b == \old(*a);
-*/
-void swap(int* a, int* b){
-  int tmp = *a;
-  *a = *b;
-  *b = tmp;
-}
-
-int main(){
-  int a = 42;
-  int b = 37;
-
-  swap(&a, &b);
-
-  //@ assert a == 37 && b == 42;
-
-  return 0;
-}
-\end{CodeBlock}
-
+\CodeBlockInput{c}{verify.c}
 
 
 Ensuite, depuis un terminal, dans le dossier où ce fichier a été créé,
@@ -295,7 +268,7 @@ Cette fenêtre devrait s'ouvrir.
 
 
 
-\image{1-2-verif_install-1.png}[Vérification installation 1]
+\image{verif_install-1.png}[Vérification installation 1]
 
 
 En cliquant sur \CodeInline{main.c} dans le volet latéral gauche pour le sélectionner,
@@ -304,7 +277,7 @@ vertes sur différentes lignes comme ceci :
 
 
 
-\image{1-2-verif_install-2.png}[Vérification installation 2]
+\image{verif_install-2.png}[Vérification installation 2]
 
 
 Si c'est le cas, tant mieux, sinon il faudra d'abord vérifier que rien n'a été
@@ -382,7 +355,7 @@ WP.
 
 
 
-\image{1-2-select-coq.png}[Sélectionner l'assistant de preuve Coq]
+\image{select_coq.png}[Sélectionner l'assistant de preuve Coq]
 
 
 \begin{Information}

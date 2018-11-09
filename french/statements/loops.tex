@@ -151,19 +151,7 @@ en début de boucle :
 
 
 
-\begin{CodeBlock}{c}
-int main(){
-  int i = 0;
-  
-  /*@
-    loop invariant 0 <= i <= 30;
-  */
-  while(i < 30){
-    ++i;
-  }
-  //@assert i == 30;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{first_loop-1.c}
 
 
 
@@ -193,7 +181,7 @@ Goals} » :
 
 
 
-\image{3-3-1-i_30-1.png}[Obligations générées pour prouver notre boucle]
+\image{i_30-1.png}[Obligations générées pour prouver notre boucle]
 
 
 Nous remarquons bien que WP décompose la preuve de l'invariant en deux parties : 
@@ -206,28 +194,14 @@ l'obligation correspondante :
 
 
 
-\image{3-3-1-i_30-2.png}[Preuve de l'assertion par connaissance de l'invariant et l'invalidation de la condition de boucle]
+\image{i_30-2.png}[Preuve de l'assertion par connaissance de l'invariant et l'invalidation de la condition de boucle]
 
 
 Mais notre spécification est-elle suffisante ?
 
 
 
-\begin{CodeBlock}{c}
-int main(){
-  int i = 0;
-  int h = 42;
-  
-  /*@
-    loop invariant 0 <= i <= 30;
-  */
-  while(i < 30){
-    ++i;
-  }
-  //@assert i == 30;
-  //@assert h == 42;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{first_loop-2.c}
 
 
 
@@ -235,7 +209,7 @@ Voyons le résultat :
 
 
 
-\image{3-3-boucle-effet-bord.png}[Encore des effets de bord]
+\image{i_30-3.png}[Encore des effets de bord]
 
 
 Il semble que non.
@@ -253,23 +227,7 @@ ACSL nous propose plus simplement d'ajouter des annotations \CodeInline{assigns}
 les boucles. Toute autre variable est considérée invariante. Par exemple :
 
 
-
-\begin{CodeBlock}{c}
-int main(){
-  int i = 0;
-  int h = 42;
-  
-  /*@
-    loop invariant 0 <= i <= 30;
-    loop assigns i;
-  */
-  while(i < 30){
-    ++i;
-  }
-  //@assert i == 30;
-  //@assert h == 42;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{first_loop-3.c}
 
 
 
@@ -309,13 +267,7 @@ s'intéresse par défaut à de la preuve de correction partielle :
 
 
 
-\begin{CodeBlock}{c}
-void foo(){
-  while(1){}
-  //assert \false;
-}
-\end{CodeBlock}
-
+\CodeBlockInput{c}{infinite.c}
 
 
 Si nous demandons la vérification de ce code en activant le contrôle de RTE,
@@ -323,7 +275,7 @@ nous obtenons ceci :
 
 
 
-\image{3-3-infinite.png}[Preuve de faux par non-terminaison de boucle]
+\image{infinite.png}[Preuve de faux par non-terminaison de boucle]
 
 
 L'assertion « FAUX » est prouvée ! La raison est simple : la non-terminaison de
@@ -339,7 +291,7 @@ soit prouvée.
 \begin{Information}
 À noter qu'une assertion inatteignable est toujours prouvée comme vraie de cette 
 manière :
-\inlineImage{3-3-goto_end.png}
+\inlineImage{goto_end.png}
 
 Et c'est également le cas lorsque l'on sait trivialement qu'une instruction
 produit nécessairement une erreur d'exécution (par exemple en déréférençant 
@@ -362,23 +314,7 @@ de cette façon :
 
 
 
-\begin{CodeBlock}{c}
-int main(){
-  int i = 0;
-  int h = 42;
-  
-  /*@
-    loop invariant 0 <= i <= 30;
-    loop assigns i;
-    loop variant 30 - i;
-  */
-  while(i < 30){
-    ++i;
-  }
-  //@assert i == 30;
-  //@assert h == 42;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{first_loop-4.c}
 
 
 
@@ -386,7 +322,7 @@ Une nouvelle fois nous pouvons regarder les buts générés :
 
 
 
-\image{3-3-boucle_complete.png}[Notre simple boucle complètement spécifiée et prouvée]
+\image{i_30-4.png}[Notre simple boucle complètement spécifiée et prouvée]
 
 
 Le variant nous génère bien deux obligations au niveau de la vérification : 
@@ -404,25 +340,7 @@ connaissance aussi précise du comportement de notre programme. Nous pouvons par
 
 
 
-\begin{CodeBlock}{c}
-###include <stddef.h>
-
-/*@
-  ensures min <= \result <= max;
-*/
-size_t random_between(size_t min, size_t max);
-
-void undetermined_loop(size_t bound){
-  /*@
-    loop invariant 0 <= i <= bound ;
-    loop assigns i;
-    loop variant i;
-   */
-  for(size_t i = bound; i > 0; ){
-    i -= random_between(1, i);
-  }
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{random_loop.c}
 
 
 
@@ -447,22 +365,7 @@ de cette fonction est l'ancienne valeur de \CodeInline{a} à laquelle nous avons
 
 
 
-\begin{CodeBlock}{c}
-/*@
-    ensures \result == \old(a) + 10;
-*/
-int plus_dix(int a){
-    /*@
-        loop invariant 0 <= i <= 10;
-        loop assigns i, a;
-        loop variant 10 - i;
-    */
-    for (int i = 0; i < 10; ++i)
-        ++a;
-
-    return a;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{add_ten-0.c}
 
 
 
@@ -475,7 +378,7 @@ informations qui ne font pas partie de l'invariant. Dans un programme comme :
 /*@
     ensures \result == \old(a) + 10;
 */
-int plus_dix(int a){
+int add_ten(int a){
     ++a;
     ++a;
     ++a;
@@ -496,23 +399,7 @@ exemple :
 
 
 
-\begin{CodeBlock}{c}
-/*@
-    ensures \result == \old(a) + 10;
-*/
-int plus_dix(int a){
-    /*@
-        loop invariant 0 <= i <= 10;
-        loop invariant a = \old(a) + i; //< AJOUT
-        loop assigns i, a;
-        loop variant 10 - i;
-    */
-    for (int i = 0; i < 10; ++i)
-        ++a;
-
-    return a;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{add_ten-1.c}
 
 
 

@@ -69,15 +69,7 @@ mot-clé \CodeInline{\textbackslash{}result}) est supérieur ou égal à 0.
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  ensures \result >= 0;
-*/
-int abs(int val){
-  if(val < 0) return -val;
-  return val;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{abs-1.c}
 
 
 
@@ -98,17 +90,7 @@ comme illustré ci-dessous.
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  ensures \result >= 0;
-  ensures (val >= 0 ==> \result == val ) && 
-          (val <  0 ==> \result == -val);
-*/
-int abs(int val){
-  if(val < 0) return -val;
-  return val;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{abs-2.c}
 
 
 
@@ -169,17 +151,7 @@ catégoriser nos propriétés. Par exemple nous pouvons écrire ceci :
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  ensures positive_value: function_result: \result >= 0;
-  ensures (val >= 0 ==> \result == val) && 
-          (val < 0 ==> \result == -val);
-*/
-int abs(int val){
-  if(val < 0) return -val;
-  return val;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{abs-3.c}
 
 
 
@@ -229,7 +201,7 @@ $ frama-c-gui abs.c
 
 
 
-\image{2-1-1-abs-1.png}[Le volet latéral liste l’arbre des fichiers et des fonctions]
+\image{1-abs-1.png}[Le volet latéral liste l’arbre des fichiers et des fonctions]
 
 
 La fenêtre de Frama-C s'ouvre, dans le volet correspondant aux fichiers et aux
@@ -244,7 +216,7 @@ un clic droit sur le nom de la fonction et « \textit{Prove function annotations
 
 
 
-\image{2-1-1-abs-2.png}[Lancer la vérification de ```abs``` avec WP]
+\image{1-abs-2.png}[Lancer la vérification de ```abs``` avec WP]
 
 
 Nous pouvons voir que les cercles bleus deviennent des pastilles vertes, 
@@ -270,7 +242,7 @@ contrôles par un clic droit sur le nom de la fonction puis « Insert RTE guards
 
 
 
-\image{2-1-1-abs-3.png}[Activer la vérification des erreurs d'exécution]
+\image{1-abs-3.png}[Activer la vérification des erreurs d'exécution]
 
 
 Enfin nous relançons la vérification (nous pouvons également cliquer sur le 
@@ -285,7 +257,7 @@ que -\CodeInline{INT\_MIN} ($-2^{31}$) > \CodeInline{INT\_MAX} ($2^{31}-1$).
 
 
 
-\image{2-1-1-abs-4.png}[Preuve incomplète de ```abs```]
+\image{1-abs-4.png}[Preuve incomplète de ```abs```]
 
 
 \begin{Information}
@@ -358,7 +330,7 @@ dans la capture.
 
 
 
-\image{2-1-1-abs-5.png}[Tableau des obligations de preuve de WP pour ```abs```]
+\image{1-abs-5.png}[Tableau des obligations de preuve de WP pour ```abs```]
 
 
 Le tableau est découpé comme suit, en première colonne nous avons le nom de la
@@ -382,7 +354,7 @@ nous pouvons voir ceci (si ce n'est pas le cas, il faut s'assurer que
 
 
 
-\image{2-1-1-abs-6.png}[Obligation de preuve associée à la vérification de débordement dans ```abs```]
+\image{1-abs-6.png}[Obligation de preuve associée à la vérification de débordement dans ```abs```]
 
 
 C'est l'obligation de preuve que génère WP par rapport à notre propriété et 
@@ -477,21 +449,7 @@ inclure le header où \CodeInline{INT\_MIN} est défini) :
 
 
 
-\begin{CodeBlock}{c}
-###include <limits.h>
-
-/*@
-  requires INT_MIN < val;
-
-  ensures \result >= 0;
-  ensures (val >= 0 ==> \result == val) && 
-          (val < 0 ==> \result == -val);
-*/
-int abs(int val){
-  if(val < 0) return -val;
-  return val;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{abs-4.c}
 
 
 
@@ -517,7 +475,7 @@ implémentation est prouvée :
 
 
 
-\image{2-1-2-abs-1.png}[Preuve de ```abs``` effectuée]
+\image{2-abs-1.png}[Preuve de ```abs``` effectuée]
 
 
 Nous pouvons également vérifier qu'une fonction qui appellerait \CodeInline{abs} 
@@ -536,7 +494,7 @@ void foo(int a){
 
 
 
-\image{2-1-2-foo-1.png}[Vérification du contrat à l'appel de ```abs```]
+\image{2-foo-1.png}[Vérification du contrat à l'appel de ```abs```]
 
 
 Pour modifier un peu l'exemple, nous pouvons essayer d'inverser les deux 
@@ -566,10 +524,10 @@ de preuve générées par WP pour l'appel fautif et l'appel prouvé par conséqu
 
 
 
-\image{2-1-2-foo-2.png}[Obligation générée pour l'appel fautif]
+\image{2-foo-2.png}[Obligation générée pour l'appel fautif]
 
 
-\image{2-1-2-foo-3.png}[Obligation générée pour l'appel qui suit]
+\image{2-foo-3.png}[Obligation générée pour l'appel qui suit]
 
 
 Nous pouvons remarquer que pour les appels de fonctions, l'interface graphique

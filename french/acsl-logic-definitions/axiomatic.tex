@@ -53,7 +53,7 @@ Et nous pouvons voir que dans Frama-C, la propriété est bien supposée vraie :
 
 
 
-\image{5-1-1-premier-axiome.png}[Premier axiome, supposé vrai par Frama-C]
+\image{first-axiom.png}[Premier axiome, supposé vrai par Frama-C]
 
 
 \begin{Spoiler}
@@ -147,20 +147,7 @@ pouvons le faire de cette façon :
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  axiomatic A_all_zeros{
-    predicate zeroed{L}(int* a, integer b, integer e) reads a[b .. e-1];
-
-    axiom zeroed_empty{L}:
-      \forall int* a, integer b, e; b >= e ==> zeroed{L}(a,b,e);
-      
-    axiom zeroed_range{L}:
-      \forall int* a, integer b, e; b < e ==>
-        zeroed{L}(a,b,e-1) && a[e-1] == 0 <==> zeroed{L}(a,b,e);
-  }
-*/
-\end{CodeBlock}
+\CodeBlockInput[1][12]{c}{reset-0.c}
 
 
 
@@ -169,25 +156,7 @@ nouvelle définition :
 
 
 
-\begin{CodeBlock}{c}
-###include <stddef.h>
-
-/*@
-  requires \valid(array + (0 .. length-1));
-  assigns  array[0 .. length-1];
-  ensures  zeroed(array,0,length);
-*/
-void raz(int* array, size_t length){
-  /*@
-    loop invariant 0 <= i <= length;
-    loop invariant zeroed(array,0,i);
-    loop assigns i, array[0 .. length-1];
-    loop variant length-i;
-  */
-  for(size_t i = 0; i < length; ++i)
-    array[i] = 0;
-}
-\end{CodeBlock}
+\CodeBlockInput[16][30]{c}{reset-0.c}
 
 
 
@@ -200,16 +169,7 @@ n'a pas changé, alors la propriété est toujours vérifiée :
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  predicate same_elems{L1,L2}(int* a, integer b, integer e) =
-    \forall integer i; b <= i < e ==> \at(a[i],L1) == \at(a[i],L2);
-
-  lemma no_changes{L1,L2}:
-  \forall int* a, integer b, e;
-  same_elems{L1,L2}(a,b,e) ==> zeroed{L1}(a,b,e) ==> zeroed{L2}(a,b,e);
-*/
-\end{CodeBlock}
+\CodeBlockInput[16][23]{c}{reset-1.c}
 
 
 
@@ -219,13 +179,7 @@ trouve être \CodeInline{Here} puisque nous posons notre assertion à la fin) :
 
 
 
-\begin{CodeBlock}{c}
-for(size_t i = 0; i < length; ++i){
-  L:
-  array[i] = 0;
-  //@ assert same_elems{L,Here}(array,0,i);
-}
-\end{CodeBlock}
+\CodeBlockInput[38][42]{c}{reset-1.c}
 
 
 
@@ -236,34 +190,7 @@ pas induction. Pour les curieux, la (très simple) preuve en Coq est ci-dessous 
 
 
 \begin{Spoiler}
-\begin{CodeBlock}{coq}
-(* Généré par WP *)
-Definition P_same_elems (Mint_0 : farray addr Z) (Mint_1 : farray addr Z)
-    (a : addr) (b : Z) (e : Z) : Prop :=
-    forall (i : Z), let a_1 := (shift_sint32 a i%Z) in ((b <= i)%Z) ->
-      ((i < e)%Z) -> (((Mint_0.[ a_1 ]) = (Mint_1.[ a_1 ]))%Z).
-Goal
-  forall (i_1 i : Z), forall (t_1 t : farray addr Z), forall (a : addr),
-    ((P_zeroed t a i_1%Z i%Z)) -> ((P_same_elems t_1 t a i_1%Z i%Z)) -> ((P_zeroed t_1 a i_1%Z i%Z)).
-(* Notre preuve *)
-Proof.
-  intros b e.
-  (* par induction sur la distance entre b et e *)
-  induction e using Z_induction with (m := b) ; intros mem_l2 mem_l1 a Hz_l1 Hsame.
-  (* cas de base : Axiome "empty" *)
-  + apply A_A_all_zeros.Q_zeroed_empty ; assumption.
-  + replace (e + 1) with (1 + e) in * ; try omega.
-    (* on utilise l'axiome range *)
-    rewrite A_A_all_zeros.Q_zeroed_range in * ; intros Hinf.
-    apply Hz_l1 in Hinf ; clear Hz_l1 ; inversion_clear Hinf as [Hlast Hothers].
-    split.
-    (* sous plage de Hsame *)
-    - rewrite Hsame ; try assumption ; omega.
-    (* hypothèse d'induction *)
-    - apply IHe with (t := mem_l1) ; try assumption.
-      * unfold P_same_elems ; intros ; apply Hsame ; omega.
-Qed.
-\end{CodeBlock}
+\CodeBlockInput{coq}{reset-0-coq.v}
 \end{Spoiler}
 
 
@@ -292,22 +219,7 @@ L'exemple le plus simple à produire est le suivant:
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  axiomatic False{
-    axiom false_is_true: \false;
-  }
-*/
-
-int main(){
-  // Exemples de propriétés prouvées
-
-  //@ assert \false;
-  //@ assert \forall integer x; x > x;
-  //@ assert \forall integer x,y,z ; x == y == z == 42;
-  return *(int*) 0;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{false.c}
 
 
 
@@ -315,7 +227,7 @@ Et tout est prouvé, y compris que le déréférencement de l'adresse 0 est OK :
 
 
 
-\image{false_axiom.png}[Preuve de tout un tas de choses fausses]
+\image{false-axiom.png}[Preuve de tout un tas de choses fausses]
 
 
 Évidemment cet exemple est extrême, nous n'écririons pas un tel axiome. Le
@@ -361,29 +273,7 @@ axiomatiquement la notion de comptage dans un tableau :
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  axiomatic Occurrences_Axiomatic{
-    logic integer l_occurrences_of{L}(int value, int* in, integer from, integer to)
-      reads in[from .. to-1];
-
-    axiom occurrences_empty_range{L}:
-      \forall int v, int* in, integer from, to;
-        from >= to ==> l_occurrences_of{L}(v, in, from, to) == 0;
-
-    axiom occurrences_positive_range_with_element{L}:
-      \forall int v, int* in, integer from, to;
-        (from < to && in[to-1] == v) ==>
-      l_occurrences_of(v,in,from,to) == 1+l_occurrences_of(v,in,from,to-1);
-
-    axiom occurrences_positive_range_without_element{L}:
-      \forall int v, int* in, integer from, to;
-        (from < to && in[to-1] != v) ==>
-      l_occurrences_of(v,in,from,to) == l_occurrences_of(v,in,from,to-1);
-  }
-*/
-\end{CodeBlock}
-
+\CodeBlockInput[3][22]{c}{occurrences_of.c}
 
 
 Nous avons trois cas à gérer :
@@ -406,27 +296,7 @@ prouver :
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  requires \valid_read(in+(0 .. length));
-  assigns  \nothing;
-  ensures  \result == l_occurrences_of(value, in, 0, length);
-*/
-size_t occurrences_of(int value, int* in, size_t length){
-  size_t result = 0;
-  
-  /*@
-    loop invariant 0 <= result <= i <= length;
-    loop invariant result == l_occurrences_of(value, in, 0, i);
-    loop assigns i, result;
-    loop variant length-i;
-  */
-  for(size_t i = 0; i < length; ++i)
-    result += (in[i] == value)? 1 : 0;
-
-  return result;
-}
-\end{CodeBlock}
+\CodeBlockInput[24][42]{c}{occurrences_of.c}
 
 
 
@@ -464,25 +334,7 @@ Nous allons prouver un simple tri par sélection :
 
 
 
-\begin{CodeBlock}{c}
-size_t min_idx_in(int* a, size_t beg, size_t end){
-  size_t min_i = beg;
-  for(size_t i = beg+1; i < end; ++i)
-    if(a[i] < a[min_i]) min_i = i;
-  return min_i;
-}
-
-void swap(int* p, int* q){
-  int tmp = *p; *p = *q; *q = tmp;
-}
-
-void sort(int* a, size_t beg, size_t end){
-  for(size_t i = beg ; i < end ; ++i){
-    size_t imin = min_idx_in(a, i, end);
-    swap(&a[i], &a[imin]);
-  }
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{sort-0.c}
 
 
 
@@ -495,40 +347,7 @@ axiomatiques.
 
 
 \begin{Spoiler}
-\begin{CodeBlock}{c}
-/*@
-  requires \valid_read(a + (beg .. end-1));
-  requires beg < end;
-
-  assigns  \nothing;
-
-  ensures  \forall integer i; beg <= i < end ==> a[\result] <= a[i];
-  ensures  beg <= \result < end;
-*/
-size_t min_idx_in(int* a, size_t beg, size_t end){
-  size_t min_i = beg;
-
-  /*@
-    loop invariant beg <= min_i < i <= end;
-    loop invariant \forall integer j; beg <= j < i ==> a[min_i] <= a[j];
-    loop assigns min_i, i;
-    loop variant end-i;
-  */
-  for(size_t i = beg+1; i < end; ++i){
-    if(a[i] < a[min_i]) min_i = i;
-  }
-  return min_i;
-}
-
-/*@
-  requires \valid(p) && \valid(q);
-  assigns  *p, *q;
-  ensures  *p == \old(*q) && *q == \old(*p);
-*/
-void swap(int* p, int* q){
-  int tmp = *p; *p = *q; *q = tmp;
-}
-\end{CodeBlock}
+\CodeBlockInput[3][34]{c}{sort-1.c}
 \end{Spoiler}
 
 
@@ -537,26 +356,7 @@ du tri est de poser cette spécification (qui est vraie !) :
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  predicate sorted(int* a, integer b, integer e) =
-    \forall integer i, j; b <= i <= j < e ==> a[i] <= a[j];
-*/
-
-/*@
-  requires \valid(a + (beg .. end-1));
-  requires beg < end;
-  assigns  a[beg .. end-1];
-  ensures sorted(a, beg, end);
-*/
-void sort(int* a, size_t beg, size_t end){
-  /*@ //annotation de l'invariant */
-  for(size_t i = beg ; i < end ; ++i){
-    size_t imin = min_idx_in(a, i, end);
-    swap(&a[i], &a[imin]);
-  }
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{sort-incomplete.c}
 
 
 
@@ -568,26 +368,7 @@ pleinement la spécification :
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  requires \valid(a + (beg .. end-1));
-  requires beg < end;
-
-  assigns  a[beg .. end-1];
-  
-  ensures sorted(a, beg, end);
-*/
-void fail_sort(int* a, size_t beg, size_t end){
-  /*@
-    loop invariant beg <= i <= end;
-    loop invariant \forall integer j; beg <= j < i ==> a[j] == 0;
-    loop assigns i, a[beg .. end-1];
-    loop variant end-i;
-  */
-  for(size_t i = beg ; i < end ; ++i)
-    a[i] = 0;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{sort-false.c}
 
 
 
@@ -614,30 +395,7 @@ Ceci est exprimé par le code suivant :
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  predicate swap_in_array{L1,L2}(int* a, integer b, integer e, integer i, integer j) =
-    b <= i < e && b <= j < e &&
-    \at(a[i], L1) == \at(a[j], L2) && \at(a[j], L1) == \at(a[i], L2) &&
-    \forall integer k; b <= k < e && k != j && k != i ==> \at(a[k], L1) == \at(a[k], L2);
-
-  axiomatic Permutation{
-    predicate permutation{L1,L2}(int* a, integer b, integer e)
-     reads \at(*(a+(b .. e - 1)), L1), \at(*(a+(b .. e - 1)), L2);
-
-    axiom reflexive{L1}: 
-      \forall int* a, integer b,e ; permutation{L1,L1}(a, b, e);
-
-    axiom swap{L1,L2}:
-      \forall int* a, integer b,e,i,j ;
-        swap_in_array{L1,L2}(a,b,e,i,j) ==> permutation{L1,L2}(a, b, e);
-	
-    axiom transitive{L1,L2,L3}:
-      \forall int* a, integer b,e ; 
-        permutation{L1,L2}(a, b, e) && permutation{L2,L3}(a, b, e) ==> permutation{L1,L3}(a, b, e);
-  }
-*/
-\end{CodeBlock}
+\CodeBlockInput[36][57]{c}{sort-1.c}
 
 
 
@@ -647,30 +405,7 @@ fonction :
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  requires beg < end && \valid(a + (beg .. end-1));
-  assigns  a[beg .. end-1];  
-  ensures sorted(a, beg, end);
-  ensures permutation{Pre, Post}(a,beg,end);
-*/
-void sort(int* a, size_t beg, size_t end){
-  /*@
-    loop invariant beg <= i <= end;
-    loop invariant sorted(a, beg, i) && permutation{Begin, Here}(a, beg, end);
-    loop invariant \forall integer j,k; beg <= j < i ==> i <= k < end ==> a[j] <= a[k];
-    loop assigns i, a[beg .. end-1];
-    loop variant end-i;
-  */
-  for(size_t i = beg ; i < end ; ++i){
-    //@ ghost begin: ;
-    size_t imin = min_idx_in(a, i, end);
-    swap(&a[i], &a[imin]);
-    //@ assert swap_in_array{begin,Here}(a,beg,end,i,imin);
-  }
-}
-\end{CodeBlock}
-
+\CodeBlockInput[64][84]{c}{sort-1.c}
 
 
 Cette fois, notre propriété est précisément définie, la preuve reste assez

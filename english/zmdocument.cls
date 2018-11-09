@@ -245,6 +245,34 @@
    \automark[chapter]{part}
 }
 
+%%% INPUT
+
+\newcommand{\levelOneFile}{}
+
+\newenvironment{levelOne}[2]{
+  \levelOneTitle{#1}
+  \renewcommand{\levelOneFile}{#2}
+  \input{#2}
+}{
+  \renewcommand{\levelOneFile}{}
+}
+
+\newcommand{\levelTwoFile}{}
+\newenvironment{levelTwo}[2]{
+  \ifthenelse{\isempty{#1}}{}{\levelTwoTitle{#1}}
+  \renewcommand{\levelTwoFile}{#2}
+  \input{\levelOneFile/#2}
+}{
+  \renewcommand{\levelTwoFile}{}
+}
+
+\newcommand{\currentInput}{\levelOneFile/\levelTwoFile}
+%%   \ifthenelse{\isempty{\levelTwoFile}}
+%%              {\levelOneFile}
+%%              {\levelOneFile/\levelTwoFile}
+%% }
+
+
 %%% PROCESSING
 \ProcessOptions
 
@@ -373,6 +401,34 @@
    rectangle ([xshift=8mm]frame.north west);\end{tcbclipinterior}},
    left=8mm,
    title=#1,
+   attach boxed title to bottom center,
+   boxed title style={empty,boxrule=0.5mm},
+   coltitle=defaultColor
+}
+
+\DeclareTCBInputListing{\CodeBlockInput}{O{1} O{last line of input} m m}{%
+   enlarge top initially by=5mm,
+   enlarge bottom finally by=1mm,
+   boxrule=0.5pt,
+   breakable,
+   colback=codeBackgroundColor,
+   coltext=defaultColor,
+   colframe=ZdSBoxBorderSpoiler,
+   arc=0.0pt,
+   listing engine=minted,
+   listing only,
+   minted style=colorful,
+   minted language=#3,
+   listing file=../code/\currentInput/#4,
+   minted options={
+     firstline=#1,
+     lastline=#2,
+     numbersep=3mm
+   }, % Removed: highlightlines={#2}
+   enhanced,
+   overlay={\begin{tcbclipinterior}\fill[lineNumberSeparatorCodeColor] ([xshift=8mm-0.5pt]frame.south west)
+   rectangle ([xshift=8mm]frame.north west);\end{tcbclipinterior}},
+   left=8mm,
    attach boxed title to bottom center,
    boxed title style={empty,boxrule=0.5mm},
    coltitle=defaultColor
@@ -565,12 +621,15 @@
 %%% IMAGES
 \NewDocumentCommand{\image}{mo}{%
    \begin{center}
-      \includegraphics[max size={\textwidth}{0.9\textheight}, keepaspectratio]{#1}
-      \IfValueT{#2}{\captionof{figure}{#2}}
+     \includegraphics[max size={\textwidth}{0.9\textheight}, keepaspectratio]
+                     {\currentInput/#1}
+                     \IfValueT{#2}{\captionof{figure}{#2}}
    \end{center}
 }
 
-\newcommand{\inlineImage}[1]{\includegraphics[max size={\textwidth}{\textheight}, keepaspectratio]{#1}}
+\newcommand{\inlineImage}[1]{
+  \includegraphics[max size={\textwidth}{\textheight}, keepaspectratio]{\currentInput/#1}
+}
 
 %%% SMILEYS
 \def\@smileysPath{./smileys}

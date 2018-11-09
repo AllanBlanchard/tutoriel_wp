@@ -10,14 +10,7 @@ entre les valeurs absolues de deux valeurs :
 
 
 
-\begin{CodeBlock}{c}
-int max_abs(int a, int b){
-  int abs_a = abs(a);
-  int abs_b = abs(b);
-
-  return max(abs_a, abs_b);
-}
-\end{CodeBlock}
+\CodeBlockInput[6][11]{c}{max_abs.c}
 
 
 
@@ -28,48 +21,12 @@ headers/source pour \CodeInline{abs} et \CodeInline{max}. Cela donne pour \CodeI
 
 Fichier abs.h :
 
+\CodeBlockInput{c}{abs.h}
 
 
-\begin{CodeBlock}{c}
-###ifndef _ABS
-#define _ABS
+Fichier abs.c :
 
-###include <limits.h>
-
-/*@
-  requires val > INT_MIN;
-  assigns  \nothing;
-
-  behavior pos:
-    assumes 0 <= val;
-    ensures \result == val;
-  
-  behavior neg:
-    assumes val < 0;
-    ensures \result == -val;
- 
-  complete behaviors;
-  disjoint behaviors;
-*/
-int abs(int val);
-
-###endif
-\end{CodeBlock}
-
-
-
-Fichier abs.c
-
-
-
-\begin{CodeBlock}{c}
-###include "abs.h"
-
-int abs(int val){
-  if(val < 0) return -val;
-  return val;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{abs.c}
 
 
 
@@ -94,14 +51,7 @@ Dans notre header :
 
 
 
-\begin{CodeBlock}{c}
-###ifndef _MAX_ABS
-#define _MAX_ABS
-
-int max_abs(int a, int b);
-
-###endif
-\end{CodeBlock}
+\CodeBlockInput{c}{max_abs_uns.h}
 
 
 
@@ -109,18 +59,7 @@ Et dans le source :
 
 
 
-\begin{CodeBlock}{c}
-###include "max_abs.h"
-#include "max.h"
-###include "abs.h"
-
-int max_abs(int a, int b){
-  int abs_a = abs(a);
-  int abs_b = abs(b);
-
-  return max(abs_a, abs_b);
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{max_abs.c}
 
 
 
@@ -131,7 +70,7 @@ pastilles particulières (vertes et bleues) :
 
 
 
-\image{2-4-max_abs.png}[Le contrat de ```max``` est valide par hypothèse]
+\image{max_abs.png}[Le contrat de ```max``` est valide par hypothèse]
 
 
 Ces pastilles nous disent qu'en l'absence d'implémentation, les propriétés sont
@@ -157,26 +96,8 @@ Finalement, le lecteur pourra essayer de spécifier la fonction \CodeInline{max\
 
 
 
-La spécification peut ressembler à ceci (j'ai mis l'implémentation avec pour
-rappel) :
+La spécification peut ressembler à ceci:
 
 
 
-\begin{CodeBlock}{c}
-/*@
-  requires a > INT_MIN;
-  requires b > INT_MIN;
-
-  assigns \nothing;
-
-  ensures \result >= 0;
-  ensures \result >= a && \result >= -a && \result >= b && \result >= -b;
-  ensures \result == a || \result == -a || \result == b || \result == -b;
-*/
-int abs_max(int a, int b){
-  int abs_a = abs(a);
-  int abs_b = abs(b);
-
-  return max(abs_a, abs_b);
-}
-\end{CodeBlock}
+\CodeBlockInput[4][14]{c}{max_abs.h}
