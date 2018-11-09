@@ -1,4 +1,4 @@
-#include <stddef.h>
+#include <limits.h> 
 
 /*@
   logic integer ax_b(integer a, integer x, integer b) =
@@ -30,12 +30,12 @@
 */
 
 /*@
-  requires limit_int_min_ax_b(3,4) < x < limit_int_max_ax_b(3,4);
+  requires limit_int_min_ax_b(a,4) < x < limit_int_max_ax_b(a,4);
   assigns \nothing ;
-  ensures \result == ax_b(3,x,4); 
+  ensures \result == ax_b(a,x,4); 
 */
-int function(int x){
-  return 3*x + 4;
+int function(int a, int x){
+  return a*x + 4;
 }
 
 /*@ 

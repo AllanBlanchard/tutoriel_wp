@@ -8,18 +8,18 @@ Goal
 (* Notre preuve *)
 Proof.
   intros b e.
-  (* par induction sur la distance entre b et e *)
+  (* by induction on the distance between b and e *)
   induction e using Z_induction with (m := b) ; intros mem_l2 mem_l1 a Hz_l1 Hsame.
-  (* cas de base : Axiome "empty" *)
+  (* base case : "empty" Axiom *)
   + apply A_A_all_zeros.Q_zeroed_empty ; assumption.
   + replace (e + 1) with (1 + e) in * ; try omega.
-    (* on utilise l'axiome range *)
+    (* we use the range axiom *)
     rewrite A_A_all_zeros.Q_zeroed_range in * ; intros Hinf.
     apply Hz_l1 in Hinf ; clear Hz_l1 ; inversion_clear Hinf as [Hlast Hothers].
     split.
-    (* sous plage de Hsame *)
+    (* subrange Hsame *)
     - rewrite Hsame ; try assumption ; omega.
-    (* hypothèse d'induction *)
+    (* induction hypotheses *)
     - apply IHe with (t := mem_l1) ; try assumption.
       * unfold P_same_elems ; intros ; apply Hsame ; omega.
 Qed.

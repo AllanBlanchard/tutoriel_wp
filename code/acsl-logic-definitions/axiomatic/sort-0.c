@@ -1,3 +1,5 @@
+#include <stddef.h>
+
 size_t min_idx_in(int* a, size_t beg, size_t end){
   size_t min_i = beg;
   for(size_t i = beg+1; i < end; ++i)

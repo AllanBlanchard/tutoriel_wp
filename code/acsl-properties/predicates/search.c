@@ -1,3 +1,5 @@
+#include <stddef.h>
+
 /*@
   predicate valid_range_rw(int* t, integer n) =
     n >= 0 && \valid(t + (0 .. n-1));

@@ -1,4 +1,4 @@
-#include <stddef.h>
+#include <limits.h>
 
 /*@
   requires val > INT_MIN;

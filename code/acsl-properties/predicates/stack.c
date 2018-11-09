@@ -1,12 +1,15 @@
+#include <stddef.h>
+#define MAX_SIZE 42
+
 struct stack_int{
   size_t top;
   int    data[MAX_SIZE];
 };
 
 /*@
-  predicate valid_stack_int(struct stack_int* s) = // à définir ;
-  predicate empty_stack_int(struct stack_int* s) = // à définir ;
-  predicate full_stack_int(struct stack_int* s) =  // à définir ;
+  predicate valid_stack_int(struct stack_int* s) = \true ; // à définir
+  predicate empty_stack_int(struct stack_int* s) = \true ; // à définir
+  predicate full_stack_int(struct stack_int* s) =  \true ; // à définir
 */
 
 /*@
@@ -41,7 +44,7 @@ void pop(struct stack_int* s);
   assigns \nothing;
   ensures \result == 1 <==> empty_stack_int(s);
 */
-int  is_empty(stack_int_t s);
+int  is_empty(struct stack_int* s);
 
 
 /*@
@@ -49,4 +52,4 @@ int  is_empty(stack_int_t s);
   assigns \nothing;
   ensures \result == 1 <==> full_stack_int(s);
 */
-int  is_full(stack_int_t s);
+int  is_full(struct stack_int* s);

@@ -1,3 +1,10 @@
+#include <stddef.h>
+
+/*@
+  predicate sorted(int* a, integer b, integer e) =
+    \forall integer i, j; b <= i <= j < e ==> a[i] <= a[j];
+*/
+
 /*@
   requires \valid(a + (beg .. end-1));
   requires beg < end;
