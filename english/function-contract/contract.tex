@@ -314,7 +314,9 @@ In the bottom panel, we can select the ``WP Goals'' tab, it shows the
 list of proof obligations, and for each prover the result is symbolized
 by a logo that indicates if the proof has been tried and if it
 succeeded, failed or encountered a timeout (here we can see a try with
-Z3 where we had a timeout on the proof of absence of RTE).
+Z3 where we had a timeout on the proof of absence of RTE). Note that it
+may require to select ``All Results'' in the squared field to see all
+proof obligations.
 
 
 \image{1-abs-5.png}[Proof obligations panel of WP for \CodeInline{abs}]
@@ -335,8 +337,9 @@ through WP.
 
 In these provers, the first element is Qed. It is not really a prover.
 In fact, if we double-click on the property ``absence of underflow''
-(highlight in blue in the last screenshot), we can see corresponding
-proof obligation:
+(highlighted in blue in the last screenshot), we can see corresponding
+proof obligation (if it is not the case, make sure that the value ``Raw
+obligation'' is selected in the blue squared field):
 
 
 
@@ -382,7 +385,7 @@ hard to read.
 
 
 
-If we go back to our view of proof obligations (see the squared button
+If we go back to our view of proof obligations (see the red squared button
 in the last screenshot), we can see that our hypotheses are not enough
 to determine that the property ``absence of underflow'' is true (which
 is indeed currently impossible), so we need to add some hypotheses to
@@ -482,6 +485,13 @@ void foo(int a){
 
 
 \image{2-foo-1.png}[Precondition checking when calling \CodeInline{abs}]
+
+Note that we can clic on the bullet next to the function call to see the
+list of preconditions and check which ones are not validated. Here, there is
+only one precondition, but when there are multiple ones it is useful to check
+what is exactly the problem.
+
+\image{2-foo-1-bis.png}[Unfolded precondition checking when calling \CodeInline{abs}]
 
 
 We can modify this example by revering the last two instructions. If we
