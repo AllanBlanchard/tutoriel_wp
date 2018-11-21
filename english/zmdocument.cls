@@ -619,16 +619,18 @@
 \hypersetup{pdfauthor={\@author}}
 
 %%% IMAGES
-\NewDocumentCommand{\image}{mo}{%
-   \begin{center}
-     \includegraphics[max size={\textwidth}{0.9\textheight}, keepaspectratio]
-                     {\currentInput/#1}
-                     \IfValueT{#2}{\captionof{figure}{#2}}
-   \end{center}
+\NewDocumentCommand{\image}{moo}{%
+  \begin{figure}
+    \centering
+    \includegraphics
+        [scale=.5, max size={\textwidth}{0.9\textheight}, keepaspectratio]
+        {\currentInput/#1}
+    \IfValueT{#2}{\caption{#2}}
+  \end{figure}
 }
 
 \newcommand{\inlineImage}[1]{
-  \includegraphics[max size={\textwidth}{\textheight}, keepaspectratio]{\currentInput/#1}
+  \includegraphics[scale=.5, max size={\textwidth}{\textheight}, keepaspectratio]{\currentInput/#1}
 }
 
 %%% SMILEYS
