@@ -1,8 +1,8 @@
 Lemmas are general properties about predicates or functions. Once these
 properties are expressed, their proof can be performed (one time) and the
 provers will then be able to use this result to perform other proofs without
-requiring to perform again all steps needed to perform the original proof if
-it appears in a much longer proof about an other property.
+requiring to repeat all steps needed to perform the original proof if
+it appears in a much longer proof about a different property.
 
 For example, lemmas allow us to express properties about recursive functions
 in order to get easier proofs when we are interested in proving properties
@@ -35,7 +35,7 @@ which is true, even if it is trivial:
 This proof can be performed using WP. The property is, of course, proved
 using only Qed.
 
-# Example: properties about linear functions
+# Example: properties of linear functions
 
 We can come back to our linear functions and express some interesting
 properties about them:

@@ -73,7 +73,7 @@ always assumed to be true.
 
 # Recursive function or predicate definitions
 
-Axiomatic definition of recursive functions and predicates are particularly
+Axiomatic definitions of recursive functions and predicates are particularly
 useful since they will prevent provers to unroll the recursion when is is
 possible.
 
@@ -96,16 +96,16 @@ follows:
 */
 ```
 
-In this axiomatic definition, our function do not have a body. Its behavior is
+In this axiomatic definition, our function has no body. Its behavior is
 only defined by the axioms we have stated about it.
 
-A small subtlety is that we must take care about the fact that if some axioms
+A small subtlety that we must take care of is the fact that if some axioms
 state properties about the content of some pointed memory cells, we have to
 specify considered memory blocks using the `reads` notation in the declaration.
 If we omit such a specification, the predicate or function will be considered
 to be stated about the received pointers and not about pointer memory blocks.
 So, if the code modifies the content of an array for which we had proven that
-the predicate or function give some result, this result will not be considered
+the predicate or function gives some result, this result will not be considered
 to be potentially different.
 
 If, for example, we want to define that an array only contains 0s, we have to
@@ -150,8 +150,8 @@ void reset(int* array, size_t length){
 ```
 
 Depending on the Frama-C or automatic solvers versions, the proof of the
-preservation of the invariant could fail. A reason to this fail is the fact that
-the prover forget that cells preceding the one we are currently processing
+preservation of the invariant could fail. A reason for this fail is the fact that
+the prover forgets that cells preceding the one we are currently processing
 are actually still set to 0. We can add a lemma in our knowledge base, stating
 that if a set of values of an array did not change between two program points,
 the first one being a point where the property "zeroed" is verified, then the
@@ -224,7 +224,7 @@ example.
 # Consistency
 
 By adding axioms to our knowledge base, we can produce more complex proofs since
-some part of these proofs, expressed by axioms, do not need to be proved anymore
+some part of these proofs, expressed by axioms, does not need to be proved anymore
 (they are already specified to be true) shortening the proof process. However,
 using axiomatic definitions, **we must be extremely careful**. Indeed, even a
 small error could introduce false in the knowledge base, making our whole
@@ -270,9 +270,9 @@ be able to find and use the inconsistency, we then need to always be careful!
 More specifically, specifying the values read by a function or a predicate is
 important for the consistency of an axiomatic definition. Indeed, as previously
 explained, if we do not specify what is read when a pointer is received, an
-update of a value inside the array do not invalidate a property known about the
+update of a value inside the array does not invalidate a property known about the
 content of the array. In such a case, the proof is performed but since the
-axiom do not talk about the content of the array, we do not prove anything.
+axiom does not talk about the content of the array, we do not prove anything.
 
 For example, in the function that resets an array to 0, if we modify the
 axiomatic definition, removing the specification of the values that are read
@@ -282,7 +282,7 @@ but will not prove anything about the content of the arrays.
 # Example: counting occurrences of a value
 
 In this example, we want to prove that an algorithm actually counts the
-occurrences of a value inside an array. We start by axiomatically define
+occurrences of a value inside an array. We start by axiomatically defining
 what is the number of occurrences of a value inside an array:
 
 ```c
@@ -357,7 +357,7 @@ lemma l_occurrences_of_range{L}:
 ```
 
 An automatic solver cannot discharge this lemma. It would be necessary to prove
-it interactively using Coq, for example. By expressing, generic manually proved
+it interactively using Coq, for example. By expressing generic manually proved
 lemmas, we can often add useful tools to provers to manipulate more efficiently
 our axiomatic definitions, without directly adding new axioms that would augment
 the chances to introduce errors. Here, we still have to realize the proof of the
@@ -487,8 +487,8 @@ of the original array.
 Defining the notion of permutation is easily done using an axiomatic definition.
 Indeed, to determine that an array is the permutation of an other one, we can
 limit us to a few cases. First, the array is a permutation of itself, then
-swapping to values of the array produces a new permutation if we do not change
-anything else. And finally if we create the permutation $p_2$ of $p_1$, and then
+swapping two values of the array produces a new permutation if we do not change
+anything else. And finally, if we create the permutation $p_2$ of $p_1$, and then
 the permutation $p_3$ of $p_2$, then by transitivity $p_3$ is a permutation of
 $p_1$.
 
@@ -552,6 +552,6 @@ produce, only requiring to add an assertion in the block of the loop to state
 that it only performs a swap of values inside the array (and then giving
 the transition to the next permutation). To define this swap notion, we use
 a particular annotation (at line 16), introduced using the keyword `ghost`.
-Here, the goal is to introduce a label in the code that in fact does not exists
+Here, the goal is to introduce a label in the code that in fact does not exist
 from the program point of view, and is only visible from a specification point
 of view. This is the topic of the next section.

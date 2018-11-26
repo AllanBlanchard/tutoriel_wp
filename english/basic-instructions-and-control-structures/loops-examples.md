@@ -1,8 +1,8 @@
 # Examples with read-only arrays
 
-Array is the most common data structure when we are working with loops. It is
+The Array is the most common data structure when we are working with loops. It is
 then a good example base to exercise with loops, and these examples allow to
-rapidly show interesting invariant and will allow us to introduce some
+rapidly show interesting invariants and will allow us to introduce some
 important ACSL constructs.
 
 We can for example use the search function that allows to find a value inside
@@ -65,25 +65,25 @@ in our specification, we can read them this way:
 ```c
 /*@
 // for all "off" of type "size_t", such that IF "off" is comprised between 0 and "length"
-//                                 THEN the cell "off" in "a" is different of "element"
+//                                 THEN the cell "off" in "a" is different from "element"
 \forall size_t off ; 0 <= off < length ==> a[off] != element;
 
-// there exists "off" of type "size_t", such that "off" is comprise between 0 and "length"
+// there exists "off" of type "size_t", such that "off" is comprised between 0 and "length"
 //                                      AND the cell "off" in "a" equals to "element"
 \exists size_t off ; 0 <= off < length && a[off] == element;
 */
 ```
 
-If we want to sum up the use of these keyword, we would say that on a range of
+If we want to summarize the use of these keywords, we would say that on a range of
 values, a property is true, either about at least one of them or about all of
-them. A common scheme is to constraint this set using another property
+them. A common scheme is to constrain this set using another property
 (here: `0 <= off < length`) and to prove the actual interesting property on this
 smaller set. **But using `exists` and `forall` is fundamentally different**.
 
 With `\forall type a ; p(a) ==> q(a)`, the constraint `p` is followed by an
-implication. For all element, if a first property `p` is verified about it, then
-we have to verify the second property `q`. If we use a conjunction, as we do for
-"exists" (that we will later explain), that would mean that all element verify
+implication. For any element where a first property `p` is verified, we have
+to also verify the second property `q`. If we use a conjunction, as we do for
+"exists" (which we will later explain), that would mean that all elements verify
 both `p` and `q`. Sometimes, it could be what we want to express, but it would
 then not correspond anymore to the idea of constraining a set for which we want
 to verify some other property.
@@ -92,8 +92,8 @@ With `\exists type a ; p(a) && q(a)`, the constraint `p` is followed by a
 conjunction. We say there exists an element such that it satisfies the property
 `p` at the same time it also satisfies `q`. If we use an implication, as we do
 for "forall", such an expression will always be true if `p` is not a tautology!
-Why? Is there a "a" such that p(a) implies q(a) ? Let us take a "a" such that
-p(a) is false, the implication is true.
+Why? Is there an "a" such that p(a) implies q(a)? Let us take an "a" such that
+p(a) is false, then the implication is true.
 
 This part of the invariant deserves a particular attention:
 
@@ -105,7 +105,7 @@ Indeed, it defines the treatment performed by our loop, it indicates to WP what
 happens inside the loop (or more precisely: what we learn) along the execution.
 Here, this formula indicates that at each iteration of the loop, we know that
 for each memory location between 0 and the next location to visit
-(`i` excluded), the memory location contains a value different of the element we
+(`i` excluded), the memory location contains a value different from the element we
 are looking for.
 
 The proof obligation associated to the preservation of this invariant is a bit
@@ -115,10 +115,10 @@ is interesting:
 
 ![Trivial goal](https://zestedesavoir.com:443/media/galleries/2584/eda30413-2d95-4d0a-ab5c-f36a356ad516.png)
 
-We note that this property, while quite complex, is proved easily proved by
+We note that this property, while quite complex, is proved easily by
 Qed. If we look at the parts of the programs on which the proof relies, we can
 see that the instruction `i = 0` is highlighted and this is, indeed, the last
-instruction executed on `i` before we start the loop. And consequently if we
+instruction executed on `i` before we start the loop. And consequently, if we
 replace the value of `i` by 0 inside the formula of the invariant, we get:
 
 " For all j, greater or equal to 0 and strictly lower than 0 ", this part of the
@@ -131,7 +131,7 @@ memory locations, the other with selective modifications.
 
 ## Reset
 
-Let us have a look to the function that resets an array of integer to 0.
+Let us have a look at the function that resets an array of integer to 0.
 
 ```c
 #include <stddef.h>
@@ -159,7 +159,7 @@ use the notation `n .. m` to indicate which parts of the array are modified.
 ## Search and replace
 
 The last example we will detail to illustrate the proof of functions with
-loops is the algorithm "search and replace". This algorithms will selectively
+loops is the algorithm "search and replace". This algorithm will selectively
 modify values in a range of memory locations. It is generally harder to guide
 the tool in such a case, because on one hand we must keep track of what is
 modified and what is not, and on the other hand, the induction relies on this
@@ -210,13 +210,14 @@ between the old values of the array and the potentially new values:
 */
 ```
 
-For memory location, if it contained the value that must be replaced, then it
-now contains the new value, else the value remains unchanged. In fact, if we try
-to prove this invariant with WP, it fails. In such a case, the simpler method is
-to add different assertions that will express the different intermediate
-properties using assertions, that we expect to be easily proved and that implies
-the invariant. Here, we can easily notice that WP do not succeed in maintaining
-the knowledge that we have not modified the end of the array yet:
+For every memory location that contained the value to be replaced, it now must
+contain the new value. All other values must remain unchanged. In fact, if we
+try to prove this invariant with WP, it fails. In such a case, the simpler
+method is to add different assertions that will express the different
+intermediate properties using assertions which we expect to be easily proved
+and which imply the invariant. Here, we can easily notice that WP does not
+succeed in maintaining the knowledge that we have not modified the remaining
+part of the array yet:
 
 ```c
 for(size_t i = 0; i < length; ++i){
@@ -273,7 +274,7 @@ understand what the provers miss to establish the proof.
 It can miss hypotheses. In this case, we can try to add assertions to guide the
 prover. With some experience, we can read the content of the proof obligations
 or try to perform the proof with the Coq interactive prover to see whether the
-proof seems to be possible. Sometimes, the prover just need more time, in such a
+proof seems to be possible. Sometimes, the prover just needs more time. In such a
 case, we can (sometimes a lot) augment the timeout value. Of course, the
 property can be too hard for the prover, and in this case, we will have to write
 the proof ourselves with an interactive prover.

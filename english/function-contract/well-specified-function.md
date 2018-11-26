@@ -124,7 +124,7 @@ of them currently:
 - ```Here``` : value at the current program point.
 
 [[information]]
-| The behavior of `Here` is in fact the default behavior when we consider a
+| The behavior of `Here` is, in fact, the default behavior when we consider a
 | variable. Its use with `at` will generally let us ensure that what we write
 | is not ambiguous, and is more readable, when we express properties about
 | values at different program points in the same expression.
@@ -235,7 +235,7 @@ The result is not exactly what we expect:
 
 Indeed, we did not specify the allowed side effects for our function. In order
 to specify side effects, we use an `assign` clause which is part of the 
-postcondition of a function. It allows us to specify which **non local** 
+postcondition of a function. It allows us to specify which **non-local**
 elements (we verify side effects) can be modified during the execution of the 
 function.
 
@@ -317,7 +317,7 @@ is different of the pointer `b`. Now, if these pointers are the same,
   modify this memory location.
 
 [[question]]
-| Why is the `assign` clause validated ?
+| Why is the `assign` clause validated?
 |
 | The reason is simply that `a` is indeed the only modified memory location.
 | If `a != b`, we only modify the location pointed by `a`, and if `a == b`,

@@ -1,15 +1,15 @@
 # Ensure program reliability
 
 It is often difficult to ensure that our programs have only correct behaviors.
-Moreover, it is already complex to establish a good criteria that makes us
-confident enough to say that a program correctly works:
+Moreover, it is already complex to establish good criteria that make us
+confident enough to say that a program works correctly:
 
 - beginners simply "try" to use their programs and considers that these
   programs work if they do not crash (which is not a really good indicator
   in C language),
 - more advanced developers establish some test cases for which they know
   the expected result and compare the output they obtain,
-- most of companies establish complete test bases, that covers as much code
+- most companies establish complete test bases, that cover as much code
   as they can ; which are systematically executed on their code. Some of them
   apply test driven development,
 - in critical domains, such as aerospace, railway or armament, every code
@@ -41,20 +41,20 @@ Source: Dijkstra
 
 ## The developer's Holy Grail: the bug-free software
 
-Every time we can read news about attacks on computer systems, or viruses,
+Every time we read news about attacks on computer systems, or viruses,
 or bugs leading to crashes in well known apps, there is always the one same
 comment "the bug-free/perfectly secure program does not exist". And, if
 this sentence is quite true, it is a bit misunderstood.
 
 Apart from the difference between safety and security (that we can very
 vaguely define by the existence of a malicious entity), we do not really
-define what we mean by "bug-free". Creating software always rely at least
+define what we mean by "bug-free". Creating software always relies at least
 on two steps: we establish a specification of what we expect from the
 program and then we produce the source code of the program that must
 respect this specification. Both of these steps can lead to the introduction
 of errors.
 
-In this tutorial, we will show how we can prove that an implementation verify
+In this tutorial, we will show how we can prove that an implementation verifies
 a given specification. But what are the arguments of program proof, compared
 to program testing? First, the proof is complete, it cannot forget some corner
 case if the behavior is specified (program test cannot be complete,
@@ -62,13 +62,13 @@ being exhaustive would be far too costly). Then, the obligation to formally
 specify with a logic formulation requires to exactly understand what we have
 to prove about our program.
 
-One could cynically say that program proofs shows that "the implementation does
+One could cynically say that program proof shows that "the implementation does
 not contain bugs that do not exist in the specification". But, well, it is
 already a big step compared to "the implementation does not contain too many
 bugs that do not exist in the specification". Moreover, there also exist
 approaches that allow to analyze specifications to find errors or under-specified
 behaviors. For example, with model checking techniques, we can create an abstract
-model from the specification and produce the set of states that can be reach
+model from the specification and produce the set of states that can be reached
 according to this model. By characterizing what is an error state, we can
 determine if reachable states are error states.
 
@@ -77,7 +77,7 @@ determine if reachable states are error states.
 Formal methods, as we name them, allow in computer science to rigorously,
 mathematically, reason about programs. There exist a lot of formal methods that
 can take place at different levels from program design to implementation,
-analysis and validation, and for all system that allow to manipulate information.
+analysis and validation, and for all systems that allow to manipulate information.
 
 Here, we will focus on a method that allows to formally verify that our programs
 have only correct behaviors. We will use tools that are able to analyze a source
@@ -85,11 +85,11 @@ code and to determine whether a program correctly implements what we want to
 express. The analyzer we will use provides a static analysis, that we can oppose
 to dynamic analysis.
 
-In static analysis, the analyzed program is not executed, we reason on a
+In static analysis, the analyzed program is not executed. We reason on a
 mathematical model of the states it can reach during its execution. On the
 opposite, dynamic analyses such as program testing, require to execute the
 analyzed source code. Note that there exist formal dynamic analysis methods, for
-example automatic test generation, or code monitoring techniques that allows to
+example automatic test generation, or code monitoring techniques that allow to
 instrument a source code to verify some properties about it during execution
 (correct memory use, for example).
 
@@ -99,7 +99,7 @@ the program. The more the approximation is precise, the more the model is
 concrete, the more the approximation is vague, the more it is abstract.
 
 To illustrate the difference between concrete and abstract model, we can have
-a look to the model of simple chronometer. A very abstract model of a chronometer
+a look to the model of a simple chronometer. A very abstract model of a chronometer
 could be the following one:
 
 ![A very abstract model of a chronometer](https://zestedesavoir.com:443/media/galleries/2584/be01ae1b-a9fd-4147-aa1f-98542f030a4d.png)
@@ -131,7 +131,7 @@ The more a model is concrete, the more it precisely describes the behavior of
 our program. The source code more precisely describes the behavior than our
 diagram, but it is less precise than the machine code. However, the more the
 model is precise, the more it is difficult to have a global view of the defined
-behavior. Our diagram is understandable in a blink of an eye, the source code
+behavior. Our diagram is understandable in the blink of an eye, the source code
 requires more time, and for the executable ... Every single person that has
 already opened an executable with a text editor by error knows that it is not
 really pleasant to read[^binary].
@@ -141,7 +141,7 @@ limit the knowledge we have about it and ease our reasoning.
 A constraint we must respect, if we want our analysis to be correct, is to
 never under-approximate behaviors: we would risk to remove a behavior that
 contains an error. However, when we over-approximate it, we can add behaviors
-that cannot happen, and if we add to many of them, we could not be able to
+that cannot happen, and if we add too many of them, we could not be able to
 prove our program is correct, since some of them could be faulty behaviors.
 
 In our case, the model is quite concrete. Every type of instruction, of control
@@ -191,7 +191,7 @@ necessary to memorize these notions nor to understand all the theoretical
 background, but it is still useful to have some ideas about the way our
 tool works.
 
-All of this gives us the basics that allows us to say "here is what this
+All of this gives us the basics that allow us to say "here is what this
 action does" but it does not give us anything to mechanize a proof. The tool
 we will use rely on a technique called weakest precondition calculus.
 
@@ -213,7 +213,7 @@ transforms the predicate $P$ in $Q$. This kind of reasoning is called
 multiple instructions, the strongest postcondition we can reach.
 Informally, considering what we have in input, we calculate what we will
 get in output. If the postcondition we want is as strong or weaker, then
-we prove that there is not any unwanted behaviors.
+we prove that there are no unwanted behaviors.
 
 For example:
 
@@ -242,4 +242,4 @@ The rule will define that $P$ is $\{$a$=42\}$.
 
 For now, let us forget about it, we will come back to these notions as we
 use them in this tutorial to understand how our tools work. So now, we can
-have a look to these tools.
+have a look at these tools.

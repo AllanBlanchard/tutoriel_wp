@@ -7,7 +7,7 @@ previously only known implicitly.
 
 # Syntax
 
-Ghost code is added using annotations that will contains C code introduced
+Ghost code is added using annotations that will contain C code introduced
 using the `ghost` keyword:
 
 ```c
@@ -42,7 +42,7 @@ void foo(int a){
 We must again be careful using ghost code. Indeed, the tool will not perform
 any verification to ensure that we do not write in the memory of the program by
 mistake. This problem being, in fact, an undecidable problem, this analysis would
-require a proof by itself. For example, this code is allowed in input of
+require a proof by itself. For example, this code is allowed as input of
 Frama-C even if it explicitly modifies the state of the program we want to
 verify:
 
@@ -54,7 +54,7 @@ void foo(){
 }
 ```
 
-We then need to be really careful about we are doing using ghost code (by
+We then need to be really careful about what we are doing using ghost code (by
 making it simple).
 
 # Make a logical state explicit
@@ -85,7 +85,7 @@ int max_subarray(int *a, size_t len) {
 ```
 
 In order to specify the previous function, we will need an axiomatic definition
-about sum. This is not too much complex, the careful reader can express the
+about sum. This is not too complex, the careful reader can express the
 needed axioms as an exercise:
 
 ```c
