@@ -40,9 +40,10 @@ int function(int x){
 ![Some overflows seem to be possible](https://zestedesavoir.com:443/media/galleries/2584/e34ccc72-b7ea-46cf-9875-16c3d57262af.png)
 
 This code is indeed proved but some runtime-errors seems to be possible. We can
-again define some mathematical logic function, that will, from a logic point of
-view, provide the bounds of the affine function according to the machine type we
-use? It allows us to then add our bound checking in preconditon or the function.
+again define some mathematical logic function that will provide the bounds of
+the affine function according to the machine type we use (from a logic point of
+view). It allows us to then add our bounds checking in the precondition of the
+function.
 
 ```c
 /*@
@@ -69,22 +70,22 @@ int function(int x){
 
 [[information]]
 | Note that, as in specifications, computations are done using mathematical
-| integers, we then do not need to care about some overflow risk with the
-| computation or `INT_MIN-b` or `INT_MAX-b`.
+| integers. We then do not need to care about some overflow risk with the
+| computation of `INT_MIN-b` or `INT_MAX-b`.
 
 Once this specification is provided, everything is fine. Of course, we could
-provide manually these bounds every time we create an linear logic function.
-But, by creating these bound computation function, we directly get a way to
+manually provide these bounds every time we create a linear logic function.
+But, by creating these bound computation functions, we directly get a way to
 compute them automatically which is quite comfortable.
 
 # Recursive functions and limits of logic functions
 
 Logic functions (as well as predicates) can be recursively defined. However,
 such an approach will rapidly show some limits in their use for program proof.
-Indeed, when automatic solver will reason on such logic properties, if such a
-function is met, it will be necessary to evaluate it, and SMT solvers are not
-meant to be efficient for this task, which will be generally costly, producing
-to long proof resolution and eventually timeouts.
+Indeed, when the automatic solver reasons on such logic properties, if such a
+function is met, it will be necessary to evaluate it. SMT solvers are not
+meant to be efficient for this task, which will generally be costly, producing
+too long proof resolution and eventually timeouts.
 
 We can have a concrete example with the factorial function, using logic and
 using C language:
@@ -105,14 +106,14 @@ unsigned facto(unsigned n){
 
 Without checking overflows, this function is easy and fast to prove. If we add
 runtime error checking, RTE does not add any assertion to check the absence of
-overflow on unsigned integers, since it is specified by the C norm (and is then
+overflow on unsigned integers, since it is specified by the C standard (and is then
 a defined behavior). If we want to add an assertion at this point, we can ask
 WP to generate its own bound checking by right-clicking on the function and then
-asking "insert WP-safety guards". And in this case, an overflow is not proved to
+selecting "insert WP-safety guards". And in this case, an overflow is not proved to
 be absent.
 
 On `unsigned`, the maximum value for which we can compute factorial is 12. If
-we go further, it overflows. We can then add this preconditon:
+we go further, it overflows. We can then add this precondition:
 
 ```c
 /*@ 
@@ -128,12 +129,12 @@ unsigned facto(unsigned n){
 If we ask for a proof on this input, Alt-ergo will probably fail, whereas Z3 can
 compute the proof in less than a second. The reason is that in this case, the
 heuristics that are used by Z3 consider that it is a good idea to spend a bit
-more of time on the evaluation of the function. We can for example change the
-maximum value of `n` to see how the different provers behave. With a `n` fixed to
+more time on the evaluation of the function. We can for example change the
+maximum value of `n` to see how the different provers behave. With an `n` fixed to
 9, Alt-ergo produces a proof in less than 10 seconds, whereas with a value of 10,
 even a minute is not enough.
 
 Logic functions can then be defined recursively but without some more help, we
 are rapidly limited by the fact that provers will need to perform evaluation or
-to "reason" by induction, two tasks for which they are not efficient, which will
-limit our possibility for program proofs.
+to "reason" by induction, two tasks for which they are not efficient. This will
+limit our possibilities for program proofs.

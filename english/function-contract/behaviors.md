@@ -43,7 +43,7 @@ int abs(int val){
 }
 ```
 
-It can be useful to experiment two possibilities to understand the exact
+It can be useful to experiment with the two possibilities to understand the exact
 meaning of `complete` and `disjoint`:
 
 - replace the assumption of `pos` with `val > 0`, in this case, behaviors
@@ -58,7 +58,7 @@ meaning of `complete` and `disjoint`:
 | we will:
 |
 | - put our `assigns` before the behaviors (as we have done in our example)
-|   with all potentially modified non-local element,
+|   with all potentially modified non-local elements,
 | - add in post-condition of each behaviors the elements that are in fact
 |   not modified by indicating their new value to be equal to the `\old` one.
 

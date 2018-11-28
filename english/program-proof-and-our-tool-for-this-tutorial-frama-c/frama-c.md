@@ -25,7 +25,7 @@ be performed manually or automatically, here we use automatic tools.
 
 We will use a SMT solver 
 ([statisfiability modulo theory](https://en.wikipedia.org/wiki/Satisfiability_modulo_theories),
-we will not detailed how it works). This solver is  
+we will not describe in detail how it works). This solver is
 [Alt-Ergo](http://alt-ergo.lri.fr/), that was initially developed by the
 Laboratoire de Recherche en Informatique d'Orsay, and is today maintained and
 updated by OCamlPro.
@@ -88,7 +88,7 @@ installation.
 
 The packages we have listed in the Opam section are required (of course, Opam
 itself is not). It requires a recent version of Ocaml and its compiler
-(including compiler to native code).
+(including a compiler to native code).
 
 After having extracted the folder available here :
 [http://frama-c.com/download.html](http://frama-c.com/download.html) (Source distribution). 
@@ -264,7 +264,7 @@ This point is the one that interest us here. WP can translate its proof
 goals to the Why3 language and then use Why3 to interact with solvers.
 
 The [Why3 website](http://why3.lri.fr/) provides all information about it.
-If Opam is installed, Why3 is available using it, else, there is an another
+If Opam is installed, Why3 is available using it, else, there is another
 installation procedure.
 
 On this website, we can find the list of

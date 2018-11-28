@@ -63,12 +63,12 @@ this: they are precise. What is more terrible that reading a specification
 written in a natural language, with complex sentences, using conditional forms,
 imprecise terms, ambiguities, compiled in administrative documents composed of
 hundreds of pages, and where we need to determine, "so, what this function is
-supposed to do ? And have I to validate about it ?".
+supposed to do ? And what do I have to validate about it ?".
 
-Formal methods are probably not enough used currently. Sometimes because of
-mistrust, sometimes because of ignorance, sometimes becuase of prejudices
-based on ideas born at the begining of the tools, 20 years ago. Our tools
-evolve, the way we develop change, probably faster than in any other technical
+Formal methods are probably not used enough currently. Sometimes because of
+mistrust, sometimes because of ignorance, sometimes because of prejudice
+based on ideas born at the beginning of the tools, 20 years ago. Our tools
+evolve, the ways we develop change, probably faster than in any other technical
 domain. Saying that these tools could never be used for real life programs
 would certainly be a too big shortcut. After all, we see everyday how much
 development is different from what it were 10 years, 20 years, 40 years ago
@@ -107,7 +107,7 @@ point of view are certainly those ones:
 The goal of the first one is to compute the domain of the different variables at
 each program point. When we precisely know these domains, we can determine if
 these variables can produce errors when they are used. However this analysis is
-executed on the whole program and not modularly, it is also stongly dependent of
+executed on the whole program and not modularly. It is also stongly dependent of
 the type of domain we use (we will not enter into details here) and it is not
 so good at keeping the relations between variables. On the other side, it is
 really completely automatic, we do not even need to give loop invariant ! The
@@ -116,13 +116,13 @@ error or a false positive.
 
 The second analysis allows to generate from an original program, a new program
 where the assertions are transformed into runtime verifications. If these
-assertions fail, the program fails. If they are valid, the program have the same
+assertions fail, the program fails. If they are valid, the program has the same
 behavior it would have without the assertions. An example of use is to generate
 the verification of absence of runtime errors as assertions using `-rte` and
 then to use E-ACSL to generate the program containing the runtime verification
 that these assertions do not fail.
 
-There exists different other plugins for very different tasks:
+There exist different other plugins for very different tasks:
 
 - impact analysis of a modification,
 - data-flow analysis to visit it efficiently,
@@ -145,16 +145,16 @@ to bridge the gap to automatic solvers. But this is not the only way to use Why3
 It can also be used itself to write programs and prove them. It especially
 provides a set of theories for some common data structures.
 
-There is some proofs that cannot be discharged by automatic solvers. In such a
+There are some proofs that cannot be discharged by automatic solvers. In such a
 case, we have to provide these proofs interactively. WP, like Why3, can extract
 its goals to Coq, and it is very interesting to study this language. In the
-context of Frama-C, we produce lemmas libraries already proved that we can reuse.
+context of Frama-C, we produce reusable lemma libraries which are already proved.
 But Coq can also be used for many different tasks, including programming. Note
 that Why3 can also extract its proof obligations to Isabelle or PVS that are
 also proof assistants.
 
 Finally, there exists other program logics, for example separation logic or
-concurrent program logics. Again this notion are interesting to know in the
+concurrent program logics. Again these notions are interesting to know in the
 context of Frama-C: if we cannot directly use them, they can inspire the way
 we specify our program in Frama-C for the proof with WP. They could also be
 implemented into new plugins to Frama-C.
