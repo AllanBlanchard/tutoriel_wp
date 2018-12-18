@@ -1,0 +1,282 @@
+Inductive predicates gives a way to state properties whose verification requires
+to reason by induction, that is to say: for a property $p(input)$, it is true
+for some base cases (for example, $0$ is an even natural number), and knowing
+that $p(input)$ is true, it also true for a $bigger input$, provided that some
+conditions relating $input$ and $bigger input$ are verified (for example, knowing
+that $n$ is even, we define that $n+2$ is also even). Thus, inductive predicates
+are generally useful to define properties recursively.
+
+\levelThreeTitle{Syntax}
+
+For now, let us define the syntax of inductive predicates:
+
+\begin{CodeBlock}{c}
+/*@
+  inductive property{ Label0, ..., LabelN }(type0 a0, ..., typeN aN) {
+  case c_1{L0, ..., Lq}: p_1 ;
+  ...
+  case c_m{L0, ..., Lr}: p_km ;
+  }
+*/
+\end{CodeBlock}
+
+Where all \CodeInline{c\_i} are names and all \CodeInline{p\_i} are logic
+formulas where \CodeInline{property} appears has a conclusion. Basically,
+\CodeInline{property} is true for some parameters and some labels, if it
+corresponds to one of the cases of the inductive definition.
+
+We can have a look to the simple property we just talked about: how to define
+that a natural number is even using induction. We can translate the sentence:
+``0 is a natural number, and if $n$ is a natural number, $n+2$ is a natural
+number'':
+
+
+
+\CodeBlockInput{c}{even-0.c}
+
+
+
+Which perfectly describes the two cases:
+\begin{itemize}
+\item $0$ is even (base case),
+\item if a natural $n$ is even, $n+2$ is also even.
+\end{itemize}
+  
+However, this definition is not completely satisfaying. For example, we cannot
+deduce that an odd number is not even. If we try to prove that 1 is even, we
+will have to check if -1 is even, and then -3, -5, etc, infinitely. Moreover,
+we generally prefer to define the induction cases the opposite way: defining
+the condition under which the wanted conclusion is true. For example, here,
+how can we verify that some $n$ is natural and even? We first have to check that
+$n$ is greater than $0$ and then to verify that $n-2$ is even:
+
+
+
+\CodeBlockInput[1][9]{c}{even-1.c}
+
+
+
+Here, we distinguish two cases:
+\begin{itemize}
+\item 0 is even,
+\item a natural $n$ is even if $n-2$ is an even natural.
+\end{itemize}
+
+Taking the second case, we recursively decrease the number until we reach
+0, and then the number is even, since 0 is even, or -1, and then there
+is no case in the inductive that corresponds to this value, so we could
+deduce that the property is false (however, we will see later that in the
+case of WP, we need the Coq proof assistant).
+
+
+\CodeBlockInput[11][14]{c}{even-1.c}
+
+
+
+Of course, defining that some natural number is even inductively is not a
+good idea, since we can simply define it using modulo. We generally use them
+to define complex recursive properties.
+
+\levelFourTitle{Consistency}
+
+Inductive definitions bring the risk to introduce inconsistencies. Indeed, the
+property specified in the different cases are considered to be always true, so
+if we introduce a property that allows to prove \CodeInline{false}, we will be
+able to prove everything. While we will give more details about axioms in the
+Section~\ref{l2:acsl-logic-definitions-axiomatic}, let us give two hints to
+avoid building such a bad definition.
+
+First, it is possible to syntactically restrict what we allow in an inductive
+definition, by making sure that each case has the form:
+
+\begin{CodeBlock}{c}
+/*@
+  \forall y1,...,ym ; h1 ==> ··· ==> hl ==> P(t1,...,tn) ;
+*/
+\end{CodeBlock}
+
+where the predicate \CodeInline{P} can only appear positively (so not negated
+with \CodeInline{!} - $\neg$) in the different hypotheses \CodeInline{hx}.
+Basically, it ensures that we cannot build both positive and negative
+occurrences of \CodeInline{P} for some parameters which would be incoherent.
+
+This is for example verified by our previously defined predicate
+\CodeInline{even\_natural}. While a definition like:
+
+\CodeBlockInput[1][11]{c}{even-bad.c}
+
+does not respect this constraint as the property \CodeInline{even\_natural}
+appears negatively on line 8.
+
+Second, it is possible to ask the generation of a Coq version of a proof
+obligation that needs the predicate \CodeInline{P}. For example, we can write
+a function:
+
+\begin{CodeBlock}{c}
+/*@
+  requires P( params ... ) ;
+  ensures  \false ;
+*/ void function(params){
+
+}
+\end{CodeBlock}
+
+For example for our definition of \CodeInline{even\_natural}, we would write:
+
+\CodeBlockInput[13][18]{c}{even-bad.c}
+
+As Coq is more strict than Frama-C and WP on this kind of definition. If the
+inductive predicate is too strange, it will be rejected with an error. And
+indeed, with the bad definition of \CodeInline{even\_natural} we just proposed,
+Coq complains when try to prove the \CodeInline{ensures \\false}, because there
+exists a non positive occurrence of \CodeInline{P\_even\_natural}, that encodes
+the \CodeInline{even\_natural} we wrote in ACSL.
+
+\image{coq-failed}[Coq fails to generate the goal]
+
+\image{coq-failed-error}[The error generated by Coq]
+
+\levelThreeTitle{Recursive predicate definitions}
+
+Inductive predicates are often useful to express recursive properties since it
+prevents the provers to unroll the recursion when it is possible.
+
+If, for example, we want to define that an array only contains 0s, we have to
+write it as follows:
+
+\begin{CodeBlock}{c}
+/*@
+  inductive zeroed{L}(int* a, integer b, integer e){
+  case zeroed_empty{L}:
+    \forall int* a, integer b, e; b >= e ==> zeroed{L}(a,b,e);
+  case zeroed_range{L}:
+    \forall int* a, integer b, e; b < e ==>
+      zeroed{L}(a,b,e-1) && a[e-1] == 0 ==> zeroed{L}(a,b,e);
+  }
+*/
+\end{CodeBlock}
+
+And we can again prove that our reset to 0 is correct with this new
+definition:
+
+\CodeBlockInput[16][30]{c}{reset-0.c}
+
+Depending on the Frama-C or automatic solvers versions, the proof of the
+preservation of the invariant could fail. A reason to this fail is the fact that
+the prover forget that cells preceding the one we are currently processing
+are actually still set to 0. We can add a lemma in our knowledge base, stating
+that if a set of values of an array did not change between two program points,
+the first one being a point where the property "zeroed" is verified, then the
+property is still verified at the second program point.
+
+
+\CodeBlockInput[16][23]{c}{reset-1.c}
+
+
+Then we can add an assertion to specify what did not change between the
+beginning of the loop block (pointed by the label \CodeInline{L} in the code)
+and the end (which is \CodeInline{Here} since we state the property at the end):
+
+
+\CodeBlockInput[38][42]{c}{reset-1.c}
+
+
+Note that in this new version of the code, the property stated by our lemma is
+not proved using automatic solver, that cannot reason by induction. If the
+reader is curious, the (quite simple) Coq proof can be found
+in~\ref{l2:acsl-logic-definitions-answers}.
+
+
+In this case study, using an inductive definition is not efficient: our
+property can be perfectly expressed using the basic constructs of the first
+order logic as we did before. Inductive definitions are meant to be used to
+write definitions that are not easy to express using the basic formalism
+provided by ACSL. It is here used to illustrate their use with a simple
+example.
+
+\levelThreeTitle{Example: sort}
+
+We will prove a simple selection sort:
+
+
+\CodeBlockInput[3]{c}{sort-0.c}
+
+
+The reader can exercise by specifying and proving the search of the minimum and
+the swap function. We hide there a correct version of these specification and
+code (Answers~\ref{l2:acsl-logic-definitions-answers}), we will focus on the
+specification and the proof of the sort function that is a interesting use case
+for inductive definitions.
+
+Indeed, a common error we could do, trying to prove a sort function, would
+be to write this specification (which is true !):
+
+
+\CodeBlockInput[6]{c}{sort-incomplete.c}
+
+
+{\bf This specification is true}. But if we recall correctly the part of the
+tutorial about specifications, we have to {\it precisely} express what we expect of
+the program. With this specification, we do not prove all required properties
+expected for a sort function. For example, this function correctly answers to
+the specification:
+
+
+\CodeBlockInput[8]{c}{sort-false.c}
+
+
+Our specification does not express the fact that all elements initially found
+inside the array must still be found inside the array after executing the
+sort function. That is to say: the sort function produces a sorted permutation
+of the original array.
+
+Defining the notion of permutation is easily done using an inductive definition.
+Indeed, to determine that an array is the permutation of an other one, we can
+limit us to a few cases. First, the array is a permutation of itself, then
+swapping to values of the array produces a new permutation if we do not change
+anything else. And finally if we create the permutation $p_2$ of $p_1$, and then
+the permutation $p_3$ of $p_2$, then by transitivity $p_3$ is a permutation of
+$p_1$.
+
+The corresponding inductive definition is the following:
+
+\begin{CodeBlock}{c}
+/*@
+  predicate swap_in_array{L1,L2}(int* a, integer b, integer e, integer i, integer j) =
+    b <= i < e && b <= j < e &&
+    \at(a[i], L1) == \at(a[j], L2) &&
+    \at(a[j], L1) == \at(a[i], L2) &&
+    \forall integer k; b <= k < e && k != j && k != i ==>
+      \at(a[k], L1) == \at(a[k], L2);
+
+  inductive permutation{L1,L2}(int* a, integer b, integer e){
+  case reflexive{L1}: 
+    \forall int* a, integer b,e ; permutation{L1,L1}(a, b, e);
+  case swap{L1,L2}:
+    \forall int* a, integer b,e,i,j ;
+      swap_in_array{L1,L2}(a,b,e,i,j) ==> permutation{L1,L2}(a, b, e);
+  case transitive{L1,L2,L3}:
+    \forall int* a, integer b,e ; 
+      permutation{L1,L2}(a, b, e) && permutation{L2,L3}(a, b, e) ==> permutation{L1,L3}(a, b, e);
+  }
+*/
+\end{CodeBlock}
+
+We can then specify that our sort function produces the sorted permutation of
+the original array and we can then prove it by providing the invariant of the
+function:
+
+
+\CodeBlockInput[64][84]{c}{sort-1.c}
+
+
+
+This time, our property is precisely defined, the proof is relatively easy to
+produce, only requiring to add an assertion in the block of the loop to state
+that it only performs a swap of values inside the array (and then giving
+the transition to the next permutation). To define this swap notion, we use
+a particular annotation (at line 16), introduced using the keyword
+\CodeInline{ghost}. Here, the goal is to introduce a label in the code that in
+fact does not exists from the program point of view, and is only visible from
+a specification point of view. This is the final section of this chapter, for
+now let us focus on axiomatic definitions.
