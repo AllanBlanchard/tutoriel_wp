@@ -14,7 +14,7 @@
 \RequirePackage[english]{babel}
 \RequirePackage[babel=true]{microtype}
 \RequirePackage{caption}
-\RequirePackage{ulem}
+%\RequirePackage{ulem}
 \RequirePackage{newfloat}
 \RequirePackage{ifthen}
 \RequirePackage{xifthen}
@@ -251,6 +251,7 @@
 
 \newenvironment{levelOne}[2]{
   \levelOneTitle{#1}
+  \label{l1:#2}
   \renewcommand{\levelOneFile}{#2}
   \input{#2}
 }{
@@ -260,6 +261,7 @@
 \newcommand{\levelTwoFile}{}
 \newenvironment{levelTwo}[2]{
   \ifthenelse{\isempty{#1}}{}{\levelTwoTitle{#1}}
+  \label{l2:\levelOneFile-#2}
   \renewcommand{\levelTwoFile}{#2}
   \input{\levelOneFile/#2}
 }{
@@ -395,7 +397,7 @@
    listing only,
    minted style=colorful,
    minted language=#4,
-   minted options={firstnumber=#3,numbersep=3mm}, % Removed: highlightlines={#2}
+   minted options={fontsize=\scriptsize,firstnumber=#3,numbersep=3mm}, % Removed: highlightlines={#2}
    enhanced,
    overlay={\begin{tcbclipinterior}\fill[lineNumberSeparatorCodeColor] ([xshift=8mm-0.5pt]frame.south west)
    rectangle ([xshift=8mm]frame.north west);\end{tcbclipinterior}},
@@ -421,6 +423,7 @@
    minted language=#3,
    listing file=../code/\currentInput/#4,
    minted options={
+     fontsize=\scriptsize,
      firstline=#1,
      lastline=#2,
      numbersep=3mm
@@ -444,7 +447,7 @@
    boxrule=0.5pt,
    arc=0.0pt
 }
-{\texttt{#1}}
+{\texttt{\small #1}}
 
 %%% IFRAMES
 \newenvironment{Iframe}[1]{%
@@ -511,8 +514,7 @@
 }
 
 \AtEndDocument{%
-   \displaySpoilers
-   \printglossary[title=Abbreviations list]
+  \printglossary[title=Abbreviations list]
 }
 
 %%% TITLE PAGE
@@ -619,13 +621,12 @@
 \hypersetup{pdfauthor={\@author}}
 
 %%% IMAGES
-\NewDocumentCommand{\image}{moo}{%
+\NewDocumentCommand{\image}{mo}{%
   \begin{figure}
     \centering
-    \includegraphics
-        [scale=.5, max size={\textwidth}{0.9\textheight}, keepaspectratio]
-        {\currentInput/#1}
+    \includegraphics[scale=.5, max size={\textwidth}{0.9\textheight}, keepaspectratio]{\currentInput/#1}
     \IfValueT{#2}{\caption{#2}}
+    \label{img:#1}
   \end{figure}
 }
 

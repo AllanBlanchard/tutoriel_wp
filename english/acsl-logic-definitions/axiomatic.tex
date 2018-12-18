@@ -53,28 +53,9 @@ true:
 
 
 
-\image{first-axiom.png}[First axiom, assumed to be true by Frama-C]
+\image{first-axiom}[First axiom, assumed to be true by Frama-C]
 
-
-\begin{Spoiler}
-  Currently, our automatic solvers are not
-  powerful enough to compute \emph{the Answer to the Ultimate
-    Question of Life, the Universe, and Everything}. We can help
-  them by stating it as an axiom! Now, we just have to 
-  understand the question to determine in which case this result can be
-  useful \ldots{}
-
-\begin{CodeBlock}{c}
-/*@
-  axiomatic Ax_answer_to_the_ultimate_question_of_life_the_universe_and_everything {
-    logic integer the_ultimate_question_of_life_the_universe_and_everything{L} ;
-
-    axiom answer{L}:
-      the_ultimate_question_of_life_the_universe_and_everything{L} = 42;
-  }
-*/
-\end{CodeBlock}
-\end{Spoiler}
+\ref{l2:acsl-logic-definitions-answers}
 
 
 \levelFourTitle{Link with lemmas}
@@ -147,9 +128,9 @@ potentially different.
 
 
 
-
-If, for example, we want to define that an array only contains 0s, we
-have to write it as follows:
+For example, if we take the inductive property we stated for "zeroed" in the
+previous chapter, we can write it using an axiomatic definition, and it will be
+written like this:
 
 
 
@@ -157,61 +138,11 @@ have to write it as follows:
 
 
 
-And we can again prove that our reset to 0 is correct with this new
-definition:
+While it is not necessary to specify are the memory location read in an
+inductive definition, we have to specify such an information for axiomatically
+defined properties.
 
-
-
-\CodeBlockInput[16][30]{c}{reset-0.c}
-
-
-
-
-Depending on the Frama-C or automatic solvers versions, the proof of the
-preservation of the invariant could fail. A reason to this fail is the
-fact that the prover forget that cells preceding the one we are
-currently processing are actually still set to 0. We can add a lemma in
-our knowledge base, stating that if a set of values of an array did not
-change between two program points, the first one being a point where the
-property ``zeroed'' is verified, then the property is still verified at
-the second program point.
-
-
-
-\CodeBlockInput[16][23]{c}{reset-1.c}
-
-
-
-Then we can add an assertion to specify what did not change between the
-beginning of the loop block (pointed by the label \texttt{L} in the
-code) and the end (which is \texttt{Here} since we state the property at
-the end):
-
-
-
-\CodeBlockInput[38][42]{c}{reset-1.c}
-
-
-
-Note that in this new version of the code, the property stated by our
-lemma is not proved using automatic solver, that cannot reason by
-induction. If the reader is curious, the (quite simple) Coq proof can be
-found there:
-
-
-
-\begin{Spoiler}
-  \CodeBlockInput{coq}{reset-0-coq.v}
-\end{Spoiler}
-
-
-In this case study, using an axiomatic definition is not efficient: our
-property can be perfectly expressed using the basic constructs of the
-first order logic as we did before. Axiomatic definitions are meant to
-be used to write definitions that are not easy to express using the
-basic formalism provided by ACSL. It is here used to illustrate their
-use with a simple example.
-
+TODO ADD: AN EXAMPLE WHEN IT FAILS
 
 
 \levelThreeTitle{Consistency}
@@ -241,7 +172,7 @@ And everything is proved, comprising the fact that the dereferencing of
 
 
 
-\image{false-axiom.png}[Different false things proved to be true]
+\image{false-axiom}[Different false things proved to be true]
 
 
 Of course, this example is extreme, we would not write such an axiom.
@@ -282,7 +213,7 @@ of the arrays.
 
 
 
-\levelThreeTitle{xample: counting occurrences of a value}
+\levelThreeTitle{Example: counting occurrences of a value}
 
 
 In this example, we want to prove that an algorithm actually counts the
@@ -347,92 +278,5 @@ proof.
 
 
 
-\levelThreeTitle{Example: sort}
+\levelThreeTitle{Example: sort, again}
 
-
-We will prove a simple selection sort:
-
-
-
-\CodeBlockInput[3]{c}{sort-0.c}
-
-
-
-The reader can exercise by specifying and proving the search of the
-minimum and the swap function. We hide there a correct version of these
-specification and code, we will focus on the specification and the proof
-of the sort function that is a interesting use case for axiomatic
-definitions.
-
-
-
-\begin{Spoiler}
-  \CodeBlockInput[3][34]{c}{sort-1.c}
-\end{Spoiler}
-
-
-Indeed, a common error we could do, trying to prove a sort function,
-would be to write this (true!) specification:
-
-
-
-\CodeBlockInput[6]{c}{sort-incomplete.c}
-
-
-
-
-\textbf{This specification is true}. But if we recall correctly the part
-of the tutorial about specifications, we have to \emph{precisely}
-express what we expect of the program. With this specification, we do
-not prove all required properties expected for a sort function. For
-example, this function correctly fullfils the specification:
-
-
-
-\CodeBlockInput[8]{c}{sort-false.c}
-
-
-
-Our specification does not express the fact that all elements initially
-found inside the array must still be found inside the array after
-executing the sort function. That is to say: the sort function produces
-a sorted permutation of the original array.
-
-Defining the notion of permutation is easily done using an axiomatic
-definition. Indeed, to determine that an array is the permutation of an
-other one, we can limit us to a few cases. First, the array is a
-permutation of itself, then swapping to values of the array produces a
-new permutation if we do not change anything else. And finally if we
-create the permutation $p_2$ of $p_1$, and then the permutation
-$p_3$ of $p_2$, then by transitivity $p_3$ is a permutation of
-$p_1$.
-
-
-
-The corresponding axiomatic definition is the following:
-
-
-
-\CodeBlockInput[36][57]{c}{sort-1.c}
-
-
-
-We can then specify that our sort function produces the sorted
-permutation of the original array and we can then prove it by providing
-the invariant of the function:
-
-
-
-\CodeBlockInput[64][84]{c}{sort-1.c}
-
-
-
-This time, our property is precisely defined, the proof is relatively
-easy to produce, only requiring to add an assertion in the block of the
-loop to state that it only performs a swap of values inside the array
-(and then giving the transition to the next permutation). To define this
-swap notion, we use a particular annotation (at line 16), introduced
-using the keyword \texttt{ghost}. Here, the goal is to introduce a label
-in the code that in fact does not exists from the program point of view,
-and is only visible from a specification point of view. This is the
-topic of the next section.

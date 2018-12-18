@@ -201,7 +201,7 @@ $ frama-c-gui abs.c
 
 
 
-\image{1-abs-1.png}[The side panel gives the files and functions tree]
+\image{1-abs-1}[The side panel gives the files and functions tree]
 
 
 The window of Frama-C opens and in the panel dedicated to files and
@@ -216,7 +216,7 @@ function and ``Prove function annotations by WP'':
 
 
 
-\image{1-abs-2.png}[Start the verification of \texttt{abs} with WP]
+\image{1-abs-2}[Start the verification of \texttt{abs} with WP]
 
 
 We can see that blue circles become green bullets, indicating that the
@@ -241,7 +241,7 @@ right-clicking on its name and then click ``Insert RTE guards''.
 
 
 
-\image{1-abs-3.png}[Activate runtime error absence verification]
+\image{1-abs-3}[Activate runtime error absence verification]
 
 
 Finally, we execute the verification again (we can also click on the
@@ -253,7 +253,7 @@ architectures, -\CodeInline{INT\_MIN} ($-2^{31}$) > \CodeInline{INT\_MAX} ($2^{3
 
 
 
-\image{1-abs-4.png}[Incomplete proof of \texttt{abs}]
+\image{1-abs-4}[Incomplete proof of \texttt{abs}]
 
 
 \begin{Information}
@@ -319,7 +319,7 @@ may require to select ``All Results'' in the squared field to see all
 proof obligations.
 
 
-\image{1-abs-5.png}[Proof obligations panel of WP for \CodeInline{abs}]
+\image{1-abs-5}[Proof obligations panel of WP for \CodeInline{abs}]
 
 
 In the first column, we have the name of the function the proof
@@ -343,7 +343,7 @@ obligation'' is selected in the blue squared field):
 
 
 
-\image{1-abs-6.png}[Proof obligation associated to the verification of absence of
+\image{1-abs-6}[Proof obligation associated to the verification of absence of
   underflow in \CodeInline{abs}]
 
 
@@ -465,7 +465,7 @@ everything is validated by WP, our implementation is proved:
 
 
 
-\image{2-abs-1.png}[Proof of \texttt{abs} performed]
+\image{2-abs-1}[Proof of \texttt{abs} performed]
 
 
 We can also verify that a function that would call \CodeInline{abs}
@@ -484,14 +484,14 @@ void foo(int a){
 
 
 
-\image{2-foo-1.png}[Precondition checking when calling \CodeInline{abs}]
+\image{2-foo-1}[Precondition checking when calling \CodeInline{abs}]
 
 Note that we can clic on the bullet next to the function call to see the
 list of preconditions and check which ones are not validated. Here, there is
 only one precondition, but when there are multiple ones it is useful to check
 what is exactly the problem.
 
-\image{2-foo-1-bis.png}[Unfolded precondition checking when calling \CodeInline{abs}]
+\image{2-foo-1-bis}[Unfolded precondition checking when calling \CodeInline{abs}]
 
 
 We can modify this example by revering the last two instructions. If we
@@ -521,10 +521,10 @@ subsequent call that becomes verified:
 
 
 
-\image{2-foo-2.png}[Generated proof obligation for the bad call]
+\image{2-foo-2}[Generated proof obligation for the bad call]
 
 
-\image{2-foo-3.png}[Generated proof obligation for the call that follows]
+\image{2-foo-3}[Generated proof obligation for the call that follows]
 
 
 We can notice that for function calls, the GUI highlights the execution
