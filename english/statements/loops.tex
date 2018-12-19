@@ -16,7 +16,7 @@ question: why are loops so complex?
 The nature of loops makes their analysis complex. When we perform our
 reasoning, we need a rule to determine the precondition from a given sequence
 of instructions and a post-condition. Here, the problem is that we cannot
-\emp{a priori} deduce how many times a loop will iterate, and consequently, we
+\emph{a priori} deduce how many times a loop will iterate, and consequently, we
 cannot know how many times variables will be modified.
 
 
@@ -29,8 +29,9 @@ it is true at the beginning of an iteration, remains true at the end
 
 
 This type of property is called a loop invariant. A loop invariant is a
-property that must be true before and after each loop iteration. For
-example with the following loop:
+property that must be true before and after each loop iteration. And more
+precisely, each time the condition of the loop is checked. For example with
+the following loop:
 
 
 
@@ -415,3 +416,61 @@ invariant, we have to add this knowledge. See, for example:
   example the equality expressed by the invariant we have
   added.
 \end{Information}
+
+
+\levelThreeTitle{Early termination of loop}
+
+
+
+A loop invariant must be true each the condition of the loop is checked. In
+fact, that also means that it must be true before an iteration, and after
+each \textbf{complete} iteration. Let us illustrate on an example this
+important idea.
+
+
+
+\CodeBlockInput{c}{first_loop-non-term-1.c}
+
+
+
+In this function, when the loop reach the index 30, we break the loop before
+checking the condition again. While the invariant is verified, let us show
+that we can now further constrain it.
+
+
+
+\CodeBlockInput{c}{first_loop-non-term-2.c}
+
+
+
+Here we can see that we have excluded 30 from the range of values of
+\CodeInline{i} and everything is still verified by WP. This is particularly
+interesting because it does not apply only to the invariant, none of the loop
+properties need to be verified in this last iteration. For example, we can
+write this code that is still verified:
+
+
+
+\CodeBlockInput{c}{first_loop-non-term-3.c}
+
+
+
+We can see that we can write the variable \CodeInline{h} even if it is not
+listed in the \CodeInline{loop assigns} clause, and that we can give the
+value 42 to \CodeInline{i} which does not respect the invariant, and also
+makes the expression of the variant negative. In fact, everything happens
+as if we had written:
+
+
+
+\CodeBlockInput{c}{first_loop-non-term-4.c}
+
+
+
+This is an interesting scheme. It basically corresponds to any algorithm
+that search, using a loop, a particular condition respected by an element
+in a given data-structure and stops when it founds it to perform some
+operations that are thus not really part of the loop. From a verification
+point of view, it allows us to simplify the contract of the loop: we know
+that the (potentially complex) operations performed just before we stop do
+not need to be considered when designing the contract.
