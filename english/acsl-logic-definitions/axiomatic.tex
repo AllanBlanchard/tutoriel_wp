@@ -212,7 +212,23 @@ For example, in the function that resets an array to 0, if we modify the
 axiomatic definition, removing the specification of the values that are
 read by the predicate (\CodeInline{reads a[b .. e-1]}), the proof
 will still be performed, but will not prove anything about the content
-of the arrays.
+of the arrays. For example, the following function:
+
+
+
+\CodeBlockInput[16][25]{c}{all-zeroes-bad.c}
+
+
+
+is proved to be correct, while we obviously changed a value in the array
+and the value is not 0 anymore.
+
+
+
+Note that unlike inductive definitions, where Coq provides us a way to control
+that what we write in ACSL is relatively well defined, we do not have such a
+mechanism for axiomatic definitions. Basically, even with Coq such a definition
+is translated into a list of axioms that are thus assumed.
 
 
 
