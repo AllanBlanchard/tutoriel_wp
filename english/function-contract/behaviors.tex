@@ -29,8 +29,8 @@ For example, for \texttt{abs} we can write the specification:
 
 
 
-It can be useful to experiment two possibilities to understand the exact
-meaning of \CodeInline{complete} and \CodeInline{disjoint}:
+It can be useful to experiment with the two possibilities to understand
+the exact meaning of \CodeInline{complete} and \CodeInline{disjoint}:
 
 \begin{itemize}
 \item
@@ -51,7 +51,7 @@ meaning of \CodeInline{complete} and \CodeInline{disjoint}:
   this, we will:
   \begin{itemize}
   \item put our \CodeInline{assigns} before the behaviors (as we have done in our
-    example) with all potentially modified non-local element,
+    example) with all potentially modified non-local elements,
   \item add in post-condition of each behaviors the elements that are in fact
     not modified by indicating their new value to be equal to the
     \CodeInline{\textbackslash{}old} one.

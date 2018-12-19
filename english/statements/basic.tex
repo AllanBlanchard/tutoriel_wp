@@ -222,7 +222,7 @@ $Q_{-2}$ and $i_1$.
 
 
 
-Now that we can verify programs that consists of several statements it
+Now that we can verify programs that consist of several statements it
 is time to add some structure to them.
 
 
@@ -231,8 +231,8 @@ is time to add some structure to them.
 
 
 For a conditional statement to be true, one must be able to reach the
-postcondition through both branches. Of course, for both branches the
-same precondition (of the conditional statement) must hold. In addition
+postcondition through both branches. Of course, for both branches, the
+same precondition (of the conditional statement) must hold. In addition,
 we have that in the if-branch the condition is true while in the
 else-branch it is false.
 
@@ -275,7 +275,7 @@ of $S2$.
 \levelFourTitle{Empty \CodeInline{else}-branch}
 
 
-Following this definition we obtain for case of an empty else-branch the
+Following this definition, we obtain for the case of an empty else-branch the
 following rule by simply replacing the statement $S2$ by the empty
 statement \texttt{skip}.
 
@@ -371,8 +371,8 @@ $\neg (c \in [0;15])$, the implication will hold.
 
 
 It can sometimes be useful to strengthen a postcondition or to weaken a
-precondition. If the former will often be established by us to
-facilitate the work of the prover, the second is more often verified by
+precondition. The former will often be established by us to
+facilitate the work of the prover, the latter is more often verified by
 the tool as the result of computing the weakest pre condition.
 
 
@@ -402,7 +402,7 @@ Conversely, the calculation of the precondition will usually generate a
 complicated and often weaker formula than the precondition we want to
 accept as input. In this case, it is our tool that will check the
 implication between what we want and what is necessary for our code to
-be valid. Th is is the part $P \Rightarrow WP$.
+be valid. This is the part $P \Rightarrow WP$.
 
 We can illustrate this with the following code. Note that here the code
 could be proved by WP without the weakening and strengthening of
@@ -482,7 +482,7 @@ $\dfrac{\{P\}\quad c\quad \{Q\}}{\{P \wedge R\}\quad c\quad \{Q \wedge R\}}$
 
 where $c$ does not modify any input variable in $R$. In other words:
 ``To check the triple, let's get rid of the parts of the formula that
-involves variables that are not influence by $c$ and prove the new
+involve variables that are not influence by $c$ and prove the new
 triple.'' However, we must be careful not to delete too much
 information, since this could mean that we are not able to prove our
 properties.
@@ -590,5 +590,5 @@ $\dfrac{P \wedge R \Rightarrow P \quad \{P\}\quad c\quad \{Q\} \quad Q \Rightarr
 
 If the variables of $R$ have not been modified by the operation
 (which, on the other hand, may modify the variables of $P$ to produce
-$Q$), then the properties $P \ wedge R \ Rightarrow P$ and
-$Q \ Rightarrow Q \ wedge R$ hold.
+$Q$), then the properties $P \wedge R \Rightarrow P$ and
+$Q \Rightarrow Q \wedge R$ hold.

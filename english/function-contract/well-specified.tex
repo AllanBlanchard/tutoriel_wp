@@ -115,7 +115,7 @@ support all of them currently:
 
 
 \begin{Information}
-  The behavior of \CodeInline{Here} is in fact the default behavior when we
+  The behavior of \CodeInline{Here} is, in fact, the default behavior when we
   consider a variable. Its use with \CodeInline{\textbackslash{}at} with
   generally let us ensure that what we write is not ambigous, and is more
   readable, when we express properties about values at different program
@@ -227,7 +227,7 @@ The result is not exactly what we expect:
 Indeed, we did not specify the allowed side effects for our function. In
 order to specify side effects, we use an \CodeInline{assign} clause which is
 part of the postcondition of a function. It allows us to specify which
-\textbf{non local} elements (we verify side effects) can be modified
+\textbf{non-local} elements (we verify side effects) can be modified
 during the execution of the function.
 
 
@@ -303,7 +303,7 @@ pointers are the same,
 
 
 \begin{Question}
-  Why is the \CodeInline{assign} clause validated ?
+  Why is the \CodeInline{assign} clause validated?
 
   The reason is simply that \CodeInline{a} is indeed the only modified memory
   location. If \CodeInline{a != b}, we only modify the location pointed by

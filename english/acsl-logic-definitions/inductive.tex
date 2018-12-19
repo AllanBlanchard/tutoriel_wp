@@ -162,8 +162,8 @@ definition:
 \CodeBlockInput[16][30]{c}{reset-0.c}
 
 Depending on the Frama-C or automatic solvers versions, the proof of the
-preservation of the invariant could fail. A reason to this fail is the fact that
-the prover forget that cells preceding the one we are currently processing
+preservation of the invariant could fail. A reason for this fail is the fact that
+the prover forgets that cells preceding the one we are currently processing
 are actually still set to 0. We can add a lemma in our knowledge base, stating
 that if a set of values of an array did not change between two program points,
 the first one being a point where the property "zeroed" is verified, then the
@@ -233,8 +233,8 @@ of the original array.
 Defining the notion of permutation is easily done using an inductive definition.
 Indeed, to determine that an array is the permutation of an other one, we can
 limit us to a few cases. First, the array is a permutation of itself, then
-swapping to values of the array produces a new permutation if we do not change
-anything else. And finally if we create the permutation $p_2$ of $p_1$, and then
+swapping two values of the array produces a new permutation if we do not change
+anything else. And finally, if we create the permutation $p_2$ of $p_1$, and then
 the permutation $p_3$ of $p_2$, then by transitivity $p_3$ is a permutation of
 $p_1$.
 
@@ -277,6 +277,6 @@ that it only performs a swap of values inside the array (and then giving
 the transition to the next permutation). To define this swap notion, we use
 a particular annotation (at line 16), introduced using the keyword
 \CodeInline{ghost}. Here, the goal is to introduce a label in the code that in
-fact does not exists from the program point of view, and is only visible from
+fact does not exist from the program point of view, and is only visible from
 a specification point of view. This is the final section of this chapter, for
 now let us focus on axiomatic definitions.
