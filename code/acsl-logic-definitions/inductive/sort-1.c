@@ -33,28 +33,28 @@ void swap(int* p, int* q){
   int tmp = *p; *p = *q; *q = tmp;
 }
 
+
 /*@
   predicate swap_in_array{L1,L2}(int* a, integer b, integer e, integer i, integer j) =
     b <= i < e && b <= j < e &&
-    \at(a[i], L1) == \at(a[j], L2) && \at(a[j], L1) == \at(a[i], L2) &&
-    \forall integer k; b <= k < e && k != j && k != i ==> \at(a[k], L1) == \at(a[k], L2);
+    \at(a[i], L1) == \at(a[j], L2) &&
+    \at(a[j], L1) == \at(a[i], L2) &&
+    \forall integer k; b <= k < e && k != j && k != i ==>
+      \at(a[k], L1) == \at(a[k], L2);
 
-  axiomatic Permutation{
-    predicate permutation{L1,L2}(int* a, integer b, integer e)
-     reads \at(*(a+(b .. e - 1)), L1), \at(*(a+(b .. e - 1)), L2);
-
-    axiom reflexive{L1}: 
-      \forall int* a, integer b,e ; permutation{L1,L1}(a, b, e);
-
-    axiom swap{L1,L2}:
-      \forall int* a, integer b,e,i,j ;
-        swap_in_array{L1,L2}(a,b,e,i,j) ==> permutation{L1,L2}(a, b, e);
-	
-    axiom transitive{L1,L2,L3}:
-      \forall int* a, integer b,e ; 
-        permutation{L1,L2}(a, b, e) && permutation{L2,L3}(a, b, e) ==> permutation{L1,L3}(a, b, e);
+  inductive permutation{L1,L2}(int* a, integer b, integer e){
+  case reflexive{L1}: 
+    \forall int* a, integer b,e ; permutation{L1,L1}(a, b, e);
+  case swap{L1,L2}:
+    \forall int* a, integer b,e,i,j ;
+      swap_in_array{L1,L2}(a,b,e,i,j) ==> permutation{L1,L2}(a, b, e);
+  case transitive{L1,L2,L3}:
+    \forall int* a, integer b,e ; 
+      permutation{L1,L2}(a, b, e) && permutation{L2,L3}(a, b, e) ==> 
+        permutation{L1,L3}(a, b, e);
   }
 */
+
 
 /*@
   predicate sorted(int* a, integer b, integer e) =
