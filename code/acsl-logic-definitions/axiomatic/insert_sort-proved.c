@@ -34,7 +34,7 @@
     l_occurrences_of(v,in,from,split) + l_occurrences_of(v,in,split,to) ;
 */
 
-/*@ 
+/*@
   predicate permutation{L1, L2}(int* in, integer from, integer to) =
     \forall int v ; l_occurrences_of{L1}(v, in, from, to) ==
                     l_occurrences_of{L2}(v, in, from, to) ;
@@ -43,7 +43,7 @@
 /*@
   predicate rotate_left{L1, L2}(int* a, integer beg, integer end) =
     beg < end && \at(a[beg], L2) == \at(a[end-1], L1) &&
-    (\forall integer k ; beg+1 <= k < end ==> \at(a[k], L2) == \at(a[k-1], L1)) ;
+    (\forall integer k ; beg+1 <= k < end ==> \at(a[k],L2) == \at(a[k-1],L1)) ;
 */
 /*@
   predicate shifted{L1, L2}(integer s, int* a, integer beg, integer end) =
