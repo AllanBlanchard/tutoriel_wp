@@ -39,11 +39,11 @@
     \forall int v ; l_occurrences_of{L1}(v, in, from, to) ==
                     l_occurrences_of{L2}(v, in, from, to) ;
 */
-
-/*@
-  predicate rotate_left{L1, L2}(int* a, integer beg, integer end) =
-    beg < end && \at(a[beg], L2) == \at(a[end-1], L1) &&
-    (\forall integer k ; beg+1 <= k < end ==> \at(a[k],L2) == \at(a[k-1],L1)) ;
+/*@ lemma transitive_permutation{L1, L2, L3}:
+  \forall int* a, integer beg, integer end ;
+    permutation{L1, L2}(a, beg, end) ==> 
+    permutation{L2, L3}(a, beg, end) ==> 
+      permutation{L1, L3}(a, beg, end) ;
 */
 /*@
   predicate shifted{L1, L2}(integer s, int* a, integer beg, integer end) =
@@ -52,6 +52,11 @@
 /*@
   predicate unchanged{L1, L2}(int* a, integer beg, integer end) =
     shifted{L1, L2}(0, a, beg, end);
+*/
+/*@
+  predicate rotate_left{L1, L2}(int* a, integer beg, integer end) =
+    beg < end && \at(a[beg], L2) == \at(a[end-1], L1) &&
+    shifted{L1, L2}(1, a, beg, end - 1) ;
 */
 
 /*@ lemma shifted_maintains_occ{L1, L2}:
@@ -70,13 +75,9 @@
 /*@ lemma union_permutation{L1, L2}:
   \forall int* a, integer beg, split, end, int v ;
     beg <= split <= end ==>
-    permutation{L1, L2}(a, beg, split) ==> permutation{L1, L2}(a, split, end) ==>
+    permutation{L1, L2}(a, beg, split) ==> 
+    permutation{L1, L2}(a, split, end) ==>
       permutation{L1, L2}(a, beg, end) ;
-*/
-/*@ lemma transitive_permutation{L1, L2, L3}:
-  \forall int* a, integer beg, integer end ;
-    permutation{L1, L2}(a, beg, end) ==> permutation{L2, L3}(a, beg, end) ==> 
-      permutation{L1, L3}(a, beg, end) ;
 */
 
 /*@
@@ -94,10 +95,7 @@ void insert(int* a, size_t beg, size_t last){
 
   /*@
     loop invariant beg <= i <= last ;
-    loop invariant i == last ==> sorted(a, beg, last) ;
-    loop invariant i <  last ==> sorted(a, beg, last+1) ;
     loop invariant \forall integer k ; i <= k < last ==> a[k] > value ;
-
     loop invariant \forall integer k ; beg <= k <= i    ==> a[k] == \at(a[k], Pre) ;
     loop invariant \forall integer k ; i+1 <= k <= last ==> a[k] == \at(a[k-1], Pre) ;
 
@@ -108,12 +106,14 @@ void insert(int* a, size_t beg, size_t last){
     a[i] = a[i - 1] ;
     --i ;
   }
+  //@ assert sorted(a, beg, last+1) ;
+  
   a[i] = value ;
-  //@ assert rotate_left{Pre, Here}(a, i, last+1) ;
-  //@ assert permutation{Pre, Here}(a, i, last+1) ;
-
   //@ assert unchanged{Pre, Here}(a, beg, i) ;
   //@ assert permutation{Pre, Here}(a, beg, i) ;
+
+  //@ assert rotate_left{Pre, Here}(a, i, last+1) ;
+  //@ assert permutation{Pre, Here}(a, i, last+1) ;
 }
 
 

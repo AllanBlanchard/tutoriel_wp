@@ -142,8 +142,6 @@ While it is not necessary to specify are the memory location read in an
 inductive definition, we have to specify such an information for axiomatically
 defined properties.
 
-TODO ADD: AN EXAMPLE WHEN IT FAILS
-
 
 \levelThreeTitle{Consistency}
 
@@ -298,4 +296,239 @@ proof.
 
 
 \levelThreeTitle{Example: sort, again}
+
+
+
+We will again illustrate the use of axiomatic definitions with a sort
+function. This time, we will prove the insertion sort function:
+
+
+
+\CodeBlockInput{c}{insert_sort.c}
+
+
+The \CodeInline{insertion\_sort} function visits each value, from the beginning
+of the array, to the end. For each of value $v$, it is inserted (using the
+function \CodeInline{insert}) at the right place in the range of the already
+sorted values (at the beginning of the array), by shifting them until we meet a
+value that is smaller than $v$ or the first cell of the array.
+
+
+
+
+We want to prove the same postcondition as we already proved for the selection
+sort, that is: we want to create a sorted permutation of the original values.
+Again, each iteration of the loop must ensure that the new configuration is a
+permutation of the original values, and that the range from the beginning to
+the current visited cell is sorted. All these properties are ensured by the
+\CodeInline{insert} function. If we give a closer look to this function, we can
+see that it records the value to insert (which is at the end of the range) in
+the variable \CodeInline{value} and starting from this last position it shifts
+all value until we meet a value that is smaller than the one we want to insert
+or the first cell of the array.
+
+
+
+
+First, let us provide a suitable contract and loop invariant to insertion sort
+function. The contract is equivalent to the one provided to the selection sort.
+Note however that the invariant is weaker: we do not needed the values that are
+still not visited to be greater than the visited ones: we insert each value at
+the right place.
+
+
+
+\CodeBlockInput[64][81]{c}{insert_sort-contract.c}
+
+
+
+Now, we can provide a contract to the insert function. The function requires
+that the first part of the range is already sorted, and in exchange, it
+guarantees to provide a range with one more value, that is still sorted and
+is permutation of the original range:
+
+
+
+\CodeBlockInput[43][61]{c}{insert_sort-contract.c}
+
+
+
+Then, we need to provide a suitable invariant to the loop of the
+\CodeInline{insert} function. And this time, we can see that we are in trouble.
+Indeed, our inductive definition of the permutation specifies three cases: a
+range is permutation of itself, or two (and only two) values have been swapped,
+or the permutation is transitive. But none of this cases can be applied to our 
+\CodeInline{insert} function, since the shifted range is not obtained by
+successisively exchanging values, and that the wo other cases obviously do not
+apply here.
+
+
+
+Thus, we need to find a better definition to the notion of permutation. We can
+notice that what we really need to provide is a way to say ``each value that
+was previously in the array is still in the array and if several values were
+equivalent, the number of occurrence of these values does not change''. And in
+fact, this last part of the expression is enough to express our permutation.
+A permutation of range is a range such that forall value, the number of
+occurrences of this value in the array does not change from a program point to
+another:
+
+
+
+\CodeBlockInput[37][41]{c}{insert_sort-proved.c}
+
+
+
+Starting from this definition, we can directly define lemmas that can help us
+to deduce that some array that respect some properties from a label to another
+is indeed a permutation. For example, that would be possible for the defintion
+of the case \CodeInline{Swap} in our previous inductive definition. And it is
+of course also possible for our shifted range.
+
+
+
+
+Let us determine what are the required lemmas by first considering the function
+\CodeInline{insert\_sort}. The only property that is not proved is the invariant
+of the loop that expresses the fact that the array is a permutation of the
+original array. How can we deduce it? (We will consider the proofs of the lemmas
+later).
+
+
+
+
+We can observe two facts: the first part of the array (from \CodeInline{beg} to
+\CodeInline{i+1}) is a permutation of the values that were present in the array
+at the beginning of the iteration (by the contract of the \CodeInline{insert}
+function). The second part (from \CodeInline{i+1} to \CodeInline{end}) is
+unchanged, so this is also a permutation of the values present at the beginning
+of the iteration. While the first property is easily deduced, we can see that
+the second one is not:
+
+
+
+\begin{CodeBlock}{c}
+  /*@
+    loop invariant beg+1 <= i <= end ;
+    loop invariant sorted(a, beg, i) ;
+    loop invariant permutation{Pre, Here}(a,beg,end);
+    loop assigns a[beg .. end-1], i ;
+    loop variant end-i ;
+  */
+  for(size_t i = beg+1; i < end; ++i) {
+    //@ ghost L:
+    insert(a, beg, i);
+    //@ assert permutation{L, Here}(a, beg, i+1); // PROVED
+    //@ assert permutation{L, Here}(a, i+1, end); // NOT PROVED
+  }
+\end{CodeBlock}
+
+So we need a first lemma for this property, we use a predicate
+\CodeInline{shifted} to define \CodeInline{unchanged}, we will explain why
+later.
+
+\CodeBlockInput[53][60]{c}{insert-sort_proved.c}
+\CodeBlockInput[67][70]{c}{insert-sort_proved.c}
+
+And now, we can verify that those two sub-arrays are permutations:
+
+
+\CodeBlockInput[127][140]{c}{insert-sort_proved.c}
+
+
+Thus, since those two parts are permutations, the global array is a permutation
+of the values present at the beginning of the iteration. However, this is not
+directly proved, so we also need a lemma for this:
+
+
+
+\CodeBlockInput[75][81]{c}{insert-sort_proved.c}
+
+
+And now we can deduce that a loop iteration produces a permutation:
+
+
+
+\begin{CodeBlock}{c}
+    //@ ghost L:
+    insert(a, beg, i);
+    //@ assert permutation{L, Here}(a, beg, i+1);
+    //@ assert unchanged{L, Here}(a, i+1, end);
+    //@ assert permutation{L, Here}(a, i+1, end);
+    //@ assert permutation{L, Here}(a, beg, end); // PROVED
+\end{CodeBlock}
+
+
+
+Finally, we need to add one more information, the permutation of a permutation
+is also a permutation:
+
+
+
+\CodeBlockInput[42][47]{c}{insert-sort_proved.c}
+
+
+
+Now, we can have a closer look to the insertion function, by first considering
+how to maintain that the function produces a permutation.
+
+
+
+
+It shifts the different elements to the left until it reaches the beginning of
+the array or an element that is smaller than the element to insert which is
+initially at the end of the range, and is insert at the reached position. The
+cells from the beginning of the array to the location of insertion are left
+unchanged, so this is a permutation. We have a lemma for this, but we also have
+to state that the values are unchanged as an invariant of the loop. The second
+part of the array is a permutation because we rotate the elements, we need a
+lemma to express this and to state at least that the element are shifted by the
+loop as an invariant. Finally the union of the two permutations is a permutation,
+and we also have a lemma for this.
+
+
+
+So first, we can give a suitable invariant for the permutation:
+
+\begin{itemize}
+\item we provide the bounds of \CodeInline{i}
+\item we state that the first part is left unchanged
+\item we state that the last part is shifted to the left
+\end{itemize}
+
+as well as some assertions that we want to be verified.
+
+
+
+\begin{CodeBlock}{c}
+  /*@
+    loop invariant beg <= i <= last ;
+    loop invariant \forall integer k ; beg <= k <= i    ==> a[k] == \at(a[k], Pre) ;
+    loop invariant \forall integer k ; i+1 <= k <= last ==> a[k] == \at(a[k-1], Pre) ;
+
+    loop assigns i, a[beg .. last] ;
+    loop variant i ;
+  */
+  while(i > beg && a[i - 1] > value){
+    a[i] = a[i - 1] ;
+    --i ;
+  }
+
+  a[i] = value ;
+
+  //@ assert unchanged{Pre, Here}(a, beg, i) ;   // PROVED
+  //@ assert permutation{Pre, Here}(a, beg, i) ; // PROVED
+
+  //@ assert permutation{Pre, Here}(a, i, last+1) ; // NOT PROVED
+\end{CodeBlock}
+
+
+Then, for the last assertion, we need a lemma about the rotation of the
+elements:
+
+
+\CodeBlockInput[56][60]{c}{insert_sort-proved.c}
+\CodeBlockInput[71][74]{c}{insert_sort-proved.c}
+
+
 

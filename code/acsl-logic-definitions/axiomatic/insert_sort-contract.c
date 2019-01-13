@@ -60,7 +60,6 @@ void insert(int* a, size_t beg, size_t last){
   a[i] = value ;
 }
 
-
 /*@
   requires beg < end && \valid(a + (beg .. end-1));
   assigns a[beg .. end-1];

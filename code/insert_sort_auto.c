@@ -99,8 +99,6 @@ void insert(int* a, size_t beg, size_t last){
   
   /*@
     loop invariant beg <= i <= last ;
-    loop invariant i == last ==> sorted(a, beg, last) ;
-    loop invariant i <  last ==> sorted(a, beg, last+1) ;
     loop invariant \forall integer k ; i <= k < last ==> a[k] > value ;
 
     loop invariant \forall integer k ; beg <= k <= i    ==> a[k] == \at(a[k], Pre) ;
@@ -119,17 +117,19 @@ void insert(int* a, size_t beg, size_t last){
   //@ ghost l_occurrences_of_explicit_split(a, beg, i, last+1);
   //@ ghost l_occurrences_of_explicit_split(a, i, i+1, last+1) ;
 
-  /*@
-    loop invariant i+1 <= j <= last+1 ;
-    loop invariant \forall int v ;
-      l_occurrences_of(v, a, i+1, j) ==
-      l_occurrences_of{Pre}(v, a, \at(i, Here), \at(j, Here)-1) ;
-    loop assigns j ;
-    loop variant last  - j ;
+  /*@ ghost
+    /@
+      loop invariant i+1 <= j <= last+1 ;
+      loop invariant \forall int v ;
+        l_occurrences_of(v, a, i+1, j) ==
+	l_occurrences_of{Pre}(v, a, \at(i, Here), \at(j, Here)-1) ;
+      loop assigns j ;
+      loop variant last  - j ;
+    @/
+    for(size_t j = i+1 ; j < last+1 ; ++j){
+      /@ assert a[j] == \at(a[\at(j, Here)-1], Pre) ; @/
+    }
   */
-  for(size_t j = i+1 ; j < last+1 ; ++j){
-    //@ assert a[j] == \at(a[\at(j, Here)-1], Pre) ;
-  }
 
   /*@ assert \forall int v ; l_occurrences_of(v, a, i, last+1) == 
     l_occurrences_of(v, a, i, i+1) + l_occurrences_of(v, a, i+1, last+1) ;
@@ -147,14 +147,16 @@ void insert(int* a, size_t beg, size_t last){
       l_occurrences_of{Pre}(v, a, i, last+1) == l_occurrences_of(v, a, i, last+1) ;
   */
 
-  /*@ 
-    loop invariant beg <= j <= i ;
-    loop invariant \forall int v ;
-      l_occurrences_of(v, a, beg, j) == l_occurrences_of{Pre}(v, a, beg, \at(j, Here)) ;
-    loop assigns j ;
-    loop variant i - j ;
+  /*@ ghost
+    /@
+      loop invariant beg <= j <= i ;
+      loop invariant \forall int v ;
+        l_occurrences_of(v, a, beg, j) == l_occurrences_of{Pre}(v, a, beg, \at(j, Here)) ;
+      loop assigns j ;
+      loop variant i - j ;
+    @/
+    for(size_t j = beg ; j < i ; ++j);
   */
-  for(size_t j = beg ; j < i ; ++j);
 }
 
 

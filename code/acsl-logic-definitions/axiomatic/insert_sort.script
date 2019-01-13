@@ -51,7 +51,7 @@ Proof.
   assert(P_shifted M1 M2 1 a ba (ea-1)). {
     intros i ; intros.
     replace (M2 .[ shift_sint32 a i]) with (M2 .[ shift_sint32 a ((1 + i) - 1)]) by (norm ; auto).
-    symmetry ; apply Shift with (i := 1+i) ; omega.
+    norm ; apply Shift ; omega.
   }
   clear Shift.
   intros i Hi.
