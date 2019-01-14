@@ -427,13 +427,13 @@ So we need a first lemma for this property, we use a predicate
 \CodeInline{shifted} to define \CodeInline{unchanged}, we will explain why
 later.
 
-\CodeBlockInput[53][60]{c}{insert-sort_proved.c}
-\CodeBlockInput[67][70]{c}{insert-sort_proved.c}
+\CodeBlockInput[53][60]{c}{insert_sort-proved.c}
+\CodeBlockInput[67][70]{c}{insert_sort-proved.c}
 
 And now, we can verify that those two sub-arrays are permutations:
 
 
-\CodeBlockInput[127][140]{c}{insert-sort_proved.c}
+\CodeBlockInput[127][140]{c}{insert_sort-proved.c}
 
 
 Thus, since those two parts are permutations, the global array is a permutation
@@ -442,7 +442,7 @@ directly proved, so we also need a lemma for this:
 
 
 
-\CodeBlockInput[75][81]{c}{insert-sort_proved.c}
+\CodeBlockInput[75][81]{c}{insert_sort-proved.c}
 
 
 And now we can deduce that a loop iteration produces a permutation:
@@ -465,7 +465,7 @@ is also a permutation:
 
 
 
-\CodeBlockInput[42][47]{c}{insert-sort_proved.c}
+\CodeBlockInput[42][47]{c}{insert_sort-proved.c}
 
 
 
