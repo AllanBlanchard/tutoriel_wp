@@ -10,6 +10,7 @@ some logic properties that were previously only known implicitly.
 \levelThreeTitle{Syntax}
 
 
+
 Ghost code is added using annotations that will contain C code
 introduced using the \texttt{ghost} keyword:
 
@@ -51,6 +52,43 @@ void foo(int a){
   //@ assert ghost_loc_var == \at(a, Ghost_label) == \at(a, Pre);
 }
 \end{CodeBlock}
+
+
+
+While for this chapter, it will not be necessary, as we will see later,
+it is sometimes useful to write some contracts or assertions in ghost
+code. As it must be specified in code that is already in C comments, we
+can use a specific syntax to provide ghost contracts or assertions.
+We open ghost annotations with the syntax \CodeInline{/@} and close
+them with \CodeInline{@/}.
+
+
+
+For example :
+
+
+
+\begin{CodeBlock}{c}
+void foo(unsigned n){
+ /*@ ghost
+   unsigned i ;
+
+   /@
+     loop invariant 0 <= i <= n ;
+     loop assigns i ;
+     loop variant n - i ;
+   @/
+   for(i = 0 ; i < n ; ++i){
+
+   }
+   /@ assert i == n ; @/
+ */
+}
+\end{CodeBlock}
+
+
+
+\levelThreeTitle{Ghost code validity}
 
 
 
