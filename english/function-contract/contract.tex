@@ -632,10 +632,198 @@ produce this behavior using the command line:
 
 
 \begin{CodeBlock}{bash}
-$ frama-c-gui file.c -wp -then -rte -wp
+$ frama-c-gui file.c -wp -then -wp -wp-rte
 \end{CodeBlock}
 
 
 
 ``Start Frama-C with WP, then create assertions to verify the absence of
 RTE and start WP again''.
+
+
+
+\levelThreeTitle{Exercices}
+
+
+
+While this exercices are not absolutely necessary to read the next chapters
+of the tutorial we strongly suggest to practice them. Note that we also
+suggest to, at least, read the fourth exercise that introduces a notation
+that can be sometimes useful.
+
+
+
+\levelFourTitle{Addition}
+
+
+Write the postcondtion of the following addition function:
+
+
+\CodeBlockInput{c}{ex-1-addition.c}
+
+
+And run the command:
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp
+\end{CodeBlock}
+
+
+Once the function is successfuly proved to verify your contract, run:
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+It should fail, adapt your contract by adding the right precondition.
+
+
+\levelFourTitle{Distance}
+
+
+Write the postcondtion of the following distance function, by expressing
+the value of \CodeInline{b} in terms of \CodeInline{a} and
+\CodeInline{\textbackslash{}result}:
+
+
+\CodeBlockInput{c}{ex-2-distance.c}
+
+
+And run the command:
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp
+\end{CodeBlock}
+
+
+Once the function is successfuly proved to verify your contract, run:
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+It should fail, adapt your contract by adding the right precondition.
+
+
+
+\levelFourTitle{Alphabet Letter}
+
+
+
+Write the postcondition of the following function that return true if
+the character received in input is an alphabet letter. Use the equivalence
+operator \CodeInline{<==>}.
+
+
+
+\CodeBlockInput{c}{ex-3-alphabet.c}
+
+
+And run the command:
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+All proof obligations should be proved, including the assertion in the
+main function.
+
+
+
+\levelFourTitle{Days of the month}
+
+
+
+Write the postcondition of the following functions that returns the number
+of days in function of the received month (notice that we condider that
+they are numbered from 1 to 12), for february, we only consider the case
+when it has 28 days, we will later how to solve this problem:
+
+
+
+\CodeBlockInput{c}{ex-4-day-month.c}
+
+
+And run the command:
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp
+\end{CodeBlock}
+
+
+Once the postcondition is proved, run the command:
+
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+
+If it fails, complete your precondition in order to resolve the problem.
+
+
+
+You might have notice that writing the post-condition can be a bit painful.
+Let us try to simplify that. ACSL provide the notion of set, and the operator
+\CodeInline{\textbackslash{}in} that can be used to check whether a value is
+in a set or not.
+
+
+For example:
+
+
+\begin{CodeBlock}{c}
+//@ assert 13 \in { 1, 2, 3, 4, 5 } ; // FALSE
+//@ assert 3  \in { 1, 2, 3, 4, 5 } ; // TRUE
+\end{CodeBlock}
+
+
+
+Modify your postcondition by using this notation.
+
+
+
+\levelFourTitle{Last angle of a triangle}
+
+
+
+This functions receives two values of angle in input and returns the value
+of the last angle considering that the sum of the three angles must be 180.
+Write the post-condition that expresses that the sum of the three angles is
+180.
+
+
+
+\CodeBlockInput{c}{ex-5-last-angle.c}
+
+
+And run the command:
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp
+\end{CodeBlock}
+
+
+Once the function is successfuly proved to verify your contract, run:
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+
+If it fails, add the right preconditions. Note that the values of the different
+angles should not be more than 180 degrees.
