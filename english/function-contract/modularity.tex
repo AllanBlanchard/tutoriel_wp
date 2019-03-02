@@ -94,3 +94,61 @@ A solution is provided there:
 
 
 \CodeBlockInput[4][14]{c}{max_abs.h}
+
+
+
+\levelThreeTitle{Exercices}
+
+
+\levelFourTitle{Days of the month}
+
+
+Specify the function leap year that returns true if the year received
+as an input is leap. Use this functions to complete the functions
+\CodeInline{days\_of} in order to return the number of days of the
+month received as an input, including the right behavior when the year
+is leap for february.
+
+
+
+\CodeBlockInput{c}{ex-1-days-month.c}
+
+
+\levelFourTitle{Alpha-numeric character}
+
+
+Write and specify the different functions used by
+\CodeInline{is\_alpha\_num} provide a contract for each of them and
+provide the contract of \CodeInline{is\_alpha\_num}.
+
+
+
+\CodeBlockInput{c}{ex-2-alphanum.c}
+
+
+Declare an enum with values \CodeInline{LOWER}, \CodeInline{UPPER},
+\CodeInline{DIGIT} and \CodeInline{OTHER}, and a function
+\CodeInline{character\_kind} that returns, using the different
+functions \CodeInline{is\_lower}, \CodeInline{is\_upper},
+\CodeInline{is\_digit}, the kind of character received in input. Use
+behaviors to specify the contracts of this function and be sure that
+they are disjoint and complete.
+
+
+
+
+\levelFourTitle{Order 3 values}
+
+
+
+Taking back the function \CodeInline{max\_ptr} that orders two values,
+puting the maximum at the first location and the minimum at second, 
+write a function \CodeInline{min\_ptr} that uses this function and
+produced the opposite operation. Use these functions to complete the
+four functions that orders 3 values. For each variant (increasing and
+decreasing), write it once using only \CodeInline{max\_ptr} and once
+using only \CodeInline{min\_ptr}.
+
+
+
+\CodeBlockInput{c}{ex-3-order-3.c}
