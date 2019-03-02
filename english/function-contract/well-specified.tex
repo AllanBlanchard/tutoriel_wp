@@ -336,3 +336,163 @@ we do not focus on this question in this section. However, if this
 function was part of a complete program, it would be necessary to define
 the context of use of this function and the precondition guaranteeing
 the absence of overflow.
+
+
+
+\levelThreeTitle{Exercices}
+
+
+\levelFourTitle{Division and remaining}
+
+
+
+Specify the postcondition of the following function, that computes the
+results of the division of \CodeInline{a} by \CodeInline{b} and its
+remaining and stores it in two memory locations \CodeInline{p} and
+\CodeInline{q}:
+
+
+\CodeBlockInput{c}{ex-1-div-rem.c}
+
+Run the command:
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp 
+\end{CodeBlock}
+
+
+Once the function is successfuly proved to verify your contract, run:
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+If it fails, complete your condition by adding the right precondition.
+
+
+
+\levelFourTitle{Reset on condition}
+
+
+
+Provide a contract for the following function that reset its first parameter
+if the second is true. Be sure to express that the second parameter remains
+unmodified:
+
+
+\CodeBlockInput{c}{ex-2-reset-on-cond.c}
+
+
+Run the command:
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+
+\levelFourTitle{Addition of pointed values}
+
+
+The following function recieves two pointers as an input and returns the
+sum the pointed values. Write the contract of this function:
+
+
+
+\CodeBlockInput{c}{ex-3-add-ptr.c}
+
+
+
+Run the command:
+
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+
+Once the function and calling code are successfuly proved, modify the
+signature of the function add as follows:
+
+
+
+\begin{CodeBlock}{c}
+void add(int* a, int* b, int* r);
+\end{CodeBlock}
+
+
+Now the result of the sum should be stored at \CodeInline{r}. Accordingly
+modify the calls in the main function as well as the code and the contract
+of \CodeInline{add}.
+
+
+
+\levelFourTitle{Maximum of pointed values}
+
+
+
+The following functions computes the maximum of the values pointed by
+\CodeInline{a} and \CodeInline{b}. Write the contract of the function:
+
+
+
+\CodeBlockInput{c}{ex-4-max-ptr.c}
+
+
+
+Run the command:
+
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+
+Once it is proved, modify the signature of the function as follows:
+
+
+
+\begin{CodeBlock}{c}
+void max_ptr(int* a, int* b);
+\end{CodeBlock}
+
+
+Now the function should ensure that after its execution \CodeInline{*a}
+contains the maximum of the input value, and \CodeInline{*b} contains the
+other value. Modify the code accordingly as well as the contract. Note that
+the variable \CodeInline{x} is not necessary anymore in the \CodeInline{main}
+function and that you can change the assertion on line 15 to reflect the
+new behavior of the function.
+
+
+
+\levelFourTitle{Order 3 values}
+
+
+
+The following function should order the 3 input values in increasing order.
+Write the corresponding code and specification of the function:
+
+
+\CodeBlockInput{c}{ex-5-order-3.c}
+
+
+And run the command:
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+Try to minimize the amount of separation needed. In order to find the
+minimal separation, take care of the postcondition of the function that
+expresses the order of the values, and consider the case when exactly two
+different values are provided to the function.
