@@ -4,6 +4,8 @@
   requires val > INT_MIN;
   assigns  \nothing;
 
+  ensures \result >= 0;
+
   behavior pos:
     assumes 0 <= val;
     ensures \result == val;
