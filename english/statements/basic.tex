@@ -12,8 +12,6 @@ computation to an assignment operation:
 
 \begin{center}
 $wp(x = E , Post) := Post[x \leftarrow E]$
-
-
 \end{center}
 
 
@@ -37,8 +35,6 @@ x = 43 * c ;
 
 \begin{center}
 $P = wp(x = 43*c , \{x = 258\}) = \{43*c = 258\}$
-
-
 \end{center}
 
 
@@ -86,8 +82,6 @@ the inference rule for the Hoare triple of an assignment as
 
 \begin{center}
 $\dfrac{}{\{Q[x \leftarrow E] \}\quad x = E \quad\{ Q \}}$
-
-
 \end{center}
 
 
@@ -127,6 +121,7 @@ applications of the assignment rule.
 \end{Information}
 
 
+
 \levelThreeTitle{Composition of statements}
 
 For a statement to be valid, its precondition must allow us by means of
@@ -146,8 +141,6 @@ Hoare triples:
 
 \begin{center}
 $\dfrac{\{P\}\quad S1 \quad \{R\} \ \ \ \{R\}\quad S2 \quad \{Q\}}{\{P\}\quad S1 ;\ S2 \quad \{Q\}}$
-
-
 \end{center}
 
 
@@ -169,8 +162,6 @@ as follows:
 
 \begin{center}
 $wp(S1;\ S2 , Post) := wp(S1, wp(S2, Post) )$
-
-
 \end{center}
 
 
@@ -245,8 +236,6 @@ $if\ B\ then\ S1\ else\ S2$):
 
 \begin{center}
 $\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad S2\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad S2 \quad \{Q\}}$
-
-
 \end{center}
 
 
@@ -260,8 +249,6 @@ statement reads as follows:
 
 \begin{center}
 $wp(if\ B\ then\ S1\ else\ S2 , Post) := (B \Rightarrow wp(S1, Post)) \wedge (\neg B \Rightarrow wp(S2, Post))$
-
-
 \end{center}
 
 
@@ -284,8 +271,6 @@ statement \texttt{skip}.
 
 \begin{center}
 $\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad skip\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad skip \quad \{Q\}}$
-
-
 \end{center}
 
 
@@ -296,8 +281,6 @@ The triple for \CodeInline{else} is:
 
 \begin{center}
 $\{P \wedge \neg B\}\quad skip\quad \{Q\}$
-
-
 \end{center}
 
 
@@ -308,8 +291,6 @@ which means that we need to ensure:
 
 \begin{center}
 $P \wedge \neg B \Rightarrow Q$
-
-
 \end{center}
 
 
@@ -364,10 +345,7 @@ $\neg (c \in [0;15])$, the implication will hold.
 
 
 
-\levelTwoTitle{Bonus Stage - Consequence and constancy}
-
-
-\levelThreeTitle{Consequence rule}
+\levelThreeTitle{Bonus Stage - Consequence rule}
 
 
 It can sometimes be useful to strengthen a postcondition or to weaken a
@@ -384,8 +362,6 @@ The inference rule of Hoare logic is the following:
 
 \begin{center}
 $\dfrac{P \Rightarrow WP \quad \{WP\}\quad c\quad \{SQ\} \quad SQ \Rightarrow Q}{\{P\}\quad c \quad \{Q\}}$
-
-
 \end{center}
 
 
@@ -456,7 +432,7 @@ because this is the default reasoning of WP. They are just here for
 illustrating the rule.
 
 
-\levelThreeTitle{Constancy rule}
+\levelThreeTitle{Bonus Stage - Constancy rule}
 
 
 Certain sequences of instructions may concern and involve different
@@ -475,8 +451,6 @@ The rule of inference that defines this reasoning is the following:
 
 \begin{center}
 $\dfrac{\{P\}\quad c\quad \{Q\}}{\{P \wedge R\}\quad c\quad \{Q \wedge R\}}$
-
-
 \end{center}
 
 
@@ -583,8 +557,6 @@ consequence rule:
 
 \begin{center}
 $\dfrac{P \wedge R \Rightarrow P \quad \{P\}\quad c\quad \{Q\} \quad Q \Rightarrow Q \wedge R}{\{P \wedge R\}\quad c\quad \{Q \wedge R\}}$
-
-
 \end{center}
 
 
@@ -592,3 +564,123 @@ If the variables of $R$ have not been modified by the operation
 (which, on the other hand, may modify the variables of $P$ to produce
 $Q$), then the properties $P \wedge R \Rightarrow P$ and
 $Q \Rightarrow Q \wedge R$ hold.
+
+
+
+\levelThreeTitle{Exercices}
+
+
+
+\levelFourTitle{A serie of assignment}
+
+
+Compute by hand the weakest precondition of the following program:
+
+
+\begin{CodeBlock}{c}
+/*@
+  requires -10 <= x <= 0 ;
+  requires 0 <= y <= 5 ;
+  ensures -10 <= \result <= 10 ;
+*/
+int function(int x, int y){
+  int res ;
+  y += 10 ;
+  x -= 5 ;
+  res = x + y ;
+  return res ;
+}
+\end{CodeBlock}
+
+
+Deduce that the program is correct with respect to its contract using the
+right rule.
+
+
+\levelFourTitle{Empty ``then'' branch in conditional}
+
+
+We previously shown that in a condition when the ``else'' branch is empty,
+that the postcondition of the complete conditional is already verified if
+with the conjunction of the negation of the condition and the precondition.
+For both of the following question, we only need the inference rules and
+no WP calculus.
+
+Show that when, instead, the ``then'' branch is empty, the conjunction of
+the condition and the precondition must implies the post-condition of the
+``else'' branch.
+
+Show that when both branches are empty, the overall condition is just a
+skip operation.
+
+
+\levelFourTitle{Short circuit}
+
+
+C compilers implement short circuit for conditions. For example, that
+means that a code like this one (\textbf{without ``else'' block}) :
+
+
+\begin{CodeBlock}{c}
+if(cond1 && cond2){
+  // code
+}
+\end{CodeBlock}
+
+
+
+can be written as:
+
+
+
+\begin{CodeBlock}{c}
+if(cond1){
+  if(cond2){    
+    // code
+  }
+}
+\end{CodeBlock}
+
+
+
+Show that on those two source code, the weakest precondition calculus
+generates an equivalent weakest precondition for equivalent for any code
+in the ``then'' block. Note that we assume the conditions to be pure
+expressions (without side-effects).
+
+
+
+\levelFourTitle{A larger program}
+
+
+Compute by hand the weakest precondition of the following program:
+
+
+\begin{CodeBlock}{c}
+/*@ 
+  requires -5 <= y <= 5 ; 
+  requires -5 <= x <= 5 ; 
+  ensures  -15 <= \result <= 25 ;
+*/
+int function(int x, int y){
+  int res ;
+
+  if(x < 0){
+    x = 0 ;
+  }
+  
+  if(y < 0){
+    x += 5 ;
+  } else {
+    x -= 5 ;
+  }
+  
+  res = x - y ;
+
+  return res ;
+}
+\end{CodeBlock}
+
+
+Deduce that the program is correct with respect to its contract using the
+right rule.
