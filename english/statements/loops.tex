@@ -359,6 +359,21 @@ The loop variant is then only an upper bound on the number of iteration,
 not an expression of their exact number.
 
 
+Note also that a loop variant only need to be positive at the beginning
+of the execution of the block of the loop. Thus, in the following code:
+
+
+\begin{CodeBlock}{c}
+int i = 5 ;
+while(i >= 0){
+  i -= 2 ;
+}
+\end{CodeBlock}
+
+Even if \CodeInline{i} can be negative when the loop exits, it is still
+a variant since we do not start the execution of the block of the loop
+again.
+
 
 \levelThreeTitle{Create a link between post-condition and invariant}
 
@@ -474,3 +489,66 @@ operations that are thus not really part of the loop. From a verification
 point of view, it allows us to simplify the contract of the loop: we know
 that the (potentially complex) operations performed just before we stop do
 not need to be considered when designing the contract.
+
+
+\levelThreeTitle{Exercices}
+
+
+\levelFourTitle{Loop invariant}
+
+
+
+Write a suitable invariant for the following loop and prove it with
+the command `frama-c -wp your-file.c`.
+
+
+\CodeBlockInput[2][6]{c}{ex-1-invariant.c}
+
+
+Is the property $-100 \leq x <= 100$ a correct invariant? Explain why.
+
+
+
+\levelFourTitle{Loop variant}
+
+
+Write a suitable invariant for the follow loop and prove it with
+the command `frama-c -wp your-file.c`.
+
+
+\CodeBlockInput[2][6]{c}{ex-2-variant.c}
+
+
+If your variant does not precisely state the number of remaining
+iteration, add a variable that records exactly the number of remaining
+iterations and use it as a variant. You might need to add an invariant.
+
+
+
+\levelFourTitle{Loop assigns}
+
+
+Write a suitable loop assigns clause for this loop such that the assertion
+on line 9 is proved as well as the assigns clause:
+
+
+
+\CodeBlockInput[2][9]{c}{ex-3-assigns.c}
+
+
+
+Once the proof succeeds, completely remove and the assigns clause and find
+another way to ensure that the assertion is verified using annotations (note
+that you can add a C label in the code). What do you deduce about the notion
+of ``loop assigns'' clause?
+
+
+
+\levelFourTitle{Early termination}
+
+
+Write a suitable contract for this loop such that the assertions on lines
+9 and 10 are proved as well as the contract of the loop.
+
+
+\CodeBlockInput[1][10]{c}{ex-4-early.c}
