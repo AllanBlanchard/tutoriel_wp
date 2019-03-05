@@ -267,3 +267,138 @@ with an interactive prover.
 Finally, the implementation can be indeed incorrect, and in this case we
 have to fix it. Here, we will use test and not proof, because a test
 allows us to prove the presence of a bug and to analyze this bug.
+
+
+\levelThreeTitle{Exercices}
+
+For all these exercices, use the following command line to start verification:
+
+\begin{CodeBlock}{bash}
+frama-c-gui -wp -wp-rte -warn-unsigned-overflow your-file.c
+\end{CodeBlock}  
+
+\levelFourTitle{Non-mutating: Forall, Exists, ...}
+
+
+Currently, function pointers are not supported by WP. Let us consider that
+we have a function:
+
+
+\CodeBlockInput[3][9]{c}{ex-1-forall-exists.c}
+
+
+Write your own code and corresponding post-condition and then write the
+following functions together with their contract and prove their correctness.
+
+\begin{itemize}
+\item \CodeInline{forall\_pred} returns true if and only if \CodeInline{pred}
+  is true for all elements ;
+\item \CodeInline{exists\_pred} returns true if and only if \CodeInline{pred}
+  is true for at least one element ;
+\item \CodeInline{none\_pred} returns true if and only if \CodeInline{pred}
+  is false for all elements ;
+\item \CodeInline{some\_not\_pred} returns true if and only if \CodeInline{pred}
+  is false for at least one element.
+\end{itemize}
+
+The two last functions should be written by just calling the two first ones.
+
+
+\levelFourTitle{Non-mutating: Equality of ranges}
+
+
+Write, specify and prove the function \CodeInline{equal} that returns true if
+and only if two ranges of values equal. Write, using the equal function, the
+code of \CodeInline{different} that returns if two ranges are different, your
+postcondition should contain an existantial quantifier.
+
+
+\CodeBlockInput[3][9]{c}{ex-2-equal.c}
+
+
+\levelFourTitle{Binary Search}
+
+The following function searches for the position of a particular value in an
+array, assuming that this array is sorted. First, let us consider that the
+length of the array is an int and use int values to deal with indexes. One
+could note that there are two behavior: either the value exists in the array
+(and the result is the index of this value) or not (and the result is -1).
+
+
+\CodeBlockInput{c}{ex-3-binary-search.c}
+
+
+This function is a bit tricky to prove, so let us provide some hints. First,
+this time the length is provided as an int, so we need to further restrict
+this value to make it coherent. Second, one of the invariant properties
+should state the bounds of \CodeInline{low} and \CodeInline{up}, but note
+that for both of them one of the bounds is not needed. Finally, the second
+invariant property should state that if some index of the array stores the
+value, this index must be correctly bounded.
+
+
+\textbf{Harder:} Modify this function in order to recieve \CodeInline{len}
+as a \CodeInline{size\_t}. You will have to slightly modify the algorithm
+and the proof. As an hint, we advise make \CodeInline{up} and excluded
+bound for the research.
+
+
+\levelFourTitle{Mutating: Addition of vectors}
+
+
+Write, specify and prove the function that adds two vectors into a third
+one. Put arbitrary constraints to solve the integer overflow. Consider that
+the resulting vector is entirely separated from the input vectors, however
+the same vector should be usable for both input vectors.
+
+
+\CodeBlockInput[3][5]{c}{ex-4-add-vectors.c}
+
+
+\levelFourTitle{Mutating: Reverse}
+
+
+Write, specify and prove the function that reverses a vector inplace. Take
+care of the unmodified part of the vector at some iteration of the loop.
+Use the previously proved \CodeInline{swap} function.
+
+
+\CodeBlockInput[3][7]{c}{ex-5-reverse.c}
+
+
+\levelFourTitle{Mutating: Copy}
+
+
+Write, specify and prove the function \CodeInline{copy} that copies a range
+of values into another array. First consider (and specify) that the two ranges
+are entirely separated.
+
+
+\CodeBlockInput[3][5]{c}{ex-6-copy.c}
+
+
+\textbf{Harder:} The true copy and copy backward functions
+
+In fact, a strong separation is not necessary. The actual precondition must
+guarantee that if the two arrays overlap, the beginning of the destination
+range must not be in the source range:
+
+\begin{CodeBlock}{c}
+//@ requires \separated(&src[0 .. len-1], src) ;
+\end{CodeBlock}
+
+
+In essence, by copying the element in that order, we can shift elements from
+the end of a particular range to the beginning. However, that means that we
+have to be more precise in our contract: we do not guarantee anymore an equality
+with the values of the source array but with the \emph{old} values of the
+source array. And we have also to be more precise in our invariant, first by
+also specifying the relation in regard to the previous state of the memory, and
+second by adding an invariant that shows that the source array is not modified
+from the \CodeInline{i} we are visiting to the end.
+
+
+Finally, it is also possible to write a function that copies the elements from
+the end to the beginning, in this case, again, arrays can overlap but the
+condition is not exactly the same. Write, specify and prove the function
+\CodeInline{copy\_backward} that copies element in reverse order.
