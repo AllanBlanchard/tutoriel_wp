@@ -16,10 +16,10 @@ int is_upper_alpha(char c){
 
 /*@
   assigns \nothing ;
-  ensures \result <==> '1' <= c <= '9' ;
+  ensures \result <==> '0' <= c <= '9' ;
 */
 int is_digit(char c){
-  return '1' <= c && c <= '9' ;
+  return '0' <= c && c <= '9' ;
 }
 
 /*@
@@ -28,7 +28,7 @@ int is_digit(char c){
   \result <==> (
     ('a' <= c <= 'z') ||
     ('A' <= c <= 'Z') ||
-    ('1' <= c <= '9')
+    ('0' <= c <= '9')
   ) ;
 */
 int is_alpha_num(char c){
