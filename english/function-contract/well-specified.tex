@@ -492,7 +492,12 @@ frama-c-gui your-file.c -wp -wp-rte
 \end{CodeBlock}
 
 
-Try to minimize the amount of separation needed. In order to find the
-minimal separation, take care of the postcondition of the function that
-expresses the order of the values, and consider the case when exactly two
-different values are provided to the function.
+Remember that ordering values is not just ensuring that resulting values
+are increasing order and one of each original value, all original values
+should still be there after the sorting operation: new values are a
+permutation of the original one. To express this idea, you can rely on the
+set datatype. For example, this property is true:
+
+\begin{CodeBlock}{c}
+//@ assert { 1, 2, 3 } == { 2, 3, 1 };
+\end{CodeBlock}
