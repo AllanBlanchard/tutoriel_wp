@@ -157,3 +157,79 @@ returns \(v\)''), we can still guarantee that we do not produce runtime
 errors (if we provide correct predicates for the stack, and prove
 that the implementation of our functions ensures that no runtime errors
 can occur).
+
+
+\levelThreeTitle{Exercices}
+
+
+\levelFourTitle{Days of the month}
+
+
+Taking back the solution of the
+exercise~\ref{l4:contract-modularity-ex-days-of-month} about days of the month,
+write a predicate to express that a year is leap and adapt the contracts using
+it.
+
+
+\levelFourTitle{Alpha-numeric character}
+
+
+Taking back the solution of the
+exercise~\ref{l4:contract-modularity-ex-alpha-num} about alpha numeric
+characters, write predicates to express that a character is an upper letter,
+lower letter, and a digit. Adapt the contracts of the different functions using
+them.
+
+
+\levelFourTitle{Order 3 values}
+
+
+Taking back the solution of the
+exercise~\ref{l4:contract-modularity-ex-order-3} about the function that orders
+three pointed values, write predicates to express that a value is one of three
+pointed values:
+
+\begin{CodeBlock}{c}
+/*@
+  predicate one_of{L}(int value, int *a, int *b, int *c) =
+    // ...
+*/
+\end{CodeBlock}
+
+Use the set notation. With the same idea, express permutation. Modify the
+contract in order to use these predicates.
+
+
+\levelFourTitle{Binary Search}
+
+
+Taking back the solution of the
+exercise~\ref{l4:statements-loops-ex-bsearch} about the binary search
+fucntion, write a predicate that expresses that an array is sorted on a range of
+values starting at \CodeInline{begin} and ending at \CodeInline{end} (excluded).
+Overload this predicate in order to make \CodeInline{begin} optional with a
+default value of $0$. Define a predicate that an element is in a range of values
+of an array starting at index \CodeInline{begin} and ending at \CodeInline{end}
+(excluded), again overload this predicate to make the first bound optional.
+
+Use those two predicates to simplify the contract of the function. Note that
+both behaviors \CodeInline{assumes} clause should be modified.
+
+
+\levelFourTitle{Search and replace}
+
+
+
+Taking back the example~\ref{l4:statements-loops-ex-search-and-replace}, about
+the search and replace function, write predicates that expresse that some range
+of values of an array starting at index \CodeInline{begin} and ending at
+\CodeInline{end} (excluded):
+
+\begin{itemize}
+\item remain unchanged between to labels,
+\item are replaced with some new value when it equals to some old value, then
+  left unchanged
+\end{itemize}
+
+Overload both predicates to make the first bound optional. Use the obtained
+predicates to simplify the contract and loop invariant of the function.
