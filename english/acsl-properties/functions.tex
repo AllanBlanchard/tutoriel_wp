@@ -90,23 +90,18 @@ and using C language:
 
 
 Without checking overflows, this function is easy and fast to prove. If
-we add runtime error checking, RTE does not add any assertion to check
-the absence of overflow on unsigned integers, since it is specified by
-the C standard (and is then a defined behavior). If we want to add an
-assertion at this point, we can ask WP to generate its own bound
-checking by right-clicking on the function and then selecting ``insert
-WP-safety guards''. And in this case, an overflow is not proved to be
-absent.
+we add runtime error checking, we see that there is a possibility of
+overflow on the multiplication.
 
 
 
-On \CodeInline{unsigned}, the maximum value for which we can compute
+On \CodeInline{int}, the maximum value for which we can compute
 factorial is 12. If we go further, it overflows. We can then add this
 precondition:
 
 
 
-\CodeBlockInput[5][12]{c}{facto-1.c}
+\CodeBlockInput[5][10]{c}{facto-1.c}
 
 
 
