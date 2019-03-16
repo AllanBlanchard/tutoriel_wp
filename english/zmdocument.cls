@@ -622,7 +622,7 @@
 
 %%% IMAGES
 \NewDocumentCommand{\image}{mo}{%
-  \begin{figure}
+  \begin{figure}[!h]
     \centering
     \includegraphics[scale=.5, max size={\textwidth}{0.9\textheight}, keepaspectratio]{\currentInput/#1}
     \IfValueT{#2}{\caption{#2}}
