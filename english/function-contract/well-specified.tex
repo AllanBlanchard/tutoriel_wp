@@ -220,8 +220,7 @@ The result is not exactly what we expect:
 
 
 
-\image{2-swap-1}[Proof failure on the property of a global variable which is not
-  modified by \texttt{swap}]
+\image{2-swap-1}
 
 
 Indeed, we did not specify the allowed side effects for our function. In
@@ -282,7 +281,7 @@ If we ask WP to prove this function, we get the following result:
 
 
 
-\image{2-incr_a_by_b-1}[Proof failure: potential aliasing]
+\image{2-incr_a_by_b-1}
 
 
 The reason is simply that we do not have any guarantee that the pointer
@@ -328,7 +327,7 @@ And this time, the function is verified:
 
 
 
-\image{2-incr_a_by_b-2}[Solved aliasing problems]
+\image{2-incr_a_by_b-2}
 
 
 We can notice that we do not consider the arithmetic overflow here, as

@@ -1,7 +1,5 @@
 
-\begin{center}
-\inlineImage{frama-c}
-\end{center}
+\image{frama-c}
 
 
 \levelThreeTitle{Frama-C? WP?}
@@ -263,15 +261,11 @@ your installation.
 
 
 In order to verify that the installation has been correctly performed,
-we will use the code presented in Fig.~\ref{code:program-proof-frama-c-verify}.
+we will use the following code:
 
 
 
-\begin{figure}[!h]
-  \CodeBlockInput{c}{verify.c}
-  \caption{Code to verify the installation of Frama-C}
-  \label{code:program-proof-frama-c-verify}
-\end{figure}
+\CodeBlockInput{c}{verify.c}
 
 
 
@@ -286,20 +280,20 @@ frama-c-gui -wp -rte main.c
 
 
 
-The window presented by Fig.~\ref{img:verif_install-1} should appear.
+The following window should appear:
 
 
 
-\image{verif_install-1}[Verify installation 1]
+\image{verif_install-1}
 
 
 Clicking \CodeInline{main.c} in the left side panel to select it, we can see
 its content (slightly) modified, and some green bullets on different
-lines as illustrated as presented by Fig.~\ref{img:verif_install-2}.
+lines as illustrated here:
 
 
 
-\image{verif_install-2}[Verify installation 2]
+\image{verif_install-2}
 
 
 
@@ -365,11 +359,11 @@ can help: \externalLink{The Coq Proof Assistant}{https://coq.inria.fr/}.
 
 
 When we want to use Coq for a proof with Frama-C, we have to select it
-using the left side panel, in the WP part (see Fig.~\ref{img:select_coq}).
+using the left side panel, in the WP part:
 
 
 
-\image{select_coq}[Select the Coq proof assistant]
+\image{select_coq}
 
 
 \begin{Information}

@@ -182,7 +182,7 @@ Goals'':
 
 
 
-\image{i_30-1}[Proof obligations generated to verify our loop]
+\image{i_30-1}
 
 
 We note that WP produces two different proof obligations: the
@@ -195,8 +195,7 @@ start, we can however see these details:
 
 
 
-\image{i_30-2}[Proof of the assertion, knowing the invariant and the
-  invalidation of the loop condition]
+\image{i_30-2}
 
 
 But is our specification precise enough?
@@ -211,7 +210,7 @@ And the result is:
 
 
 
-\image{i_30-3}[Side effects, again]
+\image{i_30-3}
 
 
 It seems not.
@@ -281,7 +280,8 @@ RTE, we get this result:
 
 
 
-\image{infinite}[Proof of false by non termination]
+\image{infinite}
+
 
 
 The assertion ``False'' is proved! For a very simple reason: since the
@@ -296,7 +296,7 @@ the assertion will probably not be proved.
 
 \begin{Information}
   Note that a (provably) unreachable assertion is always proved to be true:
-  \inlineImage{goto_end}
+  \image{goto_end}
   And this is also the case when we trivially know that an instruction
   produces a runtime error (for example dereferencing \CodeInline{NULL}), or
   inserting ``False'' in post-condition as we have already seen with
@@ -326,7 +326,7 @@ Again, we can have a look at the generated proof obligations:
 
 
 
-\image{i_30-4}[Our loop entirely specified and proved]
+\image{i_30-4}
 
 
 The loop variant generates two proof obligations: verify that the value
