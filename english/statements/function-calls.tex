@@ -1,0 +1,98 @@
+\levelThreeTitle{Calling a function}
+
+When a function is called, the contract of this function is used to determine
+the pre-condition of the call. So basically, we could simply consider that:
+
+
+\begin{center}
+$wp( f(params ...), Post ) := f:Pre$
+\end{center}
+
+
+However, in reality it is a bit more complex.
+
+
+First, the post-condition of the function is not necessarily directly the
+pre-condition that was computed for the instruction that follows the call to
+$f$. For this, we refer to the section~\ref{l3:statements-basic-consequence},
+the idea is simply to verify that the post-condition of the function implies
+the computed pre-condition.
+
+
+
+Second, the function does not necessarily impact any property that is known in
+the current context. For example, if we use a function to swap to variables all
+other variables remain the same. For this, we refer to the
+section~\ref{l3:statements-basic-constancy}: the variables property that are
+not impacted by the function basically correspond to the $R$ predicate in our
+inference rule, and here, this predicate is determined using the
+\CodeInline{assigns} clause specified for the function.
+
+
+
+The weakest precondition calculus for a function call is thus a combination of
+the use the consequence rule and the contract of the function in order to keep
+as much precision as we can.
+
+
+
+Basically, to reason about function call, one can keep this in mind:
+
+
+
+\begin{CodeBlock}{c}
+  // Here I must be sur that the precondition of f is verified
+  
+  f(params ...) ;
+
+  // Here I can assume that :
+  // - the post-condition of f holds
+  // - any property that were true before the call to f and only refers
+  //   variables that cannot be modified by f still holds
+\end{CodeBlock}
+
+% Add examples
+
+\levelThreeTitle{Recursive functions}
+
+
+
+For now, WP does not check function termination. Of course, if a function is
+only composed of loops that terminates (that have a verified variant) and
+calls to function that terminates, it terminates. However, one particular
+case require more reasoning recursive and mutually recursive functions. And
+currently terminations of such functions cannot be proved with WP.
+
+
+
+That basically means that using a function that does not terminate we can
+prove anything. For example:
+
+
+
+\CodeBlockInput{c}{trick.c}
+
+
+\image{recursive-trick}
+
+
+We can see that the function and the assertion are proved. And indeed the
+proof is correct: we consider partial correctness and we face a function
+that does not terminate: anything that follows a call to this function would
+be true.
+
+
+
+Thus, the question is: what could we do in such a case? Again, we could use
+some kind of variant to bound the number of recursive calls in ACSL, this is
+the role of the \CodeInline{decreases} clause:
+
+
+\CodeBlockInput{c}{decreases.c}
+
+
+This clause expresses exactly the same idea as \CodeInline{loop variant}. The
+expression considered by a decrease clause is a positive integer that
+strictly decreases when the function is called again. However, it is still
+not supported by WP. Thus, for the moment, a recursive function cannot be
+totally proved with WP.
