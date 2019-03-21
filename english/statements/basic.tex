@@ -122,6 +122,145 @@ applications of the assignment rule.
 
 
 
+\levelFourTitle{Assignment of pointed value}
+
+
+
+In C, thanks to (because of?) pointers, we can have programs with aliases,
+meaning that two pointers can point on the same memory location. Our weakest
+precondition calculus should consider this cases. For example, let us consider
+this simple Hoare triple:
+
+
+\begin{CodeBlock}{c}
+//@ assert p = q ;
+*p = 1 ;
+//@ assert *p + *q == 2 ;
+\end{CodeBlock}
+
+
+
+This Hoare triple is correct, since \CodeInline{p} and \CodeInline{q} are in
+alias, modifying \CodeInline{*p} also modifies \CodeInline{*q}, thus both these
+expression evaluate to $1$ and the postcondition is true. However let us apply
+the weakest precondition calculus from the postcondition:
+
+
+
+\begin{tabular}{ll}
+$wp(*p = 1, *p + *q = 2)$ & $= (*p + *q = 2)[*p \leftarrow 1]$\\
+                          & $= (1 + *q = 2)$
+\end{tabular}
+
+
+
+We get the weakest precondition: \CodeInline{1 + *q == 2}, and thus we could
+deduce that the weakest precondition is \CodeInline{*q == 1}, which is true, but
+does not allow us to conclude that the program is correct, since the formula
+\CodeInline{p == q ==> *q == 1} cannot be verified. In fact, here, we would like
+to be able to compute a property like;
+
+
+
+\begin{tabular}{ll}
+$wp(*p = 1, *p + *q = 2)$ & $= (1 + *q = 2 \vee q = p)$\\
+                          & $= (*q = 1 \vee q = p)$
+\end{tabular}
+
+
+
+For this we have to take care of aliasing. A common way to do this is to
+consider that the memory is one particular variable (let us name this variable
+$M$ on which we can perform two operations: get the element at a particular
+location $l$ in memory (which returns an expression) and set the element at a
+particular location $l$ to a new value $v$ (which returns the new memory).
+
+
+We denote:
+
+
+\begin{itemize}
+\item $get(M,l)$ with the notation $M[l]$
+\item $set(M,l,v)$ with the notation $M[l \mapsto v]$
+\end{itemize}
+
+
+And basically, the get operation can be seen as follows:
+
+
+\begin{tabular}{ll}
+  $M[l1 \mapsto v][l2] =$ & if $l1   =  l2$ then $v$ \\
+                          & if $l1 \neq l2$ then $M[l2]$
+\end{tabular}
+
+
+Of course, at the beginning of a function, the memory context can be populated
+with the memory locations for which a value is defined.
+
+
+Now, we can change a little bit the weakest precondition calculus for assignment
+of pointed memory location. For this, we consider that we have an implicit
+variable $M$ that models the memory.
+
+
+
+\begin{center}
+  $wp(*x = E, Q) = Q[M \leftarrow M[x \mapsto E]]$
+\end{center}
+
+
+And evaluating a pointed value $*x$ in a formula now requires us to use the
+get operator to ask the right value. Thus we can for example compute the weakest
+precondition of our previous program:
+
+
+\begin{tabular}{lll}
+  $wp(*p = 1, *p + *q = 2)$
+  & $= (*p + *q = 2)[M \leftarrow M[p \mapsto 1]]$ & (1)\\
+  & $= (M[p] + M[q] = 2)[M \leftarrow M[p \mapsto 1]]$ & (2)\\
+  & $= (M[p \mapsto 1][p] + M[p \mapsto 1][q] = 2)$ & (3)\\
+  & $= (1 + M[p \mapsto 1][q] = 2)$ & (4)\\
+  & $= (1 + (\texttt{if}\ q = p\ \texttt{then}\ 1\ \texttt{else}\ M[q]) = 2)$ & (5)\\
+  & $= (\texttt{if}\ q = p\ \texttt{then}\ 1+1 = 2\ \texttt{else}\ 1+M[q] = 2)$ & (6)\\
+  & $= (q = p \vee M[q] = 1)$ & (7)
+\end{tabular}
+
+
+\begin{enumerate}
+\item we have to apply the rule of assignment for pointers, but for this we need
+  to introduce $M$,
+\item we replace pointer accesses in the formula by a call to select on $M$,
+\item we apply the replacement asked by the assignment rule,
+\item we use the definition of the get operator for the expression about $p$
+  ($M[p \mapsto 1][p] = 1$)
+\item we use the definition of the get operator for the expression about $q$\\
+  ($M[p \mapsto 1][q] = \texttt{if}\ q = p\ \texttt{then}\ 1\ \texttt{else}\ M[q]$)
+\item we perform some simplification to the goal ...
+\item ... and finally conclude that either $M[q] = 1$ or $p = q$.
+\end{enumerate}
+
+
+Then in our program, since we now that $p = q$ we can conclude that the program
+is correct.
+
+
+The WP plugin does not exactly work like this. In particular, it depends on the
+memory model chosen for the proof that will make different assumption about the
+memory is organized. For the memory model we use, the typed memory model, in
+fact WP creates multiple variables for memory. However, let us have a look to
+the goal generated for the post-condition of the swap function, by preveting
+WP to simplify the goal using the option \CodeInline{-wp-no-simpl}:
+
+
+\image{memory-model}
+
+
+And we can see, in the beginning of the proof obligation, that a variable
+\CodeInline{Mint\_0} representing a memory of values of integer types have been
+created, and that this memory is updated and accessed using the operators we
+previously introduced.
+
+
 \levelThreeTitle{Composition of statements}
 
 For a statement to be valid, its precondition must allow us by means of
