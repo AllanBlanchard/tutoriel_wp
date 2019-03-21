@@ -1,57 +1,264 @@
 \levelThreeTitle{Calling a function}
 
+\levelFourTitle{Formal - Weakest precondition calculus}
+
 When a function is called, the contract of this function is used to determine
-the pre-condition of the call. So basically, we could simply consider that:
+the pre-condition of the call. But one has to consider two important facts to
+express the weakest precondition calculus.
 
 
-\begin{center}
-$wp( f(params ...), Post ) := f:Pre$
-\end{center}
 
-
-However, in reality it is a bit more complex.
-
-
-First, the post-condition of the function is not necessarily directly the
-pre-condition that was computed for the instruction that follows the call to
-$f$. For this, we refer to the section~\ref{l3:statements-basic-consequence},
+First, the post-condition of the called function $f$ is not necessarily
+directly the pre-condition that was computed for the instructions that follow
+the call to $f$. For example, if we have a program: \CodeInline{x = f() ; c }
+and $wp(\texttt{c}, Q) = 0 \leq x \leq 10$, whereas the postcondition of the
+function \CodeInline{f} is $1 \leq x \leq 9$, we have to express some
+weakening between the actual precondition of \CodeInline{c} and the computed
+one. For this, we refer to the section~\ref{l3:statements-basic-consequence},
 the idea is simply to verify that the post-condition of the function implies
 the computed pre-condition.
 
 
 
-Second, the function does not necessarily impact any property that is known in
-the current context. For example, if we use a function to swap to variables all
-other variables remain the same. For this, we refer to the
-section~\ref{l3:statements-basic-constancy}: the variables property that are
-not impacted by the function basically correspond to the $R$ predicate in our
-inference rule, and here, this predicate is determined using the
-\CodeInline{assigns} clause specified for the function.
+Second, in C, a function can have side-effects. Thus, the values of the
+variables referenced in input is not necessarily the same as it is after the
+call to the function, and the contract may express some property about those
+values before and after the call. So, if we have labels in the post-condition,
+we must correctly replace them.
 
 
 
-The weakest precondition calculus for a function call is thus a combination of
-the use the consequence rule and the contract of the function in order to keep
-as much precision as we can.
+In order to defined the weakest-precondition calculus of function calls, let
+us introduce some notation to make things clearer. For this, consider this
+example:
+
+
+\begin{CodeBlock}{c}
+/*@ requires \valid(x) && *x >= 0 ;
+    assigns *x ;
+    ensures *x == \old(*x)+1 ; */
+void inc(int* x);
+
+void foo(int* a){
+  L1:
+  inc(a) ;
+  L2:
+}
+\end{CodeBlock}
 
 
 
-Basically, to reason about function call, one can keep this in mind:
+
+The weakest precondition of the function call asks us to consider the contract
+of the function that is called (here, in \CodeInline{foo}, when we call the
+\CodeInline{inc} function). Of course, before the call to the function we have
+to verify its precondition, so it is part of the weakest precondition. But, we
+also have to consider the post-condition of the function, else that would mean
+that we do not consider its effect.
+
+
+
+
+Thus, it is important to notice that in the precondition, the considered memory
+state is the one where we compute the weakest precondition, whereas for the
+postcondition it is not the case, the considered memory state is the one that
+follows the call, while we need to explicitely mention the old state to speak
+about the values before the call. For example, considering the contract of
+\CodeInline{inc} when we call it in \CodeInline{foo}, \CodeInline{*x} in the
+precondition is \CodeInline{*a} at \CodeInline{L1}, while \CodeInline{*x} in the
+postcondition is \CodeInline{*a} at \CodeInline{L2}. Consequently the pre and
+the postcondition must be considered slighlty differently when it comes to
+mutable memory location. Note that for the value of the parameter \CodeInline{x}
+itself, there is no such consideration: this value cannot be modified by the
+call.
+
+
+
+
+Now, let us define the weakest precondition of a function call. For this,
+we denote:
+
+\begin{itemize}
+\item $\vec{v}$ a vector of values $v_1, ..., v_n$ and $v_i$ the $i^{th}$ value,
+\item $\vec{t}$ the arguments provided to the function when we call it,
+\item $\vec{x}$ the parameters in the function definition,
+\item $\vec{a}$ the assigned values (seen from outside, once instantiated),
+\item $here(x)$ a value in postcondition
+\item $old(x)$ a value in precondition
+\end{itemize}
+
+We name $\texttt{f:Pre}$ the precondition of the function, and $\texttt{f:Post}$
+the postcondition:
+
+
+
+\begin{center}
+\begin{tabular}{rl}
+  $wp( f(\vec{t}), Q ) :=$ & $\texttt{f:Pre}[x_i \leftarrow t_i]$ \\
+  $\wedge$ & $\forall \vec{v}, \quad (
+              \texttt{f:Post}[x_i \leftarrow t_i,
+                              here(a_j) \leftarrow v_j,
+                              old(a_j) \leftarrow a_j] \Rightarrow
+              Q[here(a_j) \leftarrow v_j])$
+\end{tabular}
+\end{center}
+
+
+We can detail a little bit the reasoning for each part of this formula.
+
+
+First, note that in both pre and post-condition, each named parameter $x_i$ is
+replaced with the corresponding argument ($[x_i \leftarrow t_i]$), as we said
+before we do not have to consider memory states there because those values
+cannot be changed by the function call. For example in the contract of
+\CodeInline{inc}, each \CodeInline{x} would be replaced by the argument
+\CodeInline{a}.
+
+
+
+Then, in the part of the formula that corresponds to the postcondition, we can
+see that we introduce a $\forall \vec{v}$. The goal is here to model the fact
+that the function can write any value in each memory location that is assigned.
+So, for each of the assigned location $a_j$ (that is for our call to
+\CodeInline{inc}, \CodeInline{*(\&a)}, we generate a value $v_j$ that is its
+value after the call. But, if we want to check that the postcondition gives us
+the right result, we cannot accept \emph{any value} for each assigned location,
+we just want the ones \emph{that allows to statisfy the postcondition}.
+
+
+
+So these values are used to transform the postcondition of the function and
+verify that it implies the postcondition in input of the weakest precondition.
+This is done by replacing, for each assigned location $a_j$, its value $here$
+with the value $v_j$ that it is supposed to get after the call
+($here(a_j) \leftarrow v_j$). Finally, we have to replace each $old$ value by
+its value before the call, and for each $old(a_j)$, it is simply $a_j$
+($old(a_j) \leftarrow a_j$).
+
+
+
+\levelFourTitle{Formal - Example}
+
+
+
+Let us illustrate this on an example by applying the weakest precondition
+calculus to this short code, assuming the contract we previously proposed for
+the \CodeInline{swap} function.
 
 
 
 \begin{CodeBlock}{c}
-  // Here I must be sur that the precondition of f is verified
-  
-  f(params ...) ;
+  int a = 4 ;
+  int b = 2 ;
 
-  // Here I can assume that :
-  // - the post-condition of f holds
-  // - any property that were true before the call to f and only refers
-  //   variables that cannot be modified by f still holds
+  swap(&a, &b) ;
+
+  //@ assert a == 2 && b == 4 ;
 \end{CodeBlock}
 
-% Add examples
+
+
+We now compute the weakest precondition:
+
+
+\begin{tabular}{l}
+  $wp(a = 4; b = 2; swap(\&a, \&b), a = 2 \wedge b = 4) = $\\
+  $\quad wp(a = 4, wp(b = 2; swap(\&a, \&b), a = 2 \wedge b = 4)) = $\\
+  $\quad wp(a = 4, wp(b = 2, wp(swap(\&a, \&b), a = 2 \wedge b = 4)))$
+\end{tabular}
+
+
+Let us first consider separately:
+
+
+$$wp(swap(\&a, \&b), a = 2 \wedge b = 4)$$
+
+
+
+From this \CodeInline{assigns} clause, we know that the assigned values are
+$*(\&a) = a$ and $*(\&b) = b$. (Let us shorten $here$ with $H$ and $old$ with
+$O$).
+
+
+\begin{tabular}{rl}
+  $\quad \quad \texttt{swap:Pre}[x \leftarrow \&a,\ y \leftarrow \&b]$ & \\
+  $\quad \wedge \forall v_a, v_b,(\texttt{swap:Post}$ & $ [ x \leftarrow \&a,\ y \leftarrow \&b, $ \\
+                               & $H(*(\&a)) \leftarrow v_a,\ H(*(\&b)) \leftarrow v_b,$ \\
+                               & $O(*(\&a)) \leftarrow *(\&a),\ O(*(\&b)) \leftarrow *(\&b)])$\\
+  \multicolumn{2}{l}{$\quad \quad \Rightarrow (H(a) = 2 \wedge H(b) = 4)[H(a)) \leftarrow v_a, H(b)) \leftarrow v_b])$}
+\end{tabular}
+
+
+For the precondition, we get :
+$$valid(\&a) \wedge valid(\&b)$$
+For the postcondition part, first we replace the pointers:
+$$H(*(\&a)) = O(*(\&b)) \wedge H(*(\&b)) = O(*(\&a)) \Rightarrow H(a) = 2 \wedge H(b) = 4$$
+Then, the $here$ values, with the quantified $v_i$s:
+$$v_a = O(*(\&b)) \wedge v_b = O(*(\&a)) \Rightarrow v_a = 2 \wedge v_b = 4$$
+And the $old$ values, with the value before call:
+$$v_a = *(\&b) \wedge v_b = *(\&a) \Rightarrow v_a = 2 \wedge v_b = 4$$
+We can now simplify this formula to:
+$$v_a = b \wedge v_b = a \Rightarrow v_a = 2 \wedge v_b = 4$$
+
+
+So, $wp(swap(\&a, \&b), a = 2 \wedge b = 4)$ is:
+$$P: valid(\&a) \wedge valid(\&b) \wedge \forall v_a, v_b, \quad v_a = b \wedge v_b = a \Rightarrow v_a = 2 \wedge v_b = 4$$
+Let us immediately simplify the formula by noticing that validity property is
+trivially true here:
+$$P: \forall v_a, v_b, \quad v_a = b \wedge v_b = a \Rightarrow v_a = 2 \wedge v_b = 4$$
+
+
+Let us now compute $wp(a = 4, wp(b = 2, P)))$, by first replacing $b$ with
+$2$ by the assignement rule:
+$$\forall v_a, v_b, \quad v_a = 2 \wedge v_b = a \Rightarrow v_a = 2 \wedge v_b = 4$$
+and then replacing $a$ with $4$ by the same rule:
+$$\forall v_a, v_b, \quad v_a = 2 \wedge v_b = 4 \Rightarrow v_a = 2 \wedge v_b = 4$$
+
+
+This last property is trivially true, thus the program is verified.
+
+
+
+\levelFourTitle{What should we keep in mind?}
+
+
+
+Functions are absolutely necessary to modular programming, and the weakest
+precondition is fully compatible with this idea, allowing to reason about each
+function locally and compose proofs just as we compose function calls.
+
+
+So as a reminder, we should just keep in mind the followiing general scheme:
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  requires foo_R ;
+  assigns ... ;
+  ensures foo_E ;
+*/
+type foo(parameters...){
+  // Here we suppose that foo_R holds
+
+
+  // Here we must prove that bar_R holds
+  bar(some parameters ...) ;
+  // Dere we assume that bar_E holds
+
+
+  // Here we must prove that foo_E holds
+  return ... ;
+}
+\end{CodeBlock}
+
+
+Note that for the last statement, with weakest precondition calculus, the idea
+is more to show our precondition is strong enough to ensure that the code leads
+to our post-condition. However, first, this version is simpler to understand,
+and second the WP plugin does not actually perform a strict weakest precondition
+but an highly optimized one that does not follows exactly the same rules.
+
 
 \levelThreeTitle{Recursive functions}
 
@@ -60,8 +267,8 @@ Basically, to reason about function call, one can keep this in mind:
 For now, WP does not check function termination. Of course, if a function is
 only composed of loops that terminates (that have a verified variant) and
 calls to function that terminates, it terminates. However, one particular
-case require more reasoning recursive and mutually recursive functions. And
-currently terminations of such functions cannot be proved with WP.
+case require more reasoning: recursive and mutually recursive functions.
+Currently terminations of such functions is not supported with WP.
 
 
 
