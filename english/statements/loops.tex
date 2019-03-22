@@ -15,7 +15,7 @@ question: why are loops so complex?
 
 The nature of loops makes their analysis complex. When we perform our
 reasoning, we need a rule to determine the precondition from a given sequence
-of instructions and a post-condition. Here, the problem is that we cannot
+of instructions and a postcondition. Here, the problem is that we cannot
 \emph{a priori} deduce how many times a loop will iterate, and consequently, we
 cannot know how many times variables will be modified.
 
@@ -41,12 +41,12 @@ for(int i = 0 ; i < 10 ; ++i){ /* */ }
 
 
 
-The property $0 <= i <= 10$ is a loop invariant. The property
-$-42 <= i <= 42$ is also an invariant (even if it is far less
-precise). The property $0 < i <= 10$ is not an invariant because it is
+The property $0 \leq \texttt{i} \leq 10$ is a loop invariant. The property
+$-42 \leq \texttt{i} \leq 42$ is also an invariant (even if it is far less
+precise). The property $0 < \texttt{i} \leq 10$ is not an invariant because it is
 not true at the beginning of the execution of the loop. The property
-$0 <= i < 10$ \textbf{is not a loop invariant}, it is not true at the
-end of the last iteration that sets the value of \texttt{i} to $10$.
+$0 \leq \texttt{i} < 10$ \textbf{is not a loop invariant}, it is not true at the
+end of the last iteration that sets the value of \CodeInline{i} to $10$.
 
 To verify an invariant $I$, WP will then produce the following
 ``reasoning'':
@@ -63,17 +63,10 @@ To verify an invariant $I$, WP will then produce the following
 
 Let us note the invariant $I$, the inference rule corresponding to
 loops is defined as follows:
-
-\begin{center}
-$\dfrac{\{I \wedge B \}\ c\ \{I\}}{\{I\}\ while(B)\{c\}\ \{I \wedge \neg B\}}$
-\end{center}
+$$\dfrac{\{I \wedge B \}\ c\ \{I\}}{\{I\}\ while(B)\{c\}\ \{I \wedge \neg B\}}$$
 
 And the weakest precondition calculus is the following:
-
-\begin{center}
-$wp(while (B) \{ c \}, Post) := I \wedge ((B \wedge I) \Rightarrow wp(c, I)) \wedge ((\neg B \wedge I) \Rightarrow Post)$
-\end{center}
-
+$$wp(while (B) \{ c \}, Post) := I \wedge ((B \wedge I) \Rightarrow wp(c, I)) \wedge ((\neg B \wedge I) \Rightarrow Post)$$
 Let us detail this formula:
 
 \begin{itemize}
@@ -157,35 +150,34 @@ before the loop:
 
 
 \begin{Warning}
-  \textbf{REMINDER} : The invariant is: i \textbf{<=} 30 !
+  \textbf{REMINDER} : The invariant is: i \textbf{$\leq$} 30 !
 \end{Warning}
 
 
-Why? Because along the loop, \texttt{i} will be comprised between 0 and
+Why? Because along the loop, \CodeInline{i} will be comprised between 0 and
 \textbf{included} 30. 30 is indeed the value that allows us to leave the
 loop. Moreover, one of the properties required by the weakest
 precondition calculus is that when the loop condition is invalidated, by
 knowing the invariant, we can prove the postcondition (Formally
 $(\neg B \wedge I) \Rightarrow Post$).
 
-The postcondition of our loop is \texttt{i == 30} and must be implied
-by $\neg$ \texttt{i < 30} $\wedge$
-\texttt{0 <= i <= 30}. Here, it is true since:
-\texttt{i >= 30 \&\& 0 <= i <= 30 ==> i == 30}.
+The postcondition of our loop is $\texttt{i} = 30$ and must be implied
+by $\neg\ \texttt{i} < 30\ \wedge\ 0 \leq \texttt{i} \leq 30$. Here, it is
+true since:
+$$\texttt{i} \geq 30 \wedge 0 \leq \texttt{i} \leq 30 \Rightarrow \texttt{i} = 30$$
 On the opposite, if we exclude the equality to 30, the postcondition
 would be unreachable.
 
 
 
-Again, we can have a look at the list of proof obligations in ``WP
-Goals'':
+Again, we can have a look at the list of proof obligations in ``WP Goals'':
 
 
 
 \image{i_30-1}
 
 
-We note that WP produces two different proof obligations: the
+We notice that WP produces two different proof obligations: the
 establishment of the invariant and its preservation. WP produces exactly
 the reasoning we previously described to prove the assertion. In recent
 versions of Frama-C, Qed has become particularly aggressive and
@@ -299,7 +291,7 @@ the assertion will probably not be proved.
   \image{goto_end}
   And this is also the case when we trivially know that an instruction
   produces a runtime error (for example dereferencing \CodeInline{NULL}), or
-  inserting ``False'' in post-condition as we have already seen with
+  inserting ``False'' in postcondition as we have already seen with
   \CodeInline{abs} and the parameter \CodeInline{INT\_MIN}.
 \end{Information}
 
@@ -332,8 +324,8 @@ Again, we can have a look at the generated proof obligations:
 The loop variant generates two proof obligations: verify that the value
 specified in the variant is positive, and prove that it strictly
 decreases during the execution of the loop. And if we delete the line of
-code that increments \texttt{i}, WP cannot prove anymore that
-\texttt{30\ -\ i} strictly decreases.
+code that increments \CodeInline{i}, WP cannot prove anymore that
+\CodeInline{30\ -\ i} strictly decreases.
 
 We can also note that being able to give a loop invariant does not
 necessarily induce that we can give the exact number of remaining
@@ -348,8 +340,8 @@ this one:
 
 
 Here, at each iteration, we decrease the value of the variable
-\texttt{i} by a value comprised between 1 and \texttt{i}. Thus, we can
-ensure that the value of \texttt{i} is positive and strictly decreases
+\CodeInline{i} by a value comprised between 1 and \CodeInline{i}. Thus, we can
+ensure that the value of \CodeInline{i} is positive and strictly decreases
 during each loop iteration, but we cannot say how many loop iteration
 will be executed.
 
@@ -375,11 +367,11 @@ a variant since we do not start the execution of the block of the loop
 again.
 
 
-\levelThreeTitle{Create a link between post-condition and invariant}
+\levelThreeTitle{Create a link between postcondition and invariant}
 
 
 Let us consider the following specified program. Our goal is to prove
-that this function returns the old value of \texttt{a} plus 10.
+that this function returns the old value of \CodeInline{a} plus 10.
 
 
 
@@ -407,11 +399,11 @@ int add_ten(int a){
 
 
 By reading the instructions backward
-from the postcondition, we always keep all knowledge about \texttt{a}. On
+from the postcondition, we always keep all knowledge about \CodeInline{a}. On
 the opposite, as we previously mentioned, outside the loop, WP only
 considers the information provided by the invariant. Consequently, our
-``add\_10'' function cannot be proved: the invariant does not say anything
-about \texttt{a}. To create a link between the postcondition and the
+\CodeInline{add\_10} function cannot be proved: the invariant does not say anything
+about \CodeInline{a}. To create a link between the postcondition and the
 invariant, we have to add this knowledge. See, for example:
 
 
@@ -491,7 +483,7 @@ that the (potentially complex) operations performed just before we stop do
 not need to be considered when designing the contract.
 
 
-\levelThreeTitle{Exercices}
+\levelThreeTitle{Exercises}
 
 
 \levelFourTitle{Loop invariant}
@@ -499,13 +491,13 @@ not need to be considered when designing the contract.
 
 
 Write a suitable invariant for the following loop and prove it with
-the command `frama-c -wp your-file.c`.
+the command \CodeInline{frama-c -wp your-file.c}.
 
 
 \CodeBlockInput[2][6]{c}{ex-1-invariant.c}
 
 
-Is the property $-100 \leq x <= 100$ a correct invariant? Explain why.
+Is the property $-100 \leq x \leq 100$ a correct invariant? Explain why.
 
 
 
@@ -513,7 +505,7 @@ Is the property $-100 \leq x <= 100$ a correct invariant? Explain why.
 
 
 Write a suitable invariant for the follow loop and prove it with
-the command `frama-c -wp your-file.c`.
+the command \CodeInline{frama-c -wp your-file.c}.
 
 
 \CodeBlockInput[2][6]{c}{ex-2-variant.c}
@@ -537,7 +529,7 @@ on line 9 is proved as well as the assigns clause:
 
 
 
-Once the proof succeeds, completely remove and the assigns clause and find
+Once the proof succeeds, completely remove the assigns clause and find
 another way to ensure that the assertion is verified using annotations (note
 that you can add a C label in the code). What do you deduce about the notion
 of ``loop assigns'' clause?
@@ -551,4 +543,4 @@ Write a suitable contract for this loop such that the assertions on lines
 9 and 10 are proved as well as the contract of the loop.
 
 
-\CodeBlockInput[1][10]{c}{ex-4-early.c}
+\CodeBlockInput[1][11]{c}{ex-4-early.c}

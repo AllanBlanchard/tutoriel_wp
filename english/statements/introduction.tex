@@ -32,46 +32,18 @@ with loops.
 
 
 An inference rule is of the form
-
-
-
-
-\begin{center}
-$\dfrac{P_1 \quad ... \quad P_n}{C}$
-
-
-\end{center}
-
-
+$$\dfrac{P_1 \quad ... \quad P_n}{C}$$
 and means that in order to assure that the conclusion C is true, first
 the truth of the premises $P_1$, \ldots{}, and $P_n$ has to be
 established. In case that the rule has no premises
-
-
-
-
-\begin{center}
-$\dfrac{}{\quad C \quad}$
-
-
-\end{center}
-
-
-then nothing has to be assured in order to conclude the truth of $C$.
+$$\dfrac{}{\quad C \quad}$$
+then nothing has to be assured in order to conclude the truth of $C$,
+and it is called an axiom.
 
 On the other hand, in order to prove that a certain premise is true, it
 might be necessary to employ other inference rules which would lead to
 something like this:
-
-
-
-
-\begin{center}
-$\dfrac{\dfrac{}{\quad P_1\quad} \quad \dfrac{P_{n_1}\quad P_{n_2}}{P_n}}{C}$
-
-
-\end{center}
-
+$$\dfrac{\dfrac{}{\quad P_1\quad} \quad \dfrac{\dfrac{}{P_{n_1}}\quad \dfrac{}{P_{n_2}}}{P_n}}{C}$$
 
 This way, we obtain step by step the \emph{deduction tree} of our
 reasoning. In our case, the premises and conclusions under consideration
@@ -83,15 +55,7 @@ will in general be \emph{Hoare triples}.
 
 
 We are now returning to concept of a Hoare triple:
-
-
-
-
-\begin{center}
-$\{ P \}\quad  C\quad \{ Q \}$
-
-
-\end{center}
+$$\{ P \}\quad  C\quad \{ Q \}$$
 
 
 In the beginning of this tutorial we have seen that this triple
@@ -118,7 +82,7 @@ presentation.)
 
 
 Yet, Hoare logic does not tell us how we can automatically obtain the
-property \CodeInline{P} of our program \CodeInline{abs}. Dijkstra's
+precondition \CodeInline{P} of our program \CodeInline{abs}. Dijkstra's
 \emph{weakest-precondition calculus}, on the other hand, allows us to
 compute from a given postcondition $Q$ and a code snippet $C$ the
 minimal precondition $P$ that ensures $Q$ after the execution of
@@ -133,25 +97,12 @@ which, starting from a given postcondition and a program (or statement),
 computes the \emph{weakest} precondition that allows us to establish the
 validity of the postcondition. We will use the following notation to
 define the computation that corresponds to one or several statements:
-
-
-
-$wp(Instruction(s), Post) := WeakestPrecondition$
+$$wp(Instruction(s), Post) := WeakestPrecondition$$
 
 
 
 The function \(wp\) will guarantee that the Hoare triple
-
-
-
-
-\begin{center}
-$\{\ wp(C,Q)\ \}\quad C\quad \{ Q \}$
-
-
-\end{center}
-
-
+$$\{\ wp(C,Q)\ \}\quad C\quad \{ Q \}$$
 really is a valid triple.
 
 
@@ -162,7 +113,7 @@ upcoming concepts:
 
 
 \begin{CodeBlock}{c}
-//@ assert ma_propriete ;
+//@ assert some_property ;
 \end{CodeBlock}
 
 
