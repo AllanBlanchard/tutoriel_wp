@@ -26,7 +26,7 @@ ASCL code, so let us just skip this for now.
 
 
 The analysis we will use is provided by the WP plugin (for Weakest
-Precondition), it implements the technique we presented earlier: from
+Precondition), it implements the technique we mentioned earlier: from
 ACSL annotations and the source code, the plugin generates what we call
 proof goals, that are logic formulas that must be verified to be
 satisfiable or not. This verification can be performed manually or
@@ -45,10 +45,11 @@ maintained and updated by OCamlPro.
 \levelThreeTitle{Installation}
 
 
-Frama-C est un logiciel développé sous Linux et OSX. Son support est donc bien
-meilleur sous ces derniers. Il existe quand même de quoi faire une installation 
-sous Windows et en théorie l'utilisation sera sensiblement la même que sous 
-Linux, mais :
+
+Frama-C is a software developed under Linux and OSX. Its support is thus better
+under those operating system. Nevertheless, it is possible to install Frama-C
+under Windows and in theory, its use will be identical to its use under Linux.
+However:
 
 
 
@@ -92,16 +93,6 @@ your installation.
 \levelFiveTitle{Via opam}
 
 
-La deuxième solution consiste à passer par Opam, un gestionnaire de paquets 
-pour les bibliothèques et applications OCaml.
-
-
-
-D'abord Opam doit être installé et configuré sur votre distribution (voir 
-leur documentation). Ensuite, il faut également que quelques paquets de votre
-distribution soit présents préalablement à l'installation de Frama-C :
-
-
 
 A second option is to use Opam, a package manager for Ocaml libraries
 and applications.
@@ -118,7 +109,7 @@ installing Frama-C:
 \item lib gtk2 dev
 \item lib gtksourceview2 dev
 \item lib gnomecanvas2 dev
-\item (conseillé) lib zarith dev
+\item (recommended) lib zarith dev
 \end{itemize}
 
 
@@ -170,7 +161,7 @@ your installation.
 
 
 On OSX, the use of Homebrew and Opam is recommended to install Frama-C.
-The author do not use OSX, so here is a shameful copy and paste of the
+The author does not use OSX, so here is a shameful copy and paste of the
 installation guide of Frama-C for OSX.
 
 
@@ -319,7 +310,7 @@ $ frama-c-gui -gui-theme colorblind
 This part is optional, nothing in this section should be particularly
 useful \emph{in the tutorial}. However, when we start to be interested
 in proving more complex programs, it is often possible to reach the
-limits of Alt-Ergo, which is basically available, and we would thus need
+limits of Alt-Ergo, which is available by default, and we would thus need
 some other provers.
 
 

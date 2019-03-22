@@ -3,7 +3,7 @@ where we will start to have a closer look to WP. We will also have a
 look at the way we can split our programs in different files when we
 want to prove them using WP.
 
-Our goal will be to prove the \CodeInline{max\_abs} function, that return
+Our goal will be to prove the \CodeInline{max\_abs} function, that returns
 the maximum absolute value of two values:
 
 
@@ -30,11 +30,13 @@ File abs.c
 
 
 
-We can notice that we put our function contract inside the header file.
+We can notice that we put our function contract in the header file.
 The goal is to be able to import the specification at the same time as
-the declaration when we need it in another file. Indeed, WP will need it
-to be able to prove that the precondition of the function is verified
-when we call it.
+the declaration when we need it in another file. Indeed, WP needs the
+contract of the function when it is called. First to prove that the
+precondition is verified (and thus that the called is legal), and second
+to get in return the postcondition that we be useful to prove the right
+properties after the function call.
 
 We can create a file using the same format for the \texttt{max}
 function. In both cases, we can open the source file (we do not need to
@@ -97,7 +99,7 @@ A solution is provided there:
 
 
 
-\levelThreeTitle{Exercices}
+\levelThreeTitle{Exercises}
 
 
 \levelFourTitle{Days of the month}
@@ -108,7 +110,7 @@ Specify the function leap year that returns true if the year received
 as an input is leap. Use this functions to complete the functions
 \CodeInline{days\_of} in order to return the number of days of the
 month received as an input, including the right behavior when the year
-is leap for february.
+is leap for February.
 
 
 
@@ -128,12 +130,12 @@ provide the contract of \CodeInline{is\_alpha\_num}.
 \CodeBlockInput{c}{ex-2-alphanum.c}
 
 
-Declare an enum with values \CodeInline{LOWER}, \CodeInline{UPPER},
+Declare an enumeration with values \CodeInline{LOWER}, \CodeInline{UPPER},
 \CodeInline{DIGIT} and \CodeInline{OTHER}, and a function
 \CodeInline{character\_kind} that returns, using the different
 functions \CodeInline{is\_lower}, \CodeInline{is\_upper},
 \CodeInline{is\_digit}, the kind of character received in input. Use
-behaviors to specify the contracts of this function and be sure that
+behaviors to specify the contract of this function and be sure that
 they are disjoint and complete.
 
 
@@ -144,7 +146,7 @@ they are disjoint and complete.
 
 
 Taking back the function \CodeInline{max\_ptr} that orders two values,
-puting the maximum at the first location and the minimum at second, 
+putting the maximum at the first location and the minimum at second, 
 write a function \CodeInline{min\_ptr} that uses this function and
 produced the opposite operation. Use these functions to complete the
 four functions that orders 3 values. For each variant (increasing and

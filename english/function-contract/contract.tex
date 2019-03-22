@@ -1,8 +1,8 @@
-The goal of a function contract is to state the conditions under which
-the function will execute. That is to say, what the function expect from
-the caller to ensure that it will correctly behave: the \textbf{precondition},
-the notion of ``correctly behave'' being itself defined in the contract
-by the \textbf{postcondition}.
+The goal of a function contract is to state the properties of the input that are
+expected by the function, and in exchange the properties that will be assured
+for the output. The expectation of the function is called the
+\textbf{precondition}. The properties of the output are called the
+\textbf{postcondition}.
 
 
 
@@ -65,7 +65,7 @@ later see how to express precondition).
 
 The postcondition of a function is introduced with the clause \CodeInline{ensures}. 
 We will illustrate its use with the following function
-that returns the absolute value of an input. One of its postconditions
+that returns the absolute value of an input value. One of its postconditions
 is that the result (which is denoted with the keyword
 \CodeInline{\textbackslash{}result}) is greater or equal to 0.
 
@@ -75,9 +75,9 @@ is that the result (which is denoted with the keyword
 
 
 
-(Notice the \CodeInline{;} at the end of the line, exactly as we do in C).
+(Notice the \CodeInline{;} at the end of the line).
 
-But that it is not the only property to verify, we also need to specify
+But that it is not the only property to verify. We also need to specify
 the general behavior of a function returning the absolute value. That
 is: if the value is positive or 0, the function returns the same value,
 else it returns the opposite of the value.
@@ -124,13 +124,13 @@ Another available connector is the equivalence $A \Leftrightarrow B$
 (written \CodeInline{A <==> B} in ACSL), and it is
 stronger. It is conjunction of the implication in both ways
 $(A \Rightarrow B) \wedge (B \Rightarrow A)$. This formula is true in
-only two cases: $A$ and $B$ are both ture, or false (it can be seen
+only two cases: $A$ and $B$ are both true, or both false (it can be seen
 as the negation of the exclusive or).
 
 
 
 \begin{Information}
-  Let's give a quick reminder about all
+  Let us give a quick reminder about all
   truth tables of usual logic connectors in first order logic
   ($\neg$ = \CodeInline{!}, $\wedge$ = \CodeInline{\&\&}, $\vee$ = \CodeInline{||}) :
 
@@ -263,8 +263,8 @@ the behavior of under and overflows.
 
 
 Here, we can see another type of ACSL annotation. By the line
-\CodeInline{//@ assert propriete ;} , we can ask the verification of
-property at a particular program point. Here, RTE inserted for us, since
+\CodeInline{//@ assert property ;}, we can ask the verification of
+property at a particular program point. Here, RTE inserted it for us, since
 we have to verify that \CodeInline{-val} does not produce an underflow, but
 we can also add such an assertion manually in the source code.
 
@@ -321,7 +321,7 @@ proof obligations.
 In the first column, we have the name of the function the proof
 obligation belongs to. The second column indicates the name of proof
 obligation. For example here, our postcondition is named
-\CodeInline{Post-condition 'positive\_value,function\_result'}, we can notice
+\CodeInline{postcondition 'positive\_value,function\_result'}, we can notice
 that if we select a property in this list, it is also highlighted in the
 source code. Unnamed properties are automatically named by WP with the
 kind of wanted property. In the third column, we see the memory model
@@ -351,7 +351,7 @@ the property that we want to verify.
 
 
 
-What does WP do using these properties ? In fact, it transforms them
+What does WP do using these properties? In fact, it transforms them
 into a logic formula and then asks to different provers if it is
 possible to satisfy this formula (to find for each variable, a value
 that can make the formula true), and it determines if the property can
@@ -368,7 +368,7 @@ When automatic solvers cannot ensure that our properties are verified,
 it it sometimes hard to understand why. Indeed, provers are generally
 not able to answer something other than ``yes'', ``no'' or ``unknown'',
 they are not able to extract the reason of a ``no'' or an ``unknown''.
-There exists tools that can explore a proof tree to extract this type of
+There exist tools that can explore a proof tree to extract this type of
 information, currently Frama-C do not provide such a tool. Reading proof
 obligations can sometimes be helpful, but it requires a bit of practice
 to be efficient. Finally, one of the best way to understand the reason
@@ -481,7 +481,7 @@ void foo(int a){
 
 \image{2-foo-1}
 
-Note that we can clic on the bullet next to the function call to see the
+Note that we can click on the bullet next to the function call to see the
 list of preconditions and check which ones are not validated. Here, there is
 only one precondition, but when there are multiple ones it is useful to check
 what is exactly the problem.
@@ -497,7 +497,7 @@ it is placed after the call \CodeInline{abs(INT\_MIN)}! Why?
 
 We must keep in mind that the idea of the deductive proof is to ensure
 that if preconditions are verified, and if our computation terminates,
-then the post-condition is verified.
+then the postcondition is verified.
 
 
 
@@ -560,7 +560,7 @@ void foo(int a){
 \end{CodeBlock}
 
 
-If we ask WP to prove this function, it will accept it without a problem
+If we ask WP to prove this function, it will accept it without any problem
 since the assumption we give in precondition is necessarily false.
 However, we will not be able to give an input that respects the
 precondition so we will be able to detect this problem by carefully
@@ -579,9 +579,10 @@ careful specifying a program.
 
 Finding the right preconditions for a function is sometimes hard. The
 most important idea is to determine these preconditions without taking
-in account the content of the function (at least, in a first step), in
-order to avoid building a specification that would contain the same bugs
-currently existing in the source code, for example taking in account an
+in account the content of the function (at least, in a first step).
+Indeed, we are trying to prove the function, but maybe it contains a bug,
+so if we write the contract taking in account too directly its code, we
+have a risk to introduce the same bug, for example taking in account an
 erroneous conditional structure. In fact, it is generally a good
 practice to work with someone else. One specifies the function and the
 other implements it (even if they previously agreed on a common textual
@@ -589,7 +590,7 @@ specification).
 
 
 
-Once these precondition has been stated, then we work on the
+Once these preconditions have been stated, we work on the
 specifications that are due to the constraints of our language and our
 hardware. For example, the absolute value does not really have a
 precondition, this is our hardware that adds the condition we have given
@@ -612,7 +613,7 @@ $ frama-c-gui file.c -wp
 
 
 
-Which will collect all properties to be proved inside \texttt{file.c},
+Which will collect all properties to be proved in \texttt{file.c},
 generate all proof obligations and try to discharge them.
 
 About runtime-errors, it is generally advised to first verify the
@@ -636,11 +637,11 @@ RTE and start WP again''.
 
 
 
-\levelThreeTitle{Exercices}
+\levelThreeTitle{Exercises}
 
 
 
-While this exercices are not absolutely necessary to read the next chapters
+While this exercises are not absolutely necessary to read the next chapters
 of the tutorial we strongly suggest to practice them. Note that we also
 suggest to, at least, read the fourth exercise that introduces a notation
 that can be sometimes useful.
@@ -664,7 +665,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Once the function is successfuly proved to verify your contract, run:
+Once the function is successfully proved to verify your contract, run:
 
 
 \begin{CodeBlock}{bash}
@@ -678,7 +679,7 @@ It should fail, adapt your contract by adding the right precondition.
 \levelFourTitle{Distance}
 
 
-Write the postcondtion of the following distance function, by expressing
+Write the postcondition of the following distance function, by expressing
 the value of \CodeInline{b} in terms of \CodeInline{a} and
 \CodeInline{\textbackslash{}result}:
 
@@ -694,7 +695,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Once the function is successfuly proved to verify your contract, run:
+Once the function is successfully proved to verify your contract, run:
 
 
 \begin{CodeBlock}{bash}
@@ -737,8 +738,8 @@ main function.
 
 
 Write the postcondition of the following functions that returns the number
-of days in function of the received month (notice that we condider that
-they are numbered from 1 to 12), for february, we only consider the case
+of days in function of the received month (notice that we consider that
+they are numbered from 1 to 12), for February, we only consider the case
 when it has 28 days, we will later how to solve this problem:
 
 
@@ -764,11 +765,11 @@ frama-c-gui your-file.c -wp -wp-rte
 
 
 
-If it fails, complete your precondition in order to resolve the problem.
+If it fails, complete your precondition in order to solve the problem.
 
 
 
-You might have notice that writing the post-condition can be a bit painful.
+You might have notice that writing the postcondition can be a bit painful.
 Let us try to simplify that. ACSL provide the notion of set, and the operator
 \CodeInline{\textbackslash{}in} that can be used to check whether a value is
 in a set or not.
@@ -794,7 +795,7 @@ Modify your postcondition by using this notation.
 
 This functions receives two values of angle in input and returns the value
 of the last angle considering that the sum of the three angles must be 180.
-Write the post-condition that expresses that the sum of the three angles is
+Write the postcondition that expresses that the sum of the three angles is
 180.
 
 
@@ -810,7 +811,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Once the function is successfuly proved to verify your contract, run:
+Once the function is successfully proved to verify your contract, run:
 
 
 \begin{CodeBlock}{bash}

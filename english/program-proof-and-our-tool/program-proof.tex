@@ -188,12 +188,12 @@ a global view of the defined behavior. Our diagram is understandable in
 the blink of an eye, the source code requires more time, and for the
 executable \ldots{} Every single person that has already opened an
 executable with a text editor by error knows that it is not really
-pleasant to read\textsuperscript{\ref{footnote:1}}
+pleasant to read\textsuperscript{\ref{footnote:1}}.
 
 
 
 When we create an abstraction of a system, we approximate it, in order
-to limit the knowledge we have about it and ease our reasoning. A
+to limit the knowledge we have about it and make our reasoning easier. A
 constraint we must respect, if we want our analysis to be correct, is to
 never under-approximate behaviors: we would risk to remove a behavior
 that contains an error. However, when we over-approximate it, we can add
@@ -242,7 +242,7 @@ triples'':
 
 
 \begin{center}
-$\{P\} C \{Q\}$
+$\{P\}\ C\ \{Q\}$
 \end{center}
 
 
@@ -297,13 +297,13 @@ the behavior of the different actions of a program, but it does not say
 how to apply these rules to establish a complete proof of the program.
 
 Dijkstra reformulate the Hoare logic by explaining, in the triple
-$\{P\}C\{Q\}$, how the instruction, or the block of instructions,
+$\{P\}\ C\ \{Q\}$, how the instruction, or the block of instructions,
 $C$ transforms the predicate $P$ in $Q$. This kind of reasoning is
 called \emph{forward-reasoning}. We calculate from the precondition and
 from one or multiple instructions, the strongest postcondition we can
 reach. Informally, considering what we have in input, we calculate what
 we will get in output. If the postcondition we want is as strong or
-weaker, then we prove that there are no unwanted behaviors.
+weaker, then we prove that there are no unexpected behaviors.
 
 
 
@@ -315,7 +315,7 @@ For example:
 int a = 2;
 a = 4;
 //calculated postcondition: a == 4
-//wanted postconditione   : 0 <= a <= 30
+//expected postcondition  : 0 <= a <= 30
 \end{CodeBlock}
 
 
@@ -342,7 +342,7 @@ $\{P\}$ $x$ $:=$ a $\{x = 42\}$
 
 
 What is the weakest precondition to validate the postcondition
-$\{x = 42\}$ ? The rule will define that $P$ is $\{$a$=42\}$.
+$\{x = 42\}$ ? The rule will define that $P$ is $\{$a $=42\}$.
 
 
 

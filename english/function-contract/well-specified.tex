@@ -4,7 +4,7 @@
 
 This is certainly the hardest part of our work. Programming is already
 an effort that consists in writing algorithms that correctly respond to
-our need. Specifying request the same kind of work, except that we do
+our need. Specifying requests the same kind of work, except that we do
 not try to express \emph{how} we respond to the need but \emph{what} is
 exactly our need. To prove that our code implements what we need, we
 must be able to describe exactly what we need.
@@ -76,18 +76,18 @@ We can illustrate with a swap function for C integers:
 \levelFourTitle{History of values in memory}
 
 
-Here, we introduce a first b>uilt-in logic function of ACSL:
-\CodeInline{old}, that allows us to get the old value of a given element.
-So, our specification defines that the function must ensure that after
-the call, the value of \CodeInline{*a} is the old (that is to say, before
-the call) value of \CodeInline{*b} and conversely.
+Here, we introduce a first built-in logic function of ACSL:
+\CodeInline{\textbackslash{}old}, that allows us to get the old (that
+is to say, before the call) value of a given element. So, our specification
+defines that the function must ensure that after the call, the value of
+\CodeInline{*a} is the old  value of \CodeInline{*b} and conversely.
 
 The \CodeInline{\textbackslash{}old} function can only be used in the
-post-condition of a function. If we need this type of information
-somewhere else, we will use \CodeInline{at} that allows us to express that
-we want the value of a variable at a particular program point. This
-function receives two parameters. The first one is the variable (or
-memory location) for which we want to get its value and the second one
+postcondition of a function. If we need this type of information
+somewhere else, we will use \CodeInline{\textbackslash{}at} that allows us
+to express that we want the value of a variable at a particular program
+point. This function receives two parameters. The first one is the variable
+(or memory location) for which we want to get its value and the second one
 is the program point (as a C label) that we want to consider.
 
 For example, we could write:
@@ -99,35 +99,34 @@ For example, we could write:
 
 
 Of course, we can use any C label in our code, but we also have 6
-built-in labels defined by ACSL that can be used, however WP does not
-support all of them currently:
+built-in labels defined by ACSL that can be used:
 
 
 
 \begin{itemize}
 \item \CodeInline{Pre}/\CodeInline{Old}: value before function call,
 \item \CodeInline{Post}: value after function call,
-\item \CodeInline{LoopEntry}: value at loop entry (not supported yet),
+\item \CodeInline{LoopEntry}: value at loop entry
 \item \CodeInline{LoopCurrent}: value at the beginning of the current step of
-  the loop (not supported yet),
+  the loop,
 \item \CodeInline{Here}: value at the current program point.
 \end{itemize}
 
 
 \begin{Information}
   The behavior of \CodeInline{Here} is, in fact, the default behavior when we
-  consider a variable. Its use with \CodeInline{\textbackslash{}at} with
-  generally let us ensure that what we write is not ambigous, and is more
+  consider a variable. Its use with \CodeInline{\textbackslash{}at} will
+  generally let us ensure that what we write is not ambiguous, and is more
   readable, when we express properties about values at different program
   points in the same expression.
 \end{Information}
 
 
 Whereas \CodeInline{\textbackslash{}old} can only be used in function
-post-conditions, \CodeInline{\textbackslash{}at} can be used anywhere.
+postconditions, \CodeInline{\textbackslash{}at} can be used anywhere.
 However, we cannot use any program point with respect to the type
 annotation we are writing. \CodeInline{Old} and \CodeInline{Post} are only
-available in function post-conditions, \CodeInline{Pre} and \CodeInline{Here}
+available in function postconditions, \CodeInline{Pre} and \CodeInline{Here}
 are available everywhere. \CodeInline{LoopEntry} and \CodeInline{LoopCurrent}
 are only available in the context of loops (which we will detail later
 in this tutorial).
@@ -144,7 +143,7 @@ specification precise.
 
 
 If we try to prove that the swap function is correct (comprising RTE
-verification), our post-condition is indeed verified but WP failed to
+verification), our postcondition is indeed verified but WP failed to
 prove some possibilities of runtime-error, since we perform access to
 some pointers that we did not indicate to be valid pointers in the
 precondition of the function.
@@ -159,16 +158,16 @@ pointer in input:
 
 
 
-Once we have specified that the pointers we receive in input are valid,
+Once we have specified that the pointers we receive in input must be valid,
 dereferencing is assured to not produce undefined behaviors.
 
 
 
 As we will see later in this tutorial, \CodeInline{\textbackslash{}valid}
 can take more than one pointer in parameter. For example, we can give it
-an expression such as: \CodeInline{valid(p + (s .. e))} which means
+an expression such as: \CodeInline{\textbackslash{}valid(p + (s .. e))} which means
 ``for all \CodeInline{i} between included \CodeInline{s} and \CodeInline{e},
-\CodeInline{p+i} is a valid pointer. This kind of expression will be
+\CodeInline{p+i} is a valid pointer''. This kind of expression will be
 extremely useful when we will specify properties about arrays in
 specifications.
 
@@ -177,7 +176,7 @@ specifications.
 If we have a closer look to the assertions that WP adds in the swap
 function comprising RTE verification, we can notice that there exists
 another version of the \CodeInline{\textbackslash{}valid} predicate, denoted
-\CodeInline{\textbackslash{}valid\_read}. As opposed to \CodeInline{valid}, the
+\CodeInline{\textbackslash{}valid\_read}. As opposed to \CodeInline{\textbackslash{}valid}, the
 predicate \CodeInline{\textbackslash{}valid\_read} indicates that a pointer
 can be dereferenced, but only to read the pointed memory. This subtlety
 is due to the C language, where the downcast of a const pointer is easy
@@ -206,9 +205,9 @@ pointer \CodeInline{p} must be \CodeInline{\textbackslash{}valid\_read} and not
 
 
 Our \CodeInline{swap} function is provable with regard to the specification
-and potential runtime errors, but is it however specified enough? We can
-slightly modify our code to check this (we use \CodeInline{assert} to verify
-some properties at some particular points):
+and potential runtime errors, but is however specification precise enough? We
+can slightly modify our code to check this (we use \CodeInline{assert} to
+verify some properties at some particular points):
 
 
 
@@ -224,7 +223,7 @@ The result is not exactly what we expect:
 
 
 Indeed, we did not specify the allowed side effects for our function. In
-order to specify side effects, we use an \CodeInline{assign} clause which is
+order to specify side effects, we use an \CodeInline{assigns} clause which is
 part of the postcondition of a function. It allows us to specify which
 \textbf{non-local} elements (we verify side effects) can be modified
 during the execution of the function.
@@ -302,7 +301,7 @@ pointers are the same,
 
 
 \begin{Question}
-  Why is the \CodeInline{assign} clause validated?
+  Why is the \CodeInline{assigns} clause validated?
 
   The reason is simply that \CodeInline{a} is indeed the only modified memory
   location. If \CodeInline{a != b}, we only modify the location pointed by
@@ -311,10 +310,10 @@ pointers are the same,
 \end{Question}
 
 
-In order to ensure that pointers address separated memory locations,
-ACSL gives use the predicate
+In order to ensure that pointers refer to separated memory locations,
+ACSL provides the predicate
 \texttt{\textbackslash{}separated(p1,\ ...,pn)} that receives in
-parameter a set of pointers and that ensures that these pointers are
+parameter a set of pointers and is true if and only if these pointers are
 non-overlapping. Here, we specify:
 
 
@@ -338,7 +337,7 @@ the absence of overflow.
 
 
 
-\levelThreeTitle{Exercices}
+\levelThreeTitle{Exercises}
 
 
 \levelFourTitle{Division and remaining}
@@ -360,7 +359,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Once the function is successfuly proved to verify your contract, run:
+Once the function is successfully proved to verify your contract, run:
 
 
 \begin{CodeBlock}{bash}
@@ -396,7 +395,7 @@ frama-c-gui your-file.c -wp -wp-rte
 \levelFourTitle{Addition of pointed values}
 
 
-The following function recieves two pointers as an input and returns the
+The following function receives two pointers as an input and returns the
 sum the pointed values. Write the contract of this function:
 
 
@@ -415,7 +414,7 @@ frama-c-gui your-file.c -wp -wp-rte
 
 
 
-Once the function and calling code are successfuly proved, modify the
+Once the function and calling code are successfully proved, modify the
 signature of the function add as follows:
 
 
