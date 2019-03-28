@@ -29,7 +29,7 @@ We can for example define a mathematical \externalLink{linear function}{https://
 
 
 
-\CodeBlockInput[1][4]{c}{affine-0.c}
+\CodeBlockInput[1][4]{c}{linear-0.c}
 
 
 
@@ -37,22 +37,22 @@ And it can be used to prove the source code of the following function:
 
 
 
-\CodeBlockInput[6][12]{c}{affine-0.c}
+\CodeBlockInput[6][12]{c}{linear-0.c}
 
 
 
-\image{affine-1}
+\image{linear-1}
 
 
 This code is indeed proved but some runtime-errors seems to be possible.
 We can again define some mathematical logic function that will provide the bounds of
-the affine function according to the machine type we use (from a logic point of
+the linear function according to the machine type we use (from a logic point of
 view). It allows us to then add our bounds checking in the precondition of the
 function.
 
 
 
-\CodeBlockInput[8][27]{c}{affine-1.c}
+\CodeBlockInput[8][27]{c}{linear-1.c}
 
 
 
