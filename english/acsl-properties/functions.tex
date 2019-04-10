@@ -121,3 +121,96 @@ help, we are rapidly limited by the fact that provers will need to
 perform evaluation or to ``reason'' by induction, two tasks for which
 they are not efficient. This will limit our possibilities for program
 proofs.
+
+
+\levelThreeTitle{Exercises}
+
+
+
+\levelFourTitle{Distance}
+
+
+Specify and prove the following program:
+
+
+
+\CodeBlockInput{c}{ex-1-distance.c}
+
+
+
+For this, define two logic functions \CodeInline{abs} and \CodeInline{distance}.
+Use these functions to write the specification of the function.
+
+
+
+\levelFourTitle{Square}
+
+
+Write the body of the \CodeInline{square} function. Specify and prove the
+program. Use a \CodeInline{square} logic function.
+
+
+\CodeBlockInput{c}{ex-2-square.c}
+
+
+Take care of the types of the variables and do not over-constrain the input of
+the function. Furthermore, when verifying the absence of runtime errors, do not
+forget to provide the option \CodeInline{-warn-unsigned-overflow}.
+
+
+\levelFourTitle{Iota}
+
+
+Here is a possible implementation of the iota function:
+
+
+\CodeBlockInput{c}{ex-3-iota.c}
+
+
+Write a logic function that returns the input value increased by one. Prove
+that after the execution of \CodeInline{iota}, the first value of the array is
+the input value and that each value of the array corresponds to the value that
+precedes it increased by one (using the previously defined logic function).
+
+
+
+\levelFourTitle{Vector add}
+
+
+
+In the following program, the \CodeInline{vec\_add} function adds the second
+vector in input into the first one. Write a contrat for the function
+\CodeInline{show\_the\_difference} that expresses, for each value of the vector
+\CodeInline{v1} the difference between the pre and the postcondition. For this,
+define a logic function \CodeInline{diff} that returns the difference between
+the value of a memory location at a label \CodeInline{L1} and the value at a
+label \CodeInline{L2}.
+
+
+\CodeBlockInput{c}{ex-4-vec-inc.c}
+
+
+
+Re-express the \CodeInline{unchanged} predicate using the logic function you
+have defined.
+
+
+
+\levelFourTitle{The sum of the N first ints}
+
+
+The following function compute the sum of the N first integers. Write a
+recursive logic functions that returns the sum of the N first integers and
+write a specification for the C function that show that it computes the same
+value as provided by the logic function.
+
+
+\CodeBlockInput{c}{ex-5-n-first-ints.c}
+
+
+Try to verify the absence of runtime errors. The integer overflow is not so
+simple to get rid of. However, write a precondition that should be enough to
+prove the function (remember that the sum of the N first integers can be
+expressed with a really simple formula ...). It will certainly not be enough
+to directly prove the absence overflow, but we will see how to provide such
+an information in the next section.
