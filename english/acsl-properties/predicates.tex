@@ -201,16 +201,18 @@ contract in order to use these predicates.
 
 
 \levelFourTitle{Binary Search}
+\label{l4:acsl-properties-predicates-ex-bsearch}
 
 
 Taking back the solution of the
-exercise~\ref{l4:statements-loops-ex-bsearch} about the binary search
-function, write a predicate that expresses that an array is sorted on a range of
-values starting at \CodeInline{begin} and ending at \CodeInline{end} (excluded).
-Overload this predicate in order to make \CodeInline{begin} optional with a
-default value of $0$. Define a predicate that an element is in a range of values
-of an array starting at index \CodeInline{begin} and ending at \CodeInline{end}
-(excluded), again overload this predicate to make the first bound optional.
+exercise~\ref{l4:statements-loops-ex-bsearch} about the binary search function
+with unsigned types, write a predicate that expresses that an array is sorted on
+a range of values starting at \CodeInline{begin} and ending at \CodeInline{end}
+(excluded). Overload this predicate in order to make \CodeInline{begin} optional
+with a default value of $0$. Define a predicate that an element is in a range of
+values of an array starting at index \CodeInline{begin} and ending at
+\CodeInline{end} (excluded), again overload this predicate to make the first
+bound optional.
 
 Use those two predicates to simplify the contract of the function. Note that
 both behaviors \CodeInline{assumes} clause should be modified.

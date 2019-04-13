@@ -80,3 +80,129 @@ to prove the proof that \CodeInline{fmin} is lesser or equal to
 property is the simply an instance of the lemma
 \CodeInline{ax\_monotonic\_pos}, the proof is then trivial as our lemma is
 considered to be true when are not currently proving it.
+
+
+\levelThreeTitle{Exercises}
+
+
+
+\levelFourTitle{Multiplication property}
+
+
+
+Write a lemma that state that for three integers $x$, $y$ and $z$, if $x$ is
+greater or equals to $0$, if $z$ is greater or equals to $y$, then $x * z$ is
+greater or equals to $y * z$.
+
+
+This lemma will not be proved by SMT solvers, however if you ask a proof with
+Coq, the default tactic will probably discharged this verification condition
+automatically.
+
+
+\levelFourTitle{Locally sorted to globally sorted}
+
+
+The following program contains a function that requires an array to be sorted
+in the sense that each element is lower or equals to the element to follows it
+and calls the binary search function.
+
+
+\CodeBlockInput[59][81]{c}{ex-2-sorted-link.c}
+
+
+Take back your proved binary search function from the
+exercise~\ref{l4:acsl-properties-predicates-ex-bsearch}. You might notice that
+the precondition of the binary search function is stronger than what we know in
+precondition of the \CodeInline{bsearch\_callee}. However, our precondition
+implies that the array is globally sorted. Write a lemma that states that if
+an array is \CodeInline{element\_level\_sorted} then it is \CodeInline{sorted}.
+This lemma will probably not be proved by SMT solvers, all remaining properties
+should be.
+
+We provide a solution and the corresponding Coq proof on the GitHub repository
+of this book.
+
+
+\levelFourTitle{Sum of the N first ints}
+
+
+Take back your solution to the
+exercise~\ref{l4:acsl-properties-functions-n-first-ints} about the sum of the
+N first elements. Write a lemma that states that the result of the call to the
+logic function is $n*(n+1)/2$. This lemma will not be proved by SMT solvers.
+
+
+We provide a solution and the corresponding Coq proof on the GitHub repository
+of this book.
+
+
+\levelFourTitle{Shift transitivity}
+
+
+The following program is composed of two functions. The first one is the
+\CodeInline{shift\_array} function that shifts the elements of an array with a
+given offset (named \CodeInline{shift}). The second performs two successive
+shifts on the same array.
+
+
+\CodeBlockInput{c}{ex-4-shift-transitivity.c}
+
+
+Complete the predicates \CodeInline{shifted} and \CodeInline{unchanged} (the
+last should use the former). Complete the contract of the
+\CodeInline{shift\_array} function and prove it using WP.
+
+
+Express two lemmas about the \CodeInline{shifted} property.
+
+
+The first one \CodeInline{shift\_ptr} should state that shifting a range
+\CodeInline{fst+s1} to \CodeInline{last+s1} of an \CodeInline{array} with an
+offset \CodeInline{s2} is equivalent to shifting the range \CodeInline{fst} to
+\CodeInline{last} of the memory location \CodeInline{array+s1} with an offset
+\CodeInline{s2}.
+
+
+
+The second one should state that when the elements of an array are shifted a
+first time with an offset \CodeInline{s1} and then a second time with an offset
+\CodeInline{s2}, then the complete shifts corresponds to a single shift with an
+offset \CodeInline{s1+s2}.
+
+
+
+The lemma \CodeInline{shift\_ptr} will not be proved by SMT solvers, we provide
+a solution and the corresponding Coq proof on the GitHub repository of this
+book. All remaining properties should be proved automatically.
+
+
+
+\levelFourTitle{Shift sorted range}
+
+
+In the following program is composed of two functions. The function
+\CodeInline{shift\_and\_search} shifts the element of an array and then
+performs a binary search.
+
+
+\CodeBlockInput{c}{ex-5-shift-sorted.c}
+
+
+Take back your proved binary search function from the
+exercise~\ref{l4:acsl-properties-predicates-ex-bsearch}, modify the binary
+search function, its contract and its proof in order to be able to search in
+any range.
+
+
+Use the \CodeInline{shift\_array} function proved in the previous exercise.
+
+
+Complete the contract of the function \CodeInline{shift\_and\_search}. You might
+notice that the precondition that requires the array to be sorted is not
+validated. Complete the lemma \CodeInline{shifted\_still\_sorted} that should
+state that if a range is sorted at some label and then shifted, the resulting
+range is still sorted.
+
+The lemma does not have to be proved by WP. We provide a solution and the
+corresponding Coq proof on the GitHub repository of this book.
