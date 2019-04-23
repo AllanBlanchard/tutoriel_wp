@@ -426,3 +426,55 @@ be found in the installation directory of Frama-C, under the directory
 \CodeInline{libc}, the file is named \CodeInline{\_\_fc\_string\_axiomatic.h}.
 Note that this definition include more axioms in order to be able to
 deduce more properties about \CodeInline{strlen}.
+
+
+
+\levelThreeTitle{Exercises}
+
+
+\levelFourTitle{Occurrence counting}
+
+
+The following program cannot be proved with the axiomatic definition we
+previously defined about occurrences counting:
+
+
+\CodeBlockInput[14][26]{c}{ex-1-occurrences_of.c}
+
+
+Re-express the axiomatic definition in a form that allows to prove the
+program.
+
+
+\levelFourTitle{Greatest Common Divisor}
+
+
+Express the logic function that allows to compute the greatest common divisor as
+an axiomatic definition, write the contract of the \CodeInline{gcd} function and
+prove it:
+
+
+\CodeBlockInput{c}{ex-2-gcd.c}
+
+
+\levelFourTitle{Sum of the N first integers}
+
+
+Express the logic function that allows to compute the sum of the N first
+integers as an axiomatic definition. Write the contract of the following
+\CodeInline{sum\_n} function and prove it:
+
+
+\CodeBlockInput{c}{ex-3-sum-N-first-ints.c}
+
+
+\levelFourTitle{Permutation}
+
+
+Take back the example about selection sort
+(section~\ref{l3:acsl-logic-definitions-inductive-sort}). Re-express the
+permutation predicate using an axiomatic definition. Take care of the
+\CodeInline{reads} clause.
+
+
+\CodeBlockInput{c}{ex-4-sort.c}
