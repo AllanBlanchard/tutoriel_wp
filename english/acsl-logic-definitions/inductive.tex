@@ -206,7 +206,10 @@ write definitions that are not easy to express using the basic formalism
 provided by ACSL. It is here used to illustrate their use with a simple
 example.
 
+
+
 \levelThreeTitle{Example: sort}
+
 
 We will prove a simple selection sort:
 
@@ -227,7 +230,7 @@ be to write this specification (which is true !):
 \CodeBlockInput[6]{c}{sort-incomplete.c}
 
 
-\textbf{This specification is true}. But if we recall correctly the part of the
+\textbf{This specification is correct}. But if we recall correctly the part of the
 tutorial about specifications, we have to \emph{precisely} express what we expect
 of the program. With this specification, we do not prove all required properties
 expected for a sort function. For example, this function correctly answers to
@@ -274,3 +277,140 @@ a particular annotation (at line 16), introduced using the keyword
 fact does not exist from the program point of view, and is only visible from
 a specification point of view. This is the final section of this chapter, for
 now let us focus on axiomatic definitions.
+
+
+
+\levelThreeTitle{Exercises}
+
+
+\levelFourTitle{Sum of the N first integers}
+
+
+Take back your solution to the
+exercise~\ref{l4:acsl-properties-lemmas-n-first-ints} about the sum of the N
+first integers. Rewrite the logic function using an inductive predicate that
+states that some integers equals the sum of the N first integers.
+
+
+\CodeBlockInput{c}{ex-1-sum-N-first-ints.c}
+
+
+Adapt the contract of the function and the lemma(s). Note that lemma(s) could
+certainly not be proved by SMT solvers. We provide a solution and corresponding
+Coq proofs on the GitHub repository of this book.
+
+
+\levelFourTitle{Greatest Common Divisor}
+
+
+Write an inductive predicate that states that som integer is the greatest common
+divisor of two others. The goal of the exercise is to prove that the function
+\CodeInline{gcd} computes the greatest common divisor. Thus, we do not have to
+specify all the cases for the predicate. Indeed, a close look to the loop shows
+us that after the first iteration \CodeInline{a} is greater or equals to
+\CodeInline{b} and it is maintained by the loop. Thus, we consider two cases for
+the inductive predicate:
+
+
+\begin{itemize}
+\item \CodeInline{b} is 0,
+\item some \CodeInline{d} is the GCD of \CodeInline{b} and \CodeInline{a \% b} and
+  thus, the GCD of \CodeInline{a} and \CodeInline{b}
+\end{itemize}
+
+
+\CodeBlockInput{c}{ex-2-gcd.c}
+
+
+Express the postcondition of the function, and complete the invariant to prove
+that it is verified. Note that the invariant should make use of the inductive
+case \CodeInline{gcd\_succ}.
+
+
+
+\levelFourTitle{Power function}
+
+
+In this exercise, we do not consider RTEs.
+
+
+Write an inductive predicate that states that some integer \CodeInline{r} equals
+to $x^n$. Consider the two cases: either $n$ is 0 or it is greater and then it
+should be related to the value $x^{n-1}$.
+
+
+\CodeBlockInput[1][6]{c}{ex-3-fpower.c}
+
+
+First prove the naive version of the power function:
+
+
+\CodeBlockInput[13][28]{c}{ex-3-fpower.c}
+
+
+Now, let us prove a faster version of the power function:
+
+
+\CodeBlockInput[30][49]{c}{ex-3-fpower.c}
+
+
+In this version, we exploit two properties about the power operator:
+
+
+\begin{itemize}
+\item $(x^2)^n = x^{2n}$
+\item $x * (x^2)^n = x^{2n+1}$
+\end{itemize}
+
+
+that allows us to divide $n$ by 2 at each step of the loop instead of decreasing
+it by one (which makes the algorithm $O(log n)$ instead of $O(n)$). Express the
+two previous properties in lemmas:
+
+
+\CodeBlockInput[8][11]{c}{ex-3-fpower.c}
+
+
+First express the lemma \CodeInline{power\_even}, the SMT solvers will be able
+to combine the use of this lemma and the inductive predicate to deduce
+\CodeInline{power\_odd}. The Coq proof of the \CodeInline{power\_even} lemma is
+provided on the GitHub repository of this book.
+
+
+Finally, complete the contract and loop invariant of the \CodeInline{fast\_power}
+function. For this notice that at the beginning of the loop $x^{old(n)} = p^n$,
+and that each iteration uses the previous properties to update $r$, in the sense
+that we have $x^{old(n)} = r * p^n$ during all the loop, until we have $n = 0$ and
+thus $p^n = 1$.
+
+
+\levelFourTitle{Permutation}
+
+
+Take back the definitions of the \CodeInline{shifted} and \CodeInline{unchanged}
+predicates from the exercise~\ref{l4:acsl-properties-lemmas-shift-trans}. Use the
+shift predicate to express the rotate predicate that expresses that some elements
+of an array are rotated to the left in the sense that all elements are shifted of
+one element to the left except the last one that is put in the first cell of the
+range. Use this predicate to prove the rotate function:
+
+
+\CodeBlockInput[12][26]{c}{ex-4-rotate-permutation.c}
+
+
+Express a new version of the notion of permutation with an inductive predicate
+that considers four cases:
+
+\begin{itemize}
+\item permutation is reflexive,
+\item if the left part of the range (until an index of the range) is rotated
+  between two labels, we still have a permutation,
+\item if the right part of the range (from an index of the range) is rotated
+  between two labels, we still have a permutation,
+\item permutation is transitive.
+\end{itemize}
+
+
+Complete the contract of \CodeInline{two\_rotates} that successively rotates the
+first half of the array and then the second half and prove that it maintains the
+permutation.

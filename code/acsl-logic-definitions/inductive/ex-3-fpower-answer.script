@@ -19,24 +19,3 @@ Proof.
     replace (n + 1 - 1) with n in H1 by omega.
     apply IHn ; auto ; omega.
 Qed.
-
-Goal typed_lemma_power_mult.
-Hint power_mult,property.
-Proof.
-  intros y x n.
-  induction n using Z_induction with (m := 0) ; intros ry rx Hn Hpx Hpy.
-  + assert (n = 0) by omega ; subst.
-    inversion Hpx ; try omega ; subst.
-    inversion Hpy ; try omega ; subst.
-    rewrite Z.mul_1_l.
-    constructor.
-  + inversion Hpx ; try omega ; subst.
-    inversion Hpy ; try omega ; subst.
-    replace (i * x * (i0 * y)) with (i * i0 * (x * y)).
-    - constructor ; auto.
-      replace (n + 1 - 1) with n in * by omega.
-      apply IHn ; auto ; omega.
-    - apply Z.mul_shuffle1.
-Qed.
-
-

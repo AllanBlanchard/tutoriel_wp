@@ -26,7 +26,7 @@ int fibo(int n){
   int p_1 = 1 ;
   int r = p_1 + 1 ;
 
-  //@ ghost helper(2, p_1, 1);
+  // @ ghost helper(2, p_1, 1);
 
   /*@
     loop invariant 2 <= i <= n ;
@@ -37,7 +37,7 @@ int fibo(int n){
   */
   for(int i = 2 ; i < n ; ++i){
     int x = r + p_1 ;
-    //@ ghost helper(i+1, r, p_1);
+    // @ ghost helper(i+1, r, p_1);
     p_1 = r ;
     r = x ;
   }

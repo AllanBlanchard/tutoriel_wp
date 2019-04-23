@@ -6,10 +6,6 @@
 */
 
 /*@
-  lemma power_mult:
-    \forall integer x, y, n, rx, ry ;
-    n >= 0 ==> is_power(x, n, rx) ==> is_power(y, n, ry) ==> is_power(x * y, n, rx * ry) ;
-    
   lemma power_even:
     \forall integer x, n, r ;
     n >= 0 ==> is_power(x * x, n, r) ==> is_power(x, n * 2, r) ;
@@ -25,6 +21,27 @@
   ensures is_power(x, n, \result);
 */
 int power(int x, int n){
+  int r = 1 ;
+
+  /*@
+    loop invariant 1 <= i <= n+1 ;
+    loop invariant is_power(x, i-1, r) ;
+    loop assigns i, r ;
+    loop variant n - i ;
+  */
+  for(int i = 1 ; i <= n ; ++i){
+    r *= x ;
+  }
+  
+  return r ;
+}
+
+/*@
+  requires n >= 0 ;
+  assigns \nothing ;
+  ensures is_power(x, n, \result);
+*/
+int fast_power(int x, int n){
   int r = 1 ;
   int p = x ;
 
