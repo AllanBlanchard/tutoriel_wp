@@ -1,37 +1,30 @@
-Begin
+Now that we have presented most of the important features of ACSL for program
+proof, let us have a more general view of program proof with Frama-C and WP. We
+will present some approaches that can be used depending on the target of
+verification, the expected level of confidence and the kind of formalization
+(and features of ACSL) we use.
 
-As we will try to prove more complex properties, particularly when
-programs involve loops, there will be a part of ``trial and error'' in
-order to understand what the provers miss to establish the proof.
 
-It can miss hypotheses. In this case, we can try to add assertions to
-guide the prover. With some experience, we can read the content of the
-proof obligations or try to perform the proof with the Coq interactive
-prover to see whether the proof seems to be possible. Sometimes, the
-prover just needs more time, in such a case, we can (sometimes a lot)
-augment the timeout value. Of course, the property can be too hard for
-the prover, and in this case, we will have to write the proof ourselves
-with an interactive prover.
-
-Finally, the implementation can be indeed incorrect, and in this case we
-have to fix it. Here, we will use test and not proof, because a test
-allows us to prove the presence of a bug and to analyze this bug.
-
+%% \begin{levelTwo}
+%%   {Data-structure API}
+%%   {data-structure-api}
+%% \end{levelTwo}  
 
 \begin{levelTwo}
-  {Minimal contracts}
+  {Absence of runtime errors: Minimal contracts}
   {minimal-contracts}
 \end{levelTwo}
 
 \begin{levelTwo}
-  {Functional properties, helped by interactive proof}
-  {interactive}
+  {Assertions and triggering of lemmas}
+  {triggering-lemmas}
 \end{levelTwo}
 
 \begin{levelTwo}
-  {Functional properties, helped by autoactive proof}
-  {autoactive}
+  {More on ghost code: lemma functions and lemma macros}
+  {lemma-functions}
 \end{levelTwo}
+
 
 
 \horizontalLine

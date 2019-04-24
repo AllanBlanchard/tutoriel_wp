@@ -1,7 +1,6 @@
 #include <stddef.h>
 
 /*@
-  requires 0 < length;
   requires \valid_read(array + (0 .. length-1));
   
   assigns  \nothing;
