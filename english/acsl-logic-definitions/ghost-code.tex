@@ -19,7 +19,7 @@ introduced using the \texttt{ghost} keyword:
 \begin{CodeBlock}{c}
 /*@
   ghost
-  // code en langage C
+  // C code
 */
 \end{CodeBlock}
 
@@ -220,3 +220,39 @@ the array and strong bounds on each value of the different cells. An
 other possibility would be to add an error value in case of overflow
 (\(-1\) for example), and to specify that when an overflow is produced,
 this value is returned.
+
+
+
+\levelThreeTitle{Exercises}
+
+
+
+\levelFourTitle{Two times}
+
+
+This program computes \CodeInline{2 * x} using a loop. Use a ghost variable
+\CodeInline{i} to express as an invariant that the value of \CodeInline{r}
+is \CodeInline{i * 2} and complete the proof.
+
+
+\CodeBlockInput{c}{ex-1-times-2.c}
+
+
+
+\levelFourTitle{Playing with arrays}
+
+
+In this function, we receive an array, and we have a loop where we do nothing
+except that we have indicated that it assigns the content of the array. However,
+we would like to prove in postcondition that the array has not been modified.
+
+
+
+\CodeBlockInput{c}{ex-2-array.c}
+
+
+Without modifying the \CodeInline{assigns} clause of the loop and without using
+the keyword \CodeInline{\textbackslash{}at}, prove that the function does not
+modify the array. For this, complete the ghost code and the loop invariant, by
+assuring that the array \CodeInline{g} represents the old value of
+\CodeInline{a}.
