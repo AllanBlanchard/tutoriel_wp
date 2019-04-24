@@ -7,7 +7,7 @@ function. This time, we will prove the insertion sort function:
 
 
 
-\CodeBlockInput{c}{insert_sort.c}
+%\CodeBlockInput{c}{insert_sort.c}
 
 
 The \CodeInline{insertion\_sort} function visits each value, from the beginning
@@ -41,7 +41,7 @@ the right place.
 
 
 
-\CodeBlockInput[64][81]{c}{insert_sort-contract.c}
+%\CodeBlockInput[64][81]{c}{insert_sort-contract.c}
 
 
 
@@ -52,7 +52,7 @@ is permutation of the original range:
 
 
 
-\CodeBlockInput[43][61]{c}{insert_sort-contract.c}
+%\CodeBlockInput[43][61]{c}{insert_sort-contract.c}
 
 
 
@@ -78,7 +78,7 @@ another:
 
 
 
-\CodeBlockInput[37][41]{c}{insert_sort-proved.c}
+%\CodeBlockInput[37][41]{c}{insert_sort-proved.c}
 
 
 
@@ -110,33 +110,33 @@ the second one is not:
 
 
 
-\begin{CodeBlock}{c}
-  /*@
-    loop invariant beg+1 <= i <= end ;
-    loop invariant sorted(a, beg, i) ;
-    loop invariant permutation{Pre, Here}(a,beg,end);
-    loop assigns a[beg .. end-1], i ;
-    loop variant end-i ;
-  */
-  for(size_t i = beg+1; i < end; ++i) {
-    //@ ghost L:
-    insert(a, beg, i);
-    //@ assert permutation{L, Here}(a, beg, i+1); // PROVED
-    //@ assert permutation{L, Here}(a, i+1, end); // NOT PROVED
-  }
-\end{CodeBlock}
+%% \begin{CodeBlock}{c}
+%%   /*@
+%%     loop invariant beg+1 <= i <= end ;
+%%     loop invariant sorted(a, beg, i) ;
+%%     loop invariant permutation{Pre, Here}(a,beg,end);
+%%     loop assigns a[beg .. end-1], i ;
+%%     loop variant end-i ;
+%%   */
+%%   for(size_t i = beg+1; i < end; ++i) {
+%%     //@ ghost L:
+%%     insert(a, beg, i);
+%%     //@ assert permutation{L, Here}(a, beg, i+1); // PROVED
+%%     //@ assert permutation{L, Here}(a, i+1, end); // NOT PROVED
+%%   }
+%% \end{CodeBlock}
 
 So we need a first lemma for this property, we use a predicate
 \CodeInline{shifted} to define \CodeInline{unchanged}, we will explain why
 later.
 
-\CodeBlockInput[53][60]{c}{insert_sort-proved.c}
-\CodeBlockInput[67][70]{c}{insert_sort-proved.c}
+%\CodeBlockInput[53][60]{c}{insert_sort-proved.c}
+%\CodeBlockInput[67][70]{c}{insert_sort-proved.c}
 
 And now, we can verify that those two sub-arrays are permutations:
 
 
-\CodeBlockInput[127][140]{c}{insert_sort-proved.c}
+%\CodeBlockInput[127][140]{c}{insert_sort-proved.c}
 
 
 Thus, since those two parts are permutations, the global array is a permutation
@@ -145,21 +145,21 @@ directly proved, so we also need a lemma for this:
 
 
 
-\CodeBlockInput[75][81]{c}{insert_sort-proved.c}
+%\CodeBlockInput[75][81]{c}{insert_sort-proved.c}
 
 
 And now we can deduce that a loop iteration produces a permutation:
 
 
 
-\begin{CodeBlock}{c}
-    //@ ghost L:
-    insert(a, beg, i);
-    //@ assert permutation{L, Here}(a, beg, i+1);
-    //@ assert unchanged{L, Here}(a, i+1, end);
-    //@ assert permutation{L, Here}(a, i+1, end);
-    //@ assert permutation{L, Here}(a, beg, end); // PROVED
-\end{CodeBlock}
+%% \begin{CodeBlock}{c}
+%%     //@ ghost L:
+%%     insert(a, beg, i);
+%%     //@ assert permutation{L, Here}(a, beg, i+1);
+%%     //@ assert unchanged{L, Here}(a, i+1, end);
+%%     //@ assert permutation{L, Here}(a, i+1, end);
+%%     //@ assert permutation{L, Here}(a, beg, end); // PROVED
+%% \end{CodeBlock}
 
 
 
@@ -168,7 +168,7 @@ is also a permutation:
 
 
 
-\CodeBlockInput[42][47]{c}{insert_sort-proved.c}
+%\CodeBlockInput[42][47]{c}{insert_sort-proved.c}
 
 
 
@@ -203,35 +203,35 @@ as well as some assertions that we want to be verified.
 
 
 
-\begin{CodeBlock}{c}
-  /*@
-    loop invariant beg <= i <= last ;
-    loop invariant \forall integer k ; beg <= k <= i    ==> a[k] == \at(a[k], Pre) ;
-    loop invariant \forall integer k ; i+1 <= k <= last ==> a[k] == \at(a[k-1], Pre) ;
+%% \begin{CodeBlock}{c}
+%%   /*@
+%%     loop invariant beg <= i <= last ;
+%%     loop invariant \forall integer k ; beg <= k <= i    ==> a[k] == \at(a[k], Pre) ;
+%%     loop invariant \forall integer k ; i+1 <= k <= last ==> a[k] == \at(a[k-1], Pre) ;
 
-    loop assigns i, a[beg .. last] ;
-    loop variant i ;
-  */
-  while(i > beg && a[i - 1] > value){
-    a[i] = a[i - 1] ;
-    --i ;
-  }
+%%     loop assigns i, a[beg .. last] ;
+%%     loop variant i ;
+%%   */
+%%   while(i > beg && a[i - 1] > value){
+%%     a[i] = a[i - 1] ;
+%%     --i ;
+%%   }
 
-  a[i] = value ;
+%%   a[i] = value ;
 
-  //@ assert unchanged{Pre, Here}(a, beg, i) ;   // PROVED
-  //@ assert permutation{Pre, Here}(a, beg, i) ; // PROVED
+%%   //@ assert unchanged{Pre, Here}(a, beg, i) ;   // PROVED
+%%   //@ assert permutation{Pre, Here}(a, beg, i) ; // PROVED
 
-  //@ assert permutation{Pre, Here}(a, i, last+1) ; // NOT PROVED
-\end{CodeBlock}
+%%   //@ assert permutation{Pre, Here}(a, i, last+1) ; // NOT PROVED
+%% \end{CodeBlock}
 
 
 Then, for the last assertion, we need a lemma about the rotation of the
 elements:
 
 
-\CodeBlockInput[56][60]{c}{insert_sort-proved.c}
-\CodeBlockInput[71][74]{c}{insert_sort-proved.c}
+%\CodeBlockInput[56][60]{c}{insert_sort-proved.c}
+%\CodeBlockInput[71][74]{c}{insert_sort-proved.c}
 
 
 
