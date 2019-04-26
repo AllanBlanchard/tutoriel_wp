@@ -16,7 +16,7 @@ verification, the expected level of confidence and the kind of formalization
 \end{levelTwo}
 
 \begin{levelTwo}
-  {Assertions and triggering of lemmas}
+  {Guiding assertions and triggering of lemmas}
   {triggering-lemmas}
 \end{levelTwo}
 
@@ -30,4 +30,19 @@ verification, the expected level of confidence and the kind of formalization
 \horizontalLine
 \newpage
 
-End
+As we will try to prove more complex properties, particularly when
+programs involve loops, there will be a part of ``trial and error'' in
+order to understand what the provers miss to establish the proof.
+
+It can miss hypotheses. In this case, we can try to add assertions to
+guide the prover. With some experience, we can read the content of the
+proof obligations or try to perform the proof with the Coq interactive
+prover to see whether the proof seems to be possible. Sometimes, the
+prover just needs more time, in such a case, we can (sometimes a lot)
+augment the timeout value. Of course, the property can be too hard for
+the prover, and in this case, we will have to write the proof ourselves
+with an interactive prover.
+
+Finally, the implementation can be indeed incorrect, and in this case we
+have to fix it. Here, we will use test and not proof, because a test
+allows us to prove the presence of a bug and to analyze this bug.

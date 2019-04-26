@@ -1,4 +1,53 @@
-\levelThreeTitle{Example: sort, again}
+There are different levels of automation for the verification of programs. From
+tools that are completely automatic, like for example abstract interpreters that
+do not require any help from the human, to interactive tools, like proof
+assistants where we write the proof mostly by hand and the tools is just there
+to check that we do it right.
+
+
+
+Tools like WP (any many others like Why3, Spark, ...) tend to maximize
+automation. However, the more the properties we want to prove are complexe, the
+harder it will be to get automatically the proof. Thus, we often need to help
+the tools in order to achieve the verification. This is done by providing more
+annotations to help the verification condition generation process. Adding loop
+invariant is for example a way to be able to produce an inductive reasoning
+about a loop while automatic provers are generally bad at this kind of task.
+
+
+
+This kind of technique has been called ``auto-active'' verification. This word
+is the contraction of ``automatic'' and ``interactive''. It is automatic in the
+sense that most of the proof is performed by automatic tools, but it is also
+somewhat interactive since as a user, we manually provide information to the
+tools.
+
+
+
+In this section, we will see in more details how we can use assertions to guide
+the proofs. By adding assertions, we create some base of knowledge (properties
+that are known to be true) that are collected by the verification condition
+generator during the WP computation process and that are then given to the
+automatic solvers that consequently have more information and thus can
+potentially prove more complex properties.
+
+
+
+\levelThreeTitle{Proof context}
+
+
+
+
+
+
+
+\levelThreeTitle{Triggering lemmas}
+
+
+
+
+
+\levelThreeTitle{A more complex example: sort, again}
 
 
 
@@ -235,3 +284,4 @@ elements:
 
 
 
+\levelThreeTitle{Exercises}
