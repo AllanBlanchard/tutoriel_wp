@@ -44,7 +44,7 @@ void swap(int* p, int* q){
 
   axiomatic Permutation {
     predicate permutation{L1,L2}(int* a, integer b, integer e)
-        reads \at(a[b .. e-1], L1);
+        reads \at(a[b .. e-1], L1), \at(a[b .. e-1], L2);
 
     axiom reflexive{L1}: 
       \forall int* a, integer b,e ; permutation{L1,L1}(a, b, e);
