@@ -7,7 +7,7 @@ to check that we do it right.
 
 
 Tools like WP (any many others like Why3, Spark, ...) tend to maximize
-automation. However, the more the properties we want to prove are complexe, the
+automation. However, the more the properties we want to prove are complex, the
 harder it will be to get automatically the proof. Thus, we often need to help
 the tools in order to achieve the verification. This is done by providing more
 annotations to help the verification condition generation process. Adding loop
@@ -70,7 +70,7 @@ pretty printed):
 
 
 That is to say the different constraint we have stated as a precondition to the
-function that slighlty different (some more properties have been specified and
+function that slightly different (some more properties have been specified and
 the values are not exactly the same). What is more interesting is having a look
 to the goal generated for the second assertion (note that we have edited all the
 remaining screenshots in this section in order to focus on what is important
@@ -242,8 +242,8 @@ Indeed, our inductive definition of the permutation specifies three cases: a
 range is permutation of itself, or two (and only two) values have been swapped,
 or the permutation is transitive. But none of this cases can be applied to our 
 \CodeInline{insert} function, since the shifted range is not obtained by
-successisively exchanging values, and that the wo other cases obviously do not
-apply here.
+successively exchanging values, and that the other cases obviously do not apply
+here.
 
 
 
@@ -252,7 +252,7 @@ notice that what we really need to provide is a way to say ``each value that
 was previously in the array is still in the array and if several values were
 equivalent, the number of occurrence of these values does not change''. And in
 fact, this last part of the expression is enough to express our permutation.
-A permutation of range is a range such that forall value, the number of
+A permutation of range is a range such that for all value, the number of
 occurrences of this value in the array does not change from a program point to
 another:
 
@@ -264,7 +264,7 @@ another:
 
 Starting from this definition, we can directly define lemmas that can help us
 to deduce that some array that respect some properties from a label to another
-is indeed a permutation. For example, that would be possible for the defintion
+is indeed a permutation. For example, that would be possible for the definition
 of the case \CodeInline{Swap} in our previous inductive definition. And it is
 of course also possible for our shifted range.
 
@@ -366,8 +366,8 @@ unchanged, so this is a permutation. We have a lemma for this, but we also have
 to state that the values are unchanged as an invariant of the loop. The second
 part of the array is a permutation because we rotate the elements, we need a
 lemma to express this and to state at least that the element are shifted by the
-loop as an invariant. Finally the union of the two permutations is a permutation,
-and we also have a lemma for this.
+loop as an invariant. Finally the union of the two permutations is a
+permutation, and we also have a lemma for this.
 
 
 
