@@ -1,5 +1,3 @@
-#include <stddef.h>
-
 /*@
   axiomatic Ax {
     predicate X{L1, L2}(int* p, integer l) reads \at(p[0 .. l-1], L1), \at(p[0 .. l-1], L2) ;
@@ -16,13 +14,12 @@
   assigns p[0 .. l-1] ;
   ensures X{Pre, Post}(p, l) ;
 */
-void f(int* p, size_t l);
+void f(int* p, unsigned l);
 
 /*@
   ensures Y{Pre,Post}(p, l);
 */
-void g(int* p, size_t l){
+void g(int* p, unsigned l){
   f(p, l) ;
-  // @ assert Y{Pre, Here}(p, l) ;
   f(p, l) ;
 }

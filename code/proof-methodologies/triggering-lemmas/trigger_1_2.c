@@ -1,8 +1,3 @@
-/*@ assigns *x ; */
-void g(int* x){
-
-}
-
 /*@
   axiomatic Ax {
     predicate P(int* x) reads *x ;
@@ -14,15 +9,15 @@ void g(int* x){
   }
 */
 
+/*@ assigns *x ; */
+void g(int* x);
+
 /*@
   requires \separated(x, y);
   requires P(x) ;
-  requires P(y);
   ensures  Q(x) ;
-  ensures  Q(y);
 */
 void example(int* x, int* y){
   g(y);
   //@ assert \at(*x, Pre) == \at(*x, Here); 
-  // @ assert P(x);
 }
