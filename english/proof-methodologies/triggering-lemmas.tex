@@ -253,8 +253,8 @@ moment, the memory model of WP does not handle this clause so precisely.
 
 
 
-We will again illustrate the use of axiomatic definitions with a sort
-function. This time, we will prove the insertion sort function:
+Let us now consider a more complex example that involves some actual axiomatic
+definitions. This time, we will prove the insertion sort function:
 
 
 
@@ -356,8 +356,9 @@ We can observe two facts: the first part of the array (from \CodeInline{beg} to
 at the beginning of the iteration (by the contract of the \CodeInline{insert}
 function). The second part (from \CodeInline{i+1} to \CodeInline{end}) is
 unchanged, so this is also a permutation of the values present at the beginning
-of the iteration. While the first property is easily deduced, we can see that
-the second one is not:
+of the iteration. Let us use some assertions to see whether we can prove this
+or not. While the first property is easily deduced, we can see that the second
+one is not:
 
 
 
@@ -377,14 +378,19 @@ the second one is not:
   }
 \end{CodeBlock}
 
+
 So we need a first lemma for this property, we use a predicate
 \CodeInline{shifted} to define \CodeInline{unchanged}, we will explain why
 later.
 
+
 \CodeBlockInput[53][60]{c}{insert_sort-proved.c}
 \CodeBlockInput[67][70]{c}{insert_sort-proved.c}
 
-And now, we can verify that those two sub-arrays are permutations:
+
+And now, we can verify that those two sub-arrays are permutations, by again
+adding an assertion that will show that the range \CodeInline{i+1} to
+\CodeInline{end}, in order to trigger \CodeInline{unchanged\_is\_permutation}.
 
 
 \CodeBlockInput[127][140]{c}{insert_sort-proved.c}
@@ -399,7 +405,8 @@ directly proved, so we also need a lemma for this:
 \CodeBlockInput[75][81]{c}{insert_sort-proved.c}
 
 
-And now we can deduce that a loop iteration produces a permutation:
+And now we can deduce that a loop iteration produces a permutation by adding
+this conclusion as an assertion:
 
 
 
@@ -415,7 +422,14 @@ And now we can deduce that a loop iteration produces a permutation:
 
 
 Finally, we need to add one more information, the permutation of a permutation
-is also a permutation:
+is also a permutation. This time, we do not have to add more assertions, the
+context contains:
+\begin{itemize}
+\item \CodeInline{permutation\{Pre, L\}(a, beg, end)} (invariant)
+\item \CodeInline{permutation\{L, Here\}(a, beg, end)} (assertion)
+\end{itemize}
+which is enough to conclude \CodeInline{permutation\{Pre, Here\}(a, beg, end)}
+at the end of the loop block using the following lemma:
 
 
 
@@ -431,7 +445,7 @@ how to maintain that the function produces a permutation.
 
 It shifts the different elements to the left until it reaches the beginning of
 the array or an element that is smaller than the element to insert which is
-initially at the end of the range, and is insert at the reached position. The
+initially at the end of the range, and is inserted at the reached position. The
 cells from the beginning of the array to the location of insertion are left
 unchanged, so this is a permutation. We have a lemma for this, but we also have
 to state that the values are unchanged as an invariant of the loop. The second
@@ -450,8 +464,16 @@ So first, we can give a suitable invariant for the permutation:
 \item we state that the last part is shifted to the left
 \end{itemize}
 
-as well as some assertions that we want to be verified.
-
+as well as some assertions that we want to be verified:
+\begin{itemize}
+\item the first one asserts that the first part of the array is unchanged to
+  trigger \CodeInline{permutation\{Pre, Here\}(a, beg, end)} in order to prove
+\item the second one that asserts that the first part of the array is a
+  permutation of the original one, and is used in combination  with ...
+\item the third one that asserts that the second part of the array is a
+  permutation of the original one (which allows to trigger
+  \CodeInline{union\_permutation} and prove the postcondition).
+\end{itemize}
 
 
 \begin{CodeBlock}{c}
@@ -485,10 +507,82 @@ elements:
 \CodeBlockInput[71][74]{c}{insert_sort-proved.c}
 
 
+We have 6 lemmas to prove:
+\begin{itemize}
+\item \CodeInline{l\_occurrences\_union}
+\item \CodeInline{shifted\_maintains\_occ}
+\item \CodeInline{unchanged\_is\_permutation}
+\item \CodeInline{rotate\_left\_is\_permutation}
+\item \CodeInline{union\_permutation}
+\item \CodeInline{transitive\_permutation}
+\end{itemize}
+
+While the Coq proofs of these lemmas are beyond the scope of this tutorial (and
+we will see later that in this particular case we do not really need them), let
+us give some ideas of how to prove them (nevertheless, the Coq scripts are
+available on the GitHub repository of this book).
+
+
+To prove \CodeInline{l\_occurrences\_union}, we reason by induction on the size
+of second part of the array, the basic case is trivial: if the size is 0, we
+immediately have the equality since \CodeInline{split == to}. So now, we have
+to prove that if it is true for a range of size $i$, it is true for a range of
+size $i+1$, and for this, we simply analyze the different cases: either the
+element we have to consider at the end of the range is the one we count or not.
+
+
+For \CodeInline{shifted\_maintains\_occ}, we reason by induction on the complete
+range, the first case is trivial (empty range), and for the induction case, we
+just have to show the the considered value that we add to the range has been
+shifted and is thus the same.
+
+
+The property \CodeInline{unchanged\_is\_permutation} is proved by SMT solvers
+thank to the fact that we have expressed it using \CodeInline{shifted}, then the
+solver can immediatly instantiate the previous lemma.
+
+
+To prove \CodeInline{rotate\_left\_is\_permutation} we split the range at
+\CodeInline{L1} into two subparts \CodeInline{beg .. beg+1} and
+\CodeInline{beg+1 .. end}, and the range at \CodeInline{L2} into two subparts
+\CodeInline{beg .. end-1} and \CodeInline{end-1 .. end}, using
+\CodeInline{l\_occurrences\_union}. We show that the number of occurrences in
+\CodeInline{beg+1 .. end} at \CodeInline{L1} and \CodeInline{end-1 .. end} at
+\CodeInline{L2} did not change thanks to \CodeInline{shifted\_maintains\_occ},
+and that the number of occurrences in \CodeInline{beg .. beg+1} at
+\CodeInline{L1} and \CodeInline{end-1 .. end} at \CodeInline{L2} is the same by
+case analysis (and using the fact the values equal).
+
+
+For \CodeInline{union\_permutation}, we intantiate the lemma
+\CodeInline{l\_occurrences\_union}. Finally, the lemma
+\CodeInline{transitive\_permutation} is automatically proved by SMT solvers
+thanks to the transitivity of equality.
+
+
 \levelThreeTitle{How to correctly use assertions?}
 
-No magic method
 
-Take care of the size of the proof context
+There is no perfect guideline on when we should use assertion or not. Most of
+the time we use them to first understand why some proof fails at some point by
+expressing properties that we expect to be true at some program point. Moreover,
+most of the time, the proof obligations are tool long and complex to be read
+directly and we somewhat have to keep in mind the different lemmas we have
+already expressed and to determine whether some deduction requires the use of
+a lemma that we already expressed, or if it requires to reason by induction on
+some property or value such that SMT solvers cannot make this deduction and thus
+we might need to add another lemma.
+
+
+
+With a bit of experience, the use of assertions and lemmas become more and more
+natural, however one has to take care of the fact that it is easy to abuse of
+these. Basically, the more we add lemmas and assertions, the more the proof
+context is rich and might contain the required information to produce the proof
+that we need. However, there is also a risk to add to much information such that
+the proof context mainly contains garbage that is not useful for the proof but
+pollute the proof context and makes the job of SMT solvers harder. Thus, we have
+to find the good tradeoff.
+
 
 \levelThreeTitle{Exercises}
