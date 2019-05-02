@@ -1,8 +1,111 @@
-\levelThreeTitle{Ghost code to guide the proof}
+Assertions provide a way to give clues to the verification condition generator
+so the SMT solvers will get enough enough information to make the proofs we
+need. However, it is sometimes hard to write exactly the assertion that will
+create exactly the property needed by the SMT solver to trigger the right lemma
+(for example, since the generator makes some optimization on the goal that
+might slightly modify it). Furthermore, we rely on lemmas that often need to be
+proved with the Coq proof assistant, and that means that we need to learn Coq.
+
+
+
+In this section, we will see some techniques that we can use to make all of this
+more predictible and does not require from us to use the Coq proof assistant.
+While these techniques cannot be used in any case (and we will explain what are
+the cases when it is not applicable), they are quite efficient to get almost
+full automatic proof. This relies on ghost code.
+
+
+
+\levelThreeTitle{Proof by induction}
+
+
+
+Previously, we mentioned that SMT solvers are bad at reasoning by induction
+(most of them), and this is the reason why we often need to express lemmas that
+we then prove using the Coq proof assistant that allows us to write our proof
+by induction. However, in the section~\ref{l2:statements-loops} about loops, we
+find a subsection~\ref{l3:statements-loops-invariant} named ``Induction and
+invariant'' where we explain how to prove that a loop does the right job ... by
+induction. What is this sorcery?!
+
+
+
+
+In fact, it is quite simple. When we prove a loop invariant by induction using
+SMT solvers, they do not have to perform the reasoning by induction themselves.
+The job of splitting the proof into two subproofs, one for the establishment of
+the invariant (the base case of the proof), and one for the preservation (the
+induction case) is performed by the verification condition generator. So when
+the verification conditions are transmitted to the SMT solvers, this work is not
+needed anymore.
+
+
+
+
+How can we exploit this idea? We explained before that ghost code can be used to
+provide more information than what is explicitely provided by the source code.
+For this, we add some code (and possibly annotations about this code) that
+allows to deduce more properties. Let us illustrate this with a simple example.
+In a previous exercise (\ref{l4:acsl-properties-lemmas-lsorted-gsorted}), we
+wanted to prove the following function call (we have excluded the postconditions
+to shorten the example):
+
+
+
+\CodeBlockInput{c}{ghost-code-usage-1.c}
+
+
+
+For this, the solution that was asked in the exercise was to provide a lemma
+that states that if a range is ``locally sorted'', meaning that each element
+is greater or equals to the one that precedes it, then we can say that it is
+``globally sorted'', that is to say for each pair of indices $i$ and $j$, if
+$i \leq j$ then the $j^{th}$ of the array is greater or equals to the $i^{th}$
+element. Then, the precondition could be proved by SMT solvers, but not the
+lemma itself that requires a Coq proof. Can we do something using a loop?
+
+
+
+The answer is yes. Basically, we build a proof that, because we know that the
+array is locally sorted, we can deduce that it is globally sorted, before
+calling the function (which is basically a proof of the lemma we would need).
+We want to prove that the range is globally sorted, to write this proof by hand,
+we would procede by induction on the size of the range. We have two cases.
+First, the range is empty and the property trivially true. Now, let us suppose
+that some range of size $i$ with $i < length$ ($length$ being the size of the
+complete range), is globally sorted and show that if it is the case, then the
+range of size $i+1$ is sorted. This is easy because, by our precondition, we
+know that the $i^{th}$ element is greater than the $(i-1)^{th}$ element, that is
+itself greater than all the preceding elements.
+
+
+
+
+Now, how can we translate this into ghost code? We write a loop that goes from
+$0$ (our base case), to the end of the range \CodeInline{len} and provide as an
+invariant that the array is globally sorted from $0$ to the current step of the
+loop. We also add some assertions to help the provers (namely the fact that the
+current element is greater than the one that precedes it):
+
+
+
+\CodeBlockInput[15][31]{c}{ghost-code-usage-2.c}
+
+
+
+And we can see that all verification conditions are easily verified by SMT
+solvers, without requiring to write a Coq proof of lemma. However, had to write
+the ghost code directly in annotation of the program, and that mean that if we
+have another call somewhere else in the code with some similar precondition, we
+would have to do it again. Let us make this easier by using lemma functions.
+
+
 
 \levelThreeTitle{Lemma function}
 
 \levelThreeTitle{Lemma macro}
+
+\levelThreeTitle{Limitations}
 
 \levelThreeTitle{Back on the selection sort}
 
