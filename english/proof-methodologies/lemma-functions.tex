@@ -103,6 +103,197 @@ would have to do it again. Let us make this easier by using lemma functions.
 
 \levelThreeTitle{Lemma function}
 
+
+
+The principle of lemma functions is basically the same as lemmas: from some
+premises, we want to prove some conclusion. And once it has been done, we want
+to use it at some other place to directly deduce the conclusion from the
+premises without having to do the proof again, by instancing it with actual
+values.
+
+
+
+The way to do this is to use a function, using the \CodeInline{requires} to
+express the premisses of the lemma, and the \CodeInline{ensures} to express the
+conclusion of the lemma. The universally quantified variables will either still
+be quantified, or correspond to a parameter of the function. Namely, if a
+variable is only bounded to premises, or only to conlusions, it can be
+translated into a universally quantified variable, if it is bounded to both
+premises and conclusion, it must be a parameter of a function (as we cannot
+quantify a variable for all a function contract in ACSL).
+
+
+
+Let us first consider an example where we do not use (directly) universally
+quantified variables in the contract, with our previous example about sorted
+values. From the property \CodeInline{element\_level\_sorted(arr, len)}, we
+want to deduce \CodeInline{sorted(arr, len)}. The corresponding lemma could be:
+
+
+\begin{CodeBlock}{c}
+/*@
+  lemma element_level_sorted_is_sorted:
+    \forall int* arr, integer len ;
+       element_level_sorted(arr, len) ==> sorted(arr, len) ;
+*/
+\end{CodeBlock}
+
+
+So let us write a function that takes two parameters: \CodeInline{arr} and
+\CodeInline{len}, requires that the array is locally sorted and ensures that it
+is globally sorted:
+
+
+
+\CodeBlockInput[16][21]{c}{lemma-function-1-1.c}
+
+
+
+Note that this function must assign \CodeInline{\textbackslash{}nothing}, indeed
+we will use it to deduce some properties about the program, with ghost code, and
+thus it should not modify the content of the array, else the ghost code would
+modify the behavior of the program. Now let us provide a body to this function,
+which corresponds to the code we previously wrote to prove the precondition of
+the call to \CodeInline{bsearch}:
+
+
+
+\CodeBlockInput[16][31]{c}{lemma-function-1-2.c}
+
+
+
+With this specified loop, with we get an inductive proof that the lemma holds,
+now we can use this property by simply calling the lemma function when we need
+to perform this deduction:
+
+
+
+\CodeBlockInput[34][40]{c}{lemma-function-1-2.c}
+
+
+
+Which asks us to establish the premises thanks to the precondition of the lemma
+function (and which trivially get from the precondition of the
+\CodeInline{bsearch\_callee} function), and provides us the conclusion for free
+thanks to the postcondition of the lemma function (and we can use it as a
+precondition for the call to \CodeInline{bsearch}).
+
+
+
+As we explained, when universally quantified variable are bounded to both
+conclusion and premises, they must be parameters, and it is the case here for
+the variables \CodeInline{arr} and \CodeInline{len}. Whereas the quantified
+variable that are used in the predicates:
+
+
+
+\CodeBlockInput[4][8]{c}{lemma-function-1-2.c}
+
+
+
+as they are only bound to respectvely the premise and the conclusion remain
+universally quantified (even if it is hidden by the predicate). We could for
+example have written the contract like this:
+
+
+
+\CodeBlockInput[16][31]{c}{lemma-function-1-3.c}
+
+
+
+where we perfectly see that variables are still universally quantified. However,
+we are not forced to maintain them universally quantified, and we could p
+erfectly translate them into parameters (provided that the conclusion we want to
+get from the premises still makes sense). Let us for example translate the
+\CodeInline{i} and \CodeInline{j} of the conclusion into parameters:
+
+
+
+\CodeBlockInput[34][41]{c}{lemma-function-1-3.c}
+
+
+
+Which is also perfectly fine and we could use for example use this function to
+deduce some properties about the content of the array. Note that here, we use a
+call to the previous lemma function to make the proof easier. We even can go
+further by transfering the ``premise of our conclusion'' as another premise of
+a new lemma:
+
+
+
+\CodeBlockInput[44][52]{c}{lemma-function-1-3.c}
+
+
+
+All these lemmas state the same global relation, the difference is related to
+the amount of information that is required to instanciate them (and thus the
+precision of the property that we will get in return).
+
+
+
+Finally, let us present a last usage of lemma functions. On all previsous
+examples, we have considered only universally quantified variable. In fact, what
+we have said before is applicable to existentially quantified variables: if they
+are bound to both premises and conclusions, they must be parameters, else they
+can either be parameters or remain quantified. However, about existentially
+quantified variables, we sometimes can go further by building a function that
+directly provide a witness for an existentially quantified formula.
+
+
+
+For example, let us consider the axiomatic definition for occurrence counting,
+and imagine that at some point in a program, we want to prove the following
+assertion from the precondition:
+
+
+
+\CodeBlockInput[24][32]{c}{lemma-function-2-1.c}
+
+
+
+Of course, there exists some index \CodeInline{n} such that \CodeInline{in[n]}
+is \CodeInline{v}, else the number of occurrences of this value would be $0$.
+But, instead of just proving that such an index exists, let us directly find
+some index respect the constraints on \CodeInline{n} by using a lemma function
+that will return it:
+
+
+
+\CodeBlockInput[24][42]{c}{lemma-function-2-2.c}
+
+
+
+If we only look at the body of the function, it has two behaviors: either some
+cell of the array contains \CodeInline{v} and the function returns its index, or
+there is not, and then the function returns -1. The first behavior is easy to
+show, the return is performed in a branch where we know that the considered
+index corresponds to a cell that is in the range of the array and has a value
+\CodeInline{v}.
+
+
+
+We prove that the second behavior respects the postcondition by showing that it
+leads to a contradiction. If there is not a cell of value \CodeInline{v}, then
+the number of occurrences of \CodeInline{v} is 0, this is expressed by the
+second invariant that show that as we have not met any \CodeInline{v} since we
+started, the number of occurrences is 0. However, the precondition of the
+function states that the number of occurrences is more than $0$ which leads to
+a contradiction that we model model by an assertion of false (note that this is
+not necessary, we explicitely write it for our explanation).
+
+
+
+Finally, we can call this function to show that there exists some index that
+allows our assertion to be validated:
+
+
+
+\CodeBlockInput[44][53]{c}{lemma-function-2-2.c}
+
+
+
+
+
 \levelThreeTitle{Lemma macro}
 
 \levelThreeTitle{Limitations}
