@@ -111,8 +111,34 @@ void foo(){
 
 
 
-We then need to be really careful about what we are doing using ghost
-code (by making it simple).
+Thus it is easy to modify the behavior of the code we want to verify by
+adding ghost code and in this case, if we prove a property about the
+program, we would prove it about the modified program, not about the
+actual one. One must thus take care of modifying only ghost memory locations
+when writing ghost code.
+
+
+Furthermore, as we do not have restriction on the kind of C code we can write,
+we can write loops. As we said in section~\ref{l3:statements-loops-variant},
+there are two kinds of correctness: partial and total correctness, the second
+one allowing to prove that a program terminates. In the case of ghost code, it
+is absolutely necessary to prove total correctness as an infinite loop in the
+ghost code would allow us to prove anything about the program.
+
+
+For example, the following program is proved because of the non terminating
+ghost code:
+
+
+
+\begin{CodeBlock}{c}
+/*@ ensures \false ; */
+void foo(void){
+  /*@ ghost
+    while(1){}
+  */
+}
+\end{CodeBlock}
 
 
 
