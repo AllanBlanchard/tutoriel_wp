@@ -94,10 +94,13 @@ current element is greater than the one that precedes it):
 
 
 And we can see that all verification conditions are easily verified by SMT
-solvers, without requiring to write a Coq proof of lemma. However, had to write
-the ghost code directly in annotation of the program, and that mean that if we
-have another call somewhere else in the code with some similar precondition, we
-would have to do it again. Let us make this easier by using lemma functions.
+solvers, without requiring to write a Coq proof of lemma. This kind of code is
+called a proof carrying code: we have written some code and annotations that
+carries a proof that some property we want to verify holds. However, we had to
+write the ghost code directly in annotation of the program, and that mean that
+if we have another call somewhere else in the code with some similar
+precondition, we would have to do it again. Let us make this easier by using
+lemma functions.
 
 
 
@@ -115,7 +118,7 @@ values.
 
 The way to do this is to use a function, using the \CodeInline{requires} to
 express the premisses of the lemma, and the \CodeInline{ensures} to express the
-conclusion of the lemma. The universally quantified variables will either still
+conclusion of the lemma. The universally quantified variables can either still
 be quantified, or correspond to a parameter of the function. Namely, if a
 variable is only bounded to premises, or only to conlusions, it can be
 translated into a universally quantified variable, if it is bounded to both
@@ -150,10 +153,11 @@ is globally sorted:
 
 
 Note that this function must assign \CodeInline{\textbackslash{}nothing}, indeed
-we will use it to deduce some properties about the program, with ghost code, and
+we use it to deduce some properties about the program, with ghost code, and
 thus it should not modify the content of the array, else the ghost code would
 modify the behavior of the program. Now let us provide a body to this function,
-which corresponds to the code we previously wrote to prove the precondition of
+the proof carrying code that the conclusion is true when the precondition is true.
+It corresponds to the code we previously wrote to prove the precondition of
 the call to \CodeInline{bsearch}:
 
 
@@ -173,7 +177,7 @@ to perform this deduction:
 
 
 Which asks us to establish the premises thanks to the precondition of the lemma
-function (and which trivially get from the precondition of the
+function (and which we trivially get from the precondition of the
 \CodeInline{bsearch\_callee} function), and provides us the conclusion for free
 thanks to the postcondition of the lemma function (and we can use it as a
 precondition for the call to \CodeInline{bsearch}).
@@ -202,9 +206,9 @@ example have written the contract like this:
 
 
 where we perfectly see that variables are still universally quantified. However,
-we are not forced to maintain them universally quantified, and we could p
-erfectly translate them into parameters (provided that the conclusion we want to
-get from the premises still makes sense). Let us for example translate the
+we are not forced to maintain them universally quantified, and we could
+perfectly translate them into parameters (provided that the conclusion we want
+to get from the premises still makes sense). Let us for example translate the
 \CodeInline{i} and \CodeInline{j} of the conclusion into parameters:
 
 
@@ -213,7 +217,7 @@ get from the premises still makes sense). Let us for example translate the
 
 
 
-Which is also perfectly fine and we could use for example use this function to
+Which is also perfectly fine and we could for example use this function to
 deduce some properties about the content of the array. Note that here, we use a
 call to the previous lemma function to make the proof easier. We even can go
 further by transfering the ``premise of our conclusion'' as another premise of
@@ -227,7 +231,7 @@ a new lemma:
 
 All these lemmas state the same global relation, the difference is related to
 the amount of information that is required to instanciate them (and thus the
-precision of the property that we will get in return).
+precision of the property that we get in return).
 
 
 
@@ -255,7 +259,7 @@ Of course, there exists some index \CodeInline{n} such that \CodeInline{in[n]}
 is \CodeInline{v}, else the number of occurrences of this value would be $0$.
 But, instead of just proving that such an index exists, let us directly find
 some index respect the constraints on \CodeInline{n} by using a lemma function
-that will return it:
+that returns it:
 
 
 
@@ -292,12 +296,177 @@ allows our assertion to be validated:
 
 
 
+The use of lemma functions makes reasoning by induction feasible for lemmas
+without the need of interactive proof. Furthermore, the triggerring of lemmas
+becomes more predictible as we instanciate them by hand. However, while lemmas
+can consider multiple labels:
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  lemma my_lemma{L1, L2}:  P{L1} ==> P{L2} ;
+*/
+\end{CodeBlock}
+
+
+
+Lemma functions do not provide an equivalent mechanism as they are basically
+normal C functions that cannot take labels in input. Let us show what we can
+do when we need such a construct.
+
 
 
 \levelThreeTitle{Lemma macro}
 
+
+
+When we have to deal with multiple labels, the idea is to directly ``inject''
+the proof carrying code at the place where it is needed exactly as we did at the
+beginning of the section. However, we do not want to write this code by hand
+everytime we need such a proof, so let us use macros to do it.
+
+
+
+For now, let us translate our previous code into a macro instead of a function.
+As we use this macro in ghost code (thus, in annotation) we have to take care to
+use the ghost annotation syntax to write the invariant of the loop and the
+assertions:
+
+
+
+\CodeBlockInput[16][33]{c}{lemma-macro-1.c}
+
+
+
+Instead of providing a pre and a postcondition, we state these properties using
+assertions before and after the proof carrying code. The proof carrying code
+itslef is basically the same as before, and it is used exactly as it was used in
+the case of functions. However, we can see that it makes an important difference
+once it has been preprocessed by Frama-C as the block of code and annotations is
+directly injected in the function \CodeInline{bsearch\_callee}.
+
+
+
+\image{lemma-macro-1}
+
+
+
+So in fact, we use the macro to generate the code we previously wrote. In this
+case, it is not really interesting as a function call allows us to make things
+more modular. So let us study a case where we do not have any other choice than
+using a macro.
+
+
+
+We illustrate using the following lemma:
+
+
+
+\CodeBlockInput[4][11]{c}{lemma-macro-2-1.c}
+
+
+In order to prove the following program:
+
+
+\CodeBlockInput[13][29]{c}{lemma-macro-2-1.c}
+
+
+Where the lemma \CodeInline{shift\_ptr} is necessary to prove the postcondition
+of \CodeInline{callee} from the postcondition of \CodeInline{shift\_array}. Our
+goal is of course to get rid of the lemma, replacing it by a lemma macro.
+
+
+
+There is no precise guideline for designing a macro used from the injection of
+proof carrying code. However, most lemmas stated about multiple labels are quite
+similar in the way they related labels. So let us illustrate with this example,
+most of the time designing a macro in such a situation will more or less follow
+the same scheme.
+
+
+
+In order to build the macro, we need a context where we can work on it. We build
+the context using a function, let us name this function
+\CodeInline{context\_to\_prove\_shift\_ptr}. The idea is to use the function to
+build the macro in isolation of the rest of the program to make the verification
+of the property easier. However, while lemma functions are then called to deduce
+some properties in some other function, this function will never be called, its
+only role is to provide us a ``place'' where we can build our proof. In
+particular, as we need multiple memory labels, our function \textbf{needs} to
+modify the content of the memory (else, there is a single memory state for all
+the function).
+
+
+
+Let us illustrate with our current problem to make all of this clearer. First,
+we create a macro \CodeInline{shift\_array} that will contain our proof carrying
+code, for now let us just indicate that it is an empty statement. In the
+parameters of this lemma, we take the labels that are considered. Note that the
+rules we previously mentioned about quantified variables still apply to macros.
+
+
+\begin{CodeBlock}{c}
+#define shift_ptr(_L1, _L2, _arr, _fst, _last, _s1, _s2) ;
+\end{CodeBlock}
+
+
+Then we create our context function:
+
+
+\CodeBlockInput[22][41]{c}{lemma-macro-2-2.c}
+
+
+Let us decompose this code, starting from the context function. In input, we
+recieve all the variables of the lemma. We also state some properties about the
+bounds of the integer values we consider, basically these should be requirements
+that are not related to memory states. Then, we introduce the label
+\CodeInline{L1} and we call the function \CodeInline{assign\_array} that leads
+us to the label \CodeInline{L2}. The role of this call is to ensure that WP will
+create a new memory label (thus, it will not consider that the memory is the
+same), and to establish our premises. Indeed, if we have a look to the contract
+of \CodeInline{assign\_array}, we see that it assigns the array (which
+guarantees the creation of a new memory label) and in postcondition, it ensures
+that the content of the array, between the pre and the postcondition (thus, when
+we call it: \CodeInline{L1} and \CodeInline{L2}) respects the premise of our
+lemma (which we repeat on line 36, by adding an assertion). Then we use our
+\CodeInline{shift\_ptr} macro (that will later contain the proof carrying code),
+and we then expect to be able to prove the postcondition of our lemma (line 40).
+
+
+
+By doing this, we ensure that we built a context that only contains the
+information we need to build the proof carrying code that allows us to deduce
+the conclusion (line 40) from the premise (line 36). Now let us write the macro.
+
+
+
+\CodeBlockInput[9][19]{c}{lemma-macro-2-2.c}
+
+
+
+We will not detail this code which is quite similar to what we have written in
+the beginning of this section. the only small subtlety is the assert that helps
+the SMT solvers to relate the memory locations between \CodeInline{L1} and
+\CodeInline{L2} together. Finally, we can complete the proof of our function by
+using our lemma:
+
+
+
+\CodeBlockInput[52][61]{c}{lemma-macro-2-2.c}
+
+
+
+As one could notice, while this techniques allows to inject the proof carrying
+code with a single line of code, it can inject quite a lot of code and
+annotations everytime we use it. Thus, it can make proof context bigger, and
+harder to use for SMT solvers. There are other limitations to this technique and
+the careful reader might have notice them. Let us now talk about it.
+
+
+
 \levelThreeTitle{Limitations}
 
-\levelThreeTitle{Back on the selection sort}
+\levelThreeTitle{Back to the selection sort}
 
 \levelThreeTitle{Exercises}
