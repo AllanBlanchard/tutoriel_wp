@@ -306,7 +306,7 @@ In this section, let us prove the C \CodeInline{strlen} function:
 
 First, we have to provide a suitable contract. Let us suppose that we
 have a logic function \CodeInline{strlen} that returns the length of a
-list, that is to say, what we expect of our C function:
+string, that is to say, what we expect of our C function:
 
 
 \begin{CodeBlock}{c}
@@ -340,7 +340,7 @@ a contract for \CodeInline{strlen}:
 Defining the logic function \CodeInline{strlen} is a bit tricky. Indeed
 we want to compute the length of a string by finding the character
 \CodeInline{'\textbackslash{}0'}, we expect to find it but in fact, we
-can easily imagine that we receive a list of infinite length. In this case,
+can easily imagine that we receive a string of infinite length. In this case,
 we would like to return an error value, but it is basically impossible to
 guarantee that the computation terminates, thus a logic function cannot
 be used to express this property.
