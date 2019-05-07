@@ -1,7 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{zmdocument}
 
-\LoadClass[fontsize=12pt,twoside=false,numbers=enddot,parskip=half]{scrbook}
+\LoadClass[a4paper,fontsize=12pt,twoside=false,numbers=enddot,parskip=half]{scrbook}
 
 %%% PACKAGES -------------------------------------------------------------------
 
@@ -37,7 +37,7 @@
 \RequirePackage[export]{adjustbox}
 \RequirePackage{graphicx}
 \RequirePackage{epstopdf}
-\RequirePackage[left=2cm,right=2cm,top=3cm,bottom=3cm]{geometry}
+\RequirePackage[left=2cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}
 
 \epstopdfDeclareGraphicsRule{.gif}{png}{.png}{convert gif:#1 png:\OutputFile}
 \AppendGraphicsExtensions{.gif}
@@ -168,7 +168,7 @@
 
 \def\boxIcon{[draw=none] circle (0.4cm)}
 
-\def\linkIcon{\tikz[x=1.2ex, y=1.2ex, baseline=-0.05ex]{%
+\DeclareRobustCommand{\linkIcon}{\tikz[x=1.2ex, y=1.2ex, baseline=-0.05ex]{%
 \begin{scope}[x=1ex, y=1ex]
    \clip (-0.1,-0.1)
    --++ (-0, 1.2)
