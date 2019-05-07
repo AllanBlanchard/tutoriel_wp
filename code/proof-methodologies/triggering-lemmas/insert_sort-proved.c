@@ -107,8 +107,10 @@ void insert(int* a, size_t beg, size_t last){
     --i ;
   }
   //@ assert sorted(a, beg, last+1) ;
-  
+  //@ assert \forall integer k ; beg <= k < i ==> a[k] <= value ;
   a[i] = value ;
+  //@ assert sorted(a, beg, last+1) ;
+
   //@ assert unchanged{Pre, Here}(a, beg, i) ;
   //@ assert permutation{Pre, Here}(a, beg, i) ;
 

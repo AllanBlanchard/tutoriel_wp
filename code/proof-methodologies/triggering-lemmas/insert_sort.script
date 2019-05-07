@@ -5,10 +5,11 @@ Hint l_occurrences_of_union,property.
 Proof.
   Import Compound.
 
+
   Ltac norm := repeat(match goal with
-  | [ _ : _ |- context [ ?i + 1 - 1 ]] => replace (i + 1 - 1) with i by omega
-  | [ _ : _ |- context [ 0 + ?i ]] => replace (0 + i) with i by omega
-  | [ _ : _ |- context [ ?i + 0 ]] => replace (i + 0) with i by omega
+  | [ _ : _ |- context [ (?i + 1 - 1)%Z ]] => replace (i + 1 - 1)%Z with i by omega
+  | [ _ : _ |- context [ (0 + ?i)%Z ]] => replace (0 + i)%Z with i by omega
+  | [ _ : _ |- context [ (?i + 0)%Z ]] => replace (i + 0)%Z with i by omega
   end).
   intros e from cut to.
   generalize dependent cut.
@@ -16,18 +17,18 @@ Proof.
   * repeat(rewrite A_Occurrences_Axiomatic.Q_occurrences_empty_range ; auto ; try omega).
   * assert(EqNeq: { mem.[ (shift_sint32 page to) ] = e } + { mem.[ (shift_sint32 page to) ] <> e }) by
       repeat(decide equality).
-    assert(Cut: cut < to + 1 \/ cut = to + 1) by omega ; inversion Cut as [ Inf | Eq ].
+    assert(Cut: (cut < to + 1 \/ cut = to + 1)%Z ) by omega ; inversion Cut as [ Inf | Eq ].
     + inversion_clear EqNeq as [ Eq | Neq ].
       - rewrite <- Eq.
         replace (mem .[ shift_sint32 page to]) with (mem .[ shift_sint32 page (to + 1 - 1)]) by (norm ; auto).
-        rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_with_element with (i := to+1) ;
-        [ rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_with_element with (i := to+1) | | ] ;
+        rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_with_element with (i := (to+1)%Z) ;
+        [ rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_with_element with (i := (to+1)%Z) | | ] ;
           norm ; try rewrite Eq ; auto ; try omega.
-        assert(Simpl: forall x y z, x + y = z -> 1 + x + y = 1 + z) by (intros ; omega).
+        assert(Simpl: forall x y z : Z, (x + y = z)%Z -> (1 + x + y = 1 + z)%Z) by (intros ; omega).
         apply Simpl.
         apply IHto ; auto ; omega.
-      - rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_without_element with (i := to+1) ;
-        [ rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_without_element with (i := to+1) | | | ] ;
+      - rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_without_element with (i := (to+1)%Z) ;
+        [ rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_without_element with (i := (to+1)%Z) | | | ] ;
           norm ; auto ; try omega.
         apply IHto ; auto ; omega.
     + rewrite Eq.
@@ -38,9 +39,9 @@ Goal typed_lemma_rotate_left_is_permutation.
 Hint property,rotate_left_is_permutation.
 Proof.
   Ltac norm := repeat(match goal with
-  | [ _ : _ |- context [ ?i + 1 - 1 ]] => replace (i + 1 - 1) with i by omega
-  | [ _ : _ |- context [ (1 + ?i) - 1 ]] => replace ((1 + i) - 1) with i by omega
-  | [ H : context [ 1 + (?i - 1) ] |- _ ] => replace (1 + (i - 1)) with i in H by omega
+  | [ _ : _ |- context [ (?i + 1 - 1)%Z ]] => replace (i + 1 - 1)%Z with i by omega
+  | [ _ : _ |- context [ (0 + ?i)%Z ]] => replace (0 + i)%Z with i by omega
+  | [ _ : _ |- context [ (?i + 0)%Z ]] => replace (i + 0)%Z with i by omega
   end).
 
   intros ba ea M1 M2 a Rot.
@@ -50,15 +51,14 @@ Proof.
 
   assert(P_shifted M1 M2 1 a ba (ea-1)). {
     intros i ; intros.
-    replace (M2 .[ shift_sint32 a i]) with (M2 .[ shift_sint32 a ((1 + i) - 1)]) by (norm ; auto).
-    norm ; apply Shift ; omega.
+    apply Shift ; omega.
   }
   clear Shift.
   intros i Hi.
   apply Q_shifted_maintains_occ with (i := i) in H ; auto.
   norm.
-  rewrite <- Q_l_occurrences_of_union with (t := M2)(i_1 := ea-1) ; auto ; try omega.
-  rewrite <- Q_l_occurrences_of_union with (t := M1)(i_1 := ba+1) ; auto ; try omega.
+  rewrite <- Q_l_occurrences_of_union with (t := M2)(i_1 := (ea-1)%Z) ; auto ; try omega.
+  rewrite <- Q_l_occurrences_of_union with (t := M1)(i_1 := (ba+1)%Z) ; auto ; try omega.
 
   assert (L_l_occurrences_of M2 i a (ea - 1) ea = L_l_occurrences_of M1 i a ba (ba + 1)). {
     assert(EqNeq: { M1 .[ shift_sint32 a ba] = i } + { M1 .[ shift_sint32 a ba] <> i }) 
@@ -77,14 +77,13 @@ Proof.
     + rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_without_element ; 
         auto ; try omega.
       rewrite A_Occurrences_Axiomatic.Q_occurrences_empty_range ; auto ; try omega.
-      replace ba with (ba + 1 - 1) by omega.
-      replace (ba + 1 - 1 + 1) with (ba + 1) by omega.
       rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_without_element ;
         norm ; try omega ; auto.
       rewrite A_Occurrences_Axiomatic.Q_occurrences_empty_range ; auto ; try omega.
   }
   rewrite <- H0.
-  replace (ba + 1) with (1 + ba) by omega.
+  replace (ba + 1)%Z with (1 + ba)%Z by omega.
+  replace (1 + (ea - 1))%Z with ea in H by omega.
   omega.
 Qed.
 
@@ -92,8 +91,8 @@ Goal typed_lemma_shifted_maintains_occ.
 Hint property,shifted_maintains_occ.
 Proof.
   Ltac norm := repeat(match goal with
-  | [ _ : _ |- context [ ?i + 1 - 1 ]] => replace (i + 1 - 1) with i by omega
-  | [ _ : _ |- context [ ?x + (?i + 1) - 1 ]] => replace (x + (i + 1) - 1) with (x + i) by omega
+  | [ _ : _ |- context [ (?i + 1 - 1)%Z ]] => replace (i + 1 - 1)%Z with i by omega
+  | [ _ : _ |- context [ (?x + (?i + 1) - 1)%Z ]] => replace (x + (i + 1) - 1)%Z with (x + i)%Z by omega
   end).
   intros ba ea s v M2 M1 a Hv H.
   induction ea using Z_induction with (m := ba).
@@ -107,9 +106,9 @@ Proof.
     apply IHea in UP.
     inversion EqNeq as [ Eq | Neq ].
     - replace (L_l_occurrences_of M1 v a ba (ea + 1))
-         with (1 + L_l_occurrences_of M1 v a ba (ea + 1 - 1)).
+         with (1 + L_l_occurrences_of M1 v a ba (ea + 1 - 1))%Z.
       replace (L_l_occurrences_of M2 v a (s + ba) (s + (ea + 1)))
-         with (1 + L_l_occurrences_of M2 v a (s + ba) (s + (ea + 1) - 1)).
+         with (1 + L_l_occurrences_of M2 v a (s + ba) (s + (ea + 1) - 1))%Z.
       norm ; omega.
       * subst ; rewrite <- Same.
         replace (M2 .[ shift_sint32 a (s + ea)]) with (M2 .[ shift_sint32 a (s + (ea + 1) - 1)]) by (norm ; auto).

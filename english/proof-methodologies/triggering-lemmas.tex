@@ -384,8 +384,7 @@ So we need a first lemma for this property, we use a predicate
 later.
 
 
-\CodeBlockInput[53][60]{c}{insert_sort-proved.c}
-\CodeBlockInput[67][70]{c}{insert_sort-proved.c}
+\CodeBlockInput[48][55]{c}{insert_sort-proved.c}
 
 
 And now, we can verify that those two sub-arrays are permutations, by again
@@ -393,7 +392,7 @@ adding an assertion that shows that the range \CodeInline{i+1} to
 \CodeInline{end}, in order to trigger \CodeInline{unchanged\_is\_permutation}.
 
 
-\CodeBlockInput[127][140]{c}{insert_sort-proved.c}
+\CodeBlockInput[129][142]{c}{insert_sort-proved.c}
 
 
 Thus, since those two parts are permutations, the global array is a permutation
@@ -495,6 +494,7 @@ as well as some assertions that we want to be verified:
   //@ assert unchanged{Pre, Here}(a, beg, i) ;   // PROVED
   //@ assert permutation{Pre, Here}(a, beg, i) ; // PROVED
 
+  //@ assert rotate_left{Pre, Here}(a, i, last+1) ; //PROVED
   //@ assert permutation{Pre, Here}(a, i, last+1) ; // NOT PROVED
 \end{CodeBlock}
 
@@ -506,8 +506,21 @@ elements:
 \CodeBlockInput[56][60]{c}{insert_sort-proved.c}
 \CodeBlockInput[71][74]{c}{insert_sort-proved.c}
 
+We also have to help a little bit the provers to show that the range is
+sorted after the insertion. For this, we provide a new invariant to show
+that the shifted values are greater than the value to insert, and then
+we add some assertions to show that the array is sorted before the
+insertion, that all values before the cell where we insert are lower than
+the inserted value, and that the range is consequently sorted after the
+insertion. Leading us to the following annotated \CodeInline{insert}
+function:
 
-We have 6 lemmas to prove:
+
+\CodeBlockInput[83][119]{c}{insert_sort-proved.c}
+
+
+
+Overall, we have 6 lemmas to prove:
 \begin{itemize}
 \item \CodeInline{l\_occurrences\_union}
 \item \CodeInline{shifted\_maintains\_occ}
