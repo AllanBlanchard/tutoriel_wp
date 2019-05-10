@@ -86,8 +86,9 @@ able to prove everything. While we will give more details about axioms in the
 Section~\ref{l2:acsl-logic-definitions-axiomatic}, let us give two hints to
 avoid building such a bad definition.
 
-First, it is possible to syntactically restrict what we allow in an inductive
-definition, by making sure that each case has the form:
+First, we can make sure that are inductive predicate is weel founded. This can
+be done by syntactically restrict what we allow in an inductive definition, by
+making sure that each case has the form:
 
 \begin{CodeBlock}{c}
 /*@
@@ -134,11 +135,12 @@ For example for our definition of \CodeInline{even\_natural}, we would write:
 
 
 As Coq is more strict than Frama-C and WP on this kind of definition. If the
-inductive predicate is too strange, it will be rejected with an error. And
-indeed, with the bad definition of \CodeInline{even\_natural} we just proposed,
-Coq complains when try to prove the \CodeInline{ensures \\false}, because there
-exists a non positive occurrence of \CodeInline{P\_even\_natural}, that encodes
-the \CodeInline{even\_natural} we wrote in ACSL.
+inductive predicate is too strange (if it is not well founded), it will be
+rejected with an error. And indeed, with the bad definition of
+\CodeInline{even\_natural} we just proposed, Coq complains when try to prove
+the \CodeInline{ensures \\false}, because there exists a non positive
+occurrence of \CodeInline{P\_even\_natural}, that encodes the
+\CodeInline{even\_natural} we wrote in ACSL.
 
 
 
@@ -146,6 +148,23 @@ the \CodeInline{even\_natural} we wrote in ACSL.
 
 \image{coq-failed-error}
 
+
+However, that does not that we cannot write a inconsistent inductive definition.
+For example. The following definition is well founded, while it allows us to
+prove false:
+
+
+\begin{CodeBlock}{c}
+/*@
+  inductive bad {
+    case always: \false ;
+  }
+*/
+\end{CodeBlock}
+
+
+Thus we must be careful when defining inductive definitions to not introduce a
+definition that can lead to a proof of false.
 
 
 \levelThreeTitle{Recursive predicate definitions}
