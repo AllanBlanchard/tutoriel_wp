@@ -45,6 +45,12 @@
     permutation{L2, L3}(a, beg, end) ==>
       permutation{L1, L3}(a, beg, end) ;
 */
+/*@ lemma one_same_element_same_count{L1, L2}:
+  \forall int* a, int* b, int v, integer pos_a, pos_b ;
+    \at(a[pos_a], L1) == \at(b[pos_b], L2) ==>
+    l_occurrences_of{L1}(v, a, pos_a, pos_a+1) == 
+    l_occurrences_of{L2}(v, b, pos_b, pos_b+1) ;
+*/
 
 
 /*@ 
@@ -91,27 +97,26 @@ void l_occurrences_of_split(int* a, size_t beg, size_t end){
 }
 
 /*@
-  requires beg <= end ;
+  requires beg < end ;
 
   assigns \nothing ;
 
-  ensures \forall int v, size_t any, split ; beg <= any <= split <= end ==>
+  ensures \forall int v, size_t any ; beg <= any < end ==>
     l_occurrences_of(v, a, any, end) ==
-    l_occurrences_of(v, a, any, split) + l_occurrences_of(v, a, split, end) ;
+    l_occurrences_of(v, a, any, end-1) + l_occurrences_of(v, a, end-1, end) ;
 */
-void l_occurrences_of_from_any_split(int* a, size_t beg, size_t end){
+void l_occurrences_of_from_any_split_last(int* a, size_t beg, size_t end){
   /*@
-    loop invariant beg <= i <= end ;
-    loop invariant \forall int v, size_t j, split ;
+    loop invariant beg <= i <= end-1 ;
+    loop invariant \forall int v, size_t j ;
       beg <= j < i ==>
-      j <= split <= i ==>
       l_occurrences_of(v, a, j, end) ==
-      l_occurrences_of(v, a, j, split) + l_occurrences_of(v, a, split, end) ;
+      l_occurrences_of(v, a, j, end-1) + l_occurrences_of(v, a, end-1, end) ;
     loop assigns i ;
-    loop variant end - i ;
+    loop variant (end - 1) - i ;
   */
-  for(size_t i = beg ; i < end ; ++i){
-    //@ ghost l_occurrences_of_split(a, i, end);
+  for(size_t i = beg ; i < end-1 ; ++i){
+    //@ ghost l_occurrences_of_explicit_split(a, i, end-1, end);
   }
 }
 
@@ -167,10 +172,10 @@ void context_to_prove_unchanged_permutation(int* arr, size_t fst, size_t last){
        l_occurrences_of{_L1}(_v, _arr, _fst, _last-1) +                 \
        l_occurrences_of{_L1}(_v, _arr, _last-1, _last) ;                \
    @/                                                                   \
-   /@ assert \at(_arr[_fst], _L2) == \at(_arr[_last-1], _L1) ; @/       \
-   /@ assert \forall int _v ;                                           \
-     l_occurrences_of{_L2}(_v, _arr, _fst, _fst+1) ==                   \
-     l_occurrences_of{_L1}(_v, _arr, _last-1, _last) ;                  \
+   /@ assert \at(_arr[_fst], _L2) == \at(_arr[_last-1], _L1) ==>        \
+     (\forall int _v ;                                                  \
+       l_occurrences_of{_L2}(_v, _arr, _fst, _fst+1) ==                 \
+       l_occurrences_of{_L1}(_v, _arr, _last-1, _last)) ;               \
    @/                                                                   \
    /@ assert permutation{_L1, _L2}(_arr, _fst, _last); @/
 
@@ -207,7 +212,7 @@ void insert(int* a, size_t beg, size_t last){
   int value = a[i] ;
 
   //@ ghost l_occurrences_of_split(a, beg, last+1);
-  //@ ghost l_occurrences_of_from_any_split(a, beg, last+1);
+  //@ ghost l_occurrences_of_from_any_split_last(a, beg, last+1);
 
   /*@
     loop invariant beg <= i <= last ;

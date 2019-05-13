@@ -96,11 +96,23 @@ current element is greater than the one that precedes it):
 And we can see that all verification conditions are easily verified by SMT
 solvers, without requiring to write a Coq proof of lemma. This kind of code is
 called a proof carrying code: we have written some code and annotations that
-carries a proof that some property we want to verify holds. However, we had to
-write the ghost code directly in annotation of the program, and that mean that
-if we have another call somewhere else in the code with some similar
-precondition, we would have to do it again. Let us make this easier by using
-lemma functions.
+carries a proof that some property we want to verify holds.
+
+
+
+Note that here, as we can write quite a lot of ghost code, we augment our risk
+to modify the behavior of the program by mistake. Most of the time we do not
+need to modify any memory location, thus taking care to check (few) assigned
+memory locations (for example, loop iterators), that we do not create a runtime
+error (through RTE plugin) and that the ghost code terminates is enough to be
+confident about the verification.
+
+
+
+In this example, we had to write the ghost code directly in annotation of the
+program, and that mean that if we have another call somewhere else in the code
+with some similar precondition, we would have to do it again. Let us make this
+easier by using lemma functions.
 
 
 
@@ -459,14 +471,338 @@ using our lemma:
 
 As one could notice, while this techniques allows to inject the proof carrying
 code with a single line of code, it can inject quite a lot of code and
-annotations everytime we use it. Thus, it can make proof context bigger, and
-harder to use for SMT solvers. There are other limitations to this technique and
-the careful reader might have notice them. Let us now talk about it.
+annotations everytime we use it. Furthermore, once we inject the code in the
+location where we expect it to be actually useful, the context can be sometimes
+complex. Thus, we could need to slightly modify the code of the macro in order
+to add more information that is unnecessary in a clean context.
+
+
+All of this can make the proof context bigger, and harder to use for SMT solvers.
+There are other limitations to this technique and the careful reader might have
+notice them. Let us now talk about it.
 
 
 
 \levelThreeTitle{Limitations}
 
+
+
+The main limitation of lemma functions and lemma macros is the fact that we are
+limited to C types. For example, if we compare our lemma
+\CodeInline{element\_level\_sorted\_is\_sorted} with its corresponding lemma
+function, the original type for the variable \CodeInline{len} is a mathematical
+integers while in the lemma function its type is \CodeInline{size\_t}. It means
+that while the lemma is true for any integer, and so it could be used no matter
+if in the program the type of the variable that represents the size is an
+\CodeInline{int}, or an \CodeInline{unsigned} (or another integer type). On the
+opposite, our lemma function can be used only if this type can be safely
+converted to \CodeInline{size\_t}. However, this limitation is often not a
+problem: we just have to express or specification for the biggest type we have
+to consider in our program and most of the time, it will be enough. And if it is
+not, we can for example duplicate the lemma for the types we are interested in.
+However, most of the time this limitation is not a big deal since during a
+verification, we just tend to work with the same types as the program uses.
+
+
+
+In some cases, however, it can constrain our modeling of some properties, and
+is it mainly related to the logic types we can use to model some actual data
+structures. For example, in order to model a linked list, one could use the
+ACSL logic type \CodeInline{\textbackslash{}list<Type>}, and express an
+inductive or axiomatic definition in order to define how an actual linked list
+can be modeled by a logic list, thus we could have some lemmas about logic
+lists. For example:
+
+\begin{CodeBlock}{c}
+/*@
+  lemma in_list_in_sublist:
+    \forall \list<int> l, l1, l2, int element ;
+      l == (l1 ^ l2) ==>
+      (in_list(element, l) <==> (in_list(element, l1) || in_list(element, l2))) ;
+*/
+\end{CodeBlock}
+
+We cannot write lemma functions with proof carrying code for this property as
+we have not way to use this type in C code. Thus, no way to write a loop and
+an invariant that would allow us to prove this property.
+
+
+The other limitation is related to lemma macros and what we already mentioned
+in the previous part about assertions. By adding to many assertions, the proof
+context can become too big and complexe, thus hard to manipulate from SMT
+solvers. Using lemma macros that can generate quite a lot code and annotations
+can lead to bigger proof contexts, thus it should be used with care.
+
+
+
 \levelThreeTitle{Back to the selection sort}
+
+
+Now let us go back to our proof of the selection sort algorithm and see how we
+can get rid of all our interactive proofs for this function. Note however that
+in this proof, we often need to deal with macros since the program has not been
+particularly written with the idea to formally verify it later (for this, the
+reader can refer to the version proposed in the book ACSL by Example). Thus, in
+this example, we push the solvers to their limit because of big proof contexts.
+With this example, depending on how powerful the machine is, we might need to
+increase the proof timeout to 120 seconds (which is already quite long for a
+SMT solver). In this example, we will illustrate three actual usage of ghost
+code that we have seen so far:
+
+
+\begin{itemize}
+\item directly writing code to build a proof,
+\item writing (and using) lemma functions,
+\item writing (and using) lemma macros.
+\end{itemize}
+
+
+We also make use of assertions to make the proof context richer so SMT solvers
+succeed in proving the properties we are interested in. Some parts of the
+annotations are equivalent to what we have done previously. First, we use some
+assertions that were also useful in our previous proof. We will recall their
+purpose for each function. Second, we re-use the same axiomatic definition for
+occurrences counting. Furthermore, we keep the following predicate definitions:
+
+
+\CodeBlockInput[25][41]{c}{insert-sort-auto.c}
+
+
+As we will need them, as well as the lemma about the transitivity of
+occurrences counting as it is automatically proved by SMT solvers (thus we can
+keep it since it does not require an interactive proof from us):
+
+
+\CodeBlockInput[42][47]{c}{insert-sort-auto.c}
+
+
+Let us start with the \CodeInline{insertion\_sort} function itself. In this
+function, we made use of two assertions:
+
+
+\CodeBlockInput[86][107]{c}{insert-sort-auto.c}
+
+
+The first one makes sure that the part of the array where we just inserted a
+value is a permutation of the same range of values before the call to
+\CodeInline{insert}, as this is the postcondition of the function, it is not
+necessary but let us keep it for illustration. The last assertion is the
+property we want to prove in order to get enough knowledge to use the lemma that
+states that permutation is transitive (and show that after the block of the
+since our array is a permutation of the array at the beginning, which is itself
+a permutation of the original one, then after the body of the loop we have
+maintained that the array is a permutation of the original one).
+
+
+
+The second assertion says that the second part of the array is unchanged, and we
+want to use this knowledge to show that the number of occurrences of the values
+is unchanged. Here we could use a combination of lemma functions and macros to
+prove that the complete range is a permutation (as we will do for the other
+function) however, directly the code is here a bit simpler (requires less proofs,
+as we will see later) so let us directly write the code that will create the
+proof of our property.
+
+
+
+In order to show that the complete range is a permutation, we have to show that
+the number of occurrences did not change. We know that the first part of the array
+is a permutation of the array at the beginning of the body of the loop. Thus, we
+already know that the number of occurrences of any $v$ did not change for a part
+of our list. Let us continue the occurrences counting for the rest of our array,
+assuming that this second part is unchanged (when \CodeInline{i+1} is less than
+\CodeInline{end} as else, we do not have anything to count):
+
+
+\CodeBlockInput[266][285]{c}{insert-sort-auto-proved.c}
+
+
+which enough to ensure that the \CodeInline{insertion\_sort} function respects
+its specification as long as we finish the proof of \CodeInline{insert}. This
+second version does a more complex action. Let us depart from this annotated
+version:
+
+
+\CodeBlockInput[49][83]{c}{insert-sort-auto.c}
+
+
+Again, the proof that this function maintains a permutation of the array is
+the hardest part of the job. The fact that the function guarantees that the
+value are sorted is already easily established. Using the same technique as
+for \CodeInline{insertion\_sort} is not so easy here, indeed the second part
+of the array has been rotated which makes the properties slightly more
+complex. So, let us show that we can split the array at the position where
+we insert into two parts, in which we respectively show that:
+
+\begin{itemize}
+\item for the first part, since it is unchanged, for any $v$, the number of
+  occurrences did not change either,
+\item for the second part, since it is rotated, for any $v$, the number of
+  occurrences did not change.
+\end{itemize}
+
+First let us define a lemma function that allows to explicitely split a
+range of values into two subparts in which we can count separately.
+
+
+\CodeBlockInput[56][74]{c}{insert-sort-auto-proved.c}
+
+
+We can note that this property is proved in a way that is quite similar to
+what we wrote for the body of our loop in \CodeInline{insertion\_sort}, we
+start from the point where we want to count and show that the property
+remains true until the end of the array. 
+
+
+
+Now, we can use our function to split the array at the right place after
+the loop. However, we can only do it for the new content of the array,
+indeed, in order to establish for the original array, we have to call the
+function on the original array, when we still do not know the value of $i$.
+Thus, let us write an other version of the ``split'' property that shows
+that we can split the array at any index, thus make the \CodeInline{split}
+variable a universally quantified variable, and use the previous function
+to prove that it is true:
+
+
+\CodeBlockInput[76][97]{c}{insert-sort-auto-proved.c}
+
+
+Now we can split our original array and the new one:
+
+
+\begin{CodeBlock}{c}
+void insert(int* a, size_t beg, size_t last){
+  size_t i = last ;
+  int value = a[i] ;
+
+  // split before modifying
+  //@ ghost l_occurrences_of_split(a, beg, last+1);
+
+  /*@ LOOP ANNOT */
+  while(i > beg && a[i - 1] > value){
+    a[i] = a[i - 1] ;
+    --i ;
+  }
+  a[i] = value ;
+  // Assertions ...
+
+  // split after modifying, now we know "i"
+  //@ ghost l_occurrences_of_explicit_split(a, beg, i, last+1);
+}
+\end{CodeBlock}
+
+
+Now, the only remaining parts of the proof are to show that an un changed array
+is a permutation and rotate operation also maintains permutation. Let us start
+with the easiest: the unchanged property that we already almost exactly proved
+in the \CodeInline{insertion\_sort} function. We start by building the context
+for our proof:
+
+
+\CodeBlockInput[137][153]{c}{insert-sort-auto-proved.c}
+
+
+The function \CodeInline{unchanged\_permutation\_premise} ensures that we have
+modified the array (thus created a new memory state) and that the array is
+unchanged from the precondition to the postcondition. Now, we can build our
+lemma macro:
+
+
+\CodeBlockInput[124][134]{c}{insert-sort-auto-proved.c}
+
+
+Which almost corresponds to what we have written previously in the
+\CodeInline{insert\_sort} function. Now we can use the macro where it is needed
+in the \CodeInline{insert} function.
+
+
+\CodeBlockInput[244][246]{c}{insert-sort-auto-proved.c}
+
+
+The only remaining property to prove is the hardest one and is about the
+\CodeInline{rotate\_left} predicate. Let us first write our context to prepare
+the macro.
+
+
+\CodeBlockInput[182][199]{c}{insert-sort-auto-proved.c}
+
+
+Now, how can we prove this property? Basically, one as to notice that since all
+the element from the beginning to the penultimate have been shifted of one index
+to the right the number of occurrences in the shifted part did not change. Then
+one has to show that the number of occurrences of any $v$ in respectively the
+last cell in the original array, and the first cell in the new is the same
+(since the corresponding element is the same). Again, we rely on the split
+function to count separately the elements that are shifted and the one which is
+moved from the end to the beginning. However, the call corresponding to the
+original array has again to be put before the call that modifies the memory (see
+line 188) in the previous code, and we will have to take that in account when we
+will insert our use of the macro int othe \CodeInline{insert} function.
+
+
+Let us now present the macro that we use to prove that the lemma holds:
+
+
+\CodeBlockInput[155][180]{c}{insert-sort-auto-proved.c}
+
+
+The loop invariant is pretty similar to what we have written so far, the only
+difference is that it takes in account the shift of the elements. Furthermore,
+to prove the invariant we had to add an assertion to help the solvers notice
+that the last element of both ranges is the same (note however that depending
+on the versions of the solvers or how powerful is the machine, this might be
+unneeded sometimes). A more important difference compared to our previous
+examples is that here, we need to provide more information to SMT solvers by
+adding other ghost functions calls (line 164, in order to split the first
+element of the array), as well as assertions to guide the last steps of the
+proof:
+
+
+\begin{itemize}
+\item 170--174: we recall that in the original array we can split the last
+  element,
+\item 175--179: we show that as the element the first element of the array is
+  the last element of the original array (170), the number of occurrences for
+  any value in these ranges is the same (176--178).
+\end{itemize}
+
+
+Now, we have to use the macro in our program:
+
+
+\begin{CodeBlock}{c}
+//@ assert rotate_left{Pre, Here}(a, i, last+1) ;
+//@ ghost rotate_left_permutation(Pre, Here, a, i, last+1) ;
+//@ assert permutation{Pre, Here}(a, i, last+1) ;
+\end{CodeBlock}
+
+
+Depending on the version of the solvers, the assertion about the element
+at the beginning/the end of the array might fail due to the complexity of the
+proof context. Let us help the solvers a last time by adding a last lemma
+(automatically proved) by SMT solvers that states this relation for any array
+and position in the array:
+
+
+
+\CodeBlockInput[48][53]{c}{insert-sort-auto-proved.c}
+
+
+which guarantees that our resulting annotated insertion function is entirely
+proved:
+
+
+\CodeBlockInput[201][249]{c}{insert-sort-auto-proved.c}
+
+
+We finally highlight how the proof context can make the proof harder for SMT
+solvers. Basically, if we swap the proofs for each part of the array, that is,
+starting with the ``unchanged'' part and next the ``rotate'' part, the proof has
+more chance to fail, since it would make the proof context bigger for the
+hardest proof. For the same reason, it is here almost needed (again depending
+on how powerful is the machine and the solvers) to separate the proof of the
+absence of runtime errors, else it pollutes the proof context and it may fail.
+
 
 \levelThreeTitle{Exercises}
