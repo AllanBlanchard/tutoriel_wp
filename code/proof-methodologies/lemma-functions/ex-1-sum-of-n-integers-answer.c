@@ -4,33 +4,13 @@
 */
 
 /*@
-  requires n <= 92681 ;
-  assigns \nothing ;
-  ensures (n*(n+1)) / 2 == sum_of_n_integers(n) ;
-*/
-void lemma_value_of_sum_of_n_integers(unsigned n){
-  unsigned result = 0 ;
-
-  /*@
-    loop invariant 0 <= i <= n ;
-    loop invariant result == (i*(i+1)) / 2 ;
-    loop invariant result == sum_of_n_integers(i) ;
-    loop assigns result, i ;
-    loop variant n - i ;
-  */
-  for(unsigned i = 0 ; i < n ; ++i){
-    result += (i+1) ;
-  }
-}
-  
-/*@
   assigns \nothing ;
   ensures (n*(n+1)) / 2 == sum_of_n_integers(n) ;
 */
 void lemma_value_of_sum_of_n_integers_2(unsigned n){
   /*@
     loop invariant 0 <= i <= n ;
-    loop invariant (i*(i+1)) / 2 == sum_of_n_integers(i) ;
+    loop invariant (i*(i+1)) == 2 * sum_of_n_integers(i) ;
     loop assigns i ;
     loop variant n - i ;
   */
