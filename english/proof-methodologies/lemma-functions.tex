@@ -438,7 +438,7 @@ introduce the label
 \CodeInline{L1} and we call the function \CodeInline{assign\_array} that leads
 us to the label \CodeInline{L2}. The role of this call is to ensure that WP will
 create a new memory label (thus, it will not consider that the memory is the
-same), and to establish our premises. Indeed, if we have a look to the contract
+same), and to establish our premises. Indeed, if we have a look at the contract
 of \CodeInline{assign\_array}, we see that it assigns the array (which
 guarantees the creation of a new memory label) and in postcondition, it ensures
 that the content of the array, between the pre and the postcondition (thus, when

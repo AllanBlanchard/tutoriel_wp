@@ -524,7 +524,7 @@ subsequent call that becomes verified:
 
 We can notice that for function calls, the GUI highlights the execution
 path that leads to the call for which we want to verify the precondition.
-Then, if we have a closer look to the call \CodeInline{abs(INT\_MIN)}, we
+Then, if we have a closer look at the call \CodeInline{abs(INT\_MIN)}, we
 can notice that, simplifying, Qed deduced that we try to prove
 ``False''. Consequently, the next call \CodeInline{abs(a)} receives in its
 assumptions the property ``False''. This is why Qed can immediately
