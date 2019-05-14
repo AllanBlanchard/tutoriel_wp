@@ -35,6 +35,7 @@
   predicate rotate_left{L1, L2}(int* a, integer beg, integer end) =
     beg < end && \at(a[beg], L2) == \at(a[end-1], L1) &&
     shifted{L1, L2}(1, a, beg, end - 1) ;
+
   predicate permutation{L1, L2}(int* in, integer from, integer to) =
     \forall int v ; l_occurrences_of{L1}(v, in, from, to) ==
                     l_occurrences_of{L2}(v, in, from, to) ;

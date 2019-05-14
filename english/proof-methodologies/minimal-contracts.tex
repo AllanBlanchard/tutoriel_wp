@@ -1,22 +1,22 @@
 We have seen that program proof allows to verify two main aspects of program
 correctness: first that programs do not contain runtime errors, second that
-programs correctly implement given specification. However, it is sometimes hard
+programs correctly implement their specification. However, it is sometimes hard
 to guarantee the later, and the former is already an interesting step for
 program correctness.
 
 Indeed, RTE often cause the presence of so-called ``undefined behaviors'' in C
 programs. These undefined behaviors are often the main vectors of security
-breaches and thus, guaranteeing their absence already avoids a lot of attack
-vector. The absence of runtime errors can be verified thanks to an approach
-called minimal contracts.
+breaches and thus, guaranteeing their absence already protects us of a lot of
+attack vectors. The absence of runtime errors can be verified thanks to an
+approach called minimal contracts.
 
 
 \levelThreeTitle{Principle}
 
 
-The minimal contracts approach is guided by the RTE plugins. Basically, the idea
+The minimal contracts approach is guided by the RTE plugin. Basically, the idea
 is to generate the assertions related to absence of runtime errors for all the
-function of a module or a project and to write the minimal set of (correct)
+functions of a module or a project and to write the minimal set of (correct)
 contracts that are sufficient to prove that the runtime errors cannot happen.
 Most of the time, we will need far less specification that what is usually
 required to prove the functional correctness of the program.
@@ -49,11 +49,11 @@ function.
 As we will see later, the function is however generally used in a particular
 context. So it is probable that this contract will in fact not be enough. For
 example, we often have global variables in our program and here we do not
-specify what is assigned by the function. Most of the time this annotation
-cannot be avoided (which is expected in a language where everything is mutable
-by default). Moreover, if one take the absolute value of an integer, it is
-surely because they need a positive value. In reality, the minimal contract of
-the absolute value function will be the following:
+specify what is assigned by the function. Most of the time the ``assigns''
+clause cannot be ignored (which is expected in a language where everything is
+mutable by default). Moreover, if one take the absolute value of an integer,
+it is surely because they need a positive value. In reality, the minimal
+contract of the absolute value function will be the following:
 
 
 \CodeBlockInput{c}{abs-4.c}
@@ -83,11 +83,11 @@ following program:
 
 
 We have to prove that any cell visited by the program can be read, thus we need
-to express a precondition that the array is
+to express as a precondition that the array is
 \CodeInline{\textbackslash{}valid\_read} on the corresponding range of indices.
-However, this is not enough since we have a loop in tis program, so we have to
-provide a suitable invariant. We also probably want to prove that the loop
-terminates.
+However, this is not enough to complete the proof since we have a loop in this
+program, so we have to provide a suitable invariant. We also probably want to
+prove that the loop terminates.
 
 
 Thus, we get the following minimally specified function:
@@ -126,7 +126,7 @@ Thus we have to verify that:
 
 In addition to the contract of \CodeInline{foo}, we have to provide some more
 information in the contract of \CodeInline{search}. Indeed, we will not be able
-to prove that the pointer is valid when it is not nul if the function does not
+to prove that the pointer is valid when it is not null if the function does not
 guarantee that the pointer is in the range of our array in this case.
 Furthermore, we will not be able to prove that \CodeInline{*p} is less than
 \CodeInline{INT\_MAX} if the function can modify it.
@@ -142,7 +142,7 @@ This leads us to this complete annotated program:
 
 
 The evident advantage of this approach is the fact that it can guarantee the
-absence of runtime errors in all function of module or a program in (relative)
+absence of runtime errors in any function of a module or a program in (relative)
 isolation of the other functions. Furthermore, this absence of runtime errors
 is guaranteed for any use of the function as long as the precondition is
 verified when it is called. That allows to gain some confidence into a system
