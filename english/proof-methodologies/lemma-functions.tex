@@ -837,17 +837,19 @@ integers that we previously expressed. You might have done this proof when you
 were in high school, now it is time to do it in C and ACSL. Write a contract for
 the following function that expresses in postcondition that the sum of the N
 first integers is \CodeInline{N(N+1)/2}. Complete the body of the function with
-a loop in order to prove this property. We advise to transform the invariant in
-order to be sure that the property does not contain any division.
+a loop in order to prove this property. We advise to slightly transform the
+invariant in order to be sure that the property does not contain any division
+(division on integers have some properties that can make them hard to deal with
+for SMT solvers depending on the constraint that exists on the used values).
 
 
 \CodeBlockInput[1][12]{c}{ex-1-sum-of-n-integers.c}
 
 
 Now, let us generalize to any bounds with the sum of all the integers between
-\CodeInline{fst} and \CodeInline{lst}. We provide the function and the contract.
-Write the body of the function that allows to prove the postcondition. Note that
-again, we advise to express the invariant without division.
+\CodeInline{fst} and \CodeInline{lst}. We provide the logic function and the
+contract. Write a body for the function such that the postcondition is proved.
+Note that again, we advise to express the invariant without division.
 
 
 \CodeBlockInput[14][26]{c}{ex-1-sum-of-n-integers.c}
@@ -864,7 +866,7 @@ axiomatically defined logic function \CodeInline{l\_occurrences\_of}:
 
 
 The function \CodeInline{occ\_bounds} should state that the number of
-occurrences of \CodeInline{v} in the array is comprised between 0 and its
+occurrences of \CodeInline{v} in the array is comprised between 0 and
 \CodeInline{len}.
 
 
@@ -873,7 +875,7 @@ not in the array then the number of occurrences of \CodeInline{v} in the array
 is 0.
 
 
-The function \CodeInline{occ\_monotonic} shoudl state that the number of
+The function \CodeInline{occ\_monotonic} should state that the number of
 occurrences of \CodeInline{v} in the array from 0 to \CodeInline{pos} is lower
 or equals to the number of occurrences of \CodeInline{v} in the array from 0
 to \CodeInline{more}, if \CodeInline{more} is greater or equals to
@@ -885,10 +887,10 @@ occurrences of \CodeInline{v} in the array is 0 then \CodeInline{v} is not in
 the array. Note that you will probably need to use \CodeInline{occ\_monotonic}.
 
 
-The function \CodeInline{occ\_pos\_find} should find an index of the value
-\CodeInline{v} in the array provided that the number of occurrences of
-\CodeInline{v} is positive. Note that you will probably need to use
-\CodeInline{occ\_monotonic}.
+The function \CodeInline{occ\_pos\_find} should find an index \CodeInline{i}
+such that the value \CodeInline{arr[i]} is \CodeInline{v}, provided that the
+number of occurrences of \CodeInline{v} is positive. Note that you will
+probably need to use \CodeInline{occ\_monotonic}.
 
 
 Finally the function \CodeInline{occ\_pos\_exists} should translate the contract
@@ -896,12 +898,12 @@ of the previous function using an existentially quantified variable, and use the
 previous function to obtain the proof for free.
 
 
-For all these function, WP should be parameterized with the control of the
+For all these functions, WP should be parameterized with the control of the
 absence of runtime errors as well as the option
 \CodeInline{-warn-unsigned-overflow}.
 
 
-\levelFourTitle{An actual exemple with sum}
+\levelFourTitle{An actual example with sum}
 
 
 Take back the proof performed in the previous chapter for the

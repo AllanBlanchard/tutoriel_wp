@@ -612,9 +612,9 @@ to find the good trade-off.
 
 In the following function, the last assertion is automatically proved by SMT
 solvers, probably by unfolding the predicate and directly proving the
-corresponding property. Using assertions, provide and other way to prove the
-last property. In the proof context, find the properties required to complete
-the proof and explain how.
+corresponding property. Using assertions, provide an other way to prove the
+last property. In the proof context, find the generated properties that could
+allow to prove the assertion and explain how.
 
 
 \CodeBlockInput{c}{ex-1-context.c}
@@ -637,8 +637,8 @@ place), such that the proof succeeds.
 In the following program, WP fails to prove that the postcondition of the
 function \CodeInline{example} is verified. However, we can notice that the
 \CodeInline{g} function indirectly ensures that the pointed value is either
-increased or decreased. Add the right assertions that depending on the value
-of \CodeInline{*x}, one of the two predicates hold.
+increased or decreased. Add two assertions that shows which predicate holds
+depending on the value of \CodeInline{*x}.
 
 
 \CodeBlockInput{c}{ex-3-trigger-cond.c}
@@ -657,6 +657,7 @@ Another way to bring some information in the context is to use ghost code.
 For example, the truth value of a condition appears in the context of a
 verification condition. Modify the annotation to make the code look like:
 
+
 \begin{CodeBlock}{c}
 void example(int* x){
   g(x);
@@ -672,17 +673,18 @@ void example(int* x){
 
 Compare the verification condition of each assertion with the previous ones.
 
+
 Finally, one can in fact notice that ``the pointed value is either increased
 or decreased'' can be expressed with a single simple assertion. Write the
 corresponding annotation.
 
 
 
-\levelFourTitle{An actual exemple with sum}
+\levelFourTitle{An actual example with sum}
 \label{l4:proof-methodologies-triggering-lemmas-exercises-sum}
 
 
-The following function increase by 1 the value of a cell in an array, thus it
+The following function increases by 1 the value of a cell in an array, thus it
 also increases the value of the sum of the content of this array. Write a
 contract to the function that expresses this fact.
 
@@ -690,10 +692,10 @@ contract to the function that expresses this fact.
 \CodeBlockInput{c}{ex-4-sum-content.c}
 
 
-In order to prove that this function fullfils its contract, we need to provide
-some assertions that will guide the proof. Namely, we have to show that since
-all values before the modified cell has not been modified, the sum has not been
-modified in this part of the array, and same for the cells that follow the
+In order to prove that this function fulfills its contract, we need to provide
+some assertions that will guide the proof. More precisely, we have to show that
+since all values before the modified cell has not been modified, the sum has not
+been modified in this part of the array, and same for the cells that follow the
 modified cell.
 
 
