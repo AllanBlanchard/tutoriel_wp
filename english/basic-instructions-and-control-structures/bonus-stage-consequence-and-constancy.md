@@ -2,8 +2,8 @@
 
 It can sometimes be useful to strengthen a postcondition or
 to weaken a precondition.
-If the former will often be established by us to facilitate the work of the
-prover, the second is more often verified by the tool as the result of computing
+The former will often be established by us to facilitate the work of the
+prover, the latter is more often verified by the tool as the result of computing
 the weakest precondition.
 
 The inference rule of Hoare logic is the following:
@@ -23,7 +23,7 @@ Conversely, the calculation of the precondition will usually generate a
 complicated and often weaker formula than the precondition we want to accept as
 input. In this case, it is our tool that will check the implication between
 what we want and what is necessary for our code to be valid.
-Th is is the part $P \Rightarrow WP$.
+This is the part $P \Rightarrow WP$.
 
 We can illustrate this with the following code. Note that here the code could
 be proved by WP without the weakening and strengthening of properties because
@@ -77,11 +77,11 @@ The rule of inference that defines this reasoning is the following:
 
 where $c$ does not modify any input variable in $R$.
 In other words: "To check the triple, let's get rid of the parts of the formula
-that involves variables that are not influence by $c$ and prove the new triple."
+that involve variables that are not influenced by $c$ and then prove the new triple."
 However, we must be careful not to delete too much information, since this could
 mean that we are not able to prove our properties.
 
-As an example,let us consider the following code (here gain, we ignore
+As an example, let us consider the following code (here again, we ignore
 potential integer overflows):
 
 
@@ -163,5 +163,5 @@ rule:
 
 If the variables of $R$ have not been modified by the operation
 (which, on the other hand, may modify the variables of $P$ to produce $Q$),
-then the properties $P \ wedge R \ Rightarrow P$ and
-$Q \ Rightarrow Q \ wedge R$ hold.
+then the properties $P \wedge R \Rightarrow P$ and
+$Q \Rightarrow Q \wedge R$ hold.

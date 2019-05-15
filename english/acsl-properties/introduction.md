@@ -1,6 +1,6 @@
 From the beginning of this tutorial, we have used different predicates and
 logic functions provided by ACSL : `\valid`, `\valid_read`, `\separated`, `\old`
-and `at`. There are others built-in predicates but we will not present them all,
+and `\at`. There are others built-in predicates but we will not present them all,
 the reader can refer to
 [the documentation (ACSL implementation)](http://frama-c.com/download.html)
 (note that everything is not necessarily supported by WP).

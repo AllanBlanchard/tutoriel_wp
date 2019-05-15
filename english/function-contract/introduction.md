@@ -6,7 +6,7 @@ able to write it correct is required), and then because it will allow us to
 directly prove some programs.
 
 After this part about functions, we will on the opposite focus on simple notions
-like assignments or conditonal structures, to understand how our tool really
+like assignments or conditional structures, to understand how our tool really
 works.
 
 In order to be able to prove that a code is valid, we first need to specify what

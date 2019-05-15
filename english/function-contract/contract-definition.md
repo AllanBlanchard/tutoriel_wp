@@ -5,10 +5,10 @@ of "correctly behave" being itself defined in the contract by the
 postcondition.
 
 These properties are expressed with ACSL, the syntax is relatively simple if
-one have already developed in C language since it shares most of the syntax
+one has already developed in C language since it shares most of the syntax
 of boolean expressions in C. However, it also provides:
 
-- some logic constructs and connectors that do not exists in C, to ease the
+- some logic constructs and connectors that do not exist in C, to ease the
   writing of specifications,
 - built-in predicates to express properties that are useful about C
   programs (for example: a valid pointer),
@@ -35,7 +35,7 @@ Notice the `@` at the beginning of the comment block, this indicates to
 Frama-C that what follows are annotations and not a comment block that it
 should simply ignore.
 
-Now, let us have a look to the way we express contracts, starting with
+Now, let us have a look at the way we express contracts, starting with
 postconditions, since it is what we want our function to do (we will later
 see how to express precondition).
 
@@ -44,7 +44,7 @@ see how to express precondition).
 The postcondition of a function is introduced with the clause `ensures`.
 We will illustrate its use with the following function that returns the
 absolute value of an input. One of its postconditions is that the result
-(which is denoted with the keywork `\result`) is greater or equal to 0.
+(which is denoted with the keyword `\result`) is greater or equal to 0.
 
 ```c
 /*@
@@ -176,7 +176,7 @@ We can see that blue circles become green bullets, indicating that the
 specification is indeed ensured by the program. We can also prove properties
 one by one by right-clicking on them and not on the name of the function.
 
-But is our code really bug free ? WP gives us a way to ensure that a code
+But is our code really bug-free? WP gives us a way to ensure that a code
 respects a specification, but it does not check for runtime errors (RTE). This
 is provided by another plugin that we will use here and that is called RTE.
 Its goal is to add, in the program, some controls to ensure that the program
@@ -301,7 +301,7 @@ determine that the property "absence of underflow" is true (which is
 indeed currently impossible), so we need to add some hypotheses to guarantee
 that our function will well-behave: a call precondition.
 
-# Preconditon
+# Precondition
 
 Preconditions are introduced using `requires` clauses. As we could do with
 `ensures` clauses, we can compose logic expressions and specify multiple
@@ -379,16 +379,16 @@ void foo(int a){
 
 ![Precondition checking when calling `abs`](https://zestedesavoir.com:443/media/galleries/2584/12a9ba65-5934-4d3e-bb52-d273d90fcf98.png)
 
-We can modify this example by revering the last two instructions. If we
+We can modify this example by reverting the last two instructions. If we
 do this, we can see that the call `abs(a)` is validated by WP if it is
 placed after the call `abs(INT_MIN)`! Why?
 
 We must keep in mind that the idea of the deductive proof is to ensure that
 if preconditions are verified, and if our computation terminates, then the
-post-conditon is verified.
+post-condition is verified.
 
 If we give a function that surely breaks the precondition, we can deduce that
-the postconditon is false. Knowing this, we can prove absolutely everything
+the postcondition is false. Knowing this, we can prove absolutely everything
 because this "false" becomes an assumption of every call that follows. Knowing
 false, we can prove everything, because if we have a proof of false, then false
 is true, as well as true is true. So everything is true.
@@ -402,7 +402,7 @@ that becomes verified:
 ![Generated proof obligation for the call that follows](https://zestedesavoir.com:443/media/galleries/2584/f81582b8-e822-47c5-9600-ee34b0d04a21.png)
 
 We can notice that for function calls, the GUI highlights the execution path
-that leads to the call for which we want to verify the preconditon. Then, if
+that leads to the call for which we want to verify the precondition. Then, if
 we have a closer look to the call `abs(INT_MIN)`, we can notice that,
 simplifying, Qed deduced that we try to prove "False". Consequently, the next
 call `abs(a)` receives in its assumptions the property "False". This is why
@@ -450,7 +450,7 @@ previously agreed on a common textual specification).
 
 Once these precondition has been stated, then we work on the specifications
 that are due to the constraints of our language and our hardware. For example,
-the absolute value do not really have a precondition, this is our hardware
+the absolute value does not really have a precondition, this is our hardware
 that adds the condition we have given in precondition due to the two's
 complement on which it relies.
 

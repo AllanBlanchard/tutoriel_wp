@@ -146,15 +146,15 @@ starting from the property $Q$ and statement $i_3$ which in turn enables us
 to derive the property $Q_{-2}$ from the property $Q_{-1}$ and statement $i_2$.
 Finally, $P$ can be determined from $Q_{-2}$ and $i_1$.
 
-Now that we can verify programs that consists of several statements it
+Now that we can verify programs that consist of several statements it
 is time to add some structure to them.
 
 # Conditional rule
 
 For a conditional statement to be true, one must be able to reach the
 postcondition through both branches.
-Of course, for both branches the same precondition (of the conditional
-statement) must hold. In addition we have that in the if-branch
+Of course, for both branches, the same precondition (of the conditional
+statement) must hold. In addition, we have that in the if-branch
 the condition is true while in the else-branch it is false.
 
 We therefore have, as in the case of composed statements, two facts to verify
@@ -177,7 +177,7 @@ Analogously, the negation of $B$ must imply the weakest precondition of $S2$.
 
 ## Empty else-branch
 
-Following this definition we obtain for case of an empty else-branch the
+Following this definition, we obtain for the case of an empty else-branch the
 following rule by simply replacing the statement $S2$ by the empty statement
 `skip`.
 

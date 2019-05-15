@@ -95,16 +95,16 @@ follows:
 */
 ```
 
-In this axiomatic definition, our function do not have a body. Its behavior is
+In this axiomatic definition, our function has no body. Its behavior is
 only defined by the axioms we have stated about it.
 
-A small subtlety is that we must take care about the fact that if some axioms
+A small subtlety that we must take care of is the fact that if some axioms
 state properties about the content of some pointed memory cells, we have to
 specify considered memory blocks using the `reads` notation in the declaration.
 If we omit such a specification, the predicate or function will be considered
 to be stated about the received pointers and not about pointer memory blocks.
 So, if the code modifies the content of an array for which we had proven that
-the predicate or function give some result, this result will not be considered
+the predicate or function gives some result, this result will not be considered
 to be potentially different.
 
 For example, if we take the inductive property we stated for "zeroed" in the
@@ -133,7 +133,7 @@ defined properties.
 # Consistency
 
 By adding axioms to our knowledge base, we can produce more complex proofs since
-some part of these proofs, expressed by axioms, do not need to be proved anymore
+some part of these proofs, expressed by axioms, does not need to be proved anymore
 (they are already specified to be true) shortening the proof process. However,
 using axiomatic definitions, **we must be extremely careful**. Indeed, even a
 small error could introduce false in the knowledge base, making our whole
@@ -179,9 +179,9 @@ be able to find and use the inconsistency, we then need to always be careful!
 More specifically, specifying the values read by a function or a predicate is
 important for the consistency of an axiomatic definition. Indeed, as previously
 explained, if we do not specify what is read when a pointer is received, an
-update of a value inside the array do not invalidate a property known about the
+update of a value inside the array does not invalidate a property known about the
 content of the array. In such a case, the proof is performed but since the
-axiom do not talk about the content of the array, we do not prove anything.
+axiom does not talk about the content of the array, we do not prove anything.
 
 For example, in the function that resets an array to 0, if we modify the
 axiomatic definition, removing the specification of the values that are read
@@ -191,7 +191,7 @@ but will not prove anything about the content of the arrays.
 # Example: counting occurrences of a value
 
 In this example, we want to prove that an algorithm actually counts the
-occurrences of a value inside an array. We start by axiomatically define
+occurrences of a value inside an array. We start by axiomatically defining
 what is the number of occurrences of a value inside an array:
 
 ```c
@@ -266,7 +266,7 @@ lemma l_occurrences_of_range{L}:
 ```
 
 An automatic solver cannot discharge this lemma. It would be necessary to prove
-it interactively using Coq, for example. By expressing, generic manually proved
+it interactively using Coq, for example. By expressing generic manually proved
 lemmas, we can often add useful tools to provers to manipulate more efficiently
 our axiomatic definitions, without directly adding new axioms that would augment
 the chances to introduce errors. Here, we still have to realize the proof of the
@@ -274,3 +274,193 @@ lemma to have a complete proof.
 
 # Example: sort, again
 
+We will prove a simple selection sort:
+
+```c
+size_t min_idx_in(int* a, size_t beg, size_t end){
+  size_t min_i = beg;
+  for(size_t i = beg+1; i < end; ++i)
+    if(a[i] < a[min_i]) min_i = i;
+  return min_i;
+}
+
+void swap(int* p, int* q){
+  int tmp = *p; *p = *q; *q = tmp;
+}
+
+void sort(int* a, size_t beg, size_t end){
+  for(size_t i = beg ; i < end ; ++i){
+    size_t imin = min_idx_in(a, i, end);
+    swap(&a[i], &a[imin]);
+  }
+}
+```
+
+The reader can exercise by specifying and proving the search of the minimum and
+the swap function. We hide there a correct version of these specification and
+code, we will focus on the specification and the proof of the sort function that
+is a interesting use case for axiomatic definitions.
+
+[[secret]]
+| ```c
+| /*@
+|   requires \valid_read(a + (beg .. end-1));
+|   requires beg < end;
+| 
+|   assigns  \nothing;
+| 
+|   ensures  \forall integer i; beg <= i < end ==> a[\result] <= a[i];
+|   ensures  beg <= \result < end;
+| */
+| size_t min_idx_in(int* a, size_t beg, size_t end){
+|   size_t min_i = beg;
+| 
+|   /*@
+|     loop invariant beg <= min_i < i <= end;
+|     loop invariant \forall integer j; beg <= j < i ==> a[min_i] <= a[j];
+|     loop assigns min_i, i;
+|     loop variant end-i;
+|   */
+|   for(size_t i = beg+1; i < end; ++i){
+|     if(a[i] < a[min_i]) min_i = i;
+|   }
+|   return min_i;
+| }
+| 
+| /*@
+|   requires \valid(p) && \valid(q);
+|   assigns  *p, *q;
+|   ensures  *p == \old(*q) && *q == \old(*p);
+| */
+| void swap(int* p, int* q){
+|   int tmp = *p; *p = *q; *q = tmp;
+| }
+| ```
+
+Indeed, a common error we could do, trying to prove a sort function, would
+be to write this specification (which is true !):
+
+```c
+/*@
+  predicate sorted(int* a, integer b, integer e) =
+    \forall integer i, j; b <= i <= j < e ==> a[i] <= a[j];
+*/
+
+/*@
+  requires \valid(a + (beg .. end-1));
+  requires beg < end;
+  assigns  a[beg .. end-1];
+  ensures sorted(a, beg, end);
+*/
+void sort(int* a, size_t beg, size_t end){
+  /*@ //invariant */
+  for(size_t i = beg ; i < end ; ++i){
+    size_t imin = min_idx_in(a, i, end);
+    swap(&a[i], &a[imin]);
+  }
+}
+```
+
+**This specification is true**. But if we recall correctly the part of the
+tutorial about specifications, we have to *precisely* express what we expect of
+the program. With this specification, we do not prove all required properties
+expected for a sort function. For example, this function correctly answers to
+the specification:
+
+```c
+/*@
+  requires \valid(a + (beg .. end-1));
+  requires beg < end;
+
+  assigns  a[beg .. end-1];
+  
+  ensures sorted(a, beg, end);
+*/
+void fail_sort(int* a, size_t beg, size_t end){
+  /*@
+    loop invariant beg <= i <= end;
+    loop invariant \forall integer j; beg <= j < i ==> a[j] == 0;
+    loop assigns i, a[beg .. end-1];
+    loop variant end-i;
+  */
+  for(size_t i = beg ; i < end ; ++i)
+    a[i] = 0;
+}
+```
+
+Our specification does not express the fact that all elements initially found
+inside the array must still be found inside the array after executing the
+sort function. That is to say: the sort function produces a sorted permutation
+of the original array.
+
+Defining the notion of permutation is easily done using an axiomatic definition.
+Indeed, to determine that an array is the permutation of an other one, we can
+limit us to a few cases. First, the array is a permutation of itself, then
+swapping to values of the array produces a new permutation if we do not change
+anything else. And finally if we create the permutation $p_2$ of $p_1$, and then
+the permutation $p_3$ of $p_2$, then by transitivity $p_3$ is a permutation of
+$p_1$.
+
+The corresponding axiomatic definition is the following:
+
+```c
+/*@
+  predicate swap_in_array{L1,L2}(int* a, integer b, integer e, integer i, integer j) =
+    b <= i < e && b <= j < e &&
+    \at(a[i], L1) == \at(a[j], L2) && \at(a[j], L1) == \at(a[i], L2) &&
+    \forall integer k; b <= k < e && k != j && k != i ==> \at(a[k], L1) == \at(a[k], L2);
+
+  axiomatic Permutation{
+    predicate permutation{L1,L2}(int* a, integer b, integer e)
+     reads \at(*(a+(b .. e - 1)), L1), \at(*(a+(b .. e - 1)), L2);
+
+    axiom reflexive{L1}: 
+      \forall int* a, integer b,e ; permutation{L1,L1}(a, b, e);
+
+    axiom swap{L1,L2}:
+      \forall int* a, integer b,e,i,j ;
+        swap_in_array{L1,L2}(a,b,e,i,j) ==> permutation{L1,L2}(a, b, e);
+	
+    axiom transitive{L1,L2,L3}:
+      \forall int* a, integer b,e ; 
+        permutation{L1,L2}(a, b, e) && permutation{L2,L3}(a, b, e) ==> permutation{L1,L3}(a, b, e);
+  }
+*/
+```
+
+We can then specify that our sort function produces the sorted permutation of
+the original array and we can then prove it by providing the invariant of the
+function:
+
+```c
+/*@
+  requires beg < end && \valid(a + (beg .. end-1));
+  assigns  a[beg .. end-1];  
+  ensures sorted(a, beg, end);
+  ensures permutation{Pre, Post}(a,beg,end);
+*/
+void sort(int* a, size_t beg, size_t end){
+  /*@
+    loop invariant beg <= i <= end;
+    loop invariant sorted(a, beg, i) && permutation{Begin, Here}(a, beg, end);
+    loop invariant \forall integer j,k; beg <= j < i ==> i <= k < end ==> a[j] <= a[k];
+    loop assigns i, a[beg .. end-1];
+    loop variant end-i;
+  */
+  for(size_t i = beg ; i < end ; ++i){
+    //@ ghost begin: ;
+    size_t imin = min_idx_in(a, i, end);
+    swap(&a[i], &a[imin]);
+    //@ assert swap_in_array{begin,Here}(a,beg,end,i,imin);
+  }
+}
+```
+
+This time, our property is precisely defined, the proof is relatively easy to
+produce, only requiring to add an assertion in the block of the loop to state
+that it only performs a swap of values inside the array (and then giving
+the transition to the next permutation). To define this swap notion, we use
+a particular annotation (at line 16), introduced using the keyword `ghost`.
+Here, the goal is to introduce a label in the code that in fact does not exists
+from the program point of view, and is only visible from a specification point
+of view. This is the topic of the next section.

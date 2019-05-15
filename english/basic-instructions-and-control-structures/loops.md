@@ -1,5 +1,5 @@
-Loops needs a particular treatment in deductive verification of programs.
-These are the only control structures that will require an important work
+Loops need a particular treatment in deductive verification of programs.
+These are the only control structures that will require important work
 from us. We cannot avoid this because without loops, it is difficult to
 write and prove interesting programs.
 
@@ -9,18 +9,18 @@ question: why are loops so complex?
 # Induction and invariant
 
 The nature of loops makes their analysis complex. When we perform our backward
-reasoning, we need a rule to determine from a post-condition, what is the
-precondition to a given sequence of instructions. Here, the problem is that we
-cannot *a priori* deduce how many times a loop will iterate, and consequently,
-we cannot know neither how many times variables will be modified.
+reasoning, we need a rule to determine the precondition from a given sequence
+of instructions and a post-condition. Here, the problem is that we cannot *a
+priori* deduce how many times a loop will iterate, and consequently, we cannot
+know how many times variables will be modified.
 
-we will then proceed using an inductive reasoning. We have to find a property
+We will then proceed using an inductive reasoning. We have to find a property
 that is true before we start to execute the loop and that, if it is true at the
 beginning of an iteration, remains true at the end (and that is consequently
 true at the beginning of the next iteration).
 
 This type of property is called a loop invariant. A loop invariant is a property
-that must be true before and after each loop instruction. For example with the
+that must be true before and after each loop iteration. For example with the
 following loop:
 
 ```c
@@ -71,22 +71,22 @@ Let us detail this formula:
       explained.
 - finally, the last part ($(\neg B \wedge I) \Rightarrow Post$) expresses the
   fact that when the loop ends($\neg B$), and the invariant $I$ has been
-  maintained, it must imply that the wanted postcondition of the loop is
+  maintained, it must imply that the wanted postcondition of the loop is valid.
 
-In this computation, we can notice that the $wp$ function do not indicate any
+In this computation, we can notice that the $wp$ function does not indicate any
 way to obtain the invariant $I$. We have to specify ourselves this property
 about our loops.
 
 ## Back to the WP plugin
 
 There exist tools that can infer invariant properties (provided that these
-properties are simple, automatic tools remains limited). It is not the case for
+properties are simple, automatic tools remain limited). This is not the case for
 WP. We will have to manually annotate our programs to specify the invariant of
-each loop. To find and write invariant for our loops will always be the hardest
+each loop. To find and write invariants for our loops will always be the hardest
 part of our work when we want to prove programs.
 
-Indeed if, when there are no loops, the weakest precondition calculus function
-can automatically provide the verifiable properties of our programs, it is not
+Indeed, when there are no loops, the weakest precondition calculus function
+can automatically provide the verifiable properties of our programs. This is not
 the case for loop invariant properties for which we do not have computation
 procedures. We have to find and express them correctly, and depending on the
 algorithm, they can be quite subtle and complex.
@@ -122,7 +122,7 @@ $\neg$ ```i < 30``` $\wedge$ ```0 <= i <= 30```. Here, it is true since:
 ```i >= 30 && 0 <= i <= 30 ==> i == 30```. On the opposite, if we exclude the
 equality to 30, the postcondition would be unreachable.
 
-Again, we can have a look to the list of proof obligations in "WP Goals":
+Again, we can have a look at the list of proof obligations in "WP Goals":
 
 ![Proof obligations generated to verify our loop](https://zestedesavoir.com:443/media/galleries/2584/3e2cfa83-cbf8-48fd-b716-9baf51a91ed3.png)
 
@@ -233,7 +233,7 @@ the termination is not trivially provable, the assertion will probably not be
 proved.
 
 [[information]]
-| Note that an (provably) unreachable assertion is always proved to be true:
+| Note that a (provably) unreachable assertion is always proved to be true:
 [
 | ![We "jump" after an assertion using goto](https://zestedesavoir.com:443/media/galleries/2584/eafe5462-e97f-4b9b-8581-c8d9b4ecca5c.png)
 |
@@ -245,9 +245,9 @@ proved.
 In order to prove the termination of a loop, we use the notion of loop variant.
 The loop variant is not a property but a value. It is an expression that involves
 the element modified by the loop and that provides an upper bound to the number
-of iteration that have to be executed by the loop at each iteration. Thus, it is
+of iterations that have to be executed by the loop at each iteration. Thus, it is
 an expression greater or equal to 0, and that strictly decreases at each loop
-iteration (it will also be verified by induction by WP).
+iteration (this will also be verified by induction by WP).
 
 If we take our previous example, we add the loop variant with this syntax:
 
@@ -270,7 +270,7 @@ int main(){
 }
 ```
 
-Again, we can have a look to the generated proof obligations:
+Again, we can have a look at the generated proof obligations:
 
 ![Our loop entirely specified and proved](https://zestedesavoir.com:443/media/galleries/2584/077e05ac-1841-4a19-9309-000807fc35bf.png)
 
@@ -380,6 +380,6 @@ int add_10(int a){
 | There exists strongly automated analysis that can compute loop invariant
 | properties. For example, without a specification, an abstract interpretation
 | would easily compute `0 <= i <= 10` and `old(a) <= a <= \old(a)+10`. However,
-| it is often more difficult to compute the relations that exists between the
+| it is often more difficult to compute the relations that exist between the
 | different variables of a program, for example the equality expressed by the
 | invariant we have added.
