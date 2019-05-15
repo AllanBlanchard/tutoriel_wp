@@ -1,0 +1,915 @@
+Assertions provide a way to give clues to the verification condition generator
+so the SMT solvers will get enough enough information to make the proofs we
+need. However, it is sometimes hard to write exactly the assertion that will
+create exactly the property needed by the SMT solver to trigger the right lemma
+(for example, since the generator makes some optimization on the verification
+condition that might slightly modify it and the context of the proof).
+Furthermore, we rely on lemmas that often need to be proved with the Coq proof
+assistant, and that means that we need to learn Coq.
+
+
+
+In this section, we will see some techniques that we can use to make all of this
+more predictable and does not require from us to use the Coq proof assistant.
+While these techniques cannot be used in any case (and we will explain what are
+the cases when it is not applicable), they are quite efficient to get almost
+full automatic proof. This relies on ghost code.
+
+
+
+\levelThreeTitle{Proof by induction}
+
+
+
+Previously, we mentioned that SMT solvers are bad at reasoning by induction
+(most of them), and this is the reason why we often need to express lemmas that
+we then prove using the Coq proof assistant that allows us to write our proof
+by induction. However, in the section~\ref{l2:statements-loops} about loops, we
+find a subsection~\ref{l3:statements-loops-invariant} named ``Induction and
+invariant'' where we explain how to prove that a loop does the right job ... by
+induction. What is this sorcery?!
+
+
+
+
+In fact, it is quite simple. When we prove a loop invariant by induction using
+SMT solvers, they do not have to perform the reasoning by induction themselves.
+The job of splitting the proof into two subproofs, one for the establishment of
+the invariant (the base case of the proof), and one for the preservation (the
+induction case) is performed by the verification condition generator. So when
+the verification conditions are transmitted to the SMT solvers, this work is not
+needed anymore.
+
+
+
+
+How can we exploit this idea? We explained before that ghost code can be used to
+provide more information than what is explicitly provided by the source code.
+For this, we add some code (and possibly annotations about this code) that
+allows to deduce more properties. Let us illustrate this with a simple example.
+In a previous exercise (\ref{l4:acsl-properties-lemmas-lsorted-gsorted}), we
+wanted to prove the following function call (we have excluded the postconditions
+to shorten the example):
+
+
+
+\CodeBlockInput{c}{ghost-code-usage-1.c}
+
+
+
+For this, the solution that was asked in the exercise was to provide a lemma
+that states that if a range is ``locally sorted'', meaning that each element
+is greater or equals to the one that precedes it, then we can say that it is
+``globally sorted'', that is to say for each pair of indices $i$ and $j$, if
+$i \leq j$ then the $j^{th}$ of the array is greater or equals to the $i^{th}$
+element. Then, the precondition could be proved by SMT solvers, but not the
+lemma itself that requires a Coq proof. Can we do something using a loop?
+
+
+
+The answer is yes. Basically, we build a proof that, because we know that the
+array is locally sorted, we can deduce that it is globally sorted, before
+calling the function (which is basically a proof of the lemma we would need).
+We want to prove that the range is globally sorted, to write this proof by hand,
+we would proceed by induction on the size of the range. We have two cases.
+First, the range is empty and the property trivially true. Second, let us suppose
+that some range of size $i$ with $i < length$ ($length$ being the size of the
+complete range), is globally sorted and show that if it is the case, then the
+range of size $i+1$ is sorted. This is easy because, by our precondition, we
+know that the $i^{th}$ element is greater than the $(i-1)^{th}$ element, that is
+itself greater than all the preceding elements.
+
+
+
+
+Now, how can we translate this into ghost code? We write a loop that goes from
+$0$ (our base case), to the end of the range \CodeInline{len} and provide as an
+invariant that the array is globally sorted from $0$ to the current step of the
+loop. We also add some assertions to help the provers (namely the fact that the
+current element is greater than the one that precedes it):
+
+
+
+\CodeBlockInput[15][31]{c}{ghost-code-usage-2.c}
+
+
+
+And we can see that all verification conditions are easily verified by SMT
+solvers, without requiring to write a Coq proof of lemma. This kind of code is
+called a proof carrying code: we have written some code and annotations that
+carries a proof that some property we want to verify holds.
+
+
+
+Note that here, as we can write quite a lot of ghost code, we augment our risk
+to modify the behavior of the program by mistake. Most of the time we do not
+need to modify any memory location, thus taking care to check (few) assigned
+memory locations (for example, loop iterators), that we do not create a runtime
+error (through RTE plugin) and that the ghost code terminates is enough to be
+confident about the verification.
+
+
+
+In this example, we had to write the ghost code directly in annotation of the
+program, and that mean that if we have another call somewhere else in the code
+with some similar precondition, we would have to do it again. Let us make this
+easier by using lemma functions.
+
+
+
+\levelThreeTitle{Lemma function}
+
+
+
+The principle of lemma functions is basically the same as lemmas: from some
+premises, we want to prove some conclusion. And once it has been done, we want
+to use it at some other place to directly deduce the conclusion from the
+premises without having to do the proof again, by instancing it with actual
+values.
+
+
+
+The way to do this is to use a function, using the \CodeInline{requires} to
+express the premises of the lemma, and the \CodeInline{ensures} to express the
+conclusion of the lemma. The universally quantified variables can either still
+be quantified, or correspond to a parameter of the function. Namely, if a
+variable is only bounded to premises, or only to conclusions, it can be
+translated into a universally quantified variable, if it is bounded to both
+premises and conclusion, it must be a parameter of a function (as we cannot
+quantify a variable for all a function contract in ACSL).
+
+
+
+Let us first consider an example where we do not use (directly) universally
+quantified variables in the contract, with our previous example about sorted
+values. From the property \CodeInline{element\_level\_sorted(arr, len)}, we
+want to deduce \CodeInline{sorted(arr, len)}. The corresponding lemma could be:
+
+
+\begin{CodeBlock}{c}
+/*@
+  lemma element_level_sorted_is_sorted:
+    \forall int* arr, integer len ;
+       element_level_sorted(arr, len) ==> sorted(arr, len) ;
+*/
+\end{CodeBlock}
+
+
+So let us write a function that takes two parameters: \CodeInline{arr} and
+\CodeInline{len}, requires that the array is locally sorted and ensures that it
+is globally sorted:
+
+
+
+\CodeBlockInput[16][21]{c}{lemma-function-1-1.c}
+
+
+
+Note that this function must assign \CodeInline{\textbackslash{}nothing}, indeed
+we use it to deduce some properties about the program, with ghost code, and
+thus it should not modify the content of the array, else the ghost code would
+modify the behavior of the program. Now let us provide a body to this function,
+the proof carrying code that the conclusion is true when the precondition is true.
+It corresponds to the code we previously wrote to prove the precondition of
+the call to \CodeInline{bsearch}:
+
+
+
+\CodeBlockInput[16][31]{c}{lemma-function-1-2.c}
+
+
+
+With this specified loop, we get an inductive proof that the lemma holds,
+now we can use this property by simply calling the lemma function when we need
+to perform this deduction:
+
+
+
+\CodeBlockInput[34][40]{c}{lemma-function-1-2.c}
+
+
+
+Which asks us to establish the premises thanks to the precondition of the lemma
+function (and which we trivially get from the precondition of the
+\CodeInline{bsearch\_callee} function), and provides us the conclusion for free
+thanks to the postcondition of the lemma function (and we can use it as a
+precondition for the call to \CodeInline{bsearch}).
+
+
+
+As we explained, when universally quantified variable are bounded to both
+conclusion and premises, they must be parameters, and it is the case here for
+the variables \CodeInline{arr} and \CodeInline{len}. Whereas the quantified
+variable that are used in the predicates:
+
+
+
+\CodeBlockInput[4][8]{c}{lemma-function-1-2.c}
+
+
+
+as they are only bound to respectively the premise and the conclusion remain
+universally quantified (even if it is hidden by the predicate). We could for
+example have written the contract like this:
+
+
+
+\CodeBlockInput[16][31]{c}{lemma-function-1-3.c}
+
+
+
+where we perfectly see that variables are still universally quantified. However,
+we are not forced to maintain them universally quantified, and we could
+perfectly translate them into parameters (provided that the conclusion we want
+to get from the premises still makes sense). Let us for example translate the
+\CodeInline{i} and \CodeInline{j} of the conclusion into parameters:
+
+
+
+\CodeBlockInput[34][41]{c}{lemma-function-1-3.c}
+
+
+
+Which is also perfectly fine and we could for example use this function to
+deduce some properties about the content of the array. Note that here, we use a
+call to the previous lemma function to make the proof easier. We even can go
+further by transferring the ``premise of our conclusion'' as another premise of
+a new lemma:
+
+
+
+\CodeBlockInput[44][52]{c}{lemma-function-1-3.c}
+
+
+
+All these lemmas state the same global relation, the difference is related to
+the amount of information that is required to instantiate them (and thus the
+precision of the property that we get in return).
+
+
+
+Finally, let us present a last usage of lemma functions. On all previous
+examples, we have considered only universally quantified variable. In fact, what
+we have said before is applicable to existentially quantified variables: if they
+are bound to both premises and conclusions, they must be parameters, else they
+can either be parameters or remain quantified. However, about existentially
+quantified variables, we sometimes can go further by building a function that
+directly provide a witness for an existentially quantified formula.
+
+
+
+For example, let us consider the axiomatic definition for occurrence counting,
+and imagine that at some point in a program, we want to prove the following
+assertion from the precondition:
+
+
+
+\CodeBlockInput[24][32]{c}{lemma-function-2-1.c}
+
+
+
+Of course, there exists some index \CodeInline{n} such that \CodeInline{in[n]}
+is \CodeInline{v}, else the number of occurrences of this value would be $0$.
+But, instead of just proving that such an index exists, let us directly find
+some index that respects the constraints on \CodeInline{n} by using a lemma
+function that returns it:
+
+
+
+\CodeBlockInput[24][42]{c}{lemma-function-2-2.c}
+
+
+
+If we only look at the body of the function, it has two behaviors: either some
+cell of the array contains \CodeInline{v} and the function returns its index, or
+there is not, and then the function returns -1. The first behavior is easy to
+show, the return statement is performed in a branch where we know that the
+considered index corresponds to a cell that is in the range of the array and has
+a value \CodeInline{v}.
+
+
+
+We prove that the second behavior respects the postcondition by showing that it
+leads to a contradiction. If there is no cell of value \CodeInline{v}, then
+the number of occurrences of \CodeInline{v} is 0, this is expressed by the
+second invariant that shows that as we have not met any \CodeInline{v} since we
+started, the number of occurrences is 0. However, the precondition of the
+function states that the number of occurrences is more than $0$ which leads to
+a contradiction that we model model by an assertion of false (note that this is
+not necessary, we explicitly write it for our explanation).
+
+
+
+Finally, we can call this function to show that there exists some index that
+allows our assertion to be validated:
+
+
+
+\CodeBlockInput[44][53]{c}{lemma-function-2-2.c}
+
+
+
+The use of lemma functions makes reasoning by induction feasible for lemmas
+without the need of interactive proof. Furthermore, the triggerring of lemmas
+becomes more predictable as we instantiate them by hand. However, while lemmas
+can consider multiple labels:
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  lemma my_lemma{L1, L2}:  P{L1} ==> P{L2} ;
+*/
+\end{CodeBlock}
+
+
+
+Lemma functions do not provide an equivalent mechanism as they are basically
+normal C functions that cannot take labels in input. Let us show what we can
+do when we need such a construct.
+
+
+
+\levelThreeTitle{Lemma macro}
+
+
+
+When we have to deal with multiple labels, the idea is to directly ``inject''
+the proof carrying code at the place where it is needed exactly as we did at the
+beginning of the section. However, we do not want to write this code by hand
+everytime we need such a proof, so let us use macros to do it.
+
+
+
+For now, let us translate our previous code into a macro instead of a function.
+As we use this macro in ghost code (thus, in annotation) we have to take care to
+use the ghost annotation syntax to write the invariant of the loop and the
+assertions:
+
+
+
+\CodeBlockInput[16][33]{c}{lemma-macro-1.c}
+
+
+
+Instead of providing a pre and a postcondition, we state these properties using
+assertions before and after the proof carrying code. The proof carrying code
+itself is basically the same as before, and it is used exactly as it was used in
+the case of functions. However, we can see that it makes an important difference
+once it has been preprocessed by Frama-C as the block of code and annotations is
+directly injected in the function \CodeInline{bsearch\_callee}.
+
+
+
+\image{lemma-macro-1}
+
+
+
+So in fact, we use the macro to generate the code we previously wrote. In this
+case, it is not really interesting as a function call allows us to make things
+more modular. So let us study a case where we do not have any other choice than
+using a macro.
+
+
+
+We illustrate using the following lemma:
+
+
+
+\CodeBlockInput[4][11]{c}{lemma-macro-2-1.c}
+
+
+In order to prove the following program:
+
+
+\CodeBlockInput[13][29]{c}{lemma-macro-2-1.c}
+
+
+Where the lemma \CodeInline{shift\_ptr} is necessary to prove the postcondition
+of \CodeInline{callee} from the postcondition of \CodeInline{shift\_array}. Our
+goal is of course to get rid of the lemma, replacing it by a lemma macro.
+
+
+
+There is no precise guideline for designing a macro used from the injection of
+proof carrying code. However, most lemmas stated about multiple labels are quite
+similar in the way they relate labels. So let us illustrate with this example,
+most of the time designing a macro in such a situation will more or less follow
+the same scheme.
+
+
+
+In order to build the macro, we need a context where we can work on it. We build
+the context using a function, let us name this function
+\CodeInline{context\_to\_prove\_shift\_ptr}. The idea is to use the function to
+build the macro in isolation of the rest of the program to make the verification
+of the property easier. However, while lemma functions are then called to deduce
+some properties in some other function, this function will never be called, its
+only role is to provide us a ``place'' where we can build our proof. In
+particular, as we need multiple memory labels, our function \textbf{needs} to
+modify the content of the memory (else, there is a single memory state for all
+the function).
+
+
+
+Let us illustrate with our current problem to make all of this clearer. First,
+we create a macro \CodeInline{shift\_array} that will contain our proof carrying
+code, for now let us just indicate that it is an empty statement. In the
+parameters of this lemma, we take the labels that are considered. Note that the
+rules we previously mentioned about quantified variables still apply to macros.
+
+
+\begin{CodeBlock}{c}
+#define shift_ptr(_L1, _L2, _arr, _fst, _last, _s1, _s2) ;
+\end{CodeBlock}
+
+
+Then we create our context function:
+
+
+\CodeBlockInput[22][41]{c}{lemma-macro-2-2.c}
+
+
+Let us decompose this code, starting from the context function. In input, we
+receive all the variables of the lemma. We also state some properties about the
+bounds of the integer values we consider, basically these should be requirements
+that are not related to memory states, or related to the first one. Then, we
+introduce the label
+\CodeInline{L1} and we call the function \CodeInline{assign\_array} that leads
+us to the label \CodeInline{L2}. The role of this call is to ensure that WP will
+create a new memory label (thus, it will not consider that the memory is the
+same), and to establish our premises. Indeed, if we have a look at the contract
+of \CodeInline{assign\_array}, we see that it assigns the array (which
+guarantees the creation of a new memory label) and in postcondition, it ensures
+that the content of the array, between the pre and the postcondition (thus, when
+we call it: \CodeInline{L1} and \CodeInline{L2}) respects the premise of our
+lemma (which we repeat on line 36, by adding an assertion). Then we use our
+\CodeInline{shift\_ptr} macro (that will later contain the proof carrying code),
+and we then expect to be able to prove the postcondition of our lemma (line 40).
+
+
+
+By doing this, we ensure that we built a context that only contains the
+information we need to build the proof carrying code that allows us to deduce
+the conclusion (line 40) from the premise (line 36). Now let us write the macro.
+
+
+
+\CodeBlockInput[9][19]{c}{lemma-macro-2-2.c}
+
+
+
+We will not detail this code which is quite similar to what we have written in
+the beginning of this section. the only small subtlety is the assert that helps
+the SMT solvers to relate the memory locations between \CodeInline{L1} and
+\CodeInline{L2} together. Finally, we can complete the proof of our function by
+using our lemma:
+
+
+
+\CodeBlockInput[52][61]{c}{lemma-macro-2-2.c}
+
+
+
+As one could notice, while this techniques allows to inject the proof carrying
+code with a single line of code, it can inject quite a lot of code and
+annotations each time we use it. Furthermore, once we inject the code in the
+location where we expect it to be actually useful, the corresponding context
+can sometimes be already complex. Thus, we could need to slightly modify the
+code of the macro in order to add more information that is unnecessary in a
+clean context.
+
+
+All of this can make the proof context bigger, and harder to use for SMT solvers.
+There are other limitations to this technique and the careful reader might have
+notice them. Let us now talk about it.
+
+
+
+\levelThreeTitle{Limitations}
+
+
+
+The main limitation of lemma functions and lemma macros is the fact that we are
+limited to C types. For example, if we compare our lemma
+\CodeInline{element\_level\_sorted\_is\_sorted} with its corresponding lemma
+function, the original type for the variable \CodeInline{len} is a mathematical
+integer while in the lemma function its type is \CodeInline{size\_t}. It means
+that while the lemma is true for any integer, and so it could be used no matter
+if in the program the type of the variable that represents the size is an
+\CodeInline{int}, or an \CodeInline{unsigned} (or another integer type), on the
+opposite, our lemma function can be used only if this type can be safely
+converted to \CodeInline{size\_t}. However, this limitation is often not a
+problem: we just have to express our specification for the biggest type we have
+to consider in our program and most of the time, it will be enough. And if it is
+not, we can for example duplicate the lemma for the types we are interested in.
+However, most of the time this limitation is not a big deal since during a
+verification, we just tend to work with the same types as the program uses.
+
+
+
+In some cases, however, it can constrain our modeling of some properties, and
+is it mainly related to the logic types we can use to model some actual data
+structures. For example, in order to model a linked list, one could use the
+ACSL logic type \CodeInline{\textbackslash{}list<Type>}, and express an
+inductive or axiomatic definition in order to define how an actual linked list
+can be modeled by a logic list, thus we could have some lemmas about logic
+lists. For example:
+
+\begin{CodeBlock}{c}
+/*@
+  lemma in_list_in_sublist:
+    \forall \list<int> l, l1, l2, int element ;
+      l == (l1 ^ l2) ==>
+      (in_list(element, l) <==> (in_list(element, l1) || in_list(element, l2))) ;
+*/
+\end{CodeBlock}
+
+We cannot write lemma functions with proof carrying code for this property as
+we have not way to use this type in C code. Thus, no way to write a loop and
+an invariant that would allow us to prove this property.
+
+
+The other limitation is related to lemma macros and what we already mentioned
+in the previous part about assertions. By adding too many assertions, the proof
+context can become too big and complex, thus hard to manipulate for SMT
+solvers. Using lemma macros that can generate quite a lot code and annotations
+can lead to bigger proof contexts, thus it should be used with care.
+
+
+
+\levelThreeTitle{Back to the selection sort}
+
+
+Now let us go back to our proof of the selection sort algorithm and see how we
+can get rid of all our interactive proofs for this function. Note however that
+in this proof, we often need to deal with macros since the program has not been
+particularly written with the idea to formally verify it later (for this, the
+reader can refer to the version proposed in the book ACSL by Example which can
+be adpated with a similar technique and is easier to prove). Thus, in
+this example, we push the solvers to their limit because of big proof contexts.
+With this example, depending on how powerful the machine is, we might need to
+increase the proof timeout to 120 seconds (which is already quite long for a
+SMT solver). In this example, we will illustrate three actual usage of ghost
+code that we have seen so far:
+
+
+\begin{itemize}
+\item directly writing code to build a proof,
+\item writing (and using) lemma functions,
+\item writing (and using) lemma macros.
+\end{itemize}
+
+
+We also make use of assertions to make the proof context richer so SMT solvers
+succeed in proving the properties we are interested in. Some parts of the
+annotations are equivalent to what we have done previously. First, we use some
+assertions that were also useful in our previous proof. We will recall their
+purpose for each function. Second, we re-use the same axiomatic definition for
+occurrences counting. Furthermore, we keep the following predicate definitions:
+
+
+\CodeBlockInput[25][42]{c}{insert-sort-auto.c}
+
+
+As we will need them, as well as the lemma about the transitivity of
+occurrences counting as it is automatically proved by SMT solvers (thus we can
+keep it since it does not require an interactive proof from us):
+
+
+\CodeBlockInput[43][48]{c}{insert-sort-auto.c}
+
+
+Let us start with the \CodeInline{insertion\_sort} function itself. In this
+function, we made use of three assertions:
+
+
+\CodeBlockInput[87][108]{c}{insert-sort-auto.c}
+
+
+The first one makes sure that the part of the array where we just inserted a
+value is a permutation of the same range of values before the call to
+\CodeInline{insert}, as this is the postcondition of the function, it is not
+necessary but let us keep it for illustration. The last assertion is the
+property we want to prove in order to get enough knowledge to use the lemma that
+states that permutation is transitive (and show that after the block of the loop
+since our array is a permutation of the array at the beginning, which is itself
+a permutation of the original one, then after the body of the loop we have
+maintained that the array is a permutation of the original one).
+
+
+
+The second assertion says that the second part of the array is unchanged, and we
+want to use this knowledge to show that the number of occurrences of the values
+is unchanged. Here we could use a combination of lemma functions and macros to
+prove that the complete range is a permutation (as we will do for the other
+function) however, directly writing the code is here a bit simpler (requires
+less proofs, as we will see later) so let us directly write the code that will
+create the proof of our property.
+
+
+
+In order to show that the complete range is a permutation, we have to show that
+the number of occurrences did not change. We know that the first part of the
+array is a permutation of the array at the beginning of the body of the loop.
+Thus, we already know that the number of occurrences of any $v$ did not change
+for a part of our array. Let us continue the occurrences counting for the rest
+of our array, assuming that this second part is unchanged (when \CodeInline{i+1}
+is less than \CodeInline{end} as else, we do not have anything to count):
+
+
+\CodeBlockInput[267][286]{c}{insert-sort-auto-proved.c}
+
+
+which is enough to ensure that the \CodeInline{insertion\_sort} function
+respects its specification as long as we finish the proof of the function
+\CodeInline{insert}. This second function makes a more complex action. Let us
+depart from this annotated version:
+
+
+\CodeBlockInput[50][84]{c}{insert-sort-auto.c}
+
+
+Again, the proof that this function maintains a permutation of the array is
+the hardest part of the job. The fact that the function guarantees that the
+value are sorted is already easily established. Using the same technique as
+for \CodeInline{insertion\_sort} is not so easy here. Indeed, the second part
+of the array has been rotated which makes the properties slightly more
+complex. So, let us show that we can split the array at the position where
+we insert into two parts, in which we respectively show that:
+
+\begin{itemize}
+\item for the first part, since it is unchanged, for any $v$, the number of
+  occurrences did not change either,
+\item for the second part, since it is rotated, for any $v$, the number of
+  occurrences did not change.
+\end{itemize}
+
+First let us define a lemma function that allows to explicitly split a range of
+values into two subparts in which we can count separately.
+
+
+\CodeBlockInput[57][75]{c}{insert-sort-auto-proved.c}
+
+
+We can note that this property is proved in a way that is quite similar to what
+we wrote for the body of our loop in \CodeInline{insertion\_sort}, we start from
+the point where we want to count and show that the property remains true until
+the end of the array. 
+
+
+
+We can use our function to split the array at the right place after the loop.
+However, we can only do it for the new content of the array, indeed, in order to
+establish it for the original array, we have to call the function on the
+original array, when we still do not know the value of $i$. Thus, let us write
+an other version of the ``split'' property that shows that we can split the
+array at any index, thus make the \CodeInline{split} variable a universally
+quantified variable, and use the previous function to prove that it is true:
+
+
+\CodeBlockInput[77][98]{c}{insert-sort-auto-proved.c}
+
+
+And we can split our original array and the new one:
+
+
+\begin{CodeBlock}{c}
+void insert(int* a, size_t beg, size_t last){
+  size_t i = last ;
+  int value = a[i] ;
+
+  // split before modifying
+  //@ ghost l_occurrences_of_split(a, beg, last+1);
+
+  /*@ LOOP ANNOT */
+  while(i > beg && a[i - 1] > value){
+    a[i] = a[i - 1] ;
+    --i ;
+  }
+  a[i] = value ;
+  // Assertions ...
+
+  // split after modifying, now we know "i"
+  //@ ghost l_occurrences_of_explicit_split(a, beg, i, last+1);
+}
+\end{CodeBlock}
+
+
+Now, the only remaining parts of the proof are first to show that an unchanged
+array is a permutation and second that the rotate operation also maintains a
+permutation. Here, we need macros. Let us start with the easiest: the unchanged
+property that we already almost exactly proved in the
+\CodeInline{insertion\_sort} function. We start by building the context for our
+proof:
+
+
+\CodeBlockInput[138][154]{c}{insert-sort-auto-proved.c}
+
+
+The function \CodeInline{unchanged\_permutation\_premise} ensures that we have
+modified the array (thus created a new memory state) and that the array is
+unchanged from the precondition to the postcondition. We can build our
+lemma macro:
+
+
+\CodeBlockInput[125][135]{c}{insert-sort-auto-proved.c}
+
+
+Which almost corresponds to what we have written previously in the
+\CodeInline{insert\_sort} function and we can use the macro where it is needed
+in the \CodeInline{insert} function.
+
+
+\CodeBlockInput[245][247]{c}{insert-sort-auto-proved.c}
+
+
+The only remaining property to prove is the hardest one and is about the
+\CodeInline{rotate\_left} predicate. Let us first write our context to prepare
+the macro.
+
+
+\CodeBlockInput[183][200]{c}{insert-sort-auto-proved.c}
+
+
+How can we prove this property? Basically, one has to notice that since all the
+elements from the beginning to the penultimate have been shifted of one index
+to the right the number of occurrences in the shifted part did not change. Then
+one has to show that the number of occurrences of any $v$ in respectively the
+last cell in the original array, and the first cell in the new array is the same
+(since the corresponding element is the same). Again, we rely on the split
+function to count separately the elements that are shifted and the one which is
+moved from the end to the beginning. However, the call corresponding to the
+original array has again to be put before the call that modifies the memory (see
+line 194) in the previous code, and we will have to take that in account when we
+will insert our use of the macro in the \CodeInline{insert} function.
+
+
+Let us now present the macro that we use to prove that the lemma holds:
+
+
+\CodeBlockInput[156][181]{c}{insert-sort-auto-proved.c}
+
+
+The loop invariant is pretty similar to what we have written so far, the only
+difference is that it takes in account the shift of the elements. Furthermore,
+to prove the invariant we had to add an assertion to help the solvers notice
+that the last element of both ranges is the same (note however that depending
+on the versions of the solvers or how powerful is the machine, this might be
+unneeded sometimes). A more important difference compared to our previous
+examples is that here, we need to provide more information to SMT solvers by
+adding other ghost functions calls (line 170, in order to split the first
+element of the array), as well as assertions to guide the last steps of the
+proof:
+
+
+\begin{itemize}
+\item 171--175: we recall that in the original array we can split the last
+  element,
+\item 176--180: we show that as the element the first element of the array is
+  the last element of the original array (176), the number of occurrences for
+  any value in these ranges is the same (177--179).
+\end{itemize}
+
+
+We can use the macro in our program:
+
+
+\begin{CodeBlock}{c}
+//@ assert rotate_left{Pre, Here}(a, i, last+1) ;
+//@ ghost rotate_left_permutation(Pre, Here, a, i, last+1) ;
+//@ assert permutation{Pre, Here}(a, i, last+1) ;
+\end{CodeBlock}
+
+
+However, we have to show that the considered range at label \CodeInline{Pre} can
+be split at \CodeInline{last}. For this, we use another variant of the split
+function, than show that any subrange can be split before the last element (if
+it is non empty):
+
+
+
+\CodeBlockInput[100][122]{c}{insert-sort-auto-proved.c}
+
+
+
+That we have to call before the loop in the \CodeInline{insert} function:
+
+
+\CodeBlockInput[211][216]{c}{insert-sort-auto-proved.c}
+
+
+Note that depending on the version of the solvers, the assertion on lines 176 to
+180 of the macro, about the element at the beginning/the end of the array might
+fail due to the complexity of the proof context. Let us help the solvers a last
+time by adding a last lemma (automatically proved by SMT solvers) that states
+this relation for any array and position in the array:
+
+
+
+\CodeBlockInput[49][54]{c}{insert-sort-auto-proved.c}
+
+
+which guarantees that our resulting annotated insertion function is entirely
+proved:
+
+
+\CodeBlockInput[202][250]{c}{insert-sort-auto-proved.c}
+
+
+We finally highlight how the proof context can make the proof harder for SMT
+solvers. Basically, if we swap the proofs for each part of the array, that is,
+starting with the ``unchanged'' part and next the ``rotate'' part, the proof has
+more chance to fail, since it would make the proof context bigger for the
+hardest proof. For the same reason, it is here almost needed (again depending
+on how powerful is the machine and the solvers) to separate the proof of the
+absence of runtime errors, else it pollutes the proof context and it may fail.
+
+
+\levelThreeTitle{Exercises}
+
+
+\levelFourTitle{Sum of N integers}
+
+
+Using lemma functions, we can prove the lemma about the sum of the N first
+integers that we previously expressed. You might have done this proof when you
+were in high school, now it is time to do it in C and ACSL. Write a contract for
+the following function that expresses in postcondition that the sum of the N
+first integers is \CodeInline{N(N+1)/2}. Complete the body of the function with
+a loop in order to prove this property. We advise to slightly transform the
+invariant in order to be sure that the property does not contain any division
+(division on integers have some properties that can make them hard to deal with
+for SMT solvers depending on the constraint that exists on the used values).
+
+
+\CodeBlockInput[1][12]{c}{ex-1-sum-of-n-integers.c}
+
+
+Now, let us generalize to any bounds with the sum of all the integers between
+\CodeInline{fst} and \CodeInline{lst}. We provide the logic function and the
+contract. Write a body for the function such that the postcondition is proved.
+Note that again, we advise to express the invariant without division.
+
+
+\CodeBlockInput[14][26]{c}{ex-1-sum-of-n-integers.c}
+
+
+\levelFourTitle{Properties about occurrences counting}
+
+
+In this exercise, we want to prove some interesting properties about the
+axiomatically defined logic function \CodeInline{l\_occurrences\_of}:
+
+
+\CodeBlockInput{c}{ex-2-l_occurrences_of-props.c}
+
+
+The function \CodeInline{occ\_bounds} should state that the number of
+occurrences of \CodeInline{v} in the array is comprised between 0 and
+\CodeInline{len}.
+
+
+The function \CodeInline{not\_in\_occ\_0} should state that if \CodeInline{v} is
+not in the array then the number of occurrences of \CodeInline{v} in the array
+is 0.
+
+
+The function \CodeInline{occ\_monotonic} should state that the number of
+occurrences of \CodeInline{v} in the array from 0 to \CodeInline{pos} is lower
+or equals to the number of occurrences of \CodeInline{v} in the array from 0
+to \CodeInline{more}, if \CodeInline{more} is greater or equals to
+\CodeInline{pos}.
+
+
+The function \CodeInline{occ\_0\_not\_in} should state that if the number of
+occurrences of \CodeInline{v} in the array is 0 then \CodeInline{v} is not in
+the array. Note that you will probably need to use \CodeInline{occ\_monotonic}.
+
+
+The function \CodeInline{occ\_pos\_find} should find an index \CodeInline{i}
+such that the value \CodeInline{arr[i]} is \CodeInline{v}, provided that the
+number of occurrences of \CodeInline{v} is positive. Note that you will
+probably need to use \CodeInline{occ\_monotonic}.
+
+
+Finally the function \CodeInline{occ\_pos\_exists} should translate the contract
+of the previous function using an existentially quantified variable, and use the
+previous function to obtain the proof for free.
+
+
+For all these functions, WP should be parameterized with the control of the
+absence of runtime errors as well as the option
+\CodeInline{-warn-unsigned-overflow}.
+
+
+\levelFourTitle{An actual example with sum}
+
+
+Take back the proof performed in the previous chapter for the
+exercise~\ref{l4:proof-methodologies-triggering-lemmas-exercises-sum}. Modify
+the annotations in order to ensure that no more classic lemmas are necessary.
+The skeleton of the file follows:
+
+
+\CodeBlockInput{c}{ex-3-sum-content.c}

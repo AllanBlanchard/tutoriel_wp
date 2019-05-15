@@ -1,0 +1,501 @@
+
+\levelThreeTitle{Correctly write what we expect}
+
+
+This is certainly the hardest part of our work. Programming is already
+an effort that consists in writing algorithms that correctly respond to
+our need. Specifying requests the same kind of work, except that we do
+not try to express \emph{how} we respond to the need but \emph{what} is
+exactly our need. To prove that our code implements what we need, we
+must be able to describe exactly what we need.
+
+From now, we will use an other example, the \texttt{max} function:
+
+
+
+\CodeBlockInput{c}{max-0.c}
+
+
+
+The reader could write and prove their own specification. We will start
+using this one:
+
+
+
+\CodeBlockInput[1][6]{c}{max-1.c}
+
+
+
+If we ask WP to prove this code, it will succeed without any problem.
+However, is our specification really correct? We can try to prove this
+calling code:
+
+
+
+\CodeBlockInput[8][14]{c}{max-1.c}
+
+
+
+There, it will fail. In fact, we can go further by modifying the body of
+the \CodeInline{max} function and notice that the following code is also
+correct with respect to the specification:
+
+
+
+\CodeBlockInput[1][8]{c}{max-2.c}
+
+
+
+Our specification is too permissive. We have to be more precise. We do
+not only expect the result to be greater or equal to both parameters,
+but also that the result is one of them:
+
+
+
+\CodeBlockInput[1][7]{c}{max-3.c}
+
+
+
+\levelThreeTitle{Pointers}
+
+
+If there is one notion that we permanently have to confront with in C
+language, this is definitely the notion of pointer. Pointers are quite
+hard to manipulate correctly, and they still are the main source of
+critical bugs in programs, so they benefit of a preferential treatment
+in ACSL.
+
+We can illustrate with a swap function for C integers:
+
+
+
+\CodeBlockInput{c}{swap-0.c}
+
+
+
+\levelFourTitle{History of values in memory}
+
+
+Here, we introduce a first built-in logic function of ACSL:
+\CodeInline{\textbackslash{}old}, that allows us to get the old (that
+is to say, before the call) value of a given element. So, our specification
+defines that the function must ensure that after the call, the value of
+\CodeInline{*a} is the old  value of \CodeInline{*b} and conversely.
+
+The \CodeInline{\textbackslash{}old} function can only be used in the
+postcondition of a function. If we need this type of information
+somewhere else, we will use \CodeInline{\textbackslash{}at} that allows us
+to express that we want the value of a variable at a particular program
+point. This function receives two parameters. The first one is the variable
+(or memory location) for which we want to get its value and the second one
+is the program point (as a C label) that we want to consider.
+
+For example, we could write:
+
+
+
+\CodeBlockInput[2][6]{c}{at.c}
+
+
+
+Of course, we can use any C label in our code, but we also have 6
+built-in labels defined by ACSL that can be used:
+
+
+
+\begin{itemize}
+\item \CodeInline{Pre}/\CodeInline{Old}: value before function call,
+\item \CodeInline{Post}: value after function call,
+\item \CodeInline{LoopEntry}: value at loop entry
+\item \CodeInline{LoopCurrent}: value at the beginning of the current step of
+  the loop,
+\item \CodeInline{Here}: value at the current program point.
+\end{itemize}
+
+
+\begin{Information}
+  The behavior of \CodeInline{Here} is, in fact, the default behavior when we
+  consider a variable. Its use with \CodeInline{\textbackslash{}at} will
+  generally let us ensure that what we write is not ambiguous, and is more
+  readable, when we express properties about values at different program
+  points in the same expression.
+\end{Information}
+
+
+Whereas \CodeInline{\textbackslash{}old} can only be used in function
+postconditions, \CodeInline{\textbackslash{}at} can be used anywhere.
+However, we cannot use any program point with respect to the type
+annotation we are writing. \CodeInline{Old} and \CodeInline{Post} are only
+available in function postconditions, \CodeInline{Pre} and \CodeInline{Here}
+are available everywhere. \CodeInline{LoopEntry} and \CodeInline{LoopCurrent}
+are only available in the context of loops (which we will detail later
+in this tutorial).
+
+
+
+For the moment, we will not need \CodeInline{\textbackslash{}at} but it can
+often be useful, if not essential, when we want to make our
+specification precise.
+
+
+
+\levelFourTitle{Pointers validity}
+
+
+If we try to prove that the swap function is correct (comprising RTE
+verification), our postcondition is indeed verified but WP failed to
+prove some possibilities of runtime-error, since we perform access to
+some pointers that we did not indicate to be valid pointers in the
+precondition of the function.
+
+We can express that the dereferencing of a pointer is valid using the
+\CodeInline{\textbackslash{}valid} predicate of ACSL which receives the
+pointer in input:
+
+
+
+\CodeBlockInput[3][11]{c}{swap-1.c}
+
+
+
+Once we have specified that the pointers we receive in input must be valid,
+dereferencing is assured to not produce undefined behaviors.
+
+
+
+As we will see later in this tutorial, \CodeInline{\textbackslash{}valid}
+can take more than one pointer in parameter. For example, we can give it
+an expression such as: \CodeInline{\textbackslash{}valid(p + (s .. e))} which means
+``for all \CodeInline{i} between included \CodeInline{s} and \CodeInline{e},
+\CodeInline{p+i} is a valid pointer''. This kind of expression will be
+extremely useful when we will specify properties about arrays in
+specifications.
+
+
+
+If we have a closer look at the assertions that WP adds in the swap
+function comprising RTE verification, we can notice that there exists
+another version of the \CodeInline{\textbackslash{}valid} predicate, denoted
+\CodeInline{\textbackslash{}valid\_read}. As opposed to \CodeInline{\textbackslash{}valid}, the
+predicate \CodeInline{\textbackslash{}valid\_read} indicates that a pointer
+can be dereferenced, but only to read the pointed memory. This subtlety
+is due to the C language, where the downcast of a const pointer is easy
+to write but is not necessarily legal.
+
+
+
+Typically, in this code:
+
+
+
+\CodeBlockInput{c}{unref.c}
+
+
+
+Dereferencing \CodeInline{p} is valid, however the precondition of
+\CodeInline{unref} will not be verified by WP since dereferencing
+\CodeInline{value} is only legal for a read-access. A write access will
+result in an undefined behavior. In such a case, we can specify that the
+pointer \CodeInline{p} must be \CodeInline{\textbackslash{}valid\_read} and not
+\CodeInline{\textbackslash{}valid}.
+
+
+
+\levelFourTitle{Side Effects}
+
+
+Our \CodeInline{swap} function is provable with regard to the specification
+and potential runtime errors, but is however specification precise enough? We
+can slightly modify our code to check this (we use \CodeInline{assert} to
+verify some properties at some particular points):
+
+
+
+\CodeBlockInput{c}{swap-1.c}
+
+
+
+The result is not exactly what we expect:
+
+
+
+\image{2-swap-1}
+
+
+Indeed, we did not specify the allowed side effects for our function. In
+order to specify side effects, we use an \CodeInline{assigns} clause which is
+part of the postcondition of a function. It allows us to specify which
+\textbf{non-local} elements (we verify side effects) can be modified
+during the execution of the function.
+
+
+
+By default, WP considers that a function can modify everything in the
+memory. So, we have to specify what can be modified by a function. For
+example, our \CodeInline{swap} function will be specified like this:
+
+
+
+\CodeBlockInput[3][14]{c}{swap-2.c}
+
+
+
+If we ask WP to prove the function with this specification, it will be
+validated (including with the variable added in the previous source
+code).
+
+
+
+Finally, we sometimes want to specify that a function is side effect
+free. We specify this by giving \CodeInline{\textbackslash{}nothing} to
+\CodeInline{assigns}:
+
+
+
+\CodeBlockInput{c}{max_ptr.c}
+
+
+
+The careful reader will now be able to take back the examples we
+presented until now to integrate the right \CodeInline{assigns} clause.
+
+
+
+\levelFourTitle{Memory location separation}
+
+
+Pointers bring the risk of aliasing (multiple pointers can have access
+to the same memory location). For some functions, it will not cause any
+problem, for example when we give two identical pointers to the
+\texttt{swap} function, the specification is still verified. However,
+sometimes it is not that simple:
+
+
+
+\CodeBlockInput{c}{incr_a_by_b-0.c}
+
+
+
+If we ask WP to prove this function, we get the following result:
+
+
+
+\image{2-incr_a_by_b-1}
+
+
+The reason is simply that we do not have any guarantee that the pointer
+\CodeInline{a} is different of the pointer \CodeInline{b}. Now, if these
+pointers are the same,
+
+
+
+\begin{itemize}
+\item   the property \CodeInline{*a == \textbackslash{}old(*a) + *b} in fact
+  means \CodeInline{*a == \textbackslash{}old(*a) + *a} which can only
+  be true if the old value pointed by \CodeInline{a} was $0$, and we do
+  not have such a requirement,
+\item
+  the property \CodeInline{*b == \textbackslash{}old(*b)} is not validated
+  because we potentially modify this memory location.
+\end{itemize}
+
+
+\begin{Question}
+  Why is the \CodeInline{assigns} clause validated?
+
+  The reason is simply that \CodeInline{a} is indeed the only modified memory
+  location. If \CodeInline{a != b}, we only modify the location pointed by
+  \CodeInline{a}, and if \CodeInline{a == b}, \textbar{} that is still the case:
+  \CodeInline{b} is not another location.
+\end{Question}
+
+
+In order to ensure that pointers refer to separated memory locations,
+ACSL provides the predicate
+\texttt{\textbackslash{}separated(p1,\ ...,pn)} that receives in
+parameter a set of pointers and is true if and only if these pointers are
+non-overlapping. Here, we specify:
+
+
+
+\CodeBlockInput{c}{incr_a_by_b-1.c}
+
+
+
+And this time, the function is verified:
+
+
+
+\image{2-incr_a_by_b-2}
+
+
+We can notice that we do not consider the arithmetic overflow here, as
+we do not focus on this question in this section. However, if this
+function was part of a complete program, it would be necessary to define
+the context of use of this function and the precondition guaranteeing
+the absence of overflow.
+
+
+
+\levelThreeTitle{Exercises}
+
+
+\levelFourTitle{Division and remaining}
+
+
+
+Specify the postcondition of the following function, that computes the
+results of the division of \CodeInline{a} by \CodeInline{b} and its
+remaining and stores it in two memory locations \CodeInline{p} and
+\CodeInline{q}:
+
+
+\CodeBlockInput{c}{ex-1-div-rem.c}
+
+Run the command:
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp 
+\end{CodeBlock}
+
+
+Once the function is successfully proved to verify your contract, run:
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+If it fails, complete your condition by adding the right precondition.
+
+
+
+\levelFourTitle{Reset on condition}
+
+
+
+Provide a contract for the following function that reset its first parameter
+if the second is true. Be sure to express that the second parameter remains
+unmodified:
+
+
+\CodeBlockInput{c}{ex-2-reset-on-cond.c}
+
+
+Run the command:
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+
+\levelFourTitle{Addition of pointed values}
+
+
+The following function receives two pointers as an input and returns the
+sum the pointed values. Write the contract of this function:
+
+
+
+\CodeBlockInput{c}{ex-3-add-ptr.c}
+
+
+
+Run the command:
+
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+
+Once the function and calling code are successfully proved, modify the
+signature of the function add as follows:
+
+
+
+\begin{CodeBlock}{c}
+void add(int* a, int* b, int* r);
+\end{CodeBlock}
+
+
+Now the result of the sum should be stored at \CodeInline{r}. Accordingly
+modify the calls in the main function as well as the code and the contract
+of \CodeInline{add}.
+
+
+
+\levelFourTitle{Maximum of pointed values}
+
+
+
+The following functions computes the maximum of the values pointed by
+\CodeInline{a} and \CodeInline{b}. Write the contract of the function:
+
+
+
+\CodeBlockInput{c}{ex-4-max-ptr.c}
+
+
+
+Run the command:
+
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+
+Once it is proved, modify the signature of the function as follows:
+
+
+
+\begin{CodeBlock}{c}
+void max_ptr(int* a, int* b);
+\end{CodeBlock}
+
+
+Now the function should ensure that after its execution \CodeInline{*a}
+contains the maximum of the input value, and \CodeInline{*b} contains the
+other value. Modify the code accordingly as well as the contract. Note that
+the variable \CodeInline{x} is not necessary anymore in the \CodeInline{main}
+function and that you can change the assertion on line 15 to reflect the
+new behavior of the function.
+
+
+
+\levelFourTitle{Order 3 values}
+
+
+
+The following function should order the 3 input values in increasing order.
+Write the corresponding code and specification of the function:
+
+
+\CodeBlockInput{c}{ex-5-order-3.c}
+
+
+And run the command:
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+Remember that ordering values is not just ensuring that resulting values
+are increasing order and one of each original value, all original values
+should still be there after the sorting operation: new values are a
+permutation of the original one. To express this idea, you can rely on the
+set datatype. For example, this property is true:
+
+\begin{CodeBlock}{c}
+//@ assert { 1, 2, 3 } == { 2, 3, 1 };
+\end{CodeBlock}

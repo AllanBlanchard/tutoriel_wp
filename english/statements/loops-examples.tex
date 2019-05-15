@@ -1,0 +1,376 @@
+\levelThreeTitle{Example with read-only arrays}
+\label{l3:statements-loops-example}
+
+
+The array is the most common data structure when we are working with loops.
+It is then a good example base to exercise with loops, and these
+examples allow to rapidly show interesting invariant and will allow us
+to introduce some important ACSL constructs.
+
+
+
+We can for example use the search function that allows to find a value
+in an array:
+
+
+\CodeBlockInput{c}{search.c}
+
+
+
+There are enough ideas in this example to introduce some important syntax.
+
+
+
+First, as we previously presented, the
+\CodeInline{\textbackslash{}valid\_read} predicate (as well as
+\CodeInline{\textbackslash{}valid}) allows us to specify not only the
+validity of read-only address but also to state that a range of
+contiguous addresses is valid. It is expressed using this expression:
+
+
+
+\begin{CodeBlock}{c}
+//@ requires \valid_read(a + (0 .. length-1));
+\end{CodeBlock}
+
+
+
+This precondition states that all addresses \CodeInline{a+0},
+\CodeInline{a+1}, \ldots{}, \CodeInline{a+length-1} are valid read-only
+locations.
+
+
+
+We also introduced two notations that are used almost all the time in
+ACSL, the keywords \CodeInline{\textbackslash{}forall} ($\forall$) and
+\CodeInline{\textbackslash{}exists} ($\exists$), the universal logic
+quantifiers. The first one allows to state that for any element, some
+property is true, the second one allows to say that there exists some
+element such that the property is true. If we comment a little bit the
+corresponding lines in our specification, we can read them this way:
+
+
+\begin{CodeBlock}{c}
+/*@
+// for all "off" of type "size_t", such that IF "off" is comprised between 0 and "length"
+//                                 THEN the cell "off" in "a" is different from "element"
+\forall size_t off ; 0 <= off < length ==> a[off] != element;
+
+// there exists "off" of type "size_t", such that "off" is comprised between 0 and "length"
+//                                      AND the cell "off" in "a" equals to "element"
+\exists size_t off ; 0 <= off < length && a[off] == element;
+*/
+\end{CodeBlock}
+
+
+
+If we want to summarize the use of these keyword, we would say that on a
+range of values, a property is true, either about at least one of them
+or about all of them. A common scheme is to constrain this set using
+another property (here: \CodeInline{0 <= off < length}) and to prove the
+actual interesting property on this smaller set. \textbf{But using
+\texttt{exists} and \texttt{forall} is fundamentally different}.
+
+
+
+With \CodeInline{\textbackslash{}forall type a ; p(a) ==> q(a)},
+the constraint \CodeInline{p} is followed by an implication.
+For any element where a first property \CodeInline{p} is verified, we have
+to also verify the second property \CodeInline{q}. If we use a conjunction,
+as we do for ``exists'' (which we will later explain), that would mean that
+all elements verify both \CodeInline{p} and \CodeInline{q}. Sometimes, it
+could be what we want to express, but it would then not correspond
+anymore to the idea of constraining a set for which we want to verify
+some other property
+
+
+
+With \CodeInline{\textbackslash{}exists type a ; p(a) \&\& q(a)}, the
+constraint \texttt{p} is followed by a conjunction. We say there exists
+an element such that it satisfies the property \texttt{p} at the same
+time it also satisfies \texttt{q}. If we use an implication, as we do
+for ``forall'', such an expression will always be true if \texttt{p} is
+not a tautology! Why? Is there an ``a'' such that p(a) implies q(a)? Let
+us take an ``a'' such that p(a) is false, then the implication is true.
+
+
+
+This part of the invariant deserves a particular attention:
+
+
+
+\begin{CodeBlock}{c}
+//@ loop invariant \forall size_t j; 0 <= j < i ==> array[j] != element;
+\end{CodeBlock}
+
+
+
+Indeed, it defines the treatment performed by our loop, it indicates to
+WP what happens in the loop (or more precisely: what we learn) along
+the execution. Here, this formula indicates that at each iteration of
+the loop, we know that for each memory location between 0 and the next
+location to visit (\CodeInline{i} excluded), the memory location contains a
+value different from the element we are looking for.
+
+The proof obligation associated to the preservation of this invariant is
+a bit complex and it is not really interesting to precisely look at it,
+on the contrary, the proof that the invariant is established before
+executing the loop is interesting:
+
+
+
+\image{trivial}
+
+
+We note that this property, while quite complex, is proved easily
+by Qed. If we look at the parts of the programs on which the proof
+relies, we can see that the instruction \CodeInline{i = 0} is highlighted
+and this is, indeed, the last instruction executed on \CodeInline{i} before
+we start the loop. And consequently, if we replace the value of
+\CodeInline{i} by 0 inside the formula of the invariant, we get:
+
+
+
+\begin{CodeBlock}{c}
+//@ loop invariant \forall size_t j; 0 <= j < 0 ==> array[j] != element;
+\end{CodeBlock}
+
+
+
+``For all j, greater or equal to 0 and strictly lower than 0'', this
+part of the formula is necessarily false, our implication is then
+necessarily true.
+
+
+
+\levelThreeTitle{Examples with mutable arrays}
+
+
+Let us present two examples with mutation of arrays. One with a mutation
+of all memory locations, the other with selective modifications.
+
+
+
+\levelFourTitle{Reset}
+
+
+Let us have a look at the function that resets an array of integers to 0.
+
+
+
+\CodeBlockInput{c}{reset.c}
+
+
+
+Let us just highlight the function and loop assign clauses. Again, we
+can use the notation \CodeInline{n .. m} to indicate which parts of the
+array are modified.
+
+
+
+\levelFourTitle{Search and replace}
+\label{l4:statements-loops-ex-search-and-replace}
+
+
+The last example we will detail to illustrate the proof of functions
+with loops is the algorithm ``search and replace''. This algorithm 
+selectively modifies values in a range of memory locations. It is
+generally harder to guide the tool in such a case, because on one hand
+we must keep track of what is modified and what is not, and on the other
+hand, the induction relies on this fact.
+
+As an example, the first specification we can write for this function
+could be this one:
+
+
+
+\CodeBlockInput{c}{search_and_replace-0.c}
+
+
+
+We use the logic function \CodeInline{\textbackslash{}at(v, Label)} that gives us the
+value of the variable \CodeInline{v} at the program point \CodeInline{Label}.
+If we look at the usage of this function here, we see that in the
+invariant we try to establish a relation between the old values of the
+array and the potentially new values:
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) == old 
+                   ==> array[j] == new;
+  loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) != old 
+                   ==> array[j] == \at(array[j], Pre);
+*/
+\end{CodeBlock}
+
+
+
+For every memory location that contained the value to be replaced, it now must
+contain the new value. All other values must remain unchanged. In fact, if we
+try to prove this invariant with WP, it fails. In such a case, the simpler
+method is to add different assertions that will express the different
+intermediate properties using assertions which we expect to be easily proved
+and which imply the invariant. Here, we can easily notice that WP does not
+succeed in maintaining the knowledge that we have not modified the remaining
+part of the array yet:
+
+
+
+
+\begin{CodeBlock}{c}
+for(size_t i = 0; i < length; ++i){
+    //@assert array[i] == \at(array[i], Pre); // proof failure
+    if(array[i] == old) array[i] = new;
+}
+\end{CodeBlock}
+
+
+
+We can add this information as an invariant:
+
+
+
+\CodeBlockInput[13][26]{c}{search_and_replace-1.c}
+
+
+
+And this time the proof will succeed.
+
+
+
+\levelThreeTitle{Exercises}
+
+For all these exercises, use the following command line to start verification:
+
+\begin{CodeBlock}{bash}
+frama-c-gui -wp -wp-rte -warn-unsigned-overflow your-file.c
+\end{CodeBlock}  
+
+\levelFourTitle{Non-mutating: Forall, Exists, ...}
+
+
+Currently, function pointers are not supported by WP. Let us consider that
+we have a function:
+
+
+\CodeBlockInput[3][9]{c}{ex-1-forall-exists.c}
+
+
+Write your own code and corresponding postcondition and then write the
+following functions together with their contract and prove their correctness.
+
+\begin{itemize}
+\item \CodeInline{forall\_pred} returns true if and only if \CodeInline{pred}
+  is true for all elements ;
+\item \CodeInline{exists\_pred} returns true if and only if \CodeInline{pred}
+  is true for at least one element ;
+\item \CodeInline{none\_pred} returns true if and only if \CodeInline{pred}
+  is false for all elements ;
+\item \CodeInline{some\_not\_pred} returns true if and only if \CodeInline{pred}
+  is false for at least one element.
+\end{itemize}
+
+The two last functions should be written by just calling the two first ones.
+
+
+\levelFourTitle{Non-mutating: Equality of ranges}
+
+
+Write, specify and prove the function \CodeInline{equal} that returns true if
+and only if two ranges of values equal. Write, using the equal function, the
+code of \CodeInline{different} that returns true if two ranges are different,
+your postcondition should contain an existential quantifier.
+
+
+\CodeBlockInput[3][9]{c}{ex-2-equal.c}
+
+
+\levelFourTitle{Binary Search}
+\label{l4:statements-loops-ex-bsearch}
+
+The following function searches for the position of a particular value in an
+array, assuming that this array is sorted. First, let us consider that the
+length of the array is an int and use int values to deal with indexes. One
+could note that there are two behavior: either the value exists in the array
+(and the result is the index of this value) or not (and the result is -1).
+
+
+\CodeBlockInput{c}{ex-3-binary-search.c}
+
+
+This function is a bit tricky to prove, so let us provide some hints. First,
+this time the length is provided as an int, so we need to further restrict
+this value to make it coherent. Second, one of the invariant properties
+should state the bounds of \CodeInline{low} and \CodeInline{up}, but note
+that for both of them one of the bounds is not needed. Finally, the second
+invariant property should state that if some index of the array stores the
+value, this index must be correctly bounded.
+
+
+\textbf{Harder:} Modify this function in order to receive \CodeInline{len}
+as a \CodeInline{size\_t}. You will have to slightly modify the algorithm
+and the proof. As an hint, we advise making \CodeInline{up} an excluded
+bound for the search.
+
+
+\levelFourTitle{Mutating: Addition of vectors}
+
+
+Write, specify and prove the function that adds two vectors into a third
+one. Put arbitrary constraints to solve the integer overflow. Consider that
+the resulting vector is entirely separated from the input vectors, however
+the same vector should be usable for both input vectors.
+
+
+\CodeBlockInput[3][5]{c}{ex-4-add-vectors.c}
+
+
+\levelFourTitle{Mutating: Reverse}
+
+
+Write, specify and prove the function that reverses a vector in place. Take
+care of the unmodified part of the vector at some iteration of the loop.
+Use the previously proved \CodeInline{swap} function.
+
+
+\CodeBlockInput[3][7]{c}{ex-5-reverse.c}
+
+
+\levelFourTitle{Mutating: Copy}
+
+
+Write, specify and prove the function \CodeInline{copy} that copies a range
+of values into another array, starting from the first cell of the array.
+First consider (and specify) that the two ranges are entirely separated.
+
+
+\CodeBlockInput[3][5]{c}{ex-6-copy.c}
+
+
+\textbf{Harder:} The true copy and copy backward functions
+
+In fact, a strong separation is not necessary. The actual precondition must
+guarantee that if the two arrays overlap, the beginning of the destination
+range must not be in the source range:
+
+\begin{CodeBlock}{c}
+//@ requires \separated(&src[0 .. len-1], src) ;
+\end{CodeBlock}
+
+
+In essence, by copying the element in that order, we can shift elements from
+the end of a particular range to the beginning. However, that means that we
+have to be more precise in our contract: we do not guarantee anymore an equality
+with the values of the source array but with the \emph{old} values of the
+source array. And we have also to be more precise in our invariant, first by
+also specifying the relation in regard to the previous state of the memory, and
+second by adding an invariant that shows that the source array is not modified
+from the \CodeInline{i}$^{th}$ we are visiting to the end.
+
+
+Finally, it is also possible to write a function that copies the elements from
+the end to the beginning, in this case, again, arrays can overlap but the
+condition is not exactly the same. Write, specify and prove the function
+\CodeInline{copy\_backward} that copies element in reverse order.

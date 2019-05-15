@@ -1,0 +1,221 @@
+Logic functions are meant to describe functions that can only be used in
+specifications. It allows us, first, to factor those specifications and,
+second, to define some operations on \texttt{integer} or \texttt{real}
+with the guarantee that they cannot overflow since they are mathematical
+types.
+
+Like predicates, they can receive different labels and values in
+parameter.
+
+
+
+\levelThreeTitle{Syntax}
+
+
+To define a logic function, the syntax is the following:
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  logic return_type my_function\{ Label0, ..., LabelN \}( type0 arg0, ..., typeN argN ) =
+    formula using the arguments ;
+*/
+\end{CodeBlock}
+
+
+
+We can for example define a mathematical \externalLink{linear function}{https://en.wikipedia.org/wiki/Linear_function_(calculus)} using a logic function:
+
+
+
+\CodeBlockInput[1][4]{c}{linear-0.c}
+
+
+
+And it can be used to prove the source code of the following function:
+
+
+
+\CodeBlockInput[6][12]{c}{linear-0.c}
+
+
+
+\image{linear-1}
+
+
+This code is indeed proved but some runtime-errors seems to be possible.
+We can again define some mathematical logic function that will provide the bounds of
+the linear function according to the machine type we use (from a logic point of
+view). It allows us to then add our bounds checking in the precondition of the
+function.
+
+
+
+\CodeBlockInput[8][28]{c}{linear-1.c}
+
+
+
+\begin{Information}
+  Note that, as in specifications, computations are done using mathematical
+  integers. We then do not need to care about some overflow risk with the
+  computation of \texttt{INT\_MIN-b} or \texttt{INT\_MAX-b}.
+\end{Information}
+
+
+Once this specification is provided, everything is fine. Note that we also give
+a lower bound to the computation of \CodeInline{3 * x}, indeed while the bound
+provided for \CodeInline{x} by our logic function is correct for the complete
+computation, it does not say anything about the value obtain in the intermediate
+computation. Of course, we could manually provide these bounds every time we
+create a linear logic function. But, by creating these bound computation
+functions, we directly get a way to compute them automatically which is quite
+comfortable.
+
+
+
+\levelThreeTitle{Recursive functions and limits of logic functions}
+
+
+Logic functions (as well as predicates) can be recursively defined.
+However, such an approach will rapidly show some limits in their use for
+program proof. Indeed, when the automatic solver reasons on such logic
+properties, if such a function is met, it will be necessary to evaluate it.
+SMT solvers are not meant to be efficient for this task, which will generally
+be costly, producing too long proof resolution and eventually timeouts.
+
+We can have a concrete example with the factorial function, using logic
+and using C language:
+
+
+
+\CodeBlockInput{c}{facto-0.c}
+
+
+
+Without checking overflows, this function is easy and fast to prove. If
+we add runtime error checking, we see that there is a possibility of
+overflow on the multiplication.
+
+
+
+On \CodeInline{int}, the maximum value for which we can compute
+factorial is 12. If we go further, it overflows. We can then add this
+precondition:
+
+
+
+\CodeBlockInput[5][10]{c}{facto-1.c}
+
+
+
+If we ask for a proof on this input, Alt-ergo will probably fail,
+whereas Z3 can compute the proof in less than a second. The reason is
+that in this case, the heuristics that are used by Z3 consider that it
+is a good idea to spend a bit more time on the evaluation of the
+function. We can for example change the maximum value of \texttt{n} to
+see how the different provers behave. With an \texttt{n} fixed to 9,
+Alt-ergo produces a proof in less than 10 seconds, whereas with a value
+of 10, even a minute is not enough.
+
+
+
+Logic functions can then be defined recursively but without some more
+help, we are rapidly limited by the fact that provers will need to
+perform evaluation or to ``reason'' by induction, two tasks for which
+they are not efficient. This will limit our possibilities for program
+proofs.
+
+
+\levelThreeTitle{Exercises}
+
+
+
+\levelFourTitle{Distance}
+
+
+Specify and prove the following program:
+
+
+
+\CodeBlockInput{c}{ex-1-distance.c}
+
+
+
+For this, define two logic functions \CodeInline{abs} and \CodeInline{distance}.
+Use these functions to write the specification of the function.
+
+
+
+\levelFourTitle{Square}
+
+
+Write the body of the \CodeInline{square} function. Specify and prove the
+program. Use a \CodeInline{square} logic function.
+
+
+\CodeBlockInput{c}{ex-2-square.c}
+
+
+Take care of the types of the variables and do not over-constrain the input of
+the function. Furthermore, when verifying the absence of runtime errors, do not
+forget to provide the option \CodeInline{-warn-unsigned-overflow}.
+
+
+\levelFourTitle{Iota}
+
+
+Here is a possible implementation of the iota function:
+
+
+\CodeBlockInput{c}{ex-3-iota.c}
+
+
+Write a logic function that returns the input value increased by one. Prove
+that after the execution of \CodeInline{iota}, the first value of the array is
+the input value and that each value of the array corresponds to the value that
+precedes it increased by one (using the previously defined logic function).
+
+
+
+\levelFourTitle{Vector add}
+
+
+
+In the following program, the \CodeInline{vec\_add} function adds the second
+vector in input into the first one. Write a contract for the function
+\CodeInline{show\_the\_difference} that expresses, for each value of the vector
+\CodeInline{v1} the difference between the pre and the postcondition. For this,
+define a logic function \CodeInline{diff} that returns the difference between
+the value of a memory location at a label \CodeInline{L1} and the value at a
+label \CodeInline{L2}.
+
+
+\CodeBlockInput{c}{ex-4-vec-inc.c}
+
+
+
+Re-express the \CodeInline{unchanged} predicate using the logic function you
+have defined.
+
+
+
+\levelFourTitle{The sum of the N first integers}
+\label{l4:acsl-properties-functions-n-first-ints}
+
+
+The following function compute the sum of the N first integers. Write a
+recursive logic functions that returns the sum of the N first integers and
+write a specification for the C function that show that it computes the same
+value as provided by the logic function.
+
+
+\CodeBlockInput{c}{ex-5-n-first-ints.c}
+
+
+Try to verify the absence of runtime errors. The integer overflow is not so
+simple to get rid of. However, write a precondition that should be enough to
+prove the function (remember that the sum of the N first integers can be
+expressed with a really simple formula ...). It will certainly not be enough
+to directly prove the absence overflow, but we will see how to provide such
+an information in the next section.

@@ -1,0 +1,107 @@
+\begin{Warning}
+  Please note that this document is a beta version of the next version of the
+  tutorial. The source code of the tutorial is not currently available (it will
+  be soon).
+
+  If you find some errors, please do not hesitate to post an issue at:
+
+  \externalLink{https://github.com/AllanBlanchard/tutoriel\_wp}{https://github.com/AllanBlanchard/tutoriel_wp}
+\end{Warning}
+
+
+\begin{Information}
+  In this tutorial, some examples and some elements of organization are
+  similar to the ones used in the 
+  \externalLink
+      {TAP 2013 tutorial}
+      {https://frama-c.com/download/publications/tutorial_tap2013_slides.pdf} 
+  by Nikolai Kosmatov, Virgile Prevosto and Julien
+  Signoles of the CEA LIST, since it is quite didactic. It also
+  contains examples taken from
+  \textit{\externalLink{ACSL By Example}{https://github.com/fraunhoferfokus/acsl-by-example}}
+  by Jochen Burghardt, Jens Gerlach, Kerstin Hartig, Hans Pohl and Juan
+  Soto from the Fraunhofer. The remaining ideas come from my personal
+  experience with Frama-C and WP. The only requirement to this tutorial
+  is to have a basic knowledge of the C language, and at least to
+  be familiar with the notion of pointer.
+
+  The version of the tools considered in this tutorial are:
+  \begin{itemize}
+  \item Frama-C Potassium
+  \item Alt-Ergo 2.3.0
+  \item Why3 1.2.0
+  \item Coq 8.9.0 (for provided scripts, not used in the tutorial)
+  \end{itemize}
+  Depending on the versions used by the reader some differences could appear in
+  what is proved and what is not. Some presented features are only available
+  in recent versions of Frama-C.
+\end{Information}
+
+
+Despite its old age, C is still a widely used programming language.
+Indeed, no other language can pretend to be available on so many
+different (hardware and software) platforms, its low-level orientation
+and the amount of time invested in the optimization of its compilers
+allows to generate very light and efficient machine code (if the code
+allows it of course), and that there are a lot of experts in C language,
+which is an important knowledge base.
+
+
+Furthermore, a lot of systems rely on a huge amount of code historically
+written in C, that needs to be maintained and sometimes fixed, as it
+would be far too costly to rewrite these systems.
+
+
+But anyone who has already developed with C also know that it is very
+hard to perfectly master this language. There are numerous reasons, but
+ambiguities in the ISO C, and the fact that it is extremely permissive,
+especially about memory management, make the development of robust C
+program very hard, even for an experienced programmer.
+
+
+
+However, the C language is often chosen for critical systems (avionics,
+railway, armament, \ldots{}) where it is appreciated for its good
+performances, its technological maturity and the predictability of its
+compilation.
+
+
+
+In such cases, the needs in terms of test coverage of the source code.
+The question ``is our software tested enough?'' becomes a
+question to which it is very hard to answer. Program proof can help us.
+Rather than test all possible and (un)imaginable inputs to the program,
+we will \emph{mathematically} prove that there cannot be any problem at
+runtime.
+
+
+
+The goal of this tutorial is to use Frama-C, a tool developed at the CEA
+LIST, and WP, its deductive proof plugin, to learn the basics about C
+program proof. More than the use of the tool itself, the goal of this
+tutorial is to convince that it is more and more possible to write
+programs without any programming error, but also to sensitize to simple
+notions that allows to better understand and write programs.
+
+
+
+\begin{Information}
+  Many thanks to the different beta-testers for their constructive
+  feedback:
+
+\begin{itemize}
+\item \externalLink{Taurre}{https://zestedesavoir.com/membres/voir/Taurre/}
+\item \externalLink{barockobamo}{https://zestedesavoir.com/membres/voir/barockobamo/}
+\item \externalLink{Vayel}{https://zestedesavoir.com/membres/voir/Vayel/}
+\end{itemize}
+  I thank ZesteDeSavoir validators who helped me improve again the quality of
+  this tutorial:
+
+\begin{itemize}
+\item \externalLink{Taurre}{https://zestedesavoir.com/membres/voir/Taurre/} (again)
+\item \externalLink{Saroupille}{https://zestedesavoir.com/membres/voir/Saroupille/}
+\end{itemize}
+  Finally, many thanks to Jens Gerlach for his help during the translation of
+  this tutorial from French to English, and to Rafael Bachmann for his review
+  and remarks.
+\end{Information}

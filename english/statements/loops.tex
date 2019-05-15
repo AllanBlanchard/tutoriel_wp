@@ -1,0 +1,557 @@
+Loops need a particular treatment in deductive verification of
+programs. These are the only control structures that will require
+important work from us. We cannot avoid this because without loops, it
+is difficult to write and prove interesting programs.
+
+
+
+Before we look at the way we specify loop, we can answer to a rightful
+question: why are loops so complex?
+
+
+
+\levelThreeTitle{Induction and invariant}
+\label{l3:statements-loops-invariant}
+
+
+The nature of loops makes their analysis complex. When we perform our
+reasoning, we need a rule to determine the precondition from a given sequence
+of instructions and a postcondition. Here, the problem is that we cannot
+\emph{a priori} deduce how many times a loop will iterate, and consequently, we
+cannot know how many times variables will be modified.
+
+
+
+We will then proceed using an inductive reasoning. We have to find a
+property that is true before we start to execute the loop and that, if
+it is true at the beginning of an iteration, remains true at the end
+(and that is consequently true at the beginning of the next iteration).
+
+
+
+This type of property is called a loop invariant. A loop invariant is a
+property that must be true before and after each loop iteration. And more
+precisely, each time the condition of the loop is checked. For example with
+the following loop:
+
+
+
+\begin{CodeBlock}{c}
+for(int i = 0 ; i < 10 ; ++i){ /* */ }
+\end{CodeBlock}
+
+
+
+The property $0 \leq \texttt{i} \leq 10$ is a loop invariant. The property
+$-42 \leq \texttt{i} \leq 42$ is also an invariant (even if it is far less
+precise). The property $0 < \texttt{i} \leq 10$ is not an invariant because it is
+not true at the beginning of the execution of the loop. The property
+$0 \leq \texttt{i} < 10$ \textbf{is not a loop invariant}, it is not true at the
+end of the last iteration that sets the value of \CodeInline{i} to $10$.
+
+To verify an invariant $I$, WP will then produce the following
+``reasoning'':
+
+\begin{itemize}
+\item
+  verify that $I$ is true at the beginning of the loop (establishment)
+\item
+  verify that if $I$ is true before an iteration, then $I$ is true
+  after (preservation).
+\end{itemize}
+
+\levelFourTitle{Formal - Inference rule}
+
+Let us note the invariant $I$, the inference rule corresponding to
+loops is defined as follows:
+$$\dfrac{\{I \wedge B \}\ c\ \{I\}}{\{I\}\ while(B)\{c\}\ \{I \wedge \neg B\}}$$
+
+And the weakest precondition calculus is the following:
+$$wp(while (B) \{ c \}, Post) := I \wedge ((B \wedge I) \Rightarrow wp(c, I)) \wedge ((\neg B \wedge I) \Rightarrow Post)$$
+Let us detail this formula:
+
+\begin{itemize}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\arabic{enumi})}
+  \item
+    the first $I$ corresponds to the establishment of the invariant,
+    in layman's terms, this is the ``precondition'' of the loop,
+  \end{enumerate}
+\item
+  the second part of the conjunction
+  ($(B \wedge I) \Rightarrow wp(c, I)$) corresponds to the
+  verification of the operation performed by the body of the loop:
+
+  \begin{itemize}
+  \item
+    the precondition that we know of the loop body (let us note $KWP$,
+    ``Known WP'') is ($KWP = B \wedge I$). That is the fact we have
+    entered the loop ($B$ is true), and that the invariant is verified
+    at this moment ($I$, is true before we start the loop by (1), and
+    we want to verify that it will be true at the end of the body of the
+    loop in (2)),
+  \item
+    \begin{enumerate}
+    \def\labelenumi{(\arabic{enumi})}
+    \setcounter{enumi}{1}
+    \item
+      it remains to verify that $KWP$ implies the actual precondition*
+      of the body of the loop ($KWP \Rightarrow wp(c, Post)$). What we
+      want at the end of the loop is the preservation of the invariant
+      $I$ ($B$ is maybe not true anymore however), formally
+      $KWP \Rightarrow wp(c, I)$, that is to say
+      $(B \wedge I) \Rightarrow wp(c, I)$,
+    \end{enumerate}
+  \item
+    * it corresponds to the application of the consequence rule
+    previously explained.
+  \end{itemize}
+\item
+  finally, the last part ($(\neg B \wedge I) \Rightarrow Post$)
+  expresses the fact that when the loop ends($\neg B$), and the
+  invariant $I$ has been maintained, it must imply that the wanted
+  postcondition of the loop is valid.
+\end{itemize}
+
+In this computation, we can notice that the $wp$ function does not
+indicate any way to obtain the invariant $I$. We have to specify
+ourselves this property about our loops.
+
+
+
+\levelFourTitle{Back to the WP plugin}
+
+
+There exist tools that can infer invariant properties (provided that
+these properties are simple, automatic tools remain limited). This is not
+the case for WP. We will have to manually annotate our programs to
+specify the invariant of each loop. To find and write invariants for our
+loops will always be the hardest part of our work when we want to prove
+programs.
+
+
+
+Indeed, when there are no loops, the weakest precondition calculus
+function can automatically provide the verifiable properties of our
+programs, this is not the case for loop invariant properties for which we
+do not have computation procedures. We have to find and express them
+correctly, and depending on the algorithm, they can be quite subtle and
+complex.
+
+
+
+In order to specify a loop invariant, we add the following annotations
+before the loop:
+
+
+
+\CodeBlockInput{c}{first_loop-1.c}
+
+
+
+\begin{Warning}
+  \textbf{REMINDER} : The invariant is: i \textbf{$\leq$} 30 !
+\end{Warning}
+
+
+Why? Because along the loop, \CodeInline{i} will be comprised between 0 and
+\textbf{included} 30. 30 is indeed the value that allows us to leave the
+loop. Moreover, one of the properties required by the weakest
+precondition calculus is that when the loop condition is invalidated, by
+knowing the invariant, we can prove the postcondition (Formally
+$(\neg B \wedge I) \Rightarrow Post$).
+
+The postcondition of our loop is $\texttt{i} = 30$ and must be implied
+by $\neg\ \texttt{i} < 30\ \wedge\ 0 \leq \texttt{i} \leq 30$. Here, it is
+true since:
+$$\texttt{i} \geq 30 \wedge 0 \leq \texttt{i} \leq 30 \Rightarrow \texttt{i} = 30$$
+On the opposite, if we exclude the equality to 30, the postcondition
+would be unreachable.
+
+
+
+Again, we can have a look at the list of proof obligations in ``WP Goals'':
+
+
+
+\image{i_30-1}
+
+
+We notice that WP produces two different proof obligations: the
+establishment of the invariant and its preservation. WP produces exactly
+the reasoning we previously described to prove the assertion. In recent
+versions of Frama-C, Qed has become particularly aggressive and
+powerful, and the generated proof obligation does not show these details
+(showing directly ``True''). Using the option \texttt{-wp-no-simpl} at
+start, we can however see these details:
+
+
+
+\image{i_30-2}
+
+
+But is our specification precise enough?
+
+
+
+\CodeBlockInput{c}{first_loop-2.c}
+
+
+
+And the result is:
+
+
+
+\image{i_30-3}
+
+
+It seems not.
+
+
+
+\levelThreeTitle{The assigns clause \ldots{} for loops}
+
+
+In fact, considering loops, WP \textbf{only} reasons about what is
+provided by the user to perform its reasoning. And here, the invariant
+does not specify anything about the way the value of \CodeInline{h} is
+modified (or not). We could specify the invariant of all program
+variables, but it would be a lot of work. ACSL simply allows to add
+\CodeInline{assigns} annotations for loops. Any other variable is considered
+to keep its old value. For example:
+
+
+
+\CodeBlockInput{c}{first_loop-3.c}
+
+
+
+This time, we can establish the proof that the loop correctly behaves.
+However, we cannot prove that it terminates. The loop invariant is not
+enough to perform such a proof. For example, in our program, we could
+modify the loop, removing the loop body:
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  loop invariant 0 <= i <= 30;
+  loop assigns i;
+*/
+while(i < 30){
+   
+}
+\end{CodeBlock}
+
+
+
+The invariant is still verified, but we cannot prove that the loop ends:
+it is infinite.
+
+
+
+\levelThreeTitle{Partial correctness and total correctness - Loop variant}
+\label{l3:statements-loops-variant}
+
+
+In deductive verification, we find two types of correctness, the partial
+correctness and the total correctness. In the first case, the
+formulation of the correctness property is ``if the precondition is
+valid, and \textbf{if} the computation terminates, then the
+postcondition is valid''. In the second case, ``if the precondition is
+valid, \textbf{then} the computation terminates and the postcondition is
+valid''. By default, WP considers only partial correctness:
+
+
+
+\CodeBlockInput{c}{infinite.c}
+
+
+
+If we try to verify this code activating the verification of absence of
+RTE, we get this result:
+
+
+
+\image{infinite}
+
+
+
+The assertion ``False'' is proved! For a very simple reason: since the
+condition of the loop is ``True'' and no instruction of the loop body
+allows to leave the loop, it will not terminate. As we are proving the
+code with partial correctness, and as the execution does not terminate,
+we can prove anything about the code that follows the non terminating
+part of the code. However, if the termination is not trivially provable,
+the assertion will probably not be proved.
+
+
+
+\begin{Information}
+  Note that a (provably) unreachable assertion is always proved to be true:
+  \image{goto_end}
+  And this is also the case when we trivially know that an instruction
+  produces a runtime error (for example dereferencing \CodeInline{NULL}), or
+  inserting ``False'' in postcondition as we have already seen with
+  \CodeInline{abs} and the parameter \CodeInline{INT\_MIN}.
+\end{Information}
+
+
+In order to prove the termination of a loop, we use the notion of loop
+variant. The loop variant is not a property but a value. It is an
+expression that involves the element modified by the loop and that
+provides an upper bound to the number of iterations that have to be
+executed by the loop at each iteration. Thus, it is an expression
+greater or equal to 0, and that strictly decreases at each loop
+iteration (this will also be verified by induction by WP).
+
+
+If we take our previous example, we add the loop variant with this
+syntax:
+
+
+
+\CodeBlockInput{c}{first_loop-4.c}
+
+
+
+Again, we can have a look at the generated proof obligations:
+
+
+
+\image{i_30-4}
+
+
+The loop variant generates two proof obligations: verify that the value
+specified in the variant is positive, and prove that it strictly
+decreases during the execution of the loop. And if we delete the line of
+code that increments \CodeInline{i}, WP cannot prove anymore that
+\CodeInline{30\ -\ i} strictly decreases.
+
+We can also note that being able to give a loop invariant does not
+necessarily induce that we can give the exact number of remaining
+iterations of the loop, as we do not always have a so precise knowledge
+of the behavior of the program. We can for example build an example like
+this one:
+
+
+
+\CodeBlockInput{c}{random_loop.c}
+
+
+
+Here, at each iteration, we decrease the value of the variable
+\CodeInline{i} by a value comprised between 1 and \CodeInline{i}. Thus, we can
+ensure that the value of \CodeInline{i} is positive and strictly decreases
+during each loop iteration, but we cannot say how many loop iteration
+will be executed.
+
+
+
+The loop variant is then only an upper bound on the number of iteration,
+not an expression of their exact number.
+
+
+Note also that a loop variant only need to be positive at the beginning
+of the execution of the block of the loop. Thus, in the following code:
+
+
+\begin{CodeBlock}{c}
+int i = 5 ;
+while(i >= 0){
+  i -= 2 ;
+}
+\end{CodeBlock}
+
+Even if \CodeInline{i} can be negative when the loop exits, it is still
+a variant since we do not start the execution of the block of the loop
+again.
+
+
+\levelThreeTitle{Create a link between postcondition and invariant}
+
+
+Let us consider the following specified program. Our goal is to prove
+that this function returns the old value of \CodeInline{a} plus 10.
+
+
+
+\CodeBlockInput{c}{add_ten-0.c}
+
+
+
+The weakest precondition calculus does not allow to deduce information
+that is not part of the loop invariant. In a code like:
+
+
+
+\begin{CodeBlock}{c}
+/*@
+    ensures \result == \old(a) + 10;
+*/
+int add_ten(int a){
+    ++a;
+    ++a;
+    ++a;
+    //...
+    return a;
+}
+\end{CodeBlock}
+
+
+By reading the instructions backward
+from the postcondition, we always keep all knowledge about \CodeInline{a}. On
+the opposite, as we previously mentioned, outside the loop, WP only
+considers the information provided by the invariant. Consequently, our
+\CodeInline{add\_10} function cannot be proved: the invariant does not say anything
+about \CodeInline{a}. To create a link between the postcondition and the
+invariant, we have to add this knowledge. See, for example:
+
+
+
+\CodeBlockInput{c}{add_ten-1.c}
+
+
+
+\begin{Information}
+  This need can appear as a very strong constraint. This is not really the
+  case. There exists strongly automated analysis that can compute loop
+  invariant properties. For example, without a specification, an abstract
+  interpretation would easily compute \CodeInline{0 <= i <= 10}
+  and \CodeInline{old(a) <= a <= \textbackslash{}old(a)+10}.
+  However, it is often more difficult to compute the relations
+  that exist between the different variables of a program, for
+  example the equality expressed by the invariant we have
+  added.
+\end{Information}
+
+
+\levelThreeTitle{Early termination of loop}
+
+
+
+A loop invariant must be true each the condition of the loop is checked. In
+fact, that also means that it must be true before an iteration, and after
+each \textbf{complete} iteration. Let us illustrate on an example this
+important idea.
+
+
+
+\CodeBlockInput{c}{first_loop-non-term-1.c}
+
+
+
+In this function, when the loop reach the index 30, we break the loop before
+checking the condition again. While the invariant is verified, let us show
+that we can now further constrain it.
+
+
+
+\CodeBlockInput{c}{first_loop-non-term-2.c}
+
+
+
+Here we can see that we have excluded 30 from the range of values of
+\CodeInline{i} and everything is still verified by WP. This is particularly
+interesting because it does not apply only to the invariant, none of the loop
+properties need to be verified in this last iteration. For example, we can
+write this code that is still verified:
+
+
+
+\CodeBlockInput{c}{first_loop-non-term-3.c}
+
+
+
+We can see that we can write the variable \CodeInline{h} even if it is not
+listed in the \CodeInline{loop assigns} clause, and that we can give the
+value 42 to \CodeInline{i} which does not respect the invariant, and also
+makes the expression of the variant negative. In fact, everything happens
+as if we had written:
+
+
+
+\CodeBlockInput{c}{first_loop-non-term-4.c}
+
+
+
+This is an interesting scheme. It basically corresponds to any algorithm
+that search, using a loop, a particular condition respected by an element
+in a given data-structure and stops when it founds it to perform some
+operations that are thus not really part of the loop. From a verification
+point of view, it allows us to simplify the contract of the loop: we know
+that the (potentially complex) operations performed just before we stop do
+not need to be considered when designing the contract.
+
+
+\levelThreeTitle{Exercises}
+
+
+\levelFourTitle{Loop invariant}
+
+
+
+Write a suitable invariant for the following loop and prove it using
+the command.
+
+\begin{CodeBlock}{text}
+$ frama-c -wp your-file.c
+\end{CodeBlock}
+
+
+\CodeBlockInput[2][6]{c}{ex-1-invariant.c}
+
+
+Is the property $-100 \leq x \leq 100$ a correct invariant? Explain why.
+
+
+
+\levelFourTitle{Loop variant}
+
+
+Write a suitable invariant for the follow loop and prove it using the
+command:
+
+\begin{CodeBlock}{text}
+$ frama-c -wp your-file.c
+\end{CodeBlock}
+
+
+\CodeBlockInput[2][6]{c}{ex-2-variant.c}
+
+
+If your variant does not precisely state the number of remaining
+iteration, add a variable that records exactly the number of remaining
+iterations and use it as a variant. You might need to add an invariant.
+
+
+
+\levelFourTitle{Loop assigns}
+
+
+Write a suitable loop assigns clause for this loop such that the assertion
+on line 9 is proved as well as the assigns clause. Let us ignore runtime
+errors in this proof.
+
+
+
+\CodeBlockInput[2][9]{c}{ex-3-assigns.c}
+
+
+
+Once the proof succeeds, completely remove the assigns clause and find
+another way to ensure that the assertion is verified using annotations (note
+that you can add a C label in the code). What do you deduce about the notion
+of ``loop assigns'' clause?
+
+
+
+\levelFourTitle{Early termination}
+
+
+Write a suitable contract for this loop such that the assertions on lines
+9 and 10 are proved as well as the contract of the loop.
+
+
+\CodeBlockInput[1][11]{c}{ex-4-early.c}

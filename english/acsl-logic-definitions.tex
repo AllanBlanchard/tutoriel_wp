@@ -1,0 +1,57 @@
+In this part of the tutorial, we will present three important notions of ACSL:
+
+\begin{itemize}
+\item inductive definitions,
+\item axiomatic definitions,
+\item ghost code.
+\end{itemize}
+
+
+In some cases, these notions are absolutely needed to ease the process of
+specification and, more importantly, proof. On one hand they force some
+properties to be more abstract when an explicit modeling would involve too much
+computation during proof. On the other hand, they force some properties to be
+explicitly modeled since they are harder to reason about when they are implicit.
+
+Using these notions, we expose ourselves to the possibility to make our
+proof irrelevant if we make mistakes writing specification with it. Inductive
+predicates and axiomatic definitions involve the risk to introduce ``false'' in
+our assumptions, or to write imprecise definitions. Ghost code opens the risk
+to silently modify the verified program \ldots{} making us prove another program,
+which is not the one we want to prove.
+
+
+\begin{levelTwo}
+  {Inductive definitions}
+  {inductive}
+\end{levelTwo}
+
+\begin{levelTwo}
+  {Axiomatic definitions}
+  {axiomatic}
+\end{levelTwo}
+
+\begin{levelTwo}
+  {Ghost code}
+  {ghost-code}
+\end{levelTwo}
+
+\begin{levelTwo}
+  {Hidden content}
+  {answers}
+\end{levelTwo}
+
+
+\horizontalLine
+\newpage
+
+
+In this part, we have covered some advanced constructions of the ACSL
+language that allows to express and prove more complex properties about
+programs.
+
+Badly used, this features can make our analyses incorrect, we then need
+to be careful manipulating them and not hesitate to check them again and
+again, or eventually express properties to verify about them to assure
+that we are not introducing an incoherence in our program or our
+assumptions.

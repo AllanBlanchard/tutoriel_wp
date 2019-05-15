@@ -1,0 +1,129 @@
+\begin{Information}
+  This part is more formal than what we have seen so far. If the reader
+  wishes to concentrate on the usage of the tool, he can skip the
+  introduction and the first two sections (about the basic instructions
+  and the bonus training) of this chapter. If what we presented so far has
+  been difficult for the reader from a formal point of view,
+  it is well possible to reserve the introduction and the two
+  sections for a later reading.
+
+  The sections on loops, however, are indispensable. We will highlight
+  the more formal parts of these sections.
+\end{Information}
+
+
+We will associate with every C programming construct
+
+\begin{itemize}
+\item the corresponding inference rule together,
+\item its governing rule from the weakest precondition calculus and
+\item examples that show its usage.
+\end{itemize}
+
+Not necessarily in that order and sometimes only with a loose connection
+to the tool. Since the first rules are quite simple, we will discuss
+them in a fairly theoretical manner. Later on, however, our presentation
+will rely more and more on the tool, in particular when we begin dealing
+with loops.
+
+
+
+\levelThreeTitle{Inference rules}
+
+
+An inference rule is of the form
+$$\dfrac{P_1 \quad ... \quad P_n}{C}$$
+and means that in order to assure that the conclusion C is true, first
+the truth of the premises $P_1$, \ldots{}, and $P_n$ has to be
+established. In case that the rule has no premises
+$$\dfrac{}{\quad C \quad}$$
+then nothing has to be assured in order to conclude the truth of $C$,
+and it is called an axiom.
+
+On the other hand, in order to prove that a certain premise is true, it
+might be necessary to employ other inference rules which would lead to
+something like this:
+$$\dfrac{\dfrac{}{\quad P_1\quad} \quad \dfrac{\dfrac{}{P_{n_1}}\quad \dfrac{}{P_{n_2}}}{P_n}}{C}$$
+
+This way, we obtain step by step the \emph{deduction tree} of our
+reasoning. In our case, the premises and conclusions under consideration
+will in general be \emph{Hoare triples}.
+
+
+
+\levelThreeTitle{Hoare triples}
+
+
+We are now returning to concept of a Hoare triple:
+$$\{ P \}\quad  C\quad \{ Q \}$$
+
+
+In the beginning of this tutorial we have seen that this triple
+expresses the following: if the property $P$ holds before the
+execution of $C$ and if $C$ terminates, then the property $Q$
+holds too. For example, if we take up again our (slightly modified)
+program for the computation of the absolute value:
+
+
+
+\CodeBlockInput{c}{abs-1.c}
+
+
+
+The rules of Hoare logic tell us that in order to show that our program
+satisfies its contract we have to verify the properties shown in the
+braces. (We have omitted one postcondition in order to simplify the
+presentation.)
+
+
+
+\CodeBlockInput{c}{abs-2.c}
+
+
+
+Yet, Hoare logic does not tell us how we can automatically obtain the
+precondition \CodeInline{P} of our program \CodeInline{abs}. Dijkstra's
+\emph{weakest-precondition calculus}, on the other hand, allows us to
+compute from a given postcondition $Q$ and a code snippet $C$ the
+minimal precondition $P$ that ensures $Q$ after the execution of
+$C$. We are thus in a position to determine for our example
+\CodeInline{abs} the desired property \CodeInline{P}.
+
+
+
+
+In this chapter, we present the different cases of the function $wp$
+which, starting from a given postcondition and a program (or statement),
+computes the \emph{weakest} precondition that allows us to establish the
+validity of the postcondition. We will use the following notation to
+define the computation that corresponds to one or several statements:
+$$wp(Instruction(s), Post) := WeakestPrecondition$$
+
+
+
+The function \(wp\) will guarantee that the Hoare triple
+$$\{\ wp(C,Q)\ \}\quad C\quad \{ Q \}$$
+really is a valid triple.
+
+
+
+We will thereby often use ACSL assertions in order to represent the
+upcoming concepts:
+
+
+
+\begin{CodeBlock}{c}
+//@ assert some_property ;
+\end{CodeBlock}
+
+
+
+These assertions correspond in fact to possible intermediate steps for
+the properties in our Hoare triples. We can, for example, replace the
+properties of our function \CodeInline{abs} by corresponding ACSL assertions
+(we have omitted here the property \CodeInline{P} because it is just
+\CodeInline{true}):
+
+
+
+\CodeBlockInput{c}{abs-3.c}

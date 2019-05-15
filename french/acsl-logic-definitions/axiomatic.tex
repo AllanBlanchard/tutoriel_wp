@@ -1,0 +1,418 @@
+
+Les axiomes sont des propriétés dont nous énonçons qu'elles sont vraies quelle 
+que soit la situation. C'est un moyen très pratique d'énoncer des notions 
+complexes qui vont pouvoir rendre le processus très efficace en abstrayant 
+justement cette complexité. Évidemment, comme toute propriété exprimée comme un
+axiome est supposée vraie, il faut également faire très attention à ce que nous
+définissons car si nous introduisons une propriété fausse dans les notions que 
+nous supposons vraies alors ... nous saurons tout prouver, même ce qui est faux.
+
+
+
+\levelThreeTitle{Syntaxe}
+
+
+Pour introduire une définition axiomatique, nous utilisons la syntaxe suivante :
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  axiomatic Name_of_the_axiomatic_definition {
+    // ici nous pouvons définir ou déclarer des fonctions et prédicats
+
+    axiom axiom_name { Label0, ..., LabelN }:
+      // property ;
+
+    axiom other_axiom_name { Label0, ..., LabelM }:
+      // property ;
+
+    // ... nous pouvons en mettre autant que nous voulons
+  }
+*/
+\end{CodeBlock}
+
+
+
+Nous pouvons par exemple définir cette axiomatique :
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  axiomatic lt_plus_lt{
+    axiom always_true_lt_plus_lt:
+      \forall integer i, j; i < j ==> i+1 < j+1 ;
+  }
+*/
+\end{CodeBlock}
+
+
+
+Et nous pouvons voir que dans Frama-C, la propriété est bien supposée vraie :
+
+
+
+\image{first-axiom.png}[Premier axiome, supposé vrai par Frama-C]
+
+
+\begin{Spoiler}
+Actuellement nos prouveurs automatiques n'ont pas la puissance nécessaire
+pour calculer \textit{la réponse à la grande question sur la vie, l'univers et le 
+reste}. Qu'à cela ne tienne nous pouvons l'énoncer comme axiome ! Reste à
+comprendre la question pour savoir où ce résultat peut-être utile ...
+
+\begin{CodeBlock}{c}
+/*@
+  axiomatic Ax_answer_to_the_ultimate_question_of_life_the_universe_and_everything {
+    logic integer the_ultimate_question_of_life_the_universe_and_everything{L} ;
+
+    axiom answer{L}:
+      the_ultimate_question_of_life_the_universe_and_everything{L} = 42;
+  }
+*/
+\end{CodeBlock}
+\end{Spoiler}
+
+
+\levelFourTitle{Lien avec la notion de lemme}
+
+
+Les lemmes et les axiomes vont nous permettre d'exprimer les mêmes types de 
+propriétés, à savoir des propriétés exprimées sur des variables quantifiées (et
+éventuellement des variables globales, mais cela reste assez rare puisqu'il est
+difficile de trouver une propriété qui soit globalement vraie à leur sujet tout
+en étant intéressante). Outre ce point commun, il faut également savoir que 
+comme les axiomes, en dehors de leur définition, les lemmes sont considérés 
+vrais par WP.
+
+
+
+La seule différence entre lemme et axiome du point de vue de la preuve est donc
+que nous devrons fournir une preuve que le premier est valide alors que l'axiome
+est toujours supposé vrai.
+
+
+
+\levelThreeTitle{Définition de fonctions ou prédicats récursifs}
+
+
+Les définitions axiomatiques de fonctions ou de prédicats récursifs sont 
+particulièrement utiles car elles vont permettre d'empêcher les prouveurs de 
+dérouler la récursion quand c'est possible.
+
+
+
+L'idée est alors de ne pas définir directement la fonction ou le prédicat mais 
+plutôt de la déclarer puis de définir des axiomes spécifiant son comportement.
+Si nous reprenons par exemple la factorielle, nous pouvons la définir 
+axiomatiquement de cette manière :
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  axiomatic Factorial{
+    logic integer factorial(integer n);
+    
+    axiom factorial_0:
+      \forall integer i; i <= 0 ==> 1 == factorial(i) ;
+
+    axiom factorial_n:
+      \forall integer i; i > 0 ==> i * factorial(i-1) == factorial(i) ;
+  }
+*/
+\end{CodeBlock}
+
+
+
+Dans cette définition axiomatique, notre fonction n'a pas de corps. Son 
+comportement étant défini par les axiomes ensuite définis.
+
+
+
+Une petite subtilité
+est qu'il faut prendre garde au fait que si les axiomes énoncent des propriétés
+à propos du contenu d'une ou plusieurs zones mémoires pointées, il faut 
+spécifier ces zones mémoires en utilisant la notation \CodeInline{reads} au niveau de
+la déclaration. Si nous oublions une telle spécification, le prédicat, ou la 
+fonction, sera considéré comme énoncé à propos du pointeur et non à propos de la
+zone mémoire pointée. Une modification de celle-ci n'entraînera donc pas 
+l'invalidation d'une propriété connue axiomatiquement.
+
+
+
+Si par exemple, nous voulons définir qu'un tableau ne contient que des 0, nous
+pouvons le faire de cette façon :
+
+
+
+\CodeBlockInput[1][12]{c}{reset-0.c}
+
+
+
+Et nous pouvons à nouveau prouver notre fonction de remise à zéro avec cette
+nouvelle définition :
+
+
+
+\CodeBlockInput[16][30]{c}{reset-0.c}
+
+
+
+Selon votre version de Frama-C et de vos prouveurs automatiques, la preuve de 
+préservation de l'invariant peut échouer. Une raison à cela est que le prouveur ne
+parvient pas à garder l'information que ce qui précède la cellule en cours de
+traitement par la boucle est toujours à 0. Nous pouvons ajouter un lemme dans
+notre base de connaissance, expliquant que si l'ensemble des valeurs d'un tableau
+n'a pas changé, alors la propriété est toujours vérifiée :
+
+
+
+\CodeBlockInput[16][23]{c}{reset-1.c}
+
+
+
+Et d'énoncer une assertion pour spécifier ce qui n'a pas changé entre le début 
+du bloc de la boucle (marqué par le \textit{label} \CodeInline{L} dans le code) et la fin (qui se
+trouve être \CodeInline{Here} puisque nous posons notre assertion à la fin) :
+
+
+
+\CodeBlockInput[38][42]{c}{reset-1.c}
+
+
+
+À noter que dans cette nouvelle version du code, la propriété énoncée par notre
+lemme n'est pas prouvée par les solveurs automatiques, qui ne savent pas raisonner
+pas induction. Pour les curieux, la (très simple) preuve en Coq est ci-dessous :
+
+
+
+\begin{Spoiler}
+\CodeBlockInput{coq}{reset-0-coq.v}
+\end{Spoiler}
+
+
+Dans le cas présent, utiliser une axiomatique est contre-productif : notre
+propriété est très facilement exprimable en logique du premier ordre comme
+nous l'avons déjà fait précédemment. Les axiomatiques sont faites pour écrire
+des définitions qui ne sont pas simples à exprimer dans le formalisme de base
+d'ACSL. Mais il est mieux de commencer avec un exemple facile à lire.
+
+
+
+\levelThreeTitle{Consistance}
+
+
+En ajoutant des axiomes à notre base de connaissances, nous pouvons produire des
+preuves plus complexes car certaines parties de cette preuve, mentionnées par 
+les axiomes, ne nécessiteront plus de preuves qui allongeraient le processus 
+complet. Seulement, en faisant cela \textbf{nous devons être extrêmement prudents}.
+En effet, la moindre hypothèse fausse introduite dans la base pourraient rendre
+tous nos raisonnements futiles. Notre raisonnement serait toujours correct, mais
+basé sur des connaissances fausses, il ne nous apprendrait donc plus rien de correct.
+
+
+
+L'exemple le plus simple à produire est le suivant:
+
+
+
+\CodeBlockInput{c}{false.c}
+
+
+
+Et tout est prouvé, y compris que le déréférencement de l'adresse 0 est OK :
+
+
+
+\image{false-axiom.png}[Preuve de tout un tas de choses fausses]
+
+
+Évidemment cet exemple est extrême, nous n'écririons pas un tel axiome. Le
+problème est qu'il est très facile d'écrire une axiomatique subtilement fausse
+lorsque nous exprimons des propriétés plus complexes, ou que nous commençons à
+poser des suppositions sur l'état global d'un système.
+
+
+
+Quand nous commençons à créer de telles définitions, ajouter de temps en 
+temps une preuve ponctuelle de « \textit{false} » dont nous voulons qu'elle échoue permet 
+de s'assurer que notre définition n'est pas inconsistante. Mais cela ne fait pas 
+tout ! Si la subtilité qui crée le comportement faux est suffisamment cachée, les
+prouveurs peuvent avoir besoin de beaucoup d'informations autre que l'axiomatique
+elle-même pour être menés jusqu'à l'inconsistance, donc il faut toujours être 
+vigilant !
+
+
+
+Notamment parce que par exemple, la mention des valeurs lues par une fonction
+ou un prédicat défini axiomatiquement est également importante pour la 
+consistance de l'axiomatique. En effet, comme mentionné précédemment, si nous
+n'exprimons pas les valeurs lues dans le cas de l'usage d'un pointeur, la 
+modification d'une valeur du tableau n'invalide pas une propriété que l'on 
+connaitrait à propos du contenu du tableau par exemple. Dans un tel cas, la 
+preuve passe mais l'axiome n'exprimant pas le contenu, nous ne prouvons rien.
+
+
+
+Par exemple, si nous reprenons l'exemple de mise à zéro, nous pouvons modifier
+la définition de notre axiomatique en retirant la mention des valeurs dont 
+dépendent le prédicat : \CodeInline{reads a[b .. e-1]}. La preuve passera toujours
+mais n'exprimera plus rien à propos du contenu des tableaux considérés.
+
+
+
+\levelThreeTitle{Exemple : comptage de valeurs}
+
+
+Dans cet exemple, nous cherchons à prouver qu'un algorithme compte bien les 
+occurrences d'une valeur dans un tableau. Nous commençons par définir 
+axiomatiquement la notion de comptage dans un tableau :
+
+
+
+\CodeBlockInput[3][22]{c}{occurrences_of.c}
+
+
+Nous avons trois cas à gérer :
+
+
+
+\begin{itemize}
+\item la plage de valeur concernée est vide : le nombre d'occurrences est 0 ;
+\item la plage de valeur n'est pas vide et le dernier élément est celui recherché :
+le nombre d'occurrences est : le nombre d'occurrences dans la plage actuelle que
+l'on prive du dernier élément, plus 1 ;
+\item la plage de valeur n'est pas vide et le dernier élément n'est pas celui 
+recherché : le nombre d'occurrences est le nombre d'occurrences dans la plage
+privée du dernier élément.
+\end{itemize}
+
+
+Par la suite, nous pouvons écrire la fonction C exprimant ce comportement et la
+prouver :
+
+
+
+\CodeBlockInput[24][42]{c}{occurrences_of.c}
+
+
+
+Une alternative au fait de spécifier que dans ce code \CodeInline{result} est au 
+maximum \CodeInline{i} est d'exprimer un lemme plus général à propos de la valeur
+du nombre d'occurrences, dont nous savons qu'elle est comprise entre 0 et 
+la taille maximale de la plage de valeurs considérée :
+
+
+
+\begin{CodeBlock}{c}
+/*@
+lemma l_occurrences_of_range{L}:
+  \forall int v, int* array, integer from, to:
+    from <= to ==> 0 <= l_occurrences_of(v, a, from, to) <= to-from;
+*/
+\end{CodeBlock}
+
+
+
+La preuve de ce lemme ne pourra pas être déchargée par un solveur automatique. Il
+faudra faire cette preuve interactivement avec Coq par exemple. Exprimer des 
+lemmes généraux prouvés manuellement est souvent une bonne manière d'ajouter des
+outils aux prouveurs pour manipuler plus efficacement les axiomatiques, sans 
+ajouter formellement d'axiomes qui augmenteraient nos chances d'introduire des
+erreurs. Ici, nous devrons quand même réaliser les preuves des propriétés 
+mentionnées.
+
+
+
+\levelThreeTitle{Exemple : le tri}
+
+
+Nous allons prouver un simple tri par sélection :
+
+
+
+\CodeBlockInput[3]{c}{sort-0.c}
+
+
+
+Le lecteur pourra s'exercer en spécifiant et en prouvant les fonctions de 
+recherche de minimum et d'échange de valeur. Nous cachons la correction 
+ci-dessous et allons nous concentrer plutôt sur la spécification et la preuve de
+la fonction de tri qui sont une illustration intéressant de l'usage des
+axiomatiques.
+
+
+
+\begin{Spoiler}
+\CodeBlockInput[3][34]{c}{sort-1.c}
+\end{Spoiler}
+
+
+En effet, une erreur commune que nous pourrions faire dans le cas de la preuve 
+du tri est de poser cette spécification (qui est vraie !) :
+
+
+
+\CodeBlockInput[6]{c}{sort-incomplete.c}
+
+
+
+\textbf{Cette spécification est vraie}. Mais si nous nous rappelons la 
+partie concernant les spécifications, nous nous devons d'exprimer précisément ce
+que nous attendons. Avec la spécification actuelle, nous ne prouvons pas toutes
+les propriétés nécessaires d'un tri ! Par exemple, cette fonction remplit 
+pleinement la spécification :
+
+
+
+\CodeBlockInput[8]{c}{sort-false.c}
+
+
+
+En fait, notre spécification oublie que tous les éléments qui étaient 
+originellement présents dans le tableau à l'appel de la fonction doivent
+toujours être présents après l'exécution de notre fonction de tri. Dit
+autrement, notre fonction doit en fait produire la permutation triée des
+valeurs du tableau.
+
+
+
+Une propriété comme la définition de ce qu'est une permutation s'exprime 
+extrêmement bien par l'utilisation d'une axiomatique. En effet, pour déterminer
+qu'un tableau est la permutation d'un autre, les cas sont très limités. 
+Premièrement, le tableau est une permutation de lui-même, puis l'échange de
+deux valeurs sans changer les autres est également une permutation, et 
+finalement si nous créons la permutation $p_2$ d'une permutation $p_1$, puis que 
+nous créons la permutation $p_3$ de $p_2$, alors par transitivité $p_3$ est une
+permutation de $p_1$.
+
+
+
+Ceci est exprimé par le code suivant :
+
+
+
+\CodeBlockInput[36][57]{c}{sort-1.c}
+
+
+
+Nous spécifions alors que notre tri nous crée la permutation triée du tableau
+d'origine et nous pouvons prouver l'ensemble en complétant l'invariant de la
+fonction :
+
+
+
+\CodeBlockInput[64][84]{c}{sort-1.c}
+
+
+Cette fois, notre propriété est précisément définie, la preuve reste assez
+simple à faire passer, ne nécessitant que l'ajout d'une assertion que le bloc
+de la fonction n'effectue qu'un échange des valeurs dans le tableau (et donnant
+ainsi la transition vers la permutation suivante du tableau). Pour définir cette
+notion d'échange, nous utilisons une annotation particulière (à la ligne 16),
+introduite par le mot-clé \CodeInline{ghost}. Ici, le but est d'introduire un \textit{label} 
+fictif dans le code qui est uniquement visible d'un point de vue spécification.
+C'est l'objet de la prochaine section.

@@ -1,0 +1,158 @@
+The end of this part will be dedicated to function call composition,
+where we will start to have a closer look at WP. We will also have a
+look at the way we can split our programs in different files when we
+want to prove them using WP.
+
+Our goal will be to prove the \CodeInline{max\_abs} function, that returns
+the maximum absolute value of two values:
+
+
+
+\CodeBlockInput[6][11]{c}{max_abs.c}
+
+
+
+Let us start by (over-)splitting the function we already proved in pairs
+header/source for \CodeInline{abs} and \CodeInline{max}. We will obtain, for
+\CodeInline{abs}:
+
+
+
+File abs.h :
+
+\CodeBlockInput{c}{abs.h}
+
+
+
+File abs.c
+
+\CodeBlockInput{c}{abs.c}
+
+
+
+We can notice that we put our function contract in the header file.
+The goal is to be able to import the specification at the same time as
+the declaration when we need it in another file. Indeed, WP needs the
+contract of the function when it is called. First to prove that the
+precondition is verified (and thus that the called is legal), and second
+to get in return the postcondition that we be useful to prove the right
+properties after the function call.
+
+We can create a file using the same format for the \texttt{max}
+function. In both cases, we can open the source file (we do not need to
+specify header files in the command line) with Frama-C and notice that
+the specification is indeed associated to the function and that we prove
+it.
+
+
+Now, we can prepare our files for the \texttt{max\_abs} function with
+the header:
+
+
+
+\CodeBlockInput{c}{max_abs_uns.h}
+
+
+
+And its source file:
+
+
+
+\CodeBlockInput{c}{max_abs.c}
+
+
+
+We can open the source file in Frama-C. If we look at the side panel, we
+can see that the header files we have included in \texttt{abs\_max}
+correctly appear and if we look at the function contracts for them, we
+can see some blue and green bullets:
+
+
+
+\image{max_abs}
+
+
+These bullets indicate that, since we do not have the implementation,
+they are assumed to be true. It is an important strength of the
+deductive proof of programs compared to some other formal methods:
+functions are verified in isolation from each other.
+
+When we are not currently performing the proof of a function, its
+specification is considered to be correct: we do not try to prove it
+when we are proving another function, we will only verify that the
+precondition is correctly established when we call it. It provides very
+modular proofs and specifications that are therefore more reusable. Of
+course, if our proof relies on the specification of another function, it
+must be provable to ensure that the proof of the program is complete.
+But, we can also consider that we trust a function that comes from an
+external library that we do not want to prove (or for which we do not
+even have the source code).
+
+The careful reader could specify and prove the \CodeInline{max\_abs}
+function.
+
+A solution is provided there:
+
+
+
+\CodeBlockInput[4][14]{c}{max_abs.h}
+
+
+
+\levelThreeTitle{Exercises}
+
+
+\levelFourTitle{Days of the month}
+\label{l4:contract-modularity-ex-days-of-month}
+
+
+Specify the function leap year that returns true if the year received
+as an input is leap. Use this functions to complete the functions
+\CodeInline{days\_of} in order to return the number of days of the
+month received as an input, including the right behavior when the year
+is leap for February.
+
+
+
+\CodeBlockInput{c}{ex-1-days-month.c}
+
+
+\levelFourTitle{Alpha-numeric character}
+\label{l4:contract-modularity-ex-alpha-num}
+
+
+Write and specify the different functions used by
+\CodeInline{is\_alpha\_num} provide a contract for each of them and
+provide the contract of \CodeInline{is\_alpha\_num}.
+
+
+
+\CodeBlockInput{c}{ex-2-alphanum.c}
+
+
+Declare an enumeration with values \CodeInline{LOWER}, \CodeInline{UPPER},
+\CodeInline{DIGIT} and \CodeInline{OTHER}, and a function
+\CodeInline{character\_kind} that returns, using the different
+functions \CodeInline{is\_lower}, \CodeInline{is\_upper},
+\CodeInline{is\_digit}, the kind of character received in input. Use
+behaviors to specify the contract of this function and be sure that
+they are disjoint and complete.
+
+
+
+
+\levelFourTitle{Order 3 values}
+\label{l4:contract-modularity-ex-order-3}
+
+
+Taking back the function \CodeInline{max\_ptr} that orders two values,
+putting the maximum at the first location and the minimum at second, 
+write a function \CodeInline{min\_ptr} that uses this function and
+produced the opposite operation. Use these functions to complete the
+four functions that orders 3 values. For each variant (increasing and
+decreasing), write it once using only \CodeInline{max\_ptr} and once
+using only \CodeInline{min\_ptr}.
+
+
+
+\CodeBlockInput{c}{ex-3-order-3.c}

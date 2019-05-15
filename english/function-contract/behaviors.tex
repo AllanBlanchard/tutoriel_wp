@@ -1,0 +1,177 @@
+Sometimes, a function can have behaviors that can be quite different
+depending on the input. Typically, a function can receive a pointer to
+an optional resource: if the pointer is \texttt{NULL}, we will have a
+certain behavior, which will be different of the behavior expected when
+the pointer is not \texttt{NULL}.
+
+We have already seen a function that have different behaviors: the
+\texttt{abs} function. We will use it again to illustrate behaviors. We
+have two behaviors for the \texttt{abs} function: either the input is
+positive or it is negative.
+
+Behaviors allow us to specify the different cases for postconditions. We
+introduce them using the \texttt{behavior} keyword. Each behavior will
+have a name, the assumptions we have for the given case introduced with
+the clause \texttt{assumes}, that expresses properties about the values
+before the call of the function (thus a keyword like
+\CodeInline{\textbackslash{}old} cannot be used in \texttt{assumes}
+clauses), and the associated postcondition. Finally, we can ask WP to
+verify that behaviors are disjoint (to guarantee determinism) and
+complete (to guarantee that we cover all possible input).
+
+Behaviors are disjoint if for any (valid) input of the function, it
+corresponds to the assumption (\texttt{assumes}) of a single behavior.
+Behaviors are complete if any (valid) input of the function corresponds
+to at least one behavior.
+
+For example, for \texttt{abs} we can write the specification:
+
+
+
+\CodeBlockInput{c}{abs.c}
+
+
+
+Note that declaring behaviors do not forbids to specify global postconditions.
+For example here, we have specified that for any behavior, the function must
+return a positive value.
+
+
+
+It can be useful to experiment with the two possibilities to understand
+the exact meaning of \CodeInline{complete} and \CodeInline{disjoint}:
+
+\begin{itemize}
+\item
+  replace the assumption of \CodeInline{pos} with
+  \CodeInline{val \textgreater{} 0}, in this case, behaviors will be
+  disjoint but incomplete (we will miss \CodeInline{val == 0}),
+\item
+  replace the assumption of \CodeInline{neg} with
+  \CodeInline{val \textless{}= 0}, in this case, behaviors will be
+  complete but not disjoint (we will have two assumptions corresponding
+  to \CodeInline{val == 0}.
+\end{itemize}
+
+
+\begin{Warning}
+  Even if \CodeInline{assigns} is a postcondition, indicating different assigns
+  in each behavior is currently not well-handled by WP. If we need to specify
+  this, we will:
+  \begin{itemize}
+  \item put our \CodeInline{assigns} before the behaviors (as we have done in our
+    example) with all potentially modified non-local elements,
+  \item add in postcondition of each behaviors the elements that are in fact
+    not modified by indicating their new value to be equal to the
+    \CodeInline{\textbackslash{}old} one.
+  \end{itemize}
+\end{Warning}
+
+
+Behaviors are useful to simplify the writing of specifications when
+functions can have very different behaviors depending on their input.
+Without them, specification would be defined using implications
+expressing the same idea but harder to write and read (which would be
+error-prone).
+
+
+
+On the other hand, the translation of completeness and disjointedness
+would be necessarily written by hand which would be tedious and again
+error-prone.
+
+
+\levelThreeTitle{Exercises}
+
+
+
+\levelFourTitle{Distance}
+
+
+
+Take back the example about the computation of the distance between to
+integers. Considering that the written contract was:
+
+
+\CodeBlockInput{c}{ex-1-distance.c}
+
+
+Re-write it using behaviors.
+
+
+
+\levelFourTitle{Reset on condition}
+
+
+
+Take back the example ``reset on condition'' from the previous section.
+Considering that the written contract was:
+
+
+
+\CodeBlockInput[1][13]{c}{ex-2-reset-on-cond.c}
+
+
+
+Re-write it using behaviors.
+
+
+
+\levelFourTitle{Days of the month}
+
+
+Take back the example ``day of the month'' from the first section.
+Considering that the written contract was:
+
+
+
+\CodeBlockInput{c}{ex-3-day-month.c}
+
+
+Re-write it using behaviors.
+
+
+\levelFourTitle{Max of pointer values, ordering}
+
+
+
+Take back the example ``Max of pointed values'' from the previous section,
+this time with the version that orders the values. Considering that the
+contract was:
+
+
+
+\CodeBlockInput[1][13]{c}{ex-4-max-ptr.c}
+
+
+
+Re-write it using behaviors.
+
+
+
+\levelFourTitle{Max of pointed values, returning the result}
+
+
+
+Take back the example ``Max of pointed values'' from the previous section,
+and more precisely, the version that returns the result. Considering that
+the contract was:
+
+
+
+\CodeBlockInput[1][10]{c}{ex-5-max-ptr.c}
+
+
+
+\begin{enumerate}
+\item Rewrite it using behaviors
+\item Modify the contract of 1. in order to make the behaviors non-disjoint,
+  except this property, the contract should remain verified,
+\item Modify the contract of 1. in order to make the behaviors incomplete,
+  add a new behavior that makes the contract complete again,
+\item Modify the function of 1. in order to accept \CodeInline{NULL} pointers
+  for both \CodeInline{a} and \CodeInline{b}. If both of them are nul pointers,
+  return \CodeInline{INT\_MIN}, if one is a nul pointer, return the value of
+  the other, else, return the maximum of them. Modify the contract accordingly
+  by adding new behaviors. Be sure that they are disjoint and complete.
+\end{enumerate}

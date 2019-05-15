@@ -1,0 +1,735 @@
+
+\levelThreeTitle{Assignment}
+
+
+Assignment is the most basic operation one can have in an imperative
+language (leaving aside the ``do nothing'' operation that is not particularly
+interesting). The weakest precondition calculus associates the following
+$$wp(x = E , Post) := Post[x \leftarrow E]$$
+
+
+Here the notation $P[x \leftarrow E]$ means ``the property $P$ where
+$x$ is replaced by $E$''. In our case this corresponds to ``the
+postcondition $Post$ where $x$ is replaced by $E$''. The idea is
+that the postcondition of an assignment of $E$ to $x$ can only be
+true if replacing all occurrences of $x$ in the formula by $E$ is
+true. For example:
+
+
+
+\begin{CodeBlock}{c}
+// { P }
+x = 43 * c ;
+// { x = 258 }
+\end{CodeBlock}
+
+
+$$P = wp(x = 43*c , \{x = 258\}) = \{43*c = 258\}$$
+
+
+The function $wp$ allows us to compute, as weakest precondition of 
+the assignment provided our expected postcondition, the formula
+$\{43*c = 258\}$, thus obtaining the following Hoare triple:
+
+
+\begin{CodeBlock}{c}
+// { 43*c = 258 }
+x = 43 * c ;
+// { x = 258 }
+\end{CodeBlock}
+
+
+In order to compute the precondition of the assignment we have replaced
+each occurrence of $x$ in the postcondition by the assigned value
+$E = 43*c$. If our program were of the form:
+
+
+
+\begin{CodeBlock}{c}
+int c = 6 ;
+// { 43*c = 258 }
+x = 43 * c ;
+// { x = 258 }
+\end{CodeBlock}
+
+
+
+we could submit the formula " $43*6 = 258$ " to our automatic prover
+in order to determine whether it is really valid. The answer would of
+course be ``yes'' because the property is easy to verify. If we had,
+however, given the value 7 to the variable \texttt{c} the prover's reply
+would be ``no'' since the formula $43*7 = 258$ is not true.
+
+
+
+Taking into account the weakest precondition calculus, we can now write
+the inference rule for the Hoare triple of an assignment as
+$$\dfrac{}{\{Q[x \leftarrow E] \}\quad x = E \quad\{ Q \}}$$
+
+
+We note that there is no premise to verify. Does this mean that the
+triple is necessarily true? Yes. However, it does not mean that the
+precondition is respected by the program to which the assignment belongs
+or that the precondition is at all possible. Here the automatic provers
+come into play.
+
+
+
+For example, we can ask Frama-C to verify the following line:
+
+
+
+\begin{CodeBlock}{c}
+int a = 42;
+//@ assert a == 42;
+\end{CodeBlock}
+
+
+
+which is, of course, directly proven by Qed, since it is a simple
+applications of the assignment rule.
+
+
+
+\begin{Information}
+  We remark that according to the C standard, an assignment is in fact an
+  expression. This allows us, for example, to write
+  \CodeInline{if( (a = foo()) == 42)}.
+  In Frama-C, an assignment will always be treated as a statement. Indeed,
+  if an assignment occurs within a larger expression, then the Frama-C
+  preprocessor, while building the abstract syntax tree, systematically
+  performs a \emph{normalization step} that produces a separate assignment
+  statement.
+\end{Information}
+
+
+
+\levelFourTitle{Assignment of pointed value}
+
+
+
+In C, thanks to (because of?) pointers, we can have programs with aliases,
+meaning that two pointers can point on the same memory location. Our weakest
+precondition calculus should consider these cases. For example, let us consider
+this simple Hoare triple:
+
+
+\begin{CodeBlock}{c}
+//@ assert p = q ;
+*p = 1 ;
+//@ assert *p + *q == 2 ;
+\end{CodeBlock}
+
+
+
+This Hoare triple is correct, since \CodeInline{p} and \CodeInline{q} are in
+alias, modifying \CodeInline{*p} also modifies \CodeInline{*q}, thus both these
+expression evaluate to $1$ and the postcondition is true. However let us apply
+the weakest precondition calculus from the postcondition:
+
+
+
+\begin{tabular}{ll}
+$wp(*p = 1, *p + *q = 2)$ & $= (*p + *q = 2)[*p \leftarrow 1]$\\
+                          & $= (1 + *q = 2)$
+\end{tabular}
+
+
+
+We get the weakest precondition: \CodeInline{1 + *q == 2}, and thus we could
+deduce that the weakest precondition is \CodeInline{*q == 1}, which is true, but
+does not allow us to conclude that the program is correct, since the formula
+\CodeInline{p == q ==> *q == 1} cannot be verified. In fact, here, we would like
+to be able to compute a property like:
+
+
+
+\begin{tabular}{ll}
+$wp(*p = 1, *p + *q = 2)$ & $= (1 + *q = 2 \vee q = p)$\\
+                          & $= (*q = 1 \vee q = p)$
+\end{tabular}
+
+
+
+For this, we have to take care of aliasing. A common way to do this is to
+consider that the memory is one particular variable (let us name this variable
+$M$) on which we can perform two operations: get the element at a particular
+location $l$ in memory (which returns an expression) and set the element at a
+particular location $l$ to a new value $v$ (which returns the new memory).
+
+
+We denote:
+
+
+\begin{itemize}
+\item $get(M,l)$ with the notation $M[l]$
+\item $set(M,l,v)$ with the notation $M[l \mapsto v]$
+\end{itemize}
+
+
+And basically, the get operation can be seen as follows:
+
+
+\begin{tabular}{ll}
+  $M[l1 \mapsto v][l2] =$ & if $l1   =  l2$ then $v$ \\
+                          & if $l1 \neq l2$ then $M[l2]$
+\end{tabular}
+
+
+Of course, at the beginning of a function, the memory context can be populated
+with the memory locations for which a value is defined.
+
+
+Now, we can change a little bit the weakest precondition calculus for assignment
+of pointed memory location. For this, we consider that we have an implicit
+variable $M$ that models the memory, and we define the assignment of a memory
+location as an update of the memory such that now the corresponding pointer points
+to the written expression.
+$$wp(*x = E, Q) = Q[M \leftarrow M[x \mapsto E]]$$
+
+
+And evaluating a pointed value $*x$ in a formula now requires us to use the
+get operator to ask the right value. Thus we can for example compute the weakest
+precondition of our previous program:
+
+
+\begin{tabular}{lll}
+  $wp(*p = 1, *p + *q = 2)$
+  & $= (*p + *q = 2)[M \leftarrow M[p \mapsto 1]]$ & (1)\\
+  & $= (M[p] + M[q] = 2)[M \leftarrow M[p \mapsto 1]]$ & (2)\\
+  & $= (M[p \mapsto 1][p] + M[p \mapsto 1][q] = 2)$ & (3)\\
+  & $= (1 + M[p \mapsto 1][q] = 2)$ & (4)\\
+  & $= (1 + (\texttt{if}\ q = p\ \texttt{then}\ 1\ \texttt{else}\ M[q]) = 2)$ & (5)\\
+  & $= (\texttt{if}\ q = p\ \texttt{then}\ 1+1 = 2\ \texttt{else}\ 1+M[q] = 2)$ & (6)\\
+  & $= (q = p \vee M[q] = 1)$ & (7)
+\end{tabular}
+
+
+\begin{enumerate}
+\item we have to apply the rule of assignment for pointers, but for this we need
+  to introduce $M$,
+\item we replace pointer accesses in the formula by a call to select on $M$,
+\item we apply the replacement asked by the assignment rule,
+\item we use the definition of the get operator for the expression about $p$
+  ($M[p \mapsto 1][p] = 1$)
+\item we use the definition of the get operator for the expression about $q$\\
+  ($M[p \mapsto 1][q] = \texttt{if}\ q = p\ \texttt{then}\ 1\ \texttt{else}\ M[q]$)
+\item we perform some simplification to the goal ...
+\item ... and finally conclude that either $M[q] = 1$ or $p = q$.
+\end{enumerate}
+
+
+Then in our program, since we know that $p = q$, we can conclude that the program
+is correct.
+
+
+The WP plugin does not exactly work like this. In particular, it depends on the
+memory model chosen for the proof that will make different assumption about the
+memory is organized. For the memory model we use, the typed memory model, in
+fact WP creates multiple variables for memory. However, let us have a look at
+the goal generated for the postcondition of the swap function, by preventing
+WP to simplify the goal using the option \CodeInline{-wp-no-simpl}:
+
+
+\image{memory-model}
+
+
+We can see, in the beginning of the proof obligation, that a variable
+\CodeInline{Mint\_0} representing a memory of values of integer types have been
+created, and that this memory is updated and accessed using the operators we
+previously introduced.
+
+
+\levelThreeTitle{Composition of statements}
+
+For a statement to be valid, its precondition must allow us by means of
+executing the said statement to reach the desired postcondition. Now we
+would like to execute several statements one after another. Here the
+idea is that the postcondition of the first statement is compatible with
+the required precondition of the second statement and so on for the
+third statement.
+
+
+
+The inference rule that corresponds to this idea utilizes the following
+Hoare triples:
+$$\dfrac{\{P\}\quad S1 \quad \{R\} \ \ \ \{R\}\quad S2 \quad \{Q\}}{\{P\}\quad S1 ;\ S2 \quad \{Q\}}$$
+In order to verify the composed statement $S1;\ S2$ we rely on an
+intermediate property $R$ that is at the same time the postcondition
+of $S1$ and the precondition of $S2$. (Please note that $S1$ and
+$S2$ are not necessarily simple statements; they themselves can be
+composed statements.) The problem is, however, that nothing indicates us
+how to determine the properties $P$ and $R$.
+
+The weakest-precondition calculus now says us that the intermediate
+property $R$ can be computed as the weakest precondition of the second
+statement. The property $P$, on the other hand, then is computed as
+the weakest precondition of the first statement. In other words, the
+weakest precondition of the composed statement $S1; S2$ is determined
+as follows:
+$$wp(S1;\ S2 , Post) := wp(S1, wp(S2, Post) )$$
+
+
+The WP plugin of Frama-C performs all these computations for us. Thus,
+we do not have to write the intermediate properties as ACSL assertions
+between the lines of codes.
+
+
+
+\begin{CodeBlock}{c}
+int main(){
+  int a = 42;
+  int b = 37;
+
+  int c = a+b; // i:1
+  a -= c;      // i:2
+  b += a;      // i:3
+
+  //@assert b == 0 && c == 79;
+}
+\end{CodeBlock}
+
+
+
+\levelFourTitle{Proof tree}
+
+
+When we have more than two statements, we can consider the last
+statement as second statement of our rule and all the preceding ones as
+first statement. This way we traverse step by step backwards the
+statements in our reasoning. With the previous program this looks like:
+
+
+\begin{center}
+\begin{tabular}{ccc}
+  $\{P\}\quad i_1 ; \quad \{Q_{-2}\}$ & $\{Q_{-2}\}\quad i_2 ; \quad \{Q_{-1}\}$ & \\
+  \cline{1-2}
+  \multicolumn{2}{c}{$\{P\}\quad i\_1 ; \quad i\_2 ; \quad \{Q_{-1}\}$} & $\{Q_{-1}\} \quad i_3 ; \quad \{Q\}$\\
+  \hline
+  \multicolumn{3}{c}{$\{P\}\quad i\_1 ; \quad i\_2 ; \quad i\_3; \quad \{ Q \}$}
+\end{tabular}
+\end{center}
+
+The weakest-precondition calculus allows us to construct the property
+$Q_{-1}$ starting from the property $Q$ and statement $i_3$ which
+in turn enables us to derive the property $Q_{-2}$ from the property
+$Q_{-1}$ and statement $i_2$. Finally, $P$ can be determined from
+$Q_{-2}$ and $i_1$.
+
+
+
+Now that we can verify programs that consist of several statements it
+is time to add some structure to them.
+
+
+
+\levelThreeTitle{Conditional rule}
+
+
+For a conditional statement to be true, one must be able to reach the
+postcondition through both branches. Of course, for both branches, the
+same precondition (of the conditional statement) must hold. In addition,
+we have that in the if-branch the condition is true while in the
+else-branch it is false.
+
+We therefore have, as in the case of composed statements, two facts to
+verify (in order to avoid confusion we are using here the syntax
+$if\ B\ then\ S1\ else\ S2$):
+$$\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad S2\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad S2 \quad \{Q\}}$$
+
+Our two premises are therefore that we can both in the if-branch and the
+else-branch reach the postcondition from the precondition.
+
+The result of the weakest-precondition calculus for a conditional
+statement reads as follows:
+$$wp(if\ B\ then\ S1\ else\ S2 , Post) := (B \Rightarrow wp(S1, Post)) \wedge (\neg B \Rightarrow wp(S2, Post))$$
+This means that the condition $B$ has to imply the weakest
+precondition of $S1$ in order to safely arrive at the postcondition.
+Analogously, the negation of $B$ must imply the weakest precondition
+of $S2$.
+
+
+
+\levelFourTitle{Empty \CodeInline{else}-branch}
+
+
+Following this definition, we obtain for the case of an empty else-branch the
+following rule by simply replacing the statement $S2$ by the empty
+statement \texttt{skip}.
+$$\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad skip\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad skip \quad \{Q\}}$$
+The triple for \CodeInline{else} is:
+$$\{P \wedge \neg B\}\quad skip\quad \{Q\}$$
+which means that we need to ensure:
+$$P \wedge \neg B \Rightarrow Q$$
+
+In short, if the condition $B$ of \texttt{if} is false, this means
+that the postcondition of the complete conditional statement is already
+established before entering the else-branch (since it does not do
+anything).
+
+
+
+As an example, we consider the following code snippet where we reset a
+variable $c$ to a default value in case it had not been properly
+initialized by the user.
+
+
+
+\begin{CodeBlock}{c}
+int c;
+
+// ... some code ...
+
+if(c < 0 || c > 15){
+  c = 0;
+}
+//@ assert 0 <= c <= 15;
+\end{CodeBlock}
+
+
+
+Let
+
+
+
+$wp(if \neg (c \in [0;15])\ then\ c := 0, \{c \in [0;15]\})$
+
+
+
+$:= (\neg (c \in [0;15])\Rightarrow wp(c := 0, \{c \in [0;15]\})) \wedge (c \in [0;15]\Rightarrow wp(skip, \{c \in [0;15]\}))$
+
+
+
+$= (\neg (c \in [0;15]) \Rightarrow 0 \in [0;15]) \wedge (c \in [0;15] \Rightarrow c \in [0;15])$
+
+
+
+$= (\neg (c \in [0;15]) \Rightarrow true) \wedge true$
+
+
+
+The property can be verified: independent of the evaluation of
+$\neg (c \in [0;15])$, the implication will hold.
+
+
+
+\levelThreeTitle{Bonus Stage - Consequence rule}
+\label{l3:statements-basic-consequence}
+
+
+It can sometimes be useful to strengthen a postcondition or to weaken a
+precondition. The former will often be established by us to
+facilitate the work of the prover, the latter is more often verified by
+the tool as the result of computing the weakest precondition.
+
+
+
+The inference rule of Hoare logic is the following:
+$$\dfrac{P \Rightarrow WP \quad \{WP\}\quad c\quad \{SQ\} \quad SQ \Rightarrow Q}{\{P\}\quad c \quad \{Q\}}$$
+
+(We remark that the premises here are not only Hoare triples but also
+formulas to verify.)
+
+For example, if our postcondition is too complex, it may generate a
+weaker precondition that is, however, too complicated, thus making the
+work of provers more difficult. We can then create a simpler
+intermediate postcondition $SQ$, that is, however, stricter and
+implies the real postcondition. This is the part $SQ \Rightarrow Q$.
+
+Conversely, the calculation of the precondition will usually generate a
+complicated and often weaker formula than the precondition we want to
+accept as input. In this case, it is our tool that will check the
+implication between what we want and what is necessary for our code to
+be valid. This is the part $P \Rightarrow WP$.
+
+We can illustrate this with the following code. Note that here the code
+could be proved by WP without the weakening and strengthening of
+properties because the code is very simple, it is just to illustrate the
+rule of consequence.
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  requires P: 2 <= a <= 8;
+  ensures  Q: 0 <= \result <= 100 ;
+  assigns  \nothing ;
+*/
+int constrained_times_10(int a){
+  //@ assert P_imply_WP: 2 <= a <= 8 ==> 1 <= a <= 9 ;
+  //@ assert WP:         1 <= a <= 9 ;
+
+  int res = a * 10;
+
+  //@ assert SQ:         10 <= res <= 90 ;
+  //@ assert SQ_imply_Q: 10 <= res <= 90 ==> 0 <= res <= 100 ;
+
+  return res;
+}
+\end{CodeBlock}
+
+
+
+(Note: We have omitted here the control of integer overflow.)
+
+
+
+Here we want to have a result between 0 and 100. But we know that the
+code will not produce a result outside the bounds of 10 and 90. So we
+strengthen the postcondition with an assertion that at the end
+\CodeInline{res}, the result, is between 0 and 90. The calculation of the
+weakest precondition of this property together with the assignment
+\CodeInline{res = 10 * a} yields a weaker precondition
+\CodeInline{1 <= a <= 9} and we know that
+\CodeInline{2 <= a <= 8} gives us the desired
+guarantee.
+
+
+
+When there are difficulties to carry out a proof on more complex code,
+then it is often helpful to write assertions that produce stronger, yet
+easier to verify, postconditions. Note that in the previous code, the
+lines \CodeInline{P\_imply\_WP} and\CodeInline{SQ\_imply\_Q} are never used
+because this is the default reasoning of WP. They are just here for
+illustrating the rule.
+
+
+\levelThreeTitle{Bonus Stage - Constancy rule}
+\label{l3:statements-basic-constancy}
+
+
+Certain sequences of instructions may concern and involve different
+variables. Thus, we may initialize and manipulate a certain number of
+variables, begin to use some of them for a time, before using other
+variables. When this happens, we want our tool to be concerned only with
+variables that are susceptible to change in order to obtain the simplest
+possible properties.
+
+
+
+The rule of inference that defines this reasoning is the following:
+$$\dfrac{\{P\}\quad c\quad \{Q\}}{\{P \wedge R\}\quad c\quad \{Q \wedge R\}}$$
+where $c$ does not modify any variable in $R$. In other words:
+``To check the triple, let's get rid of the parts of the formula that
+involve variables that are not influenced by $c$ and prove the new
+triple.'' However, we must be careful not to delete too much
+information, since this could mean that we are not able to prove our
+properties.
+
+
+As an example, let us consider the following code (here gain, we ignore
+potential integer overflows):
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  requires a > -99 ;
+  requires b > 100 ;
+  ensures  \result > 0 ;
+  assigns  \nothing ;
+*/
+int foo(int a, int b){
+  if(a >= 0){
+    a++ ;
+  } else {
+    a += b ;
+  }
+  return a ;
+}
+\end{CodeBlock}
+
+
+If we look at the code of the \CodeInline{if} block, we notice that it does
+not use the variable \CodeInline{b}. Thus, we can completely omit the
+properties about \CodeInline{b} in order to prove that \CodeInline{a} will be
+strictly greater than 0 after the execution of the block:
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  requires a > -99 ;
+  requires b > 100 ;
+  ensures  \result > 0 ;
+  assigns  \nothing ;
+*/
+int foo(int a, int b){
+  if(a >= 0){
+    //@ assert a >= 0; // and nothing about b
+    a++ ;
+  } else {
+    a += b ;
+  }
+  return a ;
+}
+\end{CodeBlock}
+
+
+
+On the other hand, in the \CodeInline{else} block, even if \CodeInline{b} is
+not modified, formulating properties only about \CodeInline{a} would render
+a proof impossible for humans. The code would be:
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  requires a > -99 ;
+  requires b > 100 ;
+  ensures  \result > 0 ;
+  assigns  \nothing ;
+*/
+int foo(int a, int b){
+  if(a >= 0){
+    //@ assert a >= 0; // and nothing about b
+    a++ ;
+  } else {
+    //@ assert a < 0 && a > -99 ; // and nothing about b
+    a += b ;
+  }
+  return a ;
+}
+\end{CodeBlock}
+
+
+
+In the \CodeInline{else} block, knowing that\CodeInline{a} lies between -99 and
+0, but knowing nothing about \CodeInline{b}, we could hardly know if the
+operation \CodeInline{a + = b} produces a result that is greater than 0.
+
+The WP plug-in will, of course, prove the function without problems,
+since it produces by itself the properties that are necessary for the
+proof. In fact, the analysis which variables are necessary or not (and,
+consequently, the application of the constancy rule) is conducted
+directly by WP.
+
+Let us finally remark that the constancy rule is an instance of the
+consequence rule
+$$\dfrac{P \wedge R \Rightarrow P \quad \{P\}\quad c\quad \{Q\} \quad Q \Rightarrow Q \wedge R}{\{P \wedge R\}\quad c\quad \{Q \wedge R\}}$$
+
+
+If the variables of $R$ have not been modified by the operation
+(which, on the other hand, may modify the variables of $P$ to produce
+$Q$), then the properties $P \wedge R \Rightarrow P$ and
+$Q \Rightarrow Q \wedge R$ hold.
+
+
+
+\levelThreeTitle{Exercices}
+
+
+
+\levelFourTitle{A serie of assignment}
+
+
+Compute by hand the weakest precondition of the following program:
+
+
+\begin{CodeBlock}{c}
+/*@
+  requires -10 <= x <= 0 ;
+  requires 0 <= y <= 5 ;
+  ensures -10 <= \result <= 10 ;
+*/
+int function(int x, int y){
+  int res ;
+  y += 10 ;
+  x -= 5 ;
+  res = x + y ;
+  return res ;
+}
+\end{CodeBlock}
+
+
+Deduce that the program is correct with respect to its contract using the
+right rule.
+
+
+\levelFourTitle{Empty ``then'' branch in conditional}
+
+
+We previously shown that in a condition when the ``else'' branch is empty,
+that the postcondition of the complete conditional is already verified if
+with the conjunction of the negation of the condition and the precondition.
+For both of the following question, we only need the inference rules and
+no WP calculus.
+
+Show that when, instead, the ``then'' branch is empty, the conjunction of
+the condition and the precondition must implies the postcondition of the
+``else'' branch.
+
+Show that when both branches are empty, the overall condition is just a
+skip operation.
+
+
+\levelFourTitle{Short circuit}
+
+
+C compilers implement short circuit for conditions. For example, that
+means that a code like this one (\textbf{without ``else'' block}) :
+
+
+\begin{CodeBlock}{c}
+if(cond1 && cond2){
+  // code
+}
+\end{CodeBlock}
+
+
+
+can be written as:
+
+
+
+\begin{CodeBlock}{c}
+if(cond1){
+  if(cond2){    
+    // code
+  }
+}
+\end{CodeBlock}
+
+
+
+Show that on those two source code, the weakest precondition calculus
+generates an equivalent weakest precondition for equivalent for any code
+in the ``then'' block. Note that we assume the conditions to be pure
+expressions (without side-effects).
+
+
+
+\levelFourTitle{A larger program}
+
+
+Compute by hand the weakest precondition of the following program:
+
+
+\begin{CodeBlock}{c}
+/*@ 
+  requires -5 <= y <= 5 ; 
+  requires -5 <= x <= 5 ; 
+  ensures  -15 <= \result <= 25 ;
+*/
+int function(int x, int y){
+  int res ;
+
+  if(x < 0){
+    x = 0 ;
+  }
+  
+  if(y < 0){
+    x += 5 ;
+  } else {
+    x -= 5 ;
+  }
+  
+  res = x - y ;
+
+  return res ;
+}
+\end{CodeBlock}
+
+
+Deduce that the program is correct with respect to its contract using the
+right rule.

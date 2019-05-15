@@ -1,0 +1,248 @@
+Lemmas are general properties about predicates or functions. Once these
+properties are expressed, their proof can be performed (one time) and
+the provers will then be able to use this result to perform other proofs
+without requiring to repeat all steps needed to perform the
+original proof if it appears in a much longer proof about another
+property.
+
+
+
+
+For example, lemmas allow us to express properties about recursive
+functions in order to get easier proofs when we are interested in
+proving properties that use such functions.
+
+
+
+\levelThreeTitle{Syntax}
+
+
+Again, we introduce lemmas using ACSL annotations. The syntax is
+following:
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  lemma name_of_the_lemma { Label0, ..., LabelN }:
+    property ;
+*/
+\end{CodeBlock}
+
+
+
+This time, the properties we want to express do not depend on received
+parameters (except for labels). So we will express these properties on
+universally quantified variables. For example, we can state this lemma,
+which is true, even if it is trivial:
+
+
+
+\begin{CodeBlock}{c}
+/*@
+  lemma lt_plus_lt:
+    \forall integer i, j ; i < j ==> i+1 < j+1;
+*/
+\end{CodeBlock}
+
+
+
+This proof can be performed using WP. The property is, of course, proved
+using only Qed.
+
+
+
+\levelThreeTitle{Example: properties of linear functions}
+
+
+We can come back to our linear functions and express some interesting
+properties about them:
+
+
+
+\CodeBlockInput[20][30]{c}{linear-0.c}
+
+
+
+For these proofs, Alt-ergo, will probably not be able to discharge
+generated goals. In this case, Z3 will certainly perform it. We can then
+write some code examples:
+
+
+
+\CodeBlockInput[32][60]{c}{linear-0.c}
+
+
+
+If we do not give the lemmas provided earlier, Alt-ergo will not be able
+to prove the proof that \CodeInline{fmin} is lesser or equals to
+\CodeInline{fmax}. With the lemmas it is however very easy for it since the
+property is the simply an instance of the lemma
+\CodeInline{ax\_monotonic\_pos}, the proof is then trivial as our lemma is
+considered to be true when are not currently proving it. Note that on this
+generalized version of \CodeInline{function}, Z3 will probably more efficient
+to prove this absence of runtime errors.
+
+
+\levelThreeTitle{Example: arrays and labels}
+
+
+Later in this tutorial, we will see some kind of definitions for which it is
+sometimes hard to reason about for SMT solvers when some mutations happen in
+memory. Thus, we will often need lemmas to state relations about the content
+of the memory between labels.
+
+
+Let us illustrate with a first simple example. Consider the two following
+predicates:
+
+
+\CodeBlockInput[1][8]{c}{unchanged-sorted.c}
+
+
+One could for example want to state that when an array is sorted, and some
+mutations happen in memory (creating a new memory state), but the content of the
+array remains unchanged, then the array is still sorted. This can be done with
+the following lemma:
+
+
+\CodeBlockInput[10][16]{c}{unchanged-sorted.c}
+
+
+We state this lemma for two labels \CodeInline{L1} and \CodeInline{L2}, and
+express that if any range in any array is sorted at \CodeInline{L1}, and
+unchanged from \CodeInline{L1} to \CodeInline{L2}, then it is still sorted at
+\CodeInline{L2}.
+
+
+Note that this lemma is easily proved by SMT solvers. We will see later some
+examples where it is not so easy to get a proof.
+
+
+
+\levelThreeTitle{Exercises}
+
+
+
+\levelFourTitle{Multiplication property}
+
+
+
+Write a lemma that state that for three integers $x$, $y$ and $z$, if $x$ is
+greater or equals to $0$, if $z$ is greater or equals to $y$, then $x * z$ is
+greater or equals to $y * z$.
+
+
+This lemma will not be proved by SMT solvers, however if you ask a proof with
+Coq, the default tactic will probably discharged this verification condition
+automatically.
+
+
+\levelFourTitle{Locally sorted to globally sorted}
+\label{l4:acsl-properties-lemmas-lsorted-gsorted}
+
+
+The following program contains a function that requires an array to be sorted
+in the sense that each element is lower or equals to the element that follows it
+and calls the binary search function.
+
+
+\CodeBlockInput[59][81]{c}{ex-2-sorted-link.c}
+
+
+Take back your proved binary search function from the
+exercise~\ref{l4:acsl-properties-predicates-ex-bsearch}. You might notice that
+the precondition of the binary search function is stronger than what we know in
+precondition of the \CodeInline{bsearch\_callee}. However, our precondition
+implies that the array is globally sorted. Write a lemma that states that if
+an array is \CodeInline{element\_level\_sorted} then it is \CodeInline{sorted}.
+This lemma will probably not be proved by SMT solvers, all remaining properties
+should be.
+
+We provide a solution and the corresponding Coq proof on the GitHub repository
+of this book.
+
+
+\levelFourTitle{Sum of the N first integers}
+\label{l4:acsl-properties-lemmas-n-first-ints}
+
+Take back your solution to the
+exercise~\ref{l4:acsl-properties-functions-n-first-ints} about the sum of the
+N first integers. Write a lemma that states that the result of the call to the
+logic function is $n*(n+1)/2$. This lemma will not be proved by SMT solvers.
+
+
+We provide a solution and the corresponding Coq proof on the GitHub repository
+of this book.
+
+
+\levelFourTitle{Shift transitivity}
+\label{l4:acsl-properties-lemmas-shift-trans}
+
+
+The following program is composed of two functions. The first one is the
+\CodeInline{shift\_array} function that shifts the elements of an array with a
+given offset (named \CodeInline{shift}). The second performs two successive
+shifts on the same array.
+
+
+\CodeBlockInput{c}{ex-4-shift-transitivity.c}
+
+
+Complete the predicates \CodeInline{shifted} and \CodeInline{unchanged} (the
+last should use the former). Complete the contract of the
+\CodeInline{shift\_array} function and prove it using WP.
+
+
+Express two lemmas about the \CodeInline{shifted} property.
+
+
+The first one \CodeInline{shift\_ptr} should state that shifting a range
+\CodeInline{fst+s1} to \CodeInline{last+s1} of an \CodeInline{array} with an
+offset \CodeInline{s2} is equivalent to shifting the range \CodeInline{fst} to
+\CodeInline{last} of the memory location \CodeInline{array+s1} with an offset
+\CodeInline{s2}.
+
+
+
+The second one should state that when the elements of an array are shifted a
+first time with an offset \CodeInline{s1} and then a second time with an offset
+\CodeInline{s2}, then the complete shift corresponds to a single shift with an
+offset \CodeInline{s1+s2}.
+
+
+
+The lemma \CodeInline{shift\_ptr} will not be proved by SMT solvers, we provide
+a solution and the corresponding Coq proof on the GitHub repository of this
+book. All remaining properties should be proved automatically.
+
+
+
+\levelFourTitle{Shift sorted range}
+
+
+In the following program is composed of two functions. The function
+\CodeInline{shift\_and\_search} shifts the element of an array and then
+performs a binary search.
+
+
+\CodeBlockInput{c}{ex-5-shift-sorted.c}
+
+
+Take back your proved binary search function from the
+exercise~\ref{l4:acsl-properties-predicates-ex-bsearch}, modify the binary
+search function, its contract and its proof in order to be able to search in
+any range.
+
+
+Use the \CodeInline{shift\_array} function proved in the previous exercise.
+
+
+Complete the contract of the function \CodeInline{shift\_and\_search}. You might
+notice that the precondition that requires the array to be sorted is not
+validated. Complete the lemma \CodeInline{shifted\_still\_sorted} that should
+state that if a range is sorted at some label and then shifted, the resulting
+range is still sorted.
+
+The lemma does not have to be proved by WP. We provide a solution and the
+corresponding Coq proof on the GitHub repository of this book.

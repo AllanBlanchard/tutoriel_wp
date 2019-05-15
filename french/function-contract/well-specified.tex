@@ -1,0 +1,337 @@
+\levelThreeTitle{Bien traduire ce qui est attendu}
+
+
+C'est certainement notre tâche la plus difficile. En soi, la programmation est
+déjà un effort consistant à écrire des algorithmes qui répondent à notre 
+besoin. La spécification nous demande également de faire ce travail, la 
+différence est que nous ne nous occupons plus de préciser la manière de répondre
+au besoin mais le besoin lui-même. Pour prouver que la réalisation implémente 
+bien ce que nous attendons, il faut donc être capable de décrire précisément le
+besoin.
+
+
+
+Changeons d'exemple et spécifions la fonction suivante :
+
+
+
+\CodeBlockInput{c}{max-0.c}
+
+
+
+Le lecteur pourra écrire et prouver sa spécification. Pour la suite, nous 
+travaillerons avec celle-ci :
+
+
+
+\CodeBlockInput[1][6]{c}{max-1.c}
+
+
+
+Si nous donnons ce code à WP, il accepte sans problème de prouver la fonction. 
+Pour autant cette spécification est-elle juste ? Nous pouvons par exemple 
+essayer de voir si ce code est validé :
+
+
+
+\CodeBlockInput[8][14]{c}{max-1.c}
+
+
+
+La réponse est non. En fait, nous pouvons aller plus loin en modifiant le corps 
+de la fonction \CodeInline{max} et remarquer que le code suivant est également valide 
+quant à la spécification :
+
+
+
+\CodeBlockInput[1][8]{c}{max-2.c}
+
+
+
+
+Notre spécification est trop permissive. Il faut que nous soyons plus précis.
+Nous attendons du résultat non seulement qu'il soit supérieur ou égal à nos 
+deux paramètres mais également qu'il soit exactement l'un des deux :
+
+
+
+\CodeBlockInput[1][7]{c}{max-3.c}
+
+
+
+
+\levelThreeTitle{Pointeurs}
+
+
+S'il y a une notion à laquelle nous sommes confrontés en permanence en 
+langage C, c'est bien la notion de pointeur. C'est une notion complexe et 
+l'une des principales cause de bugs critiques dans les programmes, ils ont 
+donc droit à un traitement de faveur dans ACSL.
+
+
+
+Prenons par exemple une fonction \CodeInline{swap} pour les entiers :
+
+
+
+\CodeBlockInput{c}{swap-0.c}
+
+
+
+\levelFourTitle{Historique des valeurs}
+
+
+Ici, nous introduisons une première fonction logique fournie de base par 
+ACSL : \CodeInline{\textbackslash{}old}, qui permet de parler de l'ancienne valeur d'un élément. 
+Ce que nous dit donc la spécification c'est « la fonction doit assurer que
+\CodeInline{*a} soit égal à l'ancienne valeur (au sens : la valeur avant l'appel) de \CodeInline{*b}
+et inversement ».
+
+
+
+La fonction \CodeInline{\textbackslash{}old} ne peut être utilisée que dans la post-condition d'une
+fonction. Si nous avons besoin de ce type d'information ailleurs, nous 
+utilisons \CodeInline{\textbackslash{}at} qui nous permet d'exprimer des propriétés à propos de la 
+valeur d'une variable à un point donné. Elle reçoit deux paramètres. Le premier 
+est la variable (ou position mémoire) dont nous voulons obtenir la valeur et le 
+second la position (sous la forme d'un label C) à laquelle nous voulons 
+contrôler la valeur en question.
+
+
+
+Par exemple, nous pourrions écrire :
+
+
+
+\CodeBlockInput[2][6]{c}{at.c}
+
+
+
+En plus des labels que nous pouvons nous-mêmes créer. Il existe 6 labels 
+qu'ACSL nous propose par défaut, mais tous ne sont pas supportés par WP :
+
+
+
+\begin{itemize}
+\item \CodeInline{Pre}/\CodeInline{Old} : valeur avant l'appel de la fonction,
+\item \CodeInline{Post} : valeur après l'appel de la fonction,
+\item \CodeInline{LoopEntry} : valeur en début de boucle (pas encore supporté),
+\item \CodeInline{LoopCurrent} : valeur en début du pas actuel de la boucle (pas encore
+supporté),
+\item \CodeInline{Here} : valeur au point d'appel.
+\end{itemize}
+
+
+\begin{Information}
+Le comportement de \CodeInline{Here} est en fait le comportement par défaut lorsque
+nous parlons de la valeur d'une variable. Son utilisation avec \CodeInline{\textbackslash{}at} nous 
+servira généralement à s'assurer de l'absence d’ambiguïté lorsque nous parlons
+de divers points de programme dans la même expression.
+\end{Information}
+
+
+À la différence de \CodeInline{\textbackslash{}old}, qui ne peut être utilisée que dans les 
+post-conditions de contrats de fonction, \CodeInline{\textbackslash{}at} peut être utilisée partout.
+En revanche, tous les points de programme ne sont pas accessibles selon le type
+d'annotation que nous sommes en train d'écrire. \CodeInline{Old} et \CodeInline{Post} ne sont 
+disponibles que dans les post-conditions d'un contrat, \CodeInline{Pre} et \CodeInline{Here}
+sont disponibles partout. \CodeInline{LoopEntry} et \CodeInline{LoopCurrent} ne sont 
+disponibles que dans le contexte de boucles (dont nous parlerons plus loin dans
+le tutoriel).
+
+
+
+Pour le moment, nous n'utiliserons pas \CodeInline{\textbackslash{}at}, mais elle peut rapidement se
+montrer indispensable pour écrire des spécifications précises.
+
+
+
+\levelFourTitle{Validité de pointeurs}
+
+
+Si nous essayons de prouver le fonctionnement de \CodeInline{swap} (en activant
+la vérification des RTE), notre post-condition est bien vérifiée mais WP nous 
+indique qu'il y a un certain nombre de possibilités de \textit{runtime-error}. Ce qui 
+est normal, car nous n'avons pas précisé à WP que les pointeurs que nous
+recevons en entrée de fonction sont valides.
+
+
+
+Pour ajouter cette précision, nous allons utiliser le prédicat \CodeInline{\textbackslash{}valid} qui
+reçoit un pointeur en entrée :
+
+
+
+\CodeBlockInput[3][11]{c}{swap-1.c}
+
+
+
+À partir de là, les déréférencements qui sont effectués par la suite sont 
+acceptés car la fonction demande à ce que les pointeurs d'entrée soient 
+valides.
+
+
+
+Comme nous le verrons plus tard, \CodeInline{\textbackslash{}valid} peut recevoir plus qu'un 
+pointeur en entrée. Par exemple, il est possible de lui transmettre une 
+expression de cette forme : \CodeInline{\textbackslash{}valid(p + (s .. e))} qui voudra dire « pour
+tout \CodeInline{i} entre \CodeInline{s} et \CodeInline{e} (inclus), \CodeInline{p+i} est un pointeur valide », ce sera important 
+notamment pour la gestion des tableaux dans les spécifications.
+
+
+
+Si nous nous intéressons aux assertions ajoutées par WP dans la fonction \CodeInline{swap}
+avec la validation des RTEs, nous pouvons constater qu'il existe une variante
+de \CodeInline{\textbackslash{}valid} sous le nom \CodeInline{\textbackslash{}valid\_read}. Contrairement au premier, 
+celui-ci assure que le pointeur peut être déréférencé mais en lecture 
+seulement. Cette subtilité est due au fait qu'en C, le \textit{downcast} de pointeur 
+vers un élément const est très facile à faire mais n'est pas forcément légal.
+
+
+
+Typiquement, dans le code suivant :
+
+
+
+\CodeBlockInput{c}{unref.c}
+
+
+
+Le déréférencement de \CodeInline{p} est valide, pourtant la pré-condition de \CodeInline{unref}
+ne sera pas validée par WP car le déréférencement de l'adresse de \CodeInline{value} 
+n'est légal qu'en lecture. Un accès en écriture sera un comportement 
+indéterminé. Dans un tel cas, nous pouvons préciser que dans \CodeInline{unref}, le 
+pointeur \CodeInline{p} doit être nécessairement \CodeInline{\textbackslash{}valid\_read} et pas \CodeInline{\textbackslash{}valid}.
+
+
+
+\levelFourTitle{Effets de bord}
+
+
+Notre fonction \CodeInline{swap} est bien prouvable au regard de sa spécification et
+de ses potentielles erreurs à l'exécution, mais est-elle pour autant 
+suffisamment spécifiée ? Pour voir cela, nous pouvons modifier légèrement le code
+de cette façon (nous utilisons \CodeInline{assert} pour analyser des propriétés 
+ponctuelles) :
+
+
+
+\CodeBlockInput{c}{swap-1.c}
+
+
+
+Le résultat n'est pas vraiment celui escompté :
+
+
+
+\image{2-swap-1.png}[Échec de preuve sur une globale non concernée par l'appel à ```swap```]
+
+
+En effet, nous n'avons pas spécifié les effets de bords autorisés pour notre
+fonction. Pour spécifier les effets de bords, nous utilisons la clause \CodeInline{assigns}
+qui fait partie des post-conditions de la fonction. Elle nous permet de spécifier 
+quels éléments \textbf{non locaux} (on vérifie bien des effets de bord), sont 
+susceptibles d'être modifiés par la fonction.
+
+
+
+Par défaut, WP considère qu'une fonction a le droit de modifier n'importe quel
+élément en mémoire. Nous devons donc préciser ce qu'une fonction est en droit 
+de modifier. Par exemple pour la fonction \CodeInline{swap} :
+
+
+
+\CodeBlockInput[3][14]{c}{swap-2.c}
+
+
+
+Si nous rejouons la preuve avec cette spécification, la fonction et les 
+assertions que nous avions demandées dans le \CodeInline{main} seront validées par WP.
+
+
+
+Finalement, il peut arriver que nous voulions spécifier qu'une fonction ne 
+provoque pas d'effets de bords. Ce cas est précisé en donnant \CodeInline{\textbackslash{}nothing}
+à \CodeInline{assigns} :
+
+
+
+\CodeBlockInput{c}{max_ptr.c}
+
+
+
+Le lecteur pourra maintenant reprendre les exemples précédents pour y intégrer 
+la bonne clause \CodeInline{assigns} .
+
+
+
+\levelFourTitle{Séparation des zones de la mémoire}
+
+
+Les pointeurs apportent le risque d'\textit{aliasing} (plusieurs pointeurs ayant accès à
+la même zone de mémoire). Si dans certaines fonctions, cela ne pose pas de 
+problème (par exemple si nous passons deux pointeurs égaux
+à notre fonction \CodeInline{swap}, la spécification est toujours vérifiée par le 
+code source), dans d'autre cas, ce n'est pas si simple :
+
+
+
+\CodeBlockInput{c}{incr_a_by_b-0.c}
+
+
+
+Si nous demandons à WP de prouver cette fonction, nous obtenons le 
+résultat suivant :
+
+
+
+\image{2-incr_a_by_b-1.png}[Échec de preuve : risque d'aliasing]
+
+
+La raison est simplement que rien ne garantit que le pointeur \CodeInline{a} est bien
+différent du pointeur \CodeInline{b}. Or, si les pointeurs sont égaux,
+
+
+
+\begin{itemize}
+\item la propriété \CodeInline{*a == \textbackslash{}old(*a) + *b} signifie en fait 
+\CodeInline{*a == \textbackslash{}old(*a) + *a}, ce qui ne peut être vrai que si l'ancienne valeur 
+pointée par \CodeInline{a} était 0, ce qu'on ne sait pas,
+\item la propriété \CodeInline{*b == \textbackslash{}old(*b)} n'est pas validée car potentiellement,
+nous la modifions.
+\end{itemize}
+
+
+\begin{Question}
+Pourquoi la clause \CodeInline{assign} est-elle validée ?
+
+C'est simplement dû au fait, qu'il n'y a bien que la zone mémoire pointée par
+\CodeInline{a} qui est modifiée étant donné que si \CodeInline{a != b} nous ne modifions bien 
+que cette zone et que si \CodeInline{a == b}, il n'y a toujours que cette zone, et 
+pas une autre.
+\end{Question}
+
+
+Pour assurer que les pointeurs sont bien sur des zones séparées de mémoire, 
+ACSL nous offre le prédicat \CodeInline{\textbackslash{}separated(p1, ..., pn)} qui reçoit en entrée 
+un certain nombre de pointeurs et qui va nous assurer qu'ils sont deux à deux 
+disjoints. Ici, nous spécifierions :
+
+
+
+\CodeBlockInput{c}{incr_a_by_b-1.c}
+
+
+
+Et cette fois, la preuve est effectuée :
+
+
+
+\image{2-incr_a_by_b-2.png}[Résolution des problèmes d'aliasing]
+
+
+Nous pouvons noter que nous ne nous intéressons pas ici à la preuve de 
+l'absence d'erreur à l'exécution car ce n'est pas l'objet de cette section.
+Cependant, si cette fonction faisait partie d'un programme complet à vérifier,
+il faudrait définir le contexte dans lequel on souhaite l'utiliser et définir
+les pré-conditions qui nous garantissent l'absence de débordement en conséquence.

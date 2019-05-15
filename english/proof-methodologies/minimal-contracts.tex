@@ -1,0 +1,222 @@
+We have seen that program proof allows to verify two main aspects of program
+correctness: first that programs do not contain runtime errors, second that
+programs correctly implement their specification. However, it is sometimes hard
+to guarantee the later, and the former is already an interesting step for
+program correctness.
+
+Indeed, RTE often cause the presence of so-called ``undefined behaviors'' in C
+programs. These undefined behaviors are often the main vectors of security
+breaches and thus, guaranteeing their absence already protects us of a lot of
+attack vectors. The absence of runtime errors can be verified thanks to an
+approach called minimal contracts.
+
+
+\levelThreeTitle{Principle}
+
+
+The minimal contracts approach is guided by the RTE plugin. Basically, the idea
+is to generate the assertions related to absence of runtime errors for all the
+functions of a module or a project and to write the minimal set of (correct)
+contracts that are sufficient to prove that the runtime errors cannot happen.
+Most of the time, we will need far less specification that what is usually
+required to prove the functional correctness of the program.
+
+
+Let us take a simple example with the absolute value function.
+
+
+\CodeBlockInput{c}{abs-1.c}
+
+
+Here, we can generate the assertions required to prove the absence of runtime
+errors, which generate this program:
+
+
+\CodeBlockInput{c}{abs-2.c}
+
+
+Thus, we only need to specify as a requirement that the value of \CodeInline{x}
+must be greater than \CodeInline{INT\_MIN}:
+
+
+\CodeBlockInput{c}{abs-3.c}
+
+
+This condition is enough to prove that no runtime error can happen in the
+function.
+
+
+As we will see later, the function is however generally used in a particular
+context. So it is probable that this contract will in fact not be enough. For
+example, we often have global variables in our program and here we do not
+specify what is assigned by the function. Most of the time the ``assigns''
+clause cannot be ignored (which is expected in a language where everything is
+mutable by default). Moreover, if one take the absolute value of an integer,
+it is surely because they need a positive value. In reality, the minimal
+contract of the absolute value function will be the following:
+
+
+\CodeBlockInput{c}{abs-4.c}
+
+
+But this addition should only be guided by the verification of the context where
+the function is used once we have proved the absence of runtime errors in the
+function itself.
+
+
+
+\levelThreeTitle{Example: the search function}
+
+
+Now that we have the principle in mind, let us work on more complex examples, in
+particular with an example that involves a loop.
+
+
+\CodeBlockInput{c}{search-1.c}
+
+
+Once we have generated the assertions related to runtime errors, we have the
+following program:
+
+
+\CodeBlockInput{c}{search-2.c}
+
+
+We have to prove that any cell visited by the program can be read, thus we need
+to express as a precondition that the array is
+\CodeInline{\textbackslash{}valid\_read} on the corresponding range of indices.
+However, this is not enough to complete the proof since we have a loop in this
+program, so we have to provide a suitable invariant. We also probably want to
+prove that the loop terminates.
+
+
+Thus, we get the following minimally specified function:
+
+
+\CodeBlockInput{c}{search-3.c}
+
+
+This contract can be compared with the contract provided for the search
+function in section~\ref{l3:statements-loops-example}, and we can see that it is
+much more simple.
+
+
+Now let us imagine that the function is used in the following program:
+
+
+\CodeBlockInput{c}{search-foo-1.c}
+
+
+We again have to provide a suitable contract for the function, again by having
+a look at the assertion that RTE asks us to verify:
+
+
+\CodeBlockInput[26][35]{c}{search-4.c}
+
+
+Thus we have to verify that:
+
+
+\begin{itemize}
+\item the pointer we received from \CodeInline{search} is valid,
+\item \CodeInline{*p + 1} does not overflow,
+\item we respect the contract of the \CodeInline{search} function.
+\end{itemize}
+
+
+In addition to the contract of \CodeInline{foo}, we have to provide some more
+information in the contract of \CodeInline{search}. Indeed, we will not be able
+to prove that the pointer is valid when it is not null if the function does not
+guarantee that the pointer is in the range of our array in this case.
+Furthermore, we will not be able to prove that \CodeInline{*p} is less than
+\CodeInline{INT\_MAX} if the function can modify it.
+
+
+This leads us to this complete annotated program:
+
+
+\CodeBlockInput{c}{search-5.c}
+
+
+\levelThreeTitle{Advantages and limitations}
+
+
+The evident advantage of this approach is the fact that it can guarantee the
+absence of runtime errors in any function of a module or a program in (relative)
+isolation of the other functions. Furthermore, this absence of runtime errors
+is guaranteed for any use of the function as long as the precondition is
+verified when it is called. That allows to gain some confidence into a system
+with a relatively low-cost approach.
+
+
+
+However, as we have seen, when we use a function it can change the knowledge
+we need about its behavior, requiring to make the contract richer and richer.
+Thus we can progressively reach a state where we basically proved the functional
+correctness of the function.
+
+
+
+Furthermore, even proving the absence of runtime errors is sometimes not trivial
+as we have for example seen with functions like the factorial of the sum of
+N integers, that require to give quite a lot of information to SMT solvers.
+
+
+
+Finally, sometimes the minimal contracts of a function or a module basically
+is the full functional specification, and thus formally verifying the absence
+of runtime errors requires a full functional verification. This is commonly the
+case when we have to deal with complex data structures where the properties
+that are required for the absence of runtime errors depends on the functional
+behavior of the function, maintaining some non-trivial invariant about the
+data structure.
+
+
+
+\levelThreeTitle{Exercises}
+
+
+\levelFourTitle{Some simple examples}
+
+
+Prove the absence of runtime errors in the following programs using a minimal
+contracts approach:
+
+
+\CodeBlockInput{c}{ex-1-simple.c}
+
+
+\levelFourTitle{Reverse}
+
+
+Prove the absence of runtime errors for the following \CodeInline{reverse}
+function and its dependency using a minimal contracts approach. Note that the
+\CodeInline{swap} function should also be specified with minimal contracts only.
+Do not forget to add the option \CodeInline{-warn-unsigned-overflow}.
+
+
+\CodeBlockInput{c}{ex-2-reverse.c}
+
+
+
+\levelFourTitle{Binary search}
+
+
+Prove the absence of runtime errors for the following \CodeInline{bsearch}
+function using a minimal contracts approach. Do not forget to add the option
+\CodeInline{-warn-unsigned-overflow}.
+
+
+\CodeBlockInput{c}{ex-3-binary-search.c}
+
+
+\levelFourTitle{Sort}
+
+
+Prove the absence of runtime errors for the following \CodeInline{sort}
+function and its dependencies using a minimal contracts approach. Note that
+these dependencies should also be specified with minimal contracts only.
+Do not forget to add the option \CodeInline{-warn-unsigned-overflow}.
+
+
+\CodeBlockInput{c}{ex-4-sort.c}
