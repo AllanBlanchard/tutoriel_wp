@@ -60,7 +60,7 @@ properties about them:
 
 
 
-\CodeBlockInput[20][30]{c}{affine-0.c}
+\CodeBlockInput[20][30]{c}{linear-0.c}
 
 
 
@@ -70,16 +70,54 @@ write some code examples:
 
 
 
-\CodeBlockInput[32][57]{c}{affine-0.c}
+\CodeBlockInput[32][60]{c}{linear-0.c}
 
 
 
 If we do not give the lemmas provided earlier, Alt-ergo will not be able
-to prove the proof that \CodeInline{fmin} is lesser or equal to
+to prove the proof that \CodeInline{fmin} is lesser or equals to
 \CodeInline{fmax}. With the lemmas it is however very easy for it since the
 property is the simply an instance of the lemma
 \CodeInline{ax\_monotonic\_pos}, the proof is then trivial as our lemma is
-considered to be true when are not currently proving it.
+considered to be true when are not currently proving it. Note that on this
+generalized version of \CodeInline{function}, Z3 will probably more efficient
+to prove this absence of runtime errors.
+
+
+\levelThreeTitle{Example: arrays and labels}
+
+
+Later in this tutorial, we will see some kind of definitions for which it is
+sometimes hard to reason about for SMT solvers when some mutations happen in
+memory. Thus, we will often need lemmas to state relations about the content
+of the memory between labels.
+
+
+Let us illustrate with a first simple example. Consider the two following
+predicates:
+
+
+\CodeBlockInput[1][8]{c}{unchanged-sorted.c}
+
+
+One could for example want to state that when an array is sorted, and some
+mutations happen in memory (creating a new memory state), but the content of the
+array remains unchanged, then the array is still sorted. This can be done with
+the following lemma:
+
+
+\CodeBlockInput[10][16]{c}{unchanged-sorted.c}
+
+
+We state this lemma for two labels \CodeInline{L1} and \CodeInline{L2}, and
+express that if any range in any array is sorted at \CodeInline{L1}, and
+unchanged from \CodeInline{L1} to \CodeInline{L2}, then it is still sorted at
+\CodeInline{L2}.
+
+
+Note that this lemma is easily proved by SMT solvers. We will see later some
+examples where it is not so easy to get a proof.
+
 
 
 \levelThreeTitle{Exercises}
@@ -105,7 +143,7 @@ automatically.
 
 
 The following program contains a function that requires an array to be sorted
-in the sense that each element is lower or equals to the element to follows it
+in the sense that each element is lower or equals to the element that follows it
 and calls the binary search function.
 
 

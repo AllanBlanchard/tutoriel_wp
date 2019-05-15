@@ -18,6 +18,7 @@
 */
 
 /*@
+  requires INT_MIN <= 3 * x ;
   requires limit_int_min_ax_b(3,4) < x < limit_int_max_ax_b(3,4);
   assigns \nothing ;
   ensures \result == ax_b(3,x,4); 

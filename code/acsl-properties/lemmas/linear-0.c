@@ -30,6 +30,7 @@
 */
 
 /*@
+  requires INT_MIN <= a*x <= INT_MAX ;
   requires limit_int_min_ax_b(a,4) < x < limit_int_max_ax_b(a,4);
   assigns \nothing ;
   ensures \result == ax_b(a,x,4); 
@@ -39,6 +40,8 @@ int function(int a, int x){
 }
 
 /*@ 
+  requires INT_MIN <= a*x <= INT_MAX ;
+  requires INT_MIN <= a*y <= INT_MAX ;
   requires a > 0;
   requires limit_int_min_ax_b(a,4) < x < limit_int_max_ax_b(a,4) ;
   requires limit_int_min_ax_b(a,4) < y < limit_int_max_ax_b(a,4) ;

@@ -52,7 +52,7 @@ function.
 
 
 
-\CodeBlockInput[8][27]{c}{linear-1.c}
+\CodeBlockInput[8][28]{c}{linear-1.c}
 
 
 
@@ -63,10 +63,14 @@ function.
 \end{Information}
 
 
-Once this specification is provided, everything is fine. Of course, we
-could manually provide these bounds every time we create a linear logic
-function. But, by creating these bound computation functions, we directly
-get a way to compute them automatically which is quite comfortable.
+Once this specification is provided, everything is fine. Note that we also give
+a lower bound to the computation of \CodeInline{3 * x}, indeed while the bound
+provided for \CodeInline{x} by our logic function is correct for the complete
+computation, it does not say anything about the value obtain in the intermediate
+computation. Of course, we could manually provide these bounds every time we
+create a linear logic function. But, by creating these bound computation
+functions, we directly get a way to compute them automatically which is quite
+comfortable.
 
 
 

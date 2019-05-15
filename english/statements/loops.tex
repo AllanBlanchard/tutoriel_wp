@@ -492,8 +492,12 @@ not need to be considered when designing the contract.
 
 
 
-Write a suitable invariant for the following loop and prove it with
-the command \CodeInline{frama-c -wp your-file.c}.
+Write a suitable invariant for the following loop and prove it using
+the command.
+
+\begin{CodeBlock}{text}
+$ frama-c -wp your-file.c
+\end{CodeBlock}
 
 
 \CodeBlockInput[2][6]{c}{ex-1-invariant.c}
@@ -506,8 +510,12 @@ Is the property $-100 \leq x \leq 100$ a correct invariant? Explain why.
 \levelFourTitle{Loop variant}
 
 
-Write a suitable invariant for the follow loop and prove it with
-the command \CodeInline{frama-c -wp your-file.c}.
+Write a suitable invariant for the follow loop and prove it using the
+command:
+
+\begin{CodeBlock}{text}
+$ frama-c -wp your-file.c
+\end{CodeBlock}
 
 
 \CodeBlockInput[2][6]{c}{ex-2-variant.c}
@@ -523,7 +531,8 @@ iterations and use it as a variant. You might need to add an invariant.
 
 
 Write a suitable loop assigns clause for this loop such that the assertion
-on line 9 is proved as well as the assigns clause:
+on line 9 is proved as well as the assigns clause. Let us ignore runtime
+errors in this proof.
 
 
 

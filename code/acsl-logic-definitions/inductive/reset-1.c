@@ -1,15 +1,12 @@
 #include <stddef.h>
 
 /*@
-  axiomatic A_all_zeros{
-    predicate zeroed{L}(int* a, integer b, integer e) reads a[b .. e-1];
-
-    axiom zeroed_empty{L}:
-      \forall int* a, integer b, e; b >= e ==> zeroed{L}(a,b,e);
-      
-    axiom zeroed_range{L}:
-      \forall int* a, integer b, e; b < e ==>
-        zeroed{L}(a,b,e-1) && a[e-1] == 0 <==> zeroed{L}(a,b,e);
+  inductive zeroed{L}(int* a, integer b, integer e){
+  case zeroed_empty{L}:
+    \forall int* a, integer b, e; b >= e ==> zeroed{L}(a,b,e);
+  case zeroed_range{L}:
+    \forall int* a, integer b, e; b < e ==>
+      zeroed{L}(a,b,e-1) && a[e-1] == 0 ==> zeroed{L}(a,b,e);
   }
 */
 
