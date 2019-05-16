@@ -6,7 +6,7 @@ for the output. The expectation of the function is called the
 
 
 
-These properties are expressed with ACSL, the syntax is relatively
+These properties are expressed with ACSL. The syntax is relatively
 simple if one has already developed in C language since it shares most
 of the syntax of boolean expressions in C. However, it also provides:
 
@@ -64,10 +64,10 @@ later see how to express precondition).
 
 
 The postcondition of a function is introduced with the clause \CodeInline{ensures}. 
-We will illustrate its use with the following function
+Let us illustrate its use with the following function
 that returns the absolute value of an input value. One of its postconditions
 is that the result (which is denoted with the keyword
-\CodeInline{\textbackslash{}result}) is greater or equal to 0.
+\CodeInline{\textbackslash{}result}) is greater or equals to 0.
 
 
 
@@ -77,7 +77,7 @@ is that the result (which is denoted with the keyword
 
 (Notice the \CodeInline{;} at the end of the line).
 
-But that it is not the only property to verify. We also need to specify
+But this it is not the only property to verify. We also need to specify
 the general behavior of a function returning the absolute value. That
 is: if the value is positive or 0, the function returns the same value,
 else it returns the opposite of the value.
@@ -122,7 +122,7 @@ true''.
 
 Another available connector is the equivalence $A \Leftrightarrow B$
 (written \CodeInline{A <==> B} in ACSL), and it is
-stronger. It is conjunction of the implication in both ways
+stronger. This is the conjunction of the implication in both ways
 $(A \Rightarrow B) \wedge (B \Rightarrow A)$. This formula is true in
 only two cases: $A$ and $B$ are both true, or both false (it can be seen
 as the negation of the exclusive or).
@@ -163,7 +163,7 @@ too many of them, names would not give us much information.
 
 We can copy and paste the function \CodeInline{abs} and its specification in
 a file \CodeInline{abs.c} and use Frama-C to determine if the implementation
-is correct against the specification. We can start the GUI of Frama-C
+is correct with respect to the specification. We can start the GUI of Frama-C
 (it is also possible to use the command line interface of Frama-C but we
 will not use it during this tutorial) by using this command line:
 
@@ -181,7 +181,7 @@ Or by opening it from the graphical environment.
 
 It is then possible to click on the button ``Create a new session from
 existing C files'', files to analyze can be selected by double-clicking
-it, the OK button ending the selection. Then, adding other files will be
+it, the OK button ending the selection. Then, adding other files is
 done by clicking Files > Source Files.
 
 
@@ -223,17 +223,18 @@ the function.
 
 
 But is our code really bug free? WP gives us a way to ensure that a
-code respects a specification, but it does not check for runtime errors
-(RTE). This is provided by another plugin that we will use here and that
-is called RTE. Its goal is to add, in the program, some controls to
+code respects a specification, but it does not directly check the absence
+of runtime errors (RTE) if we do not ask it. Another plugin of Frama-C,
+called RTE, can be used to generate some ACSL annotations that can be verified
+by the other plugins. Its purpose is to add, in the program, some controls to
 ensure that the program cannot create runtime errors (integer overflow,
 invalid pointer dereferencing, 0 division, etc).
 
 
 
-To active these controls, we check the box pointed by the screenshot (in
+To activate these controls, we check the box pointed by the screenshot (in
 the WP panel). We can also ask Frama-C to add them in a function by
-right-clicking on its name and then click ``Insert RTE guards''.
+right-clicking on its name and then click ``Insert wp-rte guards''.
 
 
 
@@ -241,10 +242,10 @@ right-clicking on its name and then click ``Insert RTE guards''.
 
 
 Finally, we execute the verification again (we can also click on the
-``Reparse'' button of the toolbar, it will deletes existing proofs).
+``Reparse'' button of the toolbar, it will delete existing proofs).
 
 We can then see that WP fails to prove the absence of arithmetic
-underflow for the computation of \CodeInline{-val}. And, indeed, on our
+overflow for the computation of \CodeInline{-val}. And, indeed, on our
 architectures, -\CodeInline{INT\_MIN} ($-2^{31}$) > \CodeInline{INT\_MAX} ($2^{31}-1$).
 
 
@@ -253,19 +254,19 @@ architectures, -\CodeInline{INT\_MIN} ($-2^{31}$) > \CodeInline{INT\_MAX} ($2^{3
 
 
 \begin{Information}
-We can notice that the underflow risk
+We can notice that the overflow risk
 is real for us, since our computers (for which the
 configuration is detected by Frama-C) use the 
 \externalLink{Two's complement}{https://en.wikipedia.org/wiki/Two\%27s_complement}
-implementation of integers, which do not define
-the behavior of under and overflows.
+implementation of integers, which does not define
+the behavior of overflows.
 \end{Information}
 
 
 Here, we can see another type of ACSL annotation. By the line
-\CodeInline{//@ assert property ;}, we can ask the verification of
+\CodeInline{//@ assert property ;}, we can ask the verification of a
 property at a particular program point. Here, RTE inserted it for us, since
-we have to verify that \CodeInline{-val} does not produce an underflow, but
+we have to verify that \CodeInline{-val} does not produce an overflow, but
 we can also add such an assertion manually in the source code.
 
 
@@ -282,7 +283,7 @@ assertion, so they cannot rely on this unproved property.
 
 
 
-When WP transmits a proof obligation to an automatic prover, it
+When WP transmits a verification condition to an automatic prover, it
 basically transmits two types of properties : $G$, the goal, the
 property that we want to prove, and $A_1$ \ldots{} $A_n$, the
 different assumptions we can have about the state of the memory at the
@@ -302,25 +303,25 @@ property is verified. There are two possibles reasons:
 \begin{itemize}
 \item the prover did not have enough information,
 \item the prover did not have enough time to compute the proof and
-  encountered a timeout (which can be configured in the WP panel).
+  met a timeout (which can be configured in the WP panel).
 \end{itemize}
 
 
-In the bottom panel, we can select the ``WP Goals'' tab, it shows the
-list of proof obligations, and for each prover the result is symbolized
+In the bottom panel, we can select the ``WP Goals'' tab, it shows the list of
+verification conditions, and for each prover the result is symbolized
 by a logo that indicates if the proof has been tried and if it
-succeeded, failed or encountered a timeout (here we can see a try with
+succeeded, failed or met a timeout (here we can see a try with
 Z3 where we had a timeout on the proof of absence of RTE). Note that it
 may require to select ``All Results'' in the squared field to see all
-proof obligations.
+verification conditions.
 
 
 \image{1-abs-5}
 
 
-In the first column, we have the name of the function the proof
-obligation belongs to. The second column indicates the name of proof
-obligation. For example here, our postcondition is named
+In the first column, we have the name of the function the verification
+condition belongs to. The second column indicates the name of verification
+condition. For example here, our postcondition is named
 \CodeInline{postcondition 'positive\_value,function\_result'}, we can notice
 that if we select a property in this list, it is also highlighted in the
 source code. Unnamed properties are automatically named by WP with the
@@ -331,10 +332,10 @@ through WP.
 
 
 
-In these provers, the first element is Qed. It is not really a prover.
-In fact, if we double-click on the property ``absence of underflow''
-(highlighted in blue in the last screenshot), we can see corresponding
-proof obligation (if it is not the case, make sure that the value ``Raw
+In the list of provers, the first element is Qed. This is not really a prover.
+In fact, if we double-click on the property ``absence of overflow''
+(highlighted in blue in the last screenshot), we can see the corresponding
+verification condition (if it is not the case, make sure that the value ``Raw
 obligation'' is selected in the blue squared field):
 
 
@@ -342,7 +343,7 @@ obligation'' is selected in the blue squared field):
 \image{1-abs-6}
 
 
-This is the proof obligation generated by WP about our property and our
+This is the verification condition generated by WP about our property and our
 program, we do need to understand everything here, but we can get the
 general idea. It contains (in the ``Assume'' part) the assumptions that
 we have specified and those that have been deduced by WP from the
@@ -368,23 +369,23 @@ When automatic solvers cannot ensure that our properties are verified,
 it it sometimes hard to understand why. Indeed, provers are generally
 not able to answer something other than ``yes'', ``no'' or ``unknown'',
 they are not able to extract the reason of a ``no'' or an ``unknown''.
-There exist tools that can explore a proof tree to extract this type of
-information, currently Frama-C do not provide such a tool. Reading proof
-obligations can sometimes be helpful, but it requires a bit of practice
-to be efficient. Finally, one of the best way to understand the reason
+There exist tools that can explore a proof tree to extract this kind of
+information, currently Frama-C does not provide such a tool. Reading
+verification conditions can sometimes be helpful, but it requires a bit of
+practice to be efficient. Finally, one of the best way to understand the reason
 why a proof fails is to try to do it interactively with Coq. However, it
-requires to be quite comfortable with this language to not being lost
-facing the proof obligations generated by WP, since these obligations
+requires to be quite comfortable with this language to be able to understand
+the verification conditions generated by WP, since these conditions
 need to encode some elements of the C semantics that can make them quite
 hard to read.
 
 
 
-If we go back to our view of proof obligations (see the red squared button
-in the last screenshot), we can see that our hypotheses are not enough
-to determine that the property ``absence of underflow'' is true (which
-is indeed currently impossible), so we need to add some hypotheses to
-guarantee that our function will well-behave: a call precondition.
+If we go back to our view of the verification conditions (see the red squared
+button in the previous screenshot), we can see that our hypotheses are not
+sufficient to determine that the property ``absence of overflow'' is true (which
+is actually impossible), so we need to add some hypotheses to
+guarantee that our function will well-behave: a precondition.
 
 
 
@@ -410,7 +411,7 @@ void foo(int a, int b){
 
 
 
-Preconditions are properties about the input (and eventually about
+Preconditions are properties about the input (or about
 global variables) that we assume to be true when we analyze the
 function. We will verify that they are indeed true only at program
 points where the function is called.
@@ -426,9 +427,9 @@ perform necessary translations.
 
 
 If we come back to our example about the absolute value, to avoid the
-arithmetic underflow, it is sufficient to state that \CodeInline{val} must
+arithmetic overflow, it is sufficient to state that \CodeInline{val} must
 be strictly greater than \CodeInline{INT\_MIN} to guarantee that the
-underflow will never happen. We then add it as a precondition of the
+overflow will never happen. Thus, we add it as a precondition of the
 function (notice that it is also necessary to include the header where
 \CodeInline{INT\_MIN} is defined):
 
@@ -441,17 +442,6 @@ function (notice that it is also necessary to include the header where
 \begin{Warning}
   Reminder: The Frama-C GUI does not allow source code modification.
 \end{Warning}
-
-
-\begin{Information}
-  For Frama-C NEON and older, the
-  pre-processing of annotations is not activated by default. We
-  have to start Frama-C with the option \CodeInline{-pp-annot}:
-
-\begin{CodeBlock}{bash}
-$ frama-c-gui -pp-annot file.c
-\end{CodeBlock}
-\end{Information}
 
 
 Once we have modified the source code with our precondition, we click on
@@ -501,8 +491,9 @@ then the postcondition is verified.
 
 
 
-If we give a function that surely breaks the precondition, we can deduce
-that the postcondition is false. Knowing this, we can prove absolutely
+If we give to a function an input that surely breaks the precondition, we can
+deduce that everything can happen, including obtain false in postcondition.
+Knowing this, we can prove absolutely
 everything because this ``false'' becomes an assumption of every call
 that follows. Knowing false, we can prove everything, because if we have
 a proof of false, then false is true, as well as true is true. So
@@ -511,7 +502,7 @@ everything is true.
 
 
 Taking our modified program, we can convince ourselves of this fact by
-looking at proof obligations generated by WP for the bad call and the
+looking at the verification conditions generated by WP for the bad call and the
 subsequent call that becomes verified:
 
 
@@ -614,7 +605,7 @@ $ frama-c-gui file.c -wp
 
 
 Which will collect all properties to be proved in \texttt{file.c},
-generate all proof obligations and try to discharge them.
+generate all verification conditions and try to discharge them.
 
 About runtime-errors, it is generally advised to first verify the
 program without generating RTE assertions, and then to generate them to
@@ -641,7 +632,7 @@ RTE and start WP again''.
 
 
 
-While this exercises are not absolutely necessary to read the next chapters
+While these exercises are not absolutely necessary to read the next chapters
 of the tutorial we strongly suggest to practice them. Note that we also
 suggest to, at least, read the fourth exercise that introduces a notation
 that can be sometimes useful.
@@ -665,7 +656,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Once the function is successfully proved to verify your contract, run:
+Once the function is successfully proved to respect your contract, run:
 
 
 \begin{CodeBlock}{bash}
@@ -695,7 +686,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Once the function is successfully proved to verify your contract, run:
+Once the function is successfully proved to respect your contract, run:
 
 
 \begin{CodeBlock}{bash}
@@ -728,7 +719,7 @@ frama-c-gui your-file.c -wp -wp-rte
 \end{CodeBlock}
 
 
-All proof obligations should be proved, including the assertion in the
+All verification conditions should be proved, including the assertions in the
 main function.
 
 
@@ -740,7 +731,7 @@ main function.
 Write the postcondition of the following functions that returns the number
 of days in function of the received month (notice that we consider that
 they are numbered from 1 to 12), for February, we only consider the case
-when it has 28 days, we will later how to solve this problem:
+when it has 28 days, we will see later how to solve this problem:
 
 
 
@@ -793,7 +784,7 @@ Modify your postcondition by using this notation.
 
 
 
-This functions receives two values of angle in input and returns the value
+This function receives two values of angle in input and returns the value
 of the last angle considering that the sum of the three angles must be 180.
 Write the postcondition that expresses that the sum of the three angles is
 180.
@@ -811,7 +802,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Once the function is successfully proved to verify your contract, run:
+Once the function is successfully proved to respect your contract, run:
 
 
 \begin{CodeBlock}{bash}
