@@ -1,4 +1,4 @@
-/*@
+/*@ // This contract is wrong and needs to be fixed
   requires \valid(a) && \valid(b) && \valid(c) ;
   requires \separated(a, b, c);
   assigns *a, *b, *c ;
