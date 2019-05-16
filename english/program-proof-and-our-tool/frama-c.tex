@@ -7,38 +7,42 @@
 
 
 Frama-C (FRAmework for Modular Analysis of C code) is a platform
-dedicated to the analysis of C programs created by the CEA List and
+dedicated to the analysis of C programs created by the CEA LIST and
 Inria. It is based on a modular architectures allowing to use different
 (collaborating or not) plugins. The default plugins comprises different
 static analyses (that do not execute source code), dynamic analyses
 (that requires code execution), or combining both.
 
 
+\image{gallery}
+
+
 
 Frama-C provides a specification language called ACSL (``Axel'') for
 ANSI C Specification Language and that allows us to express the
-properties we want to verify about our programs. These properties will
-be written using code annotations in comment sections. If one has
+properties we want to verify about our programs. These properties are
+written using code annotations in comment sections. If one has
 already used Doxygen, it is quite similar, except that we write logic
 formulas and not text. During this tutorial, we will extensively write
 ASCL code, so let us just skip this for now.
 
 
 
-The analysis we will use is provided by the WP plugin (for Weakest
-Precondition), it implements the technique we mentioned earlier: from
+The analysis we will use in this tutorial is provided by the WP plugin
+(for Weakest Precondition), a deductive verification plugin. It implements
+the technique we mentioned earlier: from
 ACSL annotations and the source code, the plugin generates what we call
-proof goals, that are logic formulas that must be verified to be
+verification conditions, that are logic formulas that must be verified to be
 satisfiable or not. This verification can be performed manually or
 automatically, here we use automatic tools.
 
 
 
 We will use a SMT solver
-(\externalLink{statisfiability modulo theory}{https://fr.wikipedia.org/wiki/Satisfiability\_modulo\_theories}, we will not describe in detail how it works). This solver is
+(\externalLink{statisfiability modulo theory}{https://fr.wikipedia.org/wiki/Satisfiability\_modulo\_theories}, we do not detail how it works). This solver is
 \externalLink{Alt-Ergo}{http://alt-ergo.lri.fr/}, that was initially developed
 by the Laboratoire de Recherche en Informatique d'Orsay, and is today
-maintained and updated by OCamlPro.
+maintained by OCamlPro.
 
 
 
@@ -46,9 +50,9 @@ maintained and updated by OCamlPro.
 
 
 
-Frama-C is a software developed under Linux and OSX. Its support is thus better
-under those operating system. Nevertheless, it is possible to install Frama-C
-under Windows and in theory, its use will be identical to its use under Linux.
+Frama-C is a software developed on Linux and OSX. Its support is thus better
+on those operating system. Nevertheless, it is possible to install Frama-C
+on Windows and in theory, its use will be identical to its use on Linux.
 However:
 
 
@@ -57,7 +61,7 @@ However:
 \begin{itemize}
   \item the tutorial presents the use of Frama-C on Linux (or OSX) and
     the author did not experiment the differences that could exists with Windows,
-  \item the ``Bonus'' section of this part could not be accessible under Windows.
+  \item the ``Bonus'' section of this part could not be accessible on Windows.
   \end{itemize}
 \end{Warning}
 
@@ -68,7 +72,7 @@ However:
 \levelFiveTitle{Using package managers}
 
 
-Under Debian, Ubuntu and Fedora, there exist packages for Frama-C. In
+On Debian, Ubuntu and Fedora, there exist packages for Frama-C. In
 such a case, it is enough to type a command like:
 
 
@@ -79,14 +83,14 @@ apt-get/yum install frama-c
 
 
 
-However, these repositories are not necessarily up to date with the last
+However, these repositories are not necessarily up to date with the latest
 version of Frama-C. This is not a big problem since there is not new
 versions of Frama-C every day, but it still important to know it.
 
 
 
 Go to the section ``Verify installation'' to perform some tests about
-your installation.
+the installation.
 
 
 
@@ -100,7 +104,7 @@ and applications.
 
 
 First of all, Opam must be installed (see its documentation). Then, some
-packages from your Linux distribution must be installed before
+packages from the Linux distribution must be installed before
 installing Frama-C:
 
 
@@ -127,7 +131,7 @@ opam install alt-ergo
 
 
 Go to the section ``Verify installation'' to perform some tests about
-your installation.
+the installation.
 
 
 
@@ -147,13 +151,13 @@ Navigate to the folder and then execute the command line:
 
 
 \begin{CodeBlock}{bash}
-./configure && make && sudo make install
+autoconf && ./configure && make && sudo make install
 \end{CodeBlock}
 
 
 
 Go to the section ``Verify installation'' to perform some tests about
-your installation.
+the installation.
 
 
 
@@ -243,8 +247,11 @@ Frama-C is then started using Cygwin.
 
 
 Go to the section ``Verify installation'' to perform some tests about
-your installation.
+the installation.
 
+
+Note that it is also possible to follow the installation steps provided for
+Linux in Windows Subsystem for Linux.
 
 
 
@@ -259,7 +266,7 @@ we will use the following code:
 \CodeBlockInput{c}{verify.c}
 
 
-
+Copy and paste this code in a file named \CodeInline{main.c}.
 Then, from a terminal, in the folder where the file has been created, we
 start Frama-C with the following command line:
 
@@ -290,7 +297,7 @@ lines as illustrated here:
 
 
 \begin{Warning}
-  The graphical user interface of Frama-C does not allow source code edition
+  The graphical user interface of Frama-C does not allow source code edition.
 \end{Warning}
 
 
@@ -311,7 +318,9 @@ This part is optional, nothing in this section should be particularly
 useful \emph{in the tutorial}. However, when we start to be interested
 in proving more complex programs, it is often possible to reach the
 limits of Alt-Ergo, which is available by default, and we would thus need
-some other provers.
+some other provers. For basic properties, almost all solvers have the
+same capabilities, for more complex ones, each solvers has its predilection
+domains.
 
 
 
@@ -319,22 +328,23 @@ some other provers.
 
 
 Coq, which is developed by Inria, is a proof assistant. Basically, we
-write the proofs ourselves in a dedicated language and the platform
-verify (using typing) that the proof is actually a valid proof.
+write the proofs ourselves in a dedicated language and the assistant
+verifies (using typing) that the proof is actually a valid proof.
 
 
 
 Why would we need such a tool? Sometimes, the properties we want to
 prove can be too complex to be solved automatically by SMT solvers,
 typically when they requires careful inductive reasoning with precise
-choices at each step. In this situation, WP allows us to generate proof
-goals translated in Coq language, and to write the proof ourselves.
+choices at each step. In this situation, WP allows us to generate
+verification conditions translated in Coq language, and to write the
+proof ourselves.
 
 
 
 
 To learn Coq, we would recommend
-\externalLink{this tutorial}{http://www.cis.upenn.edu/\textasciitilde{}bcpierce/sf/current/index.html}.
+\externalLink{this tutorial}{http://www.cis.upenn.edu/~bcpierce/sf/current/index.html}.
 
 
 
@@ -372,12 +382,12 @@ using the left side panel, in the WP part:
 \end{Warning}
 
 
-Why3 is deductive proof platform developed by the LRI in Orsay. It
+Why3 is a deductive proof platform developed by the LRI in Orsay. It
 provides a programming language and a specification language, as well as
 a module that allows to interact with a wide variety of automatic and
 interactive provers. This point is the one that interest us here. WP can
-translate its proof goals to the Why3 language and then use Why3 to
-interact with solvers.
+translate the verification conditions to the Why3 language and then use
+Why3 to interact with solvers.
 
 
 
@@ -392,7 +402,7 @@ On this website, we can find the list of
 We recommend to install
 \externalLink{Z3}{https://github.com/Z3Prover/z3/wiki} which is
 developed by Microsoft Research, and
-\externalLink{CVC4}{http://cvc4.cs.nyu.edu/web/} which is developed by many
+\externalLink{CVC4}{http://cvc4.cs.stanford.edu/web/} which is developed by many
 research teams (New York University, University of Iowa, Google, CEA
 List). Those two provers are very efficient and somewhat complementary.
 
