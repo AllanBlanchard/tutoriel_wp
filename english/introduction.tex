@@ -1,9 +1,10 @@
 \begin{Warning}
-  Please note that this document is a beta version of the next version of the
-  tutorial. The source code of the tutorial is not currently available (it will
-  be soon).
+  This document is a beta version of the tutorial. The source code of
+  the tutorial is available on GitHub, as well as the solutions to the
+  different exercises (including the Coq proofs of some properties).
 
-  If you find some errors, please do not hesitate to post an issue at:
+  If you find some errors, please do not hesitate to post an issue or
+  a pull request at:
 
   \externalLink{https://github.com/AllanBlanchard/tutoriel\_wp}{https://github.com/AllanBlanchard/tutoriel_wp}
 \end{Warning}
@@ -52,9 +53,9 @@ written in C, that needs to be maintained and sometimes fixed, as it
 would be far too costly to rewrite these systems.
 
 
-But anyone who has already developed with C also know that it is very
+But anyone who has already developed with C also knows that it is very
 hard to perfectly master this language. There are numerous reasons, but
-ambiguities in the ISO C, and the fact that it is extremely permissive,
+the complexity of the ISO C, and the fact that it is extremely permissive,
 especially about memory management, make the development of robust C
 program very hard, even for an experienced programmer.
 
@@ -67,16 +68,17 @@ compilation.
 
 
 
-In such cases, the needs in terms of test coverage of the source code.
-The question ``is our software tested enough?'' becomes a
-question to which it is very hard to answer. Program proof can help us.
+In such cases, the needs in terms of test coverage of the source code
+becomes extremely high. Thus, the question ``is our software tested
+enough?'' becomes a question to which it is very hard to answer. Program
+proof can help us.
 Rather than test all possible and (un)imaginable inputs to the program,
-we will \emph{mathematically} prove that there cannot be any problem at
-runtime.
+we will \emph{statically} and \emph{mathematically} prove that there
+cannot be any problem at runtime.
 
 
 
-The goal of this tutorial is to use Frama-C, a tool developed at the CEA
+The goal of this tutorial is to use Frama-C, a tool developed the CEA
 LIST, and WP, its deductive proof plugin, to learn the basics about C
 program proof. More than the use of the tool itself, the goal of this
 tutorial is to convince that it is more and more possible to write
