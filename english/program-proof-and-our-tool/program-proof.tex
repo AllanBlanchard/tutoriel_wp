@@ -9,7 +9,7 @@ that make us confident enough to say that a program works correctly:
 
 \begin{itemize}
 \item
-  beginners simply ``try'' to use their programs and considers that
+  beginners simply ``try'' to use their programs and consider that
   these programs work if they do not crash (which is not a really good
   indicator in C language),
 \item
@@ -20,7 +20,7 @@ that make us confident enough to say that a program works correctly:
   code as they can ; which are systematically executed on their code.
   Some of them apply test driven development,
 \item
-  in critical domains, such as aerospace, railway or armament, every
+  in critical domains, such as aerospace, railway or armament, source
   code needs to be certified using standardized processes with very
   strict criteria about coding rules and code covering by the test.
 \end{itemize}
@@ -29,7 +29,7 @@ In all these ways to ensure that a program produces only what we expect
 it to produce, a word appears to be common: \emph{test}. We \emph{try}
 different inputs in order to isolate cases that are problematic. We
 provide inputs that we \emph{estimate to be representative} of the
-actual use of the program (note that unexpected use case are often not
+actual use of the program (note that unexpected use cases are often not
 considered whereas there are generally the most dangerous ones) and we
 verify that the results we get are correct. But we cannot test
 \emph{everything}. We cannot try \emph{every} combination of
@@ -131,7 +131,7 @@ example).
 
 
 Talking about static analyses, the model we use can be more or less
-abstract depending on the techniques, it is always an approximation of
+abstract depending on the techniques, this is always an approximation of
 possible states of the program. The more the approximation is precise,
 the more the model is concrete, the more the approximation is vague, the
 more it is abstract.
@@ -149,9 +149,9 @@ a chronometer could be the one presented here:
 
 We have a model of the behavior of our chronometer with the different
 states it can reach according to the different actions we can perform.
-However, we do not have modeled how these states are depicted inside the
+However, we have not modeled how these states are implemented in the
 program (is this a C enumeration? a particular program point in the
-source code?), nor how is modeled the time computation (a single
+source code?), nor the computation of the elapsed time is done (a single
 variable? multiple ones?). It would then be difficult to specify
 properties about our program. We could add some information:
 
@@ -165,9 +165,10 @@ properties about our program. We could add some information:
 
 
 Which gives us a more concrete model but that is still not precise
-enough to ask interesting questions like: ``is it possible to be in the
-state stopped and that time is still updated?'', as we do not model how
-the time measurement is updated by the chronometer.
+enough to ask interesting questions like: ``is it possible for the program
+to continue updating the time variable while the chronometer is on the Stopped
+state?'', as we do not model how the time measurement is updated by the
+chronometer.
 
 
 
@@ -196,9 +197,10 @@ When we create an abstraction of a system, we approximate it, in order
 to limit the knowledge we have about it and make our reasoning easier. A
 constraint we must respect, if we want our analysis to be correct, is to
 never under-approximate behaviors: we would risk to remove a behavior
-that contains an error. However, when we over-approximate it, we can add
+that contains an error (and thus miss it during the analysis). However,
+when we over-approximate the behaviors of the program, we can add
 behaviors that cannot happen, and if we add too many of them, we could
-not be able to prove our program is correct, since some of them could be
+not be able to prove that our program is correct, since some of them could be
 faulty behaviors.
 
 
