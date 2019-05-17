@@ -18,7 +18,7 @@
       \forall char* s ;
         strlen(s) >= 0 ==> s[strlen(s)] == '\0' ;
 
-    axiom before_of_strlen{L}:
+    axiom before_strlen{L}:
       \forall char* s ;
         strlen(s) >= 0 ==> (\forall integer i ; 0 <= i < strlen(s) ==> s[i] != '\0') ;
   }

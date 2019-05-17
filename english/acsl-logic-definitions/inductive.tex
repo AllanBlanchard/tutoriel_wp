@@ -13,9 +13,9 @@ For now, let us define the syntax of inductive predicates:
 \begin{CodeBlock}{c}
 /*@
   inductive property{ Label0, ..., LabelN }(type0 a0, ..., typeN aN) {
-  case c_1{L0, ..., Lq}: p_1 ;
+  case c_1{Lq_0, ..., Lq_X}: p_1 ;
   ...
-  case c_m{L0, ..., Lr}: p_km ;
+  case c_m{Lr_0, ..., Lr_Y}: p_km ;
   }
 */
 \end{CodeBlock}
@@ -47,8 +47,9 @@ deduce that an odd number is not even. If we try to prove that 1 is even, we
 will have to check if -1 is even, and then -3, -5, etc, infinitely. Moreover,
 we generally prefer to define the induction cases the opposite way: defining
 the condition under which the wanted conclusion is true. For example, here,
-how can we verify that some $n$ is natural and even? We first have to check that
-$n$ is greater than $0$ and then to verify that $n-2$ is even:
+how can we verify that some $n$ is natural and even? We first check whether it
+is 0, if not, we check if $n$ is greater than $0$ and then we verify that $n-2$
+is even:
 
 
 
@@ -59,7 +60,8 @@ $n$ is greater than $0$ and then to verify that $n-2$ is even:
 Here, we distinguish two cases:
 \begin{itemize}
 \item 0 is even,
-\item a natural $n$ is even if $n-2$ is an even natural.
+\item a natural $n$ is even if it is greater than 0 and $n-2$ is an even
+      natural.
 \end{itemize}
 
 Taking the second case, we recursively decrease the number until we reach
@@ -86,9 +88,9 @@ able to prove everything. While we will give more details about axioms in the
 Section~\ref{l2:acsl-logic-definitions-axiomatic}, let us give two hints to
 avoid building such a bad definition.
 
-First, we can make sure that are inductive predicate is weel founded. This can
-be done by syntactically restrict what we allow in an inductive definition, by
-making sure that each case has the form:
+First, we can make sure that inductive predicates are well founded. This can
+be done by syntactically restricting what we allow in an inductive definition,
+by making sure that each case has the form:
 
 \begin{CodeBlock}{c}
 /*@
@@ -107,7 +109,7 @@ This is for example verified by our previously defined predicate
 \CodeBlockInput[1][11]{c}{even-bad.c}
 
 does not respect this constraint as the property \CodeInline{even\_natural}
-appears negatively on line 8.
+appears negatively on line~8.
 
 Second, it is possible to ask the generation of a Coq version of a proof
 obligation that needs the predicate \CodeInline{P}. For example, we can
@@ -134,12 +136,12 @@ For example for our definition of \CodeInline{even\_natural}, we would write:
 
 
 
-As Coq is more strict than Frama-C and WP on this kind of definition. If the
+As Coq is stricter than Frama-C and WP on this kind of definition, if the
 inductive predicate is too strange (if it is not well founded), it will be
 rejected with an error. And indeed, with the bad definition of
-\CodeInline{even\_natural} we just proposed, Coq complains when try to prove
-the \CodeInline{ensures \\false}, because there exists a non positive
-occurrence of \CodeInline{P\_even\_natural}, that encodes the
+\CodeInline{even\_natural} we just proposed, Coq complains when we try to prove
+the \CodeInline{ensures \textbackslash{}false}, because there exists a non
+positive occurrence of \CodeInline{P\_even\_natural}, that encodes the
 \CodeInline{even\_natural} we wrote in ACSL.
 
 
@@ -149,9 +151,9 @@ occurrence of \CodeInline{P\_even\_natural}, that encodes the
 \image{coq-failed-error}
 
 
-However, that does not that we cannot write a inconsistent inductive definition.
-For example. The following definition is well founded, while it allows us to
-prove false:
+However, that does not mean that we cannot write a inconsistent inductive
+definition. For example, the following definition is well founded, while it
+allows us to prove false:
 
 
 \begin{CodeBlock}{c}
@@ -172,7 +174,7 @@ definition that can lead to a proof of false.
 Inductive predicates are often useful to express recursive properties since it
 prevents the provers to unroll the recursion when it is possible.
 
-If, for example, we want to define that an array only contains 0s, we have to
+For example, if we want to define that an array only contains 0s, we could
 write it as follows:
 
 
@@ -223,7 +225,7 @@ example.
 \label{l3:acsl-logic-definitions-inductive-sort}
 
 
-We will prove a simple selection sort:
+Let us prove a simple selection sort:
 
 
 \CodeBlockInput[3]{c}{sort-0.c}
@@ -236,7 +238,7 @@ specification and the proof of the sort function that is a interesting use case
 for inductive definitions.
 
 Indeed, a common error we could do, trying to prove a sort function, would
-be to write this specification (which is true !):
+be to write this specification (which is true!):
 
 
 \CodeBlockInput[6]{c}{sort-incomplete.c}
@@ -252,18 +254,19 @@ the specification:
 \CodeBlockInput[8]{c}{sort-false.c}
 
 
-Our specification does not express the fact that all elements initially found
-inside the array must still be found inside the array after executing the
-sort function. That is to say: the sort function produces a sorted permutation
-of the original array.
+Our specification does not express the fact that all elements initially present
+in the array must still be in the array after executing the sort function. That
+is to say: the sort function produces a sorted permutation of the original
+array.
 
-Defining the notion of permutation is easily done using an inductive definition.
-Indeed, to determine that an array is the permutation of an other one, we can
-limit us to a few cases. First, the array is a permutation of itself, then
-swapping two values of the array produces a new permutation if we do not change
-anything else. And finally, if we create the permutation $p_2$ of $p_1$, and then
-the permutation $p_3$ of $p_2$, then by transitivity $p_3$ is a permutation of
-$p_1$.
+Defining the notion of permutation can be done using an inductive definition.
+While we will see later a version of this property that is more general, let us
+for now limit us to a notion of permutation that is more specific to our current
+need. We can limit us to a few cases. First, the array is a permutation of
+itself, then swapping two values of the array produces a new permutation if we
+do not change anything else. And finally, if we create the permutation $p_2$ of
+$p_1$, and then the permutation $p_3$ of $p_2$, then by transitivity $p_3$ is a
+permutation of $p_1$.
 
 The corresponding inductive definition is the following:
 
@@ -282,13 +285,13 @@ function:
 
 This time, our property is precisely defined, the proof is relatively easy to
 produce, only requiring to add an assertion in the block of the loop to state
-that it only performs a swap of values inside the array (and then giving
+that it only performs a swap of values in the array (and then giving
 the transition to the next permutation). To define this swap notion, we use
 a particular annotation (at line 16), introduced using the keyword
 \CodeInline{ghost}. Here, the goal is to introduce a label in the code that in
 fact does not exist from the program point of view, and is only visible from
-a specification point of view. This is the final section of this chapter, for
-now let us focus on axiomatic definitions.
+a specification point of view. We present the ``ghost'' features in the final
+section of this chapter, for now let us focus on axiomatic definitions.
 
 
 
@@ -301,7 +304,7 @@ now let us focus on axiomatic definitions.
 Take back your solution to the
 exercise~\ref{l4:acsl-properties-lemmas-n-first-ints} about the sum of the N
 first integers. Rewrite the logic function using an inductive predicate that
-states that some integers equals the sum of the N first integers.
+states that some integer equals the sum of the N first integers.
 
 
 \CodeBlockInput{c}{ex-1-sum-N-first-ints.c}
@@ -376,7 +379,7 @@ In this version, we exploit two properties about the power operator:
 
 
 that allows us to divide $n$ by 2 at each step of the loop instead of decreasing
-it by one (which makes the algorithm $O(log n)$ instead of $O(n)$). Express the
+it by one (which makes the algorithm $O(log\ n)$ instead of $O(n)$). Express the
 two previous properties in lemmas:
 
 
@@ -407,7 +410,7 @@ one element to the left except the last one that is put in the first cell of the
 range. Use this predicate to prove the rotate function:
 
 
-\CodeBlockInput[12][26]{c}{ex-4-rotate-permutation.c}
+\CodeBlockInput[12][27]{c}{ex-4-rotate-permutation.c}
 
 
 Express a new version of the notion of permutation with an inductive predicate
@@ -423,6 +426,12 @@ that considers four cases:
 \end{itemize}
 
 
+\CodeBlockInput[30][37]{c}{ex-4-rotate-permutation.c}
+
+
 Complete the contract of \CodeInline{two\_rotates} that successively rotates the
 first half of the array and then the second half and prove that it maintains the
 permutation.
+
+
+\CodeBlockInput[43][47]{c}{ex-4-rotate-permutation.c}

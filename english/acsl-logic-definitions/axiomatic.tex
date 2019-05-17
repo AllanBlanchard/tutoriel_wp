@@ -63,7 +63,7 @@ present an {\em extremely} useful axiom.}:
 
 
 
-Lemmas and axioms allows to express the same types of properties.
+Lemmas and axioms allows to express the same kinds of properties.
 Namely, properties expressed about quantified variables (and possibly
 global variables, but it is quite rare since it is often difficult to
 find a global property about such variables being both true and
@@ -139,7 +139,7 @@ written like this:
 
 
 
-While it is not necessary to specify are the memory location read in an
+While it is not necessary to specify what are the memory locations read in an
 inductive definition, we have to specify such an information for axiomatically
 defined properties.
 
@@ -199,7 +199,7 @@ inconsistency, we then need to always be careful!
 More specifically, specifying the values read by a function or a
 predicate is important for the consistency of an axiomatic definition.
 Indeed, as previously explained, if we do not specify what is read when
-a pointer is received, an update of a value inside the array does not
+a pointer is received, an update of a value in the array does not
 invalidate a property known about the content of the array. In such a
 case, the proof is performed but since the axiom does not talk about the
 content of the array, we do not prove anything.
@@ -235,8 +235,8 @@ is translated into a list of axioms that are thus assumed.
 
 
 In this example, we want to prove that an algorithm actually counts the
-occurrences of a value inside an array. We start by axiomatically defining
-what is the number of occurrences of a value inside an array:
+occurrences of a value in an array. We start by axiomatically defining
+what is the number of occurrences of a value in an array:
 
 
 
@@ -252,16 +252,16 @@ We have three different cases:
   0,
 \item
   the considered range of values is not empty and the last element is
-  the one we are searching: the number of occurrences is the number of
+  the one we are searching for: the number of occurrences is the number of
   occurrences in the current range without the last element, plus 1,
 \item
   the considered range of values is not empty and the last element is
-  not the one we are searching: the number of occurrences is the number
+  not the one we are searching for: the number of occurrences is the number
   of occurrences in the current range without the last element.
 \end{itemize}
 
 Then, we can write the C function that computes the number of
-occurrences of a value inside an array and prove it:
+occurrences of a value in an array and prove it:
 
 
 
@@ -271,7 +271,7 @@ occurrences of a value inside an array and prove it:
 
 An alternative way to specify, in this code, that \texttt{result} is at
 most \texttt{i}, is to express a more general lemma about the number of
-occurrences of a value inside an array, since we know that it is
+occurrences of a value in an array, since we know that it is
 comprised between 0 and the size of maximum considered range of values:
 
 
@@ -291,7 +291,7 @@ to prove it interactively using Coq, for example. By expressing generic
 manually proved lemmas, we can often add useful tools to provers to
 manipulate more efficiently our axiomatic definitions, without directly
 adding new axioms that would augment the chances to introduce errors.
-Here, we still have to realize the proof of the lemma to have a complete
+Here, we still have to realize the proof of the lemma to get a complete
 proof.
 
 
@@ -349,7 +349,7 @@ be used to express this property.
 
 Thus, let us define this function axiomatically. First, let us define what
 is read by the function, which is: any memory cell from the pointer to an
-infinite range of address. Then we will consider two cases: the string is
+infinite range of address. Then we consider two cases: the string is
 finite, or it is not, that leads to two axioms: \CodeInline{strlen} returns
 a positive value that corresponds to the index of the first
 \CodeInline{'\textbackslash{}0'} character, and returns a negative value if
@@ -377,12 +377,12 @@ infinite string is not a valid string):
 
 With this definition we can now go further and provide a suitable
 invariant to the loop of the \CodeInline{strlen} function. It is quite
-simple: \CodeInline{ranges} between 0 and \CodeInline{strlen(s)}, for
+simple: \CodeInline{i} ranges between 0 and \CodeInline{strlen(s)}, for
 all values met before the iteration \CodeInline{i}, they are not
 \CodeInline{'\textbackslash{}0'}. This loop assigns \CodeInline{i} and
 the variant corresponds to the distance between \CodeInline{i} and
 \CodeInline{strlen(s)}. However, if we try to produce the proof of
-correctness of the function, that it fails. And to get more information
+correctness of the function, it fails. And to get more information
 we can try a verification asking RTE with the verification that unsigned
 integers do not overflow:
 

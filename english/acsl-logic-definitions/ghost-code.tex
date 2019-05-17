@@ -1,8 +1,8 @@
 
 Behind this title, that seems to be an action movie, we find in fact a
 way to enrich our specification with information expressed as regular C
-code. Here, the idea is to add variables and source code that will not
-be part of the actual program but will model logic states that will only
+code. Here, the idea is to add variables and source code that is not
+part of the actual program but models logic states that are only
 be visible from a proof point of view. Using it, we can make explicit
 some logic properties that were previously only known implicitly.
 
@@ -11,7 +11,7 @@ some logic properties that were previously only known implicitly.
 
 
 
-Ghost code is added using annotations that will contain C code
+Ghost code is added using annotations that contain C code
 introduced using the \texttt{ghost} keyword:
 
 
@@ -92,7 +92,7 @@ void foo(unsigned n){
 
 
 
-We must again be careful using ghost code. Indeed, the tool will not
+We must again be careful using ghost code. Indeed, the tool does not
 perform any verification to ensure that we do not write in the memory of
 the program by mistake. This problem being, in fact, an undecidable
 problem, this analysis would require a proof by itself. For example,
@@ -145,8 +145,8 @@ void foo(void){
 \levelThreeTitle{Make a logical state explicit}
 
 
-The goal of ghost code is to make explicit some information that are
-without them implicit. For example, in the previous section, we used it
+The goal of ghost code is to make explicit some information that would else
+be implicit. For example, in the previous section, we used it
 to get an explicit logic state known at a particular point of the
 program.
 
@@ -167,7 +167,7 @@ the function would then return 6.
 
 
 
-In order to specify the previous function, we will need an axiomatic
+In order to specify the previous function, we need an axiomatic
 definition about sum. This is not too complex, the careful reader
 can express the needed axioms as an exercise:
 
@@ -193,25 +193,26 @@ For any bounds, the value returned by the function must be greater or
 equal to the sum of the elements between these bounds, and there must
 exist some bounds such that the returned value is exactly the sum of the
 elements between these bounds. About this specification, when we want to
-add the loop invariant, we will realize that we miss some information.
+add the loop invariant, we realize that we miss some information.
 We want to express what are the values \CodeInline{max} and \CodeInline{cur} and
 what are the relations between them, but we cannot do it!
 
-Basically, our postcondition needs to know that there exists some bounds
+Basically, in order to prove our postcondition, we need to know that there
+exists some bounds
 \CodeInline{low} and \CodeInline{high} such that the computed sum corresponds to
 these bounds. However, in our code, we do not have anything that express
 it from a logic point of view, and we cannot \emph{a priori} make the
-link between this logical formalization. We will then use ghost code to
+link between this logical formalization. We then use ghost code to
 record these bounds and express the loop invariant.
 
-We will first need two variables that will allow us to record the bounds
-of the maximum sum range, we will call them \CodeInline{low} and
-\CodeInline{high}. Every time we will find a range where the sum is greater
-than the current one, we will update our ghost variables. This bounds
-will then corresponds to the sum currently stored by \CodeInline{max}. That
+We first need two variables to record the bounds
+of the maximum sum range, let us call them \CodeInline{low} and
+\CodeInline{high}. Every time we find a range where the sum is greater
+than the current one, we update our ghost variables. These bounds
+then correspond to the sum currently stored by \CodeInline{max}. That
 induces that we need other bounds: the ones that corresponds to the sum
-store by the variable \CodeInline{cur} from which we will build the bounds
-corresponding to \CodeInline{max}. For these bounds, we will only add a
+stored by the variable \CodeInline{cur} from which we build the bounds
+corresponding to \CodeInline{max}. For these bounds, we only add a
 single ghost variable: the current low bound \CodeInline{cur\_low}, the high
 bound being the variable \CodeInline{i} of the loop.
 
@@ -237,13 +238,13 @@ is indeed the case).
 
 
 
-Here, we will not try to fix this because it is not the topic of this
+Here, we do not try to fix this because it is not the topic of this
 example. The way we can prove the absence of RTE here strongly depends
 on the context where we use this function. A possibility is to strongly
 restrict the contract, forcing some properties about values and the size
-of the array. For example, we could strongly limit the maximal size of
-the array and strong bounds on each value of the different cells. An
-other possibility would be to add an error value in case of overflow
+of the array. For example, we could limit the maximal size of the array
+and bound each value of the different cells. Another possibility would be to
+add an error value in case of overflow
 (\(-1\) for example), and to specify that when an overflow is produced,
 this value is returned.
 
