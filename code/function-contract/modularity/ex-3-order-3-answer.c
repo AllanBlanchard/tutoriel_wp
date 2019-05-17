@@ -42,13 +42,16 @@ void min_ptr(int* a, int* b){
 
 /*@
   requires \valid(a) && \valid(b) && \valid(c) ;
-  requires \separated(a, c);
+  requires \separated(a, b, c);
+
   assigns *a, *b, *c ;
+
   ensures *a <= *b <= *c ;
-  ensures *a == \old(*a) || *a == \old(*b) || *a == \old(*c) ;
-  ensures *b == \old(*a) || *b == \old(*b) || *b == \old(*c) ;
-  ensures *c == \old(*a) || *c == \old(*b) || *c == \old(*c) ;
   ensures { *a, *b, *c } == \old({ *a, *b, *c }) ;
+  
+  ensures \old(*a == *b == *c) ==> *a == *b == *c ;
+  ensures \old(*a == *b < *c || *a == *c < *b || *b == *c < *a) ==> *a == *b ;
+  ensures \old(*a == *b > *c || *a == *c > *b || *b == *c > *a) ==> *b == *c ;
 */
 void order_3_inc_max(int* a, int* b, int* c){
   max_ptr(c, b) ;
@@ -58,13 +61,16 @@ void order_3_inc_max(int* a, int* b, int* c){
 
 /*@
   requires \valid(a) && \valid(b) && \valid(c) ;
-  requires \separated(a, c);
+  requires \separated(a, b, c);
+
   assigns *a, *b, *c ;
+
   ensures *a <= *b <= *c ;
-  ensures *a == \old(*a) || *a == \old(*b) || *a == \old(*c) ;
-  ensures *b == \old(*a) || *b == \old(*b) || *b == \old(*c) ;
-  ensures *c == \old(*a) || *c == \old(*b) || *c == \old(*c) ;
   ensures { *a, *b, *c } == \old({ *a, *b, *c }) ;
+  
+  ensures \old(*a == *b == *c) ==> *a == *b == *c ;
+  ensures \old(*a == *b < *c || *a == *c < *b || *b == *c < *a) ==> *a == *b ;
+  ensures \old(*a == *b > *c || *a == *c > *b || *b == *c > *a) ==> *b == *c ;
 */
 void order_3_inc_min(int* a, int* b, int* c){
   min_ptr(a, b) ;
@@ -74,13 +80,16 @@ void order_3_inc_min(int* a, int* b, int* c){
 
 /*@
   requires \valid(a) && \valid(b) && \valid(c) ;
-  requires \separated(a, c);
+  requires \separated(a, b, c);
+
   assigns *a, *b, *c ;
+
   ensures *a >= *b >= *c ;
-  ensures *a == \old(*a) || *a == \old(*b) || *a == \old(*c) ;
-  ensures *b == \old(*a) || *b == \old(*b) || *b == \old(*c) ;
-  ensures *c == \old(*a) || *c == \old(*b) || *c == \old(*c) ;
   ensures { *a, *b, *c } == \old({ *a, *b, *c }) ;
+  
+  ensures \old(*a == *b == *c) ==> *a == *b == *c ;
+  ensures \old(*a == *b < *c || *a == *c < *b || *b == *c < *a) ==> *b == *c ;
+  ensures \old(*a == *b > *c || *a == *c > *b || *b == *c > *a) ==> *a == *b ;
 */
 void order_3_dec_max(int* a, int* b, int* c){
   max_ptr(a, b) ;
@@ -90,13 +99,16 @@ void order_3_dec_max(int* a, int* b, int* c){
 
 /*@
   requires \valid(a) && \valid(b) && \valid(c) ;
-  requires \separated(a, c);
+  requires \separated(a, b, c);
+
   assigns *a, *b, *c ;
+
   ensures *a >= *b >= *c ;
-  ensures *a == \old(*a) || *a == \old(*b) || *a == \old(*c) ;
-  ensures *b == \old(*a) || *b == \old(*b) || *b == \old(*c) ;
-  ensures *c == \old(*a) || *c == \old(*b) || *c == \old(*c) ;
   ensures { *a, *b, *c } == \old({ *a, *b, *c }) ;
+  
+  ensures \old(*a == *b == *c) ==> *a == *b == *c ;
+  ensures \old(*a == *b < *c || *a == *c < *b || *b == *c < *a) ==> *b == *c ;
+  ensures \old(*a == *b > *c || *a == *c > *b || *b == *c > *a) ==> *a == *b ;
 */
 void order_3_dec_min(int* a, int* b, int* c){
   min_ptr(c, b) ;

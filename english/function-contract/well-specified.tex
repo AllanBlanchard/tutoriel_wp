@@ -3,13 +3,13 @@
 
 
 This is certainly the hardest part of our work. Programming is already
-an effort that consists in writing algorithms that correctly respond to
+an effort that consists in writing algorithms that correctly answer to
 our need. Specifying requests the same kind of work, except that we do
-not try to express \emph{how} we respond to the need but \emph{what} is
+not try to express \emph{how} we answer to our need but \emph{what} is
 exactly our need. To prove that our code implements what we need, we
 must be able to describe exactly what we need.
 
-From now, we will use an other example, the \texttt{max} function:
+From now, let us use an other example, the \texttt{max} function:
 
 
 
@@ -17,8 +17,8 @@ From now, we will use an other example, the \texttt{max} function:
 
 
 
-The reader could write and prove their own specification. We will start
-using this one:
+The reader could write and prove their own specification. Let us
+use this one:
 
 
 
@@ -26,8 +26,8 @@ using this one:
 
 
 
-If we ask WP to prove this code, it will succeed without any problem.
-However, is our specification really correct? We can try to prove this
+If we ask WP to prove this code, it succeeds without any problem.
+However, is our specification really what we need? We can try to prove this
 calling code:
 
 
@@ -36,7 +36,7 @@ calling code:
 
 
 
-There, it will fail. In fact, we can go further by modifying the body of
+There, it fails. In fact, we can go further by modifying the body of
 the \CodeInline{max} function and notice that the following code is also
 correct with respect to the specification:
 
@@ -46,7 +46,8 @@ correct with respect to the specification:
 
 
 
-Our specification is too permissive. We have to be more precise. We do
+This while being a correct specification of \CodeInline{max}, our specification
+is however too permissive. We have to be more precise. We do
 not only expect the result to be greater or equal to both parameters,
 but also that the result is one of them:
 
@@ -54,6 +55,10 @@ but also that the result is one of them:
 
 \CodeBlockInput[1][7]{c}{max-3.c}
 
+
+This specification can also be proved correct by WP, but now we can also prove
+the assertion in our function \CodeInline{foo}, and we cannot prove anymore an
+implementation that would just return the value \CodeInline{INT\_MAX}.
 
 
 \levelThreeTitle{Pointers}
@@ -83,8 +88,8 @@ defines that the function must ensure that after the call, the value of
 \CodeInline{*a} is the old  value of \CodeInline{*b} and conversely.
 
 The \CodeInline{\textbackslash{}old} function can only be used in the
-postcondition of a function. If we need this type of information
-somewhere else, we will use \CodeInline{\textbackslash{}at} that allows us
+postcondition of a function. If we need this kind of information
+somewhere else, we use \CodeInline{\textbackslash{}at} that allows us
 to express that we want the value of a variable at a particular program
 point. This function receives two parameters. The first one is the variable
 (or memory location) for which we want to get its value and the second one
@@ -115,8 +120,8 @@ built-in labels defined by ACSL that can be used:
 
 \begin{Information}
   The behavior of \CodeInline{Here} is, in fact, the default behavior when we
-  consider a variable. Its use with \CodeInline{\textbackslash{}at} will
-  generally let us ensure that what we write is not ambiguous, and is more
+  consider a variable. Its use with \CodeInline{\textbackslash{}at}
+  generally allows us to ensure that what we write is not ambiguous, and is more
   readable, when we express properties about values at different program
   points in the same expression.
 \end{Information}
@@ -133,7 +138,7 @@ in this tutorial).
 
 
 
-For the moment, we will not need \CodeInline{\textbackslash{}at} but it can
+For the moment, we do not need \CodeInline{\textbackslash{}at} but it can
 often be useful, if not essential, when we want to make our
 specification precise.
 
@@ -143,8 +148,8 @@ specification precise.
 
 
 If we try to prove that the swap function is correct (comprising RTE
-verification), our postcondition is indeed verified but WP failed to
-prove some possibilities of runtime-error, since we perform access to
+verification), our postcondition is indeed verified but WP fails to
+prove that some runtime-error cannot happen, since we perform access to
 some pointers that we did not indicate to be valid pointers in the
 precondition of the function.
 
@@ -167,8 +172,8 @@ As we will see later in this tutorial, \CodeInline{\textbackslash{}valid}
 can take more than one pointer in parameter. For example, we can give it
 an expression such as: \CodeInline{\textbackslash{}valid(p + (s .. e))} which means
 ``for all \CodeInline{i} between included \CodeInline{s} and \CodeInline{e},
-\CodeInline{p+i} is a valid pointer''. This kind of expression will be
-extremely useful when we will specify properties about arrays in
+\CodeInline{p+i} is a valid pointer''. This kind of expression is
+extremely useful when we have to specify properties about arrays in
 specifications.
 
 
@@ -193,8 +198,8 @@ Typically, in this code:
 
 
 Dereferencing \CodeInline{p} is valid, however the precondition of
-\CodeInline{unref} will not be verified by WP since dereferencing
-\CodeInline{value} is only legal for a read-access. A write access will
+\CodeInline{unref} is not verified by WP since dereferencing
+\CodeInline{value} is only legal for a read-access. A write access would
 result in an undefined behavior. In such a case, we can specify that the
 pointer \CodeInline{p} must be \CodeInline{\textbackslash{}valid\_read} and not
 \CodeInline{\textbackslash{}valid}.
@@ -205,7 +210,7 @@ pointer \CodeInline{p} must be \CodeInline{\textbackslash{}valid\_read} and not
 
 
 Our \CodeInline{swap} function is provable with regard to the specification
-and potential runtime errors, but is however specification precise enough? We
+and potential runtime errors, however is our specification precise enough? We
 can slightly modify our code to check this (we use \CodeInline{assert} to
 verify some properties at some particular points):
 
@@ -232,7 +237,7 @@ during the execution of the function.
 
 By default, WP considers that a function can modify everything in the
 memory. So, we have to specify what can be modified by a function. For
-example, our \CodeInline{swap} function will be specified like this:
+example, our \CodeInline{swap} function can be specified like this:
 
 
 
@@ -240,7 +245,7 @@ example, our \CodeInline{swap} function will be specified like this:
 
 
 
-If we ask WP to prove the function with this specification, it will be
+If we ask WP to prove the function with this specification, it is
 validated (including with the variable added in the previous source
 code).
 
@@ -265,7 +270,7 @@ presented until now to integrate the right \CodeInline{assigns} clause.
 
 
 Pointers bring the risk of aliasing (multiple pointers can have access
-to the same memory location). For some functions, it will not cause any
+to the same memory location). For some functions, it does not cause any
 problem, for example when we give two identical pointers to the
 \texttt{swap} function, the specification is still verified. However,
 sometimes it is not that simple:
@@ -305,7 +310,7 @@ pointers are the same,
 
   The reason is simply that \CodeInline{a} is indeed the only modified memory
   location. If \CodeInline{a != b}, we only modify the location pointed by
-  \CodeInline{a}, and if \CodeInline{a == b}, \textbar{} that is still the case:
+  \CodeInline{a}, and if \CodeInline{a == b}, this is still the case:
   \CodeInline{b} is not another location.
 \end{Question}
 
@@ -359,7 +364,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Once the function is successfully proved to verify your contract, run:
+Once the function is successfully proved to respect your contract, run:
 
 
 \begin{CodeBlock}{bash}
@@ -466,7 +471,7 @@ Now the function should ensure that after its execution \CodeInline{*a}
 contains the maximum of the input value, and \CodeInline{*b} contains the
 other value. Modify the code accordingly as well as the contract. Note that
 the variable \CodeInline{x} is not necessary anymore in the \CodeInline{main}
-function and that you can change the assertion on line 15 to reflect the
+function and that we can change the assertion on line 15 to reflect the
 new behavior of the function.
 
 
@@ -496,6 +501,35 @@ should still be there after the sorting operation: new values are a
 permutation of the original one. To express this idea, you can rely on the
 set datatype. For example, this property is true:
 
+
 \begin{CodeBlock}{c}
 //@ assert { 1, 2, 3 } == { 2, 3, 1 };
 \end{CodeBlock}
+
+
+We can use this to express that the set of original values and final values
+is the same. However, that is not the only thing to consider, as a set only
+contains one occurrence of each value. So, if \CodeInline{*a == *b == 1},
+\CodeInline{\{ *a, *b \} == \{ 1 \}}. Thus, we also have to consider three
+other particular cases:
+
+
+\begin{itemize}
+\item all original values equal
+\item two original values equal and the last is greater
+\item two original values equal and the last is lower
+\end{itemize}
+
+
+That should set one more constraint on the final values.
+
+
+As an helper, one could use the following test program:
+
+
+\CodeBlockInput[27][43]{c}{ex-5-order-3-answer.c}
+
+
+If the specification is precise enough, each assertion should be proved.
+However, that does not mean that all cases have been considered by our tests,
+so do not hesitate do add other cases.
