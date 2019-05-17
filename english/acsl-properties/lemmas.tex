@@ -1,17 +1,19 @@
-Lemmas are general properties about predicates or functions. Once these
-properties are expressed, their proof can be performed (one time) and
-the provers will then be able to use this result to perform other proofs
-without requiring to repeat all steps needed to perform the
-original proof if it appears in a much longer proof about another
-property.
+Lemmas are general properties about predicates or functions. These properties
+can be proved in isolation of the rest of the proof of a program by automatic or
+(more often) interactive provers. Once this proof is done, the information that
+it states can be safely used to simplify the reasoning in other, more complex
+proofs, without having to prove it again. For example, if we state a lemma $L$
+that says $P \Rightarrow Q$ in any case, if at some point in another proof, we
+have to prove $Q$ and we know $P$, we can directly conclude by using the lemma
+$L$ without having to perform again the reasoning that brings us from $P$ to
+$Q$.
 
 
-
-
-For example, lemmas allow us to express properties about recursive
-functions in order to get easier proofs when we are interested in
-proving properties that use such functions.
-
+In the previous section, we said that recursive function can make proof harder
+for SMT solvers. In such a case, lemmas can help us. We can write by ourselves
+the proofs that require inductive reasoning for some properties that we state as
+lemmas, and these lemmas can be used efficiently by SMT solvers to perform the
+other proofs, related to our programs.
 
 
 \levelThreeTitle{Syntax}
@@ -32,9 +34,9 @@ following:
 
 
 This time, the properties we want to express do not depend on received
-parameters (except for labels). So we will express these properties on
-universally quantified variables. For example, we can state this lemma,
-which is true, even if it is trivial:
+parameters (except for labels). So we express these properties for universally
+quantified variables. For example, we can state this lemma, which is true, even
+if it is trivial:
 
 
 
@@ -80,7 +82,7 @@ to prove the proof that \CodeInline{fmin} is lesser or equals to
 property is the simply an instance of the lemma
 \CodeInline{ax\_monotonic\_pos}, the proof is then trivial as our lemma is
 considered to be true when are not currently proving it. Note that on this
-generalized version of \CodeInline{function}, Z3 will probably more efficient
+generalized version of \CodeInline{function}, Z3 will be probably more efficient
 to prove this absence of runtime errors.
 
 
@@ -134,7 +136,7 @@ greater or equals to $y * z$.
 
 
 This lemma will not be proved by SMT solvers, however if you ask a proof with
-Coq, the default tactic will probably discharged this verification condition
+Coq, the default tactic will probably discharge this verification condition
 automatically.
 
 
@@ -221,7 +223,7 @@ book. All remaining properties should be proved automatically.
 \levelFourTitle{Shift sorted range}
 
 
-In the following program is composed of two functions. The function
+The following program is composed of two functions. The function
 \CodeInline{shift\_and\_search} shifts the element of an array and then
 performs a binary search.
 
@@ -244,5 +246,5 @@ validated. Complete the lemma \CodeInline{shifted\_still\_sorted} that should
 state that if a range is sorted at some label and then shifted, the resulting
 range is still sorted.
 
-The lemma does not have to be proved by WP. We provide a solution and the
-corresponding Coq proof on the GitHub repository of this book.
+The lemma does not have to be proved by SMT solvers. We provide a solution and
+the corresponding Coq proof on the GitHub repository of this book.

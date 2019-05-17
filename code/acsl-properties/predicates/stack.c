@@ -7,9 +7,9 @@ struct stack_int{
 };
 
 /*@
-  predicate valid_stack_int(struct stack_int* s) = \true ; // à définir
-  predicate empty_stack_int(struct stack_int* s) = \true ; // à définir
-  predicate full_stack_int(struct stack_int* s) =  \true ; // à définir
+  predicate valid_stack_int(struct stack_int* s) = \true ; // to define
+  predicate empty_stack_int(struct stack_int* s) = \true ; // to define
+  predicate full_stack_int(struct stack_int* s) =  \true ; // to define
 */
 
 /*@

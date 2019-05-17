@@ -1,7 +1,7 @@
 Logic functions are meant to describe functions that can only be used in
 specifications. It allows us, first, to factor those specifications and,
 second, to define some operations on \texttt{integer} or \texttt{real}
-with the guarantee that they cannot overflow since they are mathematical
+with the guarantee that they cannot overflow since they involve mathematical
 types.
 
 Like predicates, they can receive different labels and values in
@@ -63,14 +63,17 @@ function.
 \end{Information}
 
 
-Once this specification is provided, everything is fine. Note that we also give
-a lower bound to the computation of \CodeInline{3 * x}, indeed while the bound
-provided for \CodeInline{x} by our logic function is correct for the complete
-computation, it does not say anything about the value obtain in the intermediate
-computation. Of course, we could manually provide these bounds every time we
-create a linear logic function. But, by creating these bound computation
-functions, we directly get a way to compute them automatically which is quite
-comfortable.
+Once this specification is provided, everything is fine. Of course, we could
+manually provide these bounds every time we create a linear logic function. But,
+by creating these bound computation functions, we directly get a way to compute
+them automatically which is quite comfortable.
+
+Note that we also give a lower bound to the computation of \CodeInline{3 * x},
+indeed while the bound provided for \CodeInline{x} by our logic function is
+defined for the complete computation, it does not say anything about the value
+obtained in the intermediate computation. For example here, the fact that
+\CodeInline{3 * x + 4} is not lower than \CodeInline{INT\_MIN} does not
+guarantee that this is the case for \CodeInline{3 * x}. 
 
 
 
@@ -80,9 +83,9 @@ comfortable.
 Logic functions (as well as predicates) can be recursively defined.
 However, such an approach will rapidly show some limits in their use for
 program proof. Indeed, when the automatic solver reasons on such logic
-properties, if such a function is met, it will be necessary to evaluate it.
-SMT solvers are not meant to be efficient for this task, which will generally
-be costly, producing too long proof resolution and eventually timeouts.
+properties, if such a function is met, it is necessary to evaluate it.
+SMT solvers are not meant to be efficient for this task, thus it is generally
+costly, producing too long proof resolution and eventually timeouts.
 
 We can have a concrete example with the factorial function, using logic
 and using C language:
@@ -121,9 +124,9 @@ of 10, even a minute is not enough.
 
 
 Logic functions can then be defined recursively but without some more
-help, we are rapidly limited by the fact that provers will need to
+help, we are rapidly limited by the fact that provers needs to
 perform evaluation or to ``reason'' by induction, two tasks for which
-they are not efficient. This will limit our possibilities for program
+they are not efficient. This can limit our possibilities for program
 proofs.
 
 
@@ -206,7 +209,7 @@ have defined.
 
 The following function compute the sum of the N first integers. Write a
 recursive logic functions that returns the sum of the N first integers and
-write a specification for the C function that show that it computes the same
+write a specification for the C function expressing that it computes the same
 value as provided by the logic function.
 
 
@@ -217,5 +220,5 @@ Try to verify the absence of runtime errors. The integer overflow is not so
 simple to get rid of. However, write a precondition that should be enough to
 prove the function (remember that the sum of the N first integers can be
 expressed with a really simple formula ...). It will certainly not be enough
-to directly prove the absence overflow, but we will see how to provide such
+to directly prove the absence of overflow, but we will see how to provide such
 an information in the next section.
