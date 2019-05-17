@@ -1,21 +1,24 @@
 Sometimes, a function can have behaviors that can be quite different
 depending on the input. Typically, a function can receive a pointer to
-an optional resource: if the pointer is \texttt{NULL}, we will have a
-certain behavior, which will be different of the behavior expected when
+an optional resource: if the pointer is \texttt{NULL}, we have a
+certain behavior, which is different of the behavior expected when
 the pointer is not \texttt{NULL}.
 
 We have already seen a function that have different behaviors: the
-\texttt{abs} function. We will use it again to illustrate behaviors. We
+\texttt{abs} function. Let us use it again to illustrate behaviors. We
 have two behaviors for the \texttt{abs} function: either the input is
 positive or it is negative.
 
 Behaviors allow us to specify the different cases for postconditions. We
-introduce them using the \texttt{behavior} keyword. Each behavior will
-have a name, the assumptions we have for the given case introduced with
-the clause \texttt{assumes}, that expresses properties about the values
-before the call of the function (thus a keyword like
-\CodeInline{\textbackslash{}old} cannot be used in \texttt{assumes}
-clauses), and the associated postcondition. Finally, we can ask WP to
+introduce them using the \texttt{behavior} keyword. Each behavior 
+is named. For a given behavior, we have different assumptions about the
+input of the function, they are introduced with the clause
+\texttt{assumes} (note that since they characterize the input, the
+keywor \CodeInline{\textbackslash{}old} cannot be used there). However,
+the properties expressed by this clause do not have to be verified before
+the call, they can be verified and in this case, the postcondition
+specified in our behavior applies. The postconditions of a particular
+behavior are introduced using \texttt{ensures}. Finally, we can ask WP to
 verify that behaviors are disjoint (to guarantee determinism) and
 complete (to guarantee that we cover all possible input).
 
@@ -32,24 +35,24 @@ For example, for \texttt{abs} we can write the specification:
 
 
 
-Note that declaring behaviors do not forbids to specify global postconditions.
+Note that declaring behaviors does not forbid to specify global postconditions.
 For example here, we have specified that for any behavior, the function must
 return a positive value.
 
 
 
-It can be useful to experiment with the two possibilities to understand
-the exact meaning of \CodeInline{complete} and \CodeInline{disjoint}:
+Let us now slighlty modify the assumptions of each behavior to illustrate
+the meaning of \CodeInline{complete} and \CodeInline{disjoint}:
 
 \begin{itemize}
 \item
   replace the assumption of \CodeInline{pos} with
-  \CodeInline{val \textgreater{} 0}, in this case, behaviors will be
-  disjoint but incomplete (we will miss \CodeInline{val == 0}),
+  \CodeInline{val \textgreater{} 0}, in this case, behaviors are
+  disjoint but incomplete (we miss \CodeInline{val == 0}),
 \item
   replace the assumption of \CodeInline{neg} with
-  \CodeInline{val \textless{}= 0}, in this case, behaviors will be
-  complete but not disjoint (we will have two assumptions corresponding
+  \CodeInline{val \textless{}= 0}, in this case, behaviors are
+  complete but not disjoint (we have two assumptions corresponding
   to \CodeInline{val == 0}.
 \end{itemize}
 
@@ -181,7 +184,7 @@ the contract was:
 
 
 Take back the example ``Order 3 values'' from the previous section. Considering
-That the contract was:
+that the contract was:
 
 
 \CodeBlockInput{c}{ex-6-order-3.c}
