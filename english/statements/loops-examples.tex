@@ -24,7 +24,7 @@ There are enough ideas in this example to introduce some important syntax.
 First, as we previously presented, the
 \CodeInline{\textbackslash{}valid\_read} predicate (as well as
 \CodeInline{\textbackslash{}valid}) allows us to specify not only the
-validity of read-only address but also to state that a range of
+validity of a readable address but also to state that a range of
 contiguous addresses is valid. It is expressed using this expression:
 
 
@@ -36,7 +36,7 @@ contiguous addresses is valid. It is expressed using this expression:
 
 
 This precondition states that all addresses \CodeInline{a+0},
-\CodeInline{a+1}, \ldots{}, \CodeInline{a+length-1} are valid read-only
+\CodeInline{a+1}, \ldots{}, \CodeInline{a+length-1} must be valid readable
 locations.
 
 
@@ -52,7 +52,7 @@ corresponding lines in our specification, we can read them this way:
 
 \begin{CodeBlock}{c}
 /*@
-// for all "off" of type "size_t", such that IF "off" is comprised between 0 and "length"
+// for all "off" of type "size_t", IF "off" is comprised between 0 and "length"
 //                                 THEN the cell "off" in "a" is different from "element"
 \forall size_t off ; 0 <= off < length ==> a[off] != element;
 
@@ -78,10 +78,11 @@ the constraint \CodeInline{p} is followed by an implication.
 For any element where a first property \CodeInline{p} is verified, we have
 to also verify the second property \CodeInline{q}. If we use a conjunction,
 as we do for ``exists'' (which we will later explain), that would mean that
-all elements verify both \CodeInline{p} and \CodeInline{q}. Sometimes, it
-could be what we want to express, but it would then not correspond
-anymore to the idea of constraining a set for which we want to verify
-some other property
+all elements verify both \CodeInline{p} and \CodeInline{q}. In our previous
+example, it is clearly not the case as not all integers are comprised between
+0 and \CodeInline{length}. Sometimes, it could be what we want to express, but
+it would then not correspond anymore to the idea of constraining a set for which
+we want to verify some other property.
 
 
 
@@ -112,7 +113,7 @@ the loop, we know that for each memory location between 0 and the next
 location to visit (\CodeInline{i} excluded), the memory location contains a
 value different from the element we are looking for.
 
-The proof obligation associated to the preservation of this invariant is
+The verification condition associated to the preservation of this invariant is
 a bit complex and it is not really interesting to precisely look at it,
 on the contrary, the proof that the invariant is established before
 executing the loop is interesting:
@@ -162,9 +163,13 @@ Let us have a look at the function that resets an array of integers to 0.
 
 
 
-Let us just highlight the function and loop assign clauses. Again, we
-can use the notation \CodeInline{n .. m} to indicate which parts of the
-array are modified.
+We can see that we use a construct for the invariant that is quite similar
+to what we have written for the previous example: we put an invariant to
+constraint the value of \CodeInline{i}, and we put another invariant that
+explains what the loop allowed t learn so far (all visited elements are now
+$0$). Let us just highlight the \CodeInline{assigns} and
+\CodeInline{loop assigns} clauses: again, we can use the notation
+\CodeInline{n .. m} to indicate which parts of the array are modified.
 
 
 
@@ -210,7 +215,7 @@ array and the potentially new values:
 For every memory location that contained the value to be replaced, it now must
 contain the new value. All other values must remain unchanged. In fact, if we
 try to prove this invariant with WP, it fails. In such a case, the simpler
-method is to add different assertions that will express the different
+method is to add different assertions that expresses the different
 intermediate properties using assertions which we expect to be easily proved
 and which imply the invariant. Here, we can easily notice that WP does not
 succeed in maintaining the knowledge that we have not modified the remaining
@@ -236,7 +241,7 @@ We can add this information as an invariant:
 
 
 
-And this time the proof will succeed.
+And this time the proof succeeds.
 
 
 
@@ -373,4 +378,4 @@ from the \CodeInline{i}$^{th}$ we are visiting to the end.
 Finally, it is also possible to write a function that copies the elements from
 the end to the beginning, in this case, again, arrays can overlap but the
 condition is not exactly the same. Write, specify and prove the function
-\CodeInline{copy\_backward} that copies element in reverse order.
+\CodeInline{copy\_backward} that copies elements in the reverse order.

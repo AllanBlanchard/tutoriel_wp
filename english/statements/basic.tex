@@ -12,8 +12,8 @@ Here the notation $P[x \leftarrow E]$ means ``the property $P$ where
 $x$ is replaced by $E$''. In our case this corresponds to ``the
 postcondition $Post$ where $x$ is replaced by $E$''. The idea is
 that the postcondition of an assignment of $E$ to $x$ can only be
-true if replacing all occurrences of $x$ in the formula by $E$ is
-true. For example:
+true if replacing all occurrences of $x$ in the formula by $E$ leads
+to a property that is true. For example:
 
 
 
@@ -138,9 +138,9 @@ $wp(*p = 1, *p + *q = 2)$ & $= (*p + *q = 2)[*p \leftarrow 1]$\\
 
 We get the weakest precondition: \CodeInline{1 + *q == 2}, and thus we could
 deduce that the weakest precondition is \CodeInline{*q == 1}, which is true, but
-does not allow us to conclude that the program is correct, since the formula
-\CodeInline{p == q ==> *q == 1} cannot be verified. In fact, here, we would like
-to be able to compute a property like:
+does not allow us to conclude that the program is correct, since in our formula
+we do not have any to model that \CodeInline{p == q ==> *q == 1}. In fact, here,
+we would like to be able to compute a property like:
 
 
 
@@ -234,7 +234,7 @@ WP to simplify the goal using the option \CodeInline{-wp-no-simpl}:
 \image{memory-model}
 
 
-We can see, in the beginning of the proof obligation, that a variable
+We can see, in the beginning of the verification condition, that a variable
 \CodeInline{Mint\_0} representing a memory of values of integer types have been
 created, and that this memory is updated and accessed using the operators we
 previously introduced.

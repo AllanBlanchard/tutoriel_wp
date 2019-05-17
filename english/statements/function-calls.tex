@@ -82,7 +82,7 @@ we denote:
 \item $\vec{v}$ a vector of values $v_1, ..., v_n$ and $v_i$ the $i^{th}$ value,
 \item $\vec{t}$ the arguments provided to the function when we call it,
 \item $\vec{x}$ the parameters in the function definition,
-\item $\vec{a}$ the assigned values (seen from outside, once instantiated),
+\item $\vec{a}$ the assigned values (seen from the outside, once instantiated),
 \item $here(x)$ a value in postcondition
 \item $old(x)$ a value in precondition
 \end{itemize}
@@ -224,8 +224,9 @@ This last property is trivially true, thus the program is verified.
 
 
 Functions are absolutely necessary to modular programming, and the weakest
-precondition is fully compatible with this idea, allowing to reason about each
-function locally and compose proofs just as we compose function calls.
+precondition calculus is fully compatible with this idea, allowing to reason
+about each function locally and compose proofs just as we compose function
+calls.
 
 
 So as a reminder, we should just keep in mind the following general scheme:
@@ -244,7 +245,7 @@ type foo(parameters...){
 
   // Here we must prove that bar_R holds
   bar(some parameters ...) ;
-  // Dere we assume that bar_E holds
+  // Here we assume that bar_E holds
 
 
   // Here we must prove that foo_E holds
@@ -255,9 +256,10 @@ type foo(parameters...){
 
 Note that for the last statement, with weakest precondition calculus, the idea
 is more to show that our precondition is strong enough to ensure that the code
-leads to our postcondition. However, first, this version is simpler to understand,
-and second the WP plugin does not actually perform a strict weakest precondition
-but an highly optimized one that does not follows exactly the same rules.
+leads to our postcondition. However, first, this vision is simpler to
+understand, and second the WP plugin does not actually perform a strict weakest
+precondition calculus but an highly optimized one that does not follows exactly
+the same rules.
 
 
 \levelThreeTitle{Recursive functions}
@@ -267,7 +269,7 @@ but an highly optimized one that does not follows exactly the same rules.
 For now, WP does not check function termination. Of course, if a function is
 only composed of loops that terminate (that have a verified variant) and
 calls to functions that terminate, it terminates. However, one particular
-case require more reasoning: recursive and mutually recursive functions.
+case requires more reasoning: recursive and mutually recursive functions.
 Currently termination of such functions is not supported with WP.
 
 
@@ -291,15 +293,15 @@ be true.
 
 
 Thus, the question is: what could we do in such a case? Again, we could use
-some kind of variant to bound the number of recursive calls in ACSL, this is
-the role of the \CodeInline{decreases} clause in ACSL:
+some kind of variant to bound the number of recursive calls. In ACSL, this is
+the role of the \CodeInline{decreases} clause:
 
 
 \CodeBlockInput{c}{decreases.c}
 
 
 This clause expresses exactly the same idea as a \CodeInline{loop variant}.
-The expression considered by a decrease clause is a positive integer that
-strictly decreases when the function is called again. However, it is still
-not supported by WP. Thus, for the moment, a recursive function cannot be
-totally proved with WP.
+The expression considered by a \CodeInline{decreases} clause is a positive
+expression that strictly decreases when the function is called again. However,
+it is still not supported by WP. Thus, for the moment, a recursive function
+cannot be totally proved with WP.

@@ -17,12 +17,12 @@ question: why are loops so complex?
 The nature of loops makes their analysis complex. When we perform our
 reasoning, we need a rule to determine the precondition from a given sequence
 of instructions and a postcondition. Here, the problem is that we cannot
-\emph{a priori} deduce how many times a loop will iterate, and consequently, we
-cannot know how many times variables will be modified.
+\emph{a priori} deduce how many times a loop iterates, and consequently, we
+cannot know how many times variables are modified.
 
 
 
-We will then proceed using an inductive reasoning. We have to find a
+We then proceed using an inductive reasoning. We have to find a
 property that is true before we start to execute the loop and that, if
 it is true at the beginning of an iteration, remains true at the end
 (and that is consequently true at the beginning of the next iteration).
@@ -49,7 +49,7 @@ not true at the beginning of the execution of the loop. The property
 $0 \leq \texttt{i} < 10$ \textbf{is not a loop invariant}, it is not true at the
 end of the last iteration that sets the value of \CodeInline{i} to $10$.
 
-To verify an invariant $I$, WP will then produce the following
+To verify an invariant $I$, WP then produces the following
 ``reasoning'':
 
 \begin{itemize}
@@ -125,7 +125,7 @@ ourselves this property about our loops.
 
 There exist tools that can infer invariant properties (provided that
 these properties are simple, automatic tools remain limited). This is not
-the case for WP. We will have to manually annotate our programs to
+the case for WP. We have to manually annotate our programs to
 specify the invariant of each loop. To find and write invariants for our
 loops will always be the hardest part of our work when we want to prove
 programs.
@@ -155,7 +155,7 @@ before the loop:
 \end{Warning}
 
 
-Why? Because along the loop, \CodeInline{i} will be comprised between 0 and
+Why? Because along the loop, \CodeInline{i} is comprised between 0 and
 \textbf{included} 30. 30 is indeed the value that allows us to leave the
 loop. Moreover, one of the properties required by the weakest
 precondition calculus is that when the loop condition is invalidated, by
@@ -171,18 +171,19 @@ would be unreachable.
 
 
 
-Again, we can have a look at the list of proof obligations in ``WP Goals'':
+Again, we can have a look at the list of verification conditions in
+``WP Goals'':
 
 
 
 \image{i_30-1}
 
 
-We notice that WP produces two different proof obligations: the
+We notice that WP produces two different verification conditions: the
 establishment of the invariant and its preservation. WP produces exactly
 the reasoning we previously described to prove the assertion. In recent
 versions of Frama-C, Qed has become particularly aggressive and
-powerful, and the generated proof obligation does not show these details
+powerful, and the generated verification condition does not show these details
 (showing directly ``True''). Using the option \texttt{-wp-no-simpl} at
 start, we can however see these details:
 
@@ -228,9 +229,9 @@ to keep its old value. For example:
 
 
 This time, we can establish the proof that the loop correctly behaves.
-However, we cannot prove that it terminates. The loop invariant is not
-enough to perform such a proof. For example, in our program, we could
-modify the loop, removing the loop body:
+However, we cannot prove that it terminates. The loop invariant alone
+does not give enough information to perform such a proof. For example,
+in our program, we could modify the loop, removing the loop body:
 
 
 
@@ -280,7 +281,7 @@ RTE, we get this result:
 
 The assertion ``False'' is proved! For a very simple reason: since the
 condition of the loop is ``True'' and no instruction of the loop body
-allows to leave the loop, it will not terminate. As we are proving the
+allows to leave the loop, it does not terminate. As we are proving the
 code with partial correctness, and as the execution does not terminate,
 we can prove anything about the code that follows the non terminating
 part of the code. However, if the termination is not trivially provable,
@@ -299,12 +300,12 @@ the assertion will probably not be proved.
 
 
 In order to prove the termination of a loop, we use the notion of loop
-variant. The loop variant is not a property but a value. It is an
-expression that involves the element modified by the loop and that
-provides an upper bound to the number of iterations that have to be
-executed by the loop at each iteration. Thus, it is an expression
-greater or equal to 0, and that strictly decreases at each loop
-iteration (this will also be verified by induction by WP).
+variant. A loop variant is not a property but a value. It is an
+expression that involves the variables modified by the loop and that
+provides an upper bound to the number of iterations that remains to be
+executed by the loop before any iteration. Thus, this expression is
+greater or equals to 0, and strictly decreases at each loop iteration
+(this must also be verified by induction by WP).
 
 
 If we take our previous example, we add the loop variant with this
@@ -316,20 +317,20 @@ syntax:
 
 
 
-Again, we can have a look at the generated proof obligations:
+Again, we can have a look at the generated verification conditions:
 
 
 
 \image{i_30-4}
 
 
-The loop variant generates two proof obligations: verify that the value
+The loop variant generates two verification conditions: verify that the value
 specified in the variant is positive, and prove that it strictly
 decreases during the execution of the loop. And if we delete the line of
 code that increments \CodeInline{i}, WP cannot prove anymore that
 \CodeInline{30\ -\ i} strictly decreases.
 
-We can also note that being able to give a loop invariant does not
+We can also note that being able to give a loop variant does not
 necessarily induce that we can give the exact number of remaining
 iterations of the loop, as we do not always have a so precise knowledge
 of the behavior of the program. We can for example build an example like
@@ -344,8 +345,8 @@ this one:
 Here, at each iteration, we decrease the value of the variable
 \CodeInline{i} by a value comprised between 1 and \CodeInline{i}. Thus, we can
 ensure that the value of \CodeInline{i} is positive and strictly decreases
-during each loop iteration, but we cannot say how many loop iteration
-will be executed.
+during each loop iteration, but we cannot say how many loop iterations
+remain to be executed.
 
 
 
@@ -353,7 +354,7 @@ The loop variant is then only an upper bound on the number of iteration,
 not an expression of their exact number.
 
 
-Note also that a loop variant only need to be positive at the beginning
+Note also that a loop variant only needs to be positive at the beginning
 of the execution of the block of the loop. Thus, in the following code:
 
 
@@ -431,7 +432,7 @@ invariant, we have to add this knowledge. See, for example:
 
 
 
-A loop invariant must be true each the condition of the loop is checked. In
+A loop invariant must be true each time the condition of the loop is checked. In
 fact, that also means that it must be true before an iteration, and after
 each \textbf{complete} iteration. Let us illustrate on an example this
 important idea.
@@ -442,7 +443,7 @@ important idea.
 
 
 
-In this function, when the loop reach the index 30, we break the loop before
+In this function, when the loop reaches the index 30, we break the loop before
 checking the condition again. While the invariant is verified, let us show
 that we can now further constrain it.
 
@@ -482,7 +483,7 @@ in a given data-structure and stops when it founds it to perform some
 operations that are thus not really part of the loop. From a verification
 point of view, it allows us to simplify the contract of the loop: we know
 that the (potentially complex) operations performed just before we stop do
-not need to be considered when designing the contract.
+not need to be considered when designing the invariant.
 
 
 \levelThreeTitle{Exercises}
