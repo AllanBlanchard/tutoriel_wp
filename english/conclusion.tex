@@ -13,21 +13,23 @@ produced indeed corresponds to the specification we have provided. This
 specification is provided using annotations of our functions that
 includes the contract they must respect. These contracts are properties
 required about the input to ensure that the function will correctly
-work, which is specified by properties about the output of the function.
+work, which is specified by properties about the output of the function
+and enforced by the tool that allow us to check specific problems related
+to the use of C (namely, the absence of runtime errors).
 
 Starting from specified programs, WP is able to produce the weakest
 precondition of our programs, provided what we want in postcondition,
 and to ask some provers if the specified precondition is compatible with
 the computed one. The reasoning is completely modular, which allows to
 prove function in isolation from each other and to compose the results.
-WP cannot currently work with dynamic allocation. A function that would
-use it could not be proved.
 
-However, even without dynamic allocation, a lot of function can be
-proved since they work with data-structures that are already allocated.
+
+WP cannot currently work with dynamic allocation. A function that would use it
+could not be proved. However, even without dynamic allocation, a lot of function
+can be proved since they work with data-structures that are already allocated.
 And these functions can then be called with the certainty that they
-perform a correct job. If we cannot or do not want to prove calling
-code, we can still write something like this:
+perform a correct job. If we cannot or do not want to prove the client code of a
+function, we can still write something like this:
 
 
 
@@ -39,7 +41,7 @@ code, we can still write something like this:
   assigns ...
   ensures ...
 */
-void ma_fonction(int* a, int b){
+void my_function(int* a, int b){
   //this is indeed the  "assert" defined in "assert.h"
   assert(/*properties on a*/ && "must respect properties on a");  
   assert(/*properties on b*/ && "must respect properties on b");
@@ -49,8 +51,8 @@ void ma_fonction(int* a, int b){
 
 
 Which allows us to benefit from the robustness of our function having
-the possibility to debug and incorrect call in a source code that we
-cannot or do want to prove.
+the possibility to debug an incorrect call in a source code that we
+cannot or do not want to prove.
 
 Writing specifications is sometimes long or tedious. Higher-level
 features of ACSL (predicates, logic functions, axiomatizations) allow us
@@ -68,16 +70,16 @@ specification in a formal language is incredibly useful (even if it can
 be sometimes frustrating) to get a clear specification.
 
 Formal languages, that are close to mathematics, are precise.
-Mathematics have this: they are precise. What is more terrible that
+Mathematics have this: they are precise. What is more terrible than
 reading a specification written in a natural language, with complex
 sentences, using conditional forms, imprecise terms, ambiguities,
 compiled in administrative documents composed of hundreds of pages, and
 where we need to determine, ``so, what this function is supposed to do?
-And do I have to validate about it?''.
+And what do I have to validate about it?''.
 
 Formal methods are probably not used enough currently. Sometimes because of
 mistrust, sometimes because of ignorance, sometimes because of prejudice
-based on ideas born at the beginning of the tools, 20 years ago. Our tools
+based on ideas born at the beginning of the tools, 30 years ago. Our tools
 evolve, the ways we develop change, probably faster than in any other
 technical domain. Saying that these tools could never be
 used for real life programs would certainly be a too big shortcut. After
@@ -86,7 +88,7 @@ all, we see everyday how much development is different from what it were
 be different in 10 years, 20 years, 40 years.
 
 During the past few years, safety and security questions have become
-more and more actual and crucial. Formal methods also progressed a lot,
+more and more visible and crucial. Formal methods also progressed a lot,
 and the improvement they bring for these questions are greatly
 appreciated. For example, this
 \externalLink{this link}{http://sfm.seas.harvard.edu/report.html} brings to the
@@ -120,7 +122,7 @@ verification point of view are certainly those ones:
 
 \begin{itemize}
 \item abstract interpretation analysis using
-\externalLink{Value}{http://frama-c.com/value.html},
+\externalLink{EVA}{http://frama-c.com/value.html},
 \item the transformation of annotation into runtime verification using
 \externalLink{E-ACSL}{http://frama-c.com/eacsl.html}.
 \end{itemize}
@@ -177,8 +179,8 @@ There are some proofs that cannot be discharged by automatic solvers. In
 such a case, we have to provide these proofs interactively. WP, like
 Why3, can extract its verification conditions to Coq, and it is very
 interesting to study
-this language. In the context of Frama-C, we produce reusable lemmas
-libraries which are already proved. But Coq can also be used for many
+this language. In the context of Frama-C, we can produce reusable lemmas
+libraries proved with Coq. But Coq can also be used for many
 different tasks, including programming. Note that Why3 can also extract
 its proof obligations to Isabelle or PVS that are also proof assistants.
 
