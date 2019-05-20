@@ -393,7 +393,8 @@ integers do not overflow:
 
 
 
-We see that the goals related to the range of \CodeInline{i} fail, and
+We see that the prover fails to discharge the verification condition
+related to the range of \CodeInline{i}, and that
 \CodeInline{i} can exceed the maximum of an unsigned int. One could try
 to provide a limit to the value of \CodeInline{strlen(s)} in precondition:
 
