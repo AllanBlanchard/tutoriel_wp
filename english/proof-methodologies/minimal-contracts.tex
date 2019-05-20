@@ -4,11 +4,11 @@ programs correctly implement their specification. However, it is sometimes hard
 to guarantee the later, and the former is already an interesting step for
 program correctness.
 
-Indeed, RTE often cause the presence of so-called ``undefined behaviors'' in C
-programs. These undefined behaviors are often the main vectors of security
-breaches and thus, guaranteeing their absence already protects us of a lot of
-attack vectors. The absence of runtime errors can be verified thanks to an
-approach called minimal contracts.
+Indeed, runtime errors often cause the presence of so-called ``undefined
+behaviors'' in C programs. These undefined behaviors are often vectors of
+security breaches and thus, guaranteeing their absence already protects us of a
+lot of attack vectors. The absence of runtime errors can be verified thanks to
+an approach called minimal contracts.
 
 
 \levelThreeTitle{Principle}
@@ -47,7 +47,7 @@ function.
 
 
 As we will see later, the function is however generally used in a particular
-context. So it is probable that this contract will in fact not be enough. For
+context. So this contract will likely not be enough. For
 example, we often have global variables in our program and here we do not
 specify what is assigned by the function. Most of the time the ``assigns''
 clause cannot be ignored (which is expected in a language where everything is
@@ -59,9 +59,9 @@ contract of the absolute value function will be the following:
 \CodeBlockInput{c}{abs-4.c}
 
 
-But this addition should only be guided by the verification of the context where
-the function is used once we have proved the absence of runtime errors in the
-function itself.
+But this addition should only be guided by the verification of the context(s)
+where the function is used once we have proved the absence of runtime errors in
+the function itself.
 
 
 
@@ -159,7 +159,8 @@ correctness of the function.
 
 Furthermore, even proving the absence of runtime errors is sometimes not trivial
 as we have for example seen with functions like the factorial of the sum of
-N integers, that require to give quite a lot of information to SMT solvers.
+N integers, that require to give quite a lot of information to SMT solvers, in
+order to prove that we cannot meet a integer overflow.
 
 
 
@@ -167,7 +168,7 @@ Finally, sometimes the minimal contracts of a function or a module basically
 is the full functional specification, and thus formally verifying the absence
 of runtime errors requires a full functional verification. This is commonly the
 case when we have to deal with complex data structures where the properties
-that are required for the absence of runtime errors depends on the functional
+that are required for the absence of runtime errors depend on the functional
 behavior of the function, maintaining some non-trivial invariant about the
 data structure.
 

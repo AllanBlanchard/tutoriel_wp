@@ -1,8 +1,8 @@
 There are different levels of automation for the verification of programs. From
 tools that are completely automatic, like for example abstract interpreters that
-do not require any help from the human, to interactive tools, like proof
-assistants where we write the proof mostly by hand and the tools is just there
-to check that we do it right.
+do not require any help from the human (or at least not so much), to interactive
+tools, like proof assistants where we write the proof mostly by hand and the
+tools is just there to check that we do it right.
 
 
 
@@ -10,7 +10,7 @@ Tools like WP (any many others like Why3, Spark, ...) tend to maximize
 automation. However, the more the properties we want to prove are complex, the
 harder it will be to get automatically the proof. Thus, we often need to help
 the tools in order to achieve the verification. This is done by providing more
-annotations to help the verification condition generation process. Adding loop
+annotations to help the verification condition generation process. Adding a loop
 invariant is for example a way to be able to produce an inductive reasoning
 about a loop while automatic provers are generally bad at this kind of task.
 
@@ -81,7 +81,10 @@ what is important, the other properties can just be ignored in our case):
 
 
 Here, we can see that for the proof of the second assertion, WP has collected
-and added to the proof context the fact that the first assertion is verified.
+and added the first assertion to the proof context. Thus WP considers that SMT
+solvers can assume this assertion. That means that they can rely on it, but also
+that it should be proved to be sure that the current verification condition is
+verified.
 
 
 Note that WP only collects what we can find on the different paths that allows
@@ -119,7 +122,7 @@ annotation:
 
 
 
-\CodeBlockInput[34][47]{c}{context.c}
+\CodeBlockInput[49][68]{c}{context.c}
 
 
 
@@ -248,11 +251,6 @@ can use it:
 \image{trigger_1_2}
 
 
-Note that here, the \CodeInline{reads} clause should give us enough information
-so that the axiom \CodeInline{ax\_2} should not be necessary. However, for the
-moment, the memory model of WP does not handle this clause so precisely.
-
-
 
 \levelThreeTitle{A more complex example: sort, again}
 
@@ -269,8 +267,8 @@ definitions. This time, we will prove the insertion sort function:
 The \CodeInline{insertion\_sort} function visits each value, from the beginning
 of the array, to the end. For each of value $v$, it is inserted (using the
 function \CodeInline{insert}) at the right place in the range of the already
-sorted values (at the beginning of the array), by shifting them until we meet a
-value that is smaller than $v$ or the first cell of the array.
+sorted values (at the beginning of the array), by shifting them until it meets
+a value that is smaller than $v$ or the first cell of the array.
 
 
 
@@ -283,17 +281,17 @@ the current visited cell is sorted. All these properties are ensured by the
 \CodeInline{insert} function. If we give a closer look at this function, we can
 see that it records the value to insert (which is at the end of the range) in
 the variable \CodeInline{value} and starting from this last position it shifts
-all value until we meet a value that is smaller than the one we want to insert
+all value until it meets a value that is smaller than the one we want to insert
 or the first cell of the array, and finally inserts the value.
 
 
 
 
-First, let us provide a suitable contract and loop invariant to insertion sort
-function. The contract is equivalent to the one provided to the selection sort.
-Note however that the invariant is weaker: we do not needed the values that are
-still not visited to be greater than the visited ones: we insert each value at
-the right place.
+First, let us provide a suitable contract and loop invariant for the insertion
+sort function. The contract is equivalent to the one provided for the selection
+sort. Note however that the invariant is weaker: we do not need the values that
+are still not visited to be greater than the visited ones: we insert each value
+at the right place.
 
 
 
@@ -301,10 +299,10 @@ the right place.
 
 
 
-Now, we can provide a contract to the insert function. The function requires
-that the first part of the range is already sorted, and in exchange, it
-guarantees to provide a range with one more value, that is still sorted and
-is permutation of the original range:
+Now, we can provide a contract for the insert function. The function requires
+that the first part of the range is already sorted from the beginning to the
+penultimate, and in exchange, it guarantees that the complete final range is
+sorted and is a permutation of the original one:
 
 
 
@@ -339,11 +337,11 @@ another:
 
 
 
-Starting from this definition, we can directly define lemmas that can help us
-to deduce that some array that respects some properties from a label to another
-is indeed a permutation. For example, that would be possible for the definition
-of the case \CodeInline{Swap} in our previous inductive definition. And it is
-of course also possible for our shifted range.
+Starting from this definition, we are able to provide lemmas that allows to
+reason efficiently about permutation, provided that some properties hold about
+the array between to program point. For example, if would be possible to define
+the case \CodeInline{Swap} in our previous inductive definition using a lemma.
+And it is of course also possible for our shifted range.
 
 
 
@@ -357,14 +355,13 @@ later).
 
 
 
-We can observe two facts: the first part of the array (from \CodeInline{beg} to
-\CodeInline{i+1}) is a permutation of the values that were present in the array
-at the beginning of the iteration (by the contract of the \CodeInline{insert}
-function). The second part (from \CodeInline{i+1} to \CodeInline{end}) is
-unchanged, so this is also a permutation of the values present at the beginning
-of the iteration. Let us use some assertions to see whether we can prove this
-or not. While the first property is easily deduced, we can see that the second
-one is not:
+We can observe two facts: the first range in the array (from \CodeInline{beg} to
+\CodeInline{i+1}) is a permutation of the same range at the beginning of the
+iteration (by the contract of the \CodeInline{insert} function). The second part
+(from \CodeInline{i+1} to \CodeInline{end}) is unchanged, thus this is also a
+permutation. Let us use some assertions to see whether we can prove this or not.
+While the first property is easily deduced, we can see that the second one is
+not:
 
 
 
@@ -393,9 +390,10 @@ later.
 \CodeBlockInput[48][55]{c}{insert_sort-proved.c}
 
 
-And now, we can verify that those two sub-arrays are permutations, by again
-adding an assertion that shows that the range \CodeInline{i+1} to
-\CodeInline{end}, in order to trigger \CodeInline{unchanged\_is\_permutation}.
+And now, we can verify that those two sub-arrays are permutations, this is done
+by adding an assertion that shows that the range \CodeInline{i+1} to
+\CodeInline{end} is unchanged, in order to trigger our lemma
+\CodeInline{unchanged\_is\_permutation}.
 
 
 \CodeBlockInput[129][142]{c}{insert_sort-proved.c}
@@ -471,8 +469,9 @@ So first, we can give a suitable invariant for the permutation:
 
 as well as some assertions that we want to be verified:
 \begin{itemize}
-\item the first one asserts that the first part of the array is unchanged to
-  trigger \CodeInline{unchanged\_permutation} in order to prove
+\item first in order to trigger \CodeInline{unchanged\_permutation}, we place
+  a first assertion that state that the first part of the array is unchanged,
+  which allows to prove
 \item the second one that asserts that the first part of the array is a
   permutation of the original one, and is used in combination  with ...
 \item the third one that asserts that the second part of the array is a
@@ -570,7 +569,7 @@ To prove \CodeInline{rotate\_left\_is\_permutation} we split the range at
 \CodeInline{L2} did not change thanks to \CodeInline{shifted\_maintains\_occ},
 and that the number of occurrences in \CodeInline{beg .. beg+1} at
 \CodeInline{L1} and \CodeInline{end-1 .. end} at \CodeInline{L2} is the same by
-case analysis (and using the fact taht the values equal).
+case analysis (and using the fact that the values equal).
 
 
 For \CodeInline{union\_permutation}, we intantiate the lemma
