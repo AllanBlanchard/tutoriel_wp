@@ -21,23 +21,32 @@
   contains examples taken from
   \textit{\externalLink{ACSL By Example}{https://github.com/fraunhoferfokus/acsl-by-example}}
   by Jochen Burghardt, Jens Gerlach, Kerstin Hartig, Hans Pohl and Juan
-  Soto from the Fraunhofer. The remaining ideas come from my personal
-  experience with Frama-C and WP. The only requirement to this tutorial
-  is to have a basic knowledge of the C language, and at least to
-  be familiar with the notion of pointer.
+  Soto from the Fraunhofer. For formal aspects, I verified my statements and
+  explanations using the course on Why3 given by Andrei Paskevich
+  \textit{\externalLink{at EJCP 2018}{https://ejcp2018.sciencesconf.org/file/441131}}.
+  The remaining ideas come from my personal experience with Frama-C and WP.
 
-  The version of the tools considered in this tutorial are:
+  \horizontalLine
+  
+  The versions of the tools considered in this tutorial are:
   \begin{itemize}
-  \item Frama-C Potassium
+  \item Frama-C 19 Potassium
   \item Alt-Ergo 2.3.0
-  \item Why3 1.2.0
   \item Coq 8.9.0 (for provided scripts, not used in the tutorial)
+  \item Why3 1.2.0 + Z3 4.8.1\\
+    (in one example, they are not absolutely necessary to follow the course)
   \end{itemize}
   Depending on the versions used by the reader some differences could appear in
   what is proved and what is not. Some presented features are only available
   in recent versions of Frama-C.
+
+  \horizontalLine
+  
+  The only requirement to this tutorial is to have a basic knowledge of the C
+  language, and at least to be familiar with the notion of pointer.
 \end{Information}
 
+\newpage
 
 Despite its old age, C is still a widely used programming language.
 Indeed, no other language can pretend to be available on so many
@@ -69,16 +78,16 @@ compilation.
 
 
 In such cases, the needs in terms of test coverage of the source code
-becomes extremely high. Thus, the question ``is our software tested
+become extremely high. Thus, the question ``is our software tested
 enough?'' becomes a question to which it is very hard to answer. Program
 proof can help us.
-Rather than test all possible and (un)imaginable inputs to the program,
+Rather than testing all possible and (un)imaginable inputs of the program,
 we will \emph{statically} and \emph{mathematically} prove that there
 cannot be any problem at runtime.
 
 
 
-The goal of this tutorial is to use Frama-C, a tool developed the CEA
+The goal of this tutorial is to use Frama-C, a tool developed at CEA
 LIST, and WP, its deductive proof plugin, to learn the basics about C
 program proof. More than the use of the tool itself, the goal of this
 tutorial is to convince that it is more and more possible to write
