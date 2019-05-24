@@ -67,9 +67,15 @@ exist''. And, if this sentence is quite true, it is a bit misunderstood.
 
 
 
-Apart from the difference between safety and security (that we can very
-vaguely define by the existence of a malicious entity), we do not really
-define what we mean by ``bug-free''. Creating software always relies at
+First, there is a difference between safety and security. Loosely speaking,
+in security a malicious entity that can attack the system, while in safety, we
+want to verify when used in a conform way, the system well behaves. Thus, safety
+is a first before we can get security\footnote{Depending on the field you are
+  working in, the term ``safety'' may have a very different sense. Namely, a
+  \textit{safe} system must be a system that can never cause injuries to human
+  beings. And thus in this case, the opposite applies: we can never have safety
+  if security is not guaranteed before.}. Second, and more important, we do not
+really define what we mean by ``bug-free''. Creating software always relies at
 least on two steps: we establish a specification of what we expect from
 the program and then we produce the source code of the program that must
 respect this specification. Both of these steps can lead to the
@@ -82,7 +88,7 @@ verifies a given specification. But what are the arguments of program
 proof, compared to program testing? First, the proof is complete, it
 cannot forget some corner case if the behavior is specified (program
 test cannot be complete, being exhaustive would be far too costly).
-Then, the obligation to formally specify with a logic formulation
+Second, the obligation to formally specify with a logic formulation
 requires to exactly understand what we have to prove about our program.
 
 
@@ -91,7 +97,9 @@ One could cynically say that program proof shows that ``the
 implementation does not contain bugs that do not exist in the
 specification''. But, well, it is already a big step compared to ``the
 implementation does not contain too many bugs that do not exist in the
-specification''. Moreover, there also exist approaches that allow to
+specification'', since for example it is generally not the fault of the
+specification if we try to access a nul pointer. Moreover, there also
+exist approaches that allow to
 analyze specifications to find errors or under-specified behaviors. For
 example, with model checking techniques, we can create an abstract model
 from the specification and produce the set of states that can be reached
@@ -151,7 +159,7 @@ We have a model of the behavior of our chronometer with the different
 states it can reach according to the different actions we can perform.
 However, we have not modeled how these states are implemented in the
 program (is this a C enumeration? a particular program point in the
-source code?), nor the computation of the elapsed time is done (a single
+source code?), nor how the computation of the elapsed time is done (a single
 variable? multiple ones?). It would then be difficult to specify
 properties about our program. We could add some information:
 
@@ -271,8 +279,8 @@ When we do nothing, the postcondition is the precondition.
 
 
 Along this tutorial, we will present the semantics of different program
-constructs (conditional blocks, loops, etc) using Hoare logic. So, we
-will not enter into details now since we will work on it later. It is
+constructs (conditional blocks, loops, etc) using Hoare logic. So, 
+let us skip these details now since we will work on it later. It is
 not necessary to memorize these notions nor to understand all the
 theoretical background, but it is still useful to have some ideas about
 the way our tool works.
@@ -293,9 +301,9 @@ The weakest precondition calculus is a form of predicate transform
 semantics proposed by Dijkstra in 1975 in \emph{Guarded commands,
 non-determinacy and formal derivation of programs}.
 
-This sentence can appear complex but the actual meaning is in fact quite
-simple. We have seen before that Hoare logic gives us rules that explain
-the behavior of the different actions of a program, but it does not say
+This title can appear complex but actually the content of the article is in
+fact quite simple. We have seen before that Hoare logic gives us rules that
+explain the behavior of the different actions of a program, but it does not say
 how to apply these rules to establish a complete proof of the program.
 
 Dijkstra reformulate the Hoare logic by explaining, in the triple
