@@ -25,7 +25,7 @@ First, as we previously presented, the
 \CodeInline{\textbackslash{}valid\_read} predicate (as well as
 \CodeInline{\textbackslash{}valid}) allows us to specify not only the
 validity of a readable address but also to state that a range of
-contiguous addresses is valid. It is expressed using this expression:
+contiguous addresses is valid. It is expressed using this syntax:
 
 
 
@@ -92,7 +92,7 @@ an element such that it satisfies the property \texttt{p} at the same
 time it also satisfies \texttt{q}. If we use an implication, as we do
 for ``forall'', such an expression will always be true if \texttt{p} is
 not a tautology! Why? Is there an ``a'' such that p(a) implies q(a)? Let
-us take an ``a'' such that p(a) is false, then the implication is true.
+us take any ``a'' such that p(a) is false, then the implication is true.
 
 
 
@@ -213,8 +213,14 @@ array and the potentially new values:
 
 
 For every memory location that contained the value to be replaced, it now must
-contain the new value. All other values must remain unchanged. In fact, if we
-try to prove this invariant with WP, it fails. In such a case, the simpler
+contain the new value. All other values must remain unchanged. While we
+previously relied on the \CodeInline{assigns} clauses for this kind of properties,
+here, we do not have this possibility because while the ACSL language provides
+some facilities that we could use to write a very precise \CodeInline{assigns}
+clause, WP would not perfectly exploit it. Thus we have to use an invariant and
+keep an approximation of the assigned memory location.
+
+If we try to prove this invariant with WP, it fails. In such a case, the simpler
 method is to add different assertions that expresses the different
 intermediate properties using assertions which we expect to be easily proved
 and which imply the invariant. Here, we can easily notice that WP does not
@@ -361,7 +367,7 @@ guarantee that if the two arrays overlap, the beginning of the destination
 range must not be in the source range:
 
 \begin{CodeBlock}{c}
-//@ requires \separated(&src[0 .. len-1], src) ;
+//@ requires \separated(&src[0 .. len-1], dst) ;
 \end{CodeBlock}
 
 

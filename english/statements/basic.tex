@@ -109,7 +109,7 @@ applications of the assignment rule.
 
 
 In C, thanks to (because of?) pointers, we can have programs with aliases,
-meaning that two pointers can point on the same memory location. Our weakest
+meaning that two pointers can point to the same memory location. Our weakest
 precondition calculus should consider these cases. For example, let us consider
 this simple Hoare triple:
 
@@ -139,8 +139,8 @@ $wp(*p = 1, *p + *q = 2)$ & $= (*p + *q = 2)[*p \leftarrow 1]$\\
 We get the weakest precondition: \CodeInline{1 + *q == 2}, and thus we could
 deduce that the weakest precondition is \CodeInline{*q == 1}, which is true, but
 does not allow us to conclude that the program is correct, since in our formula
-we do not have any to model that \CodeInline{p == q ==> *q == 1}. In fact, here,
-we would like to be able to compute a property like:
+we do not have anything that models that \CodeInline{p == q ==> *q == 1}. In
+fact, here, we would like to be able to compute a weakest precondition like:
 
 
 
@@ -176,8 +176,10 @@ And basically, the get operation can be seen as follows:
 \end{tabular}
 
 
-Of course, at the beginning of a function, the memory context can be populated
-with the memory locations for which a value is defined.
+If there is no value associated to the location we use for a get, the value is
+undefined (thus, the memory is partial function). Of course, at the beginning of
+a function, the memory context can be populated with the memory locations for
+which a value is known to be defined.
 
 
 Now, we can change a little bit the weakest precondition calculus for assignment
@@ -208,11 +210,11 @@ precondition of our previous program:
 \begin{enumerate}
 \item we have to apply the rule of assignment for pointers, but for this we need
   to introduce $M$,
-\item we replace pointer accesses in the formula by a call to select on $M$,
+\item we replace pointer accesses in the formula by a call to $get$ on $M$,
 \item we apply the replacement asked by the assignment rule,
-\item we use the definition of the get operator for the expression about $p$
+\item we use the definition of the $get$ operator for the expression about $p$
   ($M[p \mapsto 1][p] = 1$)
-\item we use the definition of the get operator for the expression about $q$\\
+\item we use the definition of the $get$ operator for the expression about $q$\\
   ($M[p \mapsto 1][q] = \texttt{if}\ q = p\ \texttt{then}\ 1\ \texttt{else}\ M[q]$)
 \item we perform some simplification to the formula ...
 \item ... and finally conclude that either $M[q] = 1$ or $p = q$.
@@ -237,7 +239,7 @@ by preventing WP to simplify it using the option \CodeInline{-wp-no-simpl}:
 We can see, in the beginning of the verification condition, that a variable
 \CodeInline{Mint\_0} representing a memory of values of integer types have been
 created, and that this memory is updated and accessed using the operators we
-previously introduced.
+previously introduced (see the definition of the variable \CodeInline{x\_2}).
 
 
 \levelThreeTitle{Composition of statements}

@@ -26,6 +26,9 @@ We then proceed using an inductive reasoning. We have to find a
 property that is true before we start to execute the loop and that, if
 it is true at the beginning of an iteration, remains true at the end
 (and that is consequently true at the beginning of the next iteration).
+When the loop ends, we add the knowledge that the condition of the loop is
+false and that should allow us to deduce that the postcondition of the loop
+is verified.
 
 
 
@@ -111,7 +114,7 @@ Let us detail this formula:
   finally, the last part ($(\neg B \wedge I) \Rightarrow Post$)
   expresses the fact that when the loop ends($\neg B$), and the
   invariant $I$ has been maintained, it must imply that the wanted
-  postcondition of the loop is valid.
+  postcondition of the loop is verified.
 \end{itemize}
 
 In this computation, we can notice that the $wp$ function does not
@@ -183,7 +186,7 @@ We notice that WP produces two different verification conditions: the
 establishment of the invariant and its preservation. WP produces exactly
 the reasoning we previously described to prove the assertion. In recent
 versions of Frama-C, Qed has become particularly aggressive and
-powerful, and the generated verification condition does not show these details
+powerful, and the generated verification condition does not show those details
 (showing directly ``True''). Using the option \texttt{-wp-no-simpl} at
 start, we can however see these details:
 
@@ -424,7 +427,8 @@ invariant, we have to add this knowledge. See, for example:
   However, it is often more difficult to compute the relations
   that exist between the different variables of a program, for
   example the equality expressed by the invariant we have
-  added.
+  added and that is absolutely necessary to prove the postcondition of the
+  function.
 \end{Information}
 
 
@@ -478,7 +482,7 @@ as if we had written:
 
 
 This is an interesting scheme. It basically corresponds to any algorithm
-that search, using a loop, a particular condition respected by an element
+that searches, using a loop, a particular condition respected by an element
 in a given data-structure and stops when it founds it to perform some
 operations that are thus not really part of the loop. From a verification
 point of view, it allows us to simplify the contract of the loop: we know

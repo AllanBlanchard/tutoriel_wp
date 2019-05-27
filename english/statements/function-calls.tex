@@ -191,11 +191,16 @@ $O$).
 
 For the precondition, we get :
 $$valid(\&a) \wedge valid(\&b)$$
-For the postcondition part, first we replace the pointers:
+For the postcondition part, let us first write the expression from which
+we start before any term replacement (and without the syntax for the
+replacement for the sake of conciseness):
+$$H(*x) = O(*y) \wedge H(*y) = O(*x) \Rightarrow H(a) = 2 \wedge H(b) = 4$$
+First we replace the pointers ($x \leftarrow \&a,\ y \leftarrow \&b$) :
 $$H(*(\&a)) = O(*(\&b)) \wedge H(*(\&b)) = O(*(\&a)) \Rightarrow H(a) = 2 \wedge H(b) = 4$$
-Then, the $here$ values, with the quantified $v_i$s:
+Then, the $here$ values, with the quantified $v_i$s ($H(a)) \leftarrow v_a, H(b)) \leftarrow v_b$):
 $$v_a = O(*(\&b)) \wedge v_b = O(*(\&a)) \Rightarrow v_a = 2 \wedge v_b = 4$$
-And the $old$ values, with the value before call:
+And the $old$ values, with the value before call
+($O(*(\&a)) \leftarrow *(\&a),\ O(*(\&b)) \leftarrow *(\&b)$):
 $$v_a = *(\&b) \wedge v_b = *(\&a) \Rightarrow v_a = 2 \wedge v_b = 4$$
 We can now simplify this formula to:
 $$v_a = b \wedge v_b = a \Rightarrow v_a = 2 \wedge v_b = 4$$
@@ -204,7 +209,8 @@ $$v_a = b \wedge v_b = a \Rightarrow v_a = 2 \wedge v_b = 4$$
 So, $wp(swap(\&a, \&b), a = 2 \wedge b = 4)$ is:
 $$P: valid(\&a) \wedge valid(\&b) \wedge \forall v_a, v_b, \quad v_a = b \wedge v_b = a \Rightarrow v_a = 2 \wedge v_b = 4$$
 Let us immediately simplify the formula by noticing that validity properties
-are trivially true here:
+are trivially true here (since the variable are allocated on the stack just
+before):
 $$P: \forall v_a, v_b, \quad v_a = b \wedge v_b = a \Rightarrow v_a = 2 \wedge v_b = 4$$
 
 
