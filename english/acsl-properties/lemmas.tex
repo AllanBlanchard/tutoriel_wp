@@ -68,7 +68,7 @@ properties about them:
 
 For these proofs, Alt-ergo, will probably not be able to discharge all
 generated verification conditions. In this case, Z3 will certainly perform
-it. We can then write some code examples:
+it. We can then write the following example code:
 
 
 
@@ -77,13 +77,13 @@ it. We can then write some code examples:
 
 
 If we do not give the lemmas provided earlier, Alt-ergo will not be able
-to prove the proof that \CodeInline{fmin} is lesser or equals to
+to prove the proof that \CodeInline{fmin} is lower or equals to
 \CodeInline{fmax}. With the lemmas it is however very easy for it since the
 property is the simply an instance of the lemma
 \CodeInline{ax\_monotonic\_pos}, the proof is then trivial as our lemma is
 considered to be true when are not currently proving it. Note that on this
 generalized version of \CodeInline{function}, Z3 will be probably more efficient
-to prove this absence of runtime errors.
+to prove the absence of runtime errors.
 
 
 \levelThreeTitle{Example: arrays and labels}
@@ -95,7 +95,7 @@ memory. Thus, we will often need lemmas to state relations about the content
 of the memory between labels.
 
 
-Let us illustrate with a first simple example. Consider the two following
+For now, let us illustrate with a first simple example. Consider the two following
 predicates:
 
 
