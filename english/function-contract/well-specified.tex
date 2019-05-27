@@ -46,7 +46,7 @@ correct with respect to the specification:
 
 
 
-This while being a correct specification of \CodeInline{max}, our specification
+While being a correct specification of \CodeInline{max}, our specification
 is however too permissive. We have to be more precise. We do
 not only expect the result to be greater or equal to both parameters,
 but also that the result is one of them:
@@ -138,6 +138,47 @@ in this tutorial).
 
 
 
+Note that one must take care to use \CodeInline{\textbackslash{}old} and
+\CodeInline{\textbackslash{}at} for values that make sense. This is why
+for example in a contract, all values received in input are put into
+\CodeInline{\textbackslash{}old} when used in postcondition, the ``new''
+value of the input variables not make any sense for the caller of the
+function as they are not accessible: they are local to the called function.
+For example, if we have look at the contract of the swap function transformed
+by Frama-C, we can see that in the postcondition, the pointers are enclosed into
+\CodeInline{\textbackslash{}old}:
+
+
+\image{2-old-swap}
+
+
+For the built-in \CodeInline{\textbackslash{}at}, we have to take care of this
+more explicitely. In particular,
+the specified label must make sense with respect to the scope of the
+value. For example, in the following program, Frama-C detects that we ask
+the value of the variable \CodeInline{x} at a program point where it does
+not exist:
+
+
+\CodeBlockInput[1][5]{c}{at-2.c}
+
+
+\image{2-at-1.png}
+
+
+However, in some other cases, we only reach a proof failure since determining
+that the value does not exists at some particular label cannot be done by
+a syntactic analysis. For example, if the variable is declared but undefined
+or if we want the value of a pointed value:
+
+
+\CodeBlockInput[7][19]{c}{at-2.c}
+
+
+In these example, it is easy to understand the problem since labels are
+explicit. We will see later that in some cases in can be trickier.
+
+
 For the moment, we do not need \CodeInline{\textbackslash{}at} but it can
 often be useful, if not essential, when we want to make our
 specification precise.
@@ -147,10 +188,10 @@ specification precise.
 \levelFourTitle{Pointers validity}
 
 
-If we try to prove that the swap function is correct (comprising RTE
-verification), our postcondition is indeed verified but WP fails to
-prove that some runtime-error cannot happen, since we perform access to
-some pointers that we did not indicate to be valid pointers in the
+If we try to prove that the swap function is correct (comprising the
+verification of absence of runtime errors), our postcondition is indeed verified
+but WP fails to prove that some runtime-error cannot happen, since we perform
+access to some pointers that we did not indicate to be valid pointers in the
 precondition of the function.
 
 We can express that the dereferencing of a pointer is valid using the
@@ -178,14 +219,15 @@ specifications.
 
 
 
-If we have a closer look at the assertions that WP adds in the swap
-function comprising RTE verification, we can notice that there exists
-another version of the \CodeInline{\textbackslash{}valid} predicate, denoted
-\CodeInline{\textbackslash{}valid\_read}. As opposed to \CodeInline{\textbackslash{}valid}, the
-predicate \CodeInline{\textbackslash{}valid\_read} indicates that a pointer
-can be dereferenced, but only to read the pointed memory. This subtlety
-is due to the C language, where the downcast of a const pointer is easy
-to write but is not necessarily legal.
+If we have a closer look at the assertions that RTE adds in the swap function
+when we ask the verification of absence of runtime errors, we can notice that
+there exists another version of the \CodeInline{\textbackslash{}valid}
+predicate, denoted \CodeInline{\textbackslash{}valid\_read}. As opposed to
+\CodeInline{\textbackslash{}valid}, the predicate
+\CodeInline{\textbackslash{}valid\_read} indicates that a pointer can be
+dereferenced, but only to read the pointed memory. This subtlety is due to the C
+language, where the downcast of a const pointer is easy to write but is not
+necessarily legal.
 
 
 
@@ -235,9 +277,10 @@ during the execution of the function.
 
 
 
-By default, WP considers that a function can modify everything in the
+By default, WP considers that a function can modify everything in 
 memory. So, we have to specify what can be modified by a function. For
-example, our \CodeInline{swap} function can be specified like this:
+example, our \CodeInline{swap} function can be specified to modify the
+values pointed by the received pointers:
 
 
 
@@ -257,7 +300,7 @@ free. We specify this by giving \CodeInline{\textbackslash{}nothing} to
 
 
 
-\CodeBlockInput{c}{max_ptr.c}
+\CodeBlockInput{c}{assigns-nothing.c}
 
 
 
@@ -341,6 +384,40 @@ the context of use of this function and the precondition guaranteeing
 the absence of overflow.
 
 
+\levelThreeTitle{Writing the right contract}
+
+
+Writing a specification that is precise enough can sometimes be a bit tricky.
+Interestingly, a good way to check if a specification is precise enough is to
+write tests. And in fact, this is basically what we have done for our examples
+\CodeInline{max} and \CodeInline{swap}. We have written a first version of the
+specification and we have written some code with a call to the corresponding
+function to determine whether we could prove some properties that we expected to
+be easily provable from the contract of the function.
+
+
+
+The most important
+idea is to determine the contract without taking in account the content of the
+function (at least, in a first step). Indeed, we are trying to prove the
+function, but maybe it contains a bug, so if we write the contract taking in
+account too directly its code, we have a risk to introduce the same bug, for
+example taking in account an erroneous conditional structure. In fact, it is
+generally a good practice to work with someone else. One specifies the function
+and the other implements it (even if they previously agreed on a common textual
+specification).
+
+
+
+Once the contract have been stated, we work on the specifications that are due
+to the constraints of our language and our hardware. That mostly concerns the
+precondition of the function. For example, the absolute value does not really
+have a precondition, this is our hardware that adds the condition we have given
+in precondition due to the two's complement on which it relies. As we will see
+in the chapter~\ref{l1:proof-methodologies}, verifying the absence of runtime
+errors can also impact the postcondition. For now, let us leave this.
+
+
 
 \levelThreeTitle{Exercises}
 
@@ -351,7 +428,7 @@ the absence of overflow.
 
 Specify the postcondition of the following function, that computes the
 results of the division of \CodeInline{a} by \CodeInline{b} and its
-remaining and stores it in two memory locations \CodeInline{p} and
+remaining and stores it into two memory locations \CodeInline{p} and
 \CodeInline{q}:
 
 
@@ -364,7 +441,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Once the function is successfully proved to respect your contract, run:
+Once the function is successfully proved to respect the contract, run:
 
 
 \begin{CodeBlock}{bash}
@@ -372,7 +449,7 @@ frama-c-gui your-file.c -wp -wp-rte
 \end{CodeBlock}
 
 
-If it fails, complete your condition by adding the right precondition.
+If it fails, complete the contract by adding the right precondition.
 
 
 
@@ -496,10 +573,10 @@ frama-c-gui your-file.c -wp -wp-rte
 
 
 Remember that ordering values is not just ensuring that resulting values
-are increasing order and one of each original value, all original values
-should still be there after the sorting operation: new values are a
-permutation of the original one. To express this idea, you can rely on the
-set datatype. For example, this property is true:
+are sorted increasing order that each pointed value must be one the original
+ones. All original values should still be there after the sorting operation:
+new values are a permutation of the original ones. To express this idea, one
+can rely on the set datatype. For example, this property is true:
 
 
 \begin{CodeBlock}{c}

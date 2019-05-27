@@ -116,7 +116,8 @@ $B$), or $A$ is true and then $B$ must also be true. Note that it means
 that $A \Rightarrow B$ is equivalent to $\neg A \wedge B$. The idea
 finally being ``I want to know if when $A$ is true, $B$ also is. If
 $A$ is false, I don't care, I consider that the complete formula is
-true''.
+true''. For example, ``if it rains, I want to check that I have an
+umbrella, if it does not, I do not care, everything is fine''.
 
 
 
@@ -125,7 +126,9 @@ Another available connector is the equivalence $A \Leftrightarrow B$
 stronger. This is the conjunction of the implication in both ways
 $(A \Rightarrow B) \wedge (B \Rightarrow A)$. This formula is true in
 only two cases: $A$ and $B$ are both true, or both false (it can be seen
-as the negation of the exclusive or).
+as the negation of the exclusive or). Continuing with our example, ``I
+do not only want to know that I have an umbrella when it rains, I also
+want to be sure that I have one only when it rains''.
 
 
 
@@ -265,7 +268,8 @@ the behavior of overflows.
 
 Here, we can see another type of ACSL annotation. By the line
 \CodeInline{//@ assert property ;}, we can ask the verification of a
-property at a particular program point. Here, RTE inserted it for us, since
+property at a particular program point. Here, the RTE plugin inserted it for
+us, since
 we have to verify that \CodeInline{-val} does not produce an overflow, but
 we can also add such an assertion manually in the source code.
 
@@ -284,14 +288,15 @@ assertion, so they cannot rely on this unproved property.
 
 
 When WP transmits a verification condition to an automatic prover, it
-basically transmits two types of properties : $G$, the goal, the
+basically transmits two kinds of properties : $G$, the goal, the
 property that we want to prove, and $A_1$ \ldots{} $A_n$, the
 different assumptions we can have about the state of the memory at the
 program point where we want to verify $G$. However, it does not
 receive (in return) the properties that have been used by the prover to
 validate $G$. So, if $A_3$ is an assumption, and if WP did not
 succeed in getting a proof of $A_3$, it indicates that $G$ is true,
-but only if we succeed in proving $A_3$.
+but only assuming that $A_3$ is true, for which no proof has been established
+so far.
 
 
 
@@ -301,7 +306,7 @@ property is verified. There are two possibles reasons:
 
 
 \begin{itemize}
-\item the prover did not have enough information,
+\item the prover did not have the information needed to terminate the proof,
 \item the prover did not have enough time to compute the proof and
   met a timeout (which can be configured in the WP panel).
 \end{itemize}
@@ -311,7 +316,7 @@ In the bottom panel, we can select the ``WP Goals'' tab, it shows the list of
 verification conditions, and for each prover the result is symbolized
 by a logo that indicates if the proof has been tried and if it
 succeeded, failed or met a timeout (here we can see a try with
-Z3 where we had a timeout on the proof of absence of RTE). Note that it
+Z3 that lead timeout on the proof of absence of RTE). Note that it
 may require to select ``All Results'' in the squared field to see all
 verification conditions.
 
@@ -320,7 +325,7 @@ verification conditions.
 
 
 In the first column, we have the name of the function the verification
-condition belongs to. The second column indicates the name of verification
+condition belongs to. The second column indicates the name of the verification
 condition. For example here, our postcondition is named
 \CodeInline{postcondition 'positive\_value,function\_result'}, we can notice
 that if we select a property in this list, it is also highlighted in the
@@ -493,11 +498,13 @@ then the postcondition is verified.
 
 If we give to a function an input that surely breaks the precondition, we can
 deduce that everything can happen, including obtain false in postcondition.
-Knowing this, we can prove absolutely
-everything because this ``false'' becomes an assumption of every call
-that follows. Knowing false, we can prove everything, because if we have
-a proof of false, then false is true, as well as true is true. So
-everything is true.
+More precisely, here, after the call, we just suppose that the precondition
+is still true (as the function does not modify anything is memory), thus we
+suppose that \CodeInline{INT\_MIN < INT\_MIN} which is obviously false.
+Knowing this, we can prove absolutely everything because this ``false'' becomes
+an assumption of every call that follows. Knowing false, we can prove everything,
+because if we have a proof of false, then false is true, as well as true is true.
+So everything is true.
 
 
 
@@ -526,11 +533,11 @@ deduce ``True''.
 The second part of the question is then: why our first version of the
 calling function (\CodeInline{abs(a)} and then \CodeInline{abs(INT\_MIN)}) did
 not have the same behavior, indicating a proof failure on the second
-call? The answer is simply that the call \CodeInline{abs(a)} can, or not,
-produce an error, whereas \CodeInline{abs(INT\_MIN)} necessarily leads to an
-error. So, while \CodeInline{abs(INT\_MIN)} necessarily gives us the
-knowledge of ``false'', the call \CodeInline{abs(a)} does not, since it can
-succeed.
+call? The answer is simply that for the call \CodeInline{abs(a)} can we add
+the assumption \CodeInline{a < INT\_MIN}, and while we do not have a proof
+that it is true, we do not have a proof that is false neither. So, while
+\CodeInline{abs(INT\_MIN)} necessarily gives us the knowledge of ``false'',
+the call \CodeInline{abs(a)} does not, since it can succeed.
 
 
 
@@ -562,30 +569,6 @@ reading what we have specified.
 Some notions we will see in this tutorial can expose us to the
 possibility to introduce subtle incoherence. So, we must always be
 careful specifying a program.
-
-
-
-\levelFourTitle{Finding the right preconditions}
-
-
-Finding the right preconditions for a function is sometimes hard. The
-most important idea is to determine these preconditions without taking
-in account the content of the function (at least, in a first step).
-Indeed, we are trying to prove the function, but maybe it contains a bug,
-so if we write the contract taking in account too directly its code, we
-have a risk to introduce the same bug, for example taking in account an
-erroneous conditional structure. In fact, it is generally a good
-practice to work with someone else. One specifies the function and the
-other implements it (even if they previously agreed on a common textual
-specification).
-
-
-
-Once these preconditions have been stated, we work on the
-specifications that are due to the constraints of our language and our
-hardware. For example, the absolute value does not really have a
-precondition, this is our hardware that adds the condition we have given
-in precondition due to the two's complement on which it relies.
 
 
 
@@ -656,7 +639,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Once the function is successfully proved to respect your contract, run:
+Once the function is successfully proved to respect the contract, run:
 
 
 \begin{CodeBlock}{bash}
@@ -664,7 +647,7 @@ frama-c-gui your-file.c -wp -wp-rte
 \end{CodeBlock}
 
 
-It should fail, adapt your contract by adding the right precondition.
+It should fail, adapt the contract by adding the right precondition.
 
 
 \levelFourTitle{Distance}
@@ -686,7 +669,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Once the function is successfully proved to respect your contract, run:
+Once the function is successfully proved to respect the contract, run:
 
 
 \begin{CodeBlock}{bash}
@@ -694,7 +677,7 @@ frama-c-gui your-file.c -wp -wp-rte
 \end{CodeBlock}
 
 
-It should fail, adapt your contract by adding the right precondition.
+It should fail, adapt the contract by adding the right precondition.
 
 
 
@@ -728,7 +711,7 @@ main function.
 
 
 
-Write the postcondition of the following functions that returns the number
+Write the postcondition of the following function that returns the number
 of days in function of the received month (notice that we consider that
 they are numbered from 1 to 12), for February, we only consider the case
 when it has 28 days, we will see later how to solve this problem:
@@ -756,7 +739,7 @@ frama-c-gui your-file.c -wp -wp-rte
 
 
 
-If it fails, complete your precondition in order to solve the problem.
+If it fails, complete the precondition in order to solve the problem.
 
 
 
@@ -776,7 +759,7 @@ For example:
 
 
 
-Modify your postcondition by using this notation.
+Modify the postcondition by using this notation.
 
 
 
@@ -802,7 +785,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Once the function is successfully proved to respect your contract, run:
+Once the function is successfully proved to respect the contract, run:
 
 
 \begin{CodeBlock}{bash}
@@ -811,5 +794,5 @@ frama-c-gui your-file.c -wp -wp-rte
 
 
 
-If it fails, add the right preconditions. Note that the values of the different
+If it fails, add the right precondition. Note that the values of the different
 angles should not be more than 180 degrees.

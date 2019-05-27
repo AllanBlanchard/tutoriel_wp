@@ -11,8 +11,9 @@ the maximum absolute value of two values:
 
 
 
-Let us start by (over-)splitting the function we already proved in pairs
-header/source for \CodeInline{abs} and \CodeInline{max}. We obtain, for
+Let us start by (over-)separating the declarations and definitions of the
+different functions we need (and have previously proved) into header/source
+files, that are \CodeInline{abs} and \CodeInline{max}. We obtain, for
 \CodeInline{abs}:
 
 
@@ -33,7 +34,7 @@ We can notice that we put our function contract in the header file.
 The goal is to be able to import the specification at the same time as
 the declaration when we need it in another file. Indeed, WP needs the
 contract of the function when it is called. First to prove that the
-precondition is verified (and thus that the called is legal), and second
+precondition is verified (and thus that the call is legal), and second
 to get in return the postcondition that is useful to prove the right
 properties after the function call.
 
@@ -89,9 +90,7 @@ external library that we do not want to prove (or for which we do not
 even have the source code).
 
 The careful reader could specify and prove the \CodeInline{max\_abs}
-function.
-
-A solution is provided there:
+function. A possible answer is provided there:
 
 
 
