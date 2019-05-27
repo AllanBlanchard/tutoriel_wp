@@ -175,8 +175,22 @@ or if we want the value of a pointed value:
 \CodeBlockInput[7][19]{c}{at-2.c}
 
 
-In these example, it is easy to understand the problem since labels are
-explicit. We will see later that in some cases in can be trickier.
+Here, it is easy to see the problem. However, the considered label is
+propagated to subexpressions. Thus, sometimes, terms that seems to be 
+innocent can have a surprising behavior if we do not keep this fact in mind.
+For example, in the following example:
+
+
+\CodeBlockInput[21][26]{c}{at-2.c}
+
+
+The first assertion is proved, and while the second assertion seems to
+express the same property, it cannot be proved. Because, it in fact does not
+express the same property. The expression
+\CodeInline{\textbackslash{}at(x[*p], Pre)} must be seen as
+\CodeInline{\textbackslash{}at(x[\textbackslash{}at(*p)], Pre)} as the
+label is propagated to the subexpression \CodeInline{*p}, for which we do
+not know the value at label \CodeInline{Pre} (since it is not specified).
 
 
 For the moment, we do not need \CodeInline{\textbackslash{}at} but it can
