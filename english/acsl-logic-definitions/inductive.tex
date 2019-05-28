@@ -1,14 +1,14 @@
 Inductive predicates gives a way to state properties whose verification requires
 to reason by induction, that is to say: for a property $p(input)$, it is true
 for some base cases (for example, $0$ is an even natural number), and knowing
-that $p(input)$ is true, it also true for a $bigger input$, provided that some
-conditions relating $input$ and $bigger input$ are verified (for example, knowing
-that $n$ is even, we define that $n+2$ is also even). Thus, inductive predicates
-are generally useful to define properties recursively.
+that $p(input)$ is true, it also true for a $bigger\ input$, provided that some
+conditions relating $input$ and $bigger\ input$ are verified (for example,
+knowing that $n$ is even, we define that $n+2$ is also even). Thus, inductive
+predicates are generally useful to define properties recursively.
 
 \levelThreeTitle{Syntax}
 
-For now, let us define the syntax of inductive predicates:
+For now, let us introduce the syntax of inductive predicates:
 
 \begin{CodeBlock}{c}
 /*@
@@ -238,7 +238,7 @@ specification and the proof of the sort function that is a interesting use case
 for inductive definitions.
 
 Indeed, a common error we could do, trying to prove a sort function, would
-be to write this specification (which is true!):
+be to write this specification (which is correct!):
 
 
 \CodeBlockInput[6]{c}{sort-incomplete.c}
@@ -329,8 +329,8 @@ the inductive predicate:
 
 \begin{itemize}
 \item \CodeInline{b} is 0,
-\item some \CodeInline{d} is the GCD of \CodeInline{b} and \CodeInline{a \% b} and
-  thus, the GCD of \CodeInline{a} and \CodeInline{b}
+\item if some \CodeInline{d} is the GCD of \CodeInline{b} and \CodeInline{a \% b} and
+  thus, then it is the GCD of \CodeInline{a} and \CodeInline{b}
 \end{itemize}
 
 

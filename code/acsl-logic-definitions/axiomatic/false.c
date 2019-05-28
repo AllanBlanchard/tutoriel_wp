@@ -5,7 +5,7 @@
 */
 
 int main(){
-  // Exemples de propriétés prouvées
+  // Examples of proved properties
 
   //@ assert \false;
   //@ assert \forall integer x; x > x;

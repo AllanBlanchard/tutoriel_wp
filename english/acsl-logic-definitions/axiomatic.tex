@@ -84,13 +84,13 @@ axiom is always assumed to be true.
 
 
 Axiomatic definitions of recursive functions and predicates are
-particularly useful since they will prevent provers to unroll the
-recursion when is is possible.
+particularly useful since they will prevent provers from unrolling the
+recursion when it is possible.
 
 
 
 The idea is then not to define directly the function or the predicate
-but to declare it and then to define axioms that will specify its
+but to declare it and then to define axioms that specify its
 behavior. If we come back to the factorial function, we can define it
 axiomatically as follows:
 
@@ -114,6 +114,8 @@ axiomatically as follows:
 
 In this axiomatic definition, our function has no body. Its
 behavior is only defined by the axioms we have stated about it.
+Except this, nothing changes, in particular the logic function can
+be used in our specification just as before.
 
 
 
@@ -139,9 +141,10 @@ written like this:
 
 
 
-While it is not necessary to specify what are the memory locations read in an
-inductive definition, we have to specify such an information for axiomatically
-defined properties.
+Notice the \CodeInline{reads[b .. e-1]} that specifies the memory location
+on which the predicate depends. While it is not necessary to specify what are
+the memory locations read in an inductive definition, we have to specify such
+an information for axiomatically defined properties.
 
 
 \levelThreeTitle{Consistency}
@@ -320,8 +323,8 @@ string, that is to say, what we expect of our C function:
 Basically, we want to receive a valid string in input, and we want to
 compute a value that equals to the result of our logic function
 \CodeInline{strlen} applied to this string, of course this function
-does not assign anything. Defining what is a valid string is already
-a bit tricky. Indeed, previously in this tutorial, we only worked with
+does not assign anything. Defining what is a valid string is not that
+simple. Indeed, previously in this tutorial, we only worked with
 arrays, receiving in input both the array and the size of the array,
 however here, and as it is common in C, we suppose that the string ends
 with a character \CodeInline{'\textbackslash{}0'}. That means that we
@@ -421,7 +424,8 @@ not necessary):
 
 
 
-And this time the proof succeeds. The standard library provides an
+And this time the proof succeeds. Frama-C provides its own standard
+library headers, and they include an
 axiomatic definition for the \CodeInline{strlen} logic function. It can
 be found in the installation directory of Frama-C, under the directory
 \CodeInline{libc}, the file is named \CodeInline{\_\_fc\_string\_axiomatic.h}.

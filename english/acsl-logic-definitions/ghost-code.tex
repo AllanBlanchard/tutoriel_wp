@@ -1,10 +1,11 @@
 
-Behind this title, that seems to be an action movie, we find in fact a
-way to enrich our specification with information expressed as regular C
-code. Here, the idea is to add variables and source code that is not
-part of the actual program but models logic states that are only
-be visible from a proof point of view. Using it, we can make explicit
-some logic properties that were previously only known implicitly.
+The previous techniques we have seen in this chapter are meant to make the
+specification more abstract. The role of ghost code is the opposite, here, we
+find in fact a way to enrich our specification with information expressed as
+concrete C code. The idea is to add variables and source code that is not part
+of the actual program to verify and is thus only visible for the verification
+tool. It is used to make explicit some logic properties that, else, would only
+be known implicitly.
 
 
 \levelThreeTitle{Syntax}
@@ -27,8 +28,8 @@ introduced using the \texttt{ghost} keyword:
 
 The only rules we have to respect in such a code, is that we cannot
 write a memory block that is not itself defined in ghost code, and that
-the code must close any block it would open. Apart of this, any
-computation can be inserted provided it \emph{only} modifies ghost
+the code must close any block it would open. Apart from this, any
+computation can be inserted provided that it modifies \emph{only} ghost
 variables.
 
 
@@ -111,7 +112,7 @@ void foo(){
 
 
 
-Thus it is easy to modify the behavior of the code we want to verify by
+Thus, it is easy to modify the behavior of the code we want to verify by
 adding ghost code and in this case, if we prove a property about the
 program, we would prove it about the modified program, not about the
 actual one. One must thus take care of modifying only ghost memory locations
@@ -146,11 +147,16 @@ void foo(void){
 
 
 The goal of ghost code is to make explicit some information that would else
-be implicit. For example, in the previous section, we used it
-to get an explicit logic state known at a particular point of the
-program.
+be implicit. For example, in the verification of the sort algorithm, we used it
+to create a label in the program that is not visible by the compiler but that
+we can use in the verification. The fact that the value was swapped between the
+two labels was implicitly provided by the contract of the function, adding this
+ghost label allows us to write an explicit assertion of this fact.
 
-Let us take a more complex example. Here, we want to prove that the
+
+
+Let us take a more complex example where we more clearly create explicit
+knowledge about the program. Here, we want to prove that the
 following function returns the value of the maximal sum of subarrays of
 a given array. A subarray of an array \texttt{a} is a contiguous subset
 of values of \texttt{a}. For example, for an array \CodeInline{\{ 0 , 3 , -1 , 4 \}},
@@ -200,9 +206,9 @@ what are the relations between them, but we cannot do it!
 Basically, in order to prove our postcondition, we need to know that there
 exists some bounds
 \CodeInline{low} and \CodeInline{high} such that the computed sum corresponds to
-these bounds. However, in our code, we do not have anything that express
+these bounds. However, in our code, we do not have anything that expresses
 it from a logic point of view, and we cannot \emph{a priori} make the
-link between this logical formalization. We then use ghost code to
+link between this logic formalization. We then use ghost code to
 record these bounds and express the loop invariant.
 
 We first need two variables to record the bounds
