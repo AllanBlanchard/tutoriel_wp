@@ -1,7 +1,9 @@
 /*@
   axiomatic Ax {
-    predicate X{L1, L2}(int* p, integer l) reads \at(p[0 .. l-1], L1), \at(p[0 .. l-1], L2) ;
-    predicate Y{L1, L2}(int* p, integer l) reads \at(p[0 .. l-1], L1), \at(p[0 .. l-1], L2) ;
+    predicate X{L1, L2}(int* p, integer l)
+        reads \at(p[0 .. l-1], L1), \at(p[0 .. l-1], L2) ;
+    predicate Y{L1, L2}(int* p, integer l)
+        reads \at(p[0 .. l-1], L1), \at(p[0 .. l-1], L2) ;
 
     axiom Ax_axiom_XY {L1,L2}:
       \forall int* p, integer l, i ; 0 <= i <= l ==> X{L1, L2}(p, i) ==> Y{L1, L2}(p, l) ;

@@ -18,7 +18,7 @@ The minimal contracts approach is guided by the RTE plugin. Basically, the idea
 is to generate the assertions related to absence of runtime errors for all the
 functions of a module or a project and to write the minimal set of (correct)
 contracts that are sufficient to prove that the runtime errors cannot happen.
-Most of the time, we will need far less specification that what is usually
+Most of the time, we need far less lines of specification that what is usually
 required to prove the functional correctness of the program.
 
 
@@ -53,7 +53,7 @@ specify what is assigned by the function. Most of the time the ``assigns''
 clause cannot be ignored (which is expected in a language where everything is
 mutable by default). Moreover, if one take the absolute value of an integer,
 it is surely because they need a positive value. In reality, the minimal
-contract of the absolute value function will be the following:
+contract of the absolute value function is more likely the following:
 
 
 \CodeBlockInput{c}{abs-4.c}
@@ -180,7 +180,7 @@ data structure.
 \levelFourTitle{Some simple examples}
 
 
-Prove the absence of runtime errors in the following programs using a minimal
+Prove the absence of runtime errors in the following program using a minimal
 contracts approach:
 
 

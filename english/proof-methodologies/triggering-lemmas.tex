@@ -81,7 +81,7 @@ what is important, the other properties can just be ignored in our case):
 
 
 Here, we can see that for the proof of the second assertion, WP has collected
-and added the first assertion to the proof context. Thus WP considers that SMT
+and added the first assertion to the assumptions. Thus WP considers that SMT
 solvers can assume this assertion. That means that they can rely on it, but also
 that it should be proved to be sure that the current verification condition is
 verified.
@@ -233,10 +233,11 @@ we verify that we can prove \CodeInline{P(x)} after the call:
 
 
 It seems that despite the fact that it is clear that \CodeInline{*x} did not
-change during the call \CodeInline{g(y)}, since this equality is not directly
-provided in this verification condition, the SMT solver does not use the
-corresponding axiom \CodeInline{ax\_2}. Thus, let us provide this information to
-the solver:
+change during the call \CodeInline{g(y)}, and thus that
+\CodeInline{eq\{Pre, Here\}(x)} holds after the call, since this property is
+not directly provided in this verification condition, the SMT solver does not
+use the corresponding axiom \CodeInline{ax\_2}. Thus, let us provide this
+information to the solver:
 
 
 \CodeBlockInput[20][28]{c}{trigger_1_2.c}
@@ -325,7 +326,7 @@ here.
 Thus, we need to find a better definition to the notion of permutation. We can
 notice that what we really need to provide is a way to say ``each value that
 was previously in the array is still in the array and if several values were
-equivalent, the number of occurrence of these values does not change''. And in
+equivalent, the number of occurrences of these values does not change''. And in
 fact, this last part of the expression is enough to express our permutation.
 A permutation of a range is a range such that for all value, the number of
 occurrences of this value in the array does not change from a program point to
@@ -337,9 +338,9 @@ another:
 
 
 
-Starting from this definition, we are able to provide lemmas that allows to
+Starting from this definition, we are able to provide lemmas that allow to
 reason efficiently about permutation, provided that some properties hold about
-the array between to program point. For example, if would be possible to define
+the array between two program points. For example, it would be possible to define
 the case \CodeInline{Swap} in our previous inductive definition using a lemma.
 And it is of course also possible for our shifted range.
 
@@ -382,12 +383,15 @@ not:
 \end{CodeBlock}
 
 
-So we need a first lemma for this property, we use a predicate
-\CodeInline{shifted} to define \CodeInline{unchanged}, we will explain why
-later.
+So we need a first lemma for this property. Let us define two predicates
+\CodeInline{shifted} and \CodeInline{unchanged}, the later being used to
+define the former (we will see why later) and express that an unchanged
+range is a permutation.
 
 
 \CodeBlockInput[48][55]{c}{insert_sort-proved.c}
+
+\CodeBlockInput[67][70]{c}{insert_sort-proved.c}
 
 
 And now, we can verify that those two sub-arrays are permutations, this is done
@@ -453,7 +457,7 @@ cells from the beginning of the array to the location of insertion are left
 unchanged, so this is a permutation. We have a lemma for this, but we also have
 to state that the values are unchanged as an invariant of the loop. The second
 part of the array is a permutation because we rotate the elements, we need a
-lemma to express this and to state at least that the element are shifted by the
+lemma to express this, and to state at least that the element are shifted by the
 loop as an invariant. Finally the union of the two permutations is a
 permutation, and we also have a lemma for this.
 
@@ -545,8 +549,10 @@ To prove \CodeInline{l\_occurrences\_union}, we reason by induction on the size
 of the second part of the array, the basic case is trivial: if the size is 0, we
 immediately have the equality since \CodeInline{split == to}. So now, we have
 to prove that if it is true for a range of size $i$, it is true for a range of
-size $i+1$, and for this, we simply analyze the different cases: either the
-element we have to consider at the end of the range is the one we count or not.
+size $i+1$. As we know that it is true until $i$ by our induction hypothese, we
+simply analyze the different cases for the last element of the range: either this
+element is the one we count or not, and it adds the same value on both sides of
+the equality.
 
 
 For \CodeInline{shifted\_maintains\_occ}, we reason by induction on the complete
@@ -581,10 +587,10 @@ thanks to the transitivity of equality.
 \levelThreeTitle{How to correctly use assertions?}
 
 
-There is no perfect guideline on when we should use assertion or not. Most of
+There is no perfect guideline on when we should use assertions or not. Most of
 the time we use them to first understand why some proof fails at some point by
 expressing properties that we expect to be true at some program point. Moreover,
-most of the time, the proof obligations are tool long and complex to be read
+most of the time, the verification conditions are too long and complex to be read
 directly and we somewhat have to keep in mind the different lemmas we have
 already expressed and to determine whether some deduction requires the use of
 a lemma that we already expressed, or if it requires to reason by induction on
@@ -611,7 +617,7 @@ to find the good trade-off.
 
 In the following function, the last assertion is automatically proved by SMT
 solvers, probably by unfolding the predicate and directly proving the
-corresponding property. Using assertions, provide an other way to prove the
+corresponding property. Using assertions, provide another way to prove the
 last property. In the proof context, find the generated properties that could
 allow to prove the assertion and explain how.
 

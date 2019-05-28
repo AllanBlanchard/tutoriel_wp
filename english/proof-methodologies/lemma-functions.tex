@@ -67,10 +67,10 @@ lemma itself that requires a Coq proof. Can we do something using a loop?
 
 
 
-The answer is yes. Before calling the function, we can build a proof that,
+The answer is yes. Before calling the function, we can build a proof that
 shows that because the array is locally sorted, we can deduce that it is
-globally sorted, before (which is basically a proof of the lemma we would need).
-We want to prove that the range is globally sorted, to write this proof by hand,
+globally sorted (which is basically a proof of the lemma we would need).
+We want to prove that the range is globally sorted. To write this proof by hand,
 we would proceed by induction on the size of the range. We have two cases.
 First, the range is empty and the property trivially true. Second, let us suppose
 that some range of size $i$ with $i < length$ ($length$ being the size of the
@@ -95,12 +95,18 @@ current element is greater than the one that precedes it):
 
 
 And we can see that all verification conditions are easily verified by SMT
-solvers, without requiring to write a Coq proof of a lemma. The verification
-conditions that created respectively for the establishment and the preservation
+solvers, without requiring to write a Coq proof or a lemma. The verification
+conditions that are created respectively for the establishment and the preservation
 of the invariant correspond to the two cases we needed to prove in our proof
-by induction. This kind of code is called a proof carrying code: we have
-written some code and annotations that carries a proof that some property we
-want to verify holds.
+by induction.
+
+
+\image{ghost-code-base}
+
+\image{ghost-code-ind}
+
+This kind of code is called a proof carrying code: we have written some code
+and annotations that carries a proof that some property we want to verify holds.
 
 
 
@@ -137,8 +143,10 @@ express the premises of the lemma, and the \CodeInline{ensures} to express the
 conclusion of the lemma. The universally quantified variables can either still
 be quantified, or correspond to a parameter of the function. Namely, if a
 variable is only bounded to premises, or only to conclusions, it can be
-translated into a universally quantified variable, if it is bounded to both
-premises and conclusion, it must be a parameter of a function (as we cannot
+translated into a universally quantified variable, provided that it is not
+necessary to bind its value to a C variable in our proof carrying code (a
+quantified variable is not visible from the C code). If it is bounded to both
+premises and conclusion, it must be a parameter of the function (as we cannot
 quantify a variable for all a function contract in ACSL).
 
 
@@ -172,9 +180,9 @@ Note that this function must assign \CodeInline{\textbackslash{}nothing}, indeed
 we use it to deduce some properties about the program, with ghost code, and
 thus it should not modify the content of the array, else the ghost code would
 modify the behavior of the program. Now let us provide a body to this function,
-the proof carrying code that the conclusion is true when the precondition is true.
-It corresponds to the code we previously wrote to prove the precondition of
-the call to \CodeInline{bsearch}:
+the proof carrying code that guarantees that the conclusion is verified, provided
+that the precondition holds. It corresponds to the code we previously wrote to
+prove the precondition of the call to \CodeInline{bsearch}:
 
 
 
@@ -183,7 +191,7 @@ the call to \CodeInline{bsearch}:
 
 
 With this specified loop, we get an inductive proof that the lemma holds,
-now we can use this property by simply calling the lemma function when we need
+now we can use this lemma function by simply calling it when we need
 to perform this deduction:
 
 
@@ -295,11 +303,13 @@ a value \CodeInline{v}.
 We prove that the second behavior respects the postcondition by showing that it
 leads to a contradiction. If there is no cell of value \CodeInline{v}, then
 the number of occurrences of \CodeInline{v} is 0, this is expressed by the
-second invariant that shows that as we have not met any \CodeInline{v} since we
-started, the number of occurrences is 0. However, the precondition of the
+second invariant that shows that as we have not met any \CodeInline{v} from
+the beginning of the loop,
+the number of occurrences is 0. However, the precondition of the
 function states that the number of occurrences is more than $0$ which leads to
 a contradiction that we model model by an assertion of false (note that this is
-not necessary, we explicitly write it for our explanation).
+not necessary, we explicitly write it for our explanation) which means here that
+this path is infeasible.
 
 
 
@@ -469,7 +479,7 @@ the SMT solvers to relate the memory locations between \CodeInline{L1} and
 assertion at the end of the function \CodeInline{context\_to\_prove\_shift\_ptr}
 is correctly, proved. Thus, we expect the macro to help the provers to get a
 similar conclusion in a similar context (that is to say, a context were we now
-that \CodeInline{shifted} hold for some array between two memory labels).
+that \CodeInline{shifted} holds for some array between two memory labels).
 
 
 Finally, we can complete the proof of our function \CodeInline{callee} by using
@@ -530,7 +540,7 @@ lists. For example:
 /*@
   lemma in_list_in_sublist:
     \forall \list<int> l, l1, l2, int element ;
-      l == (l1 ^ l2) ==>
+      l == (l1 ^ l2) ==>      // Here, ^ denotes lists concatenation
       (in_list(element, l) <==> (in_list(element, l1) || in_list(element, l2))) ;
 */
 \end{CodeBlock}
@@ -630,11 +640,11 @@ create the proof of our property.
 
 In order to show that the complete range is a permutation, we have to show that
 the number of occurrences did not change. We know that the first part of the
-array is a permutation of the array at the beginning of the body of the loop.
+array is a permutation of the same range at the beginning of the body of the loop.
 Thus, we already know that the number of occurrences of any $v$ did not change
 for a part of our array. Let us continue the occurrences counting for the rest
-of our array, assuming that this second part is unchanged (when \CodeInline{i+1}
-is less than \CodeInline{end} as else, we do not have anything to count):
+of our array, knowing that the second part is unchanged (when \CodeInline{i+1}
+is lower than \CodeInline{end} as else, we do not have anything to count):
 
 
 \CodeBlockInput[267][286]{c}{insert-sort-auto-proved.c}
@@ -838,7 +848,7 @@ proved:
 
 We finally highlight how the proof context can make the proof harder for SMT
 solvers. Basically, if we swap the proofs for each part of the array, that is,
-starting with the ``unchanged'' part and next the ``rotate'' part, the proof has
+starting with the ``unchanged'' part and after the ``rotate'' part, the proof has
 more chance to fail, since it would make the proof context bigger for the
 hardest proof. For the same reason, it is here almost needed (again depending
 on how powerful is the machine and the solvers) to separate the proof of the
