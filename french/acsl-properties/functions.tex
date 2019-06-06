@@ -30,7 +30,7 @@ Nous pouvons par exemple décrire une \externalLink{fonction affine}{https://fr.
 
 
 
-\CodeBlockInput[1][4]{c}{affine-0.c}
+\CodeBlockInput[1][4]{c}{linear-0.c}
 
 
 
@@ -38,11 +38,11 @@ Elle peut nous servir à prouver le code de la fonction suivante :
 
 
 
-\CodeBlockInput[6][12]{c}{affine-0.c}
+\CodeBlockInput[6][12]{c}{linear-0.c}
 
 
 
-\image{affine-1.png}[Les débordements semblent pouvoir survenir]
+\image{linear-1}[Les débordements semblent pouvoir survenir]
 
 
 Le code est bien prouvé mais les contrôles d'\textit{overflow}, eux, ne le sont pas. Nous 
@@ -53,7 +53,7 @@ pré-condition de fonction :
 
 
 
-\CodeBlockInput[8][27]{c}{affine-1.c}
+\CodeBlockInput[8][27]{c}{linear-1.c}
 
 
 
