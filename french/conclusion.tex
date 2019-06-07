@@ -14,20 +14,21 @@ nous avons produit correspond effectivement à la spécification que nous en
 avons faite. Cette spécification passe par l'annotation de nos fonctions avec 
 le contrat qu'elle doit respecter, c'est-à-dire les propriétés que doivent
 respecter les entrées de la fonction pour garantir son bon fonctionnement et 
-les propriétés que celle-ci s'engage à assurer sur les sorties en retour.
+les propriétés que celle-ci s'engage à assurer sur les sorties en retour,
+associées aux contrôles que nous impose l'outil à propos des problèmes
+spécifiques au langage C (plus particulièrement, montrer l'absence de runtime
+errors).
 
 
 
 À partir de nos programmes spécifiés, WP est capable de produire un 
 raisonnement nous disant si oui, ou non, notre programme répond au besoin 
 exprimé. La forme de raisonnement utilisée étant complètement modulaire, elle 
-nous permet de prouver les fonctions une à une et de les composer. WP ne 
-comprend pas, à l'heure actuelle, l'allocation dynamique. Une fonction qui en 
-utiliserait ne pourrait donc pas être prouvée.
+nous permet de prouver les fonctions une à une et de les composer.
 
-
-
-Mais même sans cela, une large variété de fonctions n'ont pas besoin 
+WP ne  comprend pas, à l'heure actuelle, l'allocation dynamique. Une fonction
+qui en  utiliserait ne pourrait donc pas être prouvée. Mais même sans cela,
+une large variété de fonctions n'ont pas besoin 
 d'effectuer d'allocation dynamique, travaillant donc sur des données déjà 
 allouées. Et ces fonctions peuvent ensuite être appelées avec l'assurance 
 qu'elles font correctement leur travail. Si nous ne voulons pas prouver le 
@@ -154,7 +155,7 @@ statique et dynamique pour l'évaluation du bon fonctionnement d'un programme :
 
 \begin{itemize}
 \item l'analyse par interprétation abstraite avec 
-\externalLink{Value}{http://frama-c.com/value.html},
+\externalLink{EVA}{http://frama-c.com/value.html},
 \item la transformation d'annotation en vérification à l'exécution avec 
 \externalLink{E-ACSL}{http://frama-c.com/eacsl.html}.
 \end{itemize}
@@ -184,15 +185,7 @@ sortie qui va contenir les vérifications en question.
 
 
 
-Il existe divers autres greffons pour des tâches très différentes :
-
-
-
-\begin{itemize}
-\item analyse d'impact de modifications,
-\item analyse du flot de données pour le parcourir efficacement,
-\item ...
-\end{itemize}
+Il existe divers autres greffons pour des tâches très différentes dans Frama-C.
 
 
 Et finalement, la dernière possibilité qui va motiver l'utilisation de Frama-C,
