@@ -75,8 +75,17 @@ mal comprise.
 
 
 
-Outre la différence entre sûreté et sécurité (qui peut \textbf{vaguement} être 
-définie par la présence d'un élément malveillant dans l'histoire), nous ne 
+D'abord il y a une différence entre sûreté et sécurité. Pour donner une
+idée de cette différence, nous pouvons dire que dans le cas de la sécurité,
+on suppose qu'il existe une entité capable d'attaquer (volontairement ou
+pas) le système, tandis que dans la sûreté, nous voulons juste vérifier que
+lorsqu'il est utilisé de manière conforme, le système se comporte
+correctement. Par conséquent, sans sûreté, nous pouvons pas avoir la
+sécurité\footnote{Selon votre domaine d'activité, le terme sûreté peut
+avoir un sens très différent. Plus précisément, un système sûr serait un
+système qui ne doit jamais mettre la vie d'un humain en danger. Et donc
+dans ce cas, la situation est inverse : sans sécurité, nous ne pouvons pas
+avoir la sûreté.}. Ensuite, nous ne 
 précisons pas ce que nous entendons par « sans bug ». La création d'un logiciel
 fait toujours au moins intervenir deux étapes : la rédaction de ce qui est
 attendu sous la forme d'une spécification (souvent un cahier des charges) 
@@ -98,7 +107,9 @@ exactement le besoin auquel nous devons répondre.
 Nous pourrions dire avec cynisme que la preuve nous montre finalement que 
 l'implémentation « ne contient aucun bugs de plus que la spécification ». D'une 
 part, c'est un sacré pas en avant par rapport à « le test nous montre que 
-l'implémentation ne contient pas beaucoup plus de bugs que la spécification ». 
+l'implémentation ne contient pas beaucoup plus de bugs que la spécification »,
+étant donné que ce n'est généralement pas de la faute de la spécification si
+l'on essaie d'accéder à un pointeur nul.
 Et d'autre part, il existe également des techniques permettant d'analyser les 
 spécifications en quête d'erreurs ou de manquements. Par exemple, les techniques
 de \textit{Model Checking} - vérification de modèles - permettent de construire un modèle
@@ -254,9 +265,7 @@ de Hoare :
 
 
 \begin{center}
-$\{P\} C \{Q\}$
-
-
+$\{P\}\ C\ \{Q\}$
 \end{center}
 
 
@@ -274,8 +283,6 @@ est le suivant :
 
 \begin{center}
 $\{P\}$ \textbf{skip} $\{P\}$
-
-
 \end{center}
 
 
