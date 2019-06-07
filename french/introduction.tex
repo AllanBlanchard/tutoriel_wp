@@ -1,18 +1,56 @@
+\begin{Warning}
+  Ce document est la version bêta du tutoriel. Le code source de ce
+  tutoriel est disponible sur GitHub, de même que les solutions aux
+  différents exercices (incluant quelques preuves Coq de certaines
+  propriétés).
 
+  Si vous trouvez des erreurs, n'hésitez pas à créer une issue ou
+  une pull request sur:
+
+  \externalLink{https://github.com/AllanBlanchard/tutoriel\_wp}{https://github.com/AllanBlanchard/tutoriel_wp}
+
+  ou à poster sur le post de la bêta sur Zeste de Savoir:
+
+  \externalLink{https://zestedesavoir.com/forums/sujet/7725/introduction-a-la-preuve-de-programmes-c-avec-frama-c-et-son-greffon-wp/}{https://zestedesavoir.com/forums/sujet/7725/introduction-a-la-preuve-de-programmes-c-avec-frama-c-et-son-greffon-wp/}
+\end{Warning}
 
 \begin{Information}
 Le choix de certains exemples et d'une partie de l'organisation dans le présent 
 tutoriel est le même que celui du 
-\externalLink{tutoriel présenté à TAP 2013}{http://www.spacios.eu/TAP2013/keynotes.html} 
+\externalLink{tutoriel présenté à TAP 2013}
+             {https://frama-c.com/download/publications/tutorial_tap2013_slides.pdf} 
 par Nikolai Kosmatov, Virgile Prevosto et Julien Signoles du CEA List du fait de
 son cheminement didactique. Il contient également des exemples tirés de 
-\textit{\externalLink{ACSL By Example}{http://www.fokus.fraunhofer.de/download/acsl\_by\_example}} 
+\textit{\externalLink{ACSL By Example}{https://github.com/fraunhoferfokus/acsl-by-example}} 
 de Jochen Burghardt, Jens Gerlach, Kerstin Hartig, Hans Pohl et Juan Soto du 
-Fraunhofer. Le reste vient de mon expérience personnelle avec Frama-C et WP.
+Fraunhofer. Pour les aspects formels, je me suis reposé sur le cours
+à propos de Why3 donné par Andrei Paskevich
+\textit{\externalLink{à l'EJCP 2018}{https://ejcp2018.sciencesconf.org/file/441131}}.
+Le reste vient de mon expérience personnelle avec Frama-C et WP.
+
+\horizontalLine
+
+Les versions des outils utilisés dans ce tutoriel sont les suivantes:
+\begin{itemize}
+\item Frama-C 19 Potassium
+\item Alt-Ergo 2.3.0
+\item Coq 8.9.0 (pour les sripts proposés, Coq n'est pas utilisé dans le tutoriel)
+\item Why3 1.2.0 + Z3 4.8.1\\
+  (utilisés dans un exemple, ils ne sont pas absolument nécessaires)
+\end{itemize}
+Selon les versions utilisées par le lecteur, quelques différences pourrait
+apparaitre avec ce qui est prouvé et ce qui ne l'est pas. Quelques fonctionnalités
+ne sont disponibles que dans les versions récentes de Frama-C.
+
+\horizontalLine
 
 Le seul pré-requis pour ce cours est d'avoir une connaissance basique du 
 langage C, au moins jusqu'à la notion de pointeur.
+
+
 \end{Information}
+
+\newpage
 
 
 Malgré son ancienneté, le C est un langage de programmation encore largement 
@@ -71,8 +109,7 @@ permettant de mieux comprendre et de mieux écrire les programmes.
 Merci aux différents bêta-testeurs pour leurs remarques constructives :
 
 \begin{itemize}
-\item \externalLink{Taurre}{https://zestedesavoir.com/membres/voir/Taurre/} (l'exemple en section 
-III - 3 - 4 a honteusement été copié d'un de ses posts).
+\item \externalLink{Taurre}{https://zestedesavoir.com/membres/voir/Taurre/}
 \item \externalLink{barockobamo}{https://zestedesavoir.com/membres/voir/barockobamo/}
 \item \externalLink{Vayel}{https://zestedesavoir.com/membres/voir/Vayel/}
 \end{itemize}
@@ -83,5 +120,5 @@ Ainsi qu'aux validateurs qui ont encore permis d'améliorer la qualité de ce tu
 \item \externalLink{Saroupille}{https://zestedesavoir.com/membres/voir/Saroupille/}
 \end{itemize}
 Finalement, un grand merci à Jens Gerlach pour son aide lors de la traduction
-anglaise du tutoriel.
+anglaise du tutoriel, ainsi qu'à Rafael Bachmann pour ses relectures.
 \end{Information}
