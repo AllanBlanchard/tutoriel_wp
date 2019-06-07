@@ -115,7 +115,9 @@ Ce qui veut dire qu'une implication $A \Rightarrow B$ est vraie dans deux cas :
 soit $A$ est fausse (et dans ce cas, il ne faut pas se préoccuper de $B$), soit 
 $A$ est vraie et alors $B$ doit être vraie aussi. L'idée étant finalement « je 
 veux savoir si dans le cas où $A$ est vrai, $B$ l'est aussi. Si $A$ est faux, 
-je considère que l'ensemble est vrai ».
+je considère que l'ensemble est vrai ». Par exemple, « s'il pleut, je veux
+vérifier que j'ai un parapluie, s'il ne pleut pas, ce n'est pas un problème
+de savoir si j'en ai un ou pas, tout va bien ».
 
 
 
@@ -123,7 +125,9 @@ Sa cousine l'équivalence $A \Leftrightarrow B$ (écrite \CodeInline{A <==> B} e
 est plus forte. C'est la conjonction de l'implication dans les deux sens :
 $(A \Rightarrow B) \wedge (B \Rightarrow A)$. Cette formule n'est vraie que
 dans deux cas : $A$ et $B$ sont vraies toutes les deux, ou fausses 
-toutes les deux (c'est donc la négation du ou-exclusif).
+toutes les deux (c'est donc la négation du ou-exclusif). Pour continuer avec
+notre petit exemple, « je ne veux plus seulement savoir si j'ai un parapluie
+quand il pleut, je veux être sûr de n'en avoir que dans le cas où il pleut ».
 
 
 
@@ -228,8 +232,10 @@ et pas sur le nom de la fonction.
 
 Mais le code est-il vraiment sans erreur pour autant ? WP nous permet de nous 
 assurer que le code répond à la spécification, mais il ne fait pas de contrôle 
-d'erreur à l'exécution (RunTime Error : RTE). C'est le rôle d'un autre petit 
-plugin que nous allons utiliser ici et qui s'appelle sobrement RTE. Son but est
+d'erreur à l'exécution (RunTime Error : RTE) si nous le demandons pas. Un autre
+plugin de Frama-C, appelé sobrement RTE, peut être utilisé pour générer des
+annotations ACSL qui peuvent ensuite être vérifiées par d'autres plugins.
+Son but est
 d'ajouter des contrôles dans le programme pour les erreurs d'exécutions 
 possibles (débordements d'entiers, déréférencements de pointeurs invalides, 
 division par 0, etc).
@@ -238,11 +244,11 @@ division par 0, etc).
 
 Pour activer ce contrôle, nous cochons la case montrée par cette capture (dans 
 le volet de WP). Il est également possible de demander à Frama-C d'ajouter ces 
-contrôles par un clic droit sur le nom de la fonction puis « Insert RTE guards ».
+contrôles par un clic droit sur le nom de la fonction puis « Insert wp-rte guards ».
 
 
 
-\image{1-abs-3.png}[Activer la vérification des erreurs d'exécution]
+\image{1-abs-3.png}
 
 
 Enfin nous relançons la vérification (nous pouvons également cliquer sur le 
@@ -257,7 +263,7 @@ que -\CodeInline{INT\_MIN} ($-2^{31}$) > \CodeInline{INT\_MAX} ($2^{31}-1$).
 
 
 
-\image{1-abs-4.png}[Preuve incomplète de ```abs```]
+\image{1-abs-4.png}
 
 
 \begin{Information}
@@ -302,7 +308,8 @@ peut faire à propos de l'état du programme au point où l'on cherche à vérif
 Cependant, il ne reçoit pas, en retour, quelles propriétés ont été utilisées par
 le prouveur pour valider $G$. Donc si $S_3$ fait partie des suppositions, et si
 WP n'a pas réussi à obtenir une preuve de $S_3$, il indique que $G$ est vraie, mais
-à condition seulement que l'on arrive un jour à prouver $S_3$.
+en supposant que $S_3$ est vraie, pour laquelle nous n'avons actuellement pas
+établi de preuve.
 
 
 
@@ -330,7 +337,7 @@ dans la capture.
 
 
 
-\image{1-abs-5.png}[Tableau des obligations de preuve de WP pour ```abs```]
+\image{1-abs-5.png}
 
 
 Le tableau est découpé comme suit, en première colonne nous avons le nom de la
@@ -354,7 +361,7 @@ nous pouvons voir ceci (si ce n'est pas le cas, il faut s'assurer que
 
 
 
-\image{1-abs-6.png}[Obligation de preuve associée à la vérification de débordement dans ```abs```]
+\image{1-abs-6.png}
 
 
 C'est l'obligation de preuve que génère WP par rapport à notre propriété et 
@@ -458,24 +465,13 @@ Rappel : la fenêtre de Frama-C ne permet pas l'édition du code source.
 \end{Warning}
 
 
-\begin{Information}
-Avec les versions de Frama-C NEON et plus anciennes, le pré-processing des
-annotations n'était pas activé par défaut. Il faut donc lancer Frama-C avec
-l'option \CodeInline{-pp-annot} :
-
-\begin{CodeBlock}{bash}
-$ frama-c-gui -pp-annot file.c
-\end{CodeBlock}
-\end{Information}
-
-
 Une fois le code source modifié de cette manière, un clic sur « \textit{Reparse} » et 
 nous lançons à nouveau l'analyse. Cette fois, tout est validé pour WP, notre 
 implémentation est prouvée :
 
 
 
-\image{2-abs-1.png}[Preuve de ```abs``` effectuée]
+\image{2-abs-1.png}
 
 
 Nous pouvons également vérifier qu'une fonction qui appellerait \CodeInline{abs} 
@@ -494,7 +490,15 @@ void foo(int a){
 
 
 
-\image{2-foo-1.png}[Vérification du contrat à l'appel de ```abs```]
+\image{2-foo-1.png}
+
+Notons qu'en cliquant sur la pastille à côté de l'appel de fonction, nous
+pouvons voir la liste des préconditions et voir quelles sont celles qui ne sont
+pas vérifiées. Ici, nous n'avons qu'une précondition, mais quand il y en a
+plusieurs, c'est très utile pour pouvoir voir quel est exactement le problème.
+
+
+\image{2-foo-1-bis.png}
 
 
 Pour modifier un peu l'exemple, nous pouvons essayer d'inverser les deux 
@@ -509,10 +513,14 @@ assurer que si les pré-conditions sont vérifiées et que le calcul termine alo
 la post-condition est vérifiée.
 
 
-
-Si nous donnons à notre fonction une valeur qui viole ses pré-conditions, alors
-nous en déduisons que la post-condition est fausse. À partir de là, nous pouvons 
-prouver tout ce que nous voulons car ce « false » devient une supposition pour
+Si nous donnons à notre fonction une valeur qui viole explicitement sa
+précondition, nous pouvons déduire que n'importe quoi peut arriver, incluant
+obtenir faux en post-condition. Plus précisément, ici, après l'appel, nous
+supposons que la précondition est vraie (puisque la fonction ne peut pas
+modifier la valeur reçue en paramètre), sinon la fonction n'aurait pas pu
+s'exécuter correctement. Par conséquent, nous supposons que
+\CodeInline{INT\_MIN < INT\_MIN} qui est trivialement faux. À partir de là,
+nous pouvons  prouver tout ce que nous voulons car ce « false » devient une supposition pour
 tout appel qui viendrait ensuite. À partir de faux, nous prouvons tout ce que 
 nous voulons, car si nous avons la preuve de « faux » alors « faux » est vrai, de 
 même que « vrai » est vrai. Donc tout est vrai.
@@ -524,10 +532,10 @@ de preuve générées par WP pour l'appel fautif et l'appel prouvé par conséqu
 
 
 
-\image{2-foo-2.png}[Obligation générée pour l'appel fautif]
+\image{2-foo-2.png}
 
 
-\image{2-foo-3.png}[Obligation générée pour l'appel qui suit]
+\image{2-foo-3.png}
 
 
 Nous pouvons remarquer que pour les appels de fonctions, l'interface graphique
@@ -543,8 +551,9 @@ immédiatement « True ».
 La deuxième partie de la question est alors : pourquoi lorsque nous mettons les 
 appels dans l'autre sens (\CodeInline{abs(a)} puis \CodeInline{abs(INT\_MIN)}), nous obtenons 
 quand même une violation de la pré-condition sur le deuxième ? La réponse est 
-simplement que \CodeInline{abs(a)} peut, ou ne peut pas, provoquer une erreur, alors 
-que \CodeInline{abs(INT\_MIN)} provoque forcément l'erreur. Donc si nous obtenons 
+simplement que pour \CodeInline{abs(a)} nous ajoutons dans nos suppositions la
+connaissance \CodeInline{a < INT\_MIN}, et tandis que nous d'avons pas de preuve
+que c'est vrai, nous n'en avons pas non plus que c'est faux. Donc si nous obtenons 
 nécessairement une preuve de « faux » avec un appel \CodeInline{abs(INT\_MIN)}, ce n'est
 pas le cas de l'appel \CodeInline{abs(a)} qui peut aussi ne pas échouer.
 
@@ -582,25 +591,6 @@ avoir une attention particulière pour ce que nous spécifions.
 
 
 
-\levelFourTitle{Trouver les bonnes pré-conditions}
-
-
-Trouver les bonnes pré-conditions à une fonction est parfois difficile. Le plus
-important est avant tout de déterminer ces pré-conditions sans prendre en compte
-le contenu de la fonction (au moins dans un premier temps) afin d'éviter de 
-construire, par erreur, une spécification qui contiendrait le même bug qu'un code
-fautif, par exemple en prenant en compte une condition faussée. C'est pour cela que
-l'on souhaitera généralement que la personne qui développe le programme et la 
-personne qui le spécifie formellement soient différentes (même si elles ont pu
-préalablement s'accorder sur une spécification textuelle par exemple).
-
-
-
-Une fois ces pré-conditions posées, alors seulement, nous nous intéressons aux
-spécifications dues au fait que nous sommes soumis aux contraintes de notre langage
-et notre matériel. Par exemple, la fonction valeur absolue n'a, au fond, pas 
-vraiment de pré-condition à respecter, c'est la machine cible qui détermine qu'une
-condition supplémentaire doit être respectée en raison du complément à deux.
 
 
 
@@ -637,10 +627,180 @@ possible de produire ce comportement directement depuis la ligne de commande en
 
 
 \begin{CodeBlock}{bash}
-$ frama-c-gui file.c -wp -then -rte -wp
+$ frama-c-gui file.c -wp -then -wp -wp-rte
 \end{CodeBlock}
 
 
 
 « Lancer Frama-C avec WP, puis créer les assertions correspondant aux RTE, et 
 lancer à nouveau WP ».
+
+
+\levelThreeTitle{Exercices}
+
+
+Ces exercices ne sont pas absolument nécessaires pour lire les chapitres à
+venir dans ce tutoriel, nous conseillons quand même de les réaliser. Nous
+suggérons aussi fortement d'au moins lire le quatrième exercice qui introduit
+une notation qui peut parfois d'avérer utile.
+
+
+\levelFourTitle{Addition}
+
+
+Écrire la post-condition de la fonction d'addition suivante :
+
+
+\CodeBlockInput{c}{ex-1-addition.c}
+
+
+Lancer la commande :
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp
+\end{CodeBlock}
+
+
+Lorsque la preuve que la fonction respecte son contrat est établie, lancer
+la commande :
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+Qui devrait échouer. Adapter le contrat en ajoutant la bonne précondition.
+
+
+\levelFourTitle{Distance}
+
+
+Écrire la post-condition de la fonction distance suivante, en exprimant
+la valeur de \CodeInline{b} en fonction de \CodeInline{a} et
+\CodeInline{\textbackslash{}result} :
+
+
+\CodeBlockInput{c}{ex-2-distance.c}
+
+
+Lancer la commande :
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp
+\end{CodeBlock}
+
+
+Lorsque la preuve que la fonction respecte son contrat est établie, lancer
+la commande :
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+Qui devrait échouer. Adapter le contrat en ajoutant la bonne précondition.
+
+
+\levelFourTitle{Lettres de l'alphabet}
+
+
+Écrire la post-condition de la fonction suivante, qui retourne vrai si le
+caractère reçu en entrée est une lettre de l'alphabet. Utiliser la relation
+d'équivalence  \CodeInline{<==>}.
+
+
+\CodeBlockInput{c}{ex-3-alphabet.c}
+
+
+Lancer la commande :
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp
+\end{CodeBlock}
+
+
+Toutes les obligations de preuve devraient être prouvées, incluant les
+assertions dans la fonction main.
+
+
+\levelFourTitle{Jours du mois}
+
+
+Écrire la postcondition de la fonction suivante qui retourne le nombre de
+jours en fonction du mois reçu en entrée (NB: nous considérons que le mois
+reçu est entre 1 et 12), pour Février, nous considérons uniquement le cas
+où il a 28 jours, nous verrons plus tard comment régler ce problème :
+
+
+\CodeBlockInput{c}{ex-4-day-month.c}
+
+
+Lancer la commande :
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp
+\end{CodeBlock}
+
+
+Lorsque la preuve que la fonction respecte son contrat est établie, lancer
+la commande :
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+Si cela échoue, adapter le contrat en ajoutant la bonne précondition.
+
+
+Le lecteur aura peut être constaté qu'écrire la postcondition est un peu
+laborieux. Il est possible de simplifier cela. ACSL fournit la notion
+d'ensemble mathématique et l'opérateur \CodeInline{\textbackslash{}in} qui
+peut être utilisé pour vérifier si une valeur est dans un ensemble ou non.
+
+
+Par exemple :
+
+\begin{CodeBlock}{c}
+//@ assert 13 \in { 1, 2, 3, 4, 5 } ; // FAUX
+//@ assert 3  \in { 1, 2, 3, 4, 5 } ; // VRAI
++\end{CodeBlock}
+
+
+Modifier la postcondition en utilisant cette notation.
+
+
+\levelFourTitle{Le dernier angle d'un triangle}
+
+
+Cette fonction reçoit deux valeurs d'angle en entrée et retourne
+la valeur du dernier angle composant le triangle correspondant en se
+reposant sur la propriété que la somme des angles d'un triangle vaut
+180 degrés. Écrire la postcondition qui exprime que la somme des trois
+angle vaut 180.
+
+
+\CodeBlockInput{c}{ex-5-last-angle.c}
+
+
+Lancer la commande :
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp
+\end{CodeBlock}
+
+
+Lorsque la preuve que la fonction respecte son contrat est établie, lancer
+la commande :
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+Si cela échoue, adapter le contrat en ajoutant la bonne précondition.
+Notons que la valeur de chaque angle ne peut pas être supérieure à 180.

@@ -29,7 +29,7 @@ travaillerons avec celle-ci :
 
 
 Si nous donnons ce code à WP, il accepte sans problème de prouver la fonction. 
-Pour autant cette spécification est-elle juste ? Nous pouvons par exemple 
+Pour autant cette spécification est-elle suffisante ? Nous pouvons par exemple 
 essayer de voir si ce code est validé :
 
 
@@ -49,7 +49,8 @@ quant à la spécification :
 
 
 
-Notre spécification est trop permissive. Il faut que nous soyons plus précis.
+Même si elle est correcte, notre spécification est trop permissive. Il faut que nous
+soyons plus précis.
 Nous attendons du résultat non seulement qu'il soit supérieur ou égal à nos 
 deux paramètres mais également qu'il soit exactement l'un des deux :
 
@@ -57,6 +58,11 @@ deux paramètres mais également qu'il soit exactement l'un des deux :
 
 \CodeBlockInput[1][7]{c}{max-3.c}
 
+
+Nous pouvons également prouver que cette spécification est vérifiée par notre
+fonction. Mais nous pouvons maintenant prouver en plus l'assertion présente dans
+notre fonction \CodeInline{foo}, et nous ne pouvons plus prouver que
+l'implémentation qui retourne \CodeInline{INT\_MAX} vérifie la spécification.
 
 
 
@@ -108,16 +114,15 @@ Par exemple, nous pourrions écrire :
 
 
 En plus des labels que nous pouvons nous-mêmes créer. Il existe 6 labels 
-qu'ACSL nous propose par défaut, mais tous ne sont pas supportés par WP :
+qu'ACSL nous propose par défaut:
 
 
 
 \begin{itemize}
 \item \CodeInline{Pre}/\CodeInline{Old} : valeur avant l'appel de la fonction,
 \item \CodeInline{Post} : valeur après l'appel de la fonction,
-\item \CodeInline{LoopEntry} : valeur en début de boucle (pas encore supporté),
-\item \CodeInline{LoopCurrent} : valeur en début du pas actuel de la boucle (pas encore
-supporté),
+\item \CodeInline{LoopEntry} : valeur en début de boucle,
+\item \CodeInline{LoopCurrent} : valeur en début du pas actuel de la boucle,
 \item \CodeInline{Here} : valeur au point d'appel.
 \end{itemize}
 
@@ -139,6 +144,61 @@ sont disponibles partout. \CodeInline{LoopEntry} et \CodeInline{LoopCurrent} ne 
 disponibles que dans le contexte de boucles (dont nous parlerons plus loin dans
 le tutoriel).
 
+
+Notons qu'il est important de s'assurer que l'on utilise \CodeInline{\textbackslash{}old} at
+\CodeInline{\textbackslash{}at} pour des valeurs qui ont du sens. C'est pourquoi par
+exemple dans un contrat, toutes les valeurs reçues en entrée sont placées dans un
+appel à \CodeInline{\textbackslash{}old} par Frama-C lorsqu'elles sont utilisées dans
+les postconditions, la nouvelle valeur d'une variable fournie en entrée d'une
+fonction n'a aucun sens pour l'appelant puisque cette valeur est inaccessible par
+lui: elles sont locales à la fonction appelée. Par exemple, si nous regardons le
+contrat de la fonction \CodeInline{swap} dans Frama-C, nous pouvons voir que dans
+la postcondition, chaque pointeur se trouve dans un appel à \CodeInline{\textbackslash{}old} :
+
+
+\image{2-old-swap}
+
+
+Pour la fonction built-in \CodeInline{\textbackslash{}at}, nous devons plus
+explicitement faire attention à cela. En particulier, le label transmis en entrée
+doit avoir un sens par rapport à la portée de la variable que l'on lui transmet.
+Par exemple, dans le programme suivant, Frama-C détecte que nous demandons la valeur
+de la variable \CodeInline{x} à un point du programme où elle n'existe pas:
+
+
+\CodeBlockInput[1][5]{c}{at-2.c}
+
+
+\image{2-at-1.png}
+
+
+Cependant, dans certains cas, tout ce que nous pouvons obtenir est un échec de
+la preuve, parce que déterminer si la valeur existe ou non à un label particulier
+ne peut être fait par une analyse purement syntaxique. Par exemple, si la variable
+est déclarée mais pas définie, ou si nous demandons la valeur d'une zone mémoire
+pointée:
+
+
+\CodeBlockInput[7][19]{c}{at-2.c}
+
+
+Ici, il est facile de remarquer le problème. Cependant, le label que nous
+tramsettons à la fonction \CodeInline{\textbackslash{}at} est propagé également
+aux sous-expressions. Dans certains cas, des termes qui paraissent tout à fait
+innocents peuvent en réalité nous donner des comportements surprenant si nous
+ne gardons pas cette idée en tête. Par exemple dans le programme suivant:
+
+
+\CodeBlockInput[21][26]{c}{at-2.c}
+
+
+La première assertion est prouvée, et tandis que la seconde assertion a l'air
+d'exprimer la même propriété, elle ne peut pas être prouvée. Et la raison est
+simplement qu'elle n'exprime pas la même propriété. L'expression
+\CodeInline{\textbackslash{}at(x[*p], Pre)} doit être lue comme
+\CodeInline{\textbackslash{}at(x[\textbackslash{}at(*p)], Pre)} parce que le
+label est propagé à la sous-expression \CodeInline{*p}, pour laquelle nous ne
+connaissons pas la valeur au label \CodeInline{Pre} (qui n'est pas spécifié).
 
 
 Pour le moment, nous n'utiliserons pas \CodeInline{\textbackslash{}at}, mais elle peut rapidement se
@@ -183,9 +243,11 @@ notamment pour la gestion des tableaux dans les spécifications.
 Si nous nous intéressons aux assertions ajoutées par WP dans la fonction \CodeInline{swap}
 avec la validation des RTEs, nous pouvons constater qu'il existe une variante
 de \CodeInline{\textbackslash{}valid} sous le nom \CodeInline{\textbackslash{}valid\_read}. Contrairement au premier, 
-celui-ci assure que le pointeur peut être déréférencé mais en lecture 
-seulement. Cette subtilité est due au fait qu'en C, le \textit{downcast} de pointeur 
-vers un élément const est très facile à faire mais n'est pas forcément légal.
+celui-ci assure qu'il est uniquement nécessaire que le pointeur puisse
+être déréférencé en lecture et pas forcément en écriture, pour pouvoir
+réaliser l'opération de lecture. Cette subtilité est due au fait qu'en C, le
+\textit{downcast} de pointeur  vers un élément const est très facile à faire mais
+n'est pas forcément légal.
 
 
 
@@ -224,7 +286,7 @@ Le résultat n'est pas vraiment celui escompté :
 
 
 
-\image{2-swap-1.png}[Échec de preuve sur une globale non concernée par l'appel à ```swap```]
+\image{2-swap-1.png}
 
 
 En effet, nous n'avons pas spécifié les effets de bords autorisés pour notre
@@ -237,7 +299,9 @@ susceptibles d'être modifiés par la fonction.
 
 Par défaut, WP considère qu'une fonction a le droit de modifier n'importe quel
 élément en mémoire. Nous devons donc préciser ce qu'une fonction est en droit 
-de modifier. Par exemple pour la fonction \CodeInline{swap} :
+de modifier. Par exemple pour notre fonction \CodeInline{swap}, nous pouvons
+spécifier que seules les valeurs pointées par les pointeurs reçus peuvent être
+modifiées :
 
 
 
@@ -261,7 +325,7 @@ provoque pas d'effets de bords. Ce cas est précisé en donnant \CodeInline{\tex
 
 
 Le lecteur pourra maintenant reprendre les exemples précédents pour y intégrer 
-la bonne clause \CodeInline{assigns} .
+la bonne clause \CodeInline{assigns}.
 
 
 
@@ -303,7 +367,7 @@ nous la modifions.
 
 
 \begin{Question}
-Pourquoi la clause \CodeInline{assign} est-elle validée ?
+Pourquoi la clause \CodeInline{assigns} est-elle validée ?
 
 C'est simplement dû au fait, qu'il n'y a bien que la zone mémoire pointée par
 \CodeInline{a} qui est modifiée étant donné que si \CodeInline{a != b} nous ne modifions bien 
@@ -327,7 +391,7 @@ Et cette fois, la preuve est effectuée :
 
 
 
-\image{2-incr_a_by_b-2.png}[Résolution des problèmes d'aliasing]
+\image{2-incr_a_by_b-2.png}
 
 
 Nous pouvons noter que nous ne nous intéressons pas ici à la preuve de 
@@ -335,3 +399,221 @@ l'absence d'erreur à l'exécution car ce n'est pas l'objet de cette section.
 Cependant, si cette fonction faisait partie d'un programme complet à vérifier,
 il faudrait définir le contexte dans lequel on souhaite l'utiliser et définir
 les pré-conditions qui nous garantissent l'absence de débordement en conséquence.
+
+
+\levelFourTitle{Écrire le bon contrat}
+
+
+Trouver les bonnes pré-conditions à une fonction est parfois difficile. Il est
+intéressant de noter qu'une bonne manière de vérifier qu'une spécification est
+suffisamment précise est d'écrire des tests pour voir si le contrat nous permet,
+depuis un code appelant, de déduire des propriétés intéressantes. Et en fait,
+c'est exactement ce que nous avons fait pour nos exemples \CodeInline{max} et
+\CodeInline{swap}. Nous avons écrit une première version de notre spécification
+et du code appelant qui nous a servi à déterminer si nous pouvions prouver des
+propriétés que nous estimions devoir être capables de prouver à l'aide du
+contrat.
+
+
+
+Le plus important est avant tout de déterminer le contrat sans prendre en compte
+le contenu de la fonction (au moins dans un premier temps). En effet, nous
+essayons de prouver une fonction, mais elle pourrait contenir un bug, donc si
+nous suivons de trop près le code de la fonction, nous risquons d'introduire
+dans la spécification le même bug présent dans le code, par exemple en prenant
+en compte une condition erronée. C'est pour cela que
+l'on souhaitera généralement que la personne qui développe le programme et la 
+personne qui le spécifie formellement soient différentes (même si elles ont pu
+préalablement s'accorder sur une spécification textuelle par exemple).
+
+
+
+Une fois que le contrat est posé, alors seulement, nous nous intéressons aux
+spécifications dues au fait que nous sommes soumis aux contraintes de notre langage
+et notre matériel. Cela concerne principalement nos préconditions. Par exemple,
+la fonction valeur absolue n'a, au fond, pas  vraiment de pré-condition à respecter,
+c'est la machine cible qui détermine qu'une condition supplémentaire doit être
+respectée en raison du complément à deux. Comme nous le verrons dans le chapitre
+\ref{l1:proof-methodologies}, vérifier l'absence de runtime errors peut aussi
+impacter nos postconditions, pour l'instant laissons cela de côté.
+
+
+\levelThreeTitle{Exercices}
+
+
+\levelFourTitle{Division et reste}
+
+
+Spécifier la postcondition de la fonction suivante, qui calcule le résultat
+de la division de \CodeInline{a} par \CodeInline{b} et le reste de cette
+division et écrit ces deux valeurs à deux positions mémoire \CodeInline{p}
+et \CodeInline{q} :
+
+
+\CodeBlockInput{c}{ex-1-div-rem.c}
+
+
+Lancer la commande :
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp 
+\end{CodeBlock}
+
+
+Une fois que la fonction est prouvée, lancer :
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+Si cela échoue, compléter le contrat en ajoutant la bonne précondition.
+
+
+\levelFourTitle{Remettre à zéro selon une condition}
+
+
+Donner un contrat à la fonction suivante qui remet à zéro la valeur
+pointée par le première paramètre si celle pointée par le second est
+vraie. Ne pas oublier d'exprimer que la valeur pointée par le second
+paramètre doit rester la même :
+
+
+\CodeBlockInput{c}{ex-2-reset-on-cond.c}
+
+
+Lancer la commande :
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+\levelFourTitle{Addition de valeurs pointées}
+
+
+La fonction suivante reçoit deux pointeurs en entrée et retourne la
+somme des valeurs pointées. Écrire le contrat de cette fonction :
+
+
+\CodeBlockInput{c}{ex-3-add-ptr.c}
+
+
+Lancer la commande :
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+Une fois que la fonction et son code appelant sont prouvées, modifier
+la signature de la fonction comme suit :
+
+
+\begin{CodeBlock}{c}
+void add(int* a, int* b, int* r);
+\end{CodeBlock}
+
+
+Le résultat doit maintenant être stocké à la position mémoire \CodeInline{r}.
+Modifier l'appel dans la fonction main et le code de la fonction de façon à
+implémenter ce comportement. Modifier le contrat de la fonction
+\CodeInline{add} et recommencer la preuve.
+
+
+\levelFourTitle{Maximum de valeurs pointées}
+
+
+Le code suivant calcule le maximum des valeurs pointées par \CodeInline{a}
+et \CodeInline{b}. Écrire le contrat de cette fonction :
+
+
+\CodeBlockInput{c}{ex-4-max-ptr.c}
+
+
+Lancer la commande :
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+Une fois que la fonction est prouvée, modifier la signature de la
+fonction comme suit :
+
+
+\begin{CodeBlock}{c}
+void max_ptr(int* a, int* b);
+\end{CodeBlock}
+
+
+La fonction doit maintenant s'assurer qu'après l'exécution, \CodeInline{*a}
+contient le maximum des valeurs pointées et \CodeInline{*b} contient l'autre
+valeur. Modifier le code de façon à assurer cela ainsi que le contrat.
+Notons que la variable  \CodeInline{x} n'est plus nécessaire dans la fonction
+\CodeInline{main} et que nous pouvons changer l'assertion en ligne 15 pour
+mettre en lumière le nouveau comportement de la fonction.
+
+
+\levelFourTitle{Ordonner trois valeurs}
+
+
+La fonction suivante doit ordonner trois valeurs reçues en entrée dans
+l'ordre coirssant. Écrire le code correspondant et la spécification de la
+fonction :
+
+\CodeBlockInput{c}{ex-5-order-3.c}
+
+
+Et lancer la commande :
+
+
+\begin{CodeBlock}{bash}
+frama-c-gui your-file.c -wp -wp-rte
+\end{CodeBlock}
+
+
+Il faut bien garder en tête qu'ordonner des valeurs ne consiste pas seulement
+à s'assurer qu'elles sont dans l'ordre croissant et que chaque valeur doit
+être l'une de celles d'origine. Toutes les valeurs d'origine doivent être
+présente et en même quantité. Pour exprimer cette idée, nous pouvons nous
+reposer à nouveau sur les ensembles. La propriété suivante est vraie par
+exemple :
+
+
+\begin{CodeBlock}{c}
+//@ assert { 1, 2, 3 } == { 2, 3, 1 };
+\end{CodeBlock}
+
+
+Nous pouvons l'utiliser pour exprimer que l'ensemble des valeurs d'entrée et
+de sortie est le même. Cependant, ce n'est pas la seule chose à prendre en
+compte car un ensemble ne contient qu'une occurrence de chaque valeur. Donc,
+si \CodeInline{*a == *b == 1}, alors \CodeInline{\{ *a, *b \} == \{ 1 \}}.
+Par conséquent nous devons considérer trois autres cas particuliers:
+
+
+\begin{itemize}
+\item toutes les valeurs d'origine sont les mêmes ;
+\item deux valeurs d'origine sont les mêmes, la dernière est plus grande ;
+\item deux valeurs d'origine sont les mêmes, la dernière est plus petite.
+\end{itemize}
+
+
+Qui nous permet d'ajouter la bonne contrainte aux valeurs de sorties.
+
+
+Pour la réalisation de la spécification, le programme de test suivant peut
+nous aider :
+
+
+\CodeBlockInput[27][43]{c}{ex-5-order-3-answer.c}
+
+
+Si la spécification est suffisamment précise, chaque assertion devrait être
+prouvée. Cependant, cela ne signifie pas que tous les cas ont été considérés,
+il ne faut pas hésiter à ajouter d'autres tests.
