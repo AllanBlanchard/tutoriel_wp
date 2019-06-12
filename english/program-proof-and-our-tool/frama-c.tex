@@ -87,8 +87,9 @@ apt-get/yum install frama-c
 
 
 However, these repositories are not necessarily up to date with the latest
-version of Frama-C. This is not a big problem since there is not new
-versions of Frama-C every day, but it still important to know it.
+version of Frama-C. Most of the tutorial should be usable for the version
+available on your Linux distribution if it is recent enough. However, some
+specific features could be missing.
 
 
 
@@ -108,22 +109,36 @@ and applications.
 
 First of all, Opam must be installed (see its documentation). Then, some
 packages from the Linux distribution must be installed before
-installing Frama-C:
+installing Frama-C. On most systems, it is possible to ask opam to install
+dependencies of the packages we want to install. For this, first install
+the depext tool of Opam:
 
 
+\begin{CodeBlock}{bash}
+opam install depext
+\end{CodeBlock}
+
+
+And then use the depext tool to install the dependencies of Frama-C:
+
+
+\begin{CodeBlock}{bash}
+opam depext frama-c
+\end{CodeBlock}
+
+
+If the depext tool does not support your distribution, the following
+libraries and software should be installed:
 
 \begin{itemize}
-\item lib gtk2 dev
-\item lib gtksourceview2 dev
-\item lib gnomecanvas2 dev
-\item (recommended) lib zarith dev
+\item GTK2 (development library)
+\item GTKSourceview 2 (development library)
+\item GnomeCanvas 2 (development library)
+\item autoconf
 \end{itemize}
 
 
-
-Once it is done, we can install Frama-C and Alt-Ergo.
-
-
+Once these packages are installed, we can install Frama-C and Alt-Ergo.
 
 
 \begin{CodeBlock}{bash}
@@ -131,6 +146,10 @@ opam install frama-c
 opam install alt-ergo
 \end{CodeBlock}
 
+
+Note that for versions older than Potassium (Argon and before), if you
+want to use the Why3 platform as a backend (introduced later), the version
+0.88.3 should be used for Why3.
 
 
 Go to the section ``Verify installation'' to perform some tests about
