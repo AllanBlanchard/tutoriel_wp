@@ -7,9 +7,9 @@ int main(){
   int r ;
 
   r = alphabet_letter('x') ;
-  //@ assert r == 1 ;
+  //@ assert r ;
   r = alphabet_letter('H') ;
-  //@ assert r == 1 ;
+  //@ assert r ;
   r = alphabet_letter(' ') ;
-  //@ assert r == 0 ;
+  //@ assert !r ;
 }

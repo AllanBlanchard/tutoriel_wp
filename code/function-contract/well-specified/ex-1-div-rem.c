@@ -1,4 +1,4 @@
-void div_rem(int x, int y, int* q, int* r){
+void div_rem(unsigned x, unsigned y, unsigned* q, unsigned* r){
   *q = x / y ;
   *r = x % y ;
 }
