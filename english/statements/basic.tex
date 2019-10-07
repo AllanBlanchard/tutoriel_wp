@@ -187,7 +187,7 @@ of pointed memory location. For this, we consider that we have an implicit
 variable $M$ that models the memory, and we define the assignment of a memory
 location as an update of the memory such that now the corresponding pointer points
 to the written expression.
-$$wp(*x = E, Q) = Q[M \leftarrow M[x \mapsto E]]$$
+$$wp(*x = E, Q) := Q[M \leftarrow M[x \mapsto E]]$$
 
 
 And evaluating a pointed value $*x$ in a formula now requires us to use the

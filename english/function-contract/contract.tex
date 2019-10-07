@@ -113,7 +113,7 @@ $T$ & $T$ & $T$ \\ \hline
 That means that an implication $A \Rightarrow B$ is true in two cases:
 either $A$ is false (and in this case, we do not check the value of
 $B$), or $A$ is true and then $B$ must also be true. Note that it means
-that $A \Rightarrow B$ is equivalent to $\neg A \wedge B$. The idea
+that $A \Rightarrow B$ is equivalent to $\neg A \vee B$. The idea
 finally being ``I want to know if when $A$ is true, $B$ also is. If
 $A$ is false, I don't care, I consider that the complete formula is
 true''. For example, ``if it rains, I want to check that I have an
@@ -315,8 +315,9 @@ property is verified. There are two possibles reasons:
 In the bottom panel, we can select the ``WP Goals'' tab, it shows the list of
 verification conditions, and for each prover the result is symbolized
 by a logo that indicates if the proof has been tried and if it
-succeeded, failed or met a timeout (here we can see a try with
-Z3 that lead timeout on the proof of absence of RTE). Note that it
+succeeded, failed or met a timeout. In the current example, we have just added
+a try using Z3 to illustrate how a timeout is represented in the GUI (it is not
+necessary to try this yourself on this example). Note that it
 may require to select ``All Results'' in the squared field to see all
 verification conditions.
 

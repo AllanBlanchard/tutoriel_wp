@@ -1,6 +1,7 @@
 void foo(){
+  int i ;
   int x = 0 ;
-  for(int i = 0 ; i < 20 ; ++i){
+  for(i = 0 ; i < 20 ; ++i){
     if(i == 19){
       x++ ;
       break ;
