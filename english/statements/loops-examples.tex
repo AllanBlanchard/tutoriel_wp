@@ -271,6 +271,10 @@ we have a function:
 
 Write your own code and corresponding postcondition and then write the
 following functions together with their contract and prove their correctness.
+Note that, as \CodeInline{pred} is a C function, it cannot be used in the
+specification of the functions you have to write, thus the property that you
+have considered for this predicate should be inlined in the contract of the
+different functions.
 
 \begin{itemize}
 \item \CodeInline{forall\_pred} returns true if and only if \CodeInline{pred}
