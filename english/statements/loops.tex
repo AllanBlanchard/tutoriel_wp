@@ -501,7 +501,7 @@ Write a suitable invariant for the following loop and prove it using
 the command.
 
 \begin{CodeBlock}{text}
-$ frama-c -wp your-file.c
+frama-c -wp your-file.c
 \end{CodeBlock}
 
 
@@ -515,11 +515,11 @@ Is the property $-100 \leq x \leq 100$ a correct invariant? Explain why.
 \levelFourTitle{Loop variant}
 
 
-Write a suitable invariant for the follow loop and prove it using the
-command:
+Write a suitable invariant and variant for the follow loop and prove it
+using the command:
 
 \begin{CodeBlock}{text}
-$ frama-c -wp your-file.c
+frama-c -wp your-file.c
 \end{CodeBlock}
 
 
@@ -548,7 +548,7 @@ errors in this proof.
 Once the proof succeeds, completely remove the assigns clause and find
 another way to ensure that the assertion is verified using annotations (note
 that you can add a C label in the code). What do you deduce about the notion
-of ``loop assigns'' clause?
+of \CodeInline{loop assigns} clause?
 
 
 
