@@ -651,15 +651,16 @@ right rule.
 \levelFourTitle{Empty ``then'' branch in conditional}
 
 
-We previously shown that in a condition when the ``else'' branch is empty,
-that the postcondition of the complete conditional is already verified if
-with the conjunction of the negation of the condition and the precondition.
+We previously shown that when a conditional structure has an empty ``else''
+branch, that means that the conjunction of the precondition and the negation
+of the condition must be enough to verify the postcondition of the complete
+condtional structure.
 For both of the following question, we only need the inference rules and
 no WP calculus.
 
-Show that when, instead, the ``then'' branch is empty, the conjunction of
-the condition and the precondition must implies the postcondition of the
-``else'' branch.
+Show that when, instead of the ``else'' branch, the ``then'' branch is empty, 
+the conjunction of the condition and the precondition must implies the 
+postcondition of the ``else'' branch.
 
 Show that when both branches are empty, the overall condition is just a
 skip operation.
