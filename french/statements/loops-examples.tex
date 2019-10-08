@@ -33,8 +33,8 @@ contiguës. C'est la notation que nous avons utilisée dans cette expression :
 
 
 
-Cette pré-condition nous atteste que les adresses a+0, a+1 ..., a+length-1 sont
-valides en lecture.
+Cette pré-condition nous atteste que les adresses \CodeInline{a+0}, 
+\CodeInline{a+1}, \ldots{}, \CodeInline{a+length-1} sont valides en lecture.
 
 
 
@@ -115,7 +115,7 @@ preuve de l'établissement de cet invariant est intéressante :
 
 
 
-\image{trivial.png}[But trivial]
+\image{trivial}
 
 
 Nous pouvons constater que cette propriété, pourtant complexe, est prouvée par 
@@ -157,14 +157,18 @@ Regardons la fonction effectuant la remise à zéro d'un tableau.
 
 
 
-Les seules parties sur lesquelles nous pouvons nous attacher ici sont 
-les \CodeInline{assigns} de la fonction et de la boucle. À nouveau, nous pouvons
-utiliser la notation \CodeInline{n .. m} pour indiquer les parties du tableau 
-qui sont modifiées.
+Nous pouvons voir que nous utilisons pour l'invariant une structure assez similaire
+à ce que nous avons utilisé pour l'exemple précédent: nous indiquons un premier
+invariant pour contraindre la valeur de \CodeInline{i}, et un autre qui exprime
+à chaque itération ce que nous avons appris depuis le début de l'exécution de la
+boucle (tous les éléments visités sont à $0$). Finalement, intéressons nous à la
+clause \CodeInline{loop assigns}: à nouveau, nous utilisons la notation 
+\CodeInline{n .. m} pour indiquer quelle partie du tableau a été modifiée.
 
 
 
 \levelFourTitle{Chercher et remplacer}
+\label{l4:statements-loops-ex-search-and-replace}
 
 
 Le dernier exemple qui nous intéresse est l'algorithme « chercher et remplacer ». 
@@ -202,9 +206,17 @@ nouvelles valeurs :
 \end{CodeBlock}
 
 
-
 Pour tout élément que nous avons visité, s'il valait la valeur qui doit être
-remplacée, alors il vaut la nouvelle valeur, sinon il n'a pas changé. En fait, si nous essayons de prouver l'invariant, WP n'y parvient pas. Dans ce genre de 
+remplacée, alors il vaut la nouvelle valeur, sinon il n'a pas changé. Alors que
+nous nous reposions sur la clause \CodeInline{assigns} pour ce genre de propriété
+dans les exemples précédents, ici nous ne pouvons pas le faire. Même si ACSL nous
+permettrait d'exprimer cette propriété de manière très précise, WP ne pourrait pas
+vraiment en tirer parti, dû à la manière dont cette clause est traitée. Nous devons
+donc utiliser un invariant et conserver une approximation des positions mémoire
+affectées.
+
+ 
+En fait, si nous essayons de prouver l'invariant, WP n'y parvient pas. Dans ce genre de 
 cas, le plus simple est encore d'ajouter diverses assertions exprimant les 
 propriétés intermédiaires que nous nous attendons à voir facilement prouvées 
 et impliquant l'invariant. En fait, nous nous apercevons rapidement que WP 
@@ -230,35 +242,161 @@ Nous pouvons donc ajouter cette information comme invariant :
 
 
 
-Et cette fois, la preuve passera. À noter que si nous tentons la preuve 
-directement avec la vérification des RTE, il est possible qu'Alt-Ergo n'y
-parvienne pas (CVC4 décharge l'ensemble sans problème). Dans ce cas, nous
-pouvons faire séparément les deux preuves (sans, puis avec RTE) ou encore 
-ajouter des assertions permettant de guider la preuve dans la boucle :
+Et cette fois, la preuve passera. 
 
 
 
-\CodeBlockInput[24][33]{c}{search_and_replace-2.c}
+\levelThreeTitle{Exercices}
+
+
+Pour tous ces exercices, utilisez la commande suivante pour démarrer la vérification:
+
+\begin{CodeBlock}{bash}
+frama-c-gui -wp -wp-rte -warn-unsigned-overflow your-file.c
+\end{CodeBlock}  
+
+
+\levelFourTitle{Fonctions sans modification : Forall, Exists, ...}
+
+
+Actuellement, les pointeurs de fonction ne sont pas directement supportés par WP.
+Considérons que nous avons une fonction :
 
 
 
-À mesure que nous cherchons à prouver des propriétés plus compliquées et 
-notamment dépendantes de boucles, il va y avoir une part de tâtonnement pour
-comprendre ce qui manque au prouveur pour réussir la preuve.
+\CodeBlockInput[3][9]{c}{ex-1-forall-exists.c}
+
+
+Ecrivez un corps de votre choix pour cette fonction et un contrat l'accompagnant.
+Ensuite, écrivez les fonctions suivantes avec leurs contrats pour prouver leur
+correction. Notez qu'il n'est pas possible d'utiliser votre fonction C dans un
+contrat, la propriété que vous aurez choisi pour la fonction \CodeInline{pred}
+devra donc être inlinée dans la spécification des différentes fonctions.
+
+\begin{itemize}
+\item \CodeInline{forall\_pred} retourne vrai si et seulement si \CodeInline{pred}
+  est vraie pour tous les éléments ;
+\item \CodeInline{exists\_pred} retourne vrai si et seulement si \CodeInline{pred}
+  est vraie pour au moins un élément ;
+\item \CodeInline{none\_pred} retourne vrai si et seulement si \CodeInline{pred}
+  est fausse pour tous les éléments ;
+\item \CodeInline{some\_not\_pred} retourne vrai si et seulement si \CodeInline{pred}
+  est fausse pour au moins un élément.
+\end{itemize}
+
+Les deux dernières fonctions devraient être écrites en appelant seulement les deux
+premières.
 
 
 
-Ce qui peut lui manquer, ce sont des hypothèses. Dans ce type de cas, nous
-pouvons tenter d'ajouter des assertions au code pour guider le prouveur. Avec
-de l'expérience, nous pouvons regarder le contenu des obligations de preuve ou 
-tenter de commencer la preuve avec Coq pour voir si la preuve semble réalisable. 
-Parfois le prouveur manque juste de temps, auquel cas, il suffit d'augmenter 
-(parfois de beaucoup) la durée du \textit{timeout}. Finalement, la propriété peut 
-également être hors de portée du prouveur. Auquel cas, il faudra écrire une
-preuve à la main avec un prouveur interactif.
+\levelFourTitle{Fonction sans modification : Égalité de plages de valeurs}
+
+
+Écrire, spécifier et prouver la fonction \CodeInline{equal} qui retourne vrai
+si et seulement si deux plages de valeurs sont égales. Écrire, en utilisant la
+fonction \CodeInline{equal}, le code de \CodeInline{different} qui retourne vrai
+si et seulement si deux plages de valeurs sont différentes, votre post-condition
+devrait contenir un quantificateur existentiel.
+
+
+\CodeBlockInput[3][9]{c}{ex-2-equal.c}
 
 
 
-Enfin, il reste le cas où l'implémentation est effectivement fausse, et dans ce
-cas, il faut la corriger. Et c'est là que nous utiliserons plutôt le test que la
-preuve, car le test permet de prouver la présence d'un bug.
+\levelFourTitle{Fonction sans modification : recherche dichotomique}
+\label{l4:statements-loops-ex-bsearch}
+
+
+La fonction suivante cherche la position d'une valeur fournie en entrée dans
+un tableau, en supposant que le tableau est trié. D'abord, considérons que la
+longueur du tableau est fournie en tant qu'int et utilisons des valeurs de ce
+même type pour gérer les indices. Nous pouvons noter qu'il y a deux comportements
+à cette fonction : soit la valeur existe dans le tableau (et le résultat est 
+l'indice de cette valeur) ou pas (et le résultat est -1).
+ 
+ 
+\CodeBlockInput{c}{ex-3-binary-search.c}
+
+
+Cette fonction est un petit peu complexe à prouver, voici quelques conseils
+pour en venir à bout. D'abord, la longueur de la fonction est reçue en utilisant
+un type int, donc nous devons poser une restriction sur cette longueur en 
+pré-condition pour qu'elle soit cohérente. Ensuite, l'un des invariants de la
+boucle devrait indiquer les bornes des valeurs \CodeInline{low} et 
+\CodeInline{up}, mais nous pouvons noter que pour chacune d'elles, l'une des
+bornes n'est pas nécessaire. Finalement, la seconde propriété invariante 
+devrait indiquer que si l'un des indices du tableau correspond à la valeur
+recherchée, alors cette indice devrait être correctement borné.
+
+\textbf{Plus dur :} Modifier cette fonction de façon à recevoir \CodeInline{len}
+comme un \CodeInline{size\_t}. Vous devrez modifier légèrement l'algorithme et 
+la spécification/les invariants. Conseil : arrangez vous pour que \CodeInline{up}
+soit une borne exclue de la recherche.
+
+
+\levelFourTitle{Fonction avec modification : addition de vecteurs}
+
+
+Écrire, spécifier et prouver la fonciton qui ajoute deux vecteurs dans un
+troisième. Fixez des contraintes arbitraires sur les valeurs d'entrée pour 
+gérer le débordement des entiers. Considérez que le vecteur est résultant est
+spatialement séparé des vecteurs d'entrée. En revanche, le même vecteur devrait
+pouvoir être utilisé pour les deux vecteurs d'entrée.
+
+\CodeBlockInput[3][5]{c}{ex-4-add-vectors.c}
+
+
+\levelFourTitle{Fonction avec modification : inverse}
+
+
+Écrire, spécifier et prouver la fonction qui inverse un vecteur en place. Prenez
+garde à la partie non-modifiée du vecteur à une itération donnée de la boucle.
+Utilisez la fonction \CodeInline{swap} précédemment prouvée.
+
+
+\CodeBlockInput[3][7]{c}{ex-5-reverse.c}
+
+
+\levelFourTitle{Fonction avec modification : copie}
+
+
+Écrire, spécifier et prouver la fonction \CodeInline{copy} qui copie une plage
+de valeur dans un autre tableau, en commençant pas la première cellule du
+tableau. Considérez (et spécifiez) d'abord que les deux plages sont entièrement
+séparées.
+
+
+
+\CodeBlockInput[3][5]{c}{ex-6-copy.c}
+
+
+\textbf{Plus dur :} Les vraies fonctions \CodeInline{copy} et
+\CodeInline{copy\_backward}.
+
+
+En fait, une séparation aussi forte n'est pas nécessaire. Pour faire une copie
+en partant du début, la pré-condition réelle doit simplement garantir que si les
+deux plages se chevauchent en mémoire, le début de la destination ne doit pas être
+dans la plage source :
+
+
+\begin{CodeBlock}{c}
+//@ requires \separated(&src[0 .. len-1], dst) ;
+\end{CodeBlock}
+ 
+
+Essentiellement, en copiant des élements dans cet ordre, nous pouvons les faire
+glisser depuis la fin d'une plage vers le début. En revanche, cela signifie que
+nous devons être plus précis dans notre contrat : nous ne garantissons plus une
+égalité avec le tableau source mais avec les \emph{anciennes} valeurs du tableau
+source. Nous devons également être plus précis dans notre invariant, d'abord en
+spécifiant aussi la relation avec l'état précédent de la mémoire, et ensuite en
+ajoutant un invariant qui nous dit que le tableau source n'est pas modifié entre
+le \CodeInline{i}$^{ème}$ élément visité et le dernier.
+
+
+Finalement, il est aussi possible d'écrire une fonction qui copie les éléments de
+la fin vers le début. Dans ce cas, à nouveau, les plages de valeurs peuvent se
+chevaucher, mais la condition n'est pas exactement la même. Écrire, spécifier et
+prouver la fonction \CodeInline{copy\_backward} qui copie les éléments dans le
+sens inverse.
