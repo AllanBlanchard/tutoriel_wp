@@ -63,7 +63,7 @@ later see how to express precondition).
 \levelThreeTitle{Postcondition}
 
 
-The postcondition of a function is introduced with the clause \CodeInline{ensures}. 
+The postcondition of a function is introduced with the clause \CodeInline{ensures}.
 Let us illustrate its use with the following function
 that returns the absolute value of an input value. One of its postconditions
 is that the result (which is denoted with the keyword
@@ -235,13 +235,21 @@ invalid pointer dereferencing, 0 division, etc).
 
 
 
-To activate these controls, we check the box pointed by the screenshot (in
-the WP panel). We can also ask Frama-C to add them in a function by
+To activate these controls, we must activate this option in the configuration
+of WP. This is done by first clicking on the plugin configuration button:
+
+
+\image{plugin-options}
+
+
+And then adding the option \CodeInline{-wp-rte} in the options related to WP:
+
+
+\image{select-rte}
+
+
+We can also ask WP to add the RTE controls in a function by
 right-clicking on its name and then click ``Insert wp-rte guards''.
-
-
-
-\image{1-abs-3}
 
 
 Finally, we execute the verification again (we can also click on the
@@ -259,7 +267,7 @@ architectures, -\CodeInline{INT\_MIN} ($-2^{31}$) > \CodeInline{INT\_MAX} ($2^{3
 \begin{Information}
 We can notice that the overflow risk
 is real for us, since our computers (for which the
-configuration is detected by Frama-C) use the 
+configuration is detected by Frama-C) use the
 \externalLink{Two's complement}{https://en.wikipedia.org/wiki/Two\%27s_complement}
 implementation of integers, which does not define
 the behavior of overflows.
@@ -339,7 +347,15 @@ through WP.
 
 
 In the list of provers, the first element is Qed. This is not really a prover.
-In fact, if we double-click on the property ``absence of overflow''
+It is a tool by WP to simplify properties before sending them to externel
+provers. Then we find Script, this is way to finish some proofs by hand when
+automatic solvers do not succeed in doing them. Finally, we find Alt-Ergo
+which is one of the solvers we use. Notice that for the RTE property, some
+scissors are indicated: it means that the solver was stopped due to timeout.
+
+
+
+If we double-click on the property ``absence of overflow''
 (highlighted in blue in the last screenshot), we can see the corresponding
 verification condition (if it is not the case, make sure that the value ``Raw
 obligation'' is selected in the blue squared field):
@@ -411,7 +427,7 @@ and specify multiple preconditions:
   requires b < a;
 */
 void foo(int a, int b){
-  
+
 }
 \end{CodeBlock}
 
