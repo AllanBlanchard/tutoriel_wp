@@ -120,7 +120,7 @@ write a function:
 \begin{CodeBlock}{c}
 /*@
   requires P( params ... ) ;
-  ensures  \false ;
+  ensures  BAD: \false ;
 */ void function(params){
 
 }
@@ -144,6 +144,9 @@ the \CodeInline{ensures \textbackslash{}false}, because there exists a non
 positive occurrence of \CodeInline{P\_even\_natural}, that encodes the
 \CodeInline{even\_natural} we wrote in ACSL.
 
+\begin{CodeBlock}{bash}
+frama-c-gui -wp -wp-prop=BAD -wp-prover=native:coq file.c
+\end{CodeBlock}
 
 
 \image{coq-failed}
