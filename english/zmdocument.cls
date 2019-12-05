@@ -12,7 +12,7 @@
 \RequirePackage{minted}
 \RequirePackage{amsmath,amssymb}
 \RequirePackage[english]{babel}
-\RequirePackage[babel=true]{microtype}
+%\RequirePackage[babel=true]{microtype}
 \RequirePackage{caption}
 %\RequirePackage{ulem}
 \RequirePackage{newfloat}
@@ -47,7 +47,7 @@
 
 \RequirePackage[hidelinks,unicode,bookmarks=true,hyperindex=true,bookmarksopen=true,bookmarksnumbered=true]{hyperref}
 \RequirePackage[thmmarks,amsmath,hyperref]{ntheorem}
-\RequirePackage{menukeys}
+%\RequirePackage{menukeys}
 
 %%% BOX
 \RequirePackage[skins, breakable, minted, xparse]{tcolorbox}
