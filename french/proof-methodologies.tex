@@ -1,0 +1,59 @@
+Maintenant que  nous avons présenté les fonctionnalités les plus importantes
+d'ACSL pour la preuve de programme, intéressons nous plus spécifiquement à la
+manière de prouver un programme avec Frama-C et WP. Nous allons présenter
+différentes approches qui peuvent être utilisées, selon la cible de vérification,
+le type de propriétés que l'on cherche à montrer et les fonctionnalités d'ACSL
+que nous utilisons.
+
+%% \begin{levelTwo}
+%%   {Data-structure API}
+%%   {data-structure-api}
+%% \end{levelTwo}
+
+\begin{levelTwo}
+  {Absence d'erreurs à l'exécution: contrats minimaux}
+  {minimal-contracts}
+\end{levelTwo}
+
+\begin{levelTwo}
+  {Assertions de guidage et déclenchement de lemmes}
+  {triggering-lemmas}
+\end{levelTwo}
+
+\begin{levelTwo}
+  {Plus de code ghost, lemma functions et lemma macros}
+  {lemma-functions}
+\end{levelTwo}
+
+
+
+\horizontalLine
+\newpage
+
+
+A mesure que nous essayons de prouver des propriétés plus complexes,
+particulièrement quand les programmes contiennent des boucles, et des
+structures de données complexes, il y a un part de ``trial and error''
+pour comprendre ce qui manque aux prouveurs pour établir la preuve.
+
+
+Il peut manquer des hypothèses. Dans ce cas, nous pouvons essayer d'ajouter
+des assertions pour guider les prouveurs, ou écrire du code ghost avec les
+bons invariants, ce qui permet d'effectuer une part du raisonnement nous
+même lorsque c'est trop difficile pour les solveurs SMT.
+
+
+Avec un peu d'expérience, il est possible de lire le contenu des
+obligations de preuve ou essayer de faire la preuve soi-même avec
+l'assistant de preuve Coq pour voir si la preuve semble réalisable.
+Parfois, le prouveur a juste besoin de plus de temps, dans ce cas, nous
+pouvons augmenter (parfois beaucoup) le temps de \textit{timeout}. Bien
+sûr la propriété peut parfois être trop difficile pour le prouveur et
+le code ghost ne pas être adapté, dans ce cas, il sera nécessaire de
+terminer la preuve nous mêmes.
+
+
+Finalement, l'implémentation peut être incorrecte, et dans ce cas,
+nous devons la corriger. A ce moment là, nous utiliserons du test et
+non de la preuve, car un test nous permettra de mettre en évidence la
+présence du bug et de l'analyser.
