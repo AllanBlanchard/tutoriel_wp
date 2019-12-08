@@ -266,7 +266,7 @@ definitions. This time, we will prove the insertion sort function:
 
 
 The \CodeInline{insertion\_sort} function visits each value, from the beginning
-of the array, to the end. For each of value $v$, it is inserted (using the
+of the array, to the end. For each value $v$, it is inserted (using the
 function \CodeInline{insert}) at the right place in the range of the already
 sorted values (at the beginning of the array), by shifting them until it meets
 a value that is smaller than $v$ or the first cell of the array.
@@ -571,7 +571,7 @@ To prove \CodeInline{rotate\_left\_is\_permutation} we split the range at
 \CodeInline{beg+1 .. end}, and the range at \CodeInline{L2} into two subparts
 \CodeInline{beg .. end-1} and \CodeInline{end-1 .. end}, using
 \CodeInline{l\_occurrences\_union}. We show that the number of occurrences in
-\CodeInline{beg+1 .. end} at \CodeInline{L1} and \CodeInline{end-1 .. end} at
+\CodeInline{beg+1 .. end} at \CodeInline{L1} and \CodeInline{beg .. end-1} at
 \CodeInline{L2} did not change thanks to \CodeInline{shifted\_maintains\_occ},
 and that the number of occurrences in \CodeInline{beg .. beg+1} at
 \CodeInline{L1} and \CodeInline{end-1 .. end} at \CodeInline{L2} is the same by
