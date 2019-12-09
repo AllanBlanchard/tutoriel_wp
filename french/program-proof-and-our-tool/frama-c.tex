@@ -124,7 +124,7 @@ Enfin, du côté d'Opam, il reste à installer Frama-C et Alt-Ergo.
 
 \begin{CodeBlock}{bash}
 opam install frama-c
-opam install alt-ergo
+opam install alt-ergo-free
 \end{CodeBlock}
 
 
@@ -140,7 +140,9 @@ que les informations sont données.
 Pour installer Frama-C via compilation manuelle, les paquets indiqués dans la 
 section Opam sont nécessaires (mis à part Opam lui-même bien sûr). Il faut
 également une version récente d'Ocaml et de son compilateur (y compris vers 
-code natif).
+code natif). Il est aussi nécessaire d'installer Why3, en version 1.2.0,
+qui est disponible sur Opam ou sur leur site web
+(\externalLink{Why3}{http://why3.lri.fr/}).
 
 
 
@@ -210,7 +212,7 @@ Frama-C et prouveur Alt-Ergo :
 
 
 \begin{CodeBlock}{bash}
-> opam install alt-ergo
+> opam install alt-ergo-free
 > opam install frama-c
 \end{CodeBlock}
 
@@ -224,32 +226,16 @@ que les informations sont données.
 \levelFourTitle{Windows}
 
 
-L'installation de Frama-C sous Windows passe par l'usage de Cygwin et d'une
-version expérimentale d'Opam pour celui-ci. Il faut donc installer ces deux
-logiciels et le compilateur Ocaml basé sur MinGW.
-
-
-
-Les instructions d'installation se trouvent ici :
-
-
-
-\externalLink{Frama-C - Windows}{https://bts.frama-c.com/dokuwiki/doku.php?id=mantis:frama-c:compiling\_from\_source}
-
-
-
-Le lancement de Frama-C se fera par l'intermédiaire de cygwin.
-
+Actuellement, la meilleure manière d'utiliser Frama-C sous Windows
+est de passer par Windows Subsystem for Linux. Une fois que le sous-système
+Linux est installé dans Windows, il suffit d'installer Opam et de suivre les
+instructions d'installation fournies dans la section Linux. Notons que pour
+profiter de l'interface graphique, il faudra installer un serveur X sous
+Windows.
 
 
 Pour vérifier l'installation, c'est dans la sous-section « Vérifier l'installation »
 que les informations sont données.
-
-
-Notons qu'il est possible de suivre les étapes d'installation que
-nous venons d'introduire pour Linux dans le cas d'une installation
-dans Windows Subsystem for Linux.
-
 
 
 \levelThreeTitle{Vérifier l'installation}
@@ -306,7 +292,7 @@ Pour les daltoniens, il est possible de lancer Frama-C avec un mode où les
 pastilles de couleurs sont remplacées par des idéogrammes noirs et blancs :
 
 \begin{CodeBlock}{bash}
-$ frama-c-gui -gui-theme colorblind
+frama-c-gui -gui-theme colorblind
 \end{CodeBlock}
 \end{Information}
 
@@ -322,6 +308,49 @@ prouveurs. Pour des propriétés simples, tous les prouveurs jouent à armes
 égales, pour des propriétés complexes, chaque prouveur à ses domaines de
 prédilecion.
 
+\levelFourTitle{Why3}
+
+
+Why3 est une plateforme pour la preuve déductive développée par le LRI à Orsay. 
+Elle embarque en outre un langage de programmation et de spécification ainsi 
+qu'un module permettant le dialogue avec une large variété de prouveurs 
+automatiques et interactifs. C'est en cela qu'il est utile dans le cas de
+Frama-C et WP. WP utilise Why3 comme backend pour dialoguer avec les prouveurs
+externes.
+
+
+Nous pouvons retrouver sur ce même site 
+\externalLink{la liste des prouveurs}{http://why3.lri.fr/\#provers} qu'il supporte.
+Il est vivement conseillé d'avoir \externalLink{Z3}{https://github.com/Z3Prover/z3/wiki},
+développé par Microsoft Research, et \externalLink{CVC4}{http://cvc4.cs.stanford.edu/web/},
+développé par des personnes de divers organismes de recherche (New York 
+University, University of Iowa, Google, CEA List). Ces deux prouveurs sont très
+efficaces et relativement complémentaires.
+
+
+De nouveaux prouveurs peuvent être installés n'importe quand après
+l'installation de Frama-C. Cependant la liste des prouveurs vus par Why3
+doit être mise à jour :
+
+
+\begin{CodeBlock}{bash}
+why3 config --detect
+\end{CodeBlock}
+
+
+Puis activée dan Frama-C. Dans le panneau latéral, dans la partie WP,
+cliquons « Provers... » :
+
+
+\image{provers}
+
+
+Puis « Detect » dans la fenêtre qui apparaît. Une fois que c'est fait,
+les prouveurs peuvent être activés grâce au bouton qui se trouve à côté
+de leur nom.
+
+
+\image{detect-and-select}
 
 
 \levelFourTitle{Coq}
@@ -359,60 +388,13 @@ Pour plus d'informations à propos de Coq et de son installation, voir par
 ici : \externalLink{The Coq Proof Assistant}{https://coq.inria.fr/}.
 
 
-
-Pour utiliser Coq lors d'une preuve dans Frama-C, il faudra le sélectionner 
-par l'intermédiaire du panneau latéral à gauche, dans la partie qui concerne
-WP.
-
-
-
-\image{select_coq}
+Le support actuel de Coq dans Frama-C est déprécié dans Frama-C mais toujours
+accessible. Comme nous fournissons dans ce tutoriel quelques scripts de preuve
+Coq qui peuvent être utilisés, nous fournissons ces instructions afin que
+ces scripts puissent être visionnés et testé par les utilisateurs. Pour lancer
+Frama-C avec le support de Coq, nous utilisons la commande :
 
 
-\begin{Information}
-  Nous n'avons pas expérimenté cette procédure sous Windows avec Cygwin.
-  Avec WSL, cela devrait fonctionner.
-\end{Information}
-
-
-\levelFourTitle{Why3}
-
-
-\begin{Warning}
-À la connaissance de l'auteur, il n'est pas possible (ou vraiment pas facile) 
-d'installer Why3 sous Windows.
-L'auteur ne saurait être tenu responsable de blessures subies
-pendant une telle opération.
-\end{Warning}
-
-
-Why3 est une plateforme pour la preuve déductive développée par le LRI à Orsay. 
-Elle embarque en outre un langage de programmation et de spécification ainsi 
-qu'un module permettant le dialogue avec une large variété de prouveurs 
-automatiques et interactifs. C'est en cela qu'il peut nous intéresser. WP sera
-capable de traduire ses obligations de preuve vers le langage de Why3 et 
-d'utiliser ce dernier pour dialoguer avec un certain nombre de prouveurs 
-automatiques.
-
-
-
-Pour plus d'informations sur Why3 c'est \externalLink{sur son site}{http://why3.lri.fr/} que 
-ça se passe. Si Opam est installé, Why3 est disponible par son 
-intermédiaire. Sinon, il y a une procédure d'installation proposée.
-
-
-
-Nous pouvons retrouver sur ce même site 
-\externalLink{la liste des prouveurs}{http://why3.lri.fr/\#provers} qu'il supporte.
-Il est vivement conseillé d'avoir \externalLink{Z3}{https://github.com/Z3Prover/z3/wiki},
-développé par Microsoft Research, et \externalLink{CVC4}{http://cvc4.cs.stanford.edu/web/},
-développé par des personnes de divers organismes de recherche (New York 
-University, University of Iowa, Google, CEA List). Ces deux prouveurs sont très
-efficaces et relativement complémentaires.
-
-
-
-Pour utiliser les prouveurs en question, la procédure est expliquée dans la partie
-sur Coq pour la sélection d'un prouveur différent d'Alt-Ergo. À noter qu'il faudra
-peut-être demander la détection des prouveurs fraîchement installé avec le 
-bouton « Provers » puis « Detect Provers » dans la fenêtre qui s'ouvre.
+\begin{CodeBlock}{bash}
+  frama-c -wp-provers=native:coq
+\end{CodeBlock}

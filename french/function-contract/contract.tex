@@ -113,9 +113,10 @@ $V$ & $V$ & $V$ \\ \hline
 
 Ce qui veut dire qu'une implication $A \Rightarrow B$ est vraie dans deux cas : 
 soit $A$ est fausse (et dans ce cas, il ne faut pas se préoccuper de $B$), soit 
-$A$ est vraie et alors $B$ doit être vraie aussi. L'idée étant finalement « je 
-veux savoir si dans le cas où $A$ est vrai, $B$ l'est aussi. Si $A$ est faux, 
-je considère que l'ensemble est vrai ». Par exemple, « s'il pleut, je veux
+$A$ est vraie et alors $B$ doit être vraie aussi. Notons que cela signifie que
+$A \Rightarrow B$ est équivalente à $\neg A \vee B$. L'idée étant finalement
+« je veux savoir si dans le cas où $A$ est vrai, $B$ l'est aussi. Si $A$ est
+faux, je considère que l'ensemble est vrai ». Par exemple, « s'il pleut, je veux
 vérifier que j'ai un parapluie, s'il ne pleut pas, ce n'est pas un problème
 de savoir si j'en ai un ou pas, tout va bien ».
 
@@ -242,13 +243,23 @@ division par 0, etc).
 
 
 
-Pour activer ce contrôle, nous cochons la case montrée par cette capture (dans 
-le volet de WP). Il est également possible de demander à Frama-C d'ajouter ces 
-contrôles par un clic droit sur le nom de la fonction puis « Insert wp-rte guards ».
+Pour activer ce contrôle, nous devons activer l'option dans la configuration
+de WP. Pour cela, il faut d'abord cliquer sur le bouton de configuration des
+plugins :
 
 
+\image{plugin-options}
 
-\image{1-abs-3.png}
+
+Et ensuite cocher l'option \CodeInline{-wp-rte} dans les options liées à WP :
+
+
+\image{select-rte}
+
+
+Il est également possible de demander à WP d'ajouter ces 
+contrôles par un clic droit sur le nom de la fonction puis
+« Insert wp-rte guards ».
 
 
 Enfin nous relançons la vérification (nous pouvons également cliquer sur le 
@@ -329,9 +340,8 @@ dans le volet de WP.
 Dans le volet inférieur, nous pouvons sélectionner l'onglet « \textit{WP Goals} », 
 celui-ci nous affiche la liste des obligations de preuve et pour chaque 
 prouveur indique un petit logo si la preuve a été tentée et si elle a été 
-réussie, échouée ou a rencontré un \textit{timeout} (ici nous pouvons voir un essai 
-avec Z3 sur le contrôle de la RTE pour montrer le logo des ciseaux 
-associé au timeout). Pour voir la totalité des obligations de preuves, il
+réussie, échouée ou a rencontré un \textit{timeout} (logo avec les ciseaux).
+Pour voir la totalité des obligations de preuves, il
 faut s'assurer que "All Results" est bien sélectionné dans le champ encadré
 dans la capture.
 
@@ -354,7 +364,16 @@ prouveurs accessibles à WP.
 
 
 Dans ces prouveurs, le premier élément de la colonne est Qed. Ce n'est pas
-à proprement parler un prouveur. En fait, si nous double-cliquons sur la 
+à proprement parler un prouveur. C'est un outil utilisé par WP pour simplifier
+les propriétés avant de les envoyer aux prouveurs externes. Ensuite nous
+voyons la colonne Script, les scripts fournissent une manière de terminer
+les preuves à la main lorsque les prouveurs automatiques n'y arrivent pas.
+Finalement, nous trouvons la colonne Alt-Ergo, qui est un prouveur automatique.
+Notons que sur la propriété en question des ciseaux sont indiqués, cela
+veut dire que le prouveur a été stoppé à cause d'un \textit{timeout}.
+
+
+En fait, si nous double-cliquons sur la 
 propriété "ne pas déborder" (surlignée en bleu dans la capture précédente), 
 nous pouvons voir ceci (si ce n'est pas le cas, il faut s'assurer que
 "Raw obligation" est bien sélectionné dans le champ encadré en bleu) :
