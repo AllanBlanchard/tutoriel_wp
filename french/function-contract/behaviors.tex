@@ -14,22 +14,19 @@ le cas où la valeur est négative.
 
 
 Les comportements nous servent à spécifier les différents cas pour les 
-post-conditions. Nous les introduisons avec le mot-clé \CodeInline{behavior}. 
-Chaque comportement se voit attribué :
-
-
-
-\begin{itemize}
-\item un nom ;
-\item les suppositions du cas que nous traitons, introduites par le mot 
-clé \CodeInline{assumes} ;
-\item la post-condition associée à ce comportement.
-\end{itemize}
-
-
-Finalement, nous pouvons également demander à WP
+post-conditions. Nous les introduisons avec le mot-clé \CodeInline{behavior}.
+Chaque comportement a un nom. Pour un comportement donné, nous trouvons
+différentes suppositions à propos de l'entrée de la fonction, elles sont
+introduites à l'aide du mot clé \CodeInline{assumes} (notons que, puisqu'elles
+caractérisent les entrées, le mot clé \CodeInline{\textbackslash{}old} ne peut
+pas être utilisé ici). Cependant, chaque propriété exprimée par ces clauses
+n'a pas \textbf{besoin} d'être vérifiée avant à l'appel, elle \textbf{peut}
+être vérifiée et dans ce cas, les postconditions associées à ce comportement
+s'appliquent. Ces postconditions sont à nouveau introduites à l'aide du mot
+clé \texttt{ensures}. Finalement, nous pouvons également demander à WP
 de vérifier le fait que les comportements sont disjoints (pour garantir 
-le déterminisme) et complets.
+le déterminisme) et complets (pour garantir que nous couvrons toutes les
+entrées possibles).
 
 
 
@@ -46,6 +43,10 @@ Par exemple pour \CodeInline{abs} :
 
 \CodeBlockInput{c}{abs.c}
 
+
+Notons qu'introduire des comportements ne nous interdit pas de spécifier une
+postcondition globale. Par exemple ici, nous avons spécifié que quel que soit
+le comportement, la fonction doit retourner une valeur positive.
 
 
 Pour comprendre ce que font précisément \CodeInline{complete} et \CodeInline{disjoint}, il est utile
@@ -82,9 +83,99 @@ quand les fonctions ont des effets très différents en fonction de leurs
 entrées. Sans eux, les spécifications passent systématiquement par des 
 implications traduisant la même idée mais dont l'écriture et la lecture sont 
 plus difficiles (nous sommes susceptibles d'introduire des erreurs).
-
-
-
 D'autre part, la traduction de la complétude et de la disjonction devraient 
 être écrites manuellement, ce qui serait fastidieux et une nouvelle fois source
 d'erreurs.
+
+
+
+\levelThreeTitle{Exercices}
+
+
+\levelFourTitle{Distance}
+
+
+Reprendre l'exemple à propos du calcul de la distance entre deux entiers.
+En considérant que le contrat était :
+
+
+\CodeBlockInput{c}{ex-1-distance.c}
+
+
+Le ré-écrire en utilisant des comportements.
+
+
+\levelFourTitle{Remettre à zéro selon une condition}
+
+
+Reprendre l'exemple « Remettre à zéro selon une condition » de la section
+précédente. En considérant que le contrat était :
+
+
+
+\CodeBlockInput[1][13]{c}{ex-2-reset-on-cond.c}
+
+
+Le ré-écrire en utilisant des comportements.
+
+
+\levelFourTitle{Maximum des valeurs pointées I}
+
+
+Reprendre l'exemple « Maximum des valeurs pointées » de la section
+précédente et plus précisément la version qui « ordonne » les valeurs
+pointées. En considérant que le contrat était :
+
+
+
+\CodeBlockInput[1][13]{c}{ex-4-max-ptr.c}
+
+
+Le ré-écrire en utilisant des comportements.
+
+
+
+\levelFourTitle{Maximum des valeurs pointées II}
+
+
+Reprendre l'exemple « Maximum des valeurs pointées » de la section
+précédente et plus précisément la version qui retourne la plus grande
+valeur. En considérant que le contrat était :
+
+
+\CodeBlockInput[1][10]{c}{ex-5-max-ptr.c}
+
+
+\begin{enumerate}
+\item Le ré-écrire en utilisant des comportements
+\item Modifier le contrat de 1. de sorte à ce que les comportements ne
+  soient pas disjoint. Excepté cette propriété, tout le reste devrait
+  être correctement prouvé
+\item Modifier le contrat de 1. de sorte à ce que les comportements ne
+  soient pas complets, puis ajouter un nouveau comportement pour le
+  rendre de nouveau complet
+\item Modifier la fonction de 1. de façon à accepter la valeur
+  \CodeInline{NULL} pour les pointeurs d'entrées, si les deux pointeurs
+  sont nuls, retourner  \CodeInline{INT\_MIN}, si l'un seulement est
+  nul, retourner l'autre valeur, sinon retourner le maximum des deux
+  valeurs. Modifier le contrat de façon à prendre en compte tout cela
+  par de nouveaux comportements. Attention à assurer que les comportement
+  sont complets et disjoints.
+\end{enumerate}
+
+
+
+\levelFourTitle{Ordonner trois valeurs}
+
+
+Reprendre l'exemple « Ordonner trois valeurs » de la section
+précédente, en considérant que le contrat était :
+
+
+\CodeBlockInput{c}{ex-6-order-3.c}
+
+
+Le ré-récrire en utilisant des comportements. Notons que le contrat
+devrait être composé d'un comportement général et de trois
+comportements spécifiques. Est ce que ces comportements sont complets ?
+Sont-ils disjoints ?

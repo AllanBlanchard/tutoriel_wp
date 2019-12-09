@@ -1,17 +1,17 @@
-Derrière ce titre faisant penser à un scénario de film d'action se cache en fait
-un moyen d'enrichir la spécification avec des informations sous la forme de code
-en langage C. Ici, l'idée va être d'ajouter des variables et du code source qui
-n'interviendra pas dans le programme réel mais permettant de créer des états 
-logiques qui ne seront visibles que depuis la preuve. Par cet intermédiaire, 
+Les techniques que nous avons vu précédemment dans ce chapitre ont pour but de
+rendre la spécification plus abtraite. Le rôle du code fantôme est inverse. Ici,
+nous allons en fait enrichir nos spécifications à l'aide d'information exprimées
+en langage C. L'idée est d'ajouter des variables et du code source qui
+n'interviend pas dans le programme réel mais permettant de créer des états
+logiques qui ne seront visibles que depuis la preuve. Par cet intermédiaire,
 nous pouvons rendre explicites des propriétés logiques qui étaient auparavant
 implicites.
-
 
 
 \levelThreeTitle{Syntaxe}
 
 
-Le code fantôme est ajouté par l'intermédiaire d'annotations qui vont contenir 
+Le code fantôme est ajouté par l'intermédiaire d'annotations qui vont contenir
 du code C ainsi que la mention \CodeInline{ghost}.
 
 
@@ -25,7 +25,7 @@ du code C ainsi que la mention \CodeInline{ghost}.
 
 
 
-Les seules règles que nous devons respecter dans un tel code est que nous ne 
+Les seules règles que nous devons respecter dans un tel code est que nous ne
 devons jamais écrire une portion de mémoire qui n'est pas elle-même définie dans
 du code fantôme et que le code en question doit terminer tout bloc qu'il ouvrirait.
 Mis à par cela, tout calcul peut être inséré tant qu’il ne modifie \textit{que} les variables
@@ -53,12 +53,44 @@ void foo(int a){
 \end{CodeBlock}
 
 
+Tandis que dans ce chapitre, cela ne sera pas nécessaire, nous verrons plus tard
+qu'il est parfois utile d'écrire des contrats ou des assertions dans du code
+fantôme. Commme nous devons écrire ces spécifications dans du code qui est
+déjà englobé dans des commentaires C, nous avons accès à une syntaxe spécifique
+pour fournir des contrats ou des assertions fantômes. Nous ouvrons une annotation
+fantôme avec la syntaxe \CodeInline{/@} et nous les fermons avec \CodeInline{@/}.
 
-Il faut être très prudent lorsque nous produisons ce genre de code. En effet, 
+
+Par exemple :
+
+\begin{CodeBlock}{c}
+void foo(unsigned n){
+ /*@ ghost
+   unsigned i ;
+
+   /@
+     loop invariant 0 <= i <= n ;
+     loop assigns i ;
+     loop variant n - i ;
+   @/
+   for(i = 0 ; i < n ; ++i){
+
+   }
+   /@ assert i == n ; @/
+ */
+}
+\end{CodeBlock}
+
+
+
+\levelThreeTitle{Validité du code fantôme}
+
+
+Il faut être très prudent lorsque nous produisons ce genre de code. En effet,
 aucune vérification n'est effectuée pour s'assurer que nous n'écrivons pas dans
-la mémoire globale par erreur. Ce problème étant comme la vérification elle-même, 
-un problème indécidable, une telle analyse serait un travail de preuve à part 
-entière. Par exemple, ce code est accepté en entrée de Frama-C, alors qu'il 
+la mémoire globale par erreur. Ce problème étant comme la vérification elle-même,
+un problème indécidable, une telle analyse serait un travail de preuve à part
+entière. Par exemple, ce code est accepté en entrée de Frama-C, alors qu'il
 modifie manifestement l'état de la mémoire du programme :
 
 
@@ -73,16 +105,40 @@ void foo(){
 
 
 
-Il faut donc faire très attention à ce que nous faisons avec du code fantôme.
+Il est donc très facile de modifier le comportement d'un programme en ajoutant
+du code fantôme et dans ce cas, si nous prouvons des propriétés à propos du
+programme, nous sommes en train de le faire à propos d'un programme modifié et
+pas du programme réel. Il faut donc faire très attention à ne modifier que des
+positions mémoire fantôme dans du code fantôme.
 
 
+De plus, comme nous n'avons pas de restriction sur le type de code C que nous
+pouvons écrire, nous pouvons écrire des boucles. Comme nous l'avons dit dans la
+section~\ref{l3:statements-loops-variant}, il y a deux sortes de correction: la
+correction partielle et la correction totale, la seconde permettant de prouver
+qu'un programme termine. Dans le cas du code fantôme, montrer que la correction
+est totale est absolument nécessaire car une boucle infinie dans le code fantôme
+peut nous permettre de prouver n'importe quoi à propos du programme.
+
+
+Par exemple, le programme suivant est prouvé parce que le code fantôme ne termine
+pas :
+
+\begin{CodeBlock}{c}
+/*@ ensures \false ; */
+void foo(void){
+  /*@ ghost
+    while(1){}
+  */
+}
+\end{CodeBlock}
 
 \levelThreeTitle{Expliciter un état logique}
 
 
-Le but du code \textit{ghost} est de rendre explicite des informations généralement 
+Le but du code \textit{ghost} est de rendre explicite des informations généralement
 implicites. Par exemple, dans la section précédente, nous nous en sommes servi
-pour récupérer explicitement un état logique connu à un point de programme 
+pour récupérer explicitement un état logique connu à un point de programme
 donné.
 
 
@@ -92,7 +148,7 @@ la fonction suivante nous retourne la valeur maximale des sommes de sous-tableau
 sous-ensemble contigu de valeur de \CodeInline{a}. Par exemple, pour un tableau \CodeInline{\{ 0 , 3 , -1 , 4 \}},
 des exemples de sous tableaux peuvent être \CodeInline{\{\}}, \CodeInline{\{ 0 \}}, \CodeInline{\{ 3 , -1 \}}
 , \CodeInline{\{ 0 , 3 , -1 , 4 \}}, ... Notez que comme nous autorisons le tableau vide,
-la somme est toujours au moins égale à 0. Dans le tableau précédent, le sous 
+la somme est toujours au moins égale à 0. Dans le tableau précédent, le sous
 tableau de valeur maximale est \CodeInline{\{ 3 , -1 , 4 \}}, la fonction renverra donc 6.
 
 
@@ -101,9 +157,9 @@ tableau de valeur maximale est \CodeInline{\{ 3 , -1 , 4 \}}, la fonction renver
 
 
 
-Pour spécifier la fonction précédente, nous allons avoir besoin d'exprimer 
+Pour spécifier la fonction précédente, nous allons avoir besoin d'exprimer
 axiomatiquement la somme. Ce n'est pas très complexe, et le lecteur pourra
-s'exercer en exprimant les axiomes nécessaires au bon fonctionnement de cette 
+s'exercer en exprimant les axiomes nécessaires au bon fonctionnement de cette
 axiomatique :
 
 
@@ -112,13 +168,7 @@ axiomatique :
 
 
 
-La correction est cachée ici :
-
-
-
-\begin{Spoiler}
-\CodeBlockInput[3][12]{c}{max_subarray-1.c}
-\end{Spoiler}
+La correction est disponible à la section~\ref{l2:acsl-logic-definitions-answers}.
 
 
 La spécification de notre fonction est la suivante :
@@ -129,35 +179,35 @@ La spécification de notre fonction est la suivante :
 
 
 
-Pour toute paire de bornes, la valeur retournée par la fonction doit être 
-supérieure ou égale à la somme des éléments entre les bornes, et il doit exister 
-une paire de bornes, telle que la somme des éléments entre ces bornes est 
+Pour toute paire de bornes, la valeur retournée par la fonction doit être
+supérieure ou égale à la somme des éléments entre les bornes, et il doit exister
+une paire de bornes, telle que la somme des éléments entre ces bornes est
 exactement la valeur retournée par la fonction. Par rapport à cette spécification,
-si nous devons ajouter les invariants de boucles, nous nous apercevons rapidement 
+si nous devons ajouter les invariants de boucles, nous nous apercevons rapidement
 qu'il va nous manquer des informations. Nous avons besoin d'exprimer ce que sont
 les valeurs \CodeInline{max} et \CodeInline{cur} et quelles relations existent entre elles,
 mais rien ne nous le permet !
 
 
 
-En substance, notre post-condition a besoin de savoir qu'il existe des 
-bornes \CodeInline{low} et \CodeInline{high} telles que la somme calculée correspond à ces bornes. 
-Or notre code, n'exprime rien de tel d'un point de vue logique et rien ne nous 
+En substance, notre post-condition a besoin de savoir qu'il existe des
+bornes \CodeInline{low} et \CodeInline{high} telles que la somme calculée correspond à ces bornes.
+Or notre code, n'exprime rien de tel d'un point de vue logique et rien ne nous
 permet \textit{a priori} de faire cette liaison en utilisant des formulations logiques.
-Nous allons donc utiliser du code \textit{ghost} pour conserver ces bornes et exprimer 
+Nous allons donc utiliser du code \textit{ghost} pour conserver ces bornes et exprimer
 l'invariant de notre boucle.
 
 
 
 Nous allons d'abord avoir besoin de 2 variables qui vont nous permettre de stocker
-les valeurs des bornes de la plage maximum, nous les appellerons \CodeInline{low} 
-et \CodeInline{high}. Chaque fois que nous trouverons une plage où la somme est plus 
+les valeurs des bornes de la plage maximum, nous les appellerons \CodeInline{low}
+et \CodeInline{high}. Chaque fois que nous trouverons une plage où la somme est plus
 élevée nous les mettrons à jour. Ces bornes correspondront donc à la somme indiquée
-par \CodeInline{max}. Cela induit que nous avons encore besoin d'une autre paire de 
-bornes : celle correspondant à la variable de somme \CodeInline{cur} à partir de laquelle 
-nous pourrons construire les bornes de \CodeInline{max}. Pour celle-ci, nous n'avons 
-besoin que d'ajouter une variable \textit{ghost} : le minimum actuel \CodeInline{cur\_low}, la 
-borne supérieure de la somme actuelle étant indiquée par la variable \CodeInline{i} de la 
+par \CodeInline{max}. Cela induit que nous avons encore besoin d'une autre paire de
+bornes : celle correspondant à la variable de somme \CodeInline{cur} à partir de laquelle
+nous pourrons construire les bornes de \CodeInline{max}. Pour celle-ci, nous n'avons
+besoin que d'ajouter une variable \textit{ghost} : le minimum actuel \CodeInline{cur\_low}, la
+borne supérieure de la somme actuelle étant indiquée par la variable \CodeInline{i} de la
 boucle.
 
 
@@ -166,10 +216,10 @@ boucle.
 
 
 
-L'invariant \CodeInline{BOUNDS} exprime comment sont ordonnées les différentes bornes 
-pendant le calcul. L'invariant \CodeInline{REL} exprime ce que signifient les 
-valeurs \CodeInline{cur} et \CodeInline{max} par rapport à ces bornes. Finalement, 
-l'invariant \CodeInline{POST} permet de faire le lien entre les invariants précédents 
+L'invariant \CodeInline{BOUNDS} exprime comment sont ordonnées les différentes bornes
+pendant le calcul. L'invariant \CodeInline{REL} exprime ce que signifient les
+valeurs \CodeInline{cur} et \CodeInline{max} par rapport à ces bornes. Finalement,
+l'invariant \CodeInline{POST} permet de faire le lien entre les invariants précédents
 et la post-condition de la fonction.
 
 
@@ -181,10 +231,44 @@ voir que le calcul de la somme indique un dépassement possible sur les entiers.
 
 
 Ici, nous ne chercherons pas à le corriger car ce n'est pas l'objet de l'exemple.
-Le moyen de prouver cela dépend en fait fortement du contexte dans lequel on 
+Le moyen de prouver cela dépend en fait fortement du contexte dans lequel on
 utilise la fonction. Une possibilité est de restreindre fortement le contrat en
-imposant des propriétés à propos des valeurs et de la taille du tableau. Par 
+imposant des propriétés à propos des valeurs et de la taille du tableau. Par
 exemple : nous pourrions imposer une taille maximale et des bornes fortes pour
 chacune des cellules. Une autre possibilité est d'ajouter une valeur d'erreur
-en cas de dépassement (par exemple $-1$), et de spécifier qu'en cas de 
+en cas de dépassement (par exemple $-1$), et de spécifier qu'en cas de
 dépassement, c'est cette valeur qui est renvoyée.
+
+
+
+\levelThreeTitle{Exercices}
+
+
+\levelFourTitle{Multiplication par 2}
+
+
+Le programme suivant calcule \CodeInline{2 * x} en utilisant une boucle.
+Utiliser une variable fantôme \CodeInline{i} pour exprimer comme invariant que
+la valeur de \CodeInline{r} est \CodeInline{i * 2} et compléter la preuve.
+
+
+\CodeBlockInput{c}{ex-1-times-2.c}
+
+
+\levelFourTitle{Tableaux}
+
+
+Cette fonction reçoit un tableau et effectue une boucle dans laquelle nous ne
+faisons rien sauf que nous avons indiqué que le contenu du tableau est modifié.
+Cependant, nous voudrions pouvoir prouver qu'en postcondition, le tableau n'a
+pas été modifié.
+
+
+\CodeBlockInput{c}{ex-2-array.c}
+
+
+Sans modifier la clause \CodeInline{assigns} de la boucle et sans utiliser le mot
+clé \CodeInline{\textbackslash{}at}, prouver que la fonction ne modifie pas le
+contenu du tableau. Pour cela, compléter le code fantôme et l'invariant de boucle
+en assurant que le contenu du tableau \CodeInline{g} représente l'ancien contenu
+de \CodeInline{a}.

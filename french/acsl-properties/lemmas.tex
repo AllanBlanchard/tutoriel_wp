@@ -1,17 +1,25 @@
 
 Les lemmes sont des propriétés générales à propos des prédicats ou encore des 
-fonctions. Une fois ces propriétés exprimées, la preuve peut être réalisée une 
-fois et la propriété en question pourra être utilisée par les prouveurs, leur 
-permettant ainsi de ne pas reproduire les étapes de preuve nécessaires à chaque
-fois qu'une propriété équivalente intervient dans une preuve plus longue sur 
-une propriété plus précise.
+fonctions. Une fois ces propriétés exprimées, la preuve peut être réalisée en
+isolation du reste de la preuve du programme, en utilisant des prouveurs 
+automatiques ou (plus souvent) des prouveurs interactifs. Une fois la preuve
+réalisée, la propriété énoncée peut être utilisée directement par les prouveurs
+automatiques sans que cela ne nécessite d'en réaliser la preuve à nouveau. Par
+exemple, si nous énonçons un lemme $L$ qui dit que $P \Rightarrow Q$, et dans
+une autre preuve nous avons besoin de prouver $Q$ alors que nous savons déjà
+que $P$ est vérifiée, nous pouvons utiliser directement le lemme $L$ pour
+conclure sans avoir besoin de faire à nouveau le raisonnement complet qui
+amène de $P$ à $Q$.
 
 
 
-Les lemmes peuvent par exemple nous permettre d'exprimer des propriétés à 
-propos des fonctions récursives pour que les preuves les faisant intervenir 
-nécessitent moins de travail pour les prouveurs.
-
+Dans la section précédent, nous avons dit que les fonctions récursives logiques
+peuvent rendre les preuves plus difficile pour les solveurs SMT. Dans un tel cas,
+les lemmes peuvent nous aider. Nous pouvons écrire nous même les preuves qui 
+nécessitent de raisonner par induction pour certaines propriétés qui nous
+énonçons comme des lemmes, et ces lemmes peuvent ensuite être utilisés 
+efficacement par les prouvers pour effectuer les autres preuves à propos du
+programme.
 
 
 \levelThreeTitle{Syntaxe}
@@ -60,7 +68,7 @@ propriétés intéressantes à leur sujet :
 
 
 
-\CodeBlockInput[20][30]{c}{affine-0.c}
+\CodeBlockInput[20][30]{c}{linear-0.c}
 
 
 
@@ -70,7 +78,7 @@ ensuite construire cet exemple de code :
 
 
 
-\CodeBlockInput[32][57]{c}{affine-0.c}
+\CodeBlockInput[32][57]{c}{linear-0.c}
 
 
 
@@ -79,3 +87,172 @@ qu'Alt-ergo réussisse à produire la preuve que \CodeInline{fmin} est inférieu
 Avec ces lemmes présents en revanche, il y parvient sans problème car cette 
 propriété est une simple instance du lemme \CodeInline{ax\_b\_monotonic\_pos}, la preuve 
 étant ainsi triviale car notre lemme nous énonce cette propriété comme étant vraie.
+Notons que sur cette version généralisée, Z3 sera probablement plus efficace pour
+prouver l'absence d'erreurs à l'exécution.
+
+
+
+\levelThreeTitle{Exemple: tableaux et labels}
+
+
+Plus tard dans ce tutoriel, nous allons voir certains types de définitins à propos
+desquels il est parfois difficile de raisonner pour les solveurs SMT quand des
+modifications ont lieu en mémoire. Par conséquent, nous aurons souvent besoin de
+lemmes pour indiquer les relations qui existent à propos du contenu de la mémoire
+entre deux labels.
+
+
+Pour le moment, illustrons cela avec un exemple simple. Considérons les deux
+prédicats suivant :
+
+
+\CodeBlockInput[1][8]{c}{unchanged-sorted.c}
+
+
+Nous pourrions par exemple vouloir énoncer que lorsqu'un tableau est trié, et que
+la mémoire est modifiée (créant donc un nouvel état mémore), mais que le contenu du
+tableau reste inchangé, alors le tableau est toujours trié. Cela peut être réalisé
+avec le lemme suivant :
+
+
+\CodeBlockInput[10][16]{c}{unchanged-sorted.c}
+
+
+Nous énonçons ce lemme pour deux labels \CodeInline{L1} et \CodeInline{L2}, et
+exprime que pour toute plage de valeurs dans un tableau, si elle est triée au label
+\CodeInline{L1}, et reste inchangée depuis \CodeInline{L1} vers \CodeInline{L2},
+alors elle reste triée au label \CodeInline{L2}.
+
+
+Notons qu'ici, cette propriété est facilement prouvée par les prouveurs SMT. Nous
+verrons plus tard des exemples pour lesquels il n'est pas si simple d'obtenir une
+preuve.
+
+
+
+\levelThreeTitle{Exercices}
+
+
+\levelFourTitle{Propriété de la multiplication}
+
+
+Écrire un lemma qui énonce que pour trois entiers $x$, $y$ et $z$, si $x$ est
+plus grand ou égal à $0$, si $z$ est plus grand ou égal à $y$, alors $x * z$ 
+est  plus grand ou égal à $y * z$.
+
+
+Ce lemme ne sera probablement pas prouvé par les solveurs SMT. En revanche, en
+demandant une preuve avec Coq, la tactique par défaut devrait la décharger
+automatiquement.
+
+
+\levelFourTitle{Localement trié vers globalement trié}
+\label{l4:acsl-properties-lemmas-lsorted-gsorted}
+
+
+Le programme suivant contient une fonction qui demande à ce qu'un tableau soit
+trié au sens que chaque élément doit plus petit ou égal à l'élément qui le suit
+puis appelle la fonction de recherche dichotomique.
+
+
+\CodeBlockInput[59][81]{c}{ex-2-sorted-link.c}
+
+
+Pour cet exercice, reprendre la solution de 
+l'exercice~\ref{l4:acsl-properties-predicates-ex-bsearch} à propos de la recherche
+dichotomique. La pré-condition de cette recherche peut sembler plus forte que celle
+reçue par la pré-condition de de \CodeInline{bsearch\_callee}. La première demande
+chaque paire d'éléments d'être ordonnée, la seconde simplement que chaque élément
+soit inférieur à celui qui le suit. Cependant, la seconde implique la première.
+Écrire un un lemme qui énonce que si \CodeInline{element\_level\_sorted} est vraie
+pour un tableau, \CodeInline{sorted} est vraie aussi. Ce lemme ne sera probablement
+pas prouvé par un solveur SMT, toutes les autres propriétés devraient être prouvées
+automatiquement.
+
+
+Une solution et la preuve Coq du lemme sont disponibles sur le GitHub de ce tutoriel.
+
+
+\levelFourTitle{Somme des N premiers entiers}
+\label{l4:acsl-properties-lemmas-n-first-ints}
+
+
+Reprendre la solution de l'exercice~\ref{l4:acsl-properties-functions-n-first-ints}
+à propos de la somme des N premiers entiers. Écrire un lemme qui énonce que la valeur
+calculée par la fonction logique récursive qui permet la spécifications de la somme des
+N premiers entiers est $n*(n+1)/2$. Ce lemme ne sera pas prouvé par un solveur SMT.
+
+
+Une solution et la preuve Coq du lemme sont disponibles sur le GitHub de ce tutoriel.
+
+
+\levelFourTitle{Transivité d'un glissement d'éléments}
+\label{l4:acsl-properties-lemmas-shift-trans}
+
+
+Le programme suivant est composé de deux fonctions. La première est
+\CodeInline{shift\_array} et permet de faie glisser des éléments dans un tableau
+d'un certain nombre de cellule (nommé \CodeInline{shift}). La seconde effectue deux
+glissements successifs des éléments d'un même tableau.
+
+
+
+\CodeBlockInput{c}{ex-4-shift-transitivity.c}
+
+
+Compléter les prédicats \CodeInline{shifted} et \CodeInline{unchanged} (le second
+devrait utiliser le premier). Compléter le contrat de la fonction
+\CodeInline{shift\_array} et prouver sa correction avec WP.
+
+
+Exprimer deux lemmes à propos de la propriété \CodeInline{shifted}.
+
+
+Le premier, nommé \CodeInline{shift\_ptr}, doit énoncer que déplacer une plage de
+valeur \CodeInline{fst+s1} à \CodeInline{last+s1} dans un tableau \CodeInline{array}
+d'un décalage \CodeInline{s2} est équivalent à déplacer une plage de valeurs
+\CodeInline{fst} à \CodeInline{last} pour la position mémoire \CodeInline{array+s1}
+avec un décalage \CodeInline{s2}.
+
+
+Le second doit énoncer que quand les éléments d'un tableau sont déplacés une première
+fois avec un décalage \CodeInline{s1} puis une seconde fois avec un décalage
+\CodeInline{s2}, alors le déplacement final correspond à un décalage avec un
+déplacement \CodeInline{s1+s2}.
+
+
+Le lemme \CodeInline{shift\_ptr} ne sera probablement pas prouvé par un SMT solveur.
+Nous fournissons une solution et la preuve Coq de ce lemme sur le GitHub de ce livre.
+Les propriétés restantes doivent être prouvées automatiquement.
+
+
+\levelFourTitle{Déplacement d'une plage triée}
+
+
+Le programme suivant est composé de deux fonctions. La fonction
+\CodeInline{shift\_and\_search} déplace les éléments d'un tableau puis effectue
+une recherche dichotomique.
+
+
+\CodeBlockInput{c}{ex-5-shift-sorted.c}
+
+
+Reprendre la solution de la recherche dichotomique de 
+l'exercice~\ref{l4:acsl-properties-predicates-ex-bsearch}. Modifier cette
+recherche et sa spécification de façon à ce que la fonction permette de
+chercher dans toute plage triée de valeurs. La preuve doit toujours fonctionner.
+
+
+Reprendre également la fonction prouvée \CodeInline{shift\_array} de l'exercice
+précédent.
+
+
+Compléter le contrat de la fonction \CodeInline{shift\_and\_search}. La 
+précondition qui demande à ce que le tableau soit trié avant la recherche ne 
+sera pas validée. Compléter le lemme \CodeInline{shifted\_still\_sorted} qui
+doit énoncer que si une plage de valeur est triée à un label, puis déplacée,
+alors elle reste triée.
+
+
+Ce lemme ne sera probablement pas prouvé par un solveur SMT. Une solution et
+sa preuve Coq sont disponibles sur le GitHub de ce livre.

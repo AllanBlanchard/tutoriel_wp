@@ -30,7 +30,7 @@ Nous pouvons par exemple décrire une \externalLink{fonction affine}{https://fr.
 
 
 
-\CodeBlockInput[1][4]{c}{affine-0.c}
+\CodeBlockInput[1][4]{c}{linear-0.c}
 
 
 
@@ -38,11 +38,11 @@ Elle peut nous servir à prouver le code de la fonction suivante :
 
 
 
-\CodeBlockInput[6][12]{c}{affine-0.c}
+\CodeBlockInput[6][12]{c}{linear-0.c}
 
 
 
-\image{affine-1.png}[Les débordements semblent pouvoir survenir]
+\image{linear-1}
 
 
 Le code est bien prouvé mais les contrôles d'\textit{overflow}, eux, ne le sont pas. Nous 
@@ -53,7 +53,7 @@ pré-condition de fonction :
 
 
 
-\CodeBlockInput[8][27]{c}{affine-1.c}
+\CodeBlockInput[8][27]{c}{linear-1.c}
 
 
 
@@ -68,6 +68,14 @@ Et cette fois tout est prouvé. Évidemment, nous pourrions fixer ces valeurs en
 dur chaque fois que nous avons besoin d'une nouvelle fonction affine du côté de
 la logique mais en posant ces fonctions, nous obtenons directement ces valeurs 
 sans avoir besoin de les calculer nous même, ce qui est assez confortable.
+
+
+Notons que nous donnons aussi une borne inférieure pour le calcul \CodeInline{3 * x}.
+En effet, tandis que la borne fournie pour \CodeInline{x} par notre fonction logique
+est définie poiur le calcul complet, elle ne nous dit rien à propos des calculs
+intermédiaires. Par exemple ici, le fait \CodeInline{3 * x + 4} ne soit pas inférieur
+à \CodeInline{INT\_MIN} ne nous garantit pas que c'est aussi le cas pour
+\CodeInline{3 * x}.
 
 
 
@@ -94,15 +102,12 @@ et en C :
 
 
 Sans contrôle de borne, cette fonction se prouve rapidement. Si nous ajoutons
-le contrôle des RTE, le vérification de débordement sur l'entier non-signé n'est
-pas ajoutée, car c'est un comportement déterminé d'après la norme C. Pour ajouter
-une assertion à ce point, nous pouvons demander à WP de générer ses propres 
-vérifications en faisant un clic droit sur la fonction puis « insert WP-safety 
-guards ». Et dans ce cas, le non-débordemement n'est pas prouvé.
+le contrôle des RTE, nous voyons qu'il y a un risque de débordement
+arithmétique sur la multiplication.
 
 
 
-Sur le type \CodeInline{unsigned}, le maximum que nous pouvons calculer est la factorielle de 
+Sur le type \CodeInline{int}, le maximum que nous pouvons calculer est la factorielle de 
 12. Au-delà, cela produit un dépassement. Nous pouvons donc ajouter cette 
 pré-condition :
 
@@ -127,4 +132,94 @@ Les fonctions logiques peuvent donc être définies récursivement mais sans ast
 supplémentaires, nous venons vite nous heurter au fait que les prouveurs vont au 
 choix devoir faire de l'évaluation, ou encore « raisonner » par induction, deux 
 tâches pour lesquelles ils ne sont pas du tout fait, ce qui limite nos 
-possibilités de preuve.
+possibilités de preuve. Nous verrons plus tard dans ce tutoriel comment éviter
+cette limitation.
+
+
+\levelThreeTitle{Exercices}
+
+
+\levelFourTitle{Distance}
+
+
+Spécfier et prouver le programme suivant:
+
+
+\CodeBlockInput{c}{ex-1-distance.c}
+
+
+Pour cela, définir deux fonctions logiques \CodeInline{abs} and \CodeInline{distance}.
+Utiliser ces fonctions pour écrire la spécification de la fonction.
+
+
+\levelFourTitle{Carré}
+
+
+Écrire le corps de la fonction \CodeInline{square}. Spécifier et prouver le
+programme. Utiliser une fonction logique \CodeInline{square}.
+
+
+\CodeBlockInput{c}{ex-2-square.c}
+
+
+Attention aux types des différentes variables, de telle manière à ne pas
+sur-contraindre les entrées de la fonction. De plus, pour vérifier l'absence
+d'erreurs à l'exécution, utiliser l'option \CodeInline{-warn-unsigned-overflow}.
+
+
+\levelFourTitle{Iota}
+
+
+Voici une implémentation possible de la fonction \CodeInline{iota} :
+
+
+\CodeBlockInput{c}{ex-3-iota.c}
+
+
+Écrire une fonction logique qui retourne sa valeur d'entrée incrémentée de 1. 
+Prouver qu'après l'exécution de \CodeInline{iota}, la première valeur du tableau
+est celle reçue en entrée et que chaque valeur du tableau correspond à la valeur
+précédente plus 1 (en utiliant la fonction logique définie).
+
+
+
+\levelFourTitle{Addition sur un vecteur}
+
+
+
+Dans le programme suivante, la fonction \CodeInline{vec\_add} ajoute le second
+vecteur reçu en entrée dans le premier. Écrire un contrat pour la fonction
+\CodeInline{show\_the\_difference} qui exprime pour chaque valeur du vecteur
+\CodeInline{v1} la différence entre la pré et la post-condition. Pour cela,
+définir une fonction logique \CodeInline{diff} qui retourne la différence de
+valeur à une position mémoire entre un label \CodeInline{L1} et la valeur au
+label \CodeInline{L2}.
+
+
+
+\CodeBlockInput{c}{ex-4-vec-inc.c}
+
+
+Ré-exprimer la prédicat \CodeInline{unchanged} en utilisant la fonction logique.
+
+
+
+\levelFourTitle{La somme des N premiers entiers}
+\label{l4:acsl-properties-functions-n-first-ints}
+
+
+La fonction suivante calcule la somme des N premiers entiers. Écrire une fonction
+logique récursive qui retourne la somme des N premiers entiers et écrire la
+la spécification de la fonction C effectuant ce calcul en spécifiant qu'elle
+retourne la même valeur que celle fournie par la fonction logique.
+
+
+\CodeBlockInput{c}{ex-5-n-first-ints.c}
+
+
+Essayer de vérifier l'absence d'erreurs à l'exécution. Le débordement entier
+n'est pas si simple à régler. Cependant, écrire, une pré-condition qui devrait
+être suffisante pour cela (rappel: la somme des N premiers entiers peut être
+exprimée avec une formule très simple ...). Cela ne sera sûrement pas suffisant
+pour arriver au bout de la preuve, mais nous règlerons cela dans la prochaine
+section.

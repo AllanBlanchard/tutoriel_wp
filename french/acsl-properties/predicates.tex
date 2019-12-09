@@ -1,16 +1,16 @@
-Un prédicat est une propriété portant sur des objets et pouvant être vraie ou 
+Un prédicat est une propriété portant sur des objets et pouvant être vraie ou
 fausse. En résumé, des prédicats, c'est ce que nous écrivons depuis le début de
-ce tutoriel dans les clauses de nos contrats et de nos invariants de boucle. 
-ACSL nous permet de créer des versions nommées de ces prédicats, à la manière 
+ce tutoriel dans les clauses de nos contrats et de nos invariants de boucle.
+ACSL nous permet de créer des versions nommées de ces prédicats, à la manière
 d'une fonction booléenne en C par exemple. À la différence près tout de même que
-les prédicats (ainsi que les fonctions logiques que nous verrons par la suite) 
-doivent être pures, c'est-à-dire qu'elles ne peuvent pas produire d'effets de 
+les prédicats (ainsi que les fonctions logiques que nous verrons par la suite)
+doivent être pures, c'est-à-dire qu'elles ne peuvent pas produire d'effets de
 bords en modifiant des valeurs pointées par exemple.
 
 
 
 Ces prédicats peuvent prendre un certain nombre de paramètres. En plus de cela,
-ils peuvent également recevoir un certain nombre de \textit{labels} (au sens C du terme) 
+ils peuvent également recevoir un certain nombre de \textit{labels} (au sens C du terme)
 qui vont permettre d'établir des relations entre divers points du code.
 
 
@@ -18,16 +18,16 @@ qui vont permettre d'établir des relations entre divers points du code.
 \levelThreeTitle{Syntaxe}
 
 
-Les prédicats sont, comme les spécifications, introduits au travers 
+Les prédicats sont, comme les spécifications, introduits au travers
 d'annotations. La syntaxe est la suivante :
 
 
 
 \begin{CodeBlock}{c}
-/*@
-  predicate nom_du_predicat { Label0, Label1, ..., LabelN }(type0 arg0, type1 arg1, ..., typeN argN) =
-    //une relation logique entre toutes ces choses.
-*/
+  /*@
+  predicate nom_du_predicat { Lbl0, Lbl1, ..., LblN }(type0 arg0, type1 arg1, ..., typeN argN) =
+  //une relation logique entre toutes ces choses.
+  */
 \end{CodeBlock}
 
 
@@ -36,61 +36,44 @@ Nous pouvons par exemple définir le prédicat nous disant qu'un entier en mémo
 pas changé entre deux points particuliers du programme :
 
 
-
-\begin{CodeBlock}{c}
-/*@
-  predicate unchanged{L0, L1}(int* i) =
-    \at(*i, L0) == \at(*i, L1);
-*/
-\end{CodeBlock}
-
+\CodeBlockInput[1][4]{c}{unchanged-loc.c}
 
 
 \begin{Warning}
-Gardez bien en mémoire que le passage se fait, comme en C, par valeur. Nous ne
-pouvons pas écrire ce prédicat en passant directement \CodeInline{i} :
+  Gardez bien en mémoire que le passage se fait, comme en C, par valeur. Nous ne
+  pouvons pas écrire ce prédicat en passant directement \CodeInline{i} :
 
-\begin{CodeBlock}{c}
-/*@
-  predicate unchanged{L0, L1}(int i) =
+  \begin{CodeBlock}{c}
+    /*@
+    predicate unchanged{L0, L1}(int i) =
     \at(i, L0) == \at(i, L1);
- */
-\end{CodeBlock}
+    */
+  \end{CodeBlock}
 
-Car \CodeInline{i} est juste une copie de la variable reçue en paramètre.
+  Car \CodeInline{i} est juste une copie de la variable reçue en paramètre.
 \end{Warning}
 
 
 Nous pouvons par exemple vérifier ce petit code :
 
 
-
-\begin{CodeBlock}{c}
-int main(){
-  int i = 13;
-  int j = 37;
-
- Begin:
-  i = 23;
- 
-  //@assert ! unchanged{Begin, Here}(&i);
-  //@assert   unchanged{Begin, Here}(&j);
-}
-\end{CodeBlock}
+\CodeBlockInput[6][15]{c}{unchanged-loc.c}
 
 
 
-Nous pouvons également regarder les buts générés par WP et constater que, 
-même s'il subit une petite transformation syntaxique, le prédicat n'est pas 
+Nous pouvons également regarder les buts générés par WP et constater que,
+même s'il subit une petite transformation syntaxique, le prédicat n'est pas
 déroulé par WP. Ce sera au prouveur de déterminer s'il veut raisonner avec.
 
 
+\image{unchanged-loc}
 
-Comme nous l'avons dit plus tôt, une des utilités des prédicats et fonctions (que 
-nous verrons un peu plus tard) est de rendre plus lisible nos spécifications et 
-de les factoriser. Un exemple est d'écrire un prédicat pour la validité en 
+
+Comme nous l'avons dit plus tôt, une des utilités des prédicats et fonctions (que
+nous verrons un peu plus tard) est de rendre plus lisible nos spécifications et
+de les factoriser. Un exemple est d'écrire un prédicat pour la validité en
 lecture/écriture d'un tableau sur une plage particulière. Cela nous évite d'avoir
-à réécrire l'expression en question qui est moins compréhensible au premier 
+à réécrire l'expression en question qui est moins compréhensible au premier
 coup d’œil.
 
 
@@ -99,9 +82,9 @@ coup d’œil.
 
 
 
-Dans cette portion de spécification, le \textit{label} pour les prédicats n'est pas 
-précisé, ni pour leur création, ni pour leur utilisation. Pour la création, 
-Frama-C va automatiquement en ajouter un dans la définition du prédicat. 
+Dans cette portion de spécification, le \textit{label} pour les prédicats n'est pas
+précisé, ni pour leur création, ni pour leur utilisation. Pour la création,
+Frama-C va automatiquement en ajouter un dans la définition du prédicat.
 Pour l'appel, le \textit{label} passé sera implicitement \CodeInline{Here}. La non-déclaration
 du \textit{label} dans la définition n'interdit pour autant pas de passer explicitement
 un \textit{label} lors de l'appel.
@@ -112,34 +95,139 @@ Bien entendu, les prédicats peuvent être déclarés dans des fichiers \textit{
 de produire une bibliothèque d'utilitaires de spécifications par exemple.
 
 
+% +\levelFourTitle{Predicate overloading}
+% +
+% +
+% +
+% +It is possible to overload predicates as long as the types of the
+% +parameters are different or the number of parameters changes. For
+% +example, we can redefine the \CodeInline{valid\_range\_r} as a
+% +predicate that takes in parameters both the beginning and the end
+% +of the range to consider. Then, we can write a overloaded version that
+% +uses the previous one for the particular case of ranges that starts
+% +at 0:
+% +
+% +
+% +
+% +\CodeBlockInput[3]{c}{search-overload.c}
+% +
+% +
+
+
 
 \levelThreeTitle{Abstraction}
 
 
 Une autre utilité importante des prédicats est de définir l'état logique de nos
-structures quand les programmes se complexifient. Nos structures doivent 
+structures quand les programmes se complexifient. Nos structures doivent
 généralement respecter un invariant (encore) que chaque fonction de manipulation
-devra maintenir pour assurer que la structure sera toujours utilisable et 
+devra maintenir pour assurer que la structure sera toujours utilisable et
 qu'aucune fonction ne commettra de bavure.
 
 
 
 Cela permet notamment de faciliter la lecture de spécifications. Par exemple, nous
-pourrions poser les spécifications nécessaires à la sûreté d'une pile de taille 
+pourrions poser les spécifications nécessaires à la sûreté d'une pile de taille
 limitée. Et cela donnerait quelque chose comme :
-
 
 
 \CodeBlockInput{c}{stack.c}
 
 
+(Notons qu'ici, nous ne fournissons pas la définition des prédicats car ce n'est
+pas l'objet de cet exemple. Le lecteur pourra considérer ceci comme un exercice)
 
-Ici la spécification n'exprime pas de propriétés fonctionnelles. Par exemple, 
+Ici la spécification n'exprime pas de propriétés fonctionnelles. Par exemple,
 rien ne nous spécifie que lorsque nous faisons un \textit{push} d'une valeur puis que nous
-demandons \textit{top}, nous auront effectivement cette valeur. Mais elle nous donne 
-déjà tout ce dont nous avons besoin pour produire un code où, à défaut d'avoir 
-exactement les résultats que nous attendons (des comportements tels que « si 
+demandons \textit{top}, nous auront effectivement cette valeur. Mais elle nous donne
+déjà tout ce dont nous avons besoin pour produire un code où, à défaut d'avoir
+exactement les résultats que nous attendons (des comportements tels que « si
 j'empile une valeur $v$, l'appel à \CodeInline{top} renvoie la valeur $v$ », par exemple), nous
- pouvons au moins garantir que nous n'avons pas d'erreur d'exécution (à condition 
-de poser une spécification correcte pour nos prédicats et de prouver les fonctions 
+pouvons au moins garantir que nous n'avons pas d'erreur d'exécution (à condition
+de poser une spécification correcte pour nos prédicats et de prouver les fonctions
 d'utilisation de la structure).
+
+
+\levelThreeTitle{Exercices}
+
+
+\levelFourTitle{Les jours du mois}
+
+
+Reprendre la solution de l'exercice~\ref{l4:contract-modularity-ex-days-of-month},
+écrire un prédicat pour exprimer qu'une année est bissextile et modifier le contrat
+de façon à l'utiliser.
+
+
+\levelFourTitle{Caractères alpha-numeriques}
+
+
+Reprendre la solution de l'exercice~\ref{l4:contract-modularity-ex-alpha-num} à
+propos des caractères alpha-numériques. Écrire des prédicats pour exprimer qu'un
+caractères est une majuscule, une autre pour les minuscules, et un dernier pour les
+chiffres. Adapter les contrats des différentes fonctions en les utilisant.
+
+
+\levelFourTitle{Maximum de 3 valeurs}
+
+
+La fonction suivante retourne le maximum de 3 valeurs d'entrée :
+
+
+\CodeBlockInput{c}{ex-3-max-3.c}
+
+
+Écrire un prédicat qui exprime qu'une valeur est l'une de trois valeurs pointées
+à un état mémoire donné :
+
+
+\begin{CodeBlock}{c}
+  /*@
+  predicate one_of{L}(int value, int *a, int *b, int *c) =
+  // ...
+  */
+\end{CodeBlock}
+
+
+Utiliser la notation ensembliste. Écrire un contrat pour la fonction et prouver
+qu'elle le vérifie.
+
+
+
+\levelFourTitle{Recherche dichotomique}
+\label{l4:acsl-properties-predicates-ex-bsearch}
+
+
+Reprendre la solution de l'exercice~\ref{l4:statements-loops-ex-bsearch} à propos
+de la recherche dichotomique utilisant des indices non-signés. Écrire un prédicat
+qui exprime qu'une plage de valeur est triée entre \CodeInline{begin} et
+\CodeInline{end} (exclu). Écrire une surcharge de ce prédicat pour rendre
+\CodeInline{begin} optionel avec une valeur par défaut à $0$. Écrire un prédicat
+qui vérifie si un élément est dans un tableau pour des indices compris entre
+\CodeInline{begin} et \CodeInline{end} (exclu), à nouveau, écrire une surcharge
+qui rend la première borne optionnelle.
+
+
+Utiliser ces prédicats pour simplifier le contrat de la fonction. Notons que les
+clauses \CodeInline{assumes} des deux comportements devraient être modifiées.
+
+
+
+\levelFourTitle{Chercher et remplacer}
+
+
+Reprendre l'exemple~\ref{l4:statements-loops-ex-search-and-replace}, à propos de
+la fonction "chercher et remplacer". Écrire des prédicats qui exprime qu'une plage
+de valeurs dans un tableau pour des indices compris entre \CodeInline{begin} et
+\CodeInline{end} (exclu), les valeurs :
+
+\begin{itemize}
+  \item restent inchangées entre deux états mémoire,
+  \item some remplacées par une valeur si elles sont égales à une valeur donnée,
+        sinon laissée inchangée.
+\end{itemize}
+
+
+Surcharger les deux prédicats de manière à rendre la première borne optionnelle.
+Utiliser les prédicats obtenus pour simplifier le contrat et l'invariant de
+boucle de la fonction.

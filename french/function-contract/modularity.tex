@@ -14,8 +14,10 @@ entre les valeurs absolues de deux valeurs :
 
 
 
-Commençons par (sur-)découper nos précédentes fonctions en couples 
-headers/source pour \CodeInline{abs} et \CodeInline{max}. Cela donne pour \CodeInline{abs} :
+Commençons par (sur-)découper les déclarations et définitions des différentes
+fonctions dont nous avons besoin (et que nous avons déjà propuvé) en couples 
+headers/source, à savoir \CodeInline{abs} et \CodeInline{max}. Cela donne pour
+\CodeInline{abs} :
 
 
 
@@ -34,7 +36,10 @@ Nous découpons en mettant le contrat de la fonction dans le header. Le but de
 ceci est de pouvoir, lorsque nous aurons besoin de la fonction dans un autre 
 fichier, importer la spécification en même temps que la déclaration de 
 celle-ci. En effet, WP en aura besoin pour montrer que les appels à cette 
-fonction sont valides.
+fonction sont valides. D'abord pour prouver que la précondition est respectée
+(et donc que l'appel est légal) et ensuite pour savoir ce qu'il peut apprendre
+en retour (à savoir la postcondition) afin de pouvoir l'utiliser pour prouver
+la fonction appelante.
 
 
 
@@ -70,7 +75,7 @@ pastilles particulières (vertes et bleues) :
 
 
 
-\image{max_abs.png}[Le contrat de ```max``` est valide par hypothèse]
+\image{max_abs}
 
 
 Ces pastilles nous disent qu'en l'absence d'implémentation, les propriétés sont
@@ -101,3 +106,38 @@ La spécification peut ressembler à ceci:
 
 
 \CodeBlockInput[4][14]{c}{max_abs.h}
+
+
+
+\levelThreeTitle{Exercices}
+
+
+
+\levelFourTitle{Jours du mois}
+\label{l4:contract-modularity-ex-days-of-month}
+
+
+Spécifier la fonction année bissextile qui retourne vrai si l'année reçue
+en entrée est bissextile. Utiliser cette fonction pour compéter la fonction
+jours du mois de façon à retourner le nombre de jour du mois reçu en entrée,
+incluant le bon comportement lorsque le mois en question est février et que
+l'année est bissextile.
+
+
+\CodeBlockInput{c}{ex-1-days-month.c}
+
+
+\levelFourTitle{Ordonner trois valeurs}
+
+
+Reprendre la fonction \CodeInline{max\_ptr} dans sa version qui « ordonne »
+les deux valeurs. Écrire une fonction \CodeInline{min\_ptr} qui utilise la
+fonction précédente pour effectuer l'opération inverse. Utiliser ces fonctions
+pour compléter les quatre fonctions qui ordonnent trois valeurs. Pour chaque
+variante (ordre croissant et décroissant), l'écrire une première fois en
+utilisant uniquement \CodeInline{max\_ptr} et une seconde en utilisant
+\CodeInline{min\_ptr}. Écrire un contrat précis pour chacune de ces fonctions
+et les prouver.
+
+
+\CodeBlockInput{c}{ex-3-order-3.c}
