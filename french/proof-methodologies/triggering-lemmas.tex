@@ -19,7 +19,7 @@ alors que les prouveurs automatiques sont plutôt mauvais à cet exercice.
 
 Cette technique de vérification a été appelée ``auto-active''. Ce mot est la
 contraction de ``automatic'' et ``interactive''. Elle est automatique au sens
-où la majorité de la preuve est effectuée par des outils automatiques, mais 
+où la majorité de la preuve est effectuée par des outils automatiques, mais
 elle est aussi en partie interactive puisqu'en tant qu'utilisateurs, nous
 fournissons manuellement de l'information aux outils.
 
@@ -96,7 +96,7 @@ passe par la première, celle-ci n'apparaît pas dans le contexte de la seconde 
 \image{context_e1p_a2}
 
 
-Maintenant, modifions un peu notre exemple de manière à illustrer comme les 
+Maintenant, modifions un peu notre exemple de manière à illustrer comme les
 assertions peuvent changer la manière de prouver un programme. Par exemple, nous
 pouvons modifier les différentes positions mémoire (en doublant chaque valeur) et
 vérifier que le triangle résultant est rectangle.
@@ -246,7 +246,7 @@ au prouveur automatique d'en faire usage :
 \image{trigger_1_2}
 
 
-\levelThreeTitle{An exemple plus complexe : du tri à nouveau}
+\levelThreeTitle{Un exemple plus complexe : du tri à nouveau}
 
 
 Travaillons maintenant avec un exemple plus complexe utilisant une définition
@@ -283,7 +283,7 @@ insérer ou la première cellule du tableau, et insère ensuite la valeur.
 Tout d'abord, fournissons un contrat et un invariant pour la fonction de tri
 par insertion. Le contrat est équivalent à celui que nous avions fourni pour le
 tri par sélection. Notons cependant que l'invariant est plus faible : nous
-n'avons pas besoin que les valeurs restant à trier soit plus grandes que les 
+n'avons pas besoin que les valeurs restant à trier soit plus grandes que les
 valeurs déjà visitées : nous insérons chaque valeur à la bonne position.
 
 
@@ -309,7 +309,7 @@ qu'avec notre précédente définition de la notion de permutation, nous sommes 
 peu embêtés. En effet, notre définition inductive de la permutation spécifie trois
 cas : une plage de valeur est une permutation d'elle même, ou deux (et seulement
 deux) valeurs ont été changées, ou finalement la permutation d'une permutation est
-une permutation. Mais aucun de ces cas ne peut être appliqué à notre fonction 
+une permutation. Mais aucun de ces cas ne peut être appliqué à notre fonction
 d'insertion puisque la plage obtenue ne l'est pas par une succession d'échanges de
 valeurs, et les deux autres cas ne peuvent évidemment pas s'appliquer ici.
 
@@ -331,7 +331,7 @@ plage ne change pas d'un point de programme à un autre :
 
 
 En partant de cette définition, nous sommes capables de fournir des lemmes qui
-vont nous permettre de raisonner efficacement à propos des permutations, à 
+vont nous permettre de raisonner efficacement à propos des permutations, à
 supposer que certaines propriétés sont vraies à propos du tableau entre deux
 points de programme. Par exemple, nous pourrions définir le cas \CodeInline{Swap}
 de notre définition inductive précédente en utilisant un lemme. Et c'est bien
@@ -339,20 +339,20 @@ entendu aussi le cas pour notre plage de valeur ``glissée''.
 
 
 
-Déterminons quels sont les lemmes requis en considérant d'abord la fonction 
+Déterminons quels sont les lemmes requis en considérant d'abord la fonction
 \CodeInline{insert\_sort}. La seule propriété non-prouvée est l'invariant qui
 exprime que le tableau est un permutation du tableau original. Comment pouvons
 nous le déduire ? (nous nous intéresserons aux preuves de ces lemmes plus tard).
 
 
 
-Nous pouvons observer deux faits : la première plage du tableau (de 
-\CodeInline{beg} à \CodeInline{i+1}) est une permutation de la même plage au 
+Nous pouvons observer deux faits : la première plage du tableau (de
+\CodeInline{beg} à \CodeInline{i+1}) est une permutation de la même plage au
 début de l'itération (par le contrat de la fonction \CodeInline{insert}). La
-seconde partie (de \CodeInline{i+1} à \CodeInline{end}) est inchangée, donc 
+seconde partie (de \CodeInline{i+1} à \CodeInline{end}) est inchangée, donc
 c'est aussi une permutation. Essayons d'utiliser quelques assertions pour voir
 parmi ces propriétés ce qui peut être prouvée et ce qui ne peut pas l'être.
-Tandis que la première propriété est bien prouvée, nous pouvons voir que la 
+Tandis que la première propriété est bien prouvée, nous pouvons voir que la
 seconde ne l'est pas :
 
 
@@ -441,7 +441,7 @@ début du tableau ou un élément plus petit que l'élément à insérer qui est
 initialement à la fin de la plage de valeur et inséré à la position ainsi atteinte.
 Les cellules du début du tableau jusqu'à la position d'insertion restent
 inchangées, c'est donc une permutation. Nous avons un lemme pour cela, mais nous
-devons ajouter cette connaissance que le début du tableau ne change pas comme 
+devons ajouter cette connaissance que le début du tableau ne change pas comme
 un invariant de la boucle pour pouvoir déclencher le lemme après celle-ci. La
 seconde partie du tableau est une permutation parce que nous faisons ``tourner''
 les éléments, nous avons besoin d'un lemme pour exprimer cela et d'indiquer dans
@@ -511,7 +511,7 @@ un nouvel invariant pour montrer que les valeurs ``glissées'' sont plus grandes
 que la valeur à insérer. Puis, nous ajoutons également des assertions pour
 montrer que le tableau est trié avant l'insertion, et que toutes les valeurs
 avant la cellule où nous insérons sont plus petites que la valeur insérée, et
-que la plage est en conséquence triée après l'insertion. Cela nous amène à 
+que la plage est en conséquence triée après l'insertion. Cela nous amène à
 la fonction \CodeInline{insert} complètement annotée suivante :
 
 
@@ -550,7 +550,7 @@ valeur des deux côtés de l'égalité.
 
 
 Pour \CodeInline{shifted\_maintains\_occ}, nous raisonnons par induction sur la
-plage complète. Le premier cas est trivial (le plage est vide), pour le cas 
+plage complète. Le premier cas est trivial (le plage est vide), pour le cas
 d'induction, nous avons juste à montrer que la valeur ajoutée a été glissée, et
 qu'elle est donc la même.
 
@@ -562,7 +562,7 @@ précédent.
 
 
 Pour prouver \CodeInline{rotate\_left\_is\_permutation}, nous séparons la plage
-pour \CodeInline{L1} en deux sous plages \CodeInline{beg .. beg+1} et 
+pour \CodeInline{L1} en deux sous plages \CodeInline{beg .. beg+1} et
 \CodeInline{beg+1 .. end} et la plage pour \CodeInline{L2} en deux sous plages
 \CodeInline{beg .. end-1} et \CodeInline{end-1 .. end} en utilisant la propriété
 \CodeInline{l\_occurrences\_union}. Nous montrons que le nombre d'occurrences
@@ -575,7 +575,7 @@ la même).
 
 
 Pour prouver \CodeInline{union\_permutation}, nous instancions le lemme
-\CodeInline{l\_occurrences\_union}. Finalement, le lemme 
+\CodeInline{l\_occurrences\_union}. Finalement, le lemme
 \CodeInline{transitive\_permutation} est prouvée automatiquement par transitivité
 de l'égalité.
 
@@ -627,7 +627,7 @@ et expliquer comment :
 \levelFourTitle{Déclencher les lemmes}
 
 
-Dans le programme suivant, WP échoue à prouver que la postcondition de la 
+Dans le programme suivant, WP échoue à prouver que la postcondition de la
 fonction \CodeInline{g} est vérifiée. Ajouter la bonne assertion, au bon endroit,
 de façon à ce que la preuve réussisse.
 
@@ -638,7 +638,7 @@ de façon à ce que la preuve réussisse.
 \levelFourTitle{Déclencher les lemmes sous condition}
 
 
-Dans le programme suivant, WP échoue à prouver que la postcondition de la 
+Dans le programme suivant, WP échoue à prouver que la postcondition de la
 fonction \CodeInline{example} est vérifiée. Cependant, nous pouvons noter
 que la fonction \CodeInline{g} assure indirectement que la valeur pointée
 est soit augmentée soit diminuée. Ajouter deux assertions qui montrent que
