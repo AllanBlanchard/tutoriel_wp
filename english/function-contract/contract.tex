@@ -323,9 +323,7 @@ property is verified. There are two possibles reasons:
 In the bottom panel, we can select the ``WP Goals'' tab, it shows the list of
 verification conditions, and for each prover the result is symbolized
 by a logo that indicates if the proof has been tried and if it
-succeeded, failed or met a timeout. In the current example, we have just added
-a try using Z3 to illustrate how a timeout is represented in the GUI (it is not
-necessary to try this yourself on this example). Note that it
+succeeded, failed or met a timeout. Note that it
 may require to select ``All Results'' in the squared field to see all
 verification conditions.
 
@@ -347,8 +345,8 @@ through WP.
 
 
 In the list of provers, the first element is Qed. This is not really a prover.
-It is a tool by WP to simplify properties before sending them to externel
-provers. Then we find Script, this is way to finish some proofs by hand when
+It is a tool used by WP to simplify properties before sending them to external
+provers. Then we find Script, this is a way to finish some proofs by hand when
 automatic solvers do not succeed in doing them. Finally, we find Alt-Ergo
 which is one of the solvers we use. Notice that for the RTE property, some
 scissors are indicated: it means that the solver was stopped due to timeout.
