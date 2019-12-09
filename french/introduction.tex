@@ -15,14 +15,14 @@
 \end{Warning}
 
 \begin{Information}
-Le choix de certains exemples et d'une partie de l'organisation dans le présent 
-tutoriel est le même que celui du 
+Le choix de certains exemples et d'une partie de l'organisation dans le présent
+tutoriel est le même que celui du
 \externalLink{tutoriel présenté à TAP 2013}
-             {https://frama-c.com/download/publications/tutorial_tap2013_slides.pdf} 
+             {https://frama-c.com/download/publications/tutorial_tap2013_slides.pdf}
 par Nikolai Kosmatov, Virgile Prevosto et Julien Signoles du CEA List du fait de
-son cheminement didactique. Il contient également des exemples tirés de 
-\textit{\externalLink{ACSL By Example}{https://github.com/fraunhoferfokus/acsl-by-example}} 
-de Jochen Burghardt, Jens Gerlach, Kerstin Hartig, Hans Pohl et Juan Soto du 
+son cheminement didactique. Il contient également des exemples tirés de
+\textit{\externalLink{ACSL By Example}{https://github.com/fraunhoferfokus/acsl-by-example}}
+de Jochen Burghardt, Jens Gerlach, Kerstin Hartig, Hans Pohl et Juan Soto du
 Fraunhofer. Pour les aspects formels, je me suis reposé sur le cours
 à propos de Why3 donné par Andrei Paskevich
 \textit{\externalLink{à l'EJCP 2018}{https://ejcp2018.sciencesconf.org/file/441131}}.
@@ -44,7 +44,7 @@ ne sont disponibles que dans les versions récentes de Frama-C.
 
 \horizontalLine
 
-Le seul pré-requis pour ce cours est d'avoir une connaissance basique du 
+Le seul pré-requis pour ce cours est d'avoir une connaissance basique du
 langage C, au moins jusqu'à la notion de pointeur.
 
 
@@ -53,54 +53,54 @@ langage C, au moins jusqu'à la notion de pointeur.
 \newpage
 
 
-Malgré son ancienneté, le C est un langage de programmation encore largement 
-utilisé. Il faut dire qu'il n'existe, pour ainsi dire aucun langage qui soit 
-disponible sur une aussi large variété de plateformes (matérielles et 
-logicielles) différentes, que son orientation bas-niveau et les années 
-d'optimisations investies dans ses compilateurs permettent de générer à 
-partir de programme C des exécutables très performants (à condition bien sûr 
-que le code le permette), et qu'il possède un nombre d'experts (et donc une 
+Malgré son ancienneté, le C est un langage de programmation encore largement
+utilisé. Il faut dire qu'il n'existe, pour ainsi dire aucun langage qui soit
+disponible sur une aussi large variété de plateformes (matérielles et
+logicielles) différentes, que son orientation bas-niveau et les années
+d'optimisations investies dans ses compilateurs permettent de générer à
+partir de programme C des exécutables très performants (à condition bien sûr
+que le code le permette), et qu'il possède un nombre d'experts (et donc une
 base de connaissances) très conséquent.
 
 
 
 De plus, de très nombreux systèmes reposent sur des quantités phénoménales de
-code historiquement écrit en C, qu'il faut maintenir et corriger car ils 
+code historiquement écrit en C, qu'il faut maintenir et corriger car ils
 coûteraient bien trop chers à redévelopper.
 
 
 
-Mais toute personne qui a déjà codé en C sait également que c'est un langage 
-très difficile à maîtriser parfaitement. Les raisons sont multiples mais les 
-ambiguïtés présentes dans sa norme et la permissivité extrême qu'il offre au 
-développeur, notamment en ce qui concerne les accès à la mémoire, font que 
-créer un programme C robuste est très difficile même pour un programmeur 
+Mais toute personne qui a déjà codé en C sait également que c'est un langage
+très difficile à maîtriser parfaitement. Les raisons sont multiples mais les
+ambiguïtés présentes dans sa norme et la permissivité extrême qu'il offre au
+développeur, notamment en ce qui concerne les accès à la mémoire, font que
+créer un programme C robuste est très difficile même pour un programmeur
 chevronné.
 
 
 
-Pourtant, C est souvent choisi comme langage de prédilection pour la 
-réalisation de systèmes demandant un niveau critique de sûreté (aéronautique, 
-ferroviaire, armement, ...) où il est apprécié pour ses performances, sa 
+Pourtant, C est souvent choisi comme langage de prédilection pour la
+réalisation de systèmes demandant un niveau critique de sûreté (aéronautique,
+ferroviaire, armement, ...) où il est apprécié pour ses performances, sa
 maturité technologique et la prévisibilité de sa compilation.
 
 
 
-Dans ce genre de cas, les besoins de couverture par le test deviennent 
-colossaux. Et, plus encore, la question « avons-nous suffisamment testé ? » 
+Dans ce genre de cas, les besoins de couverture par le test deviennent
+colossaux. Et, plus encore, la question « avons-nous suffisamment testé ? »
 devient une question à laquelle il est de plus en plus difficile de répondre.
-C'est là qu'intervient la preuve de programme. Plutôt que tester toutes les 
+C'est là qu'intervient la preuve de programme. Plutôt que tester toutes les
 entrées possibles et (in)imaginables, nous allons prouver « mathématiquement »
 qu'aucun problème ne peut apparaître à l'exécution.
 
 
 
-L'objet de ce tutoriel est d'utiliser Frama-C, un logiciel développé au 
-CEA List, et WP, son greffon de preuve déductive, pour s'initier à la preuve 
+L'objet de ce tutoriel est d'utiliser Frama-C, un logiciel développé au
+CEA List, et WP, son greffon de preuve déductive, pour s'initier à la preuve
 de programmes C. Au delà de l'usage de l'outil en lui-même, le but de ce tutoriel
-est de convaincre que nous pouvons de plus en plus souvent toucher du 
-doigt l'idée qu'il est possible d'écrire des programmes sans erreurs de 
-programmation, mais également de sensibiliser à des notions simples 
+est de convaincre que nous pouvons de plus en plus souvent toucher du
+doigt l'idée qu'il est possible d'écrire des programmes sans erreurs de
+programmation, mais également de sensibiliser à des notions simples
 permettant de mieux comprendre et de mieux écrire les programmes.
 
 
@@ -112,6 +112,7 @@ Merci aux différents bêta-testeurs pour leurs remarques constructives :
 \item \externalLink{Taurre}{https://zestedesavoir.com/membres/voir/Taurre/}
 \item \externalLink{barockobamo}{https://zestedesavoir.com/membres/voir/barockobamo/}
 \item \externalLink{Vayel}{https://zestedesavoir.com/membres/voir/Vayel/}
+\item \externalLink{Aabu}{https://zestedesavoir.com/membres/voir/Aabu/}
 \end{itemize}
 Ainsi qu'aux validateurs qui ont encore permis d'améliorer la qualité de ce tutoriel :
 
