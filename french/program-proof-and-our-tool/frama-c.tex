@@ -129,11 +129,16 @@ suivant doivent être présents sur votre système :
 
 
 \begin{itemize}
-\item lib gtk2 dev
-\item lib gtksourceview2 dev
-\item lib gnomecanvas2 dev
-\item (conseillé) lib zarith dev
+\item GTK2 (development library)
+\item GTKSourceview 2 (development library)
+\item GnomeCanvas 2 (development library)
+\item autoconf
 \end{itemize}
+
+Sur les versions récentes de certaines distribution, GTK2 peut ne pas
+être disponible. Dans ce cas, ou si vous voulez avoir GTK3 et pas GTK2,
+les paquets GTK2, GTKSourceview2 et GnomeCanvas2 doivent être remplacés
+par GTK3 et GTKSourceview3.
 
 
 Enfin, du côté d'Opam, il reste à installer Frama-C et Alt-Ergo.
