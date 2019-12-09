@@ -389,10 +389,11 @@ two previous properties in lemmas:
 \CodeBlockInput[8][11]{c}{ex-3-fpower.c}
 
 
-First express the lemma \CodeInline{power\_even}, the SMT solvers will be able
+First express the lemma \CodeInline{power\_even}, the SMT solver might be able
 to combine the use of this lemma and the inductive predicate to deduce
 \CodeInline{power\_odd}. The Coq proof of the \CodeInline{power\_even} lemma is
-provided on the GitHub repository of this book.
+provided on the GitHub repository of this book, as well as the proof of the
+\CodeInline{power\_odd} in case the SMT solver does not prove it.
 
 
 Finally, complete the contract and loop invariant of the \CodeInline{fast\_power}
