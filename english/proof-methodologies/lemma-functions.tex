@@ -1,5 +1,5 @@
 Assertions provide a way to give clues to the verification condition generator
-so the SMT solvers will get enough enough information to make the proofs we
+so the SMT solvers will get enough information to make the proofs we
 need. However, it is sometimes hard to write the assertion that will
 create exactly the property needed by the SMT solver to trigger the right lemma
 (for example, since the generator makes some optimization on the verification
@@ -529,7 +529,7 @@ verification, we just tend to work with the same types as the program uses.
 
 
 In some cases, however, it can constrain our modeling of some properties, and
-is it mainly related to the logic types we can use to model some actual data
+it is mainly related to the logic types we can use to model some actual data
 structures. For example, in order to model a linked list, one could use the
 ACSL logic type \CodeInline{\textbackslash{}list<Type>}, and express an
 inductive or axiomatic definition in order to define how an actual linked list
@@ -567,15 +567,15 @@ a suitable invariant for the loops it would involve.
 
 
 
-\levelThreeTitle{Back to the selection sort}
+\levelThreeTitle{Back to the insertion sort}
 
 
-Now let us go back to our proof of the selection sort algorithm and see how we
+Now let us go back to our proof of the insertion sort algorithm and see how we
 can get rid of all our interactive proofs for this function. Note however that
 in this proof, we often need to deal with macros since the program has not been
 particularly written with the idea to formally verify it later (for this, the
 reader can refer to the version proposed in the book ACSL by Example which can
-be adpated with a similar technique and is easier to prove). Thus, in
+be adapted with a similar technique and is easier to prove). Thus, in
 this example, we push the solvers to their limit because of big proof contexts.
 With this example, depending on how powerful the machine is, we might need to
 increase the proof timeout to 120 seconds (which is already quite long for a
@@ -769,7 +769,7 @@ last cell in the original array, and the first cell in the new array is the same
 (since the corresponding element is the same). Again, we rely on the split
 function to count separately the elements that are shifted and the one which is
 moved from the end to the beginning. However, the call corresponding to the
-original array has again to be put before the call that modifies the memory (see
+original array has again to be put before the code that modifies the memory (see
 line 194) in the previous code, and we will have to take that in account when we
 will insert our use of the macro in the \CodeInline{insert} function.
 
