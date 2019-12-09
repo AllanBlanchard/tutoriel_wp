@@ -555,10 +555,12 @@ d'induction, nous avons juste à montrer que la valeur ajoutée a été glissée
 qu'elle est donc la même.
 
 
-La propriété \CodeInline{unchanged\_is\_permutation} est prouvée par les solveurs
-SMT grâce au fait que nous avons exprimé \CodeInline{unchanged} en utilisant
-\CodeInline{shifted}, le prouveur peut donc directement instancier le lemme
-précédent.
+La propriété \CodeInline{unchanged\_is\_permutation} peut être prouvée par les
+solveurs SMT grâce au fait que nous avons exprimé \CodeInline{unchanged} en
+utilisant \CodeInline{shifted}, le prouveur peut donc directement instancier le
+lemme précédent. Si ce n'est pas le cas, la preuve peut être réaliser en
+instanciant \CodeInline{shifted\_maintains\_occ} avec la valeur 0 pour la
+propriété de glissement.
 
 
 Pour prouver \CodeInline{rotate\_left\_is\_permutation}, nous séparons la plage

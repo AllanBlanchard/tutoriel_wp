@@ -436,10 +436,11 @@ les deux propriétés précédentes sous forme de lemmes:
 \CodeBlockInput[8][11]{c}{ex-3-fpower.c}
 
 
-Exprimer d'abord le lemme \CodeInline{power\_even}, les solveurs SMT seront capables
-de combiner ce lemme avec la définition inductive pour déduire \CodeInline{power\_odd}.
-La preuve Coq de \CodeInline{power\_even} est fournie sur le répertoire GitHub de ce
-livre.
+Exprimer d'abord le lemme \CodeInline{power\_even}, les solveurs SMT pourraient
+être capables de combiner ce lemme avec la définition inductive pour déduire
+\CodeInline{power\_odd}. La preuve Coq de \CodeInline{power\_even} est fournie
+sur le répertoire GitHub de ce livre, ainsi que la preuve de \CodeInline{power\_odd}
+si les solveurs SMT échouent.
 
 
 Finalement, compléter le contrat et l'invariant de la fonction \CodeInline{fast\_power}.
