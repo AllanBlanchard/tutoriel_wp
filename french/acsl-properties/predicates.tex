@@ -95,23 +95,17 @@ Bien entendu, les prédicats peuvent être déclarés dans des fichiers \textit{
 de produire une bibliothèque d'utilitaires de spécifications par exemple.
 
 
-% +\levelFourTitle{Predicate overloading}
-% +
-% +
-% +
-% +It is possible to overload predicates as long as the types of the
-% +parameters are different or the number of parameters changes. For
-% +example, we can redefine the \CodeInline{valid\_range\_r} as a
-% +predicate that takes in parameters both the beginning and the end
-% +of the range to consider. Then, we can write a overloaded version that
-% +uses the previous one for the particular case of ranges that starts
-% +at 0:
-% +
-% +
-% +
-% +\CodeBlockInput[3]{c}{search-overload.c}
-% +
-% +
+\levelFourTitle{Surcharger des prédicats}
+
+Il est possible de surcharger les prédicats tant que le types des paramètres
+est différents ou que le nombre de paramètres change. Par exemple, nous
+pouvons redéfinir \CodeInline{valid\_range\_r} comme un prédicat qui prend
+en paramètre à la fois le début et la fin de la plage considérée. Ensuite,
+nous pouvons écrire une surcharge qui utilise le prédicat précédent pour le
+cas particulier des plages qui commencent à 0 :
+
+
+\CodeBlockInput[3]{c}{search-overload.c}
 
 
 
