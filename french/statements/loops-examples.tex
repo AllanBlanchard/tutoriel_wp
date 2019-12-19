@@ -267,7 +267,7 @@ Considérons que nous avons une fonction :
 \CodeBlockInput[3][9]{c}{ex-1-forall-exists.c}
 
 
-Ecrivez un corps de votre choix pour cette fonction et un contrat l'accompagnant.
+Écrivez un corps de votre choix pour cette fonction et un contrat l'accompagnant.
 Ensuite, écrivez les fonctions suivantes avec leurs contrats pour prouver leur
 correction. Notez qu'il n'est pas possible d'utiliser votre fonction C dans un
 contrat, la propriété que vous aurez choisi pour la fonction \CodeInline{pred}
@@ -337,10 +337,10 @@ soit une borne exclue de la recherche.
 \levelFourTitle{Fonction avec modification : addition de vecteurs}
 
 
-Écrire, spécifier et prouver la fonciton qui ajoute deux vecteurs dans un
+Écrire, spécifier et prouver la fonction qui ajoute deux vecteurs dans un
 troisième. Fixez des contraintes arbitraires sur les valeurs d'entrée pour 
 gérer le débordement des entiers. Considérez que le vecteur est résultant est
-spatialement séparé des vecteurs d'entrée. En revanche, le même vecteur devrait
+spacialement séparé des vecteurs d'entrée. En revanche, le même vecteur devrait
 pouvoir être utilisé pour les deux vecteurs d'entrée.
 
 \CodeBlockInput[3][5]{c}{ex-4-add-vectors.c}
@@ -385,7 +385,7 @@ dans la plage source :
 \end{CodeBlock}
  
 
-Essentiellement, en copiant des élements dans cet ordre, nous pouvons les faire
+Essentiellement, en copiant des éléments dans cet ordre, nous pouvons les faire
 glisser depuis la fin d'une plage vers le début. En revanche, cela signifie que
 nous devons être plus précis dans notre contrat : nous ne garantissons plus une
 égalité avec le tableau source mais avec les \emph{anciennes} valeurs du tableau

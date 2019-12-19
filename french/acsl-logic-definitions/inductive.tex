@@ -3,7 +3,7 @@ vérification nécessite de raisonner par induction, c'est à dire que pour une 
 $p(input)$, on peut assurer qu'elle est vraie, soit parce qu'elle correspond à un
 certain cas de base (par exemple, $0$ est un entier naturel pair parce que l'on
 définit le cas 0 comme un cas de base), ou alors parce que sachant que $p$ est vraie
-pour un certain $smaller input$ (qui est "plus proche" du cas de base) et sachant
+pour un certain $smaller input$ (qui est « plus proche » du cas de base) et sachant
 que $smaller input$ et $input$ sont reliés par une propriété donnée (qui dépend
 de notre définition) nous pouvons conclure (par exemple nous pouvons définir que
 si un naturel $n$ est pair, le naturel $n+2$ est pair, donc pour vérifier qu'un
@@ -14,7 +14,7 @@ naturel supérieur à 0 est pair, on peut regarder si ce naturel moins 2 est pai
 \levelThreeTitle{Syntaxe}
 
 
-Pour le moment, introduions la syntaxe des prédicats inductifs :
+Pour le moment, introduisons la syntaxe des prédicats inductifs :
 
 \begin{CodeBlock}{c}
 /*@
@@ -28,15 +28,15 @@ Pour le moment, introduions la syntaxe des prédicats inductifs :
 
 
 Où tous les \CodeInline{c\_i} sont des noms et tous les \CodeInline{p\_i} sont
-des fomules logiques où \CodeInline{property} apparaît en conclusion. Pour résumer,
+des formules logiques où \CodeInline{property} apparaît en conclusion. Pour résumer,
 \CodeInline{property} est vraie pour certains paramètres et labels mémoire, s'ils
 valident l'un des cas du prédicat inductif.
 
 
 Jetons un oeil à la petite propriété dont nous parlions plus tôt: comment définir
 qu'un entier naturel est pair par induction ? Nous pouvons traduire la phrase :
-"0 est un naturel pair, et si $n$ est un naturel pair, alors $n+2$ est aussi un
-naturel pair".
+« 0 est un naturel pair, et si $n$ est un naturel pair, alors $n+2$ est aussi un
+naturel pair ».
 
 
 \CodeBlockInput{c}{even-0.c}
@@ -105,7 +105,7 @@ conseils pour ne pas construire une mauvaise définition.
 
 D'abord, nous pouvons nous assurer que les prédicats inductives sont bien fondés.
 Cela peut être fait en restreignant syntaxiquement que nous acceptons dans une
-définition inductive en nous assurans que chaque cas est de la forme :
+définition inductive en nous assurant que chaque cas est de la forme :
 
 \begin{CodeBlock}{c}
 /*@
@@ -116,7 +116,7 @@ définition inductive en nous assurans que chaque cas est de la forme :
 
 où le prédicat \CodeInline{P} ne peut apparaître que positivement (donc sans la
 négation \CodeInline{!} - $\neg$) dans les différentes hypothèses \CodeInline{hx}.
-Intuitivement, cela assure que nous ne pouvons pas constuire des occurrences à la
+Intuitivement, cela assure que nous ne pouvons pas construire des occurrences à la
 fois positives et négatives de \CodeInline{P} pour un ensemble de paramètres donnés
 (ce qui serait incohérent).
 
@@ -130,7 +130,7 @@ prédicat \CodeInline{even\_natural}. Tandis qu'une définition comme :
 
 
 ne respecte pas cette contrainte car la propriété \CodeInline{even\_natural}
-apparaît négativément à la ligne~8.
+apparaît négativement à la ligne~8.
 
 
 Ensuite, il est possible de demander la génération de la version Coq de la
@@ -172,7 +172,7 @@ frama-c-gui -wp -wp-prop=BAD -wp-prover=native:coq file.c
 \image{coq-failed-error}
 
 
-Cependant, cela ne signifie pas que nous ne pouvon pas écrire une définition
+Cependant, cela ne signifie pas que nous ne pouvons pas écrire une définition
 inductive inconsistante. Par exemple, la définition inductive suivante est bien
 fondée mais nous permet de prouver faux :
 
@@ -194,7 +194,7 @@ faux.
 \levelThreeTitle{Définitions de prédicats récursifs}
 
 
-Les prédicats inductifs sont souvent utiles pour exprimer des propriéts récursivement
+Les prédicats inductifs sont souvent utiles pour exprimer des propriétés récursivement
 car ils permettent souvent d'empêcher les solveurs SMT de dérouler la récursion quand
 c'est possible.
 
@@ -304,7 +304,7 @@ valeurs du tableau.
 
 
 Une propriété comme la définition de ce qu'est une permutation s'exprime
-extrêmement bien par l'utilisation d'une défintiion inductive. En effet, pour
+extrêmement bien par l'utilisation d'une définition inductive. En effet, pour
 déterminer qu'un tableau est la permutation d'un autre, les cas sont très limités.
 Premièrement, le tableau est une permutation de lui-même, puis l'échange de
 deux valeurs sans changer les autres est également une permutation, et
@@ -350,7 +350,7 @@ axiomatiques.
 \levelFourTitle{La somme des N premiers entiers}
 
 
-Reprendre la solution de l'exerice~\ref{l4:acsl-properties-lemmas-n-first-ints} à
+Reprendre la solution de l'exercice~\ref{l4:acsl-properties-lemmas-n-first-ints} à
 propos de la somme des N premiers entiers. Réécrire la fonction logique en utilisant
 plutôt un prédicat inductif qui exprimer l'égalité entre un entier et la somme des
 N premiers entiers.
@@ -372,7 +372,7 @@ et les preuves Coq sur le répertoire GitHub de ce livre.
 Écrire un prédicat inductif qui exprime qu'un entier est le plus grand diviseur
 commun de deux autres. Le but de cet exercice est de prouver que la fonction
 \CodeInline{gcd} calcule le plus grand diviseur commun. Nous n'avons donc pas
-à spécifier tous les cas du prédicat. En effey, si nous regardons de près la boucle,
+à spécifier tous les cas du prédicat. En effet, si nous regardons de près la boucle,
 nous pouvons voir qu'après la première itération, \CodeInline{a} est supérieur ou
 égal à \CodeInline{b}, et que cette propriété est maintenue par la boucle. Donc,
 considérons deux cas pour le prédicat inductif :
@@ -396,7 +396,7 @@ qu'elle est vérifiée. Notons que l'invariant devrait utiliser le cas inductive
 \levelFourTitle{Puissance}
 
 
-Dans cet exercice, nous ne considèrerons pas les RTEs.
+Dans cet exercice, nous ne considérerons pas les RTEs.
 
 
 Écrire un prédicat inductif qui exprimer qu'un entier \CodeInline{r} est égal
@@ -458,7 +458,7 @@ $p ^n = 1$.
 Reprendre la définition des prédicats \CodeInline{shifted} et \CodeInline{unchanged}
 de l'exercice~\ref{l4:acsl-properties-lemmas-shift-trans}. Utiliser le prédicat
 \CodeInline{shifted} pour exprimer le prédicat \CodeInline{rotate} qui exprime que
-les éléments d'un tableau sont "tournés" vers la gauche, dans le sens où tous les
+les éléments d'un tableau sont « tournés » vers la gauche, dans le sens où tous les
 éléments sont glissés vers la gauche, sauf le dernier qui est mis à la première
 cellule de la plage de valeur. Utiliser ce prédicat pour prouver la fonction
 \CodeInline{rotate}.
@@ -474,9 +474,9 @@ qui considère les cas suivants :
 \begin{itemize}
 \item la permutation est réflexive,
 \item si la partie gauche d'une plage de valeur (jusqu'à un certain indice) est
-      "tournée" entre deux labels, nous avons toujours un permutation,
+      « tournée » entre deux labels, nous avons toujours un permutation,
 \item si la partie droite d'une plage de valeur (à partir d'un certain indice) est
-      "tournée" entre deux labels, nous avons toujours un permutation,
+      « tournée » entre deux labels, nous avons toujours un permutation,
 \item la permutation est transitive.
 \end{itemize}
 

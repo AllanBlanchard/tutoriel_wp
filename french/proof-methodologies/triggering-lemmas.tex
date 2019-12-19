@@ -17,8 +17,8 @@ nécessaires pour produire le raisonnement par induction permettant son analyse,
 alors que les prouveurs automatiques sont plutôt mauvais à cet exercice.
 
 
-Cette technique de vérification a été appelée ``auto-active''. Ce mot est la
-contraction de ``automatic'' et ``interactive''. Elle est automatique au sens
+Cette technique de vérification a été appelée « \textit{auto-active} ». Ce mot est la
+contraction de « \textit{automatic} » et « \textit{interactive} ». Elle est automatique au sens
 où la majorité de la preuve est effectuée par des outils automatiques, mais
 elle est aussi en partie interactive puisqu'en tant qu'utilisateurs, nous
 fournissons manuellement de l'information aux outils.
@@ -39,7 +39,7 @@ Pour comprendre exactement le bénéfice que représente l'ajout d'assertions da
 les annotations d'un programme, commençons par regarder de plus près les
 obligations de preuve générées par WP à partir du code source annoté et comment
 les assertions sont prises en compte. Pour cela, nous allons utiliser le prédicat
-suivant (qui ressemble furieusement au théorème de Pytharoge) :
+suivant (qui ressemble furieusement au théorème de Pythagore) :
 
 
 
@@ -59,7 +59,7 @@ puisse par directement deviner les valeurs en entrée de fonction. En fait, ces
 valeurs sont exactement : \CodeInline{*x == 3}, \CodeInline{*y == 4} et
 \CodeInline{*z == 5}. Maintenant, si nous regardons l'obligation de preuve générée
 pour notre première assertion, nous pouvons voir ceci (il faut bien sélectionner
-la vue ``Full Context'' ou ``Raw obligation'' - elles ne sont pas exactement
+la vue « \textit{Full Context} » ou « \textit{Raw obligation} » - elles ne sont pas exactement
 identiques mais assez similaires, la première est juste légèrement plus jolie) :
 
 
@@ -112,7 +112,7 @@ vérifier que le triangle résultant est rectangle.
 
 Ici, le solveur va probablement dérouler le prédicat et directement vérifier
 que la propriété qui y est définie est vraie, en effet depuis l'obligation de
-preuve, il n'y a pas pas vraiment d'autres informations qui pourrait nous
+preuve, il n'y a pas vraiment d'autres informations qui pourrait nous
 amener à obtenir une preuve. Maintenant, ajoutons de l'information dans les
 annotations :
 
@@ -122,7 +122,7 @@ annotations :
 
 
 
-Nous prouvons d'abord que si nous multiplions par 2 chacunes des valeurs, le
+Nous prouvons d'abord que si nous multiplions par 2 chacune des valeurs, le
 prédicat est vrai pour les nouvelles valeurs. Le solveur va d'abord prouver
 la même propriété, bien sûr, mais ce n'est pas ce que nous voulons montrer ici.
 Nous ajoutons ensuite que chaque valeur a été multipliée par 2. Maintenant, nous
@@ -177,7 +177,7 @@ trouvent les informations dont ils ont besoin pour finir les preuves.
 
 Nous utilisons souvent des assertions pour exprimer des propriétés qui
 correspondent aux prémisses d'un lemme ou à ses conclusions. En faisant cela,
-nous maximisons les chances que les prouveurs automatiques ``reconnaissent''
+nous maximisons les chances que les prouveurs automatiques « reconnaissent »
 que ce que nous avons écrit correspond à un lemme en particulier et qu'il
 devrait l'utiliser.
 
@@ -274,7 +274,7 @@ Toutes ces propriétés sont garanties par la fonction \CodeInline{insert}. Si l
 regarde cette fonction de plus près, nous pouvons voir qu'elle enregistre la
 valeur à insérer (qui se trouve à la fin de la plage de valeurs) dans une variable
 \CodeInline{value}, et commençant à la fin de la plage, fait itérativement glisser
-les valeurs rencontrer jusqu'à recontrer une valeur plus petite que la valeur à
+les valeurs rencontrer jusqu'à rencontrer une valeur plus petite que la valeur à
 insérer ou la première cellule du tableau, et insère ensuite la valeur.
 
 
@@ -292,7 +292,7 @@ valeurs déjà visitées : nous insérons chaque valeur à la bonne position.
 
 
 
-Mainntenant, nous pouvons fournir un contrat à la fonction d'insertion. La
+Maintenant, nous pouvons fournir un contrat à la fonction d'insertion. La
 fonction requière que la plage de valeurs considérée soit triée du début jusqu'à
 l'avant dernière valeur. En échange elle doit garantir que la plage finale soit
 triée et soit une permutation des valeurs originales :
@@ -317,9 +317,9 @@ valeurs, et les deux autres cas ne peuvent évidemment pas s'appliquer ici.
 
 Nous avons donc besoin d'une meilleure définition pour notre permutation. Nous
 pouvons constater que ce dont nous avons vraiment besoin, c'est une manière de
-dire ``chaqye valeur qui était dans le tableau est toujours dans le tableau et
+dire « chaque valeur qui était dans le tableau est toujours dans le tableau et
 si plusieurs valeurs étaient équivalentes, le nombre d'occurrences de ces valeurs
-ne change pas''. Et en fait, nous n'avons besoin que de la dernière partie de cette
+ne change pas ». Et en fait, nous n'avons besoin que de la dernière partie de cette
 définition pour exprimer notre permutation. Une permutation est une plage de valeurs
 telles que pour toute valeur, le nombre d'occurrences de cette valeur dans cette
 plage ne change pas d'un point de programme à un autre :
@@ -335,7 +335,7 @@ vont nous permettre de raisonner efficacement à propos des permutations, à
 supposer que certaines propriétés sont vraies à propos du tableau entre deux
 points de programme. Par exemple, nous pourrions définir le cas \CodeInline{Swap}
 de notre définition inductive précédente en utilisant un lemme. Et c'est bien
-entendu aussi le cas pour notre plage de valeur ``glissée''.
+entendu aussi le cas pour notre plage de valeur « glissée ».
 
 
 
@@ -375,7 +375,7 @@ seconde ne l'est pas :
 
 
 Nous avons donc besoin d'un premier lemme pour cette propriété. Définissons
-deux prédicates \CodeInline{shifted} et \CodeInline{unchanged}, le second
+deux prédicats \CodeInline{shifted} et \CodeInline{unchanged}, le second
 étant utilisé pour définir le premier (nous verrons pourquoi un peu plus
 tard) et exprimer qu'une plage inchangée est une permutation :
 
@@ -432,7 +432,7 @@ qui est suffisant pour conclure \CodeInline{permutation\{Pre, Here\}(a, beg, end
 
 
 Maintenant, nous pouvons regarder de plus près notre fonction d'insertion en
-nous intérressant d'abord à comment obtenir la connaissance que la fonction
+nous intéressant d'abord à comment obtenir la connaissance que la fonction
 produit une permutation.
 
 
@@ -443,7 +443,7 @@ Les cellules du début du tableau jusqu'à la position d'insertion restent
 inchangées, c'est donc une permutation. Nous avons un lemme pour cela, mais nous
 devons ajouter cette connaissance que le début du tableau ne change pas comme
 un invariant de la boucle pour pouvoir déclencher le lemme après celle-ci. La
-seconde partie du tableau est une permutation parce que nous faisons ``tourner''
+seconde partie du tableau est une permutation parce que nous faisons « tourner »
 les éléments, nous avons besoin d'un lemme pour exprimer cela et d'indiquer dans
 l'invariant de boucle que les éléments sont glissés par la boucle. Finalement,
 l'union de deux permutations est une permutation et nous avons déjà un lemme
@@ -507,7 +507,7 @@ rotation des éléments :
 
 Nous devons également aider un peut les prouveurs automatiques pour montrer
 que l'ensemble des valeurs est trié après l'insertion. Pour cela, nous fournissons
-un nouvel invariant pour montrer que les valeurs ``glissées'' sont plus grandes
+un nouvel invariant pour montrer que les valeurs « glissées » sont plus grandes
 que la valeur à insérer. Puis, nous ajoutons également des assertions pour
 montrer que le tableau est trié avant l'insertion, et que toutes les valeurs
 avant la cellule où nous insérons sont plus petites que la valeur insérée, et
@@ -659,9 +659,9 @@ Les assertions devraient ressembler à:
 \end{CodeBlock}
 
 
-Une autre manière d'ajouter de l'information au context est d'utiliser du
-code fantôme. Par exemple, la valeur de véritée d'une conditionnelle apparaît
-dans le context d'une obligation de preuve. Modifier les annotations pour que
+Une autre manière d'ajouter de l'information au contexte est d'utiliser du
+code fantôme. Par exemple, la valeur de vérité d'une conditionnelle apparaît
+dans le contexte d'une obligation de preuve. Modifier les annotations pour que
 le code ressemble à :
 
 
@@ -681,8 +681,8 @@ void example(int* x){
 Comparer l'obligation de preuve générée pour chaque assertion avec les précédentes.
 
 
-Finalement, nous pouvons remarquer que ``la valeur pointée a été augmentée ou
-diminuée'' peut être exprimée en une seule assertion. Écrire l'annotation
+Finalement, nous pouvons remarquer que « la valeur pointée a été augmentée ou
+diminuée » peut être exprimée en une seule assertion. Écrire l'annotation
 correspondante et recommencer la preuve.
 
 
@@ -719,4 +719,4 @@ Nous avons donc besoin de deux lemmes :
 
 Compléter les code des lemmes et utiliser des assertions pour assurer qu'il sont
 utiliser pour compléter la preuve. Nous ne demandons par la preuve des lemmes, les
-preuves Coq sont disponsibles sur le répertoire GitHub de ce livre.
+preuves Coq sont disponibles sur le répertoire GitHub de ce livre.

@@ -18,7 +18,7 @@ peuvent rendre les preuves plus difficile pour les solveurs SMT. Dans un tel cas
 les lemmes peuvent nous aider. Nous pouvons écrire nous même les preuves qui 
 nécessitent de raisonner par induction pour certaines propriétés qui nous
 énonçons comme des lemmes, et ces lemmes peuvent ensuite être utilisés 
-efficacement par les prouvers pour effectuer les autres preuves à propos du
+efficacement par les prouveurs pour effectuer les autres preuves à propos du
 programme.
 
 
@@ -95,7 +95,7 @@ prouver l'absence d'erreurs à l'exécution.
 \levelThreeTitle{Exemple: tableaux et labels}
 
 
-Plus tard dans ce tutoriel, nous allons voir certains types de définitins à propos
+Plus tard dans ce tutoriel, nous allons voir certains types de définitions à propos
 desquels il est parfois difficile de raisonner pour les solveurs SMT quand des
 modifications ont lieu en mémoire. Par conséquent, nous aurons souvent besoin de
 lemmes pour indiquer les relations qui existent à propos du contenu de la mémoire
@@ -110,7 +110,7 @@ prédicats suivant :
 
 
 Nous pourrions par exemple vouloir énoncer que lorsqu'un tableau est trié, et que
-la mémoire est modifiée (créant donc un nouvel état mémore), mais que le contenu du
+la mémoire est modifiée (créant donc un nouvel état mémoire), mais que le contenu du
 tableau reste inchangé, alors le tableau est toujours trié. Cela peut être réalisé
 avec le lemme suivant :
 
@@ -136,7 +136,7 @@ preuve.
 \levelFourTitle{Propriété de la multiplication}
 
 
-Écrire un lemma qui énonce que pour trois entiers $x$, $y$ et $z$, si $x$ est
+Écrire un lemme qui énonce que pour trois entiers $x$, $y$ et $z$, si $x$ est
 plus grand ou égal à $0$, si $z$ est plus grand ou égal à $y$, alors $x * z$ 
 est  plus grand ou égal à $y * z$.
 
@@ -186,12 +186,12 @@ N premiers entiers est $n*(n+1)/2$. Ce lemme ne sera pas prouvé par un solveur 
 Une solution et la preuve Coq du lemme sont disponibles sur le GitHub de ce tutoriel.
 
 
-\levelFourTitle{Transivité d'un glissement d'éléments}
+\levelFourTitle{Transitivité d'un glissement d'éléments}
 \label{l4:acsl-properties-lemmas-shift-trans}
 
 
 Le programme suivant est composé de deux fonctions. La première est
-\CodeInline{shift\_array} et permet de faie glisser des éléments dans un tableau
+\CodeInline{shift\_array} et permet de faire glisser des éléments dans un tableau
 d'un certain nombre de cellule (nommé \CodeInline{shift}). La seconde effectue deux
 glissements successifs des éléments d'un même tableau.
 

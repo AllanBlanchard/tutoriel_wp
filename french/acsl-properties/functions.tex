@@ -72,7 +72,7 @@ sans avoir besoin de les calculer nous même, ce qui est assez confortable.
 
 Notons que nous donnons aussi une borne inférieure pour le calcul \CodeInline{3 * x}.
 En effet, tandis que la borne fournie pour \CodeInline{x} par notre fonction logique
-est définie poiur le calcul complet, elle ne nous dit rien à propos des calculs
+est définie pour le calcul complet, elle ne nous dit rien à propos des calculs
 intermédiaires. Par exemple ici, le fait \CodeInline{3 * x + 4} ne soit pas inférieur
 à \CodeInline{INT\_MIN} ne nous garantit pas que c'est aussi le cas pour
 \CodeInline{3 * x}.
@@ -142,7 +142,7 @@ cette limitation.
 \levelFourTitle{Distance}
 
 
-Spécfier et prouver le programme suivant:
+Spécifier et prouver le programme suivant:
 
 
 \CodeBlockInput{c}{ex-1-distance.c}
@@ -179,7 +179,7 @@ Voici une implémentation possible de la fonction \CodeInline{iota} :
 Écrire une fonction logique qui retourne sa valeur d'entrée incrémentée de 1. 
 Prouver qu'après l'exécution de \CodeInline{iota}, la première valeur du tableau
 est celle reçue en entrée et que chaque valeur du tableau correspond à la valeur
-précédente plus 1 (en utiliant la fonction logique définie).
+précédente plus 1 (en utilisant la fonction logique définie).
 
 
 
@@ -209,7 +209,7 @@ Ré-exprimer la prédicat \CodeInline{unchanged} en utilisant la fonction logiqu
 
 
 La fonction suivante calcule la somme des N premiers entiers. Écrire une fonction
-logique récursive qui retourne la somme des N premiers entiers et écrire la
+logique récursive qui retourne la somme des N premiers entiers et écrire
 la spécification de la fonction C effectuant ce calcul en spécifiant qu'elle
 retourne la même valeur que celle fournie par la fonction logique.
 
@@ -221,5 +221,5 @@ Essayer de vérifier l'absence d'erreurs à l'exécution. Le débordement entier
 n'est pas si simple à régler. Cependant, écrire, une précondition qui devrait
 être suffisante pour cela (rappel: la somme des N premiers entiers peut être
 exprimée avec une formule très simple ...). Cela ne sera sûrement pas suffisant
-pour arriver au bout de la preuve, mais nous règlerons cela dans la prochaine
+pour arriver au bout de la preuve, mais nous réglerons cela dans la prochaine
 section.

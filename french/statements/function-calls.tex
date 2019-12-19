@@ -48,7 +48,7 @@ void foo(int* a){
 
 Le calcul de plus faible précondition de l'appel de fonction nous demande de
 considérer le contrat de la fonction appelée (ici, dans \CodeInline{foo}, quand
-nous appelons la fonction \CodeInline{inc}). Biensûr, avant l'appel de la fonction
+nous appelons la fonction \CodeInline{inc}). Bien sûr, avant l'appel de la fonction
 nous devons vérifier sa précondition, qui fait donc partie de la plus faible
 précondition. Mais, nous devons aussi considérer la postcondition de la fonction,
 sinon cela voudrait dire que nous ne prenons pas en compte son effet sur l'état du
@@ -63,7 +63,7 @@ avant l'appel nous devons explicitement ajouter le mot clé
 \CodeInline{\textbackslash{}old}. Par exemple, pour le contrat de \CodeInline{inc}
 lorsque nous l'appelons depuis \CodeInline{foo}, \CodeInline{*x} dans la
 précondition est \CodeInline{*a} au label \CodeInline{L1}, alors que \CodeInline{*x}
-dans la postcondition est \CodeInline{*a} ay label \CodeInline{L2}. Par conséquent,
+dans la postcondition est \CodeInline{*a} au label \CodeInline{L2}. Par conséquent,
 la pré et la postcondition doivent être considérées de manière légèrement différentes
 lorsque nous devons parler des positions mémoire mutables. Notez que pour la valeur
 du paramètre \CodeInline{x} lui même, ce n'est pas le cas : cette valeur ne peut pas
@@ -117,7 +117,7 @@ modifiée $a_j$ (qui est, pour notre exemple d'appel à \CodeInline{inc},
 \CodeInline{*(\&a)}), nous générons une valeur $v_j$ qui représente sa valeur après
 l'appel. Mais si nous voulons vérifier que la postcondition nous donne le bon 
 résultat, nous ne pouvons pas accepter \emph{toute valeur} pour les positions mémoire
-modifiées, nous voulons celles \emph{qui permettent de satisifaire la postcondition}.
+modifiées, nous voulons celles \emph{qui permettent de satisfaire la postcondition}.
 
 
 
@@ -148,7 +148,7 @@ la fonction \CodeInline{swap}.
 \end{CodeBlock}
 
 
-Nous pouvons appliquer le calul de plus faible précondition :
+Nous pouvons appliquer le calcul de plus faible précondition :
 
 \begin{tabular}{l}
   $wp(a = 4; b = 2; swap(\&a, \&b), a = 2 \wedge b = 4) = $\\
@@ -205,7 +205,7 @@ et ensuite $a$ par $4$ par la même règle :
 $$\forall v_a, v_b, \quad v_a = 2 \wedge v_b = 4 \Rightarrow v_a = 2 \wedge v_b = 4$$
 
 
-Cette dernière propriété est triviallement vraie, le programme est vérifié.
+Cette dernière propriété est trivialement vraie, le programme est vérifié.
 
 
 \levelFourTitle{Que devrions nous garder en tête ?}
@@ -244,7 +244,7 @@ type foo(parameters...){
 Notons qu'à propos du dernier commentaire, en calcul de plus faible précondition,
 l'idée est plutôt de montrer que notre précondition est assez forte pour assurer
 que le code nous amène à la postcondition. Cependant, premièrement, cette vision
-est plus facile à comprendre et deuièmement, un greffon comme WP (et comme n'importe
+est plus facile à comprendre et deuxièmement, un greffon comme WP (et comme n'importe
 quel outil réaliste pour la preuve de programme) ne suit pas strictement un calcul
 de plus faible précondition mais une manière fortement optimisée de calculer les
 conditions de vérification qui ne suit pas exactement les mêmes règles.
@@ -274,7 +274,7 @@ défini et prouve une fonction qui ne termine pas.
 Nous pouvons voir que la fonction et l'assertion sont prouvées. Et, effectivement,
 la preuve est correcte : nous considérons une correction partielle (puisque nous ne
 pouvons pas prouver la terminaison), et cette fonction ne termine pas. Toute
-assertion suivant cette fonction est vraie: elle est innatteignable.
+assertion suivant cette fonction est vraie: elle est inatteignable.
 
 
 Une question que l'on peut alors se poser est donc: que peut on faire dans un tel 

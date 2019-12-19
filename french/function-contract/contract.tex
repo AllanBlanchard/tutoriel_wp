@@ -58,7 +58,7 @@ programme (nous nous intéresserons ensuite aux préconditions).
 
 
 
-\levelThreeTitle{postcondition}
+\levelThreeTitle{Postcondition}
 
 
 La postcondition d'une fonction est précisée avec la clause \CodeInline{ensures}. 
@@ -221,7 +221,7 @@ un clic droit sur le nom de la fonction et « \textit{Prove function annotations
 
 
 
-\image{1-abs-2.png}[Lancer la vérification de ```abs``` avec WP]
+\image{1-abs-2.png}[Lancer la vérification de abs avec WP]
 
 
 Nous pouvons voir que les cercles bleus deviennent des pastilles vertes, 
@@ -313,7 +313,7 @@ propriété puisqu'elle n'existait pas.
 
 
 En effet, lorsque WP transmet une obligation de preuve à un prouveur automatique,
-il transmet (basiquement) deux types de propriétés : $G$, le but, la propriété 
+il transmet deux types de propriétés : $G$, le but, la propriété 
 que l'on cherche à prouver, et $S_1$ ... $S_n$ les diverses suppositions que l'on
 peut faire à propos de l'état du programme au point où l'on cherche à vérifier $G$.
 Cependant, il ne reçoit pas, en retour, quelles propriétés ont été utilisées par
@@ -342,7 +342,7 @@ celui-ci nous affiche la liste des obligations de preuve et pour chaque
 prouveur indique un petit logo si la preuve a été tentée et si elle a été 
 réussie, échouée ou a rencontré un \textit{timeout} (logo avec les ciseaux).
 Pour voir la totalité des obligations de preuves, il
-faut s'assurer que "All Results" est bien sélectionné dans le champ encadré
+faut s'assurer que « \textit{All Results} » est bien sélectionné dans le champ encadré
 dans la capture.
 
 
@@ -353,7 +353,7 @@ dans la capture.
 Le tableau est découpé comme suit, en première colonne nous avons le nom de la
 fonction où se trouve le but à prouver. En seconde colonne nous trouvons le nom
 du but. Ici par exemple notre postcondition nommée est estampillée 
-"postcondition 'positive\textit{value,function}result'", nous pouvons d'ailleurs noter
+« postcondition 'positive\textit{value,function}result' », nous pouvons d'ailleurs noter
 que lorsqu'une propriété est sélectionnée dans le tableau, elle est également 
 sur-lignée dans le code source. Les propriétés non-nommées se voient assignées
 comme nom le type de propriété voulu. En troisième colonne, nous trouvons le 
@@ -374,9 +374,9 @@ veut dire que le prouveur a été stoppé à cause d'un \textit{timeout}.
 
 
 En fait, si nous double-cliquons sur la 
-propriété "ne pas déborder" (surlignée en bleu dans la capture précédente), 
+propriété « ne pas déborder » (surlignée en bleu dans la capture précédente), 
 nous pouvons voir ceci (si ce n'est pas le cas, il faut s'assurer que
-"Raw obligation" est bien sélectionné dans le champ encadré en bleu) :
+« \textit{Raw obligation} » est bien sélectionné dans le champ encadré en bleu) :
 
 
 
@@ -430,7 +430,7 @@ le bon fonctionnement de la fonction : une précondition d'appel.
 
 
 
-\levelThreeTitle{précondition}
+\levelThreeTitle{Précondition}
 
 
 Les préconditions de fonctions sont introduites par la clause \CodeInline{requires},
@@ -571,7 +571,7 @@ La deuxième partie de la question est alors : pourquoi lorsque nous mettons les
 appels dans l'autre sens (\CodeInline{abs(a)} puis \CodeInline{abs(INT\_MIN)}), nous obtenons 
 quand même une violation de la précondition sur le deuxième ? La réponse est 
 simplement que pour \CodeInline{abs(a)} nous ajoutons dans nos suppositions la
-connaissance \CodeInline{a < INT\_MIN}, et tandis que nous d'avons pas de preuve
+connaissance \CodeInline{a < INT\_MIN}, et tandis que nous n'avons pas de preuve
 que c'est vrai, nous n'en avons pas non plus que c'est faux. Donc si nous obtenons 
 nécessairement une preuve de « faux » avec un appel \CodeInline{abs(INT\_MIN)}, ce n'est
 pas le cas de l'appel \CodeInline{abs(a)} qui peut aussi ne pas échouer.

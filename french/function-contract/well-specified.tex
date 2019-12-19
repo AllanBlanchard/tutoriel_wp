@@ -183,7 +183,7 @@ pointée:
 
 
 Ici, il est facile de remarquer le problème. Cependant, le label que nous
-tramsettons à la fonction \CodeInline{\textbackslash{}at} est propagé également
+transmettons à la fonction \CodeInline{\textbackslash{}at} est propagé également
 aux sous-expressions. Dans certains cas, des termes qui paraissent tout à fait
 innocents peuvent en réalité nous donner des comportements surprenant si nous
 ne gardons pas cette idée en tête. Par exemple dans le programme suivant:
@@ -246,7 +246,7 @@ de \CodeInline{\textbackslash{}valid} sous le nom \CodeInline{\textbackslash{}va
 celui-ci assure qu'il est uniquement nécessaire que le pointeur puisse
 être déréférencé en lecture et pas forcément en écriture, pour pouvoir
 réaliser l'opération de lecture. Cette subtilité est due au fait qu'en C, le
-\textit{downcast} de pointeur  vers un élément const est très facile à faire mais
+\textit{downcast} de pointeur vers un élément \CodeInline{const} est très facile à faire mais
 n'est pas forcément légal.
 
 

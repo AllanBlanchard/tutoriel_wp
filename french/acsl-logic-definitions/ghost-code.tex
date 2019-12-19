@@ -1,8 +1,8 @@
 Les techniques que nous avons vu précédemment dans ce chapitre ont pour but de
-rendre la spécification plus abtraite. Le rôle du code fantôme est inverse. Ici,
+rendre la spécification plus abstraite. Le rôle du code fantôme est inverse. Ici,
 nous allons en fait enrichir nos spécifications à l'aide d'information exprimées
 en langage C. L'idée est d'ajouter des variables et du code source qui
-n'interviend pas dans le programme réel mais permettant de créer des états
+n'intervient pas dans le programme réel mais permettant de créer des états
 logiques qui ne seront visibles que depuis la preuve. Par cet intermédiaire,
 nous pouvons rendre explicites des propriétés logiques qui étaient auparavant
 implicites.
@@ -55,7 +55,7 @@ void foo(int a){
 
 Tandis que dans ce chapitre, cela ne sera pas nécessaire, nous verrons plus tard
 qu'il est parfois utile d'écrire des contrats ou des assertions dans du code
-fantôme. Commme nous devons écrire ces spécifications dans du code qui est
+fantôme. Comme nous devons écrire ces spécifications dans du code qui est
 déjà englobé dans des commentaires C, nous avons accès à une syntaxe spécifique
 pour fournir des contrats ou des assertions fantômes. Nous ouvrons une annotation
 fantôme avec la syntaxe \CodeInline{/@} et nous les fermons avec \CodeInline{@/}.

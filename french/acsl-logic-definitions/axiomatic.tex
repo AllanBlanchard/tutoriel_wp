@@ -50,9 +50,8 @@ Nous pouvons par exemple définir cette axiomatique :
 
 
 Et nous pouvons voir que dans Frama-C, la propriété est bien supposée
-vraie\footnote{In section \ref{l2:acsl-logic-definitions-answers}, we
-present an {\em extremely} useful axiom.} :
-
+vraie\footnote{In section \ref{l2:acsl-logic-definitions-answers}, nous
+présentons un axiome {\em extrêmement} utile.} :
 
 
 \image{first-axiom}
@@ -125,7 +124,7 @@ zone mémoire pointée. Une modification de celle-ci n'entraînera donc pas
 l'invalidation d'une propriété connue axiomatiquement.
 
 
-Par exemple, si nous prenons la définition inductive que nous avons rédidé pour
+Par exemple, si nous prenons la définition inductive que nous avons rédigé pour
 \CodeInline{zeroed} dans le chapitre précédent, nous pouvons l'écrire à l'aide
 d'une définition axiomatique qui prendra cette forme:
 
@@ -136,7 +135,7 @@ d'une définition axiomatique qui prendra cette forme:
 
 Notons le \CodeInline{reads[b .. e-1]} qui spécifie la position mémoire dont le
 prédicat dépend. Tandis que nous n'avons pas besoin de spécifier les positions
-mémoires "lues" par une définition inductive, nous devons spécifier ces propriétés
+mémoires « lues » par une définition inductive, nous devons spécifier ces propriétés
 pour les propriétés définies axiomatiquement.
 
 
@@ -190,7 +189,7 @@ ou un prédicat défini axiomatiquement est également importante pour la
 consistance de l'axiomatique. En effet, comme mentionné précédemment, si nous
 n'exprimons pas les valeurs lues dans le cas de l'usage d'un pointeur, la
 modification d'une valeur du tableau n'invalide pas une propriété que l'on
-connaitrait à propos du contenu du tableau par exemple. Dans un tel cas, la
+connaîtrait à propos du contenu du tableau par exemple. Dans un tel cas, la
 preuve passe mais l'axiome n'exprimant pas le contenu, nous ne prouvons rien.
 
 
@@ -211,7 +210,7 @@ n'est plus 0.
 
 Notons qu'à la différence des définitions inductives, où Coq nous permet de contrôler
 que ce nous écrivons est relativement bien défini, nous n'avons pas de mécanisme de
-ce gere pour les définitions axiomatiques. Ces axiomes sont simplement traduis
+ce genre pour les définitions axiomatiques. Ces axiomes sont simplement traduis
 comme axiomes aussi du côté de Coq et sont donc supposés vrais.
 
 
@@ -331,7 +330,7 @@ utilisée pour exprimer cette propriété.
 
 Définissons donc cette fonction axiomatiquement. D'abord définissons ce qui
 est lu par la fonction, à savoir : toute position mémoire depuis le pointeur
-jusuq'à un plage infinie d'adresses. Ensuite, considérons deux cas: la chaîne
+jusqu'à un plage infinie d'adresses. Ensuite, considérons deux cas: la chaîne
 est finie, ou elle ne l'est pas, ce qui nous amène à deux axiomes:
 \CodeInline{strlen} retourne une valeur positive qui correspond à l'indice
 du premier caractère \CodeInline{'\textbackslash{}0'}, et retourne une valeur
@@ -345,7 +344,7 @@ négative s'il n'y a pas de tel caractère.
 
 Maintenant, nous pouvons être plus précis dans notre définition de
 \CodeInline{\textbackslash{}valid\_read\_string}, une chaîne valide est une
-chaîne telle qu'est valide depuis le premier indiice jusqu'à \CodeInline{strlen}
+chaîne telle qu'est valide depuis le premier indice jusqu'à \CodeInline{strlen}
 de la chaîne, et telle que que cette valeur est plus grande que 0 (puisqu'une
 chaîne infinie n'est pas valide) :
 
@@ -403,7 +402,7 @@ a beaucoup plus d'axiomes pour déduire plus de propriétés à propos de
 
 
 
-\levelThreeTitle{Exercises}
+\levelThreeTitle{Exercices}
 
 
 

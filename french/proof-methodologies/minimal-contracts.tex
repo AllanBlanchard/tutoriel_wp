@@ -5,12 +5,12 @@ spécification. Cependant, il est parfois difficile d'obtenir le second aspect,
 et le premier est déjà une étape intéressante pour la correction de notre programme.
 
 
-En effet, les erreurs à l'exécution entraînent souvent la présende des fameux
-``undefined behaviors'' dans les programmes C. Ces comportements peuvent être
+En effet, les erreurs à l'exécution entraînent souvent la présence des fameux
+« \textit{undefined behaviors} » dans les programmes C. Ces comportements peuvent être
 des vecteurs de failles de sécurité. Par conséquent, garantir leur absence nous
 protège déjà d'un grand nombre de ces vecteurs d'attaques. L'absence d'erreur à
 l'exécution peut être vérifier avec WP à l'aide d'une approche appelée
-``contrats minimaux''.
+« contrats minimaux ».
 
 
 \levelThreeTitle{Principe}
@@ -38,7 +38,7 @@ l'absence d'erreurs à l'exécution, ce qui nous génère ce programme :
 \CodeBlockInput{c}{abs-2.c}
 
 
-Donc nous avons seulement besoin de spécificier la précondition qui nous dit que
+Donc nous avons seulement besoin de spécifier la précondition qui nous dit que
 \CodeInline{x} doit être plus grand que \CodeInline{INT\_MIN} :
 
 
@@ -112,7 +112,7 @@ Maintenant imaginons que cette fonction est utilisée dans le programme suivant 
 \CodeBlockInput{c}{search-foo-1.c}
 
 
-Nous devons à nouveau fournir un invariant pour cette focntion, à nouveau en
+Nous devons à nouveau fournir un invariant pour cette fonction, à nouveau en
 regardant l'assertion générée par le plugin RTE :
 
 
@@ -194,7 +194,7 @@ une approche par contrats minimaux :
 \levelFourTitle{Inverse}
 
 
-Prouver l'absence d'erreurs à l'exécuton dans la fonction \CodeInline{reverse}
+Prouver l'absence d'erreurs à l'exécution dans la fonction \CodeInline{reverse}
 suivante et ses dépendances en utilisant une approche par contrats minimaux.
 Notons que la fonction \CodeInline{swap} doit également être spécifiée par
 contrats minimaux. Ne pas oublier d'ajouter l'option \CodeInline{-warn-unsigned-overflow}.

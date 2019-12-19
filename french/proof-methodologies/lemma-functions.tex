@@ -26,7 +26,7 @@ pour laquelle nous avons souvent besoin d'exprimer des lemmes que nous prouvons
 avec l'assistant de preuve Coq qui nous permet de faire notre preuve par
 induction. Cependant, dans la section~\ref{l2:statements-loops} à propos des
 boucles, nous trouvons une sous-section~\ref{l3:statements-loops-invariant}
-nommée ``Induction et invariant'', où nous expliquons que pour prouver un
+nommée « Induction et invariant », où nous expliquons que pour prouver un
 invariant de boucle, nous procédons ... par induction. Quelle est cette
 sorcellerie ?
 
@@ -55,9 +55,9 @@ postcondition pour raccourcir l'exemple) :
 
 
 Pour cela, la solution que nous avions demandé dans l'exercice était de fournir
-un lemme qui énonce qui si la plage est ``triée localement'', au sens où chaque
-élémént est supérieur ou égal à l'élément qui le précède, alors nous pouvons
-dire qu'elle est ``globalement triée'', c'est à dire que pour chaque paire
+un lemme qui énonce qui si la plage est « triée localement », au sens où chaque
+élément est supérieur ou égal à l'élément qui le précède, alors nous pouvons
+dire qu'elle est « globalement triée », c'est à dire que pour chaque paire
 d'indices $i$ et $j$, si $i \leq j$ alors le $j^{ième}$ élément du tableau est
 supérieur ou égal au $i^{ième}$ élément. Donc, la précondition de la fonction
 pouvait être prouvée par les solveurs SMT, mais pas le lemme lui même qui
@@ -105,7 +105,7 @@ nous avions besoin dans notre preuve par induction :
 \image{ghost-code-ind}
 
 
-Ce type de code est appelé un ``proof carrying code'' : nous avons écris un code
+Ce type de code est appelé un « \textit{proof carrying code} » : nous avons écris un code
 et les annotations qui amènent la preuve qu'une propriété que nous voulons vérifier
 est vraie.
 
@@ -121,15 +121,15 @@ vérification.
 
 Dans cet exemple, nous avons directement écris le code ghost comme annotation du
 programme, cela signifie que si nous avons un autre appel comme celui-ci quelque
-part dans le code avec une précondition similaire, nous arions à le faire à
-nouveau. Rendons cela plus simple et modulaire avec des ``lemma functions''.
+part dans le code avec une précondition similaire, nous aurions à le faire à
+nouveau. Rendons cela plus simple et modulaire avec des « \textit{lemma functions} ».
 
 
 
 \levelThreeTitle{Lemma function}
 
 
-Le principe des ``lemma functions'' est le même que celui des lemmes : à
+Le principe des « \textit{lemma functions} » est le même que celui des lemmes : à
 partir de certaines prémisses, nous voulons arriver à une conclusion particulière.
 Et une fois que c'est fait, nous voulons les utiliser à d'autres endroits pour 
 directement déduire la conclusion depuis les prémisses sans avoir à faire la
@@ -224,7 +224,7 @@ prédicats). Nous pourrions avoir écris le contrat comme ceci :
 
 
 où nous voyons parfaitement que les variables sont toujours universellement
-quantifiées. Cependant, nous ne sommes pas obligé de les maintenir quantitées
+quantifiées. Cependant, nous ne sommes pas obligé de les maintenir quantifiées
 universellement, et nous pourrions parfaitement les transformer en paramètres
 (en supposant que la conclusion que nous obtenir des prémisses a toujours du
 sens). Faisons par exemple cela pour les variables \CodeInline{i} et
@@ -237,8 +237,8 @@ sens). Faisons par exemple cela pour les variables \CodeInline{i} et
 Ce qui est tout à fait bon et nous pourrions par exemple utiliser cette fonction
 pour déduire des propriétés à propos du contenu du tableau. Notons qu'ici, nous
 utilisons un appel à la précédente lemma function pour rendre la preuve plus
-facile. Nous pouvons même aller plus loin en transférant la ``prémisse de notre
-conclusion'' en tant que prémisse d'un nouveau lemme :
+facile. Nous pouvons même aller plus loin en transférant la « prémisse de notre
+conclusion » en tant que prémisse d'un nouveau lemme :
 
 
 
@@ -323,7 +323,7 @@ plusieurs labels :
 
 
 Les lemma functions ne nous fournissent pas de mécanisme équivalent car elles
-sont simplement des fonctions C normales, qui ne preuvent pas prendre de
+sont simplement des fonctions C normales, qui ne peuvent pas prendre de
 labels comme entrée. Regardons ce que nous pouvons faire à ce sujet.
 
 
@@ -331,7 +331,7 @@ labels comme entrée. Regardons ce que nous pouvons faire à ce sujet.
 \levelThreeTitle{Lemma macro}
 
 
-Lorsque nous devons traiter de multiples labels, l'idée est ``d'injecter''
+Lorsque nous devons traiter de multiples labels, l'idée est « d'injecter »
 directement le code de preuve à l'endroit où c'est nécessaire comme nous 
 l'avons fait au début de ce chapitre. En revanche, nous ne voulons pas écrire
 ce code à la main chaque fois que nous en avons besoin, utilisons donc des
@@ -397,7 +397,7 @@ cette fonction pour construire notre macro en isolation du reste du programme po
 rendre la vérification de la propriété plus facile. Cependant, tandis que les 
 lemma functions sont ensuite appelées dans d'autres fonctions pour déduire des
 propriétés, cette fonction ne sera jamais appelée, son rôle est juste de nous
-permettre d'avoir un ``endroit'' où nous pouvons construire notre preuve. En
+permettre d'avoir un « endroit » où nous pouvons construire notre preuve. En
 particulier, comme nous avons besoin de plusieurs labels mémoire, notre fonction
 \textbf{a besoin} de modifier le contenu de la mémoire (sinon, nous aurions qu'un
 seul état mémoire pour toute la fonction).
@@ -422,7 +422,7 @@ Ensuite nous créons notre fonction de contexte :
 \CodeBlockInput[22][41]{c}{lemma-macro-2-2.c}
 
 
-Décomposons ce code, en commençant par la fonction de context. En entrée, nous
+Décomposons ce code, en commençant par la fonction de contexte. En entrée, nous
 recevons les variables du lemme. Nous énonçons également quelques propriétés à
 propos des bornes des entiers considérés, généralement cela devrait simplement
 être les préconditions qui ne sont pas liées aux états mémoire, ou liées au
@@ -474,7 +474,7 @@ preuve avec une seule ligne de code, elle peut injecter beaucoup de code à la
 position où nous l'utilisons. De plus, lorsque nous injectons ce code à un endroit
 où nous savons qu'il sera utile, le contexte correspondant peut déjà être plutôt
 complexe. Il n'est donc pas rare d'avoir à modifier légèrement la macro pour
-ajouter un peu d'informations qui ne sont pas nécessaires dans un context bien
+ajouter un peu d'informations qui ne sont pas nécessaires dans un contexte bien
 propre comme celui que nous utilisons pour produire la macro.
 
 
@@ -505,7 +505,7 @@ limitation est largement gérable puisque la plupart du temps nous travaillons a
 les types utilisés dans le programme à prouver.
 
 
-Dans certains cas, en revanche, cela constraint notre manière de modéliser des
+Dans certains cas, en revanche, cela contraint notre manière de modéliser des
 propriétés, ce qui est principalement lié aux types logiques que nous pouvons
 utiliser pour modéliser certaines structures de données concrètes. Par exemple,
 pour modéliser une liste chaînée, nous pouvons utiliser le type logique ACSL
@@ -555,7 +555,7 @@ Maintenant, revenons à notre preuve du tri par insertion et voyons comment nous
 pouvons nous débarrasser de nos preuve interactives pour cette fonction. Notons
 cependant que dans cette preuve, nous avons souvent besoin de macros puisqu'il
 n'a pas été particulièrement écris avec comme objectif de le vérifier plus tard
-(pour cela, le lecteur peut se référer au libre ACSL by Example) qui peut être
+(pour cela, le lecteur peut se référer au livre {\em ACSL by Example}) qui peut être
 adapté avec une technique similaire et est beaucoup plus facile à prouver). Donc
 dans cet exemple, nous poussons les solveurs SMT vers leurs limites à cause des
 gros contextes de preuve. En fonction de la puissance de la machine sur laquelle
@@ -573,7 +573,7 @@ cas d'usage que nous avons vu du code ghost jusqu'ici :
 
 Nous utilisons également des assertions pour rendre le contexte de preuve plus
 riche afin que les solveurs SMT puissent prouver les propriétés qui nous intéressent.
-Certaines parties des annotations que nous avons écris précedemment seront
+Certaines parties des annotations que nous avons écris précédemment seront
 équivalentes à ce que nous avons fait précédemment. Nous rappellerons leur
 but dans chaque fonctions. Ensuite, nous utilisons la même définition axiomatiques
 pour le comptage d'occurrences. De plus, nous conservons ces définitions de
@@ -604,7 +604,7 @@ est un permutation de la même plage de valeur avant l'appel à \CodeInline{inse
 comme c'est la postcondition de la fonction, elle n'est pas nécessaire mais
 conservons la pour illustration. La dernière assertion est la propriété que
 nous voulons prouver pour obtenir suffisamment de connaissance pour que le
-lemme à propos de la transivité de la permutation soit utilisé (et montre qu'à
+lemme à propos de la transitivité de la permutation soit utilisé (et montre qu'à
 la fin du bloc de la boucle, puisque le tableau est une permutation du tableau
 au début, qui est lui même une permutation du tableau original, alors le tableau
 à la fin du corps est un permutation du tableau original).
@@ -619,7 +619,7 @@ un peu plus simple et requière moins de preuves (comme nous le verrons plus tar
 écrions donc directement le code qui permet de prouver notre propriété.
 
 
-Pour montrer que la plage complète est une permutation, nous devons montrr que le
+Pour montrer que la plage complète est une permutation, nous devons montrer que le
 nombre d'occurrences de chaque valeur n'a pas changé. Nous savons que la première
 partie du tableau est une permutation de la même plage au début du corps de la
 boucle. Donc, nous savons déjà que le nombre d'occurrences de chaque $v$ n'a pas
@@ -645,7 +645,7 @@ A nouveau, la preuve que cette fonction maintient la permutation du tableau est
 la partie la plus difficile de notre travail. Le fait que cette fonction
 garantisse que les valeurs sont bien triées est déjà établie. Utiliser la
 même technique que pour la fonction \CodeInline{insertion\_sort} n'est pas si
-simple ici. En effet, la seconde partie du tableau a été ``tournée'' ce qui 
+simple ici. En effet, la seconde partie du tableau a été « tournée » ce qui 
 rend la propriété un peu plus complexe. Du coup, commençons par séparer notre
 tableau à la position d'insertion en deux parties, où nous montrons
 respectivement que:
@@ -679,7 +679,7 @@ après la boucle. Cependant, nous ne pouvons le faire que pour le nouveau conten
 du tableau. En effet, pour établir cela pour le tableau original, nous devons 
 appeler la fonction sur le tableau original pour lequel nous ne connaissons pas
 encore la valeur de $i$. Par conséquent, écrivons une autre version de la 
-propriété ``split'' qui nous montrer que nous pouvons couper le tableau à toute
+propriété « \texit{split} » qui nous montrer que nous pouvons couper le tableau à toute
 position, donc rendons la variable \CodeInline{split} universellement quantifiée,
 et utilisons la fonction précédent pour montrer que cette nouvelle propriété est
 vraie.
@@ -712,8 +712,8 @@ void insert(int* a, size_t beg, size_t last){
 \end{CodeBlock}
 
 
-Mainetant, les seules parties restantes de la preuve sont de montrer qu'un tableau
-inchangé est une pertmutation et ensuite que la rotation maintient également une
+Maintenant, les seules parties restantes de la preuve sont de montrer qu'un tableau
+inchangé est une permutation et ensuite que la rotation maintient également une
 permutation. Ici, nous avons besoin d'une macro. Commençons avec la plus facile :
 le tableau inchangé, que l'on a prouvé quasiment à l'identique dans la fonction
 \CodeInline{insertion\_sort}. Nous commençons par construire notre contexte de
@@ -733,7 +733,7 @@ notre lemma macro :
 
 
 Qui correspond presque à ce que nous avons écris pour \CodeInline{insert\_sort},
-et utliser cette macro là où nous en avons besoin dans la fonction
+et utiliser cette macro là où nous en avons besoin dans la fonction
 \CodeInline{insert}.
 
 
@@ -762,7 +762,7 @@ le code précédent, et nouvs devons prendre cela en compte quand nous insérero
 notre utilisation de la macro dans la fonction \CodeInline{insert}.
 
 
-Présentons maintenat la macro qui est utilisée pour prouver que notre lemme
+Présentons maintenant la macro qui est utilisée pour prouver que notre lemme
 est valide :
 
 
@@ -775,7 +775,7 @@ des éléments. De plus, pour l'invariant, nous avons dû ajouter une assertion
 pour aider les prouveurs automatiques à remarquer que le dernier élément de
 chaque plage est le même (notons que selon la versions des prouveurs ou la
 puissance de la machine, cela peut parfois ne pas être nécessaire). Une différence
-plus importante compartiement à nos exemples précédents est le fait qu'ici, nous
+plus importante comparativement à nos exemples précédents est le fait qu'ici, nous
 devons fournir plus d'informations aux SMT solveurs en ajoutant d'autres appels
 de fonction ghost (ligne 170, pour couper le premier élément du tableau), ainsi
 que des assertions pour guider les dernières étapes de preuve :

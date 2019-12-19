@@ -94,7 +94,7 @@ application de la règle de l'affectation.
 \begin{Information}
 Notons que d'après la norme C, l'opération d'affectation est une expression
 et non une instruction. C'est ce qui nous permet par exemple d'écrire 
-\CodeInline{if( (a = foo()) == 42)}. Dans Frama-C, une affectation sera toujous une
+\CodeInline{if( (a = foo()) == 42)}. Dans Frama-C, une affectation sera toujours une
 instruction. En effet, si une affectation est présente au sein d'une 
 expression plus complexe, le module de création de l'arbre de syntaxe abstraite
 du programme analysé effectue une étape de normalisation qui crée 
@@ -122,7 +122,7 @@ de cas. Par exemple, nous pouvons regarder ce triplet de Hoare :
 Ce triplet de Hoare est correct, puisque \CodeInline{p} et \CodeInline{q} sont en
 alias, modifier la valeur \CodeInline{*p} modifie aussi la valeur \CodeInline{*q},
 par conséquent, ces deux expressions s'évaluent à $1$ et la postcondition est 
-vraie. Cependant, regardons ce que nous obtenons en applicant le calcul de plus
+vraie. Cependant, regardons ce que nous obtenons en appliquant le calcul de plus
 faible précondition précédemment défini pour l'affectation sur cet exemple:
 
 
@@ -147,7 +147,7 @@ $wp(*p = 1, *p + *q = 2)$ & $= (1 + *q = 2 \vee q = p)$\\
 
 
 Et pour cela, nous devons faire attention à la notion d'aliasing. Une manière
-commune de faire cela est de considérer que la mémoire est une variable paritculière
+commune de faire cela est de considérer que la mémoire est une variable particulière
 du programme (nommons la $M$) sur laquelle nous pouvons effectuer deux opérations:
 obtenir la valeur d'un emplacement particulier $m$ en mémoire (qui nous retourne une
 expression) et changer la valeur à une position mémoire $l$ pour y placer une nouvelle
@@ -214,7 +214,7 @@ précédent :
 \item nous utilisons la définition de $get$ pour $q$\\
   ($M[p \mapsto 1][q] = \texttt{if}\ q = p\ \texttt{then}\ 1\ \texttt{else}\ M[q]$)
 \item nous appliquons quelques simplifications sur la formule \dots
-\item \dots et nous pouvons finallement conclure que soit $M[q] = 1$ ou $p = q$.
+\item \dots et nous pouvons finalement conclure que soit $M[q] = 1$ ou $p = q$.
 \end{enumerate}
 
 Et donc comme dans notre programme nous savons que $p = q$, nous pouvons conclure que
@@ -672,18 +672,18 @@ En utilisant la bonne règle d'inférence, en déduire que le programme respecte
 contrat fixé pour cette fonction.
 
 
-\levelFourTitle{Branche ``then'' vide dans une conditionnelle}
+\levelFourTitle{Branche « \textit{then} » vide dans une conditionnelle}
 
 
 Nous avons précédemment montré que lorsqu'une structure conditionnelle a une branche
-``else'' vide, cela signifie que la conjonction de la précondition et de la négation
+« \textit{else} » vide, cela signifie que la conjonction de la précondition et de la négation
 de la condition de notre structure conditionnelle est suffisante pour prouver la
 postcondition de la structure conditionnelle.
 Pour les deux questions qui suivent, nous avons uniquement besoin des règles d'inférence
-et pas du calcul de plus failes précondition.
+et pas du calcul de plus faible précondition.
 
 
-Montrez que lorsqu'au lieu de la branche ``else'', c'est la branche ``then'' qui est
+Montrez que lorsqu'au lieu de la branche « \textit{else} », c'est la branche « \textit{then} » qui est
 vide, la postcondition de structure conditionnelle est vérifiée par la conjonction de
 la précondition et de la condition de notre structure conditionnelle.
 
@@ -697,7 +697,7 @@ instruction \textit{skip}.
 
 Les compilateurs C implémentent le short-circuit pour les conditions (c'est d'ailleurs
 imposé par le standard C). Par exemple, cela signifie qu'un code comme (\textbf{sans
-bloc ``else''}) :
+bloc « \textit{else} »}) :
 
 
 \begin{CodeBlock}{c}
@@ -707,7 +707,7 @@ if(cond1 && cond2){
 \end{CodeBlock}
 
 
-peut être ré-écrit comme :
+peut être réécrit comme :
 
 
 \begin{CodeBlock}{c}
@@ -721,7 +721,7 @@ if(cond1){
 
 Montrez que sur ces deux morceaux de code, le calcul de plus faible précondition
 génère une plus faible précondition pour tout code qui se trouverait dans le bloc
-``then''. Notez que nous supposons que les conditions sont pures (ne modifient aucune
+« \textit{then} ». Notez que nous supposons que les conditions sont pures (ne modifient aucune
 position en mémoire).
 
 
