@@ -49,7 +49,7 @@ Le code est bien prouvé mais les contrôles d'\textit{overflow}, eux, ne le son
 pouvons à nouveau définir des fonctions logiques générales, qui vont, du point de 
 vue de la logique, nous fournir les bornes en fonction des valeurs que nous donnons
 en entrée. Cela nous permet ensuite d'ajouter nos contrôles de bornes en 
-pré-condition de fonction :
+précondition de fonction :
 
 
 
@@ -109,7 +109,7 @@ arithmétique sur la multiplication.
 
 Sur le type \CodeInline{int}, le maximum que nous pouvons calculer est la factorielle de 
 12. Au-delà, cela produit un dépassement. Nous pouvons donc ajouter cette 
-pré-condition :
+précondition :
 
 
 
@@ -190,7 +190,7 @@ précédente plus 1 (en utiliant la fonction logique définie).
 Dans le programme suivante, la fonction \CodeInline{vec\_add} ajoute le second
 vecteur reçu en entrée dans le premier. Écrire un contrat pour la fonction
 \CodeInline{show\_the\_difference} qui exprime pour chaque valeur du vecteur
-\CodeInline{v1} la différence entre la pré et la post-condition. Pour cela,
+\CodeInline{v1} la différence entre la pré et la postcondition. Pour cela,
 définir une fonction logique \CodeInline{diff} qui retourne la différence de
 valeur à une position mémoire entre un label \CodeInline{L1} et la valeur au
 label \CodeInline{L2}.
@@ -218,7 +218,7 @@ retourne la même valeur que celle fournie par la fonction logique.
 
 
 Essayer de vérifier l'absence d'erreurs à l'exécution. Le débordement entier
-n'est pas si simple à régler. Cependant, écrire, une pré-condition qui devrait
+n'est pas si simple à régler. Cependant, écrire, une précondition qui devrait
 être suffisante pour cela (rappel: la somme des N premiers entiers peut être
 exprimée avec une formule très simple ...). Cela ne sera sûrement pas suffisant
 pour arriver au bout de la preuve, mais nous règlerons cela dans la prochaine

@@ -274,7 +274,7 @@ quel état se trouve la mémoire traitée par le programme. $C$ est un ensemble 
 commandes définissant un programme. Cette écriture nous dit « si nous sommes 
 dans un état où $P$ est vrai, après exécution de $C$ et si $C$ termine, 
 alors $Q$ sera vrai pour le nouvel état du programme ». Dis autrement, $P$ est 
-une pré-condition suffisante pour que $C$ nous amène à la post-condition $Q$. 
+une précondition suffisante pour que $C$ nous amène à la postcondition $Q$. 
 Par exemple, le triplet correspondant à l'action « ne rien faire » (\textbf{skip}) 
 est le suivant :
 
@@ -286,7 +286,7 @@ $\{P\}$ \textbf{skip} $\{P\}$
 \end{center}
 
 
-Quand nous ne faisons rien, la post-condition est la même que la pré-condition.
+Quand nous ne faisons rien, la postcondition est la même que la précondition.
 
 
 
@@ -303,14 +303,14 @@ utilisons  .
 Tout ceci nous donne les bases permettant de dire « voilà ce que fait cette 
 action » mais ne nous donne pas encore de matériel pour mécaniser la preuve. 
 L'outil que nous allons utiliser repose sur la technique de calcul de plus 
-faible pré-condition.
+faible précondition.
 
 
 
-\levelThreeTitle{Calcul de plus faible pré-condition}
+\levelThreeTitle{Calcul de plus faible précondition}
 
 
-Le calcul de plus faible pré-condition est une forme de sémantique de 
+Le calcul de plus faible précondition est une forme de sémantique de 
 transformation de prédicats, proposée par Dijkstra en 1975 dans \textit{Guarded 
 commands, non-determinacy and formal derivation of programs}.
 
@@ -327,10 +327,10 @@ complète du programme.
 Dijkstra reformule la logique de Hoare en expliquant comment, dans le triplet 
 $\{P\}C\{Q\}$, l'instruction, ou le bloc d'instructions, $C$ transforme le 
 prédicat $P$, en $Q$. Cette forme est appelée « raisonnement vers l'avant » ou 
-\textit{forward-reasoning}. Nous calculons à partir d'une pré-condition et d'une ou 
-plusieurs instructions, la plus forte post-condition que nous pouvons
+\textit{forward-reasoning}. Nous calculons à partir d'une précondition et d'une ou 
+plusieurs instructions, la plus forte postcondition que nous pouvons
 atteindre. Informellement, en considérant ce qui est reçu en entrée, nous 
-calculons ce qui sera renvoyé au plus en sortie. Si la post-condition voulue
+calculons ce qui sera renvoyé au plus en sortie. Si la postcondition voulue
 est au plus aussi forte, alors nous avons prouvé qu'il n'y a pas de 
 comportements non-voulus.
 
@@ -341,8 +341,8 @@ Par exemple :
 \begin{CodeBlock}{c}
 int a = 2;
 a = 4;
-//post-condition calculée : a == 4
-//post-condition voulue   : 0 <= a <= 30
+//postcondition calculée : a == 4
+//postcondition voulue   : 0 <= a <= 30
 \end{CodeBlock}
 
 
@@ -351,12 +351,12 @@ Pas de problème, 4 fait bien partie des valeurs acceptables pour a.
 
 
 
-La forme qui nous intéresse, le calcul de plus faible pré-condition, fonctionne
+La forme qui nous intéresse, le calcul de plus faible précondition, fonctionne
 dans le sens inverse, nous parlons de « raisonnement vers l'arrière » ou 
-\textit{backward-reasoning}. À partir de la post-condition voulue et de 
-l'instruction que nous traitons, nous allons trouver la pré-condition minimale
-qui nous assure ce fonctionnement. Si notre pré-condition réelle est au moins
-aussi forte, c'est-à-dire, qu'elle implique la plus faible pré-condition, alors
+\textit{backward-reasoning}. À partir de la postcondition voulue et de 
+l'instruction que nous traitons, nous allons trouver la précondition minimale
+qui nous assure ce fonctionnement. Si notre précondition réelle est au moins
+aussi forte, c'est-à-dire, qu'elle implique la plus faible précondition, alors
 notre programme est valide.
 
 
@@ -369,7 +369,7 @@ $\{P\}$ $x$ $:=$ a $\{x = 42\}$
 
 
 
-Quelle est la pré-condition minimale pour que la post-condition $\{x = 42\}$ 
+Quelle est la précondition minimale pour que la postcondition $\{x = 42\}$ 
 soit respectée ? La règle nous dira que $P$ est $\{$a$=42\}$.
 
 

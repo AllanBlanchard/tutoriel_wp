@@ -16,7 +16,7 @@ poser la question suivante : pourquoi les boucles sont-elles compliquées ?
 
 La nature des boucles rend leur analyse difficile. Lorsque nous faisons nos 
 raisonnements arrières, il nous faut une règle capable de dire à partir de la
-post-condition quelle est la pré-condition d'une certaine séquence 
+postcondition quelle est la précondition d'une certaine séquence 
 d'instructions. Problème : nous ne pouvons \textit{a priori} pas déduire combien de 
 fois la boucle va s'exécuter et donc par conséquent, nous ne pouvons pas non 
 plus savoir combien de fois les variables ont été modifiées.
@@ -28,7 +28,7 @@ propriété qui est vraie avant de commencer la boucle et qui, si elle est vraie
 au début d'un tour de boucle, sera vraie à la fin (et donc par extension, au 
 début du tour suivant). Quand la boucle termine, nous gagnons la connaissance 
 que la condition de boucle est fausse qui, en conjonction avec l'invariant,
-doit nous permettre de prouver que la post-condition de la boucle est vérifiée.
+doit nous permettre de prouver que la postcondition de la boucle est vérifiée.
 
 
 
@@ -73,7 +73,7 @@ définie comme suit :
 $$\dfrac{\{I \wedge B \}\ c\ \{I\}}{\{I\}\ while(B)\{c\}\ \{I \wedge \neg B\}}$$
 
 
-Et le calcul de plus faible pré-condition est le suivant :
+Et le calcul de plus faible précondition est le suivant :
 $$wp(while (B) \{ c \}, Post) := I \wedge ((B \wedge I) \Rightarrow wp(c, I)) \wedge ((\neg B \wedge I) \Rightarrow Post)$$
 
 
@@ -83,18 +83,18 @@ Détaillons cette formule :
 
 \begin{itemize}
 \item (1) le premier $I$ correspond à l'établissement de l'invariant, c'est 
-vulgairement la « pré-condition » de la boucle,
+vulgairement la « précondition » de la boucle,
 \item la deuxième partie de la conjonction ($(B \wedge I) \Rightarrow wp(c, I)$)
 correspond à la vérification du travail effectué par le corps de la boucle :
 
 \begin{itemize}
-\item la pré-condition que nous connaissons du corps de la boucle (notons $KWP$,
+\item la précondition que nous connaissons du corps de la boucle (notons $KWP$,
 « \textit{Known WP} ») est ($KWP = B \wedge I$). Soit le fait que nous sommes
 rentrés dedans ($B$ est vrai), et que l'invariant est respecté à ce moment
 ($I$, qui est vrai avant de commencer la boucle par (1), et dont veut 
 vérifier qu'il sera vraie en fin de bloc de la boucle (2)),
 \item (2) ce qu'il nous reste à vérifier c'est que $KWP$ implique la 
-pré-condition réelle* du bloc de code de la boucle 
+précondition réelle* du bloc de code de la boucle 
   ($KWP \Rightarrow wp(c, Post)$). Ce que nous voulons en fin de bloc, 
   c'est avoir maintenu l'invariant $I$ ($B$ n'est peut-être plus vrai en
   revanche). Donc 
@@ -104,7 +104,7 @@ précédemment.
 \end{itemize}
 \item finalement, la dernière partie ($(\neg B \wedge I) \Rightarrow Post$)
 nous dit que le fait d'être sorti de la boucle ($\neg B$), tout en ayant 
-maintenu l'invariant $I$, doit impliquer la post-condition voulue pour la 
+maintenu l'invariant $I$, doit impliquer la postcondition voulue pour la 
 boucle.
 \end{itemize}
 
@@ -127,7 +127,7 @@ de notre travail lorsque nous chercherons à prouver des programmes.
 
 
 En effet, si en l'absence de boucle, la fonction de calcul de plus faible 
-pré-condition peut nous fournir automatiquement les propriétés vérifiables de nos
+précondition peut nous fournir automatiquement les propriétés vérifiables de nos
 programmes, ce n'est pas le cas pour les invariants de boucle pour lesquels 
 nous n'avons pas accès à une procédure automatique de calcul. Nous devons donc 
 trouver et formuler correctement ces invariants, et selon l'algorithme, celui-ci
@@ -152,17 +152,17 @@ en début de boucle :
 Pourquoi ? Parce que tout au long de la boucle \CodeInline{i} sera bien compris entre
 0 et 30 \textbf{inclus}. 30 est même la valeur qui nous permettra de sortir de la 
 boucle. Plus encore, une des propriétés demandées par le calcul de plus faible
-pré-conditions sur les boucles est que lorsque l'on invalide la condition de la
-boucle, par la connaissance de l'invariant, on peut prouver la post-condition 
+préconditions sur les boucles est que lorsque l'on invalide la condition de la
+boucle, par la connaissance de l'invariant, on peut prouver la postcondition 
 (Formellement : $(\neg B \wedge I) \Rightarrow Post$).
 
 
 
-La post-condition de notre boucle est $\texttt{i} = 30$ et doit être impliquée par
+La postcondition de notre boucle est $\texttt{i} = 30$ et doit être impliquée par
 $\neg \texttt{i} < 30 \wedge 0 \leq \texttt{i} \leq 30$. Ici, cela fonctionne 
 bien : 
 $$\texttt{i} \geq 30 \wedge 0 \leq \texttt{i} \leq 30 \Rightarrow \texttt{i} = 30$$
-Si l'invariant excluait l'égalité à 30, la post-condition ne serait pas atteignable.
+Si l'invariant excluait l'égalité à 30, la postcondition ne serait pas atteignable.
 
 
 
@@ -250,9 +250,9 @@ que la boucle se termine : elle est infinie.
 
 En vérification déductive, il y a deux types de correction, la correction 
 partielle et la correction totale. Dans le premier cas, la formulation est 
-« si la pré-condition est validée et \textbf{si} le calcul termine, alors la 
-post-condition est validée ». Dans le second cas, « si la pré-condition est 
-validée, alors le calcul termine et la post-condition est validée ». WP 
+« si la précondition est validée et \textbf{si} le calcul termine, alors la 
+postcondition est validée ». Dans le second cas, « si la précondition est 
+validée, alors le calcul termine et la postcondition est validée ». WP 
 s'intéresse par défaut à de la preuve de correction partielle :
 
 
@@ -362,7 +362,7 @@ bien un variant de la boucle puisque nous n'exécutons pas le corps de la boucle
 nouveau.
 
 
-\levelThreeTitle{Lier la post-condition et l'invariant}
+\levelThreeTitle{Lier la postcondition et l'invariant}
 
 
 Supposons le programme spécifié suivant. Notre but est de prouver que le retour
@@ -374,7 +374,7 @@ de cette fonction est l'ancienne valeur de \CodeInline{a} à laquelle nous avons
 
 
 
-Le calcul de plus faibles pré-conditions ne permet pas de sortir de la boucle des
+Le calcul de plus faibles préconditions ne permet pas de sortir de la boucle des
 informations qui ne font pas partie de l'invariant. Dans un programme comme :
 
 
@@ -394,12 +394,12 @@ int add_ten(int a){
 
 
 
-En remontant les instructions depuis la post-condition, on conserve toujours les
+En remontant les instructions depuis la postcondition, on conserve toujours les
 informations à propos de \CodeInline{a}. À l'inverse, comme mentionné plus tôt, en dehors
 de la boucle WP, ne considérera que les informations fournies par notre
 invariant. Par conséquent, notre fonction \CodeInline{add\_ten} ne peut pas être prouvée
 en l'état : l'invariant ne mentionne rien à propos de \CodeInline{a}. Pour lier notre
-post-condition à l'invariant, il faut ajouter une telle information. Par 
+postcondition à l'invariant, il faut ajouter une telle information. Par 
 exemple :
 
 

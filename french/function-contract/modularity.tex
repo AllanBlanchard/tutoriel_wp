@@ -87,7 +87,7 @@ en isolation les unes des autres.
 
 En dehors de la fonction, sa spécification est considérée comme étant
 vérifiée : nous ne cherchons pas à reprouver que la fonction fait bien son travail
-à chaque appel, nous nous contenterons de vérifier que les pré-conditions sont
+à chaque appel, nous nous contenterons de vérifier que les préconditions sont
 réunies au moment de l'appel. Cela donne donc des preuves très modulaires et donc
 des spécifications plus facilement réutilisables. Évidemment, si notre preuve
 repose sur la spécification d'une autre fonction, cette fonction doit-elle même
@@ -136,14 +136,14 @@ l'année est bissextile.
 fournir le contrat de \CodeInline{is\_alpha\_num}.
 
 
-```c
+\begin{CodeBlock}{c}
 int is_alpha_num(char c){
   return
     is_lower_alpha(c) ||
     is_upper_alpha(c) ||
     is_digit(c) ;
 }
-```
+\end{CodeBlock}
 
 Déclarer une énumération avec les valeurs \CodeInline{LOWER}, \CodeInline{UPPER},
 \CodeInline{DIGIT} et \CodeInline{OTHER}, et une fonction \CodeInline{character\_kind}

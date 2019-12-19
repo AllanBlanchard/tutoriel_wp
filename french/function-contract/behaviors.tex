@@ -14,7 +14,7 @@ le cas où la valeur est négative.
 
 
 Les comportements nous servent à spécifier les différents cas pour les
-post-conditions. Nous les introduisons avec le mot-clé \CodeInline{behavior}.
+postconditions. Nous les introduisons avec le mot-clé \CodeInline{behavior}.
 Chaque comportement a un nom. Pour un comportement donné, nous trouvons
 différentes suppositions à propos de l'entrée de la fonction, elles sont
 introduites à l'aide du mot clé \CodeInline{assumes} (notons que, puisqu'elles
@@ -65,14 +65,14 @@ présent dans les deux comportements.
 
 
 \begin{Warning}
-Même si \CodeInline{assigns} est une post-condition, à ma connaissance, il n'est pas
+Même si \CodeInline{assigns} est une postcondition, à ma connaissance, il n'est pas
 possible de mettre des \CodeInline{assigns} pour chaque \textit{behavior}. Si nous avons
 besoin d'un tel cas, nous spécifions :
 
 \begin{itemize}
 \item \CodeInline{assigns} avant les \textit{behavior} (comme dans notre exemple) avec tout
 élément non-local susceptible d'être modifié,
-\item en post-condition de chaque \textit{behavior} les éléments qui ne sont finalement
+\item en postcondition de chaque \textit{behavior} les éléments qui ne sont finalement
 pas modifiés en les indiquant égaux à leur ancienne (\CodeInline{\textbackslash{}old}) valeur.
 \end{itemize}
 \end{Warning}

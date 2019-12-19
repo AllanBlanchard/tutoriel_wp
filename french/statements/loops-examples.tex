@@ -33,7 +33,7 @@ contiguës. C'est la notation que nous avons utilisée dans cette expression :
 
 
 
-Cette pré-condition nous atteste que les adresses \CodeInline{a+0}, 
+Cette précondition nous atteste que les adresses \CodeInline{a+0}, 
 \CodeInline{a+1}, \ldots{}, \CodeInline{a+length-1} sont valides en lecture.
 
 
@@ -295,7 +295,7 @@ premières.
 Écrire, spécifier et prouver la fonction \CodeInline{equal} qui retourne vrai
 si et seulement si deux plages de valeurs sont égales. Écrire, en utilisant la
 fonction \CodeInline{equal}, le code de \CodeInline{different} qui retourne vrai
-si et seulement si deux plages de valeurs sont différentes, votre post-condition
+si et seulement si deux plages de valeurs sont différentes, votre postcondition
 devrait contenir un quantificateur existentiel.
 
 
@@ -321,7 +321,7 @@ l'indice de cette valeur) ou pas (et le résultat est -1).
 Cette fonction est un petit peu complexe à prouver, voici quelques conseils
 pour en venir à bout. D'abord, la longueur de la fonction est reçue en utilisant
 un type int, donc nous devons poser une restriction sur cette longueur en 
-pré-condition pour qu'elle soit cohérente. Ensuite, l'un des invariants de la
+précondition pour qu'elle soit cohérente. Ensuite, l'un des invariants de la
 boucle devrait indiquer les bornes des valeurs \CodeInline{low} et 
 \CodeInline{up}, mais nous pouvons noter que pour chacune d'elles, l'une des
 bornes n'est pas nécessaire. Finalement, la seconde propriété invariante 
@@ -375,7 +375,7 @@ séparées.
 
 
 En fait, une séparation aussi forte n'est pas nécessaire. Pour faire une copie
-en partant du début, la pré-condition réelle doit simplement garantir que si les
+en partant du début, la précondition réelle doit simplement garantir que si les
 deux plages se chevauchent en mémoire, le début de la destination ne doit pas être
 dans la plage source :
 

@@ -14,7 +14,7 @@ formels de ces sections seront signalés.
 
 
 Pour chaque notion en programmation C, nous associerons la règle d'inférence qui 
-lui correspond, la règle utilisée de calcul de plus faible pré-conditions qui la 
+lui correspond, la règle utilisée de calcul de plus faible préconditions qui la 
 régit, et des exemples d'utilisation. Pas forcément dans cet ordre et avec plus ou 
 moins de liaison avec l'outil. Les premiers points seront plus focalisés sur la
 théorie que sur l'utilisation car ce sont les plus simples, au fur et à mesure,
@@ -104,7 +104,7 @@ calcul de la valeur absolue (légèrement modifié):
 
 Ce que nous dit Hoare, est que pour prouver notre programme, les propriétés
 entre accolades dans ce programme doivent être vérifiées (j'ai omis une des
-deux post-conditions pour alléger la lecture) :
+deux postconditions pour alléger la lecture) :
 
 
 
@@ -114,16 +114,16 @@ deux post-conditions pour alléger la lecture) :
 
 Cependant, Hoare ne nous dit pas comment nous pouvons obtenir automatiquement la 
 propriété \CodeInline{P} de ce programme. Ce que nous propose Dijkstra, c'est donc un moyen
-de calculer, à partir d'une post-condition $Q$ et d'une commande ou d'une liste de 
-commandes $C$, la pré-condition minimale assurant $Q$ après $C$. Nous pourrions 
+de calculer, à partir d'une postcondition $Q$ et d'une commande ou d'une liste de 
+commandes $C$, la précondition minimale assurant $Q$ après $C$. Nous pourrions 
 donc, dans le programme précédent, calculer la propriété \CodeInline{P} qui nous donne les
 garanties voulues.
 
 
 
 Nous allons tout au long de cette partie présenter les différents cas de la 
-fonction $wp$ qui, à une post-condition voulue et un programme ou une instruction,
-nous associe la plus faible pré-condition qui permet de l'assurer. Nous utiliserons
+fonction $wp$ qui, à une postcondition voulue et un programme ou une instruction,
+nous associe la plus faible précondition qui permet de l'assurer. Nous utiliserons
 cette notation pour définir le calcul correspondant à une/des instructions :
 
 

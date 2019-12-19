@@ -2,9 +2,9 @@ Le principe d'un contrat de fonction est de poser les conditions selon
 lesquelles la fonction va s'exécuter. C'est-à-dire : ce que doit respecter 
 le code appelant à propos des variables passées en paramètres et de l'état de
 la mémoire globale pour que la fonction s'exécute correctement, 
-\textbf{la pré-condition} ; et ce que s'engage à respecter la fonction en retour
+\textbf{la précondition} ; et ce que s'engage à respecter la fonction en retour
 à propos de l'état de la mémoire et de la valeur de retour : 
-\textbf{la post-condition}.
+\textbf{la postcondition}.
 
 
 
@@ -53,18 +53,18 @@ bloc de commentaires à ignorer.
 
 
 Maintenant, regardons comment sont exprimés les contrats, à commencer par la
-post-condition, puisque c'est ce que nous attendons en priorité de notre 
-programme (nous nous intéresserons ensuite aux pré-conditions).
+postcondition, puisque c'est ce que nous attendons en priorité de notre 
+programme (nous nous intéresserons ensuite aux préconditions).
 
 
 
-\levelThreeTitle{Post-condition}
+\levelThreeTitle{postcondition}
 
 
-La post-condition d'une fonction est précisée avec la clause \CodeInline{ensures}. 
+La postcondition d'une fonction est précisée avec la clause \CodeInline{ensures}. 
 Nous allons travailler avec la fonction suivante qui donne la valeur absolue
 d'un entier reçu en entrée. 
-Une de ses post-conditions est que le résultat (que nous notons avec le 
+Une de ses postconditions est que le résultat (que nous notons avec le 
 mot-clé \CodeInline{\textbackslash{}result}) est supérieur ou égal à 0.
 
 
@@ -84,7 +84,7 @@ l'opposée de la valeur.
 
 
 
-Nous pouvons spécifier plusieurs post-conditions, soit en les composants avec 
+Nous pouvons spécifier plusieurs postconditions, soit en les composants avec 
 un \CodeInline{\&\&} comme en C, soit en introduisant une nouvelle clause \CodeInline{ensures}, 
 comme illustré ci-dessous.
 
@@ -352,8 +352,8 @@ dans la capture.
 
 Le tableau est découpé comme suit, en première colonne nous avons le nom de la
 fonction où se trouve le but à prouver. En seconde colonne nous trouvons le nom
-du but. Ici par exemple notre post-condition nommée est estampillée 
-"Post-condition 'positive\textit{value,function}result'", nous pouvons d'ailleurs noter
+du but. Ici par exemple notre postcondition nommée est estampillée 
+"postcondition 'positive\textit{value,function}result'", nous pouvons d'ailleurs noter
 que lorsqu'une propriété est sélectionnée dans le tableau, elle est également 
 sur-lignée dans le code source. Les propriétés non-nommées se voient assignées
 comme nom le type de propriété voulu. En troisième colonne, nous trouvons le 
@@ -426,16 +426,16 @@ encadré en rouge dans la capture d'écran précédente), nous pouvons donc voir
 que les hypothèses n'ont pas suffi aux prouveurs pour déterminer que la
 propriété  « absence de débordement » est vraie (et nous l'avons dit : c'est
 normal), il nous faut donc ajouter une hypothèse supplémentaire pour garantir
-le bon fonctionnement de la fonction : une pré-condition d'appel.
+le bon fonctionnement de la fonction : une précondition d'appel.
 
 
 
-\levelThreeTitle{Pré-condition}
+\levelThreeTitle{précondition}
 
 
-Les pré-conditions de fonctions sont introduites par la clause \CodeInline{requires},
+Les préconditions de fonctions sont introduites par la clause \CodeInline{requires},
 de la même manière qu'avec \CodeInline{ensures}, nous pouvons composer nos 
-expressions logiques et mettre plusieurs pré-conditions :
+expressions logiques et mettre plusieurs préconditions :
 
 
 
@@ -451,7 +451,7 @@ void foo(int a, int b){
 
 
 
-Les pré-conditions sont des propriétés sur les entrées (et potentiellement sur
+Les préconditions sont des propriétés sur les entrées (et potentiellement sur
 des variables globales) qui seront supposées préalablement vraies lors de 
 l'analyse de la fonction. La preuve que celles-ci sont effectivement validées 
 n'interviendra qu'aux points où la fonction est appelée.
@@ -470,7 +470,7 @@ la traduction nécessaire.
 Si nous revenons à notre exemple de la valeur absolue, pour éviter le 
 débordement arithmétique, il suffit que la valeur de val soit strictement 
 supérieure à \CodeInline{INT\_MIN} pour garantir que le débordement n'arrivera pas.
-Nous l'ajoutons donc comme pré-condition (à noter : il faut également
+Nous l'ajoutons donc comme précondition (à noter : il faut également
 inclure le header où \CodeInline{INT\_MIN} est défini) :
 
 
@@ -494,7 +494,7 @@ implémentation est prouvée :
 
 
 Nous pouvons également vérifier qu'une fonction qui appellerait \CodeInline{abs} 
-respecte bien la pré-condition qu'elle impose :
+respecte bien la précondition qu'elle impose :
 
 
 
@@ -528,13 +528,13 @@ Pourquoi ?
 
 
 Il faut bien garder en tête que le principe de la preuve déductive est de nous
-assurer que si les pré-conditions sont vérifiées et que le calcul termine alors
-la post-condition est vérifiée.
+assurer que si les préconditions sont vérifiées et que le calcul termine alors
+la postcondition est vérifiée.
 
 
 Si nous donnons à notre fonction une valeur qui viole explicitement sa
 précondition, nous pouvons déduire que n'importe quoi peut arriver, incluant
-obtenir faux en post-condition. Plus précisément, ici, après l'appel, nous
+obtenir faux en postcondition. Plus précisément, ici, après l'appel, nous
 supposons que la précondition est vraie (puisque la fonction ne peut pas
 modifier la valeur reçue en paramètre), sinon la fonction n'aurait pas pu
 s'exécuter correctement. Par conséquent, nous supposons que
@@ -559,7 +559,7 @@ de preuve générées par WP pour l'appel fautif et l'appel prouvé par conséqu
 
 Nous pouvons remarquer que pour les appels de fonctions, l'interface graphique
 nous surligne le chemin d'exécution suivi avant l'appel dont nous cherchons à 
-vérifier la pré-condition. Ensuite, si nous regardons l'appel \CodeInline{abs(INT\_MIN)},
+vérifier la précondition. Ensuite, si nous regardons l'appel \CodeInline{abs(INT\_MIN)},
 nous pouvons remarquer qu'à force de simplifications, Qed a déduit que nous 
 cherchons à prouver « False ». Conséquence logique, l'appel suivant \CodeInline{abs(a)} 
 reçoit dans ses suppositions « False ». C'est pourquoi Qed est capable de déduire
@@ -569,7 +569,7 @@ immédiatement « True ».
 
 La deuxième partie de la question est alors : pourquoi lorsque nous mettons les 
 appels dans l'autre sens (\CodeInline{abs(a)} puis \CodeInline{abs(INT\_MIN)}), nous obtenons 
-quand même une violation de la pré-condition sur le deuxième ? La réponse est 
+quand même une violation de la précondition sur le deuxième ? La réponse est 
 simplement que pour \CodeInline{abs(a)} nous ajoutons dans nos suppositions la
 connaissance \CodeInline{a < INT\_MIN}, et tandis que nous d'avons pas de preuve
 que c'est vrai, nous n'en avons pas non plus que c'est faux. Donc si nous obtenons 
@@ -579,7 +579,7 @@ pas le cas de l'appel \CodeInline{abs(a)} qui peut aussi ne pas échouer.
 
 
 Bien spécifier son programme est donc d'une importance cruciale. Typiquement, 
-préciser une pré-condition fausse peut nous donner la possibilité de prouver 
+préciser une précondition fausse peut nous donner la possibilité de prouver 
 FAUX :
 
 
@@ -599,7 +599,7 @@ void foo(int a){
 Si nous demandons à WP de prouver cette fonction. Il l'acceptera sans rechigner
 car la supposition que nous lui donnons en entrée est nécessairement fausse. Par
 contre, nous aurons bien du mal à lui donner une valeur en entrée qui respecte la 
-pré-condition, nous pourrons donc nous en apercevoir. En regardant pourquoi nous
+précondition, nous pourrons donc nous en apercevoir. En regardant pourquoi nous
 n'arrivons pas à transmettre une valeur valide en entrée.
 
 
@@ -629,7 +629,7 @@ $ frama-c-gui file.c -wp
 
 
 
-Cela demande à WP d'immédiatement faire les calculs de plus faible pré-condition
+Cela demande à WP d'immédiatement faire les calculs de plus faible précondition
 et de lancer les prouveurs sur les buts générés.
 
 
@@ -667,7 +667,7 @@ une notation qui peut parfois d'avérer utile.
 \levelFourTitle{Addition}
 
 
-Écrire la post-condition de la fonction d'addition suivante :
+Écrire la postcondition de la fonction d'addition suivante :
 
 
 \CodeBlockInput{c}{ex-1-addition.c}
@@ -694,7 +694,7 @@ Qui devrait échouer. Adapter le contrat en ajoutant la bonne précondition.
 \levelFourTitle{Distance}
 
 
-Écrire la post-condition de la fonction distance suivante, en exprimant
+Écrire la postcondition de la fonction distance suivante, en exprimant
 la valeur de \CodeInline{b} en fonction de \CodeInline{a} et
 \CodeInline{\textbackslash{}result} :
 
@@ -724,7 +724,7 @@ Qui devrait échouer. Adapter le contrat en ajoutant la bonne précondition.
 \levelFourTitle{Lettres de l'alphabet}
 
 
-Écrire la post-condition de la fonction suivante, qui retourne vrai si le
+Écrire la postcondition de la fonction suivante, qui retourne vrai si le
 caractère reçu en entrée est une lettre de l'alphabet. Utiliser la relation
 d'équivalence  \CodeInline{<==>}.
 
