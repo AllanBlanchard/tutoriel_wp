@@ -3,19 +3,19 @@
 \levelFourTitle{Formel - Calcul de plus faible précondition}
 
 Lorsqu'une fonction est appelée, le contrat de cette fonction est utilisé pour
-déterminer la pré-condition de l'appel. Mais il est important de garder en tête deux
-aspects important pour exprimer le calcul de plus faible pré-condition.
+déterminer la précondition de l'appel. Mais il est important de garder en tête deux
+aspects important pour exprimer le calcul de plus faible précondition.
 
 
-Premièrement, la post-condition d'une fonction $f$ qui serait appelée dans un 
+Premièrement, la postcondition d'une fonction $f$ qui serait appelée dans un 
 programme n'est pas nécessairement directement la précondition calculée pour le code
 qui suit l'appel à $f$. Par exemple, si nous avons un programme:
 \CodeInline{x = f() ; c }, et si $wp(\texttt{c}, Q) = 0 \leq x \leq 10$ alors que
-la post-condition de la fonction \CodeInline{f} est $1 \leq x \leq 9$, nous avons
-besoin d'exprimer l'affaiblissement de la pré-condition réelle de \CodeInline{c}
+la postcondition de la fonction \CodeInline{f} est $1 \leq x \leq 9$, nous avons
+besoin d'exprimer l'affaiblissement de la précondition réelle de \CodeInline{c}
 vers celle que l'on a calculé. Pour cela cela, nous renvoyons à la
 section~\ref{l3:statements-basic-consequence}, l'idée est simplement de vérifier 
-que la post-condition de la fonction implique la pré-condition calculée.
+que la postcondition de la fonction implique la précondition calculée.
 
 
 
@@ -28,7 +28,7 @@ lieu d'appel.
 
 
 
-Pour définir le calcul de plus faible pré-condition associé aux fonctions, introduisons
+Pour définir le calcul de plus faible précondition associé aux fonctions, introduisons
 d'abord quelques notations pour rendre les explications plus claires. Pour cela,
 considérons l'exemple suivant :
 
@@ -46,25 +46,25 @@ void foo(int* a){
 \end{CodeBlock}
 
 
-Le calcul de plus faible pré-condition de l'appel de fonction nous demande de
+Le calcul de plus faible précondition de l'appel de fonction nous demande de
 considérer le contrat de la fonction appelée (ici, dans \CodeInline{foo}, quand
-nous appelons la fonction \CodeInline{inc}). Biensûr, avant l'appel de la fonction
-nous devons vérifier sa pré-condition, qui fait donc partie de la plus faible
-pré-condition. Mais, nous devons aussi considérer la post-condition de la fonction,
+nous appelons la fonction \CodeInline{inc}). Bien sûr, avant l'appel de la fonction
+nous devons vérifier sa précondition, qui fait donc partie de la plus faible
+précondition. Mais, nous devons aussi considérer la postcondition de la fonction,
 sinon cela voudrait dire que nous ne prenons pas en compte son effet sur l'état du
 programme.
 
 
-Par conséquent, il est important de noter que dans la pré-condition, l'état mémoire
-considéré est bien celui pour lequel la plus faible pré-condition doit être vraie,
-tandis que pour la post-condition, ce n'est pas le cas: l'état considéré est celui
-qui suit l'appel, alors que dans la post-condition, lorsque nous parlons des valeurs
+Par conséquent, il est important de noter que dans la précondition, l'état mémoire
+considéré est bien celui pour lequel la plus faible précondition doit être vraie,
+tandis que pour la postcondition, ce n'est pas le cas: l'état considéré est celui
+qui suit l'appel, alors que dans la postcondition, lorsque nous parlons des valeurs
 avant l'appel nous devons explicitement ajouter le mot clé 
 \CodeInline{\textbackslash{}old}. Par exemple, pour le contrat de \CodeInline{inc}
 lorsque nous l'appelons depuis \CodeInline{foo}, \CodeInline{*x} dans la
-pré-condition est \CodeInline{*a} au label \CodeInline{L1}, alors que \CodeInline{*x}
-dans la post-condition est \CodeInline{*a} ay label \CodeInline{L2}. Par conséquent,
-la pré et la post-condition doivent être considérées de manière légèrement différentes
+précondition est \CodeInline{*a} au label \CodeInline{L1}, alors que \CodeInline{*x}
+dans la postcondition est \CodeInline{*a} au label \CodeInline{L2}. Par conséquent,
+la pré et la postcondition doivent être considérées de manière légèrement différentes
 lorsque nous devons parler des positions mémoire mutables. Notez que pour la valeur
 du paramètre \CodeInline{x} lui même, ce n'est pas le cas : cette valeur ne peut pas
 être modifiée par l'appel (du point de vue de l'appelant).
@@ -79,12 +79,12 @@ Pour cela, notons:
 \item $\vec{t}$ les arguments fournies à la fonction lors de l'appel,
 \item $\vec{x}$ les paramètres dans la définition de la fonction,
 \item $\vec{a}$ les valeurs modifiées (vues de l'extérieur, une fois instanciées),
-\item $here(x)$ une valeur en post-condition,
-\item $old(x)$ une valeur en pré-condition. 
+\item $here(x)$ une valeur en postcondition,
+\item $old(x)$ une valeur en précondition. 
 \end{itemize}
 
-Nous nommons $\texttt{f:Pre}$ la pré-condition de la fonction, et $\texttt{f:Post}$,
-la post-condition.
+Nous nommons $\texttt{f:Pre}$ la précondition de la fonction, et $\texttt{f:Post}$,
+la postcondition.
 
 \begin{center}
 \begin{tabular}{rl}
@@ -101,7 +101,7 @@ Nous pouvons détailler les étapes du raisonnement dans les différentes partie
 cette formule.
 
 
-Premièrement, notons que dans les pré et post-conditions, chaque paramètre $x_i$
+Premièrement, notons que dans les pré et postconditions, chaque paramètre $x_i$
 est remplacé par l'argument correspondant ($[x_i \leftarrow t_i]$), comme nous
 l'avons dit juste avant, nous n'avons pas de question d'état mémoire à considérer
 ici puisque ces valeurs ne peuvent pas être changées par l'appel de fonction. Par
@@ -109,21 +109,21 @@ exemple dans le contrat de \CodeInline{inc}, chaque occurrence de \CodeInline{x}
 serait remplacée par l'argument \CodeInline{a}.
 
 
-Ensuite, dans la partie de notre formule qui correspond à la post-condition, nous
+Ensuite, dans la partie de notre formule qui correspond à la postcondition, nous
 pouvons voir que nous introduisons un $\forall \vec{v}$. Le but ici est de modéliser
 le fait que la fonction peut changer la valeur des positions mémoire spécifiées par
 la clause \CodeInline{assigns} du contrat. Donc, pour chaque position potentiellement
 modifiée $a_j$ (qui est, pour notre exemple d'appel à \CodeInline{inc}, 
 \CodeInline{*(\&a)}), nous générons une valeur $v_j$ qui représente sa valeur après
-l'appel. Mais si nous voulons vérifier que la post-condition nous donne le bon 
+l'appel. Mais si nous voulons vérifier que la postcondition nous donne le bon 
 résultat, nous ne pouvons pas accepter \emph{toute valeur} pour les positions mémoire
-modifiées, nous voulons celles \emph{qui permettent de satisifaire la post-condition}.
+modifiées, nous voulons celles \emph{qui permettent de satisfaire la postcondition}.
 
 
 
-Nous utilisons donc ces valeur pour transformer la post-condition de la fonction et
-pour vérifier qu'elle implique la post-condition reçue en entrée du calcul de plus
-faible pré-condition. Nous faisons cela en remplaçant, pour chaque position mémoire
+Nous utilisons donc ces valeur pour transformer la postcondition de la fonction et
+pour vérifier qu'elle implique la postcondition reçue en entrée du calcul de plus
+faible précondition. Nous faisons cela en remplaçant, pour chaque position mémoire
 modifiée $a_j$, sa valeur $here$ avec la valeur $v_j$ qu'elle obtient après l'appel
 ($here(a_j) \leftarrow v_j$). Finalement, nous devons remplacer chaque $old$ valeur
 par sa valeur avant l'appel, et pour chaque $old(a_j)$, cette valeur est
@@ -135,7 +135,7 @@ simplement $a_j$ ($old(a_j) \leftarrow a_j$).
 
 
 Illustrons tout cela sur un exemple en appliquant le calcul de plus faible
-pré-condition sur ce petit code, en supposant le contrat précédemment proposé pour
+précondition sur ce petit code, en supposant le contrat précédemment proposé pour
 la fonction \CodeInline{swap}.
 
 \begin{CodeBlock}{c}
@@ -148,7 +148,7 @@ la fonction \CodeInline{swap}.
 \end{CodeBlock}
 
 
-Nous pouvons appliquer le calul de plus faible pré-condition :
+Nous pouvons appliquer le calcul de plus faible précondition :
 
 \begin{tabular}{l}
   $wp(a = 4; b = 2; swap(\&a, \&b), a = 2 \wedge b = 4) = $\\
@@ -174,9 +174,9 @@ et $old$ avec $O$).
 \end{tabular}
 
 
-Pour la pré-condition, nous obtenons :
+Pour la précondition, nous obtenons :
 $$valid(\&a) \wedge valid(\&b)$$
-Pour la post-condition, commençons par écrire l'expression depuis laquelle nous
+Pour la postcondition, commençons par écrire l'expression depuis laquelle nous
 allons travailler avant de faire les remplacements (et sans la syntaxe de remplacement
 pour rester concis) :
 $$H(*x) = O(*y) \wedge H(*y) = O(*x) \Rightarrow H(a) = 2 \wedge H(b) = 4$$
@@ -205,14 +205,14 @@ et ensuite $a$ par $4$ par la même règle :
 $$\forall v_a, v_b, \quad v_a = 2 \wedge v_b = 4 \Rightarrow v_a = 2 \wedge v_b = 4$$
 
 
-Cette dernière propriété est triviallement vraie, le programme est vérifié.
+Cette dernière propriété est trivialement vraie, le programme est vérifié.
 
 
 \levelFourTitle{Que devrions nous garder en tête ?}
 
 
 Les fonctions sont absolument nécessaire pour programmer modulairement, et le calcul
-de plus faible pré-condition est pleinement compatible avec cette idée, permettant de
+de plus faible précondition est pleinement compatible avec cette idée, permettant de
 raisonner localement à propos de chaque fonction et donc de composer les preuves juste
 de la même manière que nous composons les appels de fonction.
 
@@ -242,11 +242,11 @@ type foo(parameters...){
 
 
 Notons qu'à propos du dernier commentaire, en calcul de plus faible précondition,
-l'idée est plutôt de montrer que notre pré-condition est assez forte pour assurer
-que le code nous amène à la post-condition. Cependant, premièrement, cette vision
-est plus facile à comprendre et deuièmement, un greffon comme WP (et comme n'importe
+l'idée est plutôt de montrer que notre précondition est assez forte pour assurer
+que le code nous amène à la postcondition. Cependant, premièrement, cette vision
+est plus facile à comprendre et deuxièmement, un greffon comme WP (et comme n'importe
 quel outil réaliste pour la preuve de programme) ne suit pas strictement un calcul
-de plus faible pré-condition mais une manière fortement optimisée de calculer les
+de plus faible précondition mais une manière fortement optimisée de calculer les
 conditions de vérification qui ne suit pas exactement les mêmes règles.
 
 
@@ -274,7 +274,7 @@ défini et prouve une fonction qui ne termine pas.
 Nous pouvons voir que la fonction et l'assertion sont prouvées. Et, effectivement,
 la preuve est correcte : nous considérons une correction partielle (puisque nous ne
 pouvons pas prouver la terminaison), et cette fonction ne termine pas. Toute
-assertion suivant cette fonction est vraie: elle est innatteignable.
+assertion suivant cette fonction est vraie: elle est inatteignable.
 
 
 Une question que l'on peut alors se poser est donc: que peut on faire dans un tel 

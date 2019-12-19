@@ -95,7 +95,7 @@ et inversement ».
 
 
 
-La fonction \CodeInline{\textbackslash{}old} ne peut être utilisée que dans la post-condition d'une
+La fonction \CodeInline{\textbackslash{}old} ne peut être utilisée que dans la postcondition d'une
 fonction. Si nous avons besoin de ce type d'information ailleurs, nous 
 utilisons \CodeInline{\textbackslash{}at} qui nous permet d'exprimer des propriétés à propos de la 
 valeur d'une variable à un point donné. Elle reçoit deux paramètres. Le premier 
@@ -136,10 +136,10 @@ de divers points de programme dans la même expression.
 
 
 À la différence de \CodeInline{\textbackslash{}old}, qui ne peut être utilisée que dans les 
-post-conditions de contrats de fonction, \CodeInline{\textbackslash{}at} peut être utilisée partout.
+postconditions de contrats de fonction, \CodeInline{\textbackslash{}at} peut être utilisée partout.
 En revanche, tous les points de programme ne sont pas accessibles selon le type
 d'annotation que nous sommes en train d'écrire. \CodeInline{Old} et \CodeInline{Post} ne sont 
-disponibles que dans les post-conditions d'un contrat, \CodeInline{Pre} et \CodeInline{Here}
+disponibles que dans les postconditions d'un contrat, \CodeInline{Pre} et \CodeInline{Here}
 sont disponibles partout. \CodeInline{LoopEntry} et \CodeInline{LoopCurrent} ne sont 
 disponibles que dans le contexte de boucles (dont nous parlerons plus loin dans
 le tutoriel).
@@ -183,7 +183,7 @@ pointée:
 
 
 Ici, il est facile de remarquer le problème. Cependant, le label que nous
-tramsettons à la fonction \CodeInline{\textbackslash{}at} est propagé également
+transmettons à la fonction \CodeInline{\textbackslash{}at} est propagé également
 aux sous-expressions. Dans certains cas, des termes qui paraissent tout à fait
 innocents peuvent en réalité nous donner des comportements surprenant si nous
 ne gardons pas cette idée en tête. Par exemple dans le programme suivant:
@@ -210,7 +210,7 @@ montrer indispensable pour écrire des spécifications précises.
 
 
 Si nous essayons de prouver le fonctionnement de \CodeInline{swap} (en activant
-la vérification des RTE), notre post-condition est bien vérifiée mais WP nous 
+la vérification des RTE), notre postcondition est bien vérifiée mais WP nous 
 indique qu'il y a un certain nombre de possibilités de \textit{runtime-error}. Ce qui 
 est normal, car nous n'avons pas précisé à WP que les pointeurs que nous
 recevons en entrée de fonction sont valides.
@@ -246,7 +246,7 @@ de \CodeInline{\textbackslash{}valid} sous le nom \CodeInline{\textbackslash{}va
 celui-ci assure qu'il est uniquement nécessaire que le pointeur puisse
 être déréférencé en lecture et pas forcément en écriture, pour pouvoir
 réaliser l'opération de lecture. Cette subtilité est due au fait qu'en C, le
-\textit{downcast} de pointeur  vers un élément const est très facile à faire mais
+\textit{downcast} de pointeur vers un élément \CodeInline{const} est très facile à faire mais
 n'est pas forcément légal.
 
 
@@ -259,7 +259,7 @@ Typiquement, dans le code suivant :
 
 
 
-Le déréférencement de \CodeInline{p} est valide, pourtant la pré-condition de \CodeInline{unref}
+Le déréférencement de \CodeInline{p} est valide, pourtant la précondition de \CodeInline{unref}
 ne sera pas validée par WP car le déréférencement de l'adresse de \CodeInline{value} 
 n'est légal qu'en lecture. Un accès en écriture sera un comportement 
 indéterminé. Dans un tel cas, nous pouvons préciser que dans \CodeInline{unref}, le 
@@ -291,7 +291,7 @@ Le résultat n'est pas vraiment celui escompté :
 
 En effet, nous n'avons pas spécifié les effets de bords autorisés pour notre
 fonction. Pour spécifier les effets de bords, nous utilisons la clause \CodeInline{assigns}
-qui fait partie des post-conditions de la fonction. Elle nous permet de spécifier 
+qui fait partie des postconditions de la fonction. Elle nous permet de spécifier 
 quels éléments \textbf{non locaux} (on vérifie bien des effets de bord), sont 
 susceptibles d'être modifiés par la fonction.
 
@@ -398,13 +398,13 @@ Nous pouvons noter que nous ne nous intéressons pas ici à la preuve de
 l'absence d'erreur à l'exécution car ce n'est pas l'objet de cette section.
 Cependant, si cette fonction faisait partie d'un programme complet à vérifier,
 il faudrait définir le contexte dans lequel on souhaite l'utiliser et définir
-les pré-conditions qui nous garantissent l'absence de débordement en conséquence.
+les préconditions qui nous garantissent l'absence de débordement en conséquence.
 
 
 \levelFourTitle{Écrire le bon contrat}
 
 
-Trouver les bonnes pré-conditions à une fonction est parfois difficile. Il est
+Trouver les bonnes préconditions à une fonction est parfois difficile. Il est
 intéressant de noter qu'une bonne manière de vérifier qu'une spécification est
 suffisamment précise est d'écrire des tests pour voir si le contrat nous permet,
 depuis un code appelant, de déduire des propriétés intéressantes. Et en fait,
@@ -431,7 +431,7 @@ préalablement s'accorder sur une spécification textuelle par exemple).
 Une fois que le contrat est posé, alors seulement, nous nous intéressons aux
 spécifications dues au fait que nous sommes soumis aux contraintes de notre langage
 et notre matériel. Cela concerne principalement nos préconditions. Par exemple,
-la fonction valeur absolue n'a, au fond, pas  vraiment de pré-condition à respecter,
+la fonction valeur absolue n'a, au fond, pas  vraiment de précondition à respecter,
 c'est la machine cible qui détermine qu'une condition supplémentaire doit être
 respectée en raison du complément à deux. Comme nous le verrons dans le chapitre
 \ref{l1:proof-methodologies}, vérifier l'absence de runtime errors peut aussi

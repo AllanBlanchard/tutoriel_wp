@@ -1,8 +1,8 @@
 Les techniques que nous avons vu précédemment dans ce chapitre ont pour but de
-rendre la spécification plus abtraite. Le rôle du code fantôme est inverse. Ici,
+rendre la spécification plus abstraite. Le rôle du code fantôme est inverse. Ici,
 nous allons en fait enrichir nos spécifications à l'aide d'information exprimées
 en langage C. L'idée est d'ajouter des variables et du code source qui
-n'interviend pas dans le programme réel mais permettant de créer des états
+n'intervient pas dans le programme réel mais permettant de créer des états
 logiques qui ne seront visibles que depuis la preuve. Par cet intermédiaire,
 nous pouvons rendre explicites des propriétés logiques qui étaient auparavant
 implicites.
@@ -55,7 +55,7 @@ void foo(int a){
 
 Tandis que dans ce chapitre, cela ne sera pas nécessaire, nous verrons plus tard
 qu'il est parfois utile d'écrire des contrats ou des assertions dans du code
-fantôme. Commme nous devons écrire ces spécifications dans du code qui est
+fantôme. Comme nous devons écrire ces spécifications dans du code qui est
 déjà englobé dans des commentaires C, nous avons accès à une syntaxe spécifique
 pour fournir des contrats ou des assertions fantômes. Nous ouvrons une annotation
 fantôme avec la syntaxe \CodeInline{/@} et nous les fermons avec \CodeInline{@/}.
@@ -190,7 +190,7 @@ mais rien ne nous le permet !
 
 
 
-En substance, notre post-condition a besoin de savoir qu'il existe des
+En substance, notre postcondition a besoin de savoir qu'il existe des
 bornes \CodeInline{low} et \CodeInline{high} telles que la somme calculée correspond à ces bornes.
 Or notre code, n'exprime rien de tel d'un point de vue logique et rien ne nous
 permet \textit{a priori} de faire cette liaison en utilisant des formulations logiques.
@@ -220,7 +220,7 @@ L'invariant \CodeInline{BOUNDS} exprime comment sont ordonnées les différentes
 pendant le calcul. L'invariant \CodeInline{REL} exprime ce que signifient les
 valeurs \CodeInline{cur} et \CodeInline{max} par rapport à ces bornes. Finalement,
 l'invariant \CodeInline{POST} permet de faire le lien entre les invariants précédents
-et la post-condition de la fonction.
+et la postcondition de la fonction.
 
 
 

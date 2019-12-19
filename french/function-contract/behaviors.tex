@@ -14,7 +14,7 @@ le cas où la valeur est négative.
 
 
 Les comportements nous servent à spécifier les différents cas pour les
-post-conditions. Nous les introduisons avec le mot-clé \CodeInline{behavior}.
+postconditions. Nous les introduisons avec le mot-clé \CodeInline{behavior}.
 Chaque comportement a un nom. Pour un comportement donné, nous trouvons
 différentes suppositions à propos de l'entrée de la fonction, elles sont
 introduites à l'aide du mot clé \CodeInline{assumes} (notons que, puisqu'elles
@@ -65,14 +65,14 @@ présent dans les deux comportements.
 
 
 \begin{Warning}
-Même si \CodeInline{assigns} est une post-condition, à ma connaissance, il n'est pas
+Même si \CodeInline{assigns} est une postcondition, à ma connaissance, il n'est pas
 possible de mettre des \CodeInline{assigns} pour chaque \textit{behavior}. Si nous avons
 besoin d'un tel cas, nous spécifions :
 
 \begin{itemize}
 \item \CodeInline{assigns} avant les \textit{behavior} (comme dans notre exemple) avec tout
 élément non-local susceptible d'être modifié,
-\item en post-condition de chaque \textit{behavior} les éléments qui ne sont finalement
+\item en postcondition de chaque \textit{behavior} les éléments qui ne sont finalement
 pas modifiés en les indiquant égaux à leur ancienne (\CodeInline{\textbackslash{}old}) valeur.
 \end{itemize}
 \end{Warning}
@@ -102,7 +102,7 @@ En considérant que le contrat était :
 \CodeBlockInput{c}{ex-1-distance.c}
 
 
-Le ré-écrire en utilisant des comportements.
+Le réécrire en utilisant des comportements.
 
 
 \levelFourTitle{Remettre à zéro selon une condition}
@@ -116,7 +116,7 @@ précédente. En considérant que le contrat était :
 \CodeBlockInput[1][13]{c}{ex-2-reset-on-cond.c}
 
 
-Le ré-écrire en utilisant des comportements.
+Le réécrire en utilisant des comportements.
 
 \levelFourTitle{Jours du mois}
 
@@ -129,7 +129,7 @@ En supposant que le contrat écrit était :
 \CodeBlockInput{c}{ex-3-day-month.c}
 
 
-Le ré-écrire en utilisant des comportements.
+Le réécrire en utilisant des comportements.
 
 
 \levelFourTitle{Maximum des valeurs pointées I}
@@ -144,7 +144,7 @@ pointées. En considérant que le contrat était :
 \CodeBlockInput[1][13]{c}{ex-4-max-ptr.c}
 
 
-Le ré-écrire en utilisant des comportements.
+Le réécrire en utilisant des comportements.
 
 
 
@@ -160,7 +160,7 @@ valeur. En considérant que le contrat était :
 
 
 \begin{enumerate}
-\item Le ré-écrire en utilisant des comportements
+\item Le réécrire en utilisant des comportements
 \item Modifier le contrat de 1. de sorte à ce que les comportements ne
   soient pas disjoint. Excepté cette propriété, tout le reste devrait
   être correctement prouvé
@@ -188,7 +188,7 @@ précédente, en considérant que le contrat était :
 \CodeBlockInput{c}{ex-6-order-3.c}
 
 
-Le ré-récrire en utilisant des comportements. Notons que le contrat
+Le réécrire en utilisant des comportements. Notons que le contrat
 devrait être composé d'un comportement général et de trois
 comportements spécifiques. Est ce que ces comportements sont complets ?
 Sont-ils disjoints ?

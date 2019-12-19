@@ -15,7 +15,7 @@ entre les valeurs absolues de deux valeurs :
 
 
 Commençons par (sur-)découper les déclarations et définitions des différentes
-fonctions dont nous avons besoin (et que nous avons déjà propuvé) en couples
+fonctions dont nous avons besoin (et que nous avons déjà prouvé) en couples
 headers/source, à savoir \CodeInline{abs} et \CodeInline{max}. Cela donne pour
 \CodeInline{abs} :
 
@@ -87,7 +87,7 @@ en isolation les unes des autres.
 
 En dehors de la fonction, sa spécification est considérée comme étant
 vérifiée : nous ne cherchons pas à reprouver que la fonction fait bien son travail
-à chaque appel, nous nous contenterons de vérifier que les pré-conditions sont
+à chaque appel, nous nous contenterons de vérifier que les préconditions sont
 réunies au moment de l'appel. Cela donne donc des preuves très modulaires et donc
 des spécifications plus facilement réutilisables. Évidemment, si notre preuve
 repose sur la spécification d'une autre fonction, cette fonction doit-elle même
@@ -132,18 +132,18 @@ l'année est bissextile.
 
 
 Écrire et spécifier les différentes fonctions utilisées par
-\CodeInline{is\_alpha\_num}. Fournir un contrat pour chacune d'alles et
+\CodeInline{is\_alpha\_num}. Fournir un contrat pour chacune d'elles et
 fournir le contrat de \CodeInline{is\_alpha\_num}.
 
 
-```c
+\begin{CodeBlock}{c}
 int is_alpha_num(char c){
   return
     is_lower_alpha(c) ||
     is_upper_alpha(c) ||
     is_digit(c) ;
 }
-```
+\end{CodeBlock}
 
 Déclarer une énumération avec les valeurs \CodeInline{LOWER}, \CodeInline{UPPER},
 \CodeInline{DIGIT} et \CodeInline{OTHER}, et une fonction \CodeInline{character\_kind}
