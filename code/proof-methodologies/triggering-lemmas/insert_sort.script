@@ -22,7 +22,7 @@ Proof.
       - rewrite <- Eq.
         replace (mem .[ shift_sint32 page to]) with (mem .[ shift_sint32 page (to + 1 - 1)]) by (norm ; auto).
         rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_with_element with (i := (to+1)%Z) ;
-        [ rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_with_element with (i := (to+1)%Z) | | ] ;
+        [ rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_with_element with (i := (to+1)%Z) | | | ] ;
           norm ; try rewrite Eq ; auto ; try omega.
         assert(Simpl: forall x y z : Z, (x + y = z)%Z -> (1 + x + y = 1 + z)%Z) by (intros ; omega).
         apply Simpl.
@@ -129,6 +129,21 @@ Proof.
           norm ; auto ; omega.
       * apply A_Occurrences_Axiomatic.Q_occurrences_positive_range_without_element ; 
           norm ; auto ; omega.
+Qed.
+
+Goal typed_lemma_unchanged_is_permutation.
+Hint property,unchanged_is_permutation.
+Proof.
+   intros ; intros x ; intros.
+   replace (L_l_occurrences_of t x a i_1 i) 
+      with (L_l_occurrences_of t x a (0%Z + i_1) (0%Z + i)).
+   + eapply Q_shifted_maintains_occ ; auto.
+     intros p ; intros.
+     replace (0 + p)%Z with p by omega.
+     symmetry ; apply H ; auto.
+   + replace (0 + i)%Z with i by omega.
+     replace (0 + i_1)%Z with i_1 by omega.
+     auto.
 Qed.
 
 Goal typed_lemma_union_permutation.

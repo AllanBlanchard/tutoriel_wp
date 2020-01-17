@@ -185,7 +185,7 @@ the proof.
 We often use assertions to express properties that precisely correspond to one
 or all of the premises of a lemma or to its conclusion. By doing this, we
 maximize the chances that the SMT solver ``recognize'' that what we have written
-corresponds to a particular lemma and that it should use it. 
+corresponds to a particular lemma and that it should use it.
 
 
 
@@ -266,7 +266,7 @@ definitions. This time, we will prove the insertion sort function:
 
 
 The \CodeInline{insertion\_sort} function visits each value, from the beginning
-of the array, to the end. For each of value $v$, it is inserted (using the
+of the array, to the end. For each value $v$, it is inserted (using the
 function \CodeInline{insert}) at the right place in the range of the already
 sorted values (at the beginning of the array), by shifting them until it meets
 a value that is smaller than $v$ or the first cell of the array.
@@ -316,7 +316,7 @@ Then, we need to provide a suitable invariant to the loop of the
 previously defined permutation predicate, we are in trouble.
 Indeed, our inductive definition of the permutation specifies three cases: a
 range is permutation of itself, or two (and only two) values have been swapped,
-or the permutation is transitive. But none of this cases can be applied to our 
+or the permutation is transitive. But none of this cases can be applied to our
 \CodeInline{insert} function, since the shifted range is not obtained by
 successively exchanging values, and that the other cases obviously do not apply
 here.
@@ -563,7 +563,9 @@ same.
 
 The property \CodeInline{unchanged\_is\_permutation} is proved by SMT solvers
 thank to the fact that we have expressed it using \CodeInline{shifted}, then the
-solver can immediately instantiate the previous lemma.
+solver can immediately instantiate the previous lemma. If it is not the case
+(depending on the version of the prover), the proof is done by instanciating
+\CodeInline{shifted\_maintains\_occ} with a value of 0 for the shift property.
 
 
 To prove \CodeInline{rotate\_left\_is\_permutation} we split the range at
@@ -571,7 +573,7 @@ To prove \CodeInline{rotate\_left\_is\_permutation} we split the range at
 \CodeInline{beg+1 .. end}, and the range at \CodeInline{L2} into two subparts
 \CodeInline{beg .. end-1} and \CodeInline{end-1 .. end}, using
 \CodeInline{l\_occurrences\_union}. We show that the number of occurrences in
-\CodeInline{beg+1 .. end} at \CodeInline{L1} and \CodeInline{end-1 .. end} at
+\CodeInline{beg+1 .. end} at \CodeInline{L1} and \CodeInline{beg .. end-1} at
 \CodeInline{L2} did not change thanks to \CodeInline{shifted\_maintains\_occ},
 and that the number of occurrences in \CodeInline{beg .. beg+1} at
 \CodeInline{L1} and \CodeInline{end-1 .. end} at \CodeInline{L2} is the same by

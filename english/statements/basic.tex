@@ -27,7 +27,7 @@ x = 43 * c ;
 $$P = wp(x = 43*c , \{x = 258\}) = \{43*c = 258\}$$
 
 
-The function $wp$ allows us to compute, as weakest precondition of 
+The function $wp$ allows us to compute, as weakest precondition of
 the assignment provided our expected postcondition, the formula
 $\{43*c = 258\}$, thus obtaining the following Hoare triple:
 
@@ -229,8 +229,7 @@ The WP plugin does not exactly work like this. In particular, it depends on the
 memory model chosen for the proof that will make different assumption about the
 memory is organized. For the memory model we use, the typed memory model, in
 fact WP creates multiple variables for memory. However, let us have a look at
-the verification condition generated for the postcondition of the swap function,
-by preventing WP to simplify it using the option \CodeInline{-wp-no-simpl}:
+the verification condition generated for the postcondition of the swap function:
 
 
 \image{memory-model}
@@ -651,15 +650,16 @@ right rule.
 \levelFourTitle{Empty ``then'' branch in conditional}
 
 
-We previously shown that in a condition when the ``else'' branch is empty,
-that the postcondition of the complete conditional is already verified if
-with the conjunction of the negation of the condition and the precondition.
+We previously shown that when a conditional structure has an empty ``else''
+branch, that means that the conjunction of the precondition and the negation
+of the condition must be enough to verify the postcondition of the complete
+condtional structure.
 For both of the following question, we only need the inference rules and
 no WP calculus.
 
-Show that when, instead, the ``then'' branch is empty, the conjunction of
-the condition and the precondition must implies the postcondition of the
-``else'' branch.
+Show that when, instead of the ``else'' branch, the ``then'' branch is empty,
+the conjunction of the condition and the precondition must implies the
+postcondition of the ``else'' branch.
 
 Show that when both branches are empty, the overall condition is just a
 skip operation.
@@ -686,7 +686,7 @@ can be written as:
 
 \begin{CodeBlock}{c}
 if(cond1){
-  if(cond2){    
+  if(cond2){
     // code
   }
 }
@@ -708,9 +708,9 @@ Compute by hand the weakest precondition of the following program:
 
 
 \begin{CodeBlock}{c}
-/*@ 
-  requires -5 <= y <= 5 ; 
-  requires -5 <= x <= 5 ; 
+/*@
+  requires -5 <= y <= 5 ;
+  requires -5 <= x <= 5 ;
   ensures  -15 <= \result <= 25 ;
 */
 int function(int x, int y){
@@ -719,13 +719,13 @@ int function(int x, int y){
   if(x < 0){
     x = 0 ;
   }
-  
+
   if(y < 0){
     x += 5 ;
   } else {
     x -= 5 ;
   }
-  
+
   res = x - y ;
 
   return res ;

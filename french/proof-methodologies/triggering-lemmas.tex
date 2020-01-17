@@ -1,0 +1,722 @@
+Il y a différent niveau d'automatisation dans la vérification de programmes.
+Depuis les outils complètement automatiques, comme les interpréteurs abstraits
+qui ne nécessite aucune aide de la part de l'utilisateur (ou en tout cas, très peu),
+jusqu'aux outils interactifs comme les assistants de preuve, où les preuves sont
+principalement écrites à la main et l'outil est juste là pour vérifier que nous
+le faisons correctement.
+
+
+Les outils comme WP (et beaucoup d'autres comme Why3, Spark, ...) visent à
+maximiser l'automatisation. Cependant, plus les propriétés que nous voulons
+prouver sont complexes, plus il sera difficile d'obtenir automatiquement toute
+la preuve. Par conséquent, nous devons souvent aider les outils pour terminer
+la vérification. Nous faisons souvent cela en fournissant plus d'annotations
+pour aider le processus de génération des obligations de preuve. Ajouter un
+invariant de boucle est par exemple une manière de fournir les informations
+nécessaires pour produire le raisonnement par induction permettant son analyse,
+alors que les prouveurs automatiques sont plutôt mauvais à cet exercice.
+
+
+Cette technique de vérification a été appelée « \textit{auto-active} ». Ce mot est la
+contraction de « \textit{automatic} » et « \textit{interactive} ». Elle est automatique au sens
+où la majorité de la preuve est effectuée par des outils automatiques, mais
+elle est aussi en partie interactive puisqu'en tant qu'utilisateurs, nous
+fournissons manuellement de l'information aux outils.
+
+
+Dans cette section, nous allons voir plus en détails comment nous pouvons
+utiliser des assertions pour guider la preuve. En ajoutant des assertions nous
+créons une certaine base de connaissances (des propriétés que nous savons vraies),
+qui sont collectées par le générateur d'obligations de preuve pendant le calcul
+de WP et qui sont données aux prouveurs automatiques qui ont par conséquent plus
+d'informations et peuvent potentiellement prouver des propriétés plus complexes.
+
+
+\levelThreeTitle{Context de preuve}
+
+
+Pour comprendre exactement le bénéfice que représente l'ajout d'assertions dans
+les annotations d'un programme, commençons par regarder de plus près les
+obligations de preuve générées par WP à partir du code source annoté et comment
+les assertions sont prises en compte. Pour cela, nous allons utiliser le prédicat
+suivant (qui ressemble furieusement au théorème de Pythagore) :
+
+
+
+\CodeBlockInput[1][4]{c}{context.c}
+
+
+
+Regardons d'abord cet exemple :
+
+
+\CodeBlockInput[6][16]{c}{context.c}
+
+
+
+Ici, nous avons spécifié une précondition suffisamment complexe pour que WP ne
+puisse par directement deviner les valeurs en entrée de fonction. En fait, ces
+valeurs sont exactement : \CodeInline{*x == 3}, \CodeInline{*y == 4} et
+\CodeInline{*z == 5}. Maintenant, si nous regardons l'obligation de preuve générée
+pour notre première assertion, nous pouvons voir ceci (il faut bien sélectionner
+la vue « \textit{Full Context} » ou « \textit{Raw obligation} » - elles ne sont pas exactement
+identiques mais assez similaires, la première est juste légèrement plus jolie) :
+
+
+\image{context_e1_a1}
+
+
+Nous y voyons les différentes contraintes que nous avons formulé comme préconditions
+de fonction (notons que les valeurs ne sont pas exactement les mêmes, et que quelques
+propriétés supplémentaires ont été générées). Maintenant, regardons plutôt
+l'obligation de preuve générées pour la seconde assertion (notons que nous avons
+édité les captures d'écran restantes de cette section pour nous concentrer sur ce
+qui est important, les autres propriétés pouvant être ignorées dans notre cas) :
+
+
+\image{context_e1_a2}
+
+
+Ici, nous pouvons voir que dans le contexte utilisable pour la preuve de la seconde
+assertion, WP a collecté et ajouté la première assertion et en a fait une supposition.
+WP considère que les solveurs SMT peuvent supposer que cette propriété est vraie.
+Cela signifie que les prouveurs peuvent l'utiliser, mais également qu'elle doit être
+prouvée pour l'obligation de preuve actuelle soit complètement vérifiée.
+
+
+Notons que WP ne collecte que ce qu'il trouve sur les différents chemins d'exécution
+qui permettent d'atteindre l'assertion. Par exemple, si nous modifions le code de
+telle manière à ce que le chemin qui mène à la seconde assertion saute le chemin qui
+passe par la première, celle-ci n'apparaît pas dans le contexte de la seconde assertion.
+
+
+\CodeBlockInput[26][31]{c}{context.c}
+
+
+\image{context_e1p_a2}
+
+
+Maintenant, modifions un peu notre exemple de manière à illustrer comme les
+assertions peuvent changer la manière de prouver un programme. Par exemple, nous
+pouvons modifier les différentes positions mémoire (en doublant chaque valeur) et
+vérifier que le triangle résultant est rectangle.
+
+
+\CodeBlockInput[34][47]{c}{context.c}
+
+
+
+\image{context_e2}
+
+
+
+Ici, le solveur va probablement dérouler le prédicat et directement vérifier
+que la propriété qui y est définie est vraie, en effet depuis l'obligation de
+preuve, il n'y a pas vraiment d'autres informations qui pourrait nous
+amener à obtenir une preuve. Maintenant, ajoutons de l'information dans les
+annotations :
+
+
+
+\CodeBlockInput[49][68]{c}{context.c}
+
+
+
+Nous prouvons d'abord que si nous multiplions par 2 chacune des valeurs, le
+prédicat est vrai pour les nouvelles valeurs. Le solveur va d'abord prouver
+la même propriété, bien sûr, mais ce n'est pas ce que nous voulons montrer ici.
+Nous ajoutons ensuite que chaque valeur a été multipliée par 2. Maintenant, nous
+pouvons regarder l'obligation de preuve générée pour la dernière assertion :
+
+
+\image{context_e3}
+
+
+
+Alors que nous devons prouver exactement la même propriété qu'avant (avec un peu
+de renommage), nous pouvons voir que nous avons une autre manière de la prouver.
+En effet en combinant ces propriétés :
+
+
+\begin{CodeBlock}{text}
+(* Assertion *)
+Have: P_rectangle(x_10, x_8, x_5).
+(* Assertion *)
+Have: x_9 = x_10.
+(* Assertion *)
+Have: x_6 = x_8.
+(* Assertion *)
+Have: x_3 = x_5.
+\end{CodeBlock}
+
+
+Il est facile de déduire :
+
+
+\begin{CodeBlock}{text}
+Prove: P_rectangle(x_9, x_6, x_3).
+\end{CodeBlock}
+
+
+En remplaçant simplement les valeurs \CodeInline{x\_9}, \CodeInline{x\_6} et
+\CodeInline{x\_3}. Donc le solveur pourrait utiliser ceci pour faire la preuve
+sans avoir à déplier le prédicat. Cependant, il ne le fera pas forcément : les
+solveurs SMT sont basés sur des méthodes heuristiques, nous pouvons juste leur
+fournir des propriétés et espérer qu'ils vont les utiliser.
+
+
+Ici la propriété est simple à prouver, donc il n'était pas vraiment nécessaire
+d'ajouter ces assertions (et donc de faire plus d'efforts pour faire la même
+chose). Cependant, dans d'autre cas, comme nous allons le voir maintenant, nous
+devons donner la bonne information au bon endroit de façon à ce que les prouveurs
+trouvent les informations dont ils ont besoin pour finir les preuves.
+
+
+\levelThreeTitle{Déclencher les lemmes}
+
+
+Nous utilisons souvent des assertions pour exprimer des propriétés qui
+correspondent aux prémisses d'un lemme ou à ses conclusions. En faisant cela,
+nous maximisons les chances que les prouveurs automatiques « reconnaissent »
+que ce que nous avons écrit correspond à un lemme en particulier et qu'il
+devrait l'utiliser.
+
+
+Illustrons cela avec l'exemple suivante. Nous utilisons des axiomes et pas des
+lemmes parce qu'ils sont considérés de la même manière par WP lorsque nous nous
+intéressons à la preuve d'une propriété qui en dépend. Regardons d'abord notre
+définition axiomatique. Nous définissons deux prédicats \CodeInline{P} et
+\CodeInline{Q} à propos d'une position mémoire particulière \CodeInline{x}.
+Nous avons deux axiomes : \CodeInline{ax\_1} qui énonce que si \CodeInline{P(x)}
+est vraie, alors \CodeInline{Q(x)} est vraie, et un second axiome \CodeInline{ax\_2}
+qui énonce que si la position mémoire pointée ne change pas entre deux labels
+(ce que l'on représente par le prédicat \CodeInline{eq}) et que \CodeInline{P(x)}
+est vraie pour le premier label, alors elle est vraie pour le second.
+
+
+
+\CodeBlockInput[1][15]{c}{trigger_1_1.c}
+
+
+Et nous voulons prouver le programme suivant :
+
+
+\CodeBlockInput[17][27]{c}{trigger_1_1.c}
+
+
+Cependant, nous pouvons voir que la preuve échoue sur l'obligation de preuve
+suivante (nous avons, à nouveau, retiré les éléments qui ne sont pas intéressant
+pour notre explication) :
+
+
+\image{trigger_1_1}
+
+
+D'après cela, notre prouver automatique semble incapable d'utiliser l'un des
+axiomes de notre définition : soit il ne peut pas montrer qu'après l'appel
+\CodeInline{g(y)}, \CodeInline{P(x)} est toujours vraie, soit il le peut, et
+dans ce cas, cela veut dire qu'il n'arrive pas à montrer que cela implique
+\CodeInline{Q(x)}. Essayons donc d'ajouter une assertion pour vérifier qu'il
+arrive à montrer \CodeInline{P(x)} après l'appel :
+
+
+\CodeBlockInput[20][28]{c}{trigger_1_1p.c}
+
+
+\image{trigger_1_1p}
+
+
+Il semble que malgré le fait qu'il est clair que \CodeInline{*x} n'a pas changé
+pendant l'appel \CodeInline{g(y)}, et donc que \CodeInline{eq\{Pre, Here\}(x)}
+est vraie après l'appel, puisque la propriété n'est pas directement fournie dans
+notre obligation de preuve, le prouveur automatique n'utilise pas l'axiome
+\CodeInline{ax\_2} correspondant. Fournissons donc cette information au prouveur
+automatique :
+
+
+\CodeBlockInput[20][28]{c}{trigger_1_2.c}
+
+
+
+Et maintenant, tout est prouvé. Si nous regardons l'obligation de preuve générée,
+nous pouvons voir que l'information nécessaire est bien fournie, ce qui permet
+au prouveur automatique d'en faire usage :
+
+
+\image{trigger_1_2}
+
+
+\levelThreeTitle{Un exemple plus complexe : du tri à nouveau}
+
+
+Travaillons maintenant avec un exemple plus complexe utilisant une définition
+axiomatique réelle. Cette fois, nous nous intéresserons à montrer la correction
+d'un tri par insertion :
+
+
+\CodeBlockInput{c}{insert_sort.c}
+
+
+La fonction \CodeInline{insertion\_sort} visite chaque valeur, du début du tableau
+jusqu'à la fin. Pour chaque valeur $v$, elle est insérée (en utilisant la fonction
+\CodeInline{insert}) à la bonne place dans la plage des valeurs déjà triées (et qui
+se trouvent dans le début du tableau), en faisant glisser les éléments jusqu'à
+recontrer un élément qui est plus petit que $v$, ou le début du tableau.
+
+
+
+Nous voulons prouver la même postcondition que ce nous avons déjà prouvé pour le
+tri par sélection. C'est à dire : nous voulons créer une permutation triée des
+valeurs originales. A nouveau, chaque itération de la boucle doit assurer que la
+nouvelle configuration obtenue est une permutation des valeurs originales, et que
+la plage de valeurs allant du début à la cellule actuellement visitée est triée.
+Toutes ces propriétés sont garanties par la fonction \CodeInline{insert}. Si l'on
+regarde cette fonction de plus près, nous pouvons voir qu'elle enregistre la
+valeur à insérer (qui se trouve à la fin de la plage de valeurs) dans une variable
+\CodeInline{value}, et commençant à la fin de la plage, fait itérativement glisser
+les valeurs rencontrer jusqu'à rencontrer une valeur plus petite que la valeur à
+insérer ou la première cellule du tableau, et insère ensuite la valeur.
+
+
+
+
+Tout d'abord, fournissons un contrat et un invariant pour la fonction de tri
+par insertion. Le contrat est équivalent à celui que nous avions fourni pour le
+tri par sélection. Notons cependant que l'invariant est plus faible : nous
+n'avons pas besoin que les valeurs restant à trier soit plus grandes que les
+valeurs déjà visitées : nous insérons chaque valeur à la bonne position.
+
+
+
+\CodeBlockInput[63][81]{c}{insert_sort-contract.c}
+
+
+
+Maintenant, nous pouvons fournir un contrat à la fonction d'insertion. La
+fonction requière que la plage de valeurs considérée soit triée du début jusqu'à
+l'avant dernière valeur. En échange elle doit garantir que la plage finale soit
+triée et soit une permutation des valeurs originales :
+
+
+
+\CodeBlockInput[43][61]{c}{insert_sort-contract.c}
+
+
+
+Ensuite, nous devons fournir un invariant utilisable pour expliquer le comportement
+de la boucle de la fonction \CodeInline{insert}. Et cette fois, nous pouvons voir
+qu'avec notre précédente définition de la notion de permutation, nous sommes un
+peu embêtés. En effet, notre définition inductive de la permutation spécifie trois
+cas : une plage de valeur est une permutation d'elle même, ou deux (et seulement
+deux) valeurs ont été changées, ou finalement la permutation d'une permutation est
+une permutation. Mais aucun de ces cas ne peut être appliqué à notre fonction
+d'insertion puisque la plage obtenue ne l'est pas par une succession d'échanges de
+valeurs, et les deux autres cas ne peuvent évidemment pas s'appliquer ici.
+
+
+
+Nous avons donc besoin d'une meilleure définition pour notre permutation. Nous
+pouvons constater que ce dont nous avons vraiment besoin, c'est une manière de
+dire « chaque valeur qui était dans le tableau est toujours dans le tableau et
+si plusieurs valeurs étaient équivalentes, le nombre d'occurrences de ces valeurs
+ne change pas ». Et en fait, nous n'avons besoin que de la dernière partie de cette
+définition pour exprimer notre permutation. Une permutation est une plage de valeurs
+telles que pour toute valeur, le nombre d'occurrences de cette valeur dans cette
+plage ne change pas d'un point de programme à un autre :
+
+
+
+\CodeBlockInput[37][41]{c}{insert_sort-proved.c}
+
+
+
+En partant de cette définition, nous sommes capables de fournir des lemmes qui
+vont nous permettre de raisonner efficacement à propos des permutations, à
+supposer que certaines propriétés sont vraies à propos du tableau entre deux
+points de programme. Par exemple, nous pourrions définir le cas \CodeInline{Swap}
+de notre définition inductive précédente en utilisant un lemme. Et c'est bien
+entendu aussi le cas pour notre plage de valeur « glissée ».
+
+
+
+Déterminons quels sont les lemmes requis en considérant d'abord la fonction
+\CodeInline{insert\_sort}. La seule propriété non-prouvée est l'invariant qui
+exprime que le tableau est un permutation du tableau original. Comment pouvons
+nous le déduire ? (nous nous intéresserons aux preuves de ces lemmes plus tard).
+
+
+
+Nous pouvons observer deux faits : la première plage du tableau (de
+\CodeInline{beg} à \CodeInline{i+1}) est une permutation de la même plage au
+début de l'itération (par le contrat de la fonction \CodeInline{insert}). La
+seconde partie (de \CodeInline{i+1} à \CodeInline{end}) est inchangée, donc
+c'est aussi une permutation. Essayons d'utiliser quelques assertions pour voir
+parmi ces propriétés ce qui peut être prouvée et ce qui ne peut pas l'être.
+Tandis que la première propriété est bien prouvée, nous pouvons voir que la
+seconde ne l'est pas :
+
+
+
+\begin{CodeBlock}{c}
+  /*@
+    loop invariant beg+1 <= i <= end ;
+    loop invariant sorted(a, beg, i) ;
+    loop invariant permutation{Pre, Here}(a,beg,end);
+    loop assigns a[beg .. end-1], i ;
+    loop variant end-i ;
+  */
+  for(size_t i = beg+1; i < end; ++i) {
+    //@ ghost L:
+    insert(a, beg, i);
+    //@ assert permutation{L, Here}(a, beg, i+1); // PROVED
+    //@ assert permutation{L, Here}(a, i+1, end); // NOT PROVED
+  }
+\end{CodeBlock}
+
+
+Nous avons donc besoin d'un premier lemme pour cette propriété. Définissons
+deux prédicats \CodeInline{shifted} et \CodeInline{unchanged}, le second
+étant utilisé pour définir le premier (nous verrons pourquoi un peu plus
+tard) et exprimer qu'une plage inchangée est une permutation :
+
+
+\CodeBlockInput[48][55]{c}{insert_sort-proved.c}
+
+\CodeBlockInput[67][70]{c}{insert_sort-proved.c}
+
+
+Et maintenant, nous pouvons vérifier que ces deux sous-tableaux sont des
+permutations, nous faisons cela en ajoutant une assertion qui montre que la
+plage allant de \CodeInline{i+1} à \CodeInline{end} est inchangée, afin de
+déclencher l'usage de notre lemme \CodeInline{unchanged\_is\_permutation}.
+
+
+\CodeBlockInput[129][142]{c}{insert_sort-proved.c}
+
+
+Comme ces deux sous-parties du tableaux sont des permutations, le tableau
+global est une permutation des valeurs initialement présentes au début de
+l'itération. Cependant, cela n'est pas prouvé directement, nous ajoutons
+donc aussi un lemme pour cela :
+
+
+\CodeBlockInput[75][81]{c}{insert_sort-proved.c}
+
+
+Et maintenant, nous pouvons déduire qu'une itération de la boucle produit
+une permutation en ajoutant cette conclusion comme une assertion :
+
+
+\begin{CodeBlock}{c}
+    //@ ghost L: ;
+    insert(a, beg, i);
+    //@ assert permutation{L, Here}(a, beg, i+1);
+    //@ assert unchanged{L, Here}(a, i+1, end);
+    //@ assert permutation{L, Here}(a, i+1, end);
+    //@ assert permutation{L, Here}(a, beg, end); // PROVED
+\end{CodeBlock}
+
+
+Finalement, nous devons ajouter une information supplémentaire, la permutation
+d'une permutation est aussi une permutation. Cette fois, nous n'avons pas
+besoin d'une assertion supplémentaire. Le contexte contient :
+\begin{itemize}
+\item \CodeInline{permutation\{Pre, L\}(a, beg, end)} (invariant)
+\item \CodeInline{permutation\{L, Here\}(a, beg, end)} (assertion)
+\end{itemize}
+qui est suffisant pour conclure \CodeInline{permutation\{Pre, Here\}(a, beg, end)}
+à la fin du bloc de la boucle en utilisant le lemme suivant :
+
+
+\CodeBlockInput[42][47]{c}{insert_sort-proved.c}
+
+
+Maintenant, nous pouvons regarder de plus près notre fonction d'insertion en
+nous intéressant d'abord à comment obtenir la connaissance que la fonction
+produit une permutation.
+
+
+Elle fait glisser les différents éléments vers la gauche jusqu'à rencontrer le
+début du tableau ou un élément plus petit que l'élément à insérer qui est
+initialement à la fin de la plage de valeur et inséré à la position ainsi atteinte.
+Les cellules du début du tableau jusqu'à la position d'insertion restent
+inchangées, c'est donc une permutation. Nous avons un lemme pour cela, mais nous
+devons ajouter cette connaissance que le début du tableau ne change pas comme
+un invariant de la boucle pour pouvoir déclencher le lemme après celle-ci. La
+seconde partie du tableau est une permutation parce que nous faisons « tourner »
+les éléments, nous avons besoin d'un lemme pour exprimer cela et d'indiquer dans
+l'invariant de boucle que les éléments sont glissés par la boucle. Finalement,
+l'union de deux permutations est une permutation et nous avons déjà un lemme
+pour cela.
+
+
+Tout d'abord, donnons un invariant pour la permutation :
+
+\begin{itemize}
+    \item nous fournissons les bornes de \CodeInline{i},
+    \item nous indiquons que la première partie du tableau est inchangée,
+    \item nous indiquons que la seconde partie est glissée vers la gauche.
+\end{itemize}
+
+
+et nous ajoutons quelques assertions pour vérifier quelques propriétés d'intérêt :
+\begin{itemize}
+    \item d'abord, pour déclencher \CodeInline{unchanged\_permutation}, nous
+          plaçons une première assertion pour énoncer que la première partie
+          du tableau est inchangée, ce qui nous permet de prouver que ...
+    \item la seconde assertion, qui nous dit que la première partie du tableau
+          est une permutation de l'originale, et que l'on utilise en combinaison
+          avec ...
+    \item la troisième assertion qui nous dit que la seconde partie du tableau
+          est une permutation de l'originale (qui nous permet de déclencher
+          l'usage de \CodeInline{union\_permutation} et de prouver la postcondition).
+\end{itemize}
+
+
+\begin{CodeBlock}{c}
+  /*@
+    loop invariant beg <= i <= last ;
+    loop invariant \forall integer k ; beg <= k <= i    ==> a[k] == \at(a[k], Pre) ;
+    loop invariant \forall integer k ; i+1 <= k <= last ==> a[k] == \at(a[k-1], Pre) ;
+
+    loop assigns i, a[beg .. last] ;
+    loop variant i ;
+  */
+  while(i > beg && a[i - 1] > value){
+    a[i] = a[i - 1] ;
+    --i ;
+  }
+
+  a[i] = value ;
+
+  //@ assert unchanged{Pre, Here}(a, beg, i) ;   // PROVED
+  //@ assert permutation{Pre, Here}(a, beg, i) ; // PROVED
+
+  //@ assert rotate_left{Pre, Here}(a, i, last+1) ; //PROVED
+  //@ assert permutation{Pre, Here}(a, i, last+1) ; // NOT PROVED
+\end{CodeBlock}
+
+
+Pour la dernière assertion, nous avons besoin d'un lemme à propos de la
+rotation des éléments :
+
+
+\CodeBlockInput[56][60]{c}{insert_sort-proved.c}
+\CodeBlockInput[71][74]{c}{insert_sort-proved.c}
+
+
+Nous devons également aider un peut les prouveurs automatiques pour montrer
+que l'ensemble des valeurs est trié après l'insertion. Pour cela, nous fournissons
+un nouvel invariant pour montrer que les valeurs « glissées » sont plus grandes
+que la valeur à insérer. Puis, nous ajoutons également des assertions pour
+montrer que le tableau est trié avant l'insertion, et que toutes les valeurs
+avant la cellule où nous insérons sont plus petites que la valeur insérée, et
+que la plage est en conséquence triée après l'insertion. Cela nous amène à
+la fonction \CodeInline{insert} complètement annotée suivante :
+
+
+
+\CodeBlockInput[83][119]{c}{insert_sort-proved.c}
+
+
+
+En tout, nous avons 6 lemmes à prouver :
+\begin{itemize}
+\item \CodeInline{l\_occurrences\_union}
+\item \CodeInline{shifted\_maintains\_occ}
+\item \CodeInline{unchanged\_is\_permutation}
+\item \CodeInline{rotate\_left\_is\_permutation}
+\item \CodeInline{union\_permutation}
+\item \CodeInline{transitive\_permutation}
+\end{itemize}
+
+
+Tandis que les preuves Coq de ces lemmes sont en dehors des préoccupations de ce
+tutoriel (et nous verrons plus tard que dans le cas particulier de cette preuve
+nous pouvons nous en débarrasser), donnons quelques indications pour obtenir une
+preuve de ces lemmes (notons que les scripts Coq de ces preuves sont disponibles
+sur le répertoire GitHub de ce livre).
+
+
+Pour prouver \CodeInline{l\_occurrences\_union}, nous raisonnons par induction
+sur la taille de la seconde partie du tableau. Le cas de base est trivial : si
+la taille est 0, nous avons immédiatement l'égalité puisque \CodeInline{split == to}.
+Maintenant, nous devons prouver que si l'égalité est vraie pour une plage de taille
+$i$, elle est vraie pour une plage de taille $i+1$. Puisque nous savons que c'est
+le cas jusqu'à $i$ par hypothèse d'induction, nous analysons simplement les
+différents cas pour le dernier élément de la plage (au rang $i$) : soit cet élément
+que nous comptons, soit il ne l'est pas, dans le deux cas, cela ajoute la même
+valeur des deux côtés de l'égalité.
+
+
+Pour \CodeInline{shifted\_maintains\_occ}, nous raisonnons par induction sur la
+plage complète. Le premier cas est trivial (le plage est vide), pour le cas
+d'induction, nous avons juste à montrer que la valeur ajoutée a été glissée, et
+qu'elle est donc la même.
+
+
+La propriété \CodeInline{unchanged\_is\_permutation} peut être prouvée par les
+solveurs SMT grâce au fait que nous avons exprimé \CodeInline{unchanged} en
+utilisant \CodeInline{shifted}, le prouveur peut donc directement instancier le
+lemme précédent. Si ce n'est pas le cas, la preuve peut être réaliser en
+instanciant \CodeInline{shifted\_maintains\_occ} avec la valeur 0 pour la
+propriété de glissement.
+
+
+Pour prouver \CodeInline{rotate\_left\_is\_permutation}, nous séparons la plage
+pour \CodeInline{L1} en deux sous plages \CodeInline{beg .. beg+1} et
+\CodeInline{beg+1 .. end} et la plage pour \CodeInline{L2} en deux sous plages
+\CodeInline{beg .. end-1} et \CodeInline{end-1 .. end} en utilisant la propriété
+\CodeInline{l\_occurrences\_union}. Nous montrons que le nombre d'occurrences
+dans \CodeInline{beg+1 .. end} pour \CodeInline{L1} et \CodeInline{beg .. end-1}
+pour \CodeInline{L2} n'a pas changé grâce à \CodeInline{shifted\_maintains\_occ}
+et que le nombre d'occurrences dans \CodeInline{beg .. beg+1} pour
+\CodeInline{L1} et \CodeInline{end-1 .. end} pour \CodeInline{L2} est le même
+en analysant par cas (et en utilisant le fait que la valeur correspondante est
+la même).
+
+
+Pour prouver \CodeInline{union\_permutation}, nous instancions le lemme
+\CodeInline{l\_occurrences\_union}. Finalement, le lemme
+\CodeInline{transitive\_permutation} est prouvée automatiquement par transitivité
+de l'égalité.
+
+
+\levelThreeTitle{Comment utiliser correctement les assertions ?}
+
+
+Il n'y a pas de guide précis à propos de quand utiliser des assertions ou non.
+La plupart du temps nous les utilisons d'abord pour comprendre pourquoi certaines
+preuves échouent en exprimant des propriétés dont nous pensons qu'elles sont vraies
+à un point particulier de programme. De plus, il n'est pas rare que les obligations
+de preuve soient longues ou un peu complexes à lire directement. Bien utiliser les
+assertion nécessite que l'on garde en tête les lemmes déjà exprimé pour savoir
+quelle assertion utiliser pour déclencher l'usage d'un lemme nous amenant à la
+propriété voulue. S'il n'y a pas de tel lemme, par exemple parce que la preuve
+de la propriété voulue nécessite un raisonnement par induction à propos d'une
+propriété ou d'une valeur, nous avons probablement besoin d'ajouter un nouveau
+lemme.
+
+
+Avec un peu d'expérience, l'utilisation des assertions et des lemmes devient de
+plus en plus naturelle, cependant il est important de garder en tête qu'il est
+facile d'abuser de cela. Plus nous ajoutons de lemmes et d'assertions, plus notre
+contexte de preuve est riche et est susceptible de contenir les informations
+nécessaires à la preuve. Cependant, il y a aussi un risque d'ajouter trop
+d'information de telle manière à ce que le contexte de preuve finisse par contenir
+des informations inutiles qui polluent le contexte de preuve, rendant le travail
+des solveurs SMT plus difficile. Nous devons donc essayer de trouver le bon
+compromis.
+
+
+\levelThreeTitle{Exercices}
+
+
+\levelFourTitle{Comprendre le contexte de preuve}
+
+
+Dans la fonction suivante, la dernière assertion est prouvée automatiquement
+par le solveur SMT, probablement en dépliant le prédicat pour prouver
+directement la propriété. En utilisant des assertions, fournir une nouvelle
+manière de prouver la dernière propriété. Dans le contexte de preuve, trouver
+les propriétés générées qui peuvent amener à une autre preuve de l'assertion
+et expliquer comment :
+
+
+\CodeBlockInput{c}{ex-1-context.c}
+
+
+\levelFourTitle{Déclencher les lemmes}
+
+
+Dans le programme suivant, WP échoue à prouver que la postcondition de la
+fonction \CodeInline{g} est vérifiée. Ajouter la bonne assertion, au bon endroit,
+de façon à ce que la preuve réussisse.
+
+
+\CodeBlockInput{c}{ex-2-trigger.c}
+
+
+\levelFourTitle{Déclencher les lemmes sous condition}
+
+
+Dans le programme suivant, WP échoue à prouver que la postcondition de la
+fonction \CodeInline{example} est vérifiée. Cependant, nous pouvons noter
+que la fonction \CodeInline{g} assure indirectement que la valeur pointée
+est soit augmentée soit diminuée. Ajouter deux assertions qui montrent que
+le prédicat est vérifié en fonction de la valeur de \CodeInline{*x}.
+
+
+\CodeBlockInput{c}{ex-3-trigger-cond.c}
+
+
+Les assertions devraient ressembler à:
+
+
+\begin{CodeBlock}{c}
+//@ assert *x ... ==> ... ;
+//@ assert *x ... ==> ... ;
+\end{CodeBlock}
+
+
+Une autre manière d'ajouter de l'information au contexte est d'utiliser du
+code fantôme. Par exemple, la valeur de vérité d'une conditionnelle apparaît
+dans le contexte d'une obligation de preuve. Modifier les annotations pour que
+le code ressemble à :
+
+
+\begin{CodeBlock}{c}
+void example(int* x){
+  g(x);
+  /*@ ghost
+   if ( ... ){
+    /@ assert ... @/
+   } else {
+    /@ assert ... @/
+   }
+  */
+}
+\end{CodeBlock}
+
+Comparer l'obligation de preuve générée pour chaque assertion avec les précédentes.
+
+
+Finalement, nous pouvons remarquer que « la valeur pointée a été augmentée ou
+diminuée » peut être exprimée en une seule assertion. Écrire l'annotation
+correspondante et recommencer la preuve.
+
+
+\levelFourTitle{Un exemple avec la somme}
+\label{l4:proof-methodologies-triggering-lemmas-exercises-sum}
+
+
+La fonction suivante incrémenter de 1 la valeur d'une cellule du tableau, donc
+elle augmente aussi la valeur de la somme du contenu du tableau. Écrire un contrat
+pour la fonction qui exprime ce fait :
+
+
+\CodeBlockInput{c}{ex-4-sum-content.c}
+
+
+Pour prouver que cette fonction remplit sont contrat, nous avons besoin de fournir
+des assertion qui vont guider la preuve. Plus précisément, nous devons montrer que
+puisque toutes les valeurs avant la cellule modifiée n'a pas été modifiée, la somme
+n'a pas été modifiée pour cette partie du tableau, et de même pour les cellules qui
+suivent la cellule modifiée.
+
+
+Nous avons donc besoin de deux lemmes :
+
+\begin{itemize}
+    \item \CodeInline{sum\_separable} doit exprimer que nous pouvons séparer le
+          tableau en deux sous parties, compter dans chaque partie et sommer les
+          résultats pour obtenir la somme totale,
+    \item \CodeInline{unchanged\_sum} devrait exprimer que si une plage dans un
+          tableau n'a pas changé entre deux labels, la somme du contenu est la
+          même.
+\end{itemize}
+
+
+Compléter les code des lemmes et utiliser des assertions pour assurer qu'il sont
+utiliser pour compléter la preuve. Nous ne demandons par la preuve des lemmes, les
+preuves Coq sont disponibles sur le répertoire GitHub de ce livre.

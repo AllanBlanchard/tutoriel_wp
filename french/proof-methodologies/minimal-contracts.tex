@@ -1,0 +1,227 @@
+Nous avons vu que la preuve d'un programme nous permet de vérifier deux aspects
+principaux à propos de sa correction ; d'abord que le programme ne contient pas
+d'erreur d'exécution, et ensuite que le programme répond correctement à sa
+spécification. Cependant, il est parfois difficile d'obtenir le second aspect,
+et le premier est déjà une étape intéressante pour la correction de notre programme.
+
+
+En effet, les erreurs à l'exécution entraînent souvent la présence des fameux
+« \textit{undefined behaviors} » dans les programmes C. Ces comportements peuvent être
+des vecteurs de failles de sécurité. Par conséquent, garantir leur absence nous
+protège déjà d'un grand nombre de ces vecteurs d'attaques. L'absence d'erreur à
+l'exécution peut être vérifier avec WP à l'aide d'une approche appelée
+« contrats minimaux ».
+
+
+\levelThreeTitle{Principe}
+
+
+L'approche par contrats minimaux est guidée par l'usage du greffon RTE de Frama-C.
+L'idée est simple : nous générons les assertions nécessaires à vérifier l'absence
+d'erreurs à l'exécution pour toutes les fonctions d'un module ou d'un projet, et
+nous écrivons ensuite l'ensemble des spécifications (correctes) qui sont suffisantes
+pour prouver ces assertions et les contrats ainsi rédigés. La plupart du temps, cela
+permet d'avoir beaucoup moins de lignes de spécifications que ce qui est nécessaire
+pour prouver la correction fonctionnelle du programme.
+
+
+Commençons par un exemple simple avec la fonction valeur absolue.
+
+
+\CodeBlockInput{c}{abs-1.c}
+
+
+Ici, nous pouvons générer les assertions nécessaires à prouver pour montrer
+l'absence d'erreurs à l'exécution, ce qui nous génère ce programme :
+
+
+\CodeBlockInput{c}{abs-2.c}
+
+
+Donc nous avons seulement besoin de spécifier la précondition qui nous dit que
+\CodeInline{x} doit être plus grand que \CodeInline{INT\_MIN} :
+
+
+\CodeBlockInput{c}{abs-3.c}
+
+
+Cette condition est suffisante pour montrer l'absence d'erreurs à l'exécution
+dans cette fonction.
+
+
+Comme nous le verrons plus tard, généralement une fonction est cependant utilisée
+dans un contexte particulier. Il est donc probable que ce contrat ne soit en
+réalité pas suffisant pour assurer la correction dans son contexte d'appel. Par
+exemple, il est commun en C d'avoir des variables globales ou des pointeurs, il
+est donc probable que nous devions spécifier ce qui est assigné par la fonction.
+La plupart du temps, les clauses \CodeInline{assigns} ne peuvent pas être ignorées
+(ce qui est prévisible dans un langage où tout est mutable par défaut). De plus,
+si une personne demande la valeur absolue d'un entier, c'est probablement qu'elle
+a besoin d'une valeur positive. En réalité, le contrat ressemblera probablement à
+ceci :
+
+
+\CodeBlockInput{c}{abs-4.c}
+
+
+Mais cette addition ne devrait être guidée que par la vérification du (des)
+contexte(s) dans le(s)quel(s) la fonction est appelée, une fois que nous avons
+prouvée l'absence d'erreur d'exécution dans cette fonction.
+
+
+\levelThreeTitle{Exemple: la fonction recherche}
+
+
+Maintenant que nous avons le principe en tête, travaillons avec un exemple un peu
+plus complexe, en particulier avec un exemple qui nécessite une boucle.
+
+
+\CodeBlockInput{c}{search-1.c}
+
+
+Lorsque nous avons généré les assertions liées aux erreurs à l'exécution, nous
+obtenons le programme suivant :
+
+
+\CodeBlockInput{c}{search-2.c}
+
+
+Nous devons prouver que toute cellule visitée par le programme peut être lue,
+nous avons donc besoin d'exprimer comme précondition que ce tableau est
+\CodeInline{\textbackslash{}valid\_read} sur la plage de valeurs correspondante.
+Cependant, ce n'est pas suffisant pour terminer la preuve puisque nous avons une
+boucle dans ce programme. Nous devons donc aussi fournir un invariant, nous
+voulons aussi probablement prouver que la boucle termine.
+
+
+Nous obtenons donc la fonction suivante, spécifiée minimalement :
+
+
+\CodeBlockInput{c}{search-3.c}
+
+
+
+Ce contrat peut être comparé avec le contrat fourni pour la fonction de recherche
+de la section~\ref{l3:statements-loops-example}, et nous pouvons voir qu'il est
+beaucoup plus simple.
+
+
+Maintenant imaginons que cette fonction est utilisée dans le programme suivant :
+
+
+\CodeBlockInput{c}{search-foo-1.c}
+
+
+Nous devons à nouveau fournir un invariant pour cette fonction, à nouveau en
+regardant l'assertion générée par le plugin RTE :
+
+
+\CodeBlockInput[26][35]{c}{search-4.c}
+
+
+Nous devons donc vérifier que :
+
+\begin{itemize}
+\item le pointeur que nous avons reçu est valide,
+\item \CodeInline{*p+1} ne fait pas de débordement,
+\item nous respectons le contrat de la fonction \CodeInline{search}.
+\end{itemize}
+
+
+En plus du contrat de \CodeInline{foo}, nous devons fournir plus d'informations
+dans le contrat de \CodeInline{search}. En effet, nous ne pourrons pas prouver
+que le pointeur est valide s'il n'est pas nul si la fonction ne nous garantit
+pas qu'il est dans la plage correspondant à notre tableau dans ce cas. De plus,
+nous ne pourrons pas prouver que \CodeInline{*p} a une valeur inférieure à
+\CodeInline{INT\_MAX} si la fonction peut modifier le tableau.
+
+
+Cela nous amène donc au programme complet annoté suivant :
+
+
+\CodeBlockInput{c}{search-5.c}
+
+
+\levelThreeTitle{Avantages et limitations}
+
+
+L'avantage le plus évident de cette approche est le fait qu'elle permet de garantir
+qu'un programme ne contient pas d'erreurs à l'exécution dans toute fonction d'un
+module ou d'un programme en (relative) isolation des autres fonctions. De plus,
+cette absence d'erreurs à l'exécution est garantie pour tout usage de la fonction
+dont l'appel respecte ses préconditions. Cela permet de gagner une certaine confiance
+dans un système avec une approche dont le coût est relativement raisonnable.
+
+
+
+Cependant, comme nous avons pu le voir, lorsque nous utilisons une fonction, cela
+peut changer les connaissances que nous avons besoin d'avoir à son sujet, nécessitant
+d'enrichir son contrat progressivement. Nous pouvons par conséquent atteindre un
+point où nous avons prouvé la correction fonctionnelle de la fonction.
+
+
+
+De plus, prouver l'absence d'erreur à l'exécution peut parfois ne pas être trivial
+comme nous avons pu le voir précédemment avec des fonctions comme la factorielle ou
+la somme des N premiers entiers, qui nécessitent de donner une quantité notable
+d'information aux solveurs SMT pour montrer qu'elle ne déborde pas.
+
+
+
+Finalement, parfois les contrats minimaux d'une fonction ou d'un module sont
+simplement la spécification fonctionnelle complète. Et dans ce cas, effectuer la
+vérification d'absence d'erreur à l'exécution correspond à réaliser la vérification
+fonctionnelle complète du programme. C'est communément le cas lorsque nous devons
+travailler avec des structures de données complexes où les propriétés dont nous
+avons besoin pour montrer l'absence d'erreurs à l'exécution dépendent du
+comportement fonctionnel des fonctions, maintenant des invariants non triviaux
+à propos de la structure de donnée.
+
+
+\levelThreeTitle{Exercices}
+
+
+\levelFourTitle{Exemple simple}
+
+
+Prouver l'absence d'erreurs à l'exécution dans le programme suivant en utilisant
+une approche par contrats minimaux :
+
+
+\CodeBlockInput{c}{ex-1-simple.c}
+
+
+\levelFourTitle{Inverse}
+
+
+Prouver l'absence d'erreurs à l'exécution dans la fonction \CodeInline{reverse}
+suivante et ses dépendances en utilisant une approche par contrats minimaux.
+Notons que la fonction \CodeInline{swap} doit également être spécifiée par
+contrats minimaux. Ne pas oublier d'ajouter l'option \CodeInline{-warn-unsigned-overflow}.
+
+
+\CodeBlockInput{c}{ex-2-reverse.c}
+
+
+
+\levelFourTitle{Recherche dichotomique}
+
+
+Prouver l'absence d'erreurs à l'exécution dans la fonction \CodeInline{bsearch}
+suivante en utilisant une approche par contrats minimaux. Ne pas oublier d'ajouter
+l'option \CodeInline{-warn-unsigned-overflow}.
+
+
+\CodeBlockInput{c}{ex-3-binary-search.c}
+
+
+\levelFourTitle{Tri}
+
+
+Prouver l'absence d'erreurs à l'exécution dans la fonction \CodeInline{sort}
+et ses dépendances en utilisant une approche par contrats minimaux. Notons que
+ces dépendances doivent également être spécifiées par contrats minimaux. Ne pas
+oublier d'ajouter l'option \CodeInline{-warn-unsigned-overflow}.
+
+
+\CodeBlockInput{c}{ex-4-sort.c}

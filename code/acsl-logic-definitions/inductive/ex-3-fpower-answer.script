@@ -19,3 +19,14 @@ Proof.
     replace (n + 1 - 1) with n in H1 by omega.
     apply IHn ; auto ; omega.
 Qed.
+
+Goal typed_lemma_power_odd.
+Hint power_odd,property.
+Proof.
+  intros.
+  constructor ; try omega.
+  replace (1 + 2 * i_1 - 1)%Z with (2 * i_1)%Z by omega.
+  apply Q_power_even ; auto.
+Qed.
+
+

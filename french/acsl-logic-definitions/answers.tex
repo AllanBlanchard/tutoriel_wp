@@ -1,0 +1,36 @@
+\levelThreeTitle{Preuve Coq du lemme \CodeInline{no\_changes}}
+
+
+\CodeBlockInput{coq}{reset-0-coq.v}
+
+
+\levelThreeTitle{Fonctions utilisées pour le tri spécifiées}
+
+
+\CodeBlockInput[3][34]{c}{sort-1.c}
+
+
+\levelThreeTitle{Un important axiome}
+
+
+Actuellement nos prouveurs automatiques n'ont pas la puissance nécessaire
+pour calculer \textit{la réponse à la grande question sur la vie, l'univers et le
+reste}. Qu'à cela ne tienne nous pouvons l'énoncer comme axiome ! Reste à
+comprendre la question pour savoir où ce résultat peut-être utile ...
+
+\begin{CodeBlock}{c}
+/*@
+  axiomatic Ax_answer_to_the_ultimate_question_of_life_the_universe_and_everything {
+    logic integer the_ultimate_question_of_life_the_universe_and_everything{L} ;
+
+    axiom answer{L}:
+      the_ultimate_question_of_life_the_universe_and_everything{L} = 42;
+  }
+*/
+\end{CodeBlock}
+
+
+\levelThreeTitle{Axiomes pour la somme des éléments d'un tableau}
+
+
+\CodeBlockInput[3][12]{c}{max_subarray-1.c}

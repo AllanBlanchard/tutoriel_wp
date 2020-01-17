@@ -1,0 +1,292 @@
+\levelThreeTitle{Appel de fonction}
+
+\levelFourTitle{Formel - Calcul de plus faible précondition}
+
+Lorsqu'une fonction est appelée, le contrat de cette fonction est utilisé pour
+déterminer la précondition de l'appel. Mais il est important de garder en tête deux
+aspects important pour exprimer le calcul de plus faible précondition.
+
+
+Premièrement, la postcondition d'une fonction $f$ qui serait appelée dans un 
+programme n'est pas nécessairement directement la précondition calculée pour le code
+qui suit l'appel à $f$. Par exemple, si nous avons un programme:
+\CodeInline{x = f() ; c }, et si $wp(\texttt{c}, Q) = 0 \leq x \leq 10$ alors que
+la postcondition de la fonction \CodeInline{f} est $1 \leq x \leq 9$, nous avons
+besoin d'exprimer l'affaiblissement de la précondition réelle de \CodeInline{c}
+vers celle que l'on a calculé. Pour cela cela, nous renvoyons à la
+section~\ref{l3:statements-basic-consequence}, l'idée est simplement de vérifier 
+que la postcondition de la fonction implique la précondition calculée.
+
+
+
+Deuxièmement, en C, une fonction peut avoir des effets de bord. Par conséquent, les
+valeurs référencées en entrée de fonction ne restent pas nécessairement les mêmes
+après l'appel à la fonction, et le contrat devrait exprimer certaines propriétés à
+propos des valeurs avant et après l'appel. Donc, si nous avons des labels (C) dans
+la postcondition, nous devons faire les remplacements qui s'imposent par rapport au
+lieu d'appel.
+
+
+
+Pour définir le calcul de plus faible précondition associé aux fonctions, introduisons
+d'abord quelques notations pour rendre les explications plus claires. Pour cela,
+considérons l'exemple suivant :
+
+\begin{CodeBlock}{c}
+/*@ requires \valid(x) && *x >= 0 ;
+    assigns *x ;
+    ensures *x == \old(*x)+1 ; */
+void inc(int* x);
+
+void foo(int* a){
+  L1:
+  inc(a) ;
+  L2:
+}
+\end{CodeBlock}
+
+
+Le calcul de plus faible précondition de l'appel de fonction nous demande de
+considérer le contrat de la fonction appelée (ici, dans \CodeInline{foo}, quand
+nous appelons la fonction \CodeInline{inc}). Bien sûr, avant l'appel de la fonction
+nous devons vérifier sa précondition, qui fait donc partie de la plus faible
+précondition. Mais, nous devons aussi considérer la postcondition de la fonction,
+sinon cela voudrait dire que nous ne prenons pas en compte son effet sur l'état du
+programme.
+
+
+Par conséquent, il est important de noter que dans la précondition, l'état mémoire
+considéré est bien celui pour lequel la plus faible précondition doit être vraie,
+tandis que pour la postcondition, ce n'est pas le cas: l'état considéré est celui
+qui suit l'appel, alors que dans la postcondition, lorsque nous parlons des valeurs
+avant l'appel nous devons explicitement ajouter le mot clé 
+\CodeInline{\textbackslash{}old}. Par exemple, pour le contrat de \CodeInline{inc}
+lorsque nous l'appelons depuis \CodeInline{foo}, \CodeInline{*x} dans la
+précondition est \CodeInline{*a} au label \CodeInline{L1}, alors que \CodeInline{*x}
+dans la postcondition est \CodeInline{*a} au label \CodeInline{L2}. Par conséquent,
+la pré et la postcondition doivent être considérées de manière légèrement différentes
+lorsque nous devons parler des positions mémoire mutables. Notez que pour la valeur
+du paramètre \CodeInline{x} lui même, ce n'est pas le cas : cette valeur ne peut pas
+être modifiée par l'appel (du point de vue de l'appelant).
+ 
+
+
+Maintenant, définissons le calcul de plus faible précondition d'un appel de fonction.
+Pour cela, notons:
+
+\begin{itemize}
+\item $\vec{v}$ un vecteur de valeurs $v_1, ..., v_n$ et $v_i$ la $i^{ème}$ valeur,
+\item $\vec{t}$ les arguments fournies à la fonction lors de l'appel,
+\item $\vec{x}$ les paramètres dans la définition de la fonction,
+\item $\vec{a}$ les valeurs modifiées (vues de l'extérieur, une fois instanciées),
+\item $here(x)$ une valeur en postcondition,
+\item $old(x)$ une valeur en précondition. 
+\end{itemize}
+
+Nous nommons $\texttt{f:Pre}$ la précondition de la fonction, et $\texttt{f:Post}$,
+la postcondition.
+
+\begin{center}
+\begin{tabular}{rl}
+  $wp( f(\vec{t}), Q ) :=$ & $\texttt{f:Pre}[x_i \leftarrow t_i]$ \\
+  $\wedge$ & $\forall \vec{v}, \quad (
+              \texttt{f:Post}[x_i \leftarrow t_i,
+                              here(a_j) \leftarrow v_j,
+                              old(a_j) \leftarrow a_j] \Rightarrow
+              Q[here(a_j) \leftarrow v_j])$
+\end{tabular}
+\end{center}
+
+Nous pouvons détailler les étapes du raisonnement dans les différentes parties de
+cette formule.
+
+
+Premièrement, notons que dans les pré et postconditions, chaque paramètre $x_i$
+est remplacé par l'argument correspondant ($[x_i \leftarrow t_i]$), comme nous
+l'avons dit juste avant, nous n'avons pas de question d'état mémoire à considérer
+ici puisque ces valeurs ne peuvent pas être changées par l'appel de fonction. Par
+exemple dans le contrat de \CodeInline{inc}, chaque occurrence de \CodeInline{x}
+serait remplacée par l'argument \CodeInline{a}.
+
+
+Ensuite, dans la partie de notre formule qui correspond à la postcondition, nous
+pouvons voir que nous introduisons un $\forall \vec{v}$. Le but ici est de modéliser
+le fait que la fonction peut changer la valeur des positions mémoire spécifiées par
+la clause \CodeInline{assigns} du contrat. Donc, pour chaque position potentiellement
+modifiée $a_j$ (qui est, pour notre exemple d'appel à \CodeInline{inc}, 
+\CodeInline{*(\&a)}), nous générons une valeur $v_j$ qui représente sa valeur après
+l'appel. Mais si nous voulons vérifier que la postcondition nous donne le bon 
+résultat, nous ne pouvons pas accepter \emph{toute valeur} pour les positions mémoire
+modifiées, nous voulons celles \emph{qui permettent de satisfaire la postcondition}.
+
+
+
+Nous utilisons donc ces valeur pour transformer la postcondition de la fonction et
+pour vérifier qu'elle implique la postcondition reçue en entrée du calcul de plus
+faible précondition. Nous faisons cela en remplaçant, pour chaque position mémoire
+modifiée $a_j$, sa valeur $here$ avec la valeur $v_j$ qu'elle obtient après l'appel
+($here(a_j) \leftarrow v_j$). Finalement, nous devons remplacer chaque $old$ valeur
+par sa valeur avant l'appel, et pour chaque $old(a_j)$, cette valeur est
+simplement $a_j$ ($old(a_j) \leftarrow a_j$).
+
+
+
+\levelFourTitle{Formel - Exemple}
+
+
+Illustrons tout cela sur un exemple en appliquant le calcul de plus faible
+précondition sur ce petit code, en supposant le contrat précédemment proposé pour
+la fonction \CodeInline{swap}.
+
+\begin{CodeBlock}{c}
+  int a = 4 ;
+  int b = 2 ;
+
+  swap(&a, &b) ;
+
+  //@ assert a == 2 && b == 4 ;
+\end{CodeBlock}
+
+
+Nous pouvons appliquer le calcul de plus faible précondition :
+
+\begin{tabular}{l}
+  $wp(a = 4; b = 2; swap(\&a, \&b), a = 2 \wedge b = 4) = $\\
+  $\quad wp(a = 4, wp(b = 2; swap(\&a, \&b), a = 2 \wedge b = 4)) = $\\
+  $\quad wp(a = 4, wp(b = 2, wp(swap(\&a, \&b), a = 2 \wedge b = 4)))$
+\end{tabular}
+
+
+Et considérons séparément :
+$$wp(swap(\&a, \&b), a = 2 \wedge b = 4)$$
+
+
+Par la clause \CodeInline{assigns}, nous savons que les valeurs modifiées par la
+fonction sont $*(\&a) = a$ et $*(\&b) = b$. (nous raccourcissons $here$ avec $H$ 
+et $old$ avec $O$).
+
+\begin{tabular}{rl}
+  $\quad \quad \texttt{swap:Pre}[x \leftarrow \&a,\ y \leftarrow \&b]$ & \\
+  $\quad \wedge \forall v_a, v_b,(\texttt{swap:Post}$ & $ [ x \leftarrow \&a,\ y \leftarrow \&b, $ \\
+                               & $H(*(\&a)) \leftarrow v_a,\ H(*(\&b)) \leftarrow v_b,$ \\
+                               & $O(*(\&a)) \leftarrow *(\&a),\ O(*(\&b)) \leftarrow *(\&b)])$\\
+  \multicolumn{2}{r}{$\quad \quad \Rightarrow (H(a) = 2 \wedge H(b) = 4)[H(a)) \leftarrow v_a, H(b)) \leftarrow v_b])$}
+\end{tabular}
+
+
+Pour la précondition, nous obtenons :
+$$valid(\&a) \wedge valid(\&b)$$
+Pour la postcondition, commençons par écrire l'expression depuis laquelle nous
+allons travailler avant de faire les remplacements (et sans la syntaxe de remplacement
+pour rester concis) :
+$$H(*x) = O(*y) \wedge H(*y) = O(*x) \Rightarrow H(a) = 2 \wedge H(b) = 4$$
+Remplaçons d'abord les pointeurs ($x \leftarrow \&a,\ y \leftarrow \&b$) :
+$$H(*(\&a)) = O(*(\&b)) \wedge H(*(\&b)) = O(*(\&a)) \Rightarrow H(a) = 2 \wedge H(b) = 4$$
+Puis les valeurs $here$, avec les valeurs quantifiées $v_i$ ($H(a)) \leftarrow v_a, H(b)) \leftarrow v_b$) :
+$$v_a = O(*(\&b)) \wedge v_b = O(*(\&a)) \Rightarrow v_a = 2 \wedge v_b = 4$$
+Et les valeurs $old$, avec les valeurs avant l'appel ($O(*(\&a)) \leftarrow *(\&a),\ O(*(\&b)) \leftarrow *(\&b)$) :
+$$v_a = *(\&b) \wedge v_b = *(\&a) \Rightarrow v_a = 2 \wedge v_b = 4$$
+Nous pouvons maintenant simplifier cette formule en :
+$$v_a = b \wedge v_b = a \Rightarrow v_a = 2 \wedge v_b = 4$$
+
+
+Donc, $wp(swap(\&a, \&b), a = 2 \wedge b = 4)$ est :
+$$P: valid(\&a) \wedge valid(\&b) \wedge \forall v_a, v_b, \quad v_a = b \wedge v_b = a \Rightarrow v_a = 2 \wedge v_b = 4$$
+Nous pouvons immédiatement simplifier cette formule en constatant que les propriétés
+de validité sont trivialement vraies (puisque les variables sont allouées sur la pile
+juste avant) :
+$$P: \forall v_a, v_b, \quad v_a = b \wedge v_b = a \Rightarrow v_a = 2 \wedge v_b = 4$$
+
+
+Maintenant, calculons $wp(a = 4, wp(b = 2, P)))$, en remplaçant d'abord $b$
+par $2$ par la règle d'affectation :
+$$\forall v_a, v_b, \quad v_a = 2 \wedge v_b = a \Rightarrow v_a = 2 \wedge v_b = 4$$
+et ensuite $a$ par $4$ par la même règle :
+$$\forall v_a, v_b, \quad v_a = 2 \wedge v_b = 4 \Rightarrow v_a = 2 \wedge v_b = 4$$
+
+
+Cette dernière propriété est trivialement vraie, le programme est vérifié.
+
+
+\levelFourTitle{Que devrions nous garder en tête ?}
+
+
+Les fonctions sont absolument nécessaire pour programmer modulairement, et le calcul
+de plus faible précondition est pleinement compatible avec cette idée, permettant de
+raisonner localement à propos de chaque fonction et donc de composer les preuves juste
+de la même manière que nous composons les appels de fonction.
+
+
+Comme pense-bête, nous devrions toujours garder en tête le schéma suivant:
+
+
+\begin{CodeBlock}{c}
+/*@
+  requires foo_R ;
+  assigns ... ;
+  ensures foo_E ;
+*/
+type foo(parameters...){
+  // Ici, nous supposons que foo_R est vérifiée
+
+
+  // Ici, nous devons prouver que bar_R est vérifiée
+  bar(some parameters ...) ;
+  // Ici, nous supposons que bar_E est vérifiée
+
+
+  // Ici nous devons prouver que foo_E est vérifiée
+  return ... ;
+}
+\end{CodeBlock}
+
+
+Notons qu'à propos du dernier commentaire, en calcul de plus faible précondition,
+l'idée est plutôt de montrer que notre précondition est assez forte pour assurer
+que le code nous amène à la postcondition. Cependant, premièrement, cette vision
+est plus facile à comprendre et deuxièmement, un greffon comme WP (et comme n'importe
+quel outil réaliste pour la preuve de programme) ne suit pas strictement un calcul
+de plus faible précondition mais une manière fortement optimisée de calculer les
+conditions de vérification qui ne suit pas exactement les mêmes règles.
+
+
+\levelThreeTitle{Fonctions récursives}
+
+
+Actuellement, WP ne vérifie pas encore la terminaison des fonctions. Bien sûr, si
+une fonction est seulement composée de boucles qui terminent (dont le variant 
+indiqué est vérifié) et des appels de fonctions qui elles-mêmes terminent, elle
+termine. En revanche, parfois ce raisonnement est insuffisant : dans le cas des
+fonctions récursives et mutuellement récursives. C'est la terminaison de ces 
+fonctions qui n'est pas encore vérifiée par WP.
+
+
+Cela signifie que nous pouvons, par mégarde, prouver n'importe quoi, si l'on 
+défini et prouve une fonction qui ne termine pas.
+
+
+\CodeBlockInput{c}{trick.c}
+
+
+\image{recursive-trick}
+
+
+Nous pouvons voir que la fonction et l'assertion sont prouvées. Et, effectivement,
+la preuve est correcte : nous considérons une correction partielle (puisque nous ne
+pouvons pas prouver la terminaison), et cette fonction ne termine pas. Toute
+assertion suivant cette fonction est vraie: elle est inatteignable.
+
+
+Une question que l'on peut alors se poser est donc: que peut on faire dans un tel 
+cas ? Nous pouvons à nouveau utiliser une notion de variant pour borner le nombre
+d'appels récursifs. En ACSL, c'est le rôle de la clause \CodeInline{decreases} :
+
+
+\CodeBlockInput{c}{decreases.c}
+
+
+Cette clause exprime essentiellement la même idée que le \CodeInline{loop variant}.
+L'expression spécifiée par la clause \CodeInline{decreases} est une valeur positive
+qui décroît strictement à chaque nouvel appel récursif de la fonction. Cependant,
+cette clause n'est pas encore supporté par WP, donc nous ne pouvons pas encore 
+faire la preuve totale d'une fonction récursive avec le greffon WP.

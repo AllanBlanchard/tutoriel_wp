@@ -27,8 +27,8 @@ corresponds to one of the cases of the inductive definition.
 
 We can have a look at the simple property we just talked about: how to define
 that a natural number is even using induction. We can translate the sentence:
-``0 is a natural number, and if $n$ is a natural number, $n+2$ is a natural
-number'':
+``0 is an even natural number, and if $n$ is an even natural number, $n+2$ is
+an even natural number'':
 
 
 
@@ -41,7 +41,7 @@ Which perfectly describes the two cases:
 \item $0$ is even (base case),
 \item if a natural $n$ is even, $n+2$ is also even.
 \end{itemize}
-  
+
 However, this definition is not completely satisfying. For example, we cannot
 deduce that an odd number is not even. If we try to prove that 1 is even, we
 will have to check if -1 is even, and then -3, -5, etc, infinitely. Moreover,
@@ -120,7 +120,7 @@ write a function:
 \begin{CodeBlock}{c}
 /*@
   requires P( params ... ) ;
-  ensures  \false ;
+  ensures  BAD: \false ;
 */ void function(params){
 
 }
@@ -144,6 +144,9 @@ the \CodeInline{ensures \textbackslash{}false}, because there exists a non
 positive occurrence of \CodeInline{P\_even\_natural}, that encodes the
 \CodeInline{even\_natural} we wrote in ACSL.
 
+\begin{CodeBlock}{bash}
+frama-c-gui -wp -wp-prop=BAD -wp-prover=native:coq file.c
+\end{CodeBlock}
 
 
 \image{coq-failed}
@@ -329,8 +332,8 @@ the inductive predicate:
 
 \begin{itemize}
 \item \CodeInline{b} is 0,
-\item if some \CodeInline{d} is the GCD of \CodeInline{b} and \CodeInline{a \% b} and
-  thus, then it is the GCD of \CodeInline{a} and \CodeInline{b}
+\item if some \CodeInline{d} is the GCD of \CodeInline{b} and \CodeInline{a \% b},
+  then it is the GCD of \CodeInline{a} and \CodeInline{b}
 \end{itemize}
 
 
@@ -386,10 +389,11 @@ two previous properties in lemmas:
 \CodeBlockInput[8][11]{c}{ex-3-fpower.c}
 
 
-First express the lemma \CodeInline{power\_even}, the SMT solvers will be able
+First express the lemma \CodeInline{power\_even}, the SMT solver might be able
 to combine the use of this lemma and the inductive predicate to deduce
 \CodeInline{power\_odd}. The Coq proof of the \CodeInline{power\_even} lemma is
-provided on the GitHub repository of this book.
+provided on the GitHub repository of this book, as well as the proof of the
+\CodeInline{power\_odd} in case the SMT solver does not prove it.
 
 
 Finally, complete the contract and loop invariant of the \CodeInline{fast\_power}
