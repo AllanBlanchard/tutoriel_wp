@@ -4,12 +4,12 @@
   différents exercices (incluant quelques preuves Coq de certaines
   propriétés).
 
-  Si vous trouvez des erreurs, n'hésitez pas à créer une issue ou
-  une pull request sur:
+  Si vous trouvez des erreurs, n'hésitez pas à créer une \textit{issue} ou
+  une \textit{pull request} sur:
 
   \externalLink{https://github.com/AllanBlanchard/tutoriel\_wp}{https://github.com/AllanBlanchard/tutoriel_wp}
 
-  ou à poster sur le post de la bêta sur Zeste de Savoir:
+  ou à poster sur le sujet de la bêta sur Zeste de Savoir:
 
   \externalLink{https://zestedesavoir.com/forums/sujet/7725/introduction-a-la-preuve-de-programmes-c-avec-frama-c-et-son-greffon-wp/}{https://zestedesavoir.com/forums/sujet/7725/introduction-a-la-preuve-de-programmes-c-avec-frama-c-et-son-greffon-wp/}
 \end{Warning}
@@ -30,7 +30,7 @@ Le reste vient de mon expérience personnelle avec Frama-C et WP.
 
 \horizontalLine
 
-Les versions des outils utilisés dans ce tutoriel sont les suivantes:
+Les versions des outils utilisés dans ce tutoriel sont les suivantes :
 \begin{itemize}
 \item Frama-C 20 Calcium
 \item Why3 1.2.0
@@ -38,7 +38,7 @@ Les versions des outils utilisés dans ce tutoriel sont les suivantes:
 \item Coq 8.9.0 (pour les scripts proposés, Coq n'est pas utilisé dans le tutoriel)
 \item Z3 4.8.1 (utilisés dans un exemple, il n'est pas absolument nécessaire)
 \end{itemize}
-Selon les versions utilisées par le lecteur, quelques différences pourrait
+Selon les versions utilisées par le lecteur, quelques différences pourraient
 apparaître avec ce qui est prouvé et ce qui ne l'est pas. Quelques fonctionnalités
 ne sont disponibles que dans les versions récentes de Frama-C.
 
@@ -54,7 +54,7 @@ langage C, au moins jusqu'à la notion de pointeur.
 
 
 Malgré son ancienneté, le C est un langage de programmation encore largement
-utilisé. Il faut dire qu'il n'existe, pour ainsi dire aucun langage qui soit
+utilisé. Il faut dire qu'il n'existe, pour ainsi dire, aucun langage qui soit
 disponible sur une aussi large variété de plateformes (matérielles et
 logicielles) différentes, que son orientation bas-niveau et les années
 d'optimisations investies dans ses compilateurs permettent de générer à
@@ -98,8 +98,7 @@ qu'aucun problème ne peut apparaître à l'exécution.
 L'objet de ce tutoriel est d'utiliser Frama-C, un logiciel développé au
 CEA List, et WP, son greffon de preuve déductive, pour s'initier à la preuve
 de programmes C. Au delà de l'usage de l'outil en lui-même, le but de ce tutoriel
-est de convaincre que nous pouvons de plus en plus souvent toucher du
-doigt l'idée qu'il est possible d'écrire des programmes sans erreurs de
+est de vous convaincre qu'il est possible d'écrire des programmes sans erreurs de
 programmation, mais également de sensibiliser à des notions simples
 permettant de mieux comprendre et de mieux écrire les programmes.
 
