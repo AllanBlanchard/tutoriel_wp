@@ -46,8 +46,8 @@ these behaviors.
 
 
 
-A very well-known quote from Dijkstra precisely express the difference
-between test and proof:
+A very well-known quote from \externalLink{Dijkstra}{https://en.wikipedia.org/wiki/Edsger_Dijkstra}
+precisely express the difference between test and proof:
 
 
 
@@ -66,25 +66,57 @@ the one same comment ``the bug-free/perfectly secure program does not
 exist''. And, if this sentence is quite true, it is a bit misunderstood.
 
 
+First, we do not really define what we mean by ``bug-free''. Creating
+software always relies at least on two steps: we establish a specification
+of what we expect from the program and then we produce the source code of
+the program that must respect this specification. Moreover, we can add that
+our programming language itself defines what is the correct way to use it.
+On each of these aspects, an error can lead to the introduction of bugs that
+we can classify into three categories:
 
-First, there is a difference between safety and security. Loosely speaking,
+
+\begin{itemize}
+\item the program is not correct, or does not have a defined behavior,
+      according to the language specification (for example, a program
+      accesses out of the bounds of an array when searching the minimal
+      value of the array),
+\item the program is not correct according to the specification that we
+      defined for it (for example, we have defined that our program must
+      find the minimum value of an array, but in fact, due to an error, it
+      does not check the last value of the array),
+\item the specification does not exactly reflect what we had in mind for
+      our function, and consequently, the program does not do what we really
+      wanted (for example, we have defined that our function must find the
+      minimal value of the array, but we did not specified that if there
+      are multiple ones, we need the position of the first one, because it
+      seemed too straightforward, but consequently, this is not what the
+      program does.
+\end{itemize}
+
+
+Each of these categories can affect the safety and/or the security of our
+programs, but these two notions are not equivalent. Loosely speaking,
 in security a malicious entity that can attack the system, while in safety, we
 want to verify when used in a conform way, the system well behaves. Thus, safety
 is a first before we can get security\footnote{Depending on the field you are
   working in, the term ``safety'' may have a very different sense. Namely, a
   \textit{safe} system must be a system that can never cause injuries to human
   beings. And thus in this case, the opposite applies: we can never have safety
-  if security is not guaranteed before.}. Second, and more important, we do not
-really define what we mean by ``bug-free''. Creating software always relies at
-least on two steps: we establish a specification of what we expect from
-the program and then we produce the source code of the program that must
-respect this specification. Both of these steps can lead to the
-introduction of errors.
+  if security is not guaranteed before. In this tutorial, we keep the definition:
+  ``safety = the program as a correct behavior when it is used in a correct way''}.
 
 
+In this tutorial, we will show how we can prove that implementations
+of our programs do not contains bugs related to the two first categories
+defined above, meaning that they conform to:
 
-In this tutorial, we will show how we can prove that an implementation
-verifies a given specification. But what are the arguments of program
+\begin{itemize}
+\item the specification of our language,
+\item the specification that we have provided for them.
+\end{itemize}
+
+
+But what are the arguments of program
 proof, compared to program testing? First, the proof is complete, it
 cannot forget some corner case if the behavior is specified (program
 test cannot be complete, being exhaustive would be far too costly).
@@ -95,12 +127,15 @@ requires to exactly understand what we have to prove about our program.
 
 One could cynically say that program proof shows that ``the
 implementation does not contain bugs that do not exist in the
-specification''. But, well, it is already a big step compared to ``the
-implementation does not contain too many bugs that do not exist in the
-specification'', since for example it is generally not the fault of the
-specification if we try to access a nul pointer. Moreover, there also
-exist approaches that allow to
-analyze specifications to find errors or under-specified behaviors. For
+specification'' as we do not treat the third category of bugs defined
+above. But, well, knowing that ``the implementation does not contain bugs
+that do not exist in the specification'' is already a big step compared to
+knowing that ``the implementation does not contain too many bugs that do
+not exist in the specification'', as it already correspond to two entire
+categories of bugs that we rule out, bugs that can severely compromise the
+safety and security of our programs. And moreover, there also exist approaches
+to deal with the third category of bugs, allowing to analyze specifications
+to find errors or under-specified behaviors. For
 example, with model checking techniques, we can create an abstract model
 from the specification and produce the set of states that can be reached
 according to this model. By characterizing what is an error state, we
@@ -230,8 +265,9 @@ complex subtleties (which makes this model concrete).
 \levelThreeTitle{Hoare triples}
 
 
-Hoare logic is a program formalization method proposed by Tony Hoare in
-1969 in a paper entitled \emph{An Axiomatic Basis for Computer
+Hoare logic is a program formalization method proposed by
+\externalLink{Tony Hoare}{https://en.wikipedia.org/wiki/Charles_Antony_Richard_Hoare}
+in 1969 in a paper entitled \emph{An Axiomatic Basis for Computer
 Programming}. This method defines:
 
 

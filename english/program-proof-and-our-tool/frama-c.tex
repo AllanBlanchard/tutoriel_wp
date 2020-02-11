@@ -9,17 +9,19 @@
 Frama-C (FRAmework for Modular Analysis of C code) is a platform
 dedicated to the analysis of C programs created by the CEA LIST and
 Inria. It is based on a modular architecture allowing to use different
-(collaborating or not) plugins. The default plugins comprises different
-static analyses (that do not execute source code), dynamic analyses
-(that requires code execution), or combining both.
+plugins. The default plugins comprises different static analyses (that
+do not execute source code), dynamic analyses (that requires code
+execution), or combining both. These plugins can collaborate together
+or not, either by communicating directly or by using the specification
+language provided by Frama-C.
 
 
 \image{gallery}
 
 
 
-Frama-C provides a specification language called ACSL (``Axel'') for
-ANSI C Specification Language and that allows us to express the
+This specification language is called ACSL (``Axel'') for
+ANSI C Specification Language and allows us to express the
 properties we want to verify about our programs. These properties are
 written using code annotations in comment sections. If one has
 already used Doxygen, it is quite similar, except that we write logic
@@ -147,7 +149,7 @@ Once these packages are installed, we can install Frama-C and Alt-Ergo.
 
 \begin{CodeBlock}{bash}
 opam install frama-c
-opam install alt-ergo-free
+opam install alt-ergo
 \end{CodeBlock}
 
 
@@ -239,7 +241,7 @@ Necessary for Frama-C/WP:
 
 
 \begin{CodeBlock}{bash}
-> opam install alt-ergo-free
+> opam install alt-ergo
 > opam install frama-c
 \end{CodeBlock}
 
@@ -293,6 +295,10 @@ lines as illustrated here:
 
 \image{verif_install-2}
 
+
+If this does not succeed, check that graphic libraries were not forgotten
+during installation, or the Alt-Ergo solver. If everything seems to be OK,
+forums can help (for example: \externalLink{StackOverflow - Frama-C}{https://stackoverflow.com/questions/tagged/frama-c})
 
 
 
