@@ -2,21 +2,21 @@
 
 
 Assurer qu'un programme a un comportement conforme à celui que nous attendons
-est souvent une tâche difficile. Plus en amont encore, il est déjà complexe 
-d'établir sur quel critère nous pouvons estimer que le programme « fonctionne » :
+est souvent une tâche difficile. Plus en amont encore, il est déjà complexe
+d'établir sur quel critère nous pouvons estimer que le programme « fonctionne ».
 
 
 
 \begin{itemize}
-\item les débutants « essayent » simplement leurs programmes et estiment qu'ils 
-fonctionnent s'ils ne plantent pas,
-\item les codeurs un peu plus habitués établissent quelques jeux de tests dont ils
-connaissent les résultats et comparent les sorties de leurs programmes,
-\item la majorité des entreprises établissent des bases de tests conséquentes, 
-couvrant un maximum de code ; tests exécutés de manière systématique sur les 
-codes de leurs bases. Certaines font du développement dirigé par le test,
-\item les entreprises de domaines critiques, comme l'aérospatial, le ferroviaire ou
-l'armement, passent par des certifications leur demandant de répondre à des 
+\item Les débutants « essayent » simplement leurs programmes et estiment qu'ils
+fonctionnent s'ils ne plantent pas.
+\item Les codeurs un peu plus habitués établissent quelques jeux de tests dont ils
+connaissent les résultats et comparent les sorties de leurs programmes.
+\item La majorité des entreprises établissent des bases de tests conséquentes,
+couvrant un maximum de code, tests exécutés de manière systématique sur les
+codes de leurs bases. Certaines font du développement dirigé par le test.
+\item Les entreprises de domaines critiques, comme l'aérospatial, le ferroviaire ou
+l'armement, passent par des certifications leur demandant de répondre à des
 critères très stricts de codage et de couverture de code par les tests.
 \end{itemize}
 
@@ -25,41 +25,41 @@ Et bien sûr, il existe tous les « entre-deux » dans cette liste.
 
 
 
-Dans toutes ces manières de s'assurer qu'un programme fait ce qui est attendu, 
-il y a un mot qui revient souvent : \textit{test}. Nous \textit{essayons} des entrées de 
+Dans toutes ces manières de s'assurer qu'un programme fait ce qui est attendu,
+il y a un mot qui revient souvent : \textit{test}. Nous \textit{essayons} des entrées de
 programme dans le but d'isoler des cas qui poseraient problème. Nous fournissons
 des entrées \textit{estimées représentatives} de l'utilisation réelle du programme
 (laissant souvent de côté les usages non prévus, qui sont souvent les plus
-dangereux) et 
-nous nous assurons que les résultats attendus sont conformes. Mais nous ne 
-pouvons pas \textit{tout} tester. Nous ne pouvons pas essayer \textit{toutes} les 
-combinaisons de \textit{toutes} les entrées possibles du programme. Toute la 
+dangereux) et
+nous nous assurons que les résultats attendus sont conformes. Mais nous ne
+pouvons pas \textit{tout} tester. Nous ne pouvons pas essayer \textit{toutes} les
+combinaisons de \textit{toutes} les entrées possibles du programme. Toute la
 difficulté réside donc dans le fait de choisir les bons tests.
 
 
 
 Le but de la preuve de programmes est de s'assurer que, quelle que soit l'entrée
-fournie au programme, si elle respecte la spécification, alors le programme 
-fera ce qui est attendu. Cependant, comme nous ne pouvons pas tout essayer, nous 
-allons établir formellement, mathématiquement, la preuve que le logiciel ne 
-peut exhiber que les comportements qui sont spécifiés et que les erreurs 
+fournie au programme, si elle respecte la spécification, alors le programme
+fera ce qui est attendu. Cependant, comme nous ne pouvons pas tout essayer, nous
+allons établir formellement, mathématiquement, la preuve que le logiciel ne
+peut exhiber que les comportements qui sont spécifiés et que les erreurs
 d'exécution n'en font pas partie.
 
 
 
-Une phrase très célèbre de Dijkstra exprime très clairement la différence entre
+Une phrase très célèbre de \externalLink{Dijkstra}{https://fr.wikipedia.org/wiki/Edsger_Dijkstra} exprime très clairement la différence entre
 test et preuve :
 
 
 
 \begin{Quotation}[Dijkstra]
-Program testing can be used to show the presence of bugs, but never to show 
+Program testing can be used to show the presence of bugs, but never to show
 their absence!
 \end{Quotation}
 
 
 
-Le test de programme peut-être utilisé pour montrer la présence de bugs mais 
+Le test de programme peut-être utilisé pour montrer la présence de bugs mais
 jamais pour montrer leur absence.
 
 
@@ -67,143 +67,175 @@ jamais pour montrer leur absence.
 \levelFourTitle{Le Graal du logiciel sans bug}
 
 
-Dans chaque nouvelle à propos d'attaque sur des systèmes informatiques, ou 
-des virus, ou des bugs provoquant des crashs, il y a toujours la remarque 
-séculaire « le programme inviolable/incassable/sans bugs n'existe pas ». Et 
-il s'avère généralement que bien qu'assez vraie, cette phrase soit assez 
+Dans chaque nouvelle à propos d'attaque sur des systèmes informatiques, ou
+des virus, ou des bugs provoquant des crashs, il y a toujours la remarque
+séculaire « le programme inviolable/incassable/sans bugs n'existe pas ». Et
+il s'avère généralement que, bien qu'assez vraie, cette phrase soit assez
 mal comprise.
 
 
 
-D'abord il y a une différence entre sûreté et sécurité. Pour donner une
-idée de cette différence, nous pouvons dire que dans le cas de la sécurité,
-on suppose qu'il existe une entité capable d'attaquer (volontairement ou
-pas) le système, tandis que dans la sûreté, nous voulons juste vérifier que
-lorsqu'il est utilisé de manière conforme, le système se comporte
-correctement. Par conséquent, sans sûreté, nous pouvons pas avoir la
-sécurité\footnote{Selon votre domaine d'activité, le terme sûreté peut
-avoir un sens très différent. Plus précisément, un système sûr serait un
-système qui ne doit jamais mettre la vie d'un humain en danger. Et donc
-dans ce cas, la situation est inverse : sans sécurité, nous ne pouvons pas
-avoir la sûreté.}. Ensuite, nous ne 
-précisons pas ce que nous entendons par « sans bug ». La création d'un logiciel
-fait toujours au moins intervenir deux étapes : la rédaction de ce qui est
-attendu sous la forme d'une spécification (souvent un cahier des charges) 
-et la réalisation du logiciel répondant à cette spécification. Et ce sont 
-également les deux moments où les erreurs peuvent être introduites.
+Tout d’abord, nous ne précisons pas ce que nous entendons par « sans bug ».
+La création d’un logiciel fait toujours au moins intervenir deux étapes : la
+rédaction de ce qui est attendu sous la forme d’une spécification (souvent
+un cahier des charges) et la réalisation du logiciel répondant à cette
+spécification. À cela s’ajoute la spécification de notre langage de
+programmation qui nous définit la manière correcte de l’utiliser. Chacun de
+ces aspects peut donner lieu à l’introduction de bugs, que nous pouvons
+séparer en trois catégories :
 
 
+\begin{itemize}
+\item le programme n’est pas pas conforme, ou son comportement non défini,
+      d’après la spécification du langage (par exemple, le programme accède
+      en dehors d’un tableau pendant une recherche de minimum);
+\item le programme n’est pas conforme à la spécification que nous en avons
+      donné (par exemple, nous avons défini que le programme doit trouver
+      la plus petite valeur d’un tableau, mais en fait il ne regarde pas sa
+      dernière valeur à cause d’une erreur) ;
+\item la spécification ne reflète pas parfaitement « ce que nous voulons »,
+      et par conséquent, le programme non plus (par exemple, nous avons
+      défini que le programme doit trouver la plus petite valeur d’un
+      tableau, mais nous n’avons pas spécifié que s’il y en a plusieurs, il
+      faut prendre la première, parce que cela me semblait trop évident,
+      mais du coup ce n’est pas ce que fait le programme).
+\end{itemize}
 
-Tout au long de ce tutoriel, nous allons nous attacher à montrer comment nous 
-pouvons prouver que l'implémentation est conforme à la spécification. Mais 
-quels sont les arguments de la preuve par rapport aux tests ? D'abord la preuve
-est complète, elle n'oublie pas de cas s'ils sont présents dans la spécification 
-(le test serait trop coûteux s'il était exhaustif). D'autre part, l'obligation 
-de formaliser la spécification sous une forme logique demande de comprendre 
-exactement le besoin auquel nous devons répondre.
+
+Chacune de ces catégories peut affecter la sûreté et/ou la sécurité de nos
+programmes, qui ne sont pas des notions tout à fait équivalente. Pour donner
+une idée de la différence qui existe entre ces deux notions, nous pouvons
+dire que dans le cas de la sécurité, on suppose qu’il existe une entité
+capable d’attaquer (volontairement ou pas) le système, tandis que dans la
+sûreté, nous voulons juste vérifier que lorsqu’il est utilisé de manière
+conforme, le système se comporte correctement. Par conséquent, sans sûreté,
+nous ne pouvons pas avoir la sécurité\footnote{Selon votre domaine
+d’activité, le terme sûreté peut avoir un sens très différent. Plus
+précisément, un système sûr serait un système qui ne doit jamais mettre la
+vie d’un humain en danger. Et donc dans ce cas, la situation est inverse :
+sans sécurité, nous ne pouvons pas avoir la sûreté. Dans ce tutoriel, nous
+nous plaçons bien dans le cas « sûreté = le programme ne présente pas de
+problème lorsqu’on l’utilise de manière conforme ».}.
 
 
+Tout au long de ce tutoriel, nous montrerons comment prouver que les
+implémentations de nos programmes ne contiennent pas de bugs correspondant
+aux deux premières catégories définies plus haut, à savoir qu’ils sont
+conformes :
 
-Nous pourrions dire avec cynisme que la preuve nous montre finalement que 
-l'implémentation « ne contient aucun bugs de plus que la spécification ». D'une 
-part, c'est un sacré pas en avant par rapport à « le test nous montre que 
-l'implémentation ne contient pas beaucoup plus de bugs que la spécification »,
-étant donné que ce n'est généralement pas de la faute de la spécification si
-l'on essaie d'accéder à un pointeur nul.
-Et d'autre part, il existe également des techniques permettant d'analyser les 
-spécifications en quête d'erreurs ou de manquements. Par exemple, les techniques
-de \textit{Model Checking} - vérification de modèles - permettent de construire un modèle
-abstrait à partir d'une spécification et de produire un ensemble d'états du 
-programme accessible d'après le modèle. En caractérisant les états fautifs, nous
-sommes en mesure de déterminer si les états accessibles contiennent des états
-fautifs.
 
+\begin{itemize}
+\item à la spécification de notre langage,
+\item à la spécification de ce que nous attendons d’eux.
+\end{itemize}
+
+
+Mais quels sont les arguments de la preuve par rapport aux tests ? D’abord,
+la preuve est complète, elle n’oublie pas de cas s’ils sont présents dans la
+spécification (le test serait trop coûteux s’il était exhaustif). D’autre
+part, l’obligation de formaliser la spécification sous une forme logique
+demande de comprendre exactement le besoin auquel nous devons répondre.
+
+Nous pourrions dire avec cynisme que la preuve nous montre finalement que
+l’implémentation « ne contient aucun bug de plus que la spécification », et
+donc que nous traitons pas la troisième catégories de bugs que nous avons
+définie. Cependant, être sûr que le programme « ne contient aucun bug de
+plus que la spécification » est déjà un sacré pas en avant par rapport à
+savoir que le programme « ne contient pas beaucoup plus de bugs que la
+spécification », après tout cela représente deux catégories entières de bugs
+dont nous nous débarrassons, bugs qui peuvent déjà sévèrement compromettre la
+sûreté et la sécurité de nos programmes. Ensuite, il existe également des
+techniques pour traiter la troisième catégories de bugs, en analysant les
+spécifications en quête d’erreurs ou d’insuffisance. Par exemple, les
+techniques de model checking - vérification de modèles - permettent de
+construire un modèle abstrait à partir d’une spécification et de produire
+un ensemble d’états accessibles du programme d’après le modèle. En
+caractérisant les états fautifs, nous sommes en mesure de déterminer si les
+états accessibles contiennent des états fautifs.
 
 
 \levelThreeTitle{Un peu de contexte}
 
-
-Les méthodes formelles, comme elles sont appelées, permettent dans le domaine de 
-l'informatique de raisonner de manière rigoureuse, mathématique, à propos des 
-programmes. Il existe un très large panel de méthodes formelles qui peuvent 
+En informatique, les méthodes dites *formelles* permettent
+ de raisonner de manière rigoureuse, mathématique, à propos des
+programmes. Il existe un très large panel de méthodes formelles qui peuvent
 intervenir à tous les niveaux de la conception, l'implémentation, l'analyse et
 la validation des programmes ou de manière plus générale de tout système
 permettant le traitement de l'information.
 
 
 
-Ici, nous allons nous intéresser à la vérification que nos programmes sont 
-conformes au comportement que nous attendons de leur part. Nous allons utiliser 
-des outils capables d'analyser le code et de nous dire si oui, ou non, notre 
-code correspond à ce que nous voulons exprimer. La technique que nous allons 
+Ici, nous nous intéresserons à la vérification de la conformité de nos programmes
+au comportement attendu. Nous utiliserons
+des outils capables d'analyser le code et de nous dire si oui, ou non, notre
+code correspond à ce que nous voulons exprimer. La technique que nous allons
 étudier ici est une analyse statique, à opposer aux analyses dynamiques.
 
 
 
-Le principe des analyses statiques est que nous n'exécuterons pas le programme 
-pour nous assurer que son fonctionnement est correct, mais nous raisonnerons sur 
+Le principe des analyses statiques est que nous n'exécuterons pas le programme
+pour nous assurer que son fonctionnement est correct, mais nous raisonnerons sur
 un modèle mathématique définissant l'ensemble des états qu'il peut atteindre.
-A l'inverse, les analyses dynamiques comme le test de programme nécessite 
-d'exécuter le code analysé. Il existe également des analyses dynamiques et 
+A l'inverse, les analyses dynamiques comme le test de programmes nécessitent
+d'exécuter le code analysé. Il existe également des analyses dynamiques et
 formelles, comme de la génération automatique de tests ou encore des techniques de
-monitoring de code qui pourront, par exemple, instrumenter un code source afin de
+{\it monitoring} de code qui pourront, par exemple, instrumenter un code source afin de
 vérifier à l'exécution que les allocations et désallocation de mémoire sont faites
 de manière sûre.
 
 
 
-Dans le cas des analyses statiques, le modèle utilisé peut être plus ou moins 
-abstrait selon la technique employée, c'est donc une approximation des états 
+Dans le cas des analyses statiques, le modèle utilisé est plus ou moins
+abstrait selon la technique employée, c'est donc une approximation des états
 possibles de notre programme. Plus l'approximation est précise, plus le modèle est
 concret, plus l'approximation est large, plus il est abstrait.
 
 
 
-Pour illustrer la différence entre modèle concret et abstrait, nous pouvons 
-prendre l'exemple d'un chronomètre simple. Une modélisation très abstraite du
+Pour illustrer la différence entre modèle concret et abstrait, prenons
+l'exemple d'un chronomètre simple. Une modélisation très abstraite du
 comportement de notre chronomètre est la suivante :
 
 
 \image{model-fr.png}[Modélisation très abstraite d'un chronomètre]
 
 
-Nous avons bien une modélisation du comportement de notre chronomètre avec 
-différents états qu'il peut atteindre en fonction des actions qui sont réalisées
-à son sujet. Cependant, nous n'avons pas modélisé comment ces états sont 
-représentés dans le programme (est ce une énumération ? une position précise 
+Nous avons bien une modélisation du comportement de notre chronomètre avec
+différents états qu'il peut atteindre en fonction des actions qu'il subit.
+Cependant, nous n'avons pas modélisé comment ces états sont
+représentés dans le programme (est-ce une énumération ? une position précise
 atteinte au sein du code ?), ni comment est modélisé le calcul du temps (une seule
-variable en secondes ? Plusieurs variables heures, minutes, secondes ?). Nous 
-aurions donc bien du mal à spécifier des propriétés à propos de notre programme. 
+variable en secondes ? Plusieurs variables heures, minutes, secondes ?). Nous
+aurions donc bien du mal à spécifier des propriétés à propos de notre programme.
 Nous pouvons ajouter des informations :
 
 
 
 \begin{itemize}
-\item État arrêté à zéro : temps = 0s ;
-\item État en marche : temps > 0s ;
-\item État arrêté : temps > 0s.
+\item état arrêté à zéro : temps = 0s ;
+\item état en marche : temps > 0s ;
+\item état arrêté : temps > 0s.
 \end{itemize}
 
 
-Ce qui nous donne déjà un modèle plus concret mais qui est toujours insuffisant 
-pour poser des questions intéressantes à propos de notre système comme : « est il 
+Ce qui nous donne déjà un modèle plus concret mais qui est toujours insuffisant
+pour poser des questions intéressantes à propos de notre système comme : « est-il
 possible que dans l'état arrêté, le temps continue de s'écouler ? ». Car nous
 n'avons pas modélisé l'écoulement du temps par le chronomètre.
 
 
 
-À l'inverse avec le code source du programme, nous avons un modèle concret du
-chronomètre, le code source exprime bien le comportement du chronomètre puisque
-c'est lui qui va nous servir à produire l'exécutable. Mais ce n'est pour autant
-pas le plus concret ! Par exemple, l'exécutable en code machine obtenu à la fin
+À l'inverse, avec le code source du programme, nous avons un modèle concret du
+chronomètre. Le code source exprime bien le comportement du chronomètre puisque
+c'est lui qui sert à produire l'exécutable. Mais ce n'est pas pour autant le plus concret ! Par exemple, l'exécutable en code machine obtenu à la fin
 de la compilation est un modèle encore plus concret de notre programme.
 
 
 
 Plus un modèle est concret, plus il décrit précisément le comportement de notre
-programme. Le code source exprime le comportement plus précisément que notre 
+programme. Le code source exprime le comportement plus précisément que notre
 diagramme, mais il est moins précis que le code de l'exécutable. Cependant, plus
-un modèle est précis, plus il est difficile d'avoir une vision globale du 
+un modèle est précis, plus il est difficile d'avoir une vision globale du
 comportement qu'il définit. Notre diagramme est compréhensible en un coup d'oeil,
 le code demande un peu plus de temps, quant à l'exécutable ... Toute personne qui
 a déjà ouvert par erreur un exécutable avec un éditeur de texte sait que ce n'est
@@ -212,29 +244,29 @@ pas très agréable à lire dans son ensemble\textsuperscript{\ref{footnote:1}}.
 
 
 Lorsque nous créons une abstraction d'un système, nous l'approximons, pour limiter
-la quantité d'informations que nous avons à son sujet et faciliter notre 
-raisonnement. Une des contraintes si nous voulons qu'une vérification soit 
-correcte est bien sûr que nous ne devons jamais sous-approximer les comportements 
+la quantité d'informations que nous avons à son sujet et faciliter notre
+raisonnement. Une des contraintes si nous voulons qu'une vérification soit
+correcte est bien sûr que nous ne devons jamais sous-approximer les comportements
 du programme : nous risquerions d'écarter un comportement qui contient une erreur.
 Inversement, si nous sur-approximons notre programme, nous ajoutons des exécutions
-qui ne peuvent en réalité pas arriver et si nous ajoutons trop d'exécutions 
-inexistantes, nous pourrions ne plus être en mesure de prouver son bon 
+qui ne peuvent pas arriver en réalité et si nous ajoutons trop d'exécutions
+inexistantes, nous pourrions ne plus être en mesure de prouver son bon
 fonctionnement dans le cas où certaines d'entre elles seraient fautives.
 
 
 
-Dans le cas de l'outil que nous allons utiliser, le modèle est plutôt concret. 
-Chaque type d'instruction, chaque type de structure de contrôle d'un programme 
-se voit attribuer une sémantique, une représentation de son comportement dans 
-un monde purement logique, mathématique. Le cadre logique qui nous intéresse 
-ici, c'est la logique de Hoare adaptée pour le langage C et toutes ses 
+Dans le cas de l'outil que nous utiliserons, le modèle est plutôt concret.
+Chaque type d'instruction, chaque type de structure de contrôle d'un programme
+se voit attribuer une sémantique, une représentation de son comportement dans
+un monde purement logique, mathématique. Le cadre logique qui nous intéresse
+ici, c'est la logique de Hoare adaptée pour le langage C et toutes ses
 subtilités (qui rendent donc le modèle final très concret).
 
 
 
 \footnotetext[1]{\label{footnote:1} Il existe des analyses formelles cherchant à comprendre le
 fonctionnement des exécutables en code machine, par exemple pour comprendre ce
-que font des malwares ou pour détecter des failles de sécurité introduites lors
+que font des logiciels malveillants ou pour détecter des failles de sécurité introduites lors
 de la compilation.}
 
 
@@ -242,9 +274,10 @@ de la compilation.}
 \levelThreeTitle{Les triplets de Hoare}
 
 
-La logique de Hoare est une méthode de formalisation des programmes proposée 
-par Tony Hoare en 1969 dans un article intitulé \textit{An Axiomatic Basis for 
-Computer Programming} (une base axiomatique pour la programmation des 
+La logique de Hoare est une méthode de formalisation des programmes proposée
+par \externalLink{Tony Hoare}{https://fr.wikipedia.org/wiki/Charles_Antony_Richard_Hoare}
+en 1969 dans un article intitulé \textit{An Axiomatic Basis for
+Computer Programming} (une base axiomatique pour la programmation des
 ordinateurs). Cette méthode définit :
 
 
@@ -252,8 +285,8 @@ ordinateurs). Cette méthode définit :
 \begin{itemize}
 \item des axiomes, qui sont des propriétés que nous admettons, comme \\
 « l'action “ne rien faire” ne change pas l'état du programme »,
-\item et des règles pour raisonner à propos des différentes possibilités de 
-compositions d'actions, par exemple « l'action “ne rien faire” puis “faire 
+\item et des règles pour raisonner à propos des différentes possibilités de
+compositions d'actions, par exemple « l'action “ne rien faire” puis “faire
 l'action A” est équivalent à “faire l'action A” ».
 \end{itemize}
 
@@ -269,13 +302,13 @@ $\{P\}\ C\ \{Q\}$
 \end{center}
 
 
-Où $P$ et $Q$ sont des prédicats, des formules logiques qui nous disent dans 
+Où $P$ et $Q$ sont des prédicats (c'est-à-dire des formules logiques) qui nous disent dans
 quel état se trouve la mémoire traitée par le programme. $C$ est un ensemble de
-commandes définissant un programme. Cette écriture nous dit « si nous sommes 
-dans un état où $P$ est vrai, après exécution de $C$ et si $C$ termine, 
-alors $Q$ sera vrai pour le nouvel état du programme ». Dis autrement, $P$ est 
-une précondition suffisante pour que $C$ nous amène à la postcondition $Q$. 
-Par exemple, le triplet correspondant à l'action « ne rien faire » (\textbf{skip}) 
+commandes définissant un programme. Cette écriture nous dit « si nous sommes
+dans un état où $P$ est vrai, après exécution de $C$ et si $C$ termine,
+alors $Q$ sera vrai pour le nouvel état du programme ». Dis autrement, $P$ est
+une précondition suffisante pour que $C$ nous amène à la postcondition $Q$.
+Par exemple, le triplet correspondant à l'action « ne rien faire » (\textbf{skip})
 est le suivant :
 
 
@@ -290,19 +323,19 @@ Quand nous ne faisons rien, la postcondition est la même que la précondition.
 
 
 
-Tout au long de ce tutoriel, nous verrons la sémantique de diverses 
+Tout au long de ce tutoriel, nous verrons la sémantique de diverses
 constructions (blocs conditionnels, boucles, etc ...) dans la logique de Hoare.
 Nous n'allons donc pas tout de suite rentrer dans ces détails puisque nous en
 aurons l'occasion plus tard. Il n'est pas nécessaire de mémoriser ces notions
 ni même de comprendre toute la théorie derrière mais il est toujours utile
 d'avoir au moins une vague idée du fonctionnement de l'outil que nous
-utilisons  .
+utilisons.
 
 
 
-Tout ceci nous donne les bases permettant de dire « voilà ce que fait cette 
-action » mais ne nous donne pas encore de matériel pour mécaniser la preuve. 
-L'outil que nous allons utiliser repose sur la technique de calcul de plus 
+Tout ceci nous donne les bases permettant de dire « voilà ce que fait cette
+action » mais ne nous donne pas encore de matériel pour mécaniser la preuve.
+L'outil que nous utiliserons repose sur la technique du calcul de plus
 faible précondition.
 
 
@@ -310,28 +343,28 @@ faible précondition.
 \levelThreeTitle{Calcul de plus faible précondition}
 
 
-Le calcul de plus faible précondition est une forme de sémantique de 
-transformation de prédicats, proposée par Dijkstra en 1975 dans \textit{Guarded 
+Le calcul de plus faible précondition est une forme de sémantique de
+transformation de prédicats, proposée par Dijkstra en 1975 dans \textit{Guarded
 commands, non-determinacy and formal derivation of programs}.
 
 
 
 Cette phrase contient pas mal de mots méchants mais le concept est en fait très
-simple. Comme nous l'avons vu précédemment, la logique de Hoare nous donne des
-règles nous expliquant comment se comportent les actions d'un programme. Mais 
-elle ne nous dit pas comment appliquer ces règles pour établir une preuve 
+simple. Comme nous l'avons vu précédemment, la logique de Hoare donne des
+règles expliquant comment se comportent les actions d'un programme. Mais
+elle ne nous dit pas comment appliquer ces règles pour établir une preuve
 complète du programme.
 
 
 
-Dijkstra reformule la logique de Hoare en expliquant comment, dans le triplet 
-$\{P\}C\{Q\}$, l'instruction, ou le bloc d'instructions, $C$ transforme le 
-prédicat $P$, en $Q$. Cette forme est appelée « raisonnement vers l'avant » ou 
-\textit{forward-reasoning}. Nous calculons à partir d'une précondition et d'une ou 
+Dijkstra reformule la logique de Hoare en expliquant comment, dans le triplet
+$\{P\}C\{Q\}$, l'instruction, ou le bloc d'instructions, $C$ transforme le
+prédicat $P$, en $Q$. Cette forme est appelée « raisonnement vers l'avant » ou
+\textit{forward-reasoning}. Nous calculons à partir d'une précondition et d'une ou
 plusieurs instructions, la plus forte postcondition que nous pouvons
-atteindre. Informellement, en considérant ce qui est reçu en entrée, nous 
+atteindre. Informellement, en considérant ce qui est reçu en entrée, nous
 calculons ce qui sera renvoyé au plus en sortie. Si la postcondition voulue
-est au plus aussi forte, alors nous avons prouvé qu'il n'y a pas de 
+est au plus aussi forte, alors nous avons prouvé qu'il n'y a pas de
 comportements non-voulus.
 
 
@@ -352,9 +385,9 @@ Pas de problème, 4 fait bien partie des valeurs acceptables pour a.
 
 
 La forme qui nous intéresse, le calcul de plus faible précondition, fonctionne
-dans le sens inverse, nous parlons de « raisonnement vers l'arrière » ou 
-\textit{backward-reasoning}. À partir de la postcondition voulue et de 
-l'instruction que nous traitons, nous allons trouver la précondition minimale
+dans le sens inverse, nous parlons de « raisonnement vers l'arrière » ou
+\textit{backward-reasoning}. À partir de la postcondition voulue et de
+l'instruction que nous traitons, nous déduisons la précondition minimale
 qui nous assure ce fonctionnement. Si notre précondition réelle est au moins
 aussi forte, c'est-à-dire, qu'elle implique la plus faible précondition, alors
 notre programme est valide.
@@ -369,11 +402,11 @@ $\{P\}$ $x$ $:=$ a $\{x = 42\}$
 
 
 
-Quelle est la précondition minimale pour que la postcondition $\{x = 42\}$ 
+Quelle est la précondition minimale pour que la postcondition $\{x = 42\}$
 soit respectée ? La règle nous dira que $P$ est $\{$a$=42\}$.
 
 
 
-Nous n'allons pas nous étendre sur ces notions pour le moment, nous y 
+Nous n'allons pas nous étendre sur ces notions pour le moment, nous y
 reviendrons au cours du tutoriel pour comprendre ce que font les outils que
 nous utilisons. Et nos outils, parlons-en justement.

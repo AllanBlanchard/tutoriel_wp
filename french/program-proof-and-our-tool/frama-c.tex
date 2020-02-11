@@ -9,21 +9,22 @@
 Frama-C (pour FRAmework for Modular Analysis of C code) est une plate-forme
  dédiée à l'analyse de programmes C créée par le CEA List et Inria. Elle est
  basée sur une architecture modulaire permettant l'utilisation de divers
- plugins avec ou sans collaborations. Les plugins fournis par défaut
- comprennent diverses analyses statiques (sans exécution du code analysé),
- dynamiques (avec exécution du code), ou combinant les deux.
-
+ {\it plugins}. Les {\it plugins} fournis par défaut comprennent diverses
+ analyses statiques (sans exécution du code analysé), dynamiques (avec
+ exécution du code), ou combinant les deux. Ces *plugins* peuvent collaborer
+ ou non, soit en communiquant directement entre eux, soit en utilisant le
+ langage de spécification fourni par Frama-C.
 
 \image{gallery}
 
 
-Frama-C nous fournit également un langage de spécification appelé ACSL (« Axel »)
-pour \textit{ANSI C Specification Language} et qui va nous permettre d'exprimer les
+Ce langage de spécification s'appelle ACSL (« Axel »)
+pour \textit{ANSI C Specification Language} et permet d'exprimer les
 propriétés que nous souhaitons vérifier sur nos programmes. Ces propriétés seront
 écrites sous forme d'annotations dans les commentaires. Pour les personnes qui
 auraient déjà utilisé Doxygen, ça y ressemble beaucoup, sauf que tout sera
-écrit sous forme de formules logiques. Tout au long de ce tutoriel, nous allons
-beaucoup parler d'ACSL donc nous ne nous étendrons pas plus à son sujet ici.
+écrit sous forme de formules logiques. Tout au long de ce tutoriel, nous parlerons
+beaucoup d'ACSL donc nous ne nous étendrons pas plus à son sujet ici.
 
 
 
@@ -32,7 +33,8 @@ L'analyse que nous allons utiliser ici est fournie par un plugin appelé WP pour
 la technique dont nous avons parlé plus tôt :
 à partir des annotations ACSL et du code source, le plugin génère ce que nous
 appelons des obligations de preuves, qui sont des formules logiques dont nous
-devons vérifier la satisfiabilité. Cette vérification peut être faite de manière
+devons vérifier si elles sont vraies ou fausses (on parle de « satifiabilité »).
+Cette vérification peut être faite de manière
 manuelle ou automatique, ici nous n'utiliserons que des outils automatiques.
 
 
@@ -91,9 +93,7 @@ Par contre, ces dépôts ne sont pas systématiquement à jour. En soi, ce n'est
 
 
 
-Pour vérifier l'installation, c'est dans la sous-section « Vérifier l'installation »
-que les informations sont données.
-
+Les informations pour vérifier l'installation sont données dans la sous-section « Vérifier l'installation ».
 
 
 \levelFiveTitle{Via opam}
@@ -103,10 +103,10 @@ La deuxième solution consiste à passer par Opam, un gestionnaire de paquets
 pour les bibliothèques et applications OCaml.
 
 
-D'abord Opam doit être installé et configuré sur votre distribution (voir
+D'abord, Opam doit être installé et configuré sur votre distribution (voir
 leur documentation). Ensuite, il faut également que quelques paquets de votre
 distribution soit présents préalablement à l'installation de Frama-C. Sur la
-plupart des distributions nous pouvons demander à Opam d'aller cherche les
+plupart des distributions nous pouvons demander à Opam d'aller chercher les
 bonnes dépendances pour le paquet que nous voulons installer. Pour cela, nous
 utilisons l'outil depext d'Opam, qu'il faut d'abord installer :
 
@@ -147,20 +147,18 @@ Enfin, du côté d'Opam, il reste à installer Frama-C et Alt-Ergo.
 
 \begin{CodeBlock}{bash}
 opam install frama-c
-opam install alt-ergo-free
+opam install alt-ergo
 \end{CodeBlock}
 
 
-
-Pour vérifier l'installation, c'est dans la sous-section « Vérifier l'installation »
-que les informations sont données.
+Les informations pour vérifier l'installation sont données dans la sous-section « Vérifier l'installation ».
 
 
 
-\levelFiveTitle{Via compilation « manuelle »}
+\levelFiveTitle{Via une compilation « manuelle »}
 
 
-Pour installer Frama-C via compilation manuelle, les paquets indiqués dans la
+Pour installer Frama-C via une compilation manuelle, les paquets indiqués dans la
 section Opam sont nécessaires (mis à part Opam lui-même bien sûr). Il faut
 également une version récente d'Ocaml et de son compilateur (y compris vers
 code natif). Il est aussi nécessaire d'installer Why3, en version 1.2.0,
@@ -180,10 +178,7 @@ autoconf && ./configure && make && sudo make install
 \end{CodeBlock}
 
 
-
-Pour vérifier l'installation, c'est dans la sous-section « Vérifier l'installation »
-que les informations sont données.
-
+Les informations pour vérifier l'installation sont données dans la sous-section « Vérifier l'installation ».
 
 
 \levelFourTitle{OSX}
@@ -235,14 +230,12 @@ Frama-C et prouveur Alt-Ergo :
 
 
 \begin{CodeBlock}{bash}
-> opam install alt-ergo-free
+> opam install alt-ergo
 > opam install frama-c
 \end{CodeBlock}
 
 
-
-Pour vérifier l'installation, c'est dans la sous-section « Vérifier l'installation »
-que les informations sont données.
+Les informations pour vérifier l'installation sont données dans la sous-section « Vérifier l'installation ».
 
 
 
@@ -257,14 +250,13 @@ profiter de l'interface graphique, il faudra installer un serveur X sous
 Windows.
 
 
-Pour vérifier l'installation, c'est dans la sous-section « Vérifier l'installation »
-que les informations sont données.
+Les informations pour vérifier l'installation sont données dans la sous-section « Vérifier l'installation ».
 
 
 \levelThreeTitle{Vérifier l'installation}
 
 
-Pour vérifier votre installation, nous allons utiliser ce code très simple dans un
+Pour vérifier votre installation, commençons par mettre ce code très simple dans un
 fichier « main.c » :
 
 
@@ -300,8 +292,10 @@ vertes sur différentes lignes comme ceci :
 
 Si c'est le cas, tant mieux, sinon il faudra d'abord vérifier que rien n'a été
 oublié au cours de l'installation (par exemple : l'oubli de bibliothèques graphiques
-ou encore l'oubli de l'installation d'Alt-Ergo). Si tout semble correct, divers forum
-pourront vous fournir de l'aide.
+ou encore l'oubli de l'installation d'Alt-Ergo). Si tout semble correct, divers forums
+pourront vous fournir de l'aide
+(\externalLink{Forum de Zeste de Savoir}{https://zestedesavoir.com/forums/savoirs/programmation/}
+ \externalLink{StackOverflow - Frama-C}{https://stackoverflow.com/questions/tagged/frama-c}).
 
 
 
@@ -324,7 +318,7 @@ frama-c-gui -gui-theme colorblind
 
 
 Cette partie est purement optionnelle, rien de ce qui est ici ne sera
-complètement nécessaire pendant le tutoriel. Cependant, lorsque l'on commence à
+indispensable pendant le tutoriel. Cependant, lorsque l'on commence à
 s'intéresser vraiment à la preuve, il est possible de toucher assez rapidement
 aux limites du prouveur pré-intégré Alt-Ergo et d'avoir besoin d'autres
 prouveurs. Pour des propriétés simples, tous les prouveurs jouent à armes
@@ -338,7 +332,7 @@ Why3 est une plateforme pour la preuve déductive développée par le LRI à Ors
 Elle embarque en outre un langage de programmation et de spécification ainsi
 qu'un module permettant le dialogue avec une large variété de prouveurs
 automatiques et interactifs. C'est en cela qu'il est utile dans le cas de
-Frama-C et WP. WP utilise Why3 comme backend pour dialoguer avec les prouveurs
+Frama-C et WP. WP utilise Why3 comme {\it backend} pour dialoguer avec les prouveurs
 externes.
 
 
@@ -361,8 +355,8 @@ why3 config --detect
 \end{CodeBlock}
 
 
-Puis activée dan Frama-C. Dans le panneau latéral, dans la partie WP,
-cliquons « Provers... » :
+puis activée dan Frama-C. Dans le panneau latéral, dans la partie WP,
+cliquons sur « Provers... » :
 
 
 \image{provers}
@@ -407,14 +401,13 @@ paquets, il peut arriver que celui-ci ait directement intégré Coq.
 \end{Information}
 
 
-Pour plus d'informations à propos de Coq et de son installation, voir par
-ici : \externalLink{The Coq Proof Assistant}{https://coq.inria.fr/}.
+Pour plus d'informations à propos de Coq et de son installation, voir \externalLink{The Coq Proof Assistant}{https://coq.inria.fr/}.
 
 
-Le support actuel de Coq dans Frama-C est déprécié dans Frama-C mais toujours
+Le support actuel de Coq dans Frama-C est déprécié mais toujours
 accessible. Comme nous fournissons dans ce tutoriel quelques scripts de preuve
 Coq qui peuvent être utilisés, nous fournissons ces instructions afin que
-ces scripts puissent être visionnés et testé par les utilisateurs. Pour lancer
+ces scripts puissent être visionnés et testés par les utilisateurs. Pour lancer
 Frama-C avec le support de Coq, nous utilisons la commande :
 
 
