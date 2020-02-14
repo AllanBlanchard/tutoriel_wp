@@ -1,15 +1,19 @@
-Le principe d'un contrat de fonction est de poser les conditions selon 
-lesquelles la fonction va s'exécuter. C'est-à-dire : ce que doit respecter 
-le code appelant à propos des variables passées en paramètres et de l'état de
-la mémoire globale pour que la fonction s'exécute correctement, 
-\textbf{la précondition} ; et ce que s'engage à respecter la fonction en retour
-à propos de l'état de la mémoire et de la valeur de retour : 
-\textbf{la postcondition}.
+Le principe d'un contrat de fonction est de poser les conditions selon
+lesquelles la fonction s'exécutera. On distinguera deux parties :
 
 
+\begin{itemize}
+\item \textbf{la précondition}, c'est-à-dire ce que doit respecter le code
+      appelant à propos des variables passées en paramètres et de l'état de
+      la mémoire globale pour que la fonction s'exécute correctement ;
+\item \textbf{la postcondition}, c'est-à-dire ce que s'engage à respecter la
+      fonction en retour à propos de l'état de la mémoire et de la valeur de
+      retour.
+\end{itemize}
 
-Ces propriétés sont exprimées en langage ACSL, la syntaxe est relativement 
-simple pour qui a déjà fait du C puisqu'elle reprend la syntaxe des expressions
+
+Ces propriétés sont exprimées en langage ACSL dont la syntaxe est relativement 
+simple pour qui a déjà fait du C, puisqu'elle reprend la syntaxe des expressions
 booléennes du C. Cependant, elle ajoute également :
 
 
@@ -18,7 +22,7 @@ booléennes du C. Cependant, elle ajoute également :
 \item certaines constructions et connecteurs logiques qui ne sont pas présents 
 originellement en C pour faciliter l'écriture ;
 \item des prédicats pré-implémentés pour exprimer des propriétés souvent utiles 
-en C (par exemple : pointeur valide) ;
+en C (par exemple, la validité d'un pointeur) ;
 \item ainsi que des types plus généraux que les types primitifs du C, 
 typiquement les types entiers ou réels.
 \end{itemize}
@@ -29,9 +33,9 @@ langage ACSL.
 
 
 
-Les spécifications ACSL sont introduites dans nos codes source par 
-l'intermédiaire d'annotations. Syntaxiquement, un contrat de fonction est 
-intégré dans les sources de la manière suivante :
+Les spécifications ACSL sont introduites dans nos codes source par
+l'intermédiaire d'annotations placées dans des commentaires. Syntaxiquement,
+un contrat de fonction est intégré dans les sources de la manière suivante :
 
 
 
@@ -62,7 +66,7 @@ programme (nous nous intéresserons ensuite aux préconditions).
 
 
 La postcondition d'une fonction est précisée avec la clause \CodeInline{ensures}. 
-Nous allons travailler avec la fonction suivante qui donne la valeur absolue
+Nous travaillerons avec la fonction suivante qui donne la valeur absolue
 d'un entier reçu en entrée. 
 Une de ses postconditions est que le résultat (que nous notons avec le 
 mot-clé \CodeInline{\textbackslash{}result}) est supérieur ou égal à 0.
@@ -80,7 +84,7 @@ mot-clé \CodeInline{\textbackslash{}result}) est supérieur ou égal à 0.
 Mais ce n'est pas tout, il faut également spécifier le comportement général 
 attendu d'une fonction renvoyant la valeur absolue. À savoir : si la valeur
 est positive ou nulle, la fonction renvoie la même valeur, sinon elle renvoie 
-l'opposée de la valeur.
+l'opposé de la valeur.
 
 
 
@@ -152,7 +156,7 @@ contenir beaucoup de spécifications, il peut être commode de nommer les
 propriétés que nous souhaitons vérifier. Pour cela, nous indiquons un nom (les 
 espaces ne sont pas autorisées) suivi de \CodeInline{:} avant de mettre effectivement
 la propriété, il est possible de mettre plusieurs « étages » de noms pour 
-catégoriser nos propriétés. Par exemple nous pouvons écrire ceci :
+catégoriser nos propriétés. Par exemple, nous pouvons écrire ceci :
 
 
 
@@ -195,7 +199,7 @@ fichiers à la session s'effectue en cliquant sur Files > Source Files.
 
 
 
-À noter également qu'il est possible de directement ouvrir le(s) fichier(s) 
+À noter également qu'il est possible d'ouvrir directement le(s) fichier(s) 
 depuis la ligne de commande en le(s) passant en argument(s) de \CodeInline{frama-c-gui}.
 
 
@@ -211,12 +215,12 @@ $ frama-c-gui abs.c
 
 La fenêtre de Frama-C s'ouvre, dans le volet correspondant aux fichiers et aux
 fonctions, nous pouvons sélectionner la fonction \CodeInline{abs}. 
-Aux différentes lignes \CodeInline{ensures}, il y a un cercle bleu dans la marge, ils 
-indiquent qu'aucune vérification n'a été tentée pour ces lignes.
+Pour chaque ligne \CodeInline{ensures}, il y a un cercle bleu dans la marge.
+Ces cercles indiquent qu'aucune vérification n'a été tentée pour ces lignes.
 
 
 
-Nous demandons la vérification que le code répond à la spécification en faisant 
+Nous demandons de vérifier que le code répond à la spécification en faisant 
 un clic droit sur le nom de la fonction et « \textit{Prove function annotations by WP} » :
 
 
@@ -226,16 +230,17 @@ un clic droit sur le nom de la fonction et « \textit{Prove function annotations
 
 Nous pouvons voir que les cercles bleus deviennent des pastilles vertes, 
 indiquant que la spécification est bien assurée par le programme. Il est 
-possible de prouver les propriétés une à une en cliquant droit sur celles-ci 
+possible de prouver les propriétés une à une en cliquant-droit sur celles-ci 
 et pas sur le nom de la fonction.
 
 
 
 Mais le code est-il vraiment sans erreur pour autant ? WP nous permet de nous 
 assurer que le code répond à la spécification, mais il ne fait pas de contrôle 
-d'erreur à l'exécution (RunTime Error : RTE) si nous le demandons pas. Un autre
-plugin de Frama-C, appelé sobrement RTE, peut être utilisé pour générer des
-annotations ACSL qui peuvent ensuite être vérifiées par d'autres plugins.
+d'erreur à l'exécution (\textit{runtime error}, abrégé RTE) si nous le demandons
+pas. Un autre \textit{plugin} de Frama-C, appelé sobrement RTE, peut être
+utilisé pour générer des annotations ACSL qui peuvent ensuite être vérifiées par
+d'autres \textit{plugins}.
 Son but est
 d'ajouter des contrôles dans le programme pour les erreurs d'exécutions 
 possibles (débordements d'entiers, déréférencements de pointeurs invalides, 
@@ -245,7 +250,7 @@ division par 0, etc).
 
 Pour activer ce contrôle, nous devons activer l'option dans la configuration
 de WP. Pour cela, il faut d'abord cliquer sur le bouton de configuration des
-plugins :
+\textit{plugins} :
 
 
 \image{plugin-options}
@@ -262,13 +267,13 @@ contrôles par un clic droit sur le nom de la fonction puis
 « Insert wp-rte guards ».
 
 
-Enfin nous relançons la vérification (nous pouvons également cliquer sur le 
+Enfin, nous relançons la vérification (nous pouvons également cliquer sur le 
 bouton « \textit{Reparse} » de la barre d'outils, cela aura pour effet de supprimer les
 preuves déjà effectuées).
 
 
 
-Nous pouvons alors voir alors que WP échoue à prouver  l'impossibilité de 
+Nous voyons alors que WP échoue à prouver  l'impossibilité de 
 débordement arithmétique sur le calcul de -val. Et c'est bien normal parce 
 que -\CodeInline{INT\_MIN} ($-2^{31}$) > \CodeInline{INT\_MAX} ($2^{31}-1$).
 
@@ -285,7 +290,7 @@ pour lequel le dépassement n'est pas défini par la norme C.
 \end{Information}
 
 
-Ici nous pouvons voir un autre type d'annotation ACSL. La 
+Ici, nous pouvons voir un autre type d'annotation ACSL. La 
 ligne \CodeInline{//@ assert propriete ;} nous permet de demander la vérification 
 d'une propriété à un point particulier du programme. Ici, l'outil l'a 
 insérée pour nous car il faut vérifier que le \CodeInline{-val} ne provoque pas de 
@@ -295,20 +300,21 @@ un code.
 
 
 Comme le montre cette capture d'écran, nous avons deux nouveaux codes couleur
-pour les pastilles : vert+marron et orange.
+pour les pastilles : vert + marron et orange.
 
 
 
-La couleur vert + marron nous indique que la preuve a été effectué mais 
-qu'elle dépend potentiellement de propriétés qui, elle, ne l'ont pas été.
+La couleur vert + marron nous indique que la preuve a été effectuée mais 
+qu'elle dépend potentiellement de propriétés pour lesquelles ce n'est pas le
+cas.
 
 
 
-Si  la preuve n'est pas recommencée intégralement par rapport à la preuve 
+Si  la preuve n'a pas été recommencée intégralement par rapport à la preuve 
 précédente, ces pastilles ont dû rester vertes car les preuves associées ont
 été réalisées avant l'introduction de la propriété nous assurant l'absence 
-de runtime-error, et ne se sont donc pas reposées sur la connaissance de cette
-propriété puisqu'elle n'existait pas.
+d'erreur d'exécution, et ne se sont donc pas reposées sur la connaissance de
+cette propriété puisqu'elle n'existait pas.
 
 
 
@@ -355,7 +361,7 @@ fonction où se trouve le but à prouver. En seconde colonne nous trouvons le no
 du but. Ici par exemple notre postcondition nommée est estampillée 
 « postcondition 'positive\textit{value,function}result' », nous pouvons d'ailleurs noter
 que lorsqu'une propriété est sélectionnée dans le tableau, elle est également 
-sur-lignée dans le code source. Les propriétés non-nommées se voient assignées
+surlignée dans le code source. Les propriétés anonymes se voient assignées
 comme nom le type de propriété voulu. En troisième colonne, nous trouvons le 
 modèle mémoire utilisé pour la preuve, (nous n'en parlerons pas dans ce 
 tutoriel). Finalement, les dernières colonnes représentent les différents 
@@ -365,7 +371,7 @@ prouveurs accessibles à WP.
 
 Dans ces prouveurs, le premier élément de la colonne est Qed. Ce n'est pas
 à proprement parler un prouveur. C'est un outil utilisé par WP pour simplifier
-les propriétés avant de les envoyer aux prouveurs externes. Ensuite nous
+les propriétés avant de les envoyer aux prouveurs externes. Ensuite, nous
 voyons la colonne Script, les scripts fournissent une manière de terminer
 les preuves à la main lorsque les prouveurs automatiques n'y arrivent pas.
 Finalement, nous trouvons la colonne Alt-Ergo, qui est un prouveur automatique.
@@ -384,7 +390,7 @@ nous pouvons voir ceci (si ce n'est pas le cas, il faut s'assurer que
 
 
 C'est l'obligation de preuve que génère WP par rapport à notre propriété et 
-notre programme, il n'est pas nécessaire de comprendre tout ce qui s'y passe, 
+notre programme, il n'est pas nécessaire de comprendre tout ce qu'il s'y passe, 
 juste d'avoir une idée globale. Elle contient (dans la partie « \textit{Assume} ») les 
 suppositions que nous avons pu donner et celles que WP a pu déduire des 
 instructions du programme. Elle contient également (dans la partie « \textit{Prove} ») 
@@ -397,7 +403,7 @@ logique puis demande aux différents prouveurs s'il est possible de la
 satisfaire (de trouver pour chaque variable, une valeur qui rend la formule 
 vraie), cela détermine si la propriété est prouvable. Mais avant d'envoyer 
 cette formule aux prouveurs, WP utilise un module qui s'appelle Qed et qui est
-capable de faire différentes simplifications à son sujet. Parfois comme dans 
+capable de faire différentes simplifications à son sujet. Parfois, comme dans 
 le cas des autres propriétés de \CodeInline{abs}, ces simplifications suffisent à 
 déterminer que la propriété est forcément vraie, auquel cas, nous ne faisons
 pas appel aux prouveurs.
@@ -406,9 +412,10 @@ pas appel aux prouveurs.
 
 Lorsque les prouveurs automatiques ne parviennent pas à assurer que nos 
 propriétés sont bien vérifiées, il est parfois difficile de comprendre 
-pourquoi. En effet, les prouveurs ne sont généralement pas capables de nous 
-répondre autre chose que « oui », « non » ou « inconnu », ils ne sont pas capables
-d'extraire le « pourquoi » d'un « non » ou d'un « inconnu ». Il existe des outils qui
+pourquoi. En effet, les prouveurs sont généralement incapables de nous 
+répondre autre chose que « oui », « non » ou « inconnu », ils sont pas
+incapables d'extraire le « pourquoi » d'un « non » ou d'un « inconnu ». Il
+existe des outils qui
 sont capables d'explorer les arbres de preuve pour en extraire ce type 
 d'information, Frama-C n'en possède pas à l'heure actuelle. La lecture des
 obligations de preuve peut parfois nous aider, mais cela demande un peu 
