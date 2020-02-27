@@ -42,7 +42,7 @@ wp(
  -10 <= x - 5 + y <= 10) --> (* BY ASSIGNMENT *)
 
 -10 <= x - 5 + y + 10 <= 10 -->
--5 <= x + y <= 15
+-15 <= x + y <= 5
 ```
 
 The actual precondition of the function is:
@@ -61,7 +61,7 @@ Thus:
 And since:
 
 ```
--10 <= x+y <= 5 ==> -5 <= x + y <= 15
+-10 <= x+y <= 5 ==> -15 <= x + y <= 5
 ```
 
 By the consequence rule the function is correct.
