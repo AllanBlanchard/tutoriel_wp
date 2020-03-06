@@ -41,10 +41,10 @@ void rotate(int* arr, size_t beg, size_t end){
   case reflexive{L1}: 
     \forall int* a, integer b,e ; permutation{L1,L1}(a, b, e);
   case rotate_left{L1,L2}:
-    \forall int* a, integer b, e, i, shift ;
+    \forall int* a, integer b, e, i ;
       b < i <= e ==> rotate{L1, L2}(a, b, i) ==> permutation{L1, L2}(a, b, e) ;
   case rotate_right{L1,L2}:
-    \forall int* a, integer b, e, i, shift ;
+    \forall int* a, integer b, e, i ;
       b <= i < e ==> rotate{L1, L2}(a, i, e) ==> permutation{L1, L2}(a, b, e) ;
   case transitive{L1,L2,L3}:
     \forall int* a, integer b,e ; 
