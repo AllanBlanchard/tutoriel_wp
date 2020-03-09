@@ -1,8 +1,8 @@
 Inductive predicates gives a way to state properties whose verification requires
 to reason by induction, that is to say: for a property $p(input)$, it is true
 for some base cases (for example, $0$ is an even natural number), and knowing
-that $p(input)$ is true, it also true for a $bigger\ input$, provided that some
-conditions relating $input$ and $bigger\ input$ are verified (for example,
+that $p(input)$ is true, it is also true for a $bigger\ input$, provided that
+some conditions relating $input$ and $bigger\ input$ are verified (for example,
 knowing that $n$ is even, we define that $n+2$ is also even). Thus, inductive
 predicates are generally useful to define properties recursively.
 
@@ -154,7 +154,7 @@ frama-c-gui -wp -wp-prop=BAD -wp-prover=native:coq file.c
 \image{coq-failed-error}
 
 
-However, that does not mean that we cannot write a inconsistent inductive
+However, that does not mean that we cannot write an inconsistent inductive
 definition. For example, the following definition is well founded, while it
 allows us to prove false:
 
@@ -237,7 +237,7 @@ Let us prove a simple selection sort:
 The reader can exercise by specifying and proving the search of the minimum and
 the swap function. We hide there a correct version of these specification and
 code (Answers~\ref{l2:acsl-logic-definitions-answers}), we will focus on the
-specification and the proof of the sort function that is a interesting use case
+specification and the proof of the sort function that is an interesting use case
 for inductive definitions.
 
 Indeed, a common error we could do, trying to prove a sort function, would

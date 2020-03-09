@@ -282,8 +282,8 @@ comprised between 0 and the size of maximum considered range of values:
 \begin{CodeBlock}{c}
 /*@
 lemma l_occurrences_of_range{L}:
-  \forall int v, int* array, integer from, to:
-    from <= to ==> 0 <= l_occurrences_of(v, a, from, to) <= to-from;
+  \forall int v, int* in, integer from, to:
+    from <= to ==> 0 <= l_occurrences_of(v, in, from, to) <= to-from;
 */
 \end{CodeBlock}
 
