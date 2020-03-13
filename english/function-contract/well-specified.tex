@@ -68,7 +68,9 @@ If there is one notion that we permanently have to confront with in C
 language, this is definitely the notion of pointer. Pointers are quite
 hard to manipulate correctly, and they still are the main source of
 critical bugs in programs, so they benefit of a preferential treatment
-in ACSL.
+in ACSL. In order to produce a correct specification of programs using
+pointers, it is necessary to detail the configuration of the considered
+memory.
 
 We can illustrate with a swap function for C integers:
 
