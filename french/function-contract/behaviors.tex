@@ -16,7 +16,7 @@ le cas où la valeur est négative.
 Les comportements nous servent à spécifier les différents cas pour les
 postconditions. Nous les introduisons avec le mot-clé \CodeInline{behavior}.
 Chaque comportement a un nom. Pour un comportement donné, nous trouvons
-différentes suppositions à propos de l'entrée de la fonction, elles sont
+différentes hypothèses à propos de l'entrée de la fonction, elles sont
 introduites à l'aide du mot clé \CodeInline{assumes} (notons que, puisqu'elles
 caractérisent les entrées, le mot clé \CodeInline{\textbackslash{}old} ne peut
 pas être utilisé ici). Cependant, chaque propriété exprimée par ces clauses
@@ -31,8 +31,8 @@ entrées possibles).
 
 
 Les comportements sont disjoints si pour toute entrée de la fonction, elle ne
-correspond aux suppositions (\textit{assumes}) que d'un seul comportement. Les
-comportements sont complets si les suppositions recouvrent bien tout le domaine
+correspond aux hypothèses (\textit{assumes}) que d'un seul comportement. Les
+comportements sont complets si les hypothèses recouvrent bien tout le domaine
 des entrées.
 
 
@@ -55,10 +55,10 @@ d'expérimenter deux possibilités :
 
 
 \begin{itemize}
-\item remplacer la supposition de « pos » par \CodeInline{val > 0} auquel cas les
+\item remplacer l'hypothèse de « pos » par \CodeInline{val > 0} auquel cas les
 comportements seront disjoints mais incomplets (il nous manquera le cas
 \CodeInline{val == 0}) ;
-\item remplacer la supposition de « neg » par \CodeInline{val <= 0} auquel cas les
+\item remplacer l'hypothèse de « neg » par \CodeInline{val <= 0} auquel cas les
 comportements seront complets mais non disjoints (le cas \CodeInline{val == 0}) sera
 présent dans les deux comportements.
 \end{itemize}
