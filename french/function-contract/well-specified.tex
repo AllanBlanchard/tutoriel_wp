@@ -113,7 +113,7 @@ Par exemple, nous pourrions écrire :
 
 
 
-En plus des labels que nous pouvons nous-mêmes créer. Il existe 6 labels 
+En plus des labels que nous pouvons nous-mêmes créer, il existe 6 labels 
 qu'ACSL nous propose par défaut:
 
 
@@ -176,7 +176,7 @@ Cependant, dans certains cas, tout ce que nous pouvons obtenir est un échec de
 la preuve, parce que déterminer si la valeur existe ou non à un label particulier
 ne peut être fait par une analyse purement syntaxique. Par exemple, si la variable
 est déclarée mais pas définie, ou si nous demandons la valeur d'une zone mémoire
-pointée:
+pointée :
 
 
 \CodeBlockInput[7][19]{c}{at-2.c}
@@ -186,14 +186,14 @@ Ici, il est facile de remarquer le problème. Cependant, le label que nous
 transmettons à la fonction \CodeInline{\textbackslash{}at} est propagé également
 aux sous-expressions. Dans certains cas, des termes qui paraissent tout à fait
 innocents peuvent en réalité nous donner des comportements surprenant si nous
-ne gardons pas cette idée en tête. Par exemple dans le programme suivant:
+ne gardons pas cette idée en tête. Par exemple, dans le programme suivant :
 
 
 \CodeBlockInput[21][26]{c}{at-2.c}
 
 
 La première assertion est prouvée, et tandis que la seconde assertion a l'air
-d'exprimer la même propriété, elle ne peut pas être prouvée. Et la raison est
+d'exprimer la même propriété, elle ne peut pas être prouvée. La raison est
 simplement qu'elle n'exprime pas la même propriété. L'expression
 \CodeInline{\textbackslash{}at(x[*p], Pre)} doit être lue comme
 \CodeInline{\textbackslash{}at(x[\textbackslash{}at(*p)], Pre)} parce que le
@@ -290,7 +290,7 @@ Le résultat n'est pas vraiment celui escompté :
 
 
 En effet, nous n'avons pas spécifié les effets de bords autorisés pour notre
-fonction. Pour spécifier les effets de bords, nous utilisons la clause \CodeInline{assigns}
+fonction. Pour cela, nous utilisons la clause \CodeInline{assigns}
 qui fait partie des postconditions de la fonction. Elle nous permet de spécifier 
 quels éléments \textbf{non locaux} (on vérifie bien des effets de bord), sont 
 susceptibles d'être modifiés par la fonction.
@@ -378,7 +378,7 @@ pas une autre.
 
 Pour assurer que les pointeurs sont bien sur des zones séparées de mémoire, 
 ACSL nous offre le prédicat \CodeInline{\textbackslash{}separated(p1, ..., pn)} qui reçoit en entrée 
-un certain nombre de pointeurs et qui va nous assurer qu'ils sont deux à deux 
+un certain nombre de pointeurs et qui nous assurera qu'ils sont deux à deux 
 disjoints. Ici, nous spécifierions :
 
 
@@ -407,7 +407,7 @@ les préconditions qui nous garantissent l'absence de débordement en conséquen
 Trouver les bonnes préconditions à une fonction est parfois difficile. Il est
 intéressant de noter qu'une bonne manière de vérifier qu'une spécification est
 suffisamment précise est d'écrire des tests pour voir si le contrat nous permet,
-depuis un code appelant, de déduire des propriétés intéressantes. Et en fait,
+depuis un code appelant, de déduire des propriétés intéressantes. En fait,
 c'est exactement ce que nous avons fait pour nos exemples \CodeInline{max} et
 \CodeInline{swap}. Nous avons écrit une première version de notre spécification
 et du code appelant qui nous a servi à déterminer si nous pouvions prouver des
@@ -519,8 +519,8 @@ void add(int* a, int* b, int* r);
 
 
 Le résultat doit maintenant être stocké à la position mémoire \CodeInline{r}.
-Modifier l'appel dans la fonction main et le code de la fonction de façon à
-implémenter ce comportement. Modifier le contrat de la fonction
+Modifier l'appel dans la fonction \CodeInline{main} et le code de la fonction de
+façon à implémenter ce comportement. Modifier le contrat de la fonction
 \CodeInline{add} et recommencer la preuve.
 
 
@@ -563,7 +563,7 @@ mettre en lumière le nouveau comportement de la fonction.
 
 
 La fonction suivante doit ordonner trois valeurs reçues en entrée dans
-l'ordre coirssant. Écrire le code correspondant et la spécification de la
+l'ordre croissant. Écrire le code correspondant et la spécification de la
 fonction :
 
 \CodeBlockInput{c}{ex-5-order-3.c}
@@ -604,7 +604,7 @@ Par conséquent nous devons considérer trois autres cas particuliers:
 \end{itemize}
 
 
-Qui nous permet d'ajouter la bonne contrainte aux valeurs de sorties.
+Qui nous permet d'ajouter la bonne contrainte aux valeurs de sortie.
 
 
 Pour la réalisation de la spécification, le programme de test suivant peut
