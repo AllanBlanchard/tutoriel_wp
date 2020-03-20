@@ -251,7 +251,7 @@ Et cette fois, la preuve passera.
 \levelThreeTitle{Exercices}
 
 
-Pour tous ces exercices, utilisez la commande suivante pour démarrer la vérification:
+Pour tous ces exercices, utiliser la commande suivante pour démarrer la vérification:
 
 \begin{CodeBlock}{bash}
 frama-c-gui -wp -wp-rte -warn-unsigned-overflow your-file.c
@@ -269,10 +269,10 @@ Considérons que nous avons une fonction :
 \CodeBlockInput[3][9]{c}{ex-1-forall-exists.c}
 
 
-Écrivez un corps de votre choix pour cette fonction et un contrat l'accompagnant.
-Ensuite, écrivez les fonctions suivantes avec leurs contrats pour prouver leur
-correction. Notez qu'il n'est pas possible d'utiliser votre fonction C dans un
-contrat, la propriété que vous aurez choisi pour la fonction \CodeInline{pred}
+Écrire un corps (au choix) pour cette fonction et un contrat l'accompagnant.
+Ensuite, écrire les fonctions suivantes avec leurs contrats pour prouver leur
+correction. Notons qu'il n'est pas possible d'utiliser une fonction C dans un
+contrat, la propriété que choisie pour la fonction \CodeInline{pred}
 devra donc être inlinée dans la spécification des différentes fonctions.
 
 \begin{itemize}
@@ -331,8 +331,8 @@ devrait indiquer que si l'un des indices du tableau correspond à la valeur
 recherchée, alors cette indice devrait être correctement borné.
 
 \textbf{Plus dur :} Modifier cette fonction de façon à recevoir \CodeInline{len}
-comme un \CodeInline{size\_t}. Vous devrez modifier légèrement l'algorithme et 
-la spécification/les invariants. Conseil : arrangez vous pour que \CodeInline{up}
+comme un \CodeInline{size\_t}. Il faut modifier légèrement l'algorithme et
+la spécification/les invariants. Conseil : s'arranger pour que \CodeInline{up}
 soit une borne exclue de la recherche.
 
 
@@ -340,8 +340,8 @@ soit une borne exclue de la recherche.
 
 
 Écrire, spécifier et prouver la fonction qui ajoute deux vecteurs dans un
-troisième. Fixez des contraintes arbitraires sur les valeurs d'entrée pour 
-gérer le débordement des entiers. Considérez que le vecteur est résultant est
+troisième. Fixer des contraintes arbitraires sur les valeurs d'entrée pour
+gérer le débordement des entiers. Considérer que le vecteur est résultant est
 spacialement séparé des vecteurs d'entrée. En revanche, le même vecteur devrait
 pouvoir être utilisé pour les deux vecteurs d'entrée.
 
@@ -351,9 +351,9 @@ pouvoir être utilisé pour les deux vecteurs d'entrée.
 \levelFourTitle{Fonction avec modification : inverse}
 
 
-Écrire, spécifier et prouver la fonction qui inverse un vecteur en place. Prenez
-garde à la partie non-modifiée du vecteur à une itération donnée de la boucle.
-Utilisez la fonction \CodeInline{swap} précédemment prouvée.
+Écrire, spécifier et prouver la fonction qui inverse un vecteur en place.
+Prendre garde à la partie non-modifiée du vecteur à une itération donnée de la
+boucle. Utiliser la fonction \CodeInline{swap} précédemment prouvée.
 
 
 \CodeBlockInput[3][7]{c}{ex-5-reverse.c}
@@ -364,7 +364,7 @@ Utilisez la fonction \CodeInline{swap} précédemment prouvée.
 
 Écrire, spécifier et prouver la fonction \CodeInline{copy} qui copie une plage
 de valeur dans un autre tableau, en commençant pas la première cellule du
-tableau. Considérez (et spécifiez) d'abord que les deux plages sont entièrement
+tableau. Considérer (et spécifier) d'abord que les deux plages sont entièrement
 séparées.
 
 
