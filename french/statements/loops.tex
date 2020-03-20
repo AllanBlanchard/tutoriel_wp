@@ -18,12 +18,12 @@ La nature des boucles rend leur analyse difficile. Lorsque nous faisons nos
 raisonnements arrières, il nous faut une règle capable de dire à partir de la
 postcondition quelle est la précondition d'une certaine séquence 
 d'instructions. Problème : nous ne pouvons \textit{a priori} pas déduire combien de 
-fois la boucle va s'exécuter et donc par conséquent, nous ne pouvons pas non 
+fois la boucle s'exécutera et donc par conséquent, nous ne pouvons pas non 
 plus savoir combien de fois les variables ont été modifiées.
 
 
 
-Nous allons donc procéder en raisonnant par induction. Nous devons trouver une
+Nous procéderons en raisonnant par induction. Nous devons trouver une
 propriété qui est vraie avant de commencer la boucle et qui, si elle est vraie
 au début d'un tour de boucle, sera vraie à la fin (et donc par extension, au 
 début du tour suivant). Quand la boucle termine, nous gagnons la connaissance 
@@ -92,7 +92,7 @@ correspond à la vérification du travail effectué par le corps de la boucle :
 « \textit{Known WP} ») est ($KWP = B \wedge I$). Soit le fait que nous sommes
 rentrés dedans ($B$ est vrai), et que l'invariant est respecté à ce moment
 ($I$, qui est vrai avant de commencer la boucle par (1), et dont veut 
-vérifier qu'il sera vraie en fin de bloc de la boucle (2)),
+vérifier qu'il sera vrai en fin de bloc de la boucle (2)),
 \item (2) ce qu'il nous reste à vérifier c'est que $KWP$ implique la 
 précondition réelle* du bloc de code de la boucle 
   ($KWP \Rightarrow wp(c, Post)$). Ce que nous voulons en fin de bloc, 
@@ -283,7 +283,7 @@ soit prouvée.
 manière :
 \inlineImage{goto_end}
 
-Et c'est également le cas lorsque l'on sait trivialement qu'une instruction
+C'est également le cas lorsque l'on sait trivialement qu'une instruction
 produit nécessairement une erreur d'exécution (par exemple en déréférençant 
 la valeur \CodeInline{NULL}), comme nous avions déjà pu le constater avec l'exemple
 de l'appel à \CodeInline{abs} avec la valeur \CodeInline{INT\_MIN}.
@@ -317,7 +317,7 @@ Une nouvelle fois nous pouvons regarder les buts générés :
 
 Le variant nous génère bien deux obligations au niveau de la vérification : 
 assurer que la valeur est positive, et assurer qu'elle décroît strictement pendant
-l'exécution de la boucle. Et si nous supprimons la ligne de code qui incrémente
+l'exécution de la boucle. Si nous supprimons la ligne de code qui incrémente
 \CodeInline{i}, WP ne peut plus prouver que la valeur \CodeInline{30 - i} décroît strictement.
 
 
@@ -394,7 +394,7 @@ int add_ten(int a){
 
 
 
-En remontant les instructions depuis la postcondition, on conserve toujours les
+en remontant les instructions depuis la postcondition, on conserve toujours les
 informations à propos de \CodeInline{a}. À l'inverse, comme mentionné plus tôt, en dehors
 de la boucle WP, ne considérera que les informations fournies par notre
 invariant. Par conséquent, notre fonction \CodeInline{add\_ten} ne peut pas être prouvée
@@ -411,7 +411,7 @@ exemple :
 \begin{Information}
 Ce besoin peut apparaître comme une contrainte très forte. Il ne l'est en fait pas
 tant que cela. Il existe des analyses fortement automatiques capables de 
-calculer les invariants de boucles. Par exemple, sans spécifications, une 
+calculer les invariants de boucles. Par exemple, sans spécification, une 
 interprétation abstraite calculera assez facilement \CodeInline{0 <= i <= 10} et 
 \CodeInline{\textbackslash{}old(a) <= a <= \textbackslash{}old(a)+10}. En revanche, il est souvent bien plus difficile
 de calculer les relations qui existent entre des variables différentes qui 
@@ -445,7 +445,7 @@ restreindre encore.
 
 Ici, nous pouvons voir que nous avons exclu 30 de la plage des valeurs de
 \CodeInline{i} et la fonction est correctement vérifiée par WP. Cette propriété
-est particulièrement intéressante car elle ne s'applique pas qu'un l'invariant. 
+est particulièrement intéressante car elle ne s'applique pas qu'à l'invariant. 
 Aucune des propriétés de la boucle n'ont besoin d'être vérifiées pendant l'itération
 qui mène au \CodeInline{break}. Par exemple, nous pouvons écrire ce code qui est
 également vérifié :
@@ -455,7 +455,7 @@ qui mène au \CodeInline{break}. Par exemple, nous pouvons écrire ce code qui e
 \CodeBlockInput{c}{first_loop-non-term-3.c}
 
 
-Nous pouvons voir que nous pouvons écrire la variable \CodeInline{h} même si elle
+Nous voyons que nous pouvons écrire la variable \CodeInline{h} même si elle
 n'est pas listée dans la clause \CodeInline{loop assigns}, et que nous pouvons
 donner la valeur 42 à \CodeInline{i} alors que l'invariant l'interdirait, et aussi
 que nous pouvons rendre l'expression du variant négative. En fait, tout se passe
@@ -470,9 +470,9 @@ C'est un schéma très pratique. Il correspond à tout algorithme qui cherche, �
 d'une boucle, une condition vérifiée par un élément particulier dans une structure 
 de données et s'arrête quand cet élément est trouvé afin d'effectuer certaines
 opérations qui ne sont finalement pas vraiment des opérations de la boucle. D'un
-point de vue vérification, cela nous permet de simplifier le contrat associé à une
-boucle: nous savons que l'opération (potentiellement complexe) ) réalisée juste 
-avant de sortir de la boucle ne nécessite pas d'être prise en compte dans
+point de vue vérification, cela nous permet de simplifier le contrat associé à
+une boucle : nous savons que l'opération (potentiellement complexe) ) réalisée
+juste avant de sortir de la boucle ne nécessite pas d'être prise en compte dans
 l'invariant.
 
 

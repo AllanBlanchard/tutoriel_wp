@@ -7,7 +7,7 @@ d'intérêt). Le calcul de plus faible précondition associé est le suivant :
 $$wp(x = E , Post) := Post[x \leftarrow E]$$
 
 
-Où la notation $P[x \leftarrow E]$ signifie « la propriété $P$ où $x$ est remplacé
+où la notation $P[x \leftarrow E]$ signifie « la propriété $P$ où $x$ est remplacé
 par $E$ ». Ce qui correspond ici à « la postcondition $Post$ où $x$ a été
 remplacé par $E$ ». Dans l'idée, pour que la formule en postcondition d'une 
 affectation de $x$ à $E$ soit vraie, il faut qu'en remplaçant chaque occurrence de
@@ -53,9 +53,9 @@ x = 43 * c ;
 
 
 
-Nous pourrions alors fournir la formule « $43*6 = 258$ » à notre prouveur automatique
+nous pourrions alors fournir la formule « $43*6 = 258$ » à notre prouveur automatique
 afin qu'il détermine si cette formule peut effectivement être satisfaite. Ce à quoi
-il répondrait évidemment « oui » puisque cette propriété est très simple à vérifier.
+il répondrait évidemment « oui », puisque cette propriété est très simple à vérifier.
 En revanche, si nous avions donné la valeur 7 pour \CodeInline{c}, le prouveur nous répondrait
 que non, une telle formule n'est pas vraie.
 
@@ -146,9 +146,9 @@ $wp(*p = 1, *p + *q = 2)$ & $= (1 + *q = 2 \vee q = p)$\\
 \end{tabular}
 
 
-Et pour cela, nous devons faire attention à la notion d'aliasing. Une manière
-commune de faire cela est de considérer que la mémoire est une variable particulière
-du programme (nommons la $M$) sur laquelle nous pouvons effectuer deux opérations:
+Pour cela, nous devons faire attention à la notion d'aliasing. Une manière
+commune de le faire est de considérer que la mémoire est une variable particulière
+du programme (nommons la $M$) sur laquelle nous pouvons effectuer deux opérations :
 obtenir la valeur d'un emplacement particulier $m$ en mémoire (qui nous retourne une
 expression) et changer la valeur à une position mémoire $l$ pour y placer une nouvelle
 valeur $v$ (qui nous retourne la nouvelle mémoire obtenue).
@@ -163,7 +163,7 @@ Notons :
 \end{itemize}
 
 
-Et ces deux opérations peuvent être définies comme suit :
+Ces deux opérations peuvent être définies comme suit :
 
 
 \begin{tabular}{ll}
@@ -188,10 +188,9 @@ l'expression fournie lors de l'affectation :
 
 $$wp(*x = E, Q) = Q[M \leftarrow M[x \mapsto E]]$$
 
-Et évaluer une valeur pointée $*x$ dans une formule consiste maintenant à utiliser 
+Évaluer une valeur pointée $*x$ dans une formule consiste maintenant à utiliser 
 l'opération $get$ pour demander la valeur à la mémoire. Nous pouvons donc
-maintenant appliquer notre calcul de plus faible précondition à notre programme
-précédent :
+appliquer notre calcul de plus faible précondition à notre programme précédent :
 
 
 \begin{tabular}{lll}
@@ -214,17 +213,17 @@ précédent :
 \item nous utilisons la définition de $get$ pour $q$\\
   ($M[p \mapsto 1][q] = \texttt{if}\ q = p\ \texttt{then}\ 1\ \texttt{else}\ M[q]$)
 \item nous appliquons quelques simplifications sur la formule \dots
-\item \dots et nous pouvons finalement conclure que soit $M[q] = 1$ ou $p = q$.
+\item \dots et nous pouvons finalement conclure que $M[q] = 1$ ou $p = q$.
 \end{enumerate}
 
-Et donc comme dans notre programme nous savons que $p = q$, nous pouvons conclure que
+et comme dans notre programme nous savons que $p = q$, nous pouvons conclure que
 le programme est correct.
 
 
 Le plugin WP ne fonctionne par exactement comme cela. En particulier, cela dépend du
 modèle mémoire sélectionné pour réaliser la preuve, qui fait différentes hypothèses à
-propos de la manière don la mémoire est organisée. Pour le modèle mémoire que nous 
-utilisons, le modèle mémoire typé, en fait WP crée différentes variables pour la mémoire.
+propos de la manière dont la mémoire est organisée. Pour le modèle mémoire que nous 
+utilisons, le modèle mémoire typé, WP crée différentes variables pour la mémoire.
 Cela dit, regardons tout de même les conditions de vérification générées par WP pour la
 postcondition de la fonction \CodeInline{swap} :
 
@@ -299,8 +298,8 @@ int main(){
 
 Notons que lorsque nous avons plus de deux instructions, nous pouvons simplement
 considérer que la dernière instruction est la seconde instruction de notre règle
-et que toutes les instructions qui la précède forment la première « instruction ». 
-De cette manière nous remontons bien les instructions une à une dans notre
+et que toutes les instructions qui la précèdent forment la première « instruction ». 
+De cette manière, nous remontons bien les instructions une à une dans notre
 raisonnement, par exemple avec le programme précédent :
 
 
@@ -321,7 +320,7 @@ partir de $Q_{-1}$ et $i_2$ et finalement $P$ avec $Q_{-2}$ et $i_1$.
 
 
 Nous pouvons maintenant vérifier des programmes comprenant plusieurs 
-instructions, il est temps d'y ajouter un peu de structure.
+instructions ; il est temps d'y ajouter un peu de structure.
 
 
 
@@ -467,7 +466,7 @@ code soit valide. C'est la partie $P \Rightarrow WP$.
 Nous pouvons par exemple illustrer cela avec le code qui suit. Notons bien qu'ici,
 le code pourrait tout à fait être prouvé par l'intermédiaire de WP sans ajouter des
 affaiblissements et renforcements de propriétés car le code est très simple, il 
-s'agit juste d'illustrer la règle de conséquences.
+s'agit juste d'illustrer la règle de conséquence.
 
 
 
@@ -532,10 +531,10 @@ $$\dfrac{\{P\}\quad c\quad \{Q\}}{\{P \wedge R\}\quad c\quad \{Q \wedge R\}}$$
 
 
 
-Où $c$ ne modifie aucune variable entrant en jeu dans $R$. Ce qui nous dit : « pour 
-vérifier le triplet, débarrassons nous des parties de la formule qui concerne des
+où $c$ ne modifie aucune variable entrant en jeu dans $R$. Ce qui nous dit : « pour 
+vérifier le triplet, débarrassons-nous des parties de la formule qui concernent des
 variables qui ne sont pas manipulées par $c$ et prouvons le nouveau triplet ». 
-Cependant, il faut prendre garde à ne pas supprimer trop d'informations, au risque
+Cependant, il faut prendre garde à ne pas supprimer trop d'information, au risque
 de ne plus pouvoir prouver nos propriétés.
 
 
@@ -646,7 +645,7 @@ $P \wedge R \Rightarrow P$ et $Q \Rightarrow Q \wedge R$.
 \levelThreeTitle{Exercices}
  
 
-\levelFourTitle{Une série d'affectation}
+\levelFourTitle{Une série d'affectations}
 
 
 Calculez à la main la plus faible précondition du programme suivant :
@@ -692,10 +691,10 @@ Montrez que si les deux branches sont vide, la structure conditionnelle est just
 instruction \textit{skip}.
 
 
-\levelFourTitle{Short circuit}
+\levelFourTitle{Court-circuit (\textit{Short circuit})}
 
 
-Les compilateurs C implémentent le short-circuit pour les conditions (c'est d'ailleurs
+Les compilateurs C implémentent le court-circuit pour les conditions (c'est d'ailleurs
 imposé par le standard C). Par exemple, cela signifie qu'un code comme (\textbf{sans
 bloc « \textit{else} »}) :
 

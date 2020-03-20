@@ -3,7 +3,7 @@
 \levelFourTitle{Formel - Calcul de plus faible précondition}
 
 Lorsqu'une fonction est appelée, le contrat de cette fonction est utilisé pour
-déterminer la précondition de l'appel. Mais il est important de garder en tête deux
+déterminer la précondition de l'appel, mais il est important de garder en tête deux
 aspects important pour exprimer le calcul de plus faible précondition.
 
 
@@ -50,7 +50,7 @@ Le calcul de plus faible précondition de l'appel de fonction nous demande de
 considérer le contrat de la fonction appelée (ici, dans \CodeInline{foo}, quand
 nous appelons la fonction \CodeInline{inc}). Bien sûr, avant l'appel de la fonction
 nous devons vérifier sa précondition, qui fait donc partie de la plus faible
-précondition. Mais, nous devons aussi considérer la postcondition de la fonction,
+précondition. Mais nous devons aussi considérer la postcondition de la fonction,
 sinon cela voudrait dire que nous ne prenons pas en compte son effet sur l'état du
 programme.
 
@@ -64,7 +64,7 @@ avant l'appel nous devons explicitement ajouter le mot clé
 lorsque nous l'appelons depuis \CodeInline{foo}, \CodeInline{*x} dans la
 précondition est \CodeInline{*a} au label \CodeInline{L1}, alors que \CodeInline{*x}
 dans la postcondition est \CodeInline{*a} au label \CodeInline{L2}. Par conséquent,
-la pré et la postcondition doivent être considérées de manière légèrement différentes
+la pré et la postcondition doivent être considérées de manières légèrement différentes
 lorsque nous devons parler des positions mémoire mutables. Notez que pour la valeur
 du paramètre \CodeInline{x} lui même, ce n'est pas le cas : cette valeur ne peut pas
 être modifiée par l'appel (du point de vue de l'appelant).
@@ -76,7 +76,7 @@ Pour cela, notons:
 
 \begin{itemize}
 \item $\vec{v}$ un vecteur de valeurs $v_1, ..., v_n$ et $v_i$ la $i^{ème}$ valeur,
-\item $\vec{t}$ les arguments fournies à la fonction lors de l'appel,
+\item $\vec{t}$ les arguments fournis à la fonction lors de l'appel,
 \item $\vec{x}$ les paramètres dans la définition de la fonction,
 \item $\vec{a}$ les valeurs modifiées (vues de l'extérieur, une fois instanciées),
 \item $here(x)$ une valeur en postcondition,
@@ -111,7 +111,7 @@ serait remplacée par l'argument \CodeInline{a}.
 
 Ensuite, dans la partie de notre formule qui correspond à la postcondition, nous
 pouvons voir que nous introduisons un $\forall \vec{v}$. Le but ici est de modéliser
-le fait que la fonction peut changer la valeur des positions mémoire spécifiées par
+la possibilité que la fonction change la valeur des positions mémoire spécifiées par
 la clause \CodeInline{assigns} du contrat. Donc, pour chaque position potentiellement
 modifiée $a_j$ (qui est, pour notre exemple d'appel à \CodeInline{inc}, 
 \CodeInline{*(\&a)}), nous générons une valeur $v_j$ qui représente sa valeur après
@@ -121,11 +121,11 @@ modifiées, nous voulons celles \emph{qui permettent de satisfaire la postcondit
 
 
 
-Nous utilisons donc ces valeur pour transformer la postcondition de la fonction et
+Nous utilisons donc ces valeurs pour transformer la postcondition de la fonction et
 pour vérifier qu'elle implique la postcondition reçue en entrée du calcul de plus
 faible précondition. Nous faisons cela en remplaçant, pour chaque position mémoire
 modifiée $a_j$, sa valeur $here$ avec la valeur $v_j$ qu'elle obtient après l'appel
-($here(a_j) \leftarrow v_j$). Finalement, nous devons remplacer chaque $old$ valeur
+($here(a_j) \leftarrow v_j$). Finalement, nous devons remplacer chaque valeur $old$
 par sa valeur avant l'appel, et pour chaque $old(a_j)$, cette valeur est
 simplement $a_j$ ($old(a_j) \leftarrow a_j$).
 
@@ -177,7 +177,7 @@ et $old$ avec $O$).
 Pour la précondition, nous obtenons :
 $$valid(\&a) \wedge valid(\&b)$$
 Pour la postcondition, commençons par écrire l'expression depuis laquelle nous
-allons travailler avant de faire les remplacements (et sans la syntaxe de remplacement
+travaillerons avant de faire les remplacements (et sans la syntaxe de remplacement
 pour rester concis) :
 $$H(*x) = O(*y) \wedge H(*y) = O(*x) \Rightarrow H(a) = 2 \wedge H(b) = 4$$
 Remplaçons d'abord les pointeurs ($x \leftarrow \&a,\ y \leftarrow \&b$) :
@@ -211,13 +211,13 @@ Cette dernière propriété est trivialement vraie, le programme est vérifié.
 \levelFourTitle{Que devrions nous garder en tête ?}
 
 
-Les fonctions sont absolument nécessaire pour programmer modulairement, et le calcul
+Les fonctions sont absolument nécessaires pour programmer modulairement, et le calcul
 de plus faible précondition est pleinement compatible avec cette idée, permettant de
 raisonner localement à propos de chaque fonction et donc de composer les preuves juste
 de la même manière que nous composons les appels de fonction.
 
 
-Comme pense-bête, nous devrions toujours garder en tête le schéma suivant:
+Comme pense-bête, nous devrions toujours garder en tête le schéma suivant :
 
 
 \begin{CodeBlock}{c}
@@ -253,16 +253,16 @@ conditions de vérification qui ne suit pas exactement les mêmes règles.
 \levelThreeTitle{Fonctions récursives}
 
 
-Actuellement, WP ne vérifie pas encore la terminaison des fonctions. Bien sûr, si
+WP ne vérifie pas encore la terminaison des fonctions. Bien sûr, si
 une fonction est seulement composée de boucles qui terminent (dont le variant 
-indiqué est vérifié) et des appels de fonctions qui elles-mêmes terminent, elle
-termine. En revanche, parfois ce raisonnement est insuffisant : dans le cas des
-fonctions récursives et mutuellement récursives. C'est la terminaison de ces 
+indiqué est vérifié) et d'appels de fonctions qui elles-mêmes terminent, elle
+termine. En revanche, parfois ce raisonnement est insuffisant, comme dans le cas
+des fonctions récursives et mutuellement récursives. C'est la terminaison de ces
 fonctions qui n'est pas encore vérifiée par WP.
 
 
 Cela signifie que nous pouvons, par mégarde, prouver n'importe quoi, si l'on 
-défini et prouve une fonction qui ne termine pas.
+définit et prouve une fonction qui ne termine pas.
 
 
 \CodeBlockInput{c}{trick.c}
@@ -274,10 +274,10 @@ défini et prouve une fonction qui ne termine pas.
 Nous pouvons voir que la fonction et l'assertion sont prouvées. Et, effectivement,
 la preuve est correcte : nous considérons une correction partielle (puisque nous ne
 pouvons pas prouver la terminaison), et cette fonction ne termine pas. Toute
-assertion suivant cette fonction est vraie: elle est inatteignable.
+assertion suivant cette fonction est vraie : elle est inatteignable.
 
 
-Une question que l'on peut alors se poser est donc: que peut on faire dans un tel 
+Une question que l'on peut alors se poser est : que peut-on faire dans un tel 
 cas ? Nous pouvons à nouveau utiliser une notion de variant pour borner le nombre
 d'appels récursifs. En ACSL, c'est le rôle de la clause \CodeInline{decreases} :
 

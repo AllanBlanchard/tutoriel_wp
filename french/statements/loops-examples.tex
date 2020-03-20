@@ -1,10 +1,10 @@
 \levelThreeTitle{Exemple avec un tableau read-only}
 
 
-S'il y a une structure de données que nous traitons avec les boucles c'est bien
-le tableau. C'est une bonne base d'exemples pour les boucles car ils permettent
-rapidement de présenter des invariants intéressants et surtout, ils vont nous 
-permettre d'introduire des constructions très importantes d'ACSL.
+S'il y a une structure de données que nous traitons avec les boucles, c'est bien
+le tableau. C'est une bonne base d'exemples pour les boucles, car ils permettent
+rapidement de présenter des invariants intéressants et surtout, ils nous 
+permettront d'introduire des constructions très importantes d'ACSL.
 
 
 
@@ -73,7 +73,7 @@ différence fondamentale entre l'usage de \CodeInline{exists} et celui de \CodeI
 
 Avec \CodeInline{\textbackslash{}forall type a ; p(a) ==> q(a)}, la restriction (\CodeInline{p}) est suivie
 par une implication. Pour tout élément, s'il respecte une première propriété 
-(\CodeInline{p}), alors vérifier la seconde propriété \CodeInline{q}. Si nous mettions un ET
+(\CodeInline{p}), alors il doit vérifier la seconde propriété \CodeInline{q}. Si nous mettions un ET
 comme pour le « il existe » (que nous expliquerons ensuite), cela voudrait dire que 
 nous voulons que tout élément respecte à la fois les deux propriétés. Parfois, 
 cela peut être ce que nous voulons exprimer, mais cela ne correspond alors plus 
@@ -103,9 +103,11 @@ Cette partie de l'invariant mérite une attention particulière :
 
 
 En effet, c'est la partie qui définit l'action de notre boucle, elle indique à
-WP ce que la boucle va faire (ou apprendre dans le cas présent) tout au long de
-son exécution. Ici en l'occurrence, cette formule nous dit qu'à chaque tour, nous 
-savons que pour toute case entre 0 et la prochaine que nous allons visiter (\CodeInline{i} exclue), elle stocke une valeur différente de l'élément recherché.
+WP ce que la boucle fera (ou apprendra dans le cas présent) tout au long de
+son exécution. Ici en l'occurrence, cette formule nous dit qu'à chaque tour,
+nous savons que pour toute case entre 0 et la prochaine que nous allons visiter
+(\CodeInline{i} exclue), elle stocke une valeur différente de l'élément
+recherché.
 
 
 
@@ -118,9 +120,9 @@ preuve de l'établissement de cet invariant est intéressante :
 \image{trivial}
 
 
-Nous pouvons constater que cette propriété, pourtant complexe, est prouvée par 
+Nous constatons que cette propriété, pourtant complexe, est prouvée par 
 Qed sans aucun problème. Si nous regardons sur quelles parties du programme la 
-preuve se base, nous pouvons voir l'instruction \CodeInline{i = 0} surlignée, et c'est 
+preuve se base, nous voyons l'instruction \CodeInline{i = 0} surlignée, et c'est 
 bien la dernière instruction que nous effectuons sur \CodeInline{i} avant de commencer
 la boucle. Et donc effectivement, si nous faisons le remplacement dans la formule 
 de l'invariant :
@@ -157,7 +159,7 @@ Regardons la fonction effectuant la remise à zéro d'un tableau.
 
 
 
-Nous pouvons voir que nous utilisons pour l'invariant une structure assez similaire
+Nous voyons que nous utilisons pour l'invariant une structure assez similaire
 à ce que nous avons utilisé pour l'exemple précédent: nous indiquons un premier
 invariant pour contraindre la valeur de \CodeInline{i}, et un autre qui exprime
 à chaque itération ce que nous avons appris depuis le début de l'exécution de la
@@ -172,7 +174,7 @@ clause \CodeInline{loop assigns}: à nouveau, nous utilisons la notation
 
 
 Le dernier exemple qui nous intéresse est l'algorithme « chercher et remplacer ». 
-C'est donc un algorithme qui va sélectivement modifier des valeurs dans une 
+C'est un algorithme qui modifie sélectivement des valeurs dans une 
 certaine plage d'adresses. Il est toujours un peu difficile de guider l'outil 
 dans ce genre de cas car, d'une part, nous devons garder « en mémoire » ce qui est modifié 
 et ce qui ne l'est pas et, d'autre part, parce que l'induction repose sur ce fait.
