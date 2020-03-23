@@ -1,7 +1,9 @@
-Les fonctions logiques nous permettent de décrire des fonctions qui ne seront 
-utilisables que dans les spécifications. Cela nous permet, d'une part, de les 
-factoriser, et d'autre part de définir des opérations sur les types \CodeInline{integer} et 
-\CodeInline{real} qui ne peuvent pas déborder contrairement aux types machines.
+Les fonctions logiques nous permettent de décrire des fonctions mathématiques
+qui contrairement aux prédicats nous permettent de renvoyer différents types.
+Elles ne seront utilisables que dans les spécifications. Cela nous permet d'une
+part, de les factoriser, et d'autre part de définir des opérations sur les
+types \CodeInline{integer} et \CodeInline{real} qui ne peuvent pas déborder
+contrairement aux types machines.
 
 
 
@@ -45,38 +47,49 @@ Elle peut nous servir à prouver le code de la fonction suivante :
 \image{linear-1}
 
 
-Le code est bien prouvé mais les contrôles d'\textit{overflow}, eux, ne le sont pas. Nous 
-pouvons à nouveau définir des fonctions logiques générales, qui vont, du point de 
-vue de la logique, nous fournir les bornes en fonction des valeurs que nous donnons
-en entrée. Cela nous permet ensuite d'ajouter nos contrôles de bornes en 
-précondition de fonction :
+Le code est bien prouvé mais les contrôles d'\textit{overflow}, eux, ne le sont pas.
+Nous pouvons ajouter la contrainte en précondition que le calcul doit entrer dans
+les bornes d'un entier:
 
 
-
-\CodeBlockInput[8][27]{c}{linear-1.c}
-
+\CodeBlockInput[8][15]{c}{linear-1.c}
 
 
-\begin{Information}
+Certains contrôles de débordement ne sont pas encore prouvé. En effet, tandis que
+la borne fournie pour \CodeInline{x} par notre fonction logique est définie pour
+le calcul complet, elle ne nous dit rien à propos des calculs intermédiaires. Par
+exemple ici, le fait \CodeInline{3 * x + 4} ne soit pas inférieur à
+\CodeInline{INT\_MIN} ne nous garantit pas que c'est aussi le cas pour
+\CodeInline{3 * x}. Nous pouvons imaginer deux manières différentes de résoudre
+le problème, ce choix doit être guidé par les besoins du projets.
+
+
+Soit nous pouvons augmenter les restrictions sur l'entrée :
+
+
+\CodeBlockInput[17][25]{c}{linear-1.c}
+
+
+Soit nous pouvons modifier le code de manière à corriger le risque
+de débordement :
+
+
+\CodeBlockInput[27][37]{c}{linear-1.c}
+
+
 Notons que comme dans la spécification, les calculs sont effectués à l'aide 
 d'entiers mathématiques, nous n'avons pas à nous préoccuper d'un quelconque
-risque de débordement avec les calculs de \CodeInline{INT\_MIN-b} ou \CodeInline{INT\_MAX-b}.
-\end{Information}
+risque de débordement lorsque nous utilisons la fonction logique \CodeInline{ax\_b}:
 
 
-Cette fois tout est prouvé. Évidemment, nous pourrions fixer ces valeurs en 
-dur chaque fois que nous avons besoin d'une nouvelle fonction affine du côté de
-la logique mais en posant ces fonctions, nous obtenons directement ces valeurs 
-sans avoir besoin de les calculer nous même, ce qui est assez confortable.
+\CodeBlockInput[39][41]{c}{linear-1.c}
 
 
-Notons que nous donnons aussi une borne inférieure pour le calcul \CodeInline{3 * x}.
-En effet, tandis que la borne fournie pour \CodeInline{x} par notre fonction logique
-est définie pour le calcul complet, elle ne nous dit rien à propos des calculs
-intermédiaires. Par exemple ici, le fait \CodeInline{3 * x + 4} ne soit pas inférieur
-à \CodeInline{INT\_MIN} ne nous garantit pas que c'est aussi le cas pour
-\CodeInline{3 * x}.
+est correctement déchargé par WP, qui ne génère aucune alarme liée aux
+débordements :
 
+
+\image{linear-math}
 
 
 \levelThreeTitle{Récursivité et limites}
