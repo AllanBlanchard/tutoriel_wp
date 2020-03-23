@@ -45,36 +45,49 @@ And it can be used to prove the source code of the following function:
 
 
 This code is indeed proved but some runtime-errors seems to be possible.
-We can again define some mathematical logic function that will provide the bounds of
-the linear function according to the machine type we use (from a logic point of
-view). It allows us to then add our bounds checking in the precondition of the
-function.
+We can add some constraint in precondition so that the result can be
+stored into a C integer:
 
 
-
-\CodeBlockInput[8][28]{c}{linear-1.c}
-
+\CodeBlockInput[8][15]{c}{linear-1.c}
 
 
-\begin{Information}
-  Note that, as in specifications, computations are done using mathematical
-  integers. We then do not need to care about some overflow risk with the
-  computation of \texttt{INT\_MIN-b} or \texttt{INT\_MAX-b}.
-\end{Information}
-
-
-Once this specification is provided, everything is fine. Of course, we could
-manually provide these bounds every time we create a linear logic function. But,
-by creating these bound computation functions, we directly get a way to compute
-them automatically which is quite comfortable.
-
-Note that we also give a lower bound to the computation of \CodeInline{3 * x},
-indeed while the bound provided for \CodeInline{x} by our logic function is
-defined for the complete computation, it does not say anything about the value
-obtained in the intermediate computation. For example here, the fact that
+Some runtime errors are still possible. Indeed while the bound provided
+for \CodeInline{x} by our logic function is defined for the complete
+computation, it does not say anything about the value obtained in the
+intermediate computation. For example here, the fact that
 \CodeInline{3 * x + 4} is not lower than \CodeInline{INT\_MIN} does not
-guarantee that this is the case for \CodeInline{3 * x}. 
+guarantee that this is the case for \CodeInline{3 * x}. We can imagine
+two ways to solve this problem, this choice should be guided by the
+project in which this function would be used.
 
+
+Either we further restrict the input values:
+
+
+\CodeBlockInput[17][25]{c}{linear-1.c}
+
+
+Or we can modify the source code so that the risk of overflow does not
+appear anymore:
+
+
+\CodeBlockInput[27][37]{c}{linear-1.c}
+
+
+Note that, as in specifications, computations are done using mathematical
+integers. We then do not need to care about some overflow risk when using
+the \CodeInline{ax\_b} function:
+
+
+\CodeBlockInput[39][41]{c}{linear-1.c}
+
+
+which is correctly discharged by WP, that does not generate any alarm
+related to overflows:
+
+
+\image{linear-math}
 
 
 \levelThreeTitle{Recursive functions and limits of logic functions}
