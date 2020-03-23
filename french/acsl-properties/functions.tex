@@ -64,7 +64,7 @@ risque de débordement avec les calculs de \CodeInline{INT\_MIN-b} ou \CodeInlin
 \end{Information}
 
 
-Et cette fois tout est prouvé. Évidemment, nous pourrions fixer ces valeurs en 
+Cette fois tout est prouvé. Évidemment, nous pourrions fixer ces valeurs en 
 dur chaque fois que nous avons besoin d'une nouvelle fonction affine du côté de
 la logique mais en posant ces fonctions, nous obtenons directement ces valeurs 
 sans avoir besoin de les calculer nous même, ce qui est assez confortable.
@@ -83,11 +83,11 @@ intermédiaires. Par exemple ici, le fait \CodeInline{3 * x + 4} ne soit pas inf
 
 
 Les fonctions logiques peuvent être définie récursivement. Cependant, une telle
-définition va très rapidement montrer ses limites pour la preuve. En effet, 
+définition montrera très rapidement ses limites pour la preuve. En effet, 
 pendant les manipulations des prouveurs automatiques sur les propriétés 
-logiques, si l'usage d'une telle fonction est présente, elle devra être évaluée,
-or les prouveurs ne sont pas conçus pour faire ce genre d'évaluation qui se 
-révélera donc généralement très coûteuse, produisant alors des temps de preuve
+logiques, si l'usage d'une telle fonction est présente, elle devra être évaluée.
+Or, les prouveurs ne sont pas conçus pour faire ce genre d'évaluation, qui se 
+révélera donc généralement très coûteuse et produisant alors des temps de preuve
 trop longs menant à des \textit{timeouts}.
 
 
@@ -218,7 +218,7 @@ retourne la même valeur que celle fournie par la fonction logique.
 
 
 Essayer de vérifier l'absence d'erreurs à l'exécution. Le débordement entier
-n'est pas si simple à régler. Cependant, écrire, une précondition qui devrait
+n'est pas si simple à régler. Cependant, écrire une précondition qui devrait
 être suffisante pour cela (rappel: la somme des N premiers entiers peut être
 exprimée avec une formule très simple ...). Cela ne sera sûrement pas suffisant
 pour arriver au bout de la preuve, mais nous réglerons cela dans la prochaine

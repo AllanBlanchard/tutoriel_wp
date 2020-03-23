@@ -16,7 +16,7 @@ amène de $P$ à $Q$.
 Dans la section précédent, nous avons dit que les fonctions récursives logiques
 peuvent rendre les preuves plus difficile pour les solveurs SMT. Dans un tel cas,
 les lemmes peuvent nous aider. Nous pouvons écrire nous même les preuves qui 
-nécessitent de raisonner par induction pour certaines propriétés qui nous
+nécessitent de raisonner par induction pour certaines propriétés que nous
 énonçons comme des lemmes, et ces lemmes peuvent ensuite être utilisés 
 efficacement par les prouveurs pour effectuer les autres preuves à propos du
 programme.
@@ -95,7 +95,7 @@ prouver l'absence d'erreurs à l'exécution.
 \levelThreeTitle{Exemple: tableaux et labels}
 
 
-Plus tard dans ce tutoriel, nous allons voir certains types de définitions à propos
+Plus tard dans ce tutoriel, nous verrons certains types de définitions à propos
 desquels il est parfois difficile de raisonner pour les solveurs SMT quand des
 modifications ont lieu en mémoire. Par conséquent, nous aurons souvent besoin de
 lemmes pour indiquer les relations qui existent à propos du contenu de la mémoire
@@ -119,7 +119,7 @@ avec le lemme suivant :
 
 
 Nous énonçons ce lemme pour deux labels \CodeInline{L1} et \CodeInline{L2}, et
-exprime que pour toute plage de valeurs dans un tableau, si elle est triée au label
+exprimons que pour toute plage de valeurs dans un tableau, si elle est triée au label
 \CodeInline{L1}, et reste inchangée depuis \CodeInline{L1} vers \CodeInline{L2},
 alors elle reste triée au label \CodeInline{L2}.
 
@@ -179,7 +179,7 @@ Une solution et la preuve Coq du lemme sont disponibles sur le GitHub de ce tuto
 
 Reprendre la solution de l'exercice~\ref{l4:acsl-properties-functions-n-first-ints}
 à propos de la somme des N premiers entiers. Écrire un lemme qui énonce que la valeur
-calculée par la fonction logique récursive qui permet la spécifications de la somme des
+calculée par la fonction logique récursive qui permet la spécification de la somme des
 N premiers entiers est $n*(n+1)/2$. Ce lemme ne sera pas prouvé par un solveur SMT.
 
 
@@ -192,7 +192,7 @@ Une solution et la preuve Coq du lemme sont disponibles sur le GitHub de ce tuto
 
 Le programme suivant est composé de deux fonctions. La première est
 \CodeInline{shift\_array} et permet de faire glisser des éléments dans un tableau
-d'un certain nombre de cellule (nommé \CodeInline{shift}). La seconde effectue deux
+d'un certain nombre de cellules (nommé \CodeInline{shift}). La seconde effectue deux
 glissements successifs des éléments d'un même tableau.
 
 
@@ -221,7 +221,7 @@ fois avec un décalage \CodeInline{s1} puis une seconde fois avec un décalage
 déplacement \CodeInline{s1+s2}.
 
 
-Le lemme \CodeInline{shift\_ptr} ne sera probablement pas prouvé par un SMT solveur.
+Le lemme \CodeInline{shift\_ptr} ne sera probablement pas prouvé par un solveur SMT.
 Nous fournissons une solution et la preuve Coq de ce lemme sur le GitHub de ce livre.
 Les propriétés restantes doivent être prouvées automatiquement.
 

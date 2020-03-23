@@ -1,8 +1,8 @@
 Un prédicat est une propriété portant sur des objets et pouvant être vraie ou
 fausse. En résumé, des prédicats, c'est ce que nous écrivons depuis le début de
 ce tutoriel dans les clauses de nos contrats et de nos invariants de boucle.
-ACSL nous permet de créer des versions nommées de ces prédicats, à la manière
-d'une fonction booléenne en C par exemple. À la différence près tout de même que
+ACSL permet de créer des versions nommées de ces prédicats, à la manière
+d'une fonction booléenne en C par exemple, à la différence près que
 les prédicats (ainsi que les fonctions logiques que nous verrons par la suite)
 doivent être pures, c'est-à-dire qu'elles ne peuvent pas produire d'effets de
 bords en modifiant des valeurs pointées par exemple.
@@ -11,15 +11,15 @@ bords en modifiant des valeurs pointées par exemple.
 
 Ces prédicats peuvent prendre un certain nombre de paramètres. En plus de cela,
 ils peuvent également recevoir un certain nombre de \textit{labels} (au sens C du terme)
-qui vont permettre d'établir des relations entre divers points du code.
+qui permettront d'établir des relations entre divers points du code.
 
 
 
 \levelThreeTitle{Syntaxe}
 
 
-Les prédicats sont, comme les spécifications, introduits au travers
-d'annotations. La syntaxe est la suivante :
+Les prédicats sont, comme les spécifications, introduits via des
+annotations. La syntaxe est la suivante :
 
 
 
@@ -50,7 +50,7 @@ pas changé entre deux points particuliers du programme :
     */
   \end{CodeBlock}
 
-  Car \CodeInline{i} est juste une copie de la variable reçue en paramètre.
+  car \CodeInline{i} est juste une copie de la variable reçue en paramètre.
 \end{Warning}
 
 
@@ -71,7 +71,7 @@ déroulé par WP. Ce sera au prouveur de déterminer s'il veut raisonner avec.
 
 Comme nous l'avons dit plus tôt, une des utilités des prédicats et fonctions (que
 nous verrons un peu plus tard) est de rendre plus lisible nos spécifications et
-de les factoriser. Un exemple est d'écrire un prédicat pour la validité en
+de les factoriser. Un exemple est l''écriture d'un prédicat pour la validité en
 lecture/écriture d'un tableau sur une plage particulière. Cela nous évite d'avoir
 à réécrire l'expression en question qui est moins compréhensible au premier
 coup d’œil.
@@ -84,7 +84,7 @@ coup d’œil.
 
 Dans cette portion de spécification, le \textit{label} pour les prédicats n'est pas
 précisé, ni pour leur création, ni pour leur utilisation. Pour la création,
-Frama-C va automatiquement en ajouter un dans la définition du prédicat.
+Frama-C en ajoutera automatiquement un dans la définition du prédicat.
 Pour l'appel, le \textit{label} passé sera implicitement \CodeInline{Here}. La non-déclaration
 du \textit{label} dans la définition n'interdit pour autant pas de passer explicitement
 un \textit{label} lors de l'appel.
@@ -97,8 +97,8 @@ de produire une bibliothèque d'utilitaires de spécifications par exemple.
 
 \levelFourTitle{Surcharger des prédicats}
 
-Il est possible de surcharger les prédicats tant que le types des paramètres
-est différents ou que le nombre de paramètres change. Par exemple, nous
+Il est possible de surcharger les prédicats tant que les types des paramètres
+sont différents ou que le nombre de paramètres change. Par exemple, nous
 pouvons redéfinir \CodeInline{valid\_range\_r} comme un prédicat qui prend
 en paramètre à la fois le début et la fin de la plage considérée. Ensuite,
 nous pouvons écrire une surcharge qui utilise le prédicat précédent pour le
@@ -120,7 +120,7 @@ qu'aucune fonction ne commettra de bavure.
 
 
 
-Cela permet notamment de faciliter la lecture de spécifications. Par exemple, nous
+Cela permet notamment de faciliter la lecture des spécifications. Par exemple, nous
 pourrions poser les spécifications nécessaires à la sûreté d'une pile de taille
 limitée. Et cela donnerait quelque chose comme :
 
@@ -129,9 +129,9 @@ limitée. Et cela donnerait quelque chose comme :
 
 
 (Notons qu'ici, nous ne fournissons pas la définition des prédicats car ce n'est
-pas l'objet de cet exemple. Le lecteur pourra considérer ceci comme un exercice)
+pas l'objet de cet exemple. Le lecteur pourra considérer ceci comme un exercice.)
 
-Ici la spécification n'exprime pas de propriétés fonctionnelles. Par exemple,
+Ici, la spécification n'exprime pas de propriétés fonctionnelles. Par exemple,
 rien ne nous spécifie que lorsque nous faisons un \textit{push} d'une valeur puis que nous
 demandons \textit{top}, nous auront effectivement cette valeur. Mais elle nous donne
 déjà tout ce dont nous avons besoin pour produire un code où, à défaut d'avoir
@@ -218,7 +218,7 @@ de valeurs dans un tableau pour des indices compris entre \CodeInline{begin} et
 \begin{itemize}
   \item restent inchangées entre deux états mémoire,
   \item sont remplacées par une valeur si elles sont égales à une valeur donnée,
-        sinon laissée inchangée.
+        sinon sont laissées inchangées.
 \end{itemize}
 
 
