@@ -24,3 +24,12 @@ void lemma_value_of_sum_of_n_integers_2(unsigned n){
 void lemma_value_of_sum_of_range_of_integers(int fst, int lst){
   // ...
 }
+
+/*@
+  requires n*(n+1) <= UINT_MAX ;
+  assigns \nothing ;
+  ensures \result == sum_of_n_integers(n);
+*/
+unsigned sum_n(unsigned n){
+  return (n*(n+1))/2 ;
+}

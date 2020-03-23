@@ -1,3 +1,5 @@
+#include <limits.h>
+
 /*@
   logic integer sum_of_n_integers(integer n) =
     (n <= 0) ? 0 : sum_of_n_integers(n-1) + n ;
@@ -35,4 +37,14 @@ void lemma_value_of_sum_of_range_of_integers(int fst, int lst){
     loop variant lst - i ;
   */
   for(int i = fst ; i < lst ; ++i);
+}
+
+/*@
+  requires n*(n+1) <= UINT_MAX ;
+  assigns \nothing ;
+  ensures \result == sum_of_n_integers(n);
+*/
+unsigned sum_n(unsigned n){
+  //@ ghost lemma_value_of_sum_of_n_integers_2(n);
+  return (n*(n+1))/2 ;
 }
