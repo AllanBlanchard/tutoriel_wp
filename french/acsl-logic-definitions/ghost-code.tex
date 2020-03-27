@@ -1,6 +1,6 @@
 Les techniques que nous avons vu précédemment dans ce chapitre ont pour but de
 rendre la spécification plus abstraite. Le rôle du code fantôme est inverse. Ici,
-nous allons en fait enrichir nos spécifications à l'aide d'information exprimées
+nous enrichirons nos spécifications à l'aide d'information exprimées
 en langage C. L'idée est d'ajouter des variables et du code source qui
 n'intervient pas dans le programme réel mais permettant de créer des états
 logiques qui ne seront visibles que depuis la preuve. Par cet intermédiaire,
@@ -11,7 +11,7 @@ implicites.
 \levelThreeTitle{Syntaxe}
 
 
-Le code fantôme est ajouté par l'intermédiaire d'annotations qui vont contenir
+Le code fantôme est ajouté par l'intermédiaire d'annotations qui contiennent
 du code C ainsi que la mention \CodeInline{ghost}.
 
 
@@ -53,7 +53,7 @@ void foo(int a){
 \end{CodeBlock}
 
 
-Tandis que dans ce chapitre, cela ne sera pas nécessaire, nous verrons plus tard
+Bien que dans ce chapitre, cela ne sera pas nécessaire, nous verrons plus tard
 qu'il est parfois utile d'écrire des contrats ou des assertions dans du code
 fantôme. Comme nous devons écrire ces spécifications dans du code qui est
 déjà englobé dans des commentaires C, nous avons accès à une syntaxe spécifique
@@ -114,7 +114,7 @@ positions mémoire fantôme dans du code fantôme.
 
 De plus, comme nous n'avons pas de restriction sur le type de code C que nous
 pouvons écrire, nous pouvons écrire des boucles. Comme nous l'avons dit dans la
-section~\ref{l3:statements-loops-variant}, il y a deux sortes de correction: la
+section~\ref{l3:statements-loops-variant}, il y a deux sortes de correction : la
 correction partielle et la correction totale, la seconde permettant de prouver
 qu'un programme termine. Dans le cas du code fantôme, montrer que la correction
 est totale est absolument nécessaire car une boucle infinie dans le code fantôme
@@ -144,12 +144,15 @@ donné.
 
 
 Prenons maintenant un exemple plus poussé. Nous voulons par exemple prouver que
-la fonction suivante nous retourne la valeur maximale des sommes de sous-tableaux possibles d'un tableau donné. Un sous-tableau d'un tableau \CodeInline{a} est un
-sous-ensemble contigu de valeur de \CodeInline{a}. Par exemple, pour un tableau \CodeInline{\{ 0 , 3 , -1 , 4 \}},
-des exemples de sous tableaux peuvent être \CodeInline{\{\}}, \CodeInline{\{ 0 \}}, \CodeInline{\{ 3 , -1 \}}
-, \CodeInline{\{ 0 , 3 , -1 , 4 \}}, ... Notons que comme nous autorisons le tableau vide,
-la somme est toujours au moins égale à 0. Dans le tableau précédent, le sous
-tableau de valeur maximale est \CodeInline{\{ 3 , -1 , 4 \}}, la fonction renverra donc 6.
+la fonction suivante nous retourne la valeur maximale des sommes de sous-tableaux
+possibles d'un tableau donné. Un sous-tableau d'un tableau \CodeInline{a} est un
+sous-ensemble contigu de valeur de \CodeInline{a}. Par exemple, pour un tableau
+\CodeInline{\{ 0 , 3 , -1 , 4 \}}, des exemples de sous tableaux peuvent être
+\CodeInline{\{\}}, \CodeInline{\{ 0 \}}, \CodeInline{\{ 3 , -1 \}},
+\CodeInline{\{ 0 , 3 , -1 , 4 \}}, ... Notons que comme nous autorisons le
+tableau vide, la somme est toujours au moins égale à 0. Dans le tableau précédent,
+le sous-tableau de valeur maximale est \CodeInline{\{ 3 , -1 , 4 \}}, la fonction
+renverra donc 6.
 
 
 
@@ -157,7 +160,7 @@ tableau de valeur maximale est \CodeInline{\{ 3 , -1 , 4 \}}, la fonction renver
 
 
 
-Pour spécifier la fonction précédente, nous allons avoir besoin d'exprimer
+Pour spécifier la fonction précédente, nous aurons besoin d'exprimer
 axiomatiquement la somme. Ce n'est pas très complexe, et le lecteur pourra
 s'exercer en exprimant les axiomes nécessaires au bon fonctionnement de cette
 axiomatique :
@@ -181,10 +184,10 @@ La spécification de notre fonction est la suivante :
 
 Pour toute paire de bornes, la valeur retournée par la fonction doit être
 supérieure ou égale à la somme des éléments entre les bornes, et il doit exister
-une paire de bornes, telle que la somme des éléments entre ces bornes est
+une paire de bornes telle que la somme des éléments entre ces bornes est
 exactement la valeur retournée par la fonction. Par rapport à cette spécification,
 si nous devons ajouter les invariants de boucles, nous nous apercevons rapidement
-qu'il va nous manquer des informations. Nous avons besoin d'exprimer ce que sont
+qu'il nous manquera des informations. Nous avons besoin d'exprimer ce que sont
 les valeurs \CodeInline{max} et \CodeInline{cur} et quelles relations existent entre elles,
 mais rien ne nous le permet !
 
@@ -192,14 +195,14 @@ mais rien ne nous le permet !
 
 En substance, notre postcondition a besoin de savoir qu'il existe des
 bornes \CodeInline{low} et \CodeInline{high} telles que la somme calculée correspond à ces bornes.
-Or notre code, n'exprime rien de tel d'un point de vue logique et rien ne nous
+Or, notre code n'exprime rien de tel d'un point de vue logique et rien ne nous
 permet \textit{a priori} de faire cette liaison en utilisant des formulations logiques.
-Nous allons donc utiliser du code \textit{ghost} pour conserver ces bornes et exprimer
+Nous utiliserons du code \textit{ghost} pour conserver ces bornes et exprimer
 l'invariant de notre boucle.
 
 
 
-Nous allons d'abord avoir besoin de 2 variables qui vont nous permettre de stocker
+Nous aurons d'abord besoin de deux variables qui nous permettront de stocker
 les valeurs des bornes de la plage maximum, nous les appellerons \CodeInline{low}
 et \CodeInline{high}. Chaque fois que nous trouverons une plage où la somme est plus
 élevée nous les mettrons à jour. Ces bornes correspondront donc à la somme indiquée
@@ -230,11 +233,11 @@ voir que le calcul de la somme indique un dépassement possible sur les entiers.
 
 
 
-Ici, nous ne chercherons pas à le corriger car ce n'est pas l'objet de l'exemple.
+Ici, nous ne chercherons pas à le corriger, car ce n'est pas l'objet de l'exemple.
 Le moyen de prouver cela dépend en fait fortement du contexte dans lequel on
 utilise la fonction. Une possibilité est de restreindre fortement le contrat en
 imposant des propriétés à propos des valeurs et de la taille du tableau. Par
-exemple : nous pourrions imposer une taille maximale et des bornes fortes pour
+exemple, nous pourrions imposer une taille maximale et des bornes fortes pour
 chacune des cellules. Une autre possibilité est d'ajouter une valeur d'erreur
 en cas de dépassement (par exemple $-1$), et de spécifier qu'en cas de
 dépassement, c'est cette valeur qui est renvoyée.
@@ -259,7 +262,7 @@ la valeur de \CodeInline{r} est \CodeInline{i * 2} et compléter la preuve.
 
 
 Cette fonction reçoit un tableau et effectue une boucle dans laquelle nous ne
-faisons rien sauf que nous avons indiqué que le contenu du tableau est modifié.
+faisons rien, sauf que nous avons indiqué que le contenu du tableau est modifié.
 Cependant, nous voudrions pouvoir prouver qu'en postcondition, le tableau n'a
 pas été modifié.
 

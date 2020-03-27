@@ -1,10 +1,10 @@
 
 Les axiomes sont des propriétés dont nous énonçons qu'elles sont vraies quelle
 que soit la situation. C'est un moyen très pratique d'énoncer des notions
-complexes qui vont pouvoir rendre le processus très efficace en abstrayant
+complexes qui pourront rendre le processus très efficace en abstrayant
 justement cette complexité. Évidemment, comme toute propriété exprimée comme un
 axiome est supposée vraie, il faut également faire très attention à ce que nous
-définissons car si nous introduisons une propriété fausse dans les notions que
+définissons, car si nous introduisons une propriété fausse dans les notions que
 nous supposons vraies alors ... nous saurons tout prouver, même ce qui est faux.
 
 
@@ -49,7 +49,7 @@ Nous pouvons par exemple définir cette axiomatique :
 
 
 
-Et nous pouvons voir que dans Frama-C, la propriété est bien supposée
+et nous pouvons voir que dans Frama-C, la propriété est bien supposée
 vraie\footnote{In section \ref{l2:acsl-logic-definitions-answers}, nous
 présentons un axiome {\em extrêmement} utile.} :
 
@@ -60,7 +60,7 @@ présentons un axiome {\em extrêmement} utile.} :
 \levelFourTitle{Lien avec la notion de lemme}
 
 
-Les lemmes et les axiomes vont nous permettre d'exprimer les mêmes types de
+Les lemmes et les axiomes nous permettront d'exprimer les mêmes types de
 propriétés, à savoir des propriétés exprimées sur des variables quantifiées (et
 éventuellement des variables globales, mais cela reste assez rare puisqu'il est
 difficile de trouver une propriété qui soit globalement vraie à leur sujet tout
@@ -80,7 +80,7 @@ est toujours supposé vrai.
 
 
 Les définitions axiomatiques de fonctions ou de prédicats récursifs sont
-particulièrement utiles car elles vont permettre d'empêcher les prouveurs de
+particulièrement utiles car elles permettent d'empêcher les prouveurs de
 dérouler la récursion quand c'est possible.
 
 
@@ -126,7 +126,7 @@ l'invalidation d'une propriété connue axiomatiquement.
 
 Par exemple, si nous prenons la définition inductive que nous avons rédigé pour
 \CodeInline{zeroed} dans le chapitre précédent, nous pouvons l'écrire à l'aide
-d'une définition axiomatique qui prendra cette forme:
+d'une définition axiomatique qui prendra cette forme :
 
 
 
@@ -160,7 +160,7 @@ L'exemple le plus simple à produire est le suivant:
 
 
 
-Et tout est prouvé, y compris que le déréférencement de l'adresse 0 est OK :
+Tout est prouvé, y compris que le déréférencement de l'adresse 0 est OK :
 
 
 
@@ -184,7 +184,7 @@ vigilant !
 
 
 
-Notamment parce que par exemple, la mention des valeurs lues par une fonction
+Notamment parce que, par exemple, la mention des valeurs lues par une fonction
 ou un prédicat défini axiomatiquement est également importante pour la
 consistance de l'axiomatique. En effet, comme mentionné précédemment, si nous
 n'exprimons pas les valeurs lues dans le cas de l'usage d'un pointeur, la
@@ -196,9 +196,9 @@ preuve passe mais l'axiome n'exprimant pas le contenu, nous ne prouvons rien.
 
 Par exemple, si nous reprenons l'exemple de mise à zéro, nous pouvons modifier
 la définition de notre axiomatique en retirant la mention des valeurs dont
-dépendent le prédicat : \CodeInline{reads a[b .. e-1]}. La preuve passera toujours
+dépendent le prédicat : \CodeInline{reads a[b .. e-1]}. La preuve passera toujours,
 mais n'exprimera plus rien à propos du contenu des tableaux considérés.
-Par exemple la fonction suivante :
+Par exemple, la fonction suivante :
 
 
 \CodeBlockInput[16][25]{c}{all-zeroes-bad.c}
@@ -210,7 +210,7 @@ n'est plus 0.
 
 Notons qu'à la différence des définitions inductives, où Coq nous permet de contrôler
 que ce nous écrivons est relativement bien défini, nous n'avons pas de mécanisme de
-ce genre pour les définitions axiomatiques. Ces axiomes sont simplement traduis
+ce genre pour les définitions axiomatiques. Ces axiomes sont simplement traduits
 comme axiomes aussi du côté de Coq et sont donc supposés vrais.
 
 
@@ -234,7 +234,7 @@ Nous avons trois cas à gérer :
 \begin{itemize}
 \item la plage de valeur concernée est vide : le nombre d'occurrences est 0 ;
 \item la plage de valeur n'est pas vide et le dernier élément est celui recherché :
-le nombre d'occurrences est : le nombre d'occurrences dans la plage actuelle que
+le nombre d'occurrences est le nombre d'occurrences dans la plage actuelle que
 l'on prive du dernier élément, plus 1 ;
 \item la plage de valeur n'est pas vide et le dernier élément n'est pas celui
 recherché : le nombre d'occurrences est le nombre d'occurrences dans la plage
@@ -300,7 +300,7 @@ de caractères, à savoir ce que nous attendons de notre fonction C.
 
 Nous voulons recevoir une chaîne C valide en entrée et nous voulons en
 calculer la longueur, une valeur qui correspond à celle fournie par la
-fonction logique \CodeInline{strlen} appliquée à cette chaîne. Bien sûr
+fonction logique \CodeInline{strlen} appliquée à cette chaîne. Bien sûr,
 cette fonction n'affecte rien. Définir ce qu'est une chaîne valide n'est
 pas si simple. En effet, précédemment dans ce tutoriel, nous avons uniquement
 travaillé avec des tableaux, en recevant en entrée à la fois un pointeur
@@ -323,15 +323,15 @@ nous devons calculer la fonction d'une chaîne en trouvant le caractère
 \CodeInline{'\textbackslash{}0'}, et nous espérons le trouver mais en fait,
 nous pouvons facilement imaginer une chaîne qui n'en contiendrait pas. Dans
 ce cas, nous voudrions avoir une valeur d'erreur, mais il est impossible de
-garantir que le calcul termine: une fonction logique ne peut donc pas être
+garantir que le calcul termine : une fonction logique ne peut donc pas être
 utilisée pour exprimer cette propriété.
 
 
 
 Définissons donc cette fonction axiomatiquement. D'abord définissons ce qui
 est lu par la fonction, à savoir : toute position mémoire depuis le pointeur
-jusqu'à un plage infinie d'adresses. Ensuite, considérons deux cas: la chaîne
-est finie, ou elle ne l'est pas, ce qui nous amène à deux axiomes:
+jusqu'à un plage infinie d'adresses. Ensuite, considérons deux cas : la chaîne
+est finie, ou elle ne l'est pas, ce qui nous amène à deux axiomes :
 \CodeInline{strlen} retourne une valeur positive qui correspond à l'indice
 du premier caractère \CodeInline{'\textbackslash{}0'}, et retourne une valeur
 négative s'il n'y a pas de tel caractère.
@@ -345,7 +345,7 @@ négative s'il n'y a pas de tel caractère.
 Maintenant, nous pouvons être plus précis dans notre définition de
 \CodeInline{\textbackslash{}valid\_read\_string}, une chaîne valide est une
 chaîne telle qu'est valide depuis le premier indice jusqu'à \CodeInline{strlen}
-de la chaîne, et telle que que cette valeur est plus grande que 0 (puisqu'une
+de la chaîne, et telle que cette valeur est plus grande que 0 (puisqu'une
 chaîne infinie n'est pas valide) :
 
 
@@ -359,7 +359,7 @@ toute valeur entre 0 et \CodeInline{i}, elles sont différentes de
 \CodeInline{'\textbackslash{}0'}. Cette boucle n'affecte que \CodeInline{i}
 et le variant correspond à la distance entre \CodeInline{i} et
 \CodeInline{strlen(s)}. Cependant, si nous essayons de prouver cette fonction,
-la preuve échoue. Et pour avoir plus d'information, nous pouvons relancer la
+la preuve échoue. Pour avoir plus d'information, nous pouvons relancer la
 preuve avec la vérification d'absence de RTEs, avec la vérification de non
 débordement des entiers non signés :
 
@@ -380,7 +380,7 @@ limite à la valeur de \CodeInline{strlen(s)} en précondition.
 Cependant, c'est insuffisant. La raison et que si nous avons défini la
 valeur de \CodeInline{strlen(s)} comme l'index du premier
 \CodeInline{'\textbackslash{}0'} dans le tableau, l'inverse n'est pas
-vrai: savoir que la valeur de \CodeInline{strlen(s)} est positive n'est
+vrai : savoir que la valeur de \CodeInline{strlen(s)} est positive n'est
 pas suffisant pour déduire que la valeur à l'indice correspondant est
 \CodeInline{'\textbackslash{}0'}. Nous étendons donc notre définition
 axiomatique avec une autre proposition indiquant cette propriété (nous
@@ -392,7 +392,7 @@ précèdent cet indice même si ici, ce n'est pas nécessaire) :
 \CodeBlockInput[17][23]{c}{strlen-proved.c}
 
 
-Et cette fois la preuve réussit. Frama-C fournit ses propres headers pour
+Cette fois la preuve réussit. Frama-C fournit ses propres headers pour
 la bibliothèque standard, et cela inclut une définition axiomatique pour
 la fonction logique \CodeInline{strlen}. Elle peut être trouvée dans le
 dossier de Frama-C, sous le dossier \CodeInline{libc}, le fichier est
