@@ -1,4 +1,4 @@
-Nous avons vu que la preuve d'un programme nous permet de vérifier deux aspects
+Nous avons vu que la preuve d'un programme permet de vérifier deux aspects
 principaux à propos de sa correction ; d'abord que le programme ne contient pas
 d'erreur d'exécution, et ensuite que le programme répond correctement à sa
 spécification. Cependant, il est parfois difficile d'obtenir le second aspect,
@@ -9,7 +9,7 @@ En effet, les erreurs à l'exécution entraînent souvent la présence des fameu
 « \textit{undefined behaviors} » dans les programmes C. Ces comportements peuvent être
 des vecteurs de failles de sécurité. Par conséquent, garantir leur absence nous
 protège déjà d'un grand nombre de ces vecteurs d'attaques. L'absence d'erreur à
-l'exécution peut être vérifier avec WP à l'aide d'une approche appelée
+l'exécution peut être vérifiée avec WP à l'aide d'une approche appelée
 « contrats minimaux ».
 
 
@@ -17,9 +17,9 @@ l'exécution peut être vérifier avec WP à l'aide d'une approche appelée
 
 
 L'approche par contrats minimaux est guidée par l'usage du greffon RTE de Frama-C.
-L'idée est simple : nous générons les assertions nécessaires à vérifier l'absence
-d'erreurs à l'exécution pour toutes les fonctions d'un module ou d'un projet, et
-nous écrivons ensuite l'ensemble des spécifications (correctes) qui sont suffisantes
+L'idée est simple : pour toutes les fonctions d'un module ou d'un projet,
+nous générons les assertions nécessaires à vérifier l'absence d'erreurs à l'exécution,
+et nous écrivons ensuite l'ensemble des spécifications (correctes) qui sont suffisantes
 pour prouver ces assertions et les contrats ainsi rédigés. La plupart du temps, cela
 permet d'avoir beaucoup moins de lignes de spécifications que ce qui est nécessaire
 pour prouver la correction fonctionnelle du programme.
@@ -32,7 +32,7 @@ Commençons par un exemple simple avec la fonction valeur absolue.
 
 
 Ici, nous pouvons générer les assertions nécessaires à prouver pour montrer
-l'absence d'erreurs à l'exécution, ce qui nous génère ce programme :
+l'absence d'erreurs à l'exécution, ce qui génère ce programme :
 
 
 \CodeBlockInput{c}{abs-2.c}
@@ -64,8 +64,8 @@ ceci :
 \CodeBlockInput{c}{abs-4.c}
 
 
-Mais cette addition ne devrait être guidée que par la vérification du (des)
-contexte(s) dans le(s)quel(s) la fonction est appelée, une fois que nous avons
+Mais cette addition ne devrait être guidée que par la vérification du ou des
+contextes dans lesquels la fonction est appelée, une fois que nous avons
 prouvée l'absence d'erreur d'exécution dans cette fonction.
 
 
@@ -73,13 +73,13 @@ prouvée l'absence d'erreur d'exécution dans cette fonction.
 
 
 Maintenant que nous avons le principe en tête, travaillons avec un exemple un peu
-plus complexe, en particulier avec un exemple qui nécessite une boucle.
+plus complexe, Celui-ci en particulier nécessite une boucle.
 
 
 \CodeBlockInput{c}{search-1.c}
 
 
-Lorsque nous avons généré les assertions liées aux erreurs à l'exécution, nous
+Lorsque nous générons les assertions liées aux erreurs à l'exécution, nous
 obtenons le programme suivant :
 
 
@@ -130,7 +130,7 @@ Nous devons donc vérifier que :
 
 En plus du contrat de \CodeInline{foo}, nous devons fournir plus d'informations
 dans le contrat de \CodeInline{search}. En effet, nous ne pourrons pas prouver
-que le pointeur est valide s'il n'est pas nul si la fonction ne nous garantit
+que le pointeur est valide si la fonction ne nous garantit
 pas qu'il est dans la plage correspondant à notre tableau dans ce cas. De plus,
 nous ne pourrons pas prouver que \CodeInline{*p} a une valeur inférieure à
 \CodeInline{INT\_MAX} si la fonction peut modifier le tableau.
