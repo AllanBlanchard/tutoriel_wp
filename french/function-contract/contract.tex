@@ -293,7 +293,7 @@ pour lequel le dépassement n'est pas défini par la norme C.
 Ici, nous pouvons voir un autre type d'annotation ACSL. La 
 ligne \CodeInline{//@ assert propriete ;} nous permet de demander la vérification 
 d'une propriété à un point particulier du programme. Ici, l'outil l'a 
-insérée pour nous car il faut vérifier que le \CodeInline{-val} ne provoque pas de 
+insérée pour nous, car il faut vérifier que le \CodeInline{-val} ne provoque pas de 
 débordement, mais il est également possible d'en ajouter manuellement dans 
 un code.
 
@@ -311,7 +311,7 @@ cas.
 
 
 Si  la preuve n'a pas été recommencée intégralement par rapport à la preuve 
-précédente, ces pastilles ont dû rester vertes car les preuves associées ont
+précédente, ces pastilles ont dû rester vertes, car les preuves associées ont
 été réalisées avant l'introduction de la propriété nous assurant l'absence 
 d'erreur d'exécution, et ne se sont donc pas reposées sur la connaissance de
 cette propriété puisqu'elle n'existait pas.
@@ -547,9 +547,9 @@ supposons que la précondition est vraie (puisque la fonction ne peut pas
 modifier la valeur reçue en paramètre), sinon la fonction n'aurait pas pu
 s'exécuter correctement. Par conséquent, nous supposons que
 \CodeInline{INT\_MIN < INT\_MIN} qui est trivialement faux. À partir de là,
-nous pouvons  prouver tout ce que nous voulons car ce « faux » devient une supposition pour
-tout appel qui viendrait ensuite. À partir de « faux », nous prouvons tout ce
-que 
+nous pouvons  prouver tout ce que nous voulons, car ce « faux » devient une
+supposition pour tout appel qui viendrait ensuite. À partir de « faux », nous
+prouvons tout ce que 
 nous voulons, car si nous avons la preuve de « faux » alors « faux » est vrai,
 de même que « vrai » est vrai. Donc tout est vrai.
 
@@ -758,7 +758,7 @@ assertions dans la fonction main.
 
 Écrire la postcondition de la fonction suivante qui retourne le nombre de
 jours en fonction du mois reçu en entrée (NB: nous considérons que le mois
-reçu est entre 1 et 12), pour Février, nous considérons uniquement le cas
+reçu est entre 1 et 12), pour février, nous considérons uniquement le cas
 où il a 28 jours, nous verrons plus tard comment régler ce problème :
 
 
@@ -784,7 +784,7 @@ frama-c-gui your-file.c -wp -wp-rte
 Si cela échoue, adapter le contrat en ajoutant la bonne précondition.
 
 
-Le lecteur aura peut être constaté qu'écrire la postcondition est un peu
+Le lecteur aura peut-être constaté qu'écrire la postcondition est un peu
 laborieux. Il est possible de simplifier cela. ACSL fournit la notion
 d'ensemble mathématique et l'opérateur \CodeInline{\textbackslash{}in} qui
 peut être utilisé pour vérifier si une valeur est dans un ensemble ou non.

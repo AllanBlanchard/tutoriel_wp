@@ -55,13 +55,13 @@ les bornes d'un entier:
 \CodeBlockInput[8][15]{c}{linear-1.c}
 
 
-Certains contrôles de débordement ne sont pas encore prouvé. En effet, tandis que
+Certains contrôles de débordement ne sont pas encore prouvée. En effet, tandis que
 la borne fournie pour \CodeInline{x} par notre fonction logique est définie pour
 le calcul complet, elle ne nous dit rien à propos des calculs intermédiaires. Par
 exemple ici, le fait \CodeInline{3 * x + 4} ne soit pas inférieur à
 \CodeInline{INT\_MIN} ne nous garantit pas que c'est aussi le cas pour
 \CodeInline{3 * x}. Nous pouvons imaginer deux manières différentes de résoudre
-le problème, ce choix doit être guidé par les besoins du projets.
+le problème, ce choix doit être guidé par les besoins du projet.
 
 
 Soit nous pouvons augmenter les restrictions sur l'entrée :
@@ -95,7 +95,7 @@ débordements :
 \levelThreeTitle{Récursivité et limites}
 
 
-Les fonctions logiques peuvent être définie récursivement. Cependant, une telle
+Les fonctions logiques peuvent être définies récursivement. Cependant, une telle
 définition montrera très rapidement ses limites pour la preuve. En effet, 
 pendant les manipulations des prouveurs automatiques sur les propriétés 
 logiques, si l'usage d'une telle fonction est présente, elle devra être évaluée.
@@ -144,7 +144,7 @@ minute ne suffit pas.
 Les fonctions logiques peuvent donc être définies récursivement mais sans astuces
 supplémentaires, nous venons vite nous heurter au fait que les prouveurs vont au 
 choix devoir faire de l'évaluation, ou encore « raisonner » par induction, deux 
-tâches pour lesquelles ils ne sont pas du tout fait, ce qui limite nos 
+tâches pour lesquelles ils ne sont pas du tout faits, ce qui limite nos 
 possibilités de preuve. Nous verrons plus tard dans ce tutoriel comment éviter
 cette limitation.
 
@@ -155,7 +155,7 @@ cette limitation.
 \levelFourTitle{Distance}
 
 
-Spécifier et prouver le programme suivant:
+Spécifier et prouver le programme suivant :
 
 
 \CodeBlockInput{c}{ex-1-distance.c}
@@ -200,7 +200,7 @@ précédente plus 1 (en utilisant la fonction logique définie).
 
 
 
-Dans le programme suivante, la fonction \CodeInline{vec\_add} ajoute le second
+Dans le programme suivant, la fonction \CodeInline{vec\_add} ajoute le second
 vecteur reçu en entrée dans le premier. Écrire un contrat pour la fonction
 \CodeInline{show\_the\_difference} qui exprime pour chaque valeur du vecteur
 \CodeInline{v1} la différence entre la pré et la postcondition. Pour cela,

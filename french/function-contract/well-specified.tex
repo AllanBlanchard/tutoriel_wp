@@ -153,7 +153,7 @@ exemple dans un contrat, toutes les valeurs reçues en entrée sont placées dan
 appel à \CodeInline{\textbackslash{}old} par Frama-C lorsqu'elles sont utilisées dans
 les postconditions, la nouvelle valeur d'une variable fournie en entrée d'une
 fonction n'a aucun sens pour l'appelant puisque cette valeur est inaccessible par
-lui: elles sont locales à la fonction appelée. Par exemple, si nous regardons le
+lui : elles sont locales à la fonction appelée. Par exemple, si nous regardons le
 contrat de la fonction \CodeInline{swap} dans Frama-C, nous pouvons voir que dans
 la postcondition, chaque pointeur se trouve dans un appel à \CodeInline{\textbackslash{}old} :
 
@@ -262,7 +262,7 @@ Typiquement, dans le code suivant :
 
 
 Le déréférencement de \CodeInline{p} est valide, pourtant la précondition de \CodeInline{unref}
-ne sera pas validée par WP car le déréférencement de l'adresse de \CodeInline{value} 
+ne sera pas validée par WP, car le déréférencement de l'adresse de \CodeInline{value} 
 n'est légal qu'en lecture. Un accès en écriture sera un comportement 
 indéterminé. Dans un tel cas, nous pouvons préciser que dans \CodeInline{unref}, le 
 pointeur \CodeInline{p} doit être nécessairement \CodeInline{\textbackslash{}valid\_read} et pas \CodeInline{\textbackslash{}valid}.
@@ -397,7 +397,7 @@ Et cette fois, la preuve est effectuée :
 
 
 Nous pouvons noter que nous ne nous intéressons pas ici à la preuve de 
-l'absence d'erreur à l'exécution car ce n'est pas l'objet de cette section.
+l'absence d'erreur à l'exécution, car ce n'est pas l'objet de cette section.
 Cependant, si cette fonction faisait partie d'un programme complet à vérifier,
 il faudrait définir le contexte dans lequel on souhaite l'utiliser et définir
 les préconditions qui nous garantissent l'absence de débordement en conséquence.
@@ -477,7 +477,7 @@ Si cela échoue, compléter le contrat en ajoutant la bonne précondition.
 
 
 Donner un contrat à la fonction suivante qui remet à zéro la valeur
-pointée par le première paramètre si et seulement si celle pointée par le
+pointée par le premier paramètre si et seulement si celle pointée par le
 second est vraie. Ne pas oublier d'exprimer que la valeur pointée par le second
 paramètre doit rester la même :
 

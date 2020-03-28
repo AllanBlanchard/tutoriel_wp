@@ -13,7 +13,7 @@ qui suit l'appel à $f$. Par exemple, si nous avons un programme:
 \CodeInline{x = f() ; c }, et si $wp(\texttt{c}, Q) = 0 \leq x \leq 10$ alors que
 la postcondition de la fonction \CodeInline{f} est $1 \leq x \leq 9$, nous avons
 besoin d'exprimer l'affaiblissement de la précondition réelle de \CodeInline{c}
-vers celle que l'on a calculé. Pour cela cela, nous renvoyons à la
+vers celle que l'on a calculé. Pour cela, nous renvoyons à la
 section~\ref{l3:statements-basic-consequence}, l'idée est simplement de vérifier 
 que la postcondition de la fonction implique la précondition calculée.
 
@@ -208,7 +208,7 @@ $$\forall v_a, v_b, \quad v_a = 2 \wedge v_b = 4 \Rightarrow v_a = 2 \wedge v_b 
 Cette dernière propriété est trivialement vraie, le programme est vérifié.
 
 
-\levelFourTitle{Que devrions nous garder en tête ?}
+\levelFourTitle{Que devrions-nous garder en tête ?}
 
 
 Les fonctions sont absolument nécessaires pour programmer modulairement, et le calcul
@@ -288,5 +288,5 @@ d'appels récursifs. En ACSL, c'est le rôle de la clause \CodeInline{decreases}
 Cette clause exprime essentiellement la même idée que le \CodeInline{loop variant}.
 L'expression spécifiée par la clause \CodeInline{decreases} est une valeur positive
 qui décroît strictement à chaque nouvel appel récursif de la fonction. Cependant,
-cette clause n'est pas encore supporté par WP, donc nous ne pouvons pas encore 
+cette clause n'est pas encore supportée par WP, donc nous ne pouvons pas encore 
 faire la preuve totale d'une fonction récursive avec le greffon WP.

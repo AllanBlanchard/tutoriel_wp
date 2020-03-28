@@ -161,7 +161,7 @@ le prédicat inductif est trop étrange (s'il n'est pas bien fondé), il sera
 refusé par Coq avec une erreur. En effet, pour la propriété
 \CodeInline{even\_natural} que nous venons de définir, Coq la refuse quand
 nous tentons de prouver \CodeInline{ensures \textbackslash{}false}, parce
-qu'il existe une occurrences non positive de \CodeInline{P\_even\_natural}
+qu'il existe une occurrence non positive de \CodeInline{P\_even\_natural}
 qui encode le \CodeInline{even\_natural} que nous avons écrit en ACSL.
 
 \begin{CodeBlock}{bash}
@@ -187,7 +187,7 @@ fondée mais nous permet de prouver faux :
 \end{CodeBlock}
 
 
-Nous devons donc être prudent pendant la conception de définition inductive afin
+Nous devons donc être prudents pendant la conception de définition inductive afin
 de ne pas introduire une définition qui nous permette de produire une preuve de
 faux.
 
@@ -242,7 +242,7 @@ assertion à la fin) :
 
 À noter que dans cette nouvelle version du code, la propriété énoncée par notre
 lemme n'est pas prouvée par les solveurs automatiques, qui ne savent pas raisonner
-pas induction. Pour les curieux, la (très simple) preuve en Coq est disponible
+par induction. Pour les curieux, la (très simple) preuve en Coq est disponible
 ici :~\ref{l2:acsl-logic-definitions-answers}.
 
 
@@ -390,7 +390,7 @@ considérons deux cas pour le prédicat inductif :
 
 
 Exprimer la postcondition de la fonction et compléter l'invariant pour prouver
-qu'elle est vérifiée. Notons que l'invariant devrait utiliser le cas inductive
+qu'elle est vérifiée. Notons que l'invariant devrait utiliser le cas inductif
 \CodeInline{gcd\_succ}.
 
 
@@ -476,9 +476,9 @@ qui considère les cas suivants :
 \begin{itemize}
 \item la permutation est réflexive ;
 \item si la partie gauche d'une plage de valeur (jusqu'à un certain indice) est
-      « tournée » entre deux labels, nous avons toujours un permutation ;
+      « tournée » entre deux labels, nous avons toujours une permutation ;
 \item si la partie droite d'une plage de valeur (à partir d'un certain indice)
-      est « tournée » entre deux labels, nous avons toujours un permutation ;
+      est « tournée » entre deux labels, nous avons toujours une permutation ;
 \item la permutation est transitive.
 \end{itemize}
 

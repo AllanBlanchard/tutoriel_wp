@@ -163,7 +163,7 @@ Nous voyons que nous utilisons pour l'invariant une structure assez similaire
 à ce que nous avons utilisé pour l'exemple précédent: nous indiquons un premier
 invariant pour contraindre la valeur de \CodeInline{i}, et un autre qui exprime
 à chaque itération ce que nous avons appris depuis le début de l'exécution de la
-boucle (tous les éléments visités sont à $0$). Finalement, intéressons nous à la
+boucle (tous les éléments visités sont à $0$). Finalement, intéressons-nous à la
 clause \CodeInline{loop assigns}: à nouveau, nous utilisons la notation 
 \CodeInline{n .. m} pour indiquer quelle partie du tableau a été modifiée.
 
@@ -328,7 +328,7 @@ boucle devrait indiquer les bornes des valeurs \CodeInline{low} et
 \CodeInline{up}, mais nous pouvons noter que pour chacune d'elles, l'une des
 bornes n'est pas nécessaire. Finalement, la seconde propriété invariante 
 devrait indiquer que si l'un des indices du tableau correspond à la valeur
-recherchée, alors cette indice devrait être correctement borné.
+recherchée, alors cet indice devrait être correctement borné.
 
 \textbf{Plus dur :} Modifier cette fonction de façon à recevoir \CodeInline{len}
 comme un \CodeInline{size\_t}. Il faut modifier légèrement l'algorithme et
@@ -387,8 +387,8 @@ dans la plage source :
 \end{CodeBlock}
  
 
-Essentiellement, en copiant des éléments dans cet ordre, nous pouvons les faire
-glisser depuis la fin d'une plage vers le début. En revanche, cela signifie que
+Essentiellement, en copiant des éléments dans cet ordre, nous pouvons les
+décaler depuis la fin d'une plage vers le début. En revanche, cela signifie que
 nous devons être plus précis dans notre contrat : nous ne garantissons plus une
 égalité avec le tableau source mais avec les \emph{anciennes} valeurs du tableau
 source. Nous devons également être plus précis dans notre invariant, d'abord en

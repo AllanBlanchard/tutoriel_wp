@@ -18,7 +18,7 @@ La nature des boucles rend leur analyse difficile. Lorsque nous faisons nos
 raisonnements arrières, il nous faut une règle capable de dire à partir de la
 postcondition quelle est la précondition d'une certaine séquence 
 d'instructions. Problème : nous ne pouvons \textit{a priori} pas déduire combien de 
-fois la boucle s'exécutera et donc par conséquent, nous ne pouvons pas non 
+fois la boucle s'exécutera et donc, nous ne pouvons pas non 
 plus savoir combien de fois les variables ont été modifiées.
 
 
@@ -445,7 +445,7 @@ restreindre encore.
 
 Ici, nous pouvons voir que nous avons exclu 30 de la plage des valeurs de
 \CodeInline{i} et la fonction est correctement vérifiée par WP. Cette propriété
-est particulièrement intéressante car elle ne s'applique pas qu'à l'invariant. 
+est particulièrement intéressante, car elle ne s'applique pas qu'à l'invariant. 
 Aucune des propriétés de la boucle n'ont besoin d'être vérifiées pendant l'itération
 qui mène au \CodeInline{break}. Par exemple, nous pouvons écrire ce code qui est
 également vérifié :
@@ -494,7 +494,7 @@ frama-c -wp your-file.c
 \CodeBlockInput[2][6]{c}{ex-1-invariant.c}
 
 
-Est ce que la propriété $-100 \leq x \leq 100$ est un invariant correct ?
+Est-ce que la propriété $-100 \leq x \leq 100$ est un invariant correct ?
 Expliquer pourquoi.
 
 

@@ -86,7 +86,7 @@ séparer en trois catégories :
 
 
 \begin{itemize}
-\item le programme n’est pas pas conforme, ou son comportement non défini,
+\item le programme n’est pas conforme, ou son comportement non défini,
       d’après la spécification du langage (par exemple, le programme accède
       en dehors d’un tableau pendant une recherche de minimum);
 \item le programme n’est pas conforme à la spécification que nous en avons
@@ -103,7 +103,7 @@ séparer en trois catégories :
 
 
 Chacune de ces catégories peut affecter la sûreté et/ou la sécurité de nos
-programmes, qui ne sont pas des notions tout à fait équivalente. Pour donner
+programmes, qui ne sont pas des notions tout à fait équivalentes. Pour donner
 une idée de la différence qui existe entre ces deux notions, nous pouvons
 dire que dans le cas de la sécurité, on suppose qu’il existe une entité
 capable d’attaquer (volontairement ou pas) le système, tandis que dans la
@@ -138,14 +138,14 @@ demande de comprendre exactement le besoin auquel nous devons répondre.
 
 Nous pourrions dire avec cynisme que la preuve nous montre finalement que
 l’implémentation « ne contient aucun bug de plus que la spécification », et
-donc que nous traitons pas la troisième catégories de bugs que nous avons
+donc que nous traitons pas la troisième catégorie de bugs que nous avons
 définie. Cependant, être sûr que le programme « ne contient aucun bug de
 plus que la spécification » est déjà un sacré pas en avant par rapport à
 savoir que le programme « ne contient pas beaucoup plus de bugs que la
 spécification », après tout cela représente deux catégories entières de bugs
 dont nous nous débarrassons, bugs qui peuvent déjà sévèrement compromettre la
 sûreté et la sécurité de nos programmes. Ensuite, il existe également des
-techniques pour traiter la troisième catégories de bugs, en analysant les
+techniques pour traiter la troisième catégorie de bugs, en analysant les
 spécifications en quête d’erreurs ou d’insuffisance. Par exemple, les
 techniques de model checking - vérification de modèles - permettent de
 construire un modèle abstrait à partir d’une spécification et de produire
@@ -165,8 +165,8 @@ permettant le traitement de l'information.
 
 
 
-Ici, nous nous intéresserons à la vérification de la conformité de nos programmes
-au comportement attendu. Nous utiliserons
+Ici, nous nous intéresserons à la vérification de la conformité de nos
+programmes au comportement attendu. Nous utiliserons
 des outils capables d'analyser le code et de nous dire si oui, ou non, notre
 code correspond à ce que nous voulons exprimer. La technique que nous allons
 étudier ici est une analyse statique, à opposer aux analyses dynamiques.
@@ -178,10 +178,10 @@ pour nous assurer que son fonctionnement est correct, mais nous raisonnerons sur
 un modèle mathématique définissant l'ensemble des états qu'il peut atteindre.
 A l'inverse, les analyses dynamiques comme le test de programmes nécessitent
 d'exécuter le code analysé. Il existe également des analyses dynamiques et
-formelles, comme de la génération automatique de tests ou encore des techniques de
-\textit{monitoring} de code qui pourront, par exemple, instrumenter un code source afin de
-vérifier à l'exécution que les allocations et désallocation de mémoire sont faites
-de manière sûre.
+formelles, comme de la génération automatique de tests ou encore des techniques
+de \textit{monitoring} de code qui pourront, par exemple, instrumenter un code
+source afin de vérifier à l'exécution que les allocations et désallocation de
+mémoire sont faites de manière sûre.
 
 
 

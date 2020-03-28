@@ -80,7 +80,7 @@ est toujours supposé vrai.
 
 
 Les définitions axiomatiques de fonctions ou de prédicats récursifs sont
-particulièrement utiles car elles permettent d'empêcher les prouveurs de
+particulièrement utiles, car elles permettent d'empêcher les prouveurs de
 dérouler la récursion quand c'est possible.
 
 
@@ -124,7 +124,7 @@ zone mémoire pointée. Une modification de celle-ci n'entraînera donc pas
 l'invalidation d'une propriété connue axiomatiquement.
 
 
-Par exemple, si nous prenons la définition inductive que nous avons rédigé pour
+Par exemple, si nous prenons la définition inductive que nous avons rédigée pour
 \CodeInline{zeroed} dans le chapitre précédent, nous pouvons l'écrire à l'aide
 d'une définition axiomatique qui prendra cette forme :
 
@@ -209,8 +209,8 @@ n'est plus 0.
 
 
 Notons qu'à la différence des définitions inductives, où Coq nous permet de contrôler
-que ce nous écrivons est relativement bien défini, nous n'avons pas de mécanisme de
-ce genre pour les définitions axiomatiques. Ces axiomes sont simplement traduits
+que ce que nous écrivons est relativement bien défini, nous n'avons pas de mécanisme
+de ce genre pour les définitions axiomatiques. Ces axiomes sont simplement traduits
 comme axiomes aussi du côté de Coq et sont donc supposés vrais.
 
 
@@ -360,7 +360,7 @@ toute valeur entre 0 et \CodeInline{i}, elles sont différentes de
 et le variant correspond à la distance entre \CodeInline{i} et
 \CodeInline{strlen(s)}. Cependant, si nous essayons de prouver cette fonction,
 la preuve échoue. Pour avoir plus d'information, nous pouvons relancer la
-preuve avec la vérification d'absence de RTEs, avec la vérification de non
+preuve avec la vérification d'absence de RTE, avec la vérification de non
 débordement des entiers non signés :
 
 
