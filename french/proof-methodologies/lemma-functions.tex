@@ -122,14 +122,15 @@ dans notre vérification.
 Dans cet exemple, nous avons directement écrit le code fantôme comme annotation du
 programme, cela signifie que si nous avons un autre appel comme celui-ci quelque
 part dans le code avec une précondition similaire, nous aurions à le faire à
-nouveau. Rendons cela plus simple et modulaire avec des « \textit{lemma functions} ».
+nouveau. Rendons cela plus simple et modulaire avec des « fonctions lemmes »
+(\textit{lemma functions}).
 
 
 
-\levelThreeTitle{Lemma function}
+\levelThreeTitle{fonction lemme}
 
 
-Le principe des « \textit{lemma functions} » est le même que celui des lemmes : à
+Le principe des « fonctions lemmes » est le même que celui des lemmes : à
 partir de certaines prémisses, nous voulons arriver à une conclusion particulière.
 Et une fois que c'est fait, nous voulons les utiliser à d'autres endroits pour 
 directement déduire la conclusion depuis les prémisses sans avoir à faire la
@@ -188,7 +189,7 @@ la fonction \CodeInline{bsearch} :
 
 
 Avec cette boucle spécifiée, nous obtenons une preuve par induction que le lemme
-est vrai. Maintenant, nous pouvons utiliser cette \textit{lemma function} en
+est vrai. Maintenant, nous pouvons utiliser cette fonction lemme en
 l'appelant tout simplement à l'endroit où nous avons besoin de faire cette
 déduction :
 
@@ -197,10 +198,10 @@ déduction :
 
 
 Ce qui nous demande d'établir la preuve que les prémisses sont établies grâce
-à la précondition de la \textit{lemma function} (et qui est trivialement vraie,
+à la précondition de la fonction lemme (et qui est trivialement vraie,
 puisque nous l'obtenons de la précondition de \CodeInline{bsearch\_callee}), et
 qui nous donne en retour la conclusion gratuitement puisque c'est la postcondition
-de la \textit{lemma function} (et nous pouvons utiliser cette propriété comme
+de la fonction lemme (et nous pouvons utiliser cette propriété comme
 précondition de l'appel à la fonction \CodeInline{bsearch}).
 
 
@@ -237,7 +238,7 @@ sens). Faisons par exemple cela pour les variables \CodeInline{i} et
 
 Ce qui est tout à fait bon et nous pourrions par exemple utiliser cette fonction
 pour déduire des propriétés à propos du contenu du tableau. Notons qu'ici, nous
-utilisons un appel à la précédente \textit{lemma function} pour rendre la preuve
+utilisons un appel à la précédente fonction lemme pour rendre la preuve
 plus facile. Nous pouvons même aller plus loin en transférant la « prémisse de
 notre conclusion » en tant que prémisse d'un nouveau lemme :
 
@@ -251,7 +252,7 @@ quantité d'information requises pour les instancier (et par conséquent la
 précision de la propriété que nous obtenons en retour).
 
 
-Finalement, présentons un dernier usage des \textit{lemma functions}. Dans tous les 
+Finalement, présentons un dernier usage des fonctions lemmes. Dans tous les 
 exemples précédent, nous avons considéré des variables universellement quantifiées.
 En fait, ce que nous avons dit précédemment est aussi applicable aux variables
 existentiellement quantifiées : si elles sont liées aux prémisses et aux
@@ -275,7 +276,7 @@ Bien sûr, il existe un indice \CodeInline{n} tel que \CodeInline{in[n]} est
 \CodeInline{v}, sinon le nombre d'occurrences de cette valeur serait $0$.
 Mais au lieu de prouver que cet index existe, montrons que nous pouvons trouver
 un index qui respecte les contraintes à propos de \CodeInline{n} en utilisant
-une lemma function qui le retourne :
+une fonction lemme qui le retourne :
 
 
 \CodeBlockInput[24][42]{c}{lemma-function-2-2.c}
@@ -308,7 +309,7 @@ indice qui nous permet de valider notre assertion :
 \CodeBlockInput[44][53]{c}{lemma-function-2-2.c}
 
 
-L'utilisation des \textit{lemma functions} nous permet de raisonner par
+L'utilisation des fonctions lemmes nous permet de raisonner par
 induction à propos de lemmes sans avoir besoin de preuve interactive. De plus,
 le déclenchement des lemmes devient beaucoup plus prévisible puisque nous le
 faisons à la main. Cependant, les lemmes nous permettent de travailler sur
@@ -323,13 +324,13 @@ plusieurs labels :
 \end{CodeBlock}
 
 
-Les \textit{lemma functions} ne nous fournissent pas de mécanisme équivalent
+Les fonctions lemmes ne nous fournissent pas de mécanisme équivalent
 car elles sont simplement des fonctions C normales, qui ne peuvent pas prendre
 de labels comme entrée. Regardons ce que nous pouvons faire à ce sujet.
 
 
 
-\levelThreeTitle{Lemma macro}
+\levelThreeTitle{Macro lemme}
 
 
 Lorsque nous devons traiter de multiples labels, l'idée est « d'injecter »
@@ -381,7 +382,7 @@ Avec pour objectif de prouver le programme suivante :
 où le lemme \CodeInline{shift\_ptr} est nécessaire pour prouver que la
 postcondition de \CodeInline{callee} depuis la postcondition de
 \CodeInline{shift\_array}. Notre but est bien sûr de ne pas avoir besoin du
-lemma en le remplaçant par une \textit{lemma macro}.
+lemme en le remplaçant par une macro lemme.
 
 
 Il n'y a pas de guide précis pour concevoir une macro utilisée pour injecter
@@ -396,7 +397,7 @@ Nous construisons ce contexte en utilisant une fonction,
 nommons-la \CodeInline{context\_to\_prove\_shift\_ptr}. L'idée est d'utiliser
 cette fonction pour construire notre macro en isolation du reste du programme pour
 rendre la vérification de la propriété plus facile. Cependant, tandis que les 
-\textit{lemma functions} sont ensuite appelées dans d'autres fonctions pour déduire
+fonctions lemmes sont ensuite appelées dans d'autres fonctions pour déduire
 des propriétés, cette fonction ne sera jamais appelée, son rôle est juste de nous
 permettre d'avoir un « endroit » où nous pouvons construire notre preuve. En
 particulier, comme nous avons besoin de plusieurs labels mémoire, notre fonction
@@ -464,7 +465,7 @@ tableau entre labels).
 
 
 Finalement, nous pouvons compléter la preuve de notre fonction \CodeInline{callee}
-en utilisant notre lemma macro :
+en utilisant notre macro lemme :
 
 
 \CodeBlockInput[52][61]{c}{lemma-macro-2-2.c}
@@ -479,6 +480,14 @@ ajouter un peu d'information qui n'est pas nécessaires dans un contexte bien
 propre comme celui que nous utilisons pour produire la macro.
 
 
+Notons qu'en cela, à la différence de la fonction lemme qui a un comportement
+très proche d'un lemme « classique », au sens où elle nous permet de faire une
+déduction immédiate d'une conclusion à partir de certaines prémisses à un point
+particulier de programme sans avoir à en refaire la preuve ; la macro lemme,
+elle, s'éloigne beaucoup du comportement d'un lemme « classique », car elle
+implique de refaire la preuve à chaque point où l'on a besoin de cette déduction.
+
+
 Tout ceci peut rendre le contexte beaucoup plus gros, et plus difficile à utiliser
 pour les solveurs SMT. Il y a d'autres limitations à cette technique et le lecteur
 très attentif aura déjà pu les constater. Parlons-en.
@@ -488,12 +497,12 @@ très attentif aura déjà pu les constater. Parlons-en.
 \levelThreeTitle{Limitations}
 
 
-La principale limitation des \textit{lemma functions} et \textit{lemma macros}
+La principale limitation des fonctions lemmes et macros lemmes
 est le fait que nous sommes limités à des types C. Par exemple, si nous
 comparons notre lemme \CodeInline{element\_level\_sorted\_is\_sorted} avec la
-\textit{lemma function} correspondante, le type original de la valeur
+fonction lemme correspondante, le type original de la valeur
 \CodeInline{len} est un type entier mathématique, tandis que dans la
-\textit{lemma function}, ce type est \CodeInline{size\_t}. Cela signifie que là
+fonction lemme, ce type est \CodeInline{size\_t}. Cela signifie que là
 où notre lemme était vrai pour tout entier, et donc qu'il pouvait être utilisé
 peu importe que la variable représentant la taille soit un \CodeInline{int},
 ou un \CodeInline{unsigned} (ou n'importe quel autre type entier), à l'opposé,
@@ -526,17 +535,17 @@ logiques, comme :
 \end{CodeBlock}
 
 
-Nous ne pouvons pas écrire une \textit{lemma function} avec du code de preuve
+Nous ne pouvons pas écrire une fonction lemme avec du code de preuve
 pour cette propriété puisque nous n'avons pas de moyen d'utiliser ce type logique
 dans du code C, et donc, aucun moyen d'écrire une boucle et un invariant qui nous 
 permettraient de prouver cette propriété.
 
 
-L'autre limitation est liée aux \textit{lemma macros} et ce que nous avons déjà
+L'autre limitation est liée aux macros lemmes et ce que nous avons déjà
 mentionné dans le chapitre précédent à propos des assertions. En ajoutant trop
 d'assertions, le contexte de preuve peut devenir trop gros et trop complexe, et
 donc difficile à manipuler pour les solveurs SMT. Utiliser des
-\textit{lemma macros} peut générer beaucoup de code et d'annotations et amener
+macros lemmes peut générer beaucoup de code et d'annotations et amener
 à de plus gros contextes preuve. Elles devraient
 donc être utilisées avec beaucoup de parcimonie.
 
@@ -569,8 +578,8 @@ cas d'usage que nous avons vu du code fantôme jusqu'ici :
 
 \begin{itemize}
     \item écris directement un code pour construire une preuve,
-    \item écrire (et utiliser) des \textit{lemma functions},
-    \item écrire (et utiliser) des \textit{lemma macros}.
+    \item écrire (et utiliser) des fonctions lemmes,
+    \item écrire (et utiliser) des macros lemmes.
 \end{itemize}
 
 
@@ -616,7 +625,7 @@ au début, qui est lui-même une permutation du tableau original, alors le table
 La seconde assertion dit que la seconde partie du tableau reste inchangée, et nous
 voulons utiliser cette connaissance pour montrer que le nombre d'occurrences des
 valeurs n'a pas changé. Ici, nous pourrions utiliser une combinaison des
-\textit{lemma functions} et \textit{macros} prouver que la plage complète est une
+fonctions et macros lemmes pour prouver que la plage complète est une
 permutation (comme nous le ferons pour l'autre fonction). Cependant ici, écrire
 directement le code est un peu plus simple et requiert moins de preuves (comme
 nous le verrons plus tard), écrivons donc directement le code qui permet de
@@ -663,7 +672,7 @@ respectivement que :
 \end{itemize}
 
 
-D'abord, définissons une \textit{lemma function} qui permet d'explicitement
+D'abord, définissons une fonction lemme qui permet d'explicitement
 couper une plage de valeur en deux sous-parties dans lesquelles nous pouvons
 compter séparément :
 
@@ -730,7 +739,7 @@ preuve :
 La fonction \CodeInline{unchanged\_permutation\_premise} assure que nous avons 
 modifié le tableau (et donc créé un nouvel état mémoire) et que le tableau est
 inchangé entre la précondition et la postcondition. Nous pouvons construire 
-notre \textit{lemma macro} :
+notre macro lemme :
 
 
 \CodeBlockInput[125][135]{c}{insert-sort-auto-proved.c}
@@ -853,7 +862,7 @@ polluent le contexte de preuve et cela peut entraîner l'échec de la preuve.
 \levelFourTitle{La somme des N premiers entiers}
 
 
-En utilisant des \textit{lemma functions}, nous pouvons prouver que le lemme à
+En utilisant des fonctions lemmes, nous pouvons prouver que le lemme à
 propos de la somme des N premiers entiers. Vous avez peut-être déjà fait cette
 preuve au lycée, maintenant, il est temps de faire cette preuve en C et ACSL.
 Écrire un contrat pour la fonction suivante qui exprimer en postcondition que la
