@@ -500,6 +500,14 @@ code of the macro in order to add more information that is unnecessary in a
 clean context.
 
 
+Thus, we can see that there is an important difference between lemma functions
+and lemma macros. A lemma function has a behavior which is quite similar to
+``classic'' lemmas: when we use it we make an immediate deduction of some
+conclusion from some premises because the proof of this lemma has been done
+separately. A lemma macro has a different behavior: every time we use it,
+we have to do the proof again.
+
+
 All of this can make the proof context bigger, and harder to use for SMT solvers.
 There are other limitations to this technique and the careful reader might have
 notice them. Let us now talk about it.
