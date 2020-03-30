@@ -27,18 +27,18 @@ avec l'assistant de preuve Coq qui nous permet de faire notre preuve par
 induction. Cependant, dans la section~\ref{l2:statements-loops} à propos des
 boucles, nous trouvons une sous-section~\ref{l3:statements-loops-invariant}
 nommée « Induction et invariant », où nous expliquons que pour prouver un
-invariant de boucle, nous procédons ... par induction. Quelle est cette
-sorcellerie ?
+invariant de boucle, nous procédons ... par induction. L'auteur de ce tutoriel
+aurait-il honteusement menti au lecteur pendant tout ce temps ?
 
 
-En fait, c'est plutôt simple. Lorsque nous prouvons un invariant de boucle par
-induction en utilisant des solveurs SMT, ils n'ont pas besoin d'effectuer le
-raisonnement par induction eux-mêmes. Le travail qui consiste à séparer la 
-preuve en deux sous-preuves, la première pour l'établissement de l'invariant
-(le cas de base de la preuve), et la seconde pour la préservation (le cas
-d'induction) est effectué par le générateur d'obligations de preuve. 
-Par conséquent, quand les obligations de preuves sont transmises aux solveurs
-SMT, ce travail n'est plus nécessaire.
+En fait non, et la raison est plutôt simple. Lorsque nous prouvons un
+invariant de boucle par induction en utilisant des solveurs SMT, ils n'ont pas
+besoin d'effectuer le raisonnement par induction eux-mêmes. Le travail qui
+consiste à séparer la preuve en deux sous-preuves, la première pour
+l'établissement de l'invariant (le cas de base de la preuve), et la seconde pour
+la préservation (le cas d'induction) est effectué par le générateur
+d'obligations de preuve. Par conséquent, quand les obligations de preuves sont
+transmises aux solveurs SMT, ce travail n'est plus nécessaire.
 
 
 Comment pouvons-nous exploiter cette idée ? Nous avons expliqué précédemment
