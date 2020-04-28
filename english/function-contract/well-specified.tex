@@ -61,6 +61,63 @@ the assertion in our function \CodeInline{foo}, and we cannot prove anymore an
 implementation that would just return the value \CodeInline{INT\_MAX}.
 
 
+\levelThreeTitle{Inconsistent preconditions}
+
+
+Producing a correct specification is crucial. Typically, by stating a
+false precondition, we can have the possibility to create a proof of
+false:
+
+
+\CodeBlockInput{c}{bad-precond.c}
+
+
+If we ask WP to prove this function, it will accept it without any problem
+since the assumption we give in precondition is necessarily false.
+However, we will not be able to give an input that respects the
+precondition.
+
+
+For this particular kind of inconsistencies, a useful feature of WP is
+the "smoke tests" option of the plugin. It can be used to detect that
+some preconditions are unsatisfiable. For example, here, we can run this
+command line:
+
+
+\begin{CodeBlock}{bash}
+  frama-c-gui -wp -wp-smoke-tests file.c
+\end{CodeBlock}
+
+
+and we obtain the following result in the GUI:
+
+
+\image{2-bad-precond}
+
+
+We can see a red and orange bullet on the precondition of the function,
+meaning that if there exists a reachable call to this function the
+precondition will be necessarily violated, and a red bullet in the
+list of goals, indicating that a prover succeeded in proving that this
+precondition is inconsistent.
+
+
+Note that when the smoke tests succeed, for example if we fix the
+precondition like this:
+
+
+ \image{2-smoke-success}
+
+
+it does not necessarily mean that the precondition is consistent, just
+that the prover was unable to prove that it was inconsistent.
+
+
+Some notions we will see in this tutorial can expose us to the
+possibility to introduce subtle incoherence. So, we must always be
+careful specifying a program.
+
+
 \levelThreeTitle{Pointers}
 
 
@@ -178,7 +235,7 @@ or if we want the value of a pointed value:
 
 
 Here, it is easy to see the problem. However, the considered label is
-propagated to subexpressions. Thus, sometimes, terms that seems to be 
+propagated to subexpressions. Thus, sometimes, terms that seems to be
 innocent can have a surprising behavior if we do not keep this fact in mind.
 For example, in the following example:
 
@@ -293,7 +350,7 @@ during the execution of the function.
 
 
 
-By default, WP considers that a function can modify everything in 
+By default, WP considers that a function can modify everything in
 memory. So, we have to specify what can be modified by a function. For
 example, our \CodeInline{swap} function can be specified to modify the
 values pointed by the received pointers:
@@ -453,7 +510,7 @@ remaining and stores it into two memory locations \CodeInline{p} and
 Run the command:
 
 \begin{CodeBlock}{bash}
-frama-c-gui your-file.c -wp 
+frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 

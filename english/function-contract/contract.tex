@@ -555,38 +555,6 @@ that it is true, we do not have a proof that is false neither. So, while
 the call \CodeInline{abs(a)} does not, since it can succeed.
 
 
-
-Produce a correct specification is then crucial. Typically, by stating
-false precondition, we can have the possibility to create a proof of
-false:
-
-
-
-\begin{CodeBlock}{c}
-/*@
-  requires a < 0 && a > 0;
-  ensures  \false;
-*/
-void foo(int a){
-
-}
-\end{CodeBlock}
-
-
-If we ask WP to prove this function, it will accept it without any problem
-since the assumption we give in precondition is necessarily false.
-However, we will not be able to give an input that respects the
-precondition so we will be able to detect this problem by carefully
-reading what we have specified.
-
-
-
-Some notions we will see in this tutorial can expose us to the
-possibility to introduce subtle incoherence. So, we must always be
-careful specifying a program.
-
-
-
 \levelThreeTitle{Some elements about the use of WP and Frama-C}
 
 
