@@ -45,7 +45,7 @@ Comment pouvons-nous exploiter cette idée ? Nous avons expliqué précédemment
 que le code fantôme peut être utilisé pour fournir plus d'information que ce qui
 est explicitement fourni par le code source. Pour cela, nous ajoutons du code
 fantôme (et possiblement des annotations à propos de ce code) qui nous permet
-de déduire plus de propriétés. Illustrons cela avec un exemple simple. Dans 
+de déduire plus de propriétés. Illustrons cela avec un exemple simple. Dans
 un exercice précédent (\ref{l4:acsl-properties-lemmas-lsorted-gsorted}), nous
 voulions prouver l'appel de fonction suivant (nous avons exclus la
 postcondition pour raccourcir l'exemple) :
@@ -70,8 +70,8 @@ preuve qui montre que puisque le tableau est trié localement, nous pouvons
 déduire qu'il est trié globalement (ce qui est simplement la preuve du lemme
 dont nous aurions besoin). Pour écrire cette preuve à la main, nous procéderions
 par induction sur la taille de la plage. Nous avons deux cas. D'abord si la
-plage est vide, la propriété est trivialement vraie. Ensuite, supposons qu'une 
-plage donnée de taille $i$ avec $i < length$ ($length$ étant la taille de la 
+plage est vide, la propriété est trivialement vraie. Ensuite, supposons qu'une
+plage donnée de taille $i$ avec $i < length$ ($length$ étant la taille de la
 plage complète) est globalement triée et montrons que si c'est le cas, alors la
 plage de taille $i+1$ est triée. C'est facile parce que, d'après notre
 précondition, nous savons que le $i^{ième}$ élément est supérieur ou égal au
@@ -111,12 +111,10 @@ vérifier.
 
 
 Notons qu'ici, puisque nous devons écrire beaucoup de code fantôme, cela augmente
-notre risque de modifier le comportement du programme par erreur. La plupart du
-temps nous ne modifions pas de positions mémoire. Par conséquent, en faisant
-attention aux (quelques) positions modifiées (par exemple, les itérateurs de
-boucle), il est suffisant que l'on ne crée pas d'erreur à l'exécution (grâce au
-plugin RTE) et que le code fantôme termine est suffisant pour avoir confiance
-dans notre vérification.
+notre risque d'introduction d'une erreur qui changerait les propriétés du code
+vérifié. Nous devons donc impérativement nous assurer que le code fantôme que
+nous avons écrit termine et qu'il ne contient pas d'erreurs à l'exécution
+(grâce au plugin RTE) pour avoir confiance dans notre vérification.
 
 
 Dans cet exemple, nous avons directement écrit le code fantôme comme annotation du
@@ -132,7 +130,7 @@ nouveau. Rendons cela plus simple et modulaire avec des « fonctions lemmes »
 
 Le principe des « fonctions lemmes » est le même que celui des lemmes : à
 partir de certaines prémisses, nous voulons arriver à une conclusion particulière.
-Et une fois que c'est fait, nous voulons les utiliser à d'autres endroits pour 
+Et une fois que c'est fait, nous voulons les utiliser à d'autres endroits pour
 directement déduire la conclusion depuis les prémisses sans avoir à faire la
 preuve à nouveau, en instanciant les valeurs nécessaires.
 
@@ -248,11 +246,11 @@ notre conclusion » en tant que prémisse d'un nouveau lemme :
 
 
 Tous ces lemmes énoncent la même relation globale, la différence est liée à la
-quantité d'information requises pour les instancier (et par conséquent la 
+quantité d'information requises pour les instancier (et par conséquent la
 précision de la propriété que nous obtenons en retour).
 
 
-Finalement, présentons un dernier usage des fonctions lemmes. Dans tous les 
+Finalement, présentons un dernier usage des fonctions lemmes. Dans tous les
 exemples précédent, nous avons considéré des variables universellement quantifiées.
 En fait, ce que nous avons dit précédemment est aussi applicable aux variables
 existentiellement quantifiées : si elles sont liées aux prémisses et aux
@@ -265,7 +263,7 @@ une fonction qui nous fournit directement une valeur qui satisfait la propriét�
 
 
 Par exemple, considérons la définition axiomatique du comptage d'occurrences et
-imaginons qu'à un certain point de notre programme, nous voulons prouver 
+imaginons qu'à un certain point de notre programme, nous voulons prouver
 l'assertion suivante à partir de la précondition :
 
 
@@ -291,13 +289,13 @@ correspond à la valeur recherchée.
 
 
 Nous prouvons que le second comportement respecte la postcondition en montrant
-qu'il mène à une contradiction. S'il n'y a pas de cellule dont la valeur est 
+qu'il mène à une contradiction. S'il n'y a pas de cellule dont la valeur est
 \CodeInline{v}, alors le nombre d'occurrences de \CodeInline{v} est 0. C'est
 exprimé grâce au second invariant qui nous dit qu'aucun \CodeInline{v} n'a été
 rencontré depuis le début de la boucle, et donc le nombre d'occurrences est 0.
 Cependant, la précondition de la fonction nous énonce que le nombre d'occurrences
 est supérieur à 0, ce qui mène à une contradiction que nous modélisons par une
-assertion de faux (notons qu'elle n'est pas nécessaire, nous l'écrivons 
+assertion de faux (notons qu'elle n'est pas nécessaire, nous l'écrivons
 explicitement pour notre explication) ce qui signifie que ce chemin est
 infaisable.
 
@@ -334,7 +332,7 @@ de labels comme entrée. Regardons ce que nous pouvons faire à ce sujet.
 
 
 Lorsque nous devons traiter de multiples labels, l'idée est « d'injecter »
-directement le code de preuve à l'endroit où c'est nécessaire comme nous 
+directement le code de preuve à l'endroit où c'est nécessaire comme nous
 l'avons fait au début de ce chapitre. En revanche, nous ne voulons pas écrire
 ce code à la main chaque fois que nous en avons besoin, utilisons donc des
 macros pour le faire.
@@ -354,7 +352,7 @@ utilisant des assertions avant et après le code de preuve. Ce code de preuve es
 simplement le même qu'avant, et est utilisé exactement comme il était utilisé dans
 le cas de la fonction. Cependant, nous pouvons voir que cela fait une différence
 importante une fois qu'il a été préprocessé par Frama-C, puisque le bloc de code
-et les annotations sont directement injectées dans la fonction 
+et les annotations sont directement injectées dans la fonction
 \CodeInline{bsearch\_callee}.
 
 
@@ -387,7 +385,7 @@ lemme en le remplaçant par une macro lemme.
 
 Il n'y a pas de guide précis pour concevoir une macro utilisée pour injecter
 un code de preuve. Cependant, la plupart des lemmes énoncés à propos de labels
-multiples sont relativement similaires dans leur manière de lier les labels. 
+multiples sont relativement similaires dans leur manière de lier les labels.
 Illustrons donc avec cet exemple ; la plupart du temps concevoir une macro dans
 une telle situation suivra plus ou moins ce schéma.
 
@@ -396,7 +394,7 @@ Pour construire la macro, nous avons besoin d'un contexte dans lequel travailler
 Nous construisons ce contexte en utilisant une fonction,
 nommons-la \CodeInline{context\_to\_prove\_shift\_ptr}. L'idée est d'utiliser
 cette fonction pour construire notre macro en isolation du reste du programme pour
-rendre la vérification de la propriété plus facile. Cependant, tandis que les 
+rendre la vérification de la propriété plus facile. Cependant, tandis que les
 fonctions lemmes sont ensuite appelées dans d'autres fonctions pour déduire
 des propriétés, cette fonction ne sera jamais appelée, son rôle est juste de nous
 permettre d'avoir un « endroit » où nous pouvons construire notre preuve. En
@@ -456,7 +454,7 @@ Nous ne détaillerons pas ce code, car il est très similaire à ce que nous avo
 écrit au début de cette section. La seule petite subtilité est l'assertion qui
 permet d'aider les solveurs SMT à relier les positions mémoire entre
 \CodeInline{L1} et \CodeInline{L2} aux lignes 16--17. Avec cette macro, nous
-pouvons voir que l'assertion à la fin de la fonction 
+pouvons voir que l'assertion à la fin de la fonction
 \CodeInline{context\_to\_prove\_shift\_ptr} est correctement validée. Par
 conséquent, nous pouvons espérer qu'elle sera capable d'aider les prouveurs à
 obtenir une conclusion similaire dans un contexte similaire (c'est-à-dire un
@@ -537,7 +535,7 @@ logiques, comme :
 
 Nous ne pouvons pas écrire une fonction lemme avec du code de preuve
 pour cette propriété puisque nous n'avons pas de moyen d'utiliser ce type logique
-dans du code C, et donc, aucun moyen d'écrire une boucle et un invariant qui nous 
+dans du code C, et donc, aucun moyen d'écrire une boucle et un invariant qui nous
 permettraient de prouver cette propriété.
 
 
@@ -658,7 +656,7 @@ complexes, nous partirons de cette version annotée :
 la partie la plus difficile de notre travail. Le fait que cette fonction
 garantisse que les valeurs sont bien triées est déjà établie. Utiliser la
 même technique que pour la fonction \CodeInline{insertion\_sort} n'est pas si
-simple ici. En effet, la seconde partie du tableau a été « tournée » ce qui 
+simple ici. En effet, la seconde partie du tableau a été « tournée » ce qui
 rend la propriété un peu plus complexe. Du coup, commençons par séparer notre
 tableau à la position d'insertion en deux parties, où nous montrons
 respectivement que :
@@ -689,9 +687,9 @@ du tableau.
 
 Nous pouvons utiliser notre fonction pour couper le tableau à la bonne position
 après la boucle. Cependant, nous ne pouvons le faire que pour le nouveau contenu
-du tableau. En effet, pour établir cela pour le tableau original, nous devons 
+du tableau. En effet, pour établir cela pour le tableau original, nous devons
 appeler la fonction sur le tableau original pour lequel nous ne connaissons pas
-encore la valeur de $i$. Par conséquent, écrivons une autre version de la 
+encore la valeur de $i$. Par conséquent, écrivons une autre version de la
 propriété « \textit{split} » qui nous montrer que nous pouvons couper le tableau à toute
 position, donc rendons la variable \CodeInline{split} universellement quantifiée,
 et utilisons la fonction précédente pour montrer que cette nouvelle propriété est
@@ -736,9 +734,9 @@ preuve :
 \CodeBlockInput[138][154]{c}{insert-sort-auto-proved.c}
 
 
-La fonction \CodeInline{unchanged\_permutation\_premise} assure que nous avons 
+La fonction \CodeInline{unchanged\_permutation\_premise} assure que nous avons
 modifié le tableau (et donc créé un nouvel état mémoire) et que le tableau est
-inchangé entre la précondition et la postcondition. Nous pouvons construire 
+inchangé entre la précondition et la postcondition. Nous pouvons construire
 notre macro lemme :
 
 
@@ -765,7 +763,7 @@ Comment pouvons-nous prouver cette propriété ? Nous devons d'abord constater
 que puisque tous les éléments depuis le début jusqu'à l'avant-dernier ont été
 décalées d'une cellule, le nombre d'occurrences dans cette partie décalée n'a
 pas changé. Ensuite, nous devons montrer que le nombre d'occurrences de $v$
-respectivement dans la dernière cellule du tableau original et la première 
+respectivement dans la dernière cellule du tableau original et la première
 cellule du nouveau tableau est le même (puisque l'élément correspondant est le
 même). À nouveau, nous nous reposons sur la fonction \CodeInline{split} pour compter
 séparément les éléments décalés et l'élément qui est déplacé de la fin vers le
@@ -784,7 +782,7 @@ est valide :
 
 L'invariant de boucle est très similaire à ce que nous avons écrit jusqu'à
 maintenant, la seule différence est que nous devons tenir compte du glissement
-des éléments. De plus, pour l'invariant, nous avons dû ajouter une assertion 
+des éléments. De plus, pour l'invariant, nous avons dû ajouter une assertion
 pour aider les prouveurs automatiques à remarquer que le dernier élément de
 chaque plage est le même (notons que selon les versions des prouveurs ou la
 puissance de la machine, cela peut parfois ne pas être nécessaire). Une différence
@@ -797,7 +795,7 @@ que des assertions pour guider les dernières étapes de preuve :
 \begin{itemize}
     \item 171--175 : nous rappelons que le tableau original peut être coupé au
           niveau du dernier élément,
-    \item 176--180 : nous montrons que comme le premier élément du tableau est le 
+    \item 176--180 : nous montrons que comme le premier élément du tableau est le
           dernier élément du tableau original (176), le nombre d'occurrences pour
           toute valeur dans ces plages est le même (177--179).
 \end{itemize}
@@ -846,7 +844,7 @@ qui nous garantit que la fonction annotée résultante est entièrement prouvée
 
 
 Nous mettons finalement en valeur le fait que le contexte de preuve peut rendre
-le travail vraiment difficile pour les solveurs SMT. Tout simplement, si nous 
+le travail vraiment difficile pour les solveurs SMT. Tout simplement, si nous
 inversons les preuves à propos du chaque partie du tableau, à savoir, en
 commençant par la partie \CodeInline{unchanged} puis la partie \CodeInline{rotate},
 la preuve a de très bonnes chances d'échouer, car elle fait grossir le contexte de
@@ -870,7 +868,7 @@ somme des N premiers entiers est \CodeInline{N(N+1)/2}. Compléter le corps de l
 fonction avec une boucle pour prouver la propriété. Nous conseillons de légèrement
 modifier l'invariant pour faire disparaître la division (qui sur les entiers a
 certaines propriétés qui rendent son utilisation difficile avec des solveurs SMT
-en fonction des contraintes qui existent sur les valeurs utilisées). 
+en fonction des contraintes qui existent sur les valeurs utilisées).
 
 
 \CodeBlockInput[1][12]{c}{ex-1-sum-of-n-integers.c}
@@ -920,14 +918,14 @@ ou égal au nombre d'occurrences de \CodeInline{v} entre 0 et \CodeInline{more} 
 \CodeInline{more} est supérieur ou égal à \CodeInline{pos}
 
 
-La fonction \CodeInline{occ\_0\_not\_in} doit énoncer que si le nombre 
+La fonction \CodeInline{occ\_0\_not\_in} doit énoncer que si le nombre
 d'occurrences de \CodeInline{v} dans le tableau est 0 alors \CodeInline{v} n'est
 pas dans le tableau. Notons que \CodeInline{occ\_monotonic} serait probablement
 utile.
 
 
 La fonction \CodeInline{occ\_pos\_find} doit trouver un indice \CodeInline{i}
-tel que \CodeInline{arr[i]} est \CodeInline{v}, à supposer que le nombre 
+tel que \CodeInline{arr[i]} est \CodeInline{v}, à supposer que le nombre
 d'occurrences de \CodeInline{v} est positif. \CodeInline{occ\_monotonic} peut
 être utile.
 
@@ -944,7 +942,7 @@ d'erreurs d'exécution ainsi que l'option \CodeInline{-warn-unsigned-overflow}.
 \levelFourTitle{Un vrai exemple avec la somme}
 
 
-Reprendre la preuve effectuée dans le chapitre précédent pour 
+Reprendre la preuve effectuée dans le chapitre précédent pour
 l'exercice~\ref{l4:proof-methodologies-triggering-lemmas-exercises-sum}. Modifier
 les annotations pour assurer que plus aucun lemme classique n'est nécessaire.
 Voici un squelette pour le fichier :

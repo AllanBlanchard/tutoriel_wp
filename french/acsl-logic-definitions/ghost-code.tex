@@ -24,17 +24,12 @@ du code C ainsi que la mention \CodeInline{ghost}.
 \end{CodeBlock}
 
 
-
-Les seules règles que nous devons respecter dans un tel code est que nous ne
-devons jamais écrire une portion de mémoire qui n'est pas elle-même définie dans
-du code fantôme et que le code en question doit terminer tout bloc qu'il ouvrirait.
-Mis à par cela, tout calcul peut être inséré tant qu’il ne modifie \textit{que} les variables
-du code fantôme.
+Dans un code fantôme, nous écrivons du C normal. Nous expliquerons certaines
+petites subtilités plus tard. Pour l'instant, intéressons nous aux éléments
+basiques que nous pouvons écrire avec du code fantôme.
 
 
-
-Voici quelques exemples pour la syntaxe de code fantôme :
-
+Nous pouvons déclarer des variables :
 
 
 \begin{CodeBlock}{c}
@@ -42,26 +37,120 @@ Voici quelques exemples pour la syntaxe de code fantôme :
 
 void foo(int a){
   //@ ghost int ghost_loc_var = a;
+}
+\end{CodeBlock}
 
+
+Ces variables peuvent être modifier via des opérations et structures
+conditionnelles :
+
+
+\begin{CodeBlock}{c}
+//@ ghost int ghost_glob_var = 0;
+
+void foo(int a){
+  //@ ghost int ghost_loc_var = a;
+  /*@ ghost
+    for(int i = 0 ; i < 10 ; i++){
+      ghost_glob_var += i ;
+      if(i < 5) ghost_local_var += 2 ;
+    }
+  */
+}
+\end{CodeBlock}
+
+
+Nous pouvons déclarer des \textit{labels} fantôme, que l'on peut utiliser dans
+nos annotations (ou même pour effectuer un \CodeInline{goto} depuis le code
+fantôme lui même, sous certaines conditions que nous expliquerons plus tard) :
+
+
+\begin{CodeBlock}{c}
+void foo(int a){
   //@ ghost Ghost_label: ;
   a = 28 ;
-
-  //@ ghost if(a < 0){ ghost_loc_var = 0; }
-
   //@ assert ghost_loc_var == \at(a, Ghost_label) == \at(a, Pre);
 }
 \end{CodeBlock}
 
 
-Bien que dans ce chapitre, cela ne sera pas nécessaire, nous verrons plus tard
-qu'il est parfois utile d'écrire des contrats ou des assertions dans du code
-fantôme. Comme nous devons écrire ces spécifications dans du code qui est
-déjà englobé dans des commentaires C, nous avons accès à une syntaxe spécifique
-pour fournir des contrats ou des assertions fantômes. Nous ouvrons une annotation
-fantôme avec la syntaxe \CodeInline{/@} et nous les fermons avec \CodeInline{@/}.
+Une construction conditionnelle \CodeInline{if} peut être étendue avec un
+\CodeInline{else} fantôme s'il n'a pas de \CodeInline{else} à la base. Par
+exemple :
 
 
-Par exemple :
+\begin{CodeBlock}{c}
+void foo(int a){
+  //@ ghost int a_was_ok = 0 ;
+  if(a < 5){
+    a = 5 ;
+  } /*@ ghost else {
+    a_was_ok = 1 ;
+  } */
+}
+\end{CodeBlock}
+
+
+Une fonction peut avoir des paramètres fantômes, cela permet de transmettre des
+informations supplémentaires pour la vérification de la fonction. Par exemple,
+si l'on imagine la vérification d'une fonction qui reçoit une liste chaînée,
+nous pourrions transmettre un paramètre fantôme qui représenterait la
+longueur de la liste :
+
+
+\begin{CodeBlock}{c}
+void function(struct list* l) /*@ ghost (int length) */ {
+  // visit the list
+  /*@ variant length ; */
+  while(l){
+    l = l->next ;
+    //@ ghost length--;
+  }
+}
+void another_function(struct list* l){
+  //@ ghost int length ;
+
+  // ... do something to compute the length
+
+  function(l) /*@ ghost(n) */ ; // we call function with the ghost parameter
+}
+\end{CodeBlock}
+
+
+Notons que si une fonction prend des paramètres fantômes, tous les appels doivent
+fournir les arguments fantômes correspondant.
+
+
+Une fonction toute entière peut être fantôme. Par exemple, nous pourrions avoir
+une fonction fantôme qui calcule la longueur d'une liste que nous aurions utilisée
+au sein du code précédent :
+
+\begin{CodeBlock}{c}
+/*@ ghost
+  /@ ensures \result == logic_length_of_list(l) ; @/
+  int compute_length(struct list* l){
+    // does the right computation
+  }
+*/
+
+void another_function(struct list* l){
+  //@ ghost int length ;
+
+  //@ ghost length = compute_length(l) ;
+  function(l) /*@ ghost(n) */ ; // we call function with the ghost parameter
+}
+\end{CodeBlock}
+
+
+Ici, nous pouvons voir une syntaxe spécifique pour le contrat de la fonction
+fantôme. En effet, il est souvent utile d'écrire des contrats ou des assertions
+dans du code fantôme. Comme nous devons écrire ces spécifications dans du code
+qui est déjà englobé dans des commentaires C, nous avons accès à une syntaxe
+spécifique pour fournir des contrats ou des assertions fantômes. Nous ouvrons
+une annotation fantôme avec la syntaxe \CodeInline{/@} et nous les fermons avec
+\CodeInline{@/}. Cela s'applique aussi aux boucles dans le code fantôme par
+exemple :
+
 
 \begin{CodeBlock}{c}
 void foo(unsigned n){
@@ -82,47 +171,364 @@ void foo(unsigned n){
 \end{CodeBlock}
 
 
+\levelThreeTitle{Validité du code fantôme, ce que Frama-C vérifie}
 
-\levelThreeTitle{Validité du code fantôme}
+
+Frama-C vérifie plusieurs propriétés à propos du code fantôme que nous écrivons :
 
 
-Il faut être très prudent lorsque nous produisons ce genre de code. En effet,
-aucune vérification n'est effectuée pour s'assurer que nous n'écrivons pas dans
-la mémoire globale par erreur. Ce problème étant comme la vérification elle-même,
-un problème indécidable, une telle analyse serait un travail de preuve à part
-entière. Par exemple, ce code est accepté en entrée de Frama-C, alors qu'il
-modifie manifestement l'état de la mémoire du programme :
+\begin{itemize}
+\item le code fantôme ne peut pas modifier le graphe de flot de contrôle
+      du programme ;
+\item le code normal ne peut pas accéder à la mémoire fantôme ;
+\item le code fantôme ne peut modifier qu'une zone de mémoire fantôme.
+\end{itemize}
 
+
+Très simplement, ces propriétés cherchent à garantir que pour n'importe
+quel programme son comportement observable pour toute entrée est le même
+avec ou sans le code fantôme.
+
+
+\begin{Warning}
+  Avant Frama-C 21 Scandium, la plupart de ces propriétés n'étaient pas vérifiées
+  par le noyau de Frama-C. Par conséquent, si l'on travaille avec une version
+  antérieure, il faut s'assurer soit même que ces propriétés sont vérifiées.
+\end{Warning}
+
+
+Si certaines de ces propriétés ne sont pas vérifiées, cela voudrait dire que le
+code fantôme peut changer le comportement du programme vérifié. Analysons de plus
+prêt chacune de ces contraintes.
+
+
+\levelFourTitle{Maintien du flot de contrôle}
+
+
+Le flot de contrôle d'un programme est l'ordre dans lequel les instructions sont
+exécutées par le programme. Si le code fantôme change cet ordre, ou permet de ne
+plus exécuter certaines instructions du programme d'origine, alors le comportement
+du programme n'est plus le même, et nous ne vérifions donc plus le même programme.
+
+
+Par exemple, dans la fonction suivante calcule la somme des $n$ premiers entiers :
+
+
+\CodeBlockInput{c}{control-flow-1.c}
+
+
+Par l'introduction, dans du code fantôme, de l'instruction \CodeInline{break} dans
+le corps de la boucle, le programme n'a plus le même comportement : au lieu de
+parcourir l'ensemble des $i$ de $0$ à $n+1$, la boucle s'arrête dès le premier
+tour de la boucle. En conséquence, ce programme sera rejeté par Frama-C :
+
+
+\begin{CodeBlock}{text}
+[kernel:ghost:bad-use] file.c:4: Warning:
+  Ghost code breaks CFG starting at:
+  /*@ ghost break; */
+  x += i;
+\end{CodeBlock}
+
+
+Il est important de noter que lorsqu'un code fantôme altère le flot de contrôle
+c'est le point de départ du code fantôme qui est pointé par l'erreur, par exemple
+si nous introduisons une conditionnelle autour de notre \CodeInline{break} :
+
+
+\CodeBlockInput{c}{control-flow-2.c}
+
+
+Le problème est indiqué pour \CodeInline{if} englobant :
+
+
+\begin{CodeBlock}{text}
+[kernel:ghost:bad-use] file.c:4: Warning:
+  Ghost code breaks CFG starting at:
+  /*@ ghost if (i < 3) break; */
+  x += i;
+\end{CodeBlock}
+
+
+Notons que la vérification que le flot de contrôle n'est pas altéré est purement
+syntaxique. Par exemple, si le \CodeInline{break} est inatteignable parce que la
+condition est toujours fausse, une erreur sera quand même levée :
+
+
+\CodeBlockInput{c}{control-flow-3.c}
+
+
+\begin{CodeBlock}{text}
+[kernel:ghost:bad-use] file.c:4: Warning:
+  Ghost code breaks CFG starting at:
+  /*@ ghost if (i > n) break; */
+  x += i;
+\end{CodeBlock}
+
+
+Finalement, remarquons qu'il existe deux manières générales d'altérer le flot de
+contrôle. La première est d'utiliser un saut (donc \CodeInline{break},
+\CodeInline{continue}, ou \CodeInline{goto}), la seconde est d'introduire un code
+non terminant. Pour ce dernier, à moins que le code soit trivialement non terminant
+le noyau ne peut pas vérifier la non-altération du flot de contrôle. Nous traiterons
+cette question dans la section~\ref{l3:acsl-logic-definitions-what-remains}.
+
+
+\levelFourTitle{Accès à la mémoire}
+
+
+Le code fantôme est un observateur du code normal. En conséquence, le code normal
+n'est pas autorisé à accéder au code fantôme, que ce soit sa mémoire ou ses
+fonctions. Le code fantôme lui, peut lire la mémoire du code normal, mais ne peut
+pas la modifier. Actuellement, le code fantôme ne peut pas non plus appeler de
+fonctions du code normal, nous parlerons de cette restriction à la fin de cette
+section.
+
+
+Refuser que le code normal voit le code fantôme a une raison toute simple, si le
+code normal tentait d'accéder à des variables fantômes, il ne pourrait même pas
+être compilé : le compilateur ne voit pas les variables déclarées dans les
+annotations. Par exemple :
+
+
+\CodeBlockInput{c}{non-ghost-access-ghost.c}
+
+
+ne peut pas être compilé :
+
+
+\begin{CodeBlock}{text}
+# gcc -c file.c
+file.c: In function ‘sum_42’:
+file.c:5:10: error: ‘r’ undeclared (first use in this function)
+    5 |     x += r;
+      |          ^
+\end{CodeBlock}
+
+
+et n'est donc pas accepté par Frama-C non plus :
+
+
+\begin{CodeBlock}{text}
+[kernel] file.c:5: User Error:
+  Variable r is a ghost symbol. It cannot be used in non-ghost context. Did you forget a /*@ ghost ... /?
+\end{CodeBlock}
+
+
+Dans le code fantôme, les variables normales ne doivent pas être modifiées. En effet,
+cela impliquerait de pouvoir par exemple modifier le résultat d'un programme en
+ajoutant du code fantôme. Par exemple dans le code suivant :
+
+
+\CodeBlockInput{c}{ghost-access-non-ghost-1.c}
+
+
+Le résultat du programme ne serait pas le même avec ou sans le code fantôme.
+Frama-C interdit donc un tel code :
+
+
+\begin{CodeBlock}{text}
+[kernel:ghost:bad-use] file.c:5: Warning:
+  'x' is a non-ghost lvalue, it cannot be assigned in ghost code
+\end{CodeBlock}
+
+
+Notons que cette vérification est faite grâce au type des différentes variables.
+Une variable déclarée dans du code normal a un statut de variable normale, tandis
+qu'une variable déclarée dans du code fantôme a un statut de variable fantôme.
+Par conséquent, une nouvelle fois, même si le code fantôme, dans les faits,
+n'altère pas le comportement du programme, toute écriture d'une variable normale
+dans le code fantôme est interdite:
+
+
+\CodeBlockInput[3]{c}{ghost-access-non-ghost-2.c}
+
+
+\begin{CodeBlock}{text}
+[kernel:ghost:bad-use] file.c:9: Warning:
+  'x' is a non-ghost lvalue, it cannot be assigned in ghost code
+[kernel:ghost:bad-use] file.c:10: Warning:
+  'x' is a non-ghost lvalue, it cannot be assigned in ghost code
+\end{CodeBlock}
+
+
+Cela s'applique également à la clause \CodeInline{assigns} lorsqu'elle est dans
+du code fantôme :
+
+
+\CodeBlockInput{c}{assigns-clause-1.c}
+
+
+\begin{CodeBlock}{text}
+[kernel:ghost:bad-use] file.c:4: Warning:
+  'x' is a non-ghost lvalue, it cannot be assigned in ghost code
+[kernel:ghost:bad-use] file.c:11: Warning:
+  'x' is a non-ghost lvalue, it cannot be assigned in ghost code
+\end{CodeBlock}
+
+
+En revanche, les contrats des fonctions et boucles normales peuvent (et doivent)
+permettre de spécifier les zones de mémoire fantôme modifiées. Par exemple, si
+nous corrigeons le petit programme précédent en rendant \CodeInline{x} fantôme,
+d'une part nos clauses \CodeInline{assigns} précédentes sont bien acceptées,
+mais en plus, nous pouvons spécifier que la fonction \CodeInline{foo} modifie
+la variable globale fantôme \CodeInline{x} :
+
+
+\CodeBlockInput{c}{assigns-clause-2.c}
+
+
+\levelFourTitle{Typage des éléments fantômes}
+
+
+Il convient de donner quelques précisions au sujet des types des variables
+créées dans du code fantôme. Par exemple, parfois il est intéressant de pouvoir
+créer un tableau fantôme pour stocker des informations :
+
+
+\CodeBlockInput{c}{ghost-array-1.c}
+
+
+Ici, nous utilisons des indices pour accéder à nos tableaux, mais nous pourrions
+par exemple vouloir y accéder en utilisant un pointeur :
+
+
+\CodeBlockInput{c}{ghost-array-2.c}
+
+
+Mais nous voyons immédiatement que Frama-C n'est pas d'accord avec notre manière
+de faire :
+
+
+\begin{CodeBlock}{text}
+[kernel:ghost:bad-use] file.c:3: Warning:
+  Invalid cast of 'even' from 'int \ghost *' to 'int *'
+[kernel:ghost:bad-use] file.c:6: Warning:
+  '*pe' is a non-ghost lvalue, it cannot be assigned in ghost code
+\end{CodeBlock}
+
+
+En particulier, le premier message nous indique que nous essayons de transformer
+un pointeur sur \CodeInline{int \textbackslash{}ghost} en pointeur sur
+\CodeInline{int}. En effet, lorsqu'une variable est déclarée dans du code fantôme,
+seule la variable est considérée fantôme. Donc dans le cas d'un pointeur, la mémoire
+pointée par ce pointeur, elle, n'est pas considérée comme fantôme. Pour résoudre
+ce problème, Frama-C nous offre le qualifieur \CodeInline{\textbackslash{}ghost},
+qui nous permet d'ajouter un caractère fantôme à un type :
+
+
+\CodeBlockInput{c}{ghost-array-3.c}
+
+
+Sur certains aspects, le qualifieur \CodeInline{\textbackslash{}ghost} ressemble
+au mot clé \CodeInline{const} du C. Cependant, son comportement n'est pas
+exactement le même pour deux raisons.
+
+
+Tout d'abord, il n'est pas possible d'avoir une déclaration de la forme suivante,
+alors que le mot clé \CodeInline{const} n'interdit rien de tel :
 
 
 \begin{CodeBlock}{c}
-int a;
+int const * * const p ;
+//@ ghost int \ghost * * p ;
+\end{CodeBlock}
 
-void foo(){
-  //@ ghost a = 42;
-}
+
+\begin{CodeBlock}{text}
+[kernel:ghost:bad-use] file.c:2: Warning:
+  Invalid type for 'p': indirection from non-ghost to ghost
 \end{CodeBlock}
 
 
 
-Il est donc très facile de modifier le comportement d'un programme en ajoutant
-du code fantôme et dans ce cas, si nous prouvons des propriétés à propos du
-programme, nous sommes en train de le faire à propos d'un programme modifié et
-pas du programme réel. Il faut donc faire très attention à ne modifier que des
-positions mémoire fantôme dans du code fantôme.
+Déclarer un pointeur constant sur une zone que l'on peut modifier et qui contient
+des pointeurs vers de la mémoire constante ne pose pas de problème. En revanche,
+il est impossible de faire de même avec le qualifieur
+\CodeInline{\textbackslash{}ghost}, cela signifierait que la mémoire normale
+contient des pointeurs vers la mémoire fantôme, ce qui n'est pas possible.
 
 
-De plus, comme nous n'avons pas de restriction sur le type de code C que nous
-pouvons écrire, nous pouvons écrire des boucles. Comme nous l'avons dit dans la
-section~\ref{l3:statements-loops-variant}, il y a deux sortes de correction : la
-correction partielle et la correction totale, la seconde permettant de prouver
-qu'un programme termine. Dans le cas du code fantôme, montrer que la correction
-est totale est absolument nécessaire car une boucle infinie dans le code fantôme
-peut nous permettre de prouver n'importe quoi à propos du programme.
+D'autre part, il est possible d'assigner un pointeur
+vers des données non-constantes à un pointeur vers des données constantes :
 
 
-Par exemple, le programme suivant est prouvé parce que le code fantôme ne termine
-pas :
+\begin{CodeBlock}{c}
+int a[10] ;
+int const * p = a ;
+\end{CodeBlock}
+
+
+Ce code ne pose pas de problème car l'on ne fait que restreindre notre capacité
+à modifier les données lorsque l'on initialise \CodeInline{p} à \CodeInline{\&a[0]}.
+En revanche, les deux initialisations des pointeurs suivants sont refusées
+avec le qualifieur \CodeInline{\textbackslash{}ghost} :
+
+
+\begin{CodeBlock}{c}
+int non_ghost_int ;
+//@ ghost int ghost_int ;
+
+//@ ghost int \ghost * p = & non_ghost_int ;
+//@ ghost int * q = & ghost_int ;
+\end{CodeBlock}
+
+
+Si la raison du refus de la première initialisation est tout à fait directe : elle
+permettrait de modifier le contenu de la mémoire normale depuis du code fantôme,
+refuser la seconde peut être un peu moins intuitif. Et en effet, nous devons passer
+par des moyens détournés pour provoquer un problème avec cette conversion :
+
+
+\CodeBlockInput{c}{why-not-const.c}
+
+
+Ici, nous faisons une conversion qui pourrait sembler autorisée. En effet, nous
+passons l'adresse d'un pointeur sur une zone de mémoire ghost à une fonction qui
+attend un pointeur sur une zone de mémoire non-ghost, cela ne fait que restreindre
+l'accès à ce pointeur. Cependant, par cet appel de fonction, la fonction
+\CodeInline{assign} assigne la valeur actuelle de \CodeInline{q} (qui est
+\CodeInline{\&x}) à \CodeInline{p} et nous permet donc, par la dernière opération
+de modifier \CodeInline{x} dans du code fantôme. En conséquence, une telle
+conversion n'est pas autorisée.
+
+
+Finalement, le code fantôme ne peut actuellement pas appeler de fonction non
+fantôme, pour des raisons semblables à celle évoquée pour l'interdiction de toutes
+les conversions. Certains cas particulier pourraient être traités de manière à
+accepter plus de code, mais ce n'est actuellement pas supporté par Frama-C.
+
+
+\levelThreeTitle{Validité du code fantôme, ce qu'il reste à vérifier}
+\label{l3:acsl-logic-definitions-what-remains}
+
+
+Mis à part les restrictions que nous avons mentionné dans la section précédente,
+le code fantôme est juste du code C normal. Cela veut dire que si nous voulons
+faire la vérification de notre programme d'origine, nous devons faire attention,
+nous mêmes, à au moins deux aspects supplémentaires :
+
+
+\begin{itemize}
+\item l'absence d'erreurs à l'exécution,
+\item la terminaison du code fantôme.
+\end{itemize}
+
+
+Le premier cas ne nécessite pas plus d'attention que le reste de notre code.
+En effet, la vérification d'absence d'erreurs à l'exécution sera traitée par
+le plugin RTE comme pour le reste de notre programme.
+
+
+Comme nous l'avons dit dans la section~\ref{l3:statements-loops-variant}, il y
+a deux sortes de correction : la correction partielle et la correction totale,
+la seconde permettant de prouver qu'un programme termine. Dans le cas du code
+normal, montrer la terminaison n'est pas toujours souhaitable pour l'ensemble
+du programme. En revanche, si nous utilisons du code fantôme pour aider la
+vérification, montrer que la correction est totale est absolument nécessaire
+car une boucle infinie dans le code fantôme peut nous permettre de prouver
+n'importe quoi à propos du programme.
+
 
 \begin{CodeBlock}{c}
 /*@ ensures \false ; */
@@ -133,13 +539,18 @@ void foo(void){
 }
 \end{CodeBlock}
 
+
 \levelThreeTitle{Expliciter un état logique}
 
 
 Le but du code \textit{ghost} est de rendre explicite des informations généralement
-implicites. Par exemple, dans la section précédente, nous nous en sommes servi
-pour récupérer explicitement un état logique connu à un point de programme
-donné.
+implicites. Par exemple, dans la vérification de l'algorithme de tri, nous nous en
+sommes servi pour ajouter un \textit{it} label dans le programme qui n'est pas
+visible par le compilateur mais que nous avons pu utiliser pour la vérification.
+Le fait que les valeurs ont été échangées entre les deux points de programme était
+implicitement garanti par le contrat de la fonction d'échange, ajouter ce
+\textit{label} fantôme nous a donné la possibilité de rendre cette propriété
+explicite par une assertion.
 
 
 

@@ -111,11 +111,10 @@ and annotations that carries a proof that some property we want to verify holds.
 
 
 Note that here, as we can write quite a lot of ghost code, we augment our risk
-to modify the behavior of the program by mistake. Most of the time we do not
-need to modify any memory location, thus taking care to check (few) assigned
-memory locations (for example, loop iterators), that we do not create a runtime
-error (through RTE plugin) and that the ghost code terminates is enough to be
-confident about the verification.
+to introduce a mistake that would change the properties of the verified code.
+We must thus verify that the ghost code we write terminates and that it does
+not contain runtime errors (through RTE plugin) to be confident about the
+verification.
 
 
 
@@ -692,7 +691,7 @@ values into two subparts in which we can count separately.
 We can note that this property is proved in a way that is quite similar to what
 we wrote for the body of our loop in \CodeInline{insertion\_sort}, we start from
 the point where we want to count and show that the property remains true until
-the end of the array. 
+the end of the array.
 
 
 
