@@ -41,7 +41,7 @@ void foo(int a){
 \end{CodeBlock}
 
 
-Ces variables peuvent être modifier via des opérations et structures
+Ces variables peuvent être modifiées via des opérations et structures
 conditionnelles :
 
 
@@ -112,7 +112,7 @@ void another_function(struct list* l){
 
   // ... do something to compute the length
 
-  function(l) /*@ ghost(n) */ ; // we call function with the ghost parameter
+  function(l) /*@ ghost(n) */ ; // we call 'function' with the ghost argument
 }
 \end{CodeBlock}
 
@@ -137,7 +137,7 @@ void another_function(struct list* l){
   //@ ghost int length ;
 
   //@ ghost length = compute_length(l) ;
-  function(l) /*@ ghost(n) */ ; // we call function with the ghost parameter
+  function(l) /*@ ghost(n) */ ; // we call 'function' with the ghost argument
 }
 \end{CodeBlock}
 
@@ -239,7 +239,7 @@ si nous introduisons une conditionnelle autour de notre \CodeInline{break} :
 \CodeBlockInput{c}{control-flow-2.c}
 
 
-Le problème est indiqué pour \CodeInline{if} englobant :
+Le problème est indiqué pour le \CodeInline{if} englobant :
 
 
 \begin{CodeBlock}{text}
@@ -270,8 +270,9 @@ Finalement, remarquons qu'il existe deux manières générales d'altérer le flo
 contrôle. La première est d'utiliser un saut (donc \CodeInline{break},
 \CodeInline{continue}, ou \CodeInline{goto}), la seconde est d'introduire un code
 non terminant. Pour ce dernier, à moins que le code soit trivialement non terminant
-le noyau ne peut pas vérifier la non-altération du flot de contrôle. Nous traiterons
-cette question dans la section~\ref{l3:acsl-logic-definitions-what-remains}.
+le noyau ne peut pas vérifier la non-altération du flot de contrôle, et ne le fait
+donc jamais. Nous traiterons cette question dans la
+section~\ref{l3:acsl-logic-definitions-what-remains}.
 
 
 \levelFourTitle{Accès à la mémoire}
@@ -338,7 +339,7 @@ Une variable déclarée dans du code normal a un statut de variable normale, tan
 qu'une variable déclarée dans du code fantôme a un statut de variable fantôme.
 Par conséquent, une nouvelle fois, même si le code fantôme, dans les faits,
 n'altère pas le comportement du programme, toute écriture d'une variable normale
-dans le code fantôme est interdite:
+dans le code fantôme est interdite :
 
 
 \CodeBlockInput[3]{c}{ghost-access-non-ghost-2.c}
@@ -412,9 +413,11 @@ En particulier, le premier message nous indique que nous essayons de transformer
 un pointeur sur \CodeInline{int \textbackslash{}ghost} en pointeur sur
 \CodeInline{int}. En effet, lorsqu'une variable est déclarée dans du code fantôme,
 seule la variable est considérée fantôme. Donc dans le cas d'un pointeur, la mémoire
-pointée par ce pointeur, elle, n'est pas considérée comme fantôme. Pour résoudre
-ce problème, Frama-C nous offre le qualifieur \CodeInline{\textbackslash{}ghost},
-qui nous permet d'ajouter un caractère fantôme à un type :
+pointée par ce pointeur, elle, n'est pas considérée comme fantôme (et donc ici, bien
+que \CodeInline{pe} soit fantôme, la mémoire pointée par \CodeInline{pe} ne l'est
+pas). Pour résoudre ce problème, Frama-C nous offre le qualifieur
+\CodeInline{\textbackslash{}ghost}, qui nous permet d'ajouter un caractère fantôme
+à un type :
 
 
 \CodeBlockInput{c}{ghost-array-3.c}
@@ -490,12 +493,12 @@ l'accès à ce pointeur. Cependant, par cet appel de fonction, la fonction
 \CodeInline{assign} assigne la valeur actuelle de \CodeInline{q} (qui est
 \CodeInline{\&x}) à \CodeInline{p} et nous permet donc, par la dernière opération
 de modifier \CodeInline{x} dans du code fantôme. En conséquence, une telle
-conversion n'est pas autorisée.
+conversion n'est jamais autorisée.
 
 
 Finalement, le code fantôme ne peut actuellement pas appeler de fonction non
 fantôme, pour des raisons semblables à celle évoquée pour l'interdiction de toutes
-les conversions. Certains cas particulier pourraient être traités de manière à
+les conversions. Certains cas particuliers pourraient être traités de manière à
 accepter plus de code, mais ce n'est actuellement pas supporté par Frama-C.
 
 
@@ -543,9 +546,9 @@ void foo(void){
 \levelThreeTitle{Expliciter un état logique}
 
 
-Le but du code \textit{ghost} est de rendre explicite des informations généralement
+Le but du code fantôme est de rendre explicite des informations généralement
 implicites. Par exemple, dans la vérification de l'algorithme de tri, nous nous en
-sommes servi pour ajouter un \textit{it} label dans le programme qui n'est pas
+sommes servi pour ajouter un \textit{label} dans le programme qui n'est pas
 visible par le compilateur mais que nous avons pu utiliser pour la vérification.
 Le fait que les valeurs ont été échangées entre les deux points de programme était
 implicitement garanti par le contrat de la fonction d'échange, ajouter ce
