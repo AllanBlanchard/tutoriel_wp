@@ -111,9 +111,8 @@ This is for example verified by our previously defined predicate
 does not respect this constraint as the property \CodeInline{even\_natural}
 appears negatively on line~8.
 
-Second, it is possible to ask the generation of a Coq version of a proof
-obligation that needs the predicate \CodeInline{P}. For example, we can
-write a function:
+Second, we can simply write a function that have a contract that needs the
+predicate \CodeInline{P}. For example, we can write a function:
 
 
 
@@ -136,22 +135,24 @@ For example for our definition of \CodeInline{even\_natural}, we would write:
 
 
 
-As Coq is stricter than Frama-C and WP on this kind of definition, if the
-inductive predicate is too strange (if it is not well founded), it will be
-rejected with an error. And indeed, with the bad definition of
-\CodeInline{even\_natural} we just proposed, Coq complains when we try to prove
-the \CodeInline{ensures \textbackslash{}false}, because there exists a non
+During the generation of the proof obligation, we ask Why3 to create an
+inductive definition from the one written in ACSL. As Why3 is stricter than
+Frama-C and WP on this kind of definition, if the inductive predicate is too
+strange (if it is not well founded), it will be rejected with an error. And
+indeed, with the bad definition of \CodeInline{even\_natural} we just proposed,
+Why3 complains when we try to prove the
+\CodeInline{ensures \textbackslash{}false}, because there exists a non
 positive occurrence of \CodeInline{P\_even\_natural}, that encodes the
 \CodeInline{even\_natural} we wrote in ACSL.
 
 \begin{CodeBlock}{bash}
-frama-c-gui -wp -wp-prop=BAD -wp-prover=native:coq file.c
+frama-c-gui -wp -wp-prop=BAD file.c
 \end{CodeBlock}
 
 
-\image{coq-failed}
+\image{why3-failed}
 
-\image{coq-failed-error}
+\image{why3-failed-error}
 
 
 However, that does not mean that we cannot write an inconsistent inductive
@@ -160,16 +161,29 @@ allows us to prove false:
 
 
 \begin{CodeBlock}{c}
-/*@
-  inductive bad {
-    case always: \false ;
-  }
+/*@ inductive P(int* p){
+      case c: \forall int* p ; \valid(p) && p == (void*)0 ==> P(p);
+    }
 */
+
+/*@ requires P(p);
+    ensures \false ; */
+void foo(int *p){}
 \end{CodeBlock}
 
 
-Thus we must be careful when defining inductive definitions to not introduce a
-definition that can lead to a proof of false.
+Here, we could detect the problem as \CodeInline{-wp-smoke-tests} can detect
+that the precondition is unsatisfiable. But we must be careful when defining
+inductive definitions to not introduce a definition that can lead to a proof
+of false.
+
+
+\begin{Warning}
+  Before Frama-C 21 Scandium, the inductive definitions were translated, in
+  Why3, as axioms. That means that this check was not performed. Thus, to
+  get a similar behavior with older Frama-C versions, one has to use Coq
+  and not a Why3 prover.
+\end{Warning}
 
 
 \levelThreeTitle{Recursive predicate definitions}
