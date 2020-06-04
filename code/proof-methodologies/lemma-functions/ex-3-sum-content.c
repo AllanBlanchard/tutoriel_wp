@@ -17,9 +17,11 @@
     \forall integer i ; begin <= i < end ==> \at(array[i], L1) == \at(array[i], L2) ;
 */
 
-void sum_separable(int* array, size_t begin, size_t split, size_t end){
-  // ...
-}
+/*@ ghost
+  void sum_separable(int* array, size_t begin, size_t split, size_t end){
+    // ...
+  }
+*/
 
 #define unchanged_sum(_L1, _L2, _arr, _beg, _end) ;
 

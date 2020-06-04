@@ -21,25 +21,27 @@
   }
 */
 
-/*@
-  requires \valid(in + (0 .. len-1)) ;
-  requires l_occurrences_of(v, in, 0, len) > 0 ;
-  assigns \nothing ;
-  ensures 0 <= \result < len && in[\result] == v ;
-*/
-size_t occ_not_zero_some_is_v(int v, int* in, size_t len){
-  /*@
-    loop invariant 0 <= i < len ;
-    loop invariant l_occurrences_of(v, in, 0, i) == 0 ;
-    loop assigns i ;
-    loop variant len-i ;
-  */
-  for(size_t i = 0 ; i < len ; ++i){
-    if(in[i] == v) return i ;
+/*@ ghost
+  /@
+    requires \valid(in + (0 .. len-1)) ;
+    requires l_occurrences_of(v, in, 0, len) > 0 ;
+    assigns \nothing ;
+    ensures 0 <= \result < len && in[\result] == v ;
+  @/
+  size_t occ_not_zero_some_is_v(int v, int* in, size_t len){
+    /@
+      loop invariant 0 <= i < len ;
+      loop invariant l_occurrences_of(v, in, 0, i) == 0 ;
+      loop assigns i ;
+      loop variant len-i ;
+    @/
+    for(size_t i = 0 ; i < len ; ++i){
+      if(in[i] == v) return i ;
+    }
+    /@ assert \false ; @/
+    return -1 ;
   }
-  //@ assert \false ;
-  return -1 ;
-}
+*/
 
 /*@
   requires \valid(in + (0 .. len-1)) ;

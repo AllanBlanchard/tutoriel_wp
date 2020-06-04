@@ -54,79 +54,25 @@
 */
 
 
-/*@ ghost
-  /@ 
-    requires beg <= split <= end ;
+/*@ 
+  requires beg <= split <= end ;
   
-    assigns \nothing ;
+  assigns \nothing ;
   
-    ensures \forall int v ;
-      l_occurrences_of(v, a, beg, end) ==
-      l_occurrences_of(v, a, beg, split) + l_occurrences_of(v, a, split, end) ;
-  @/
-  void l_occurrences_of_explicit_split(int* a, size_t beg, size_t split, size_t end){
-    /@
-      loop invariant split <= i <= end ;
-      loop invariant \forall int v ; l_occurrences_of(v, a, beg, i) ==
-        l_occurrences_of(v, a, beg, split) + l_occurrences_of(v, a, split, i) ;
-      loop assigns i ;
-      loop variant end - i ;
-    @/    
-    for(size_t i = split ; i < end ; ++i);
-  }
+  ensures \forall int v ;
+    l_occurrences_of(v, a, beg, end) ==
+    l_occurrences_of(v, a, beg, split) + l_occurrences_of(v, a, split, end) ;
 */
-
-/*@ ghost
-  /@ 
-    requires beg <= end ;
-
-    assigns \nothing ;
-
-    ensures \forall int v, size_t split ; beg <= split <= end ==>
-      l_occurrences_of(v, a, beg, end) ==
-      l_occurrences_of(v, a, beg, split) + l_occurrences_of(v, a, split, end) ;
-  @/
-  void l_occurrences_of_split(int* a, size_t beg, size_t end){
-    /@
-      loop invariant beg <= i <= end ;
-      loop invariant \forall int v, size_t split ; beg <= split < i ==>
-        l_occurrences_of(v, a, beg, end) ==
-        l_occurrences_of(v, a, beg, split) + l_occurrences_of(v, a, split, end) ;
-      loop assigns i ;
-      loop variant end - i ;
-    @/
-    for(size_t i = beg ; i < end ; ++i){
-      l_occurrences_of_explicit_split(a, beg, i, end);
-    }
-  }
-*/
-
-/*@ ghost
-  /@
-    requires beg < end ;
-
-    assigns \nothing ;
-
-    ensures \forall int v, size_t any ; beg <= any < end ==>
-      l_occurrences_of(v, a, any, end) ==
-      l_occurrences_of(v, a, any, end-1) + l_occurrences_of(v, a, end-1, end) ;
-  @/
-  void l_occurrences_of_from_any_split_last(int* a, size_t beg, size_t end){
-    /@
-      loop invariant beg <= i <= end-1 ;
-      loop invariant \forall int v, size_t j ;
-        beg <= j < i ==>
-        l_occurrences_of(v, a, j, end) ==
-        l_occurrences_of(v, a, j, end-1) + l_occurrences_of(v, a, end-1, end) ;
-      loop assigns i ;
-      loop variant (end - 1) - i ;
-    @/
-    for(size_t i = beg ; i < end-1 ; ++i){
-      l_occurrences_of_explicit_split(a, i, end-1, end);
-    }
-  }
-*/
-
+void l_occurrences_of_explicit_split(int* a, size_t beg, size_t split, size_t end){
+  /*@
+    loop invariant split <= i <= end ;
+    loop invariant \forall int v ; l_occurrences_of(v, a, beg, i) ==
+      l_occurrences_of(v, a, beg, split) + l_occurrences_of(v, a, split, i) ;
+    loop assigns i ;
+    loop variant end - i ;
+  */    
+  for(size_t i = split ; i < end ; ++i);
+}
 
 #define unchanged_permutation(_L1, _L2, _arr, _fst, _last)      \
   /@ assert unchanged{_L1, _L2}(_arr, _fst, _last) ; @/         \
@@ -205,6 +151,36 @@ void context_to_prove_rotate_left_permutation(int* arr, size_t fst, size_t last)
   //@ assert permutation{L1, L2}(arr, fst, last) ;
 }
 
+/*@ requires beg < end && \valid(a + (beg .. end-1));
+    requires sorted(a, beg, end);
+    assigns \nothing ;
+    ensures beg <= \result <= end ;
+    ensures \forall integer i ; beg <= i < \result ==> a[i] <= value ;
+    ensures \forall integer i ; \result <= i < end ==> a[i] > value ;
+*/
+size_t find_last_inf(int value, int* a, size_t beg, size_t end){
+  /*@ loop invariant beg <= i <= end ;
+      loop invariant \forall integer k ; i <= k < end ==> a[k] > value ;
+      loop assigns i ;
+      loop variant i ;
+  */
+  for(size_t i = end ; i > beg ; --i){
+    if(a[i-1] <= value) return i ;
+  }
+  return beg ;
+}
+
+/*@ lemma unique_split:
+    \forall int* a, int value, integer beg, end, i, j ; 
+      beg <= i <= end ==>
+      beg <= j <= end ==>
+      ((\forall integer k ; beg <= k < i ==> a[k] <= value) &&
+       (\forall integer k ; i <= k < end ==> a[k] > value)) &&
+      ((\forall integer k ; beg <= k < j ==> a[k] <= value) &&
+       (\forall integer k ; j <= k < end ==> a[k] > value)) ==>
+       i == j ;
+*/
+
 /*@
   requires beg < last < UINT_MAX && \valid(a + (beg .. last));
   requires sorted(a, beg, last) ;
@@ -218,9 +194,11 @@ void insert(int* a, size_t beg, size_t last){
   size_t i = last ;
   int value = a[i] ;
 
-  //@ ghost l_occurrences_of_split(a, beg, last+1);
-  //@ ghost l_occurrences_of_from_any_split_last(a, beg, last+1);
+  //@ ghost size_t fst = find_last_inf(value, a, beg, last) ;
+  //@ assert \forall integer k ; beg <= k < fst ==> \at(a[k], Pre) <= value ;
+  //@ assert \forall integer k ; fst <= k < last ==> \at(a[k], Pre) > value ;
 
+  
   /*@
     loop invariant beg <= i <= last ;
     loop invariant \forall integer k ; i <= k < last ==> a[k] > value ;
@@ -234,6 +212,9 @@ void insert(int* a, size_t beg, size_t last){
     a[i] = a[i - 1] ;
     --i ;
   }
+  //@ assert \forall integer k ; beg <= k < i ==> \at(a[k], Pre) <= value ;
+  //@ assert \forall integer k ; i <= k < last ==> \at(a[k], Pre) > value ;
+  //@ assert fst == i ;
   a[i] = value ;
   //@ assert sorted(a, beg, last+1) ;
 
@@ -241,7 +222,7 @@ void insert(int* a, size_t beg, size_t last){
       \forall int v ;
       l_occurrences_of{Pre}(v, a, \at(i, Here), last+1) ==
         l_occurrences_of{Pre}(v, a, \at(i, Here), last) +
-        l_occurrences_of{Pre}(v, a, last, last +1);
+	l_occurrences_of{Pre}(v, a, last, last +1);
   */
 
   //@ assert rotate_left{Pre, Here}(a, i, last+1) ;
@@ -271,7 +252,7 @@ void insertion_sort(int* a, size_t beg, size_t end){
     loop variant end-i ;
   */
   for(size_t i = beg+1; i < end; ++i) {
-    //@ ghost L: ;
+    //@ ghost L:
     insert(a, beg, i);
     //@ assert permutation{L, Here}(a, beg, i+1);
     //@ assert unchanged{L, Here}(a, i+1, end) ;
@@ -279,12 +260,12 @@ void insertion_sort(int* a, size_t beg, size_t end){
     /*@ ghost
       if(i+1 < end){
         /@ loop invariant i+1 <= j <= end ;
-           loop invariant \forall int v ;
-             l_occurrences_of{L}(v, a, beg, \at(j, Here)) ==
-             l_occurrences_of(v, a, beg, j) ;
-           loop assigns j ;
-           loop variant end - j ;
-        @/
+	   loop invariant \forall int v ;
+	     l_occurrences_of{L}(v, a, beg, \at(j, Here)) ==
+	     l_occurrences_of(v, a, beg, j) ;
+	   loop assigns j ;
+	   loop variant end - j ;
+	@/
         for(size_t j = i+1 ; j < end ; ++j);
       }
     */

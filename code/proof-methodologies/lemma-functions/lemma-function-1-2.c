@@ -12,24 +12,24 @@
 */
 size_t bsearch(int* arr, size_t len, int value);
 
-
-/*@
-  requires element_level_sorted(arr, len) ;
-  assigns  \nothing ;
-  ensures  sorted(arr, len);
-*/
-void element_level_sorted_implies_sorted(int* arr, size_t len){
-  /*@
-    loop invariant 0 <= i <= len ;
-    loop invariant sorted(arr, i) ;
-    loop assigns i ;
-    loop variant len-i ;
-  */
-  for(size_t i = 0 ; i < len ; ++i){
-    //@ assert 0 < i ==> arr[i-1] <= arr[i] ;
+/*@ ghost
+  /@
+    requires element_level_sorted(arr, len) ;
+    assigns  \nothing ;
+    ensures  sorted(arr, len);
+  @/
+  void element_level_sorted_implies_sorted(int* arr, size_t len){
+    /@
+      loop invariant 0 <= i <= len ;
+      loop invariant sorted(arr, i) ;
+      loop assigns i ;
+      loop variant len-i ;
+    @/
+    for(size_t i = 0 ; i < len ; ++i){
+      /@ assert 0 < i ==> arr[i-1] <= arr[i] ; @/
+    }
   }
-}
-
+*/
 
 /*@ requires \valid_read(arr + (0 .. len-1));
     requires element_level_sorted(arr, len) ;
