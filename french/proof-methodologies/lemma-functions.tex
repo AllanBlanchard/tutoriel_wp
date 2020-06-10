@@ -634,13 +634,15 @@ Pour montrer que la plage complète est une permutation, nous devons montrer que
 nombre d'occurrences de chaque valeur n'a pas changé. Nous savons que la première
 partie du tableau est une permutation de la même plage au début du corps de la
 boucle. Donc, nous savons déjà que le nombre d'occurrences de chaque $v$ n'a pas
-changé pour une partie de notre tableau. Continuons donc le comptage des
+changé pour une partie de notre tableau. En utilisant une boucle avec
+\CodeInline{j} allant de \CodeInline{i} à \CodeInline{end} et un invariant
+\CodeInline{permutation{L,PI}(a, beg, j)}, nous pouvons continuer le comptage des
 occurrences pour le reste de notre tableau, avec la connaissance que la fin n'a
 pas changé (quand \CodeInline{i+1} est plus petit que \CodeInline{end} sinon
 nous n'avons simplement plus rien à compter):
 
 
-\CodeBlockInput[273][292]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[271][287]{c}{insert-sort-auto-proved.c}
 
 
 ce qui est suffisant pour assurer que la fonction \CodeInline{insertion\_sort}
@@ -731,7 +733,7 @@ le tableau inchangé, que l'on a prouvé quasiment à l'identique dans la foncti
 preuve :
 
 
-\CodeBlockInput[144][160]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[142][158]{c}{insert-sort-auto-proved.c}
 
 
 La fonction \CodeInline{unchanged\_permutation\_premise} assure que nous avons
@@ -740,7 +742,7 @@ inchangé entre la précondition et la postcondition. Nous pouvons construire
 notre macro lemme :
 
 
-\CodeBlockInput[131][141]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[131][139]{c}{insert-sort-auto-proved.c}
 
 
 qui correspond presque à ce que nous avons écrit pour \CodeInline{insert\_sort},
@@ -748,7 +750,7 @@ et utiliser cette macro là où nous en avons besoin dans la fonction
 \CodeInline{insert}.
 
 
-\CodeBlockInput[251][253]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[249][251]{c}{insert-sort-auto-proved.c}
 
 
 La seule propriété restante est la plus complexe et concerne le prédicat
@@ -756,7 +758,7 @@ La seule propriété restante est la plus complexe et concerne le prédicat
 macro.
 
 
-\CodeBlockInput[189][206]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[187][204]{c}{insert-sort-auto-proved.c}
 
 
 Comment pouvons-nous prouver cette propriété ? Nous devons d'abord constater
@@ -768,7 +770,7 @@ cellule du nouveau tableau est le même (puisque l'élément correspondant est l
 même). À nouveau, nous nous reposons sur la fonction \CodeInline{split} pour compter
 séparément les éléments décalés et l'élément qui est déplacé de la fin vers le
 début. Cependant, l'appel correspondant dans le tableau original doit à nouveau
-être réalisée avant le code qui modifie le tableau original (voir ligne 194) dans
+être réalisée avant le code qui modifie le tableau original (voir ligne 198) dans
 le code précédent, et nouvs devons prendre cela en compte quand nous insérerons
 notre utilisation de la macro dans la fonction \CodeInline{insert}.
 
@@ -777,7 +779,7 @@ Présentons maintenant la macro qui est utilisée pour prouver que notre lemme
 est valide :
 
 
-\CodeBlockInput[162][187]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[160][185]{c}{insert-sort-auto-proved.c}
 
 
 L'invariant de boucle est très similaire à ce que nous avons écrit jusqu'à
@@ -793,9 +795,9 @@ que des assertions pour guider les dernières étapes de preuve :
 
 
 \begin{itemize}
-    \item 177--181 : nous rappelons que le tableau original peut être coupé au
+    \item 175--179 : nous rappelons que le tableau original peut être coupé au
           niveau du dernier élément,
-    \item 182--186 : nous montrons que comme le premier élément du tableau est le
+    \item 180--184 : nous montrons que comme le premier élément du tableau est le
           dernier élément du tableau original (182), le nombre d'occurrences pour
           toute valeur dans ces plages est le même (183--185).
 \end{itemize}
@@ -804,7 +806,7 @@ que des assertions pour guider les dernières étapes de preuve :
 Nous pouvons utiliser cette macro dans notre programme :
 
 
-\CodeBlockInput[247][249]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[245][247]{c}{insert-sort-auto-proved.c}
 
 
 Cependant, nous avons besoin de montrer que la plage au label \CodeInline{Pre} peut
@@ -819,11 +821,11 @@ le dernier élément (si elle n'est pas vide) :
 que nous pouvons ensuite appeler avant la boucle de la fonction \CodeInline{insert} :
 
 
-\CodeBlockInput[217][222]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[215][220]{c}{insert-sort-auto-proved.c}
 
 
 Notons que selon les versions des prouveurs automatiques, les assertions en lignes
-182 à 186 de la macro, à propos de l'élément au début et à la fin du tableau,
+180 à 184 de la macro, à propos de l'élément au début et à la fin du tableau,
 pourraient ne pas être prouvées à cause de la complexité du contexte de preuve.
 Aidons les solveurs une dernière fois en ajoutant un dernier lemme, automatiquement
 prouvé par les solveurs SMT, qui nous énonce la relation en question pour tout
@@ -836,7 +838,7 @@ tableau et toute position du tableau :
 qui nous garantit que la fonction annotée résultante est entièrement prouvée :
 
 
-\CodeBlockInput[208][256]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[206][254]{c}{insert-sort-auto-proved.c}
 
 
 Nous mettons finalement en valeur le fait que le contexte de preuve peut rendre
@@ -844,10 +846,7 @@ le travail vraiment difficile pour les solveurs SMT. Tout simplement, si nous
 inversons les preuves à propos du chaque partie du tableau, à savoir, en
 commençant par la partie \CodeInline{unchanged} puis la partie \CodeInline{rotate},
 la preuve a de très bonnes chances d'échouer, car elle fait grossir le contexte de
-preuve pour la preuve la plus difficile. Pour la même raison, il est ici presque
-obligatoire (mais cela dépend quand même de la puissance des solveurs et de la
-machine) de séparer les preuves d'absence d'erreur à l'exécution, sinon elles
-polluent le contexte de preuve et cela peut entraîner l'échec de la preuve.
+preuve pour la preuve la plus difficile.
 
 
 \levelThreeTitle{Exercices}
