@@ -3,7 +3,7 @@
 Goal typed_lemma_element_level_sorted_implies_sorted.
 Hint element_level_sorted_implies_sorted,property.
 Proof.
-  intros fst lst M array H.
+  intros fst lst M array tM H.
   induction lst using Z_induction with (m := fst).
   + unfold P_sorted_1_.
     intros ; omega.

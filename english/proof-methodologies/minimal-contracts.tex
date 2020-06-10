@@ -193,7 +193,8 @@ contracts approach:
 Prove the absence of runtime errors for the following \CodeInline{reverse}
 function and its dependency using a minimal contracts approach. Note that the
 \CodeInline{swap} function should also be specified with minimal contracts only.
-Do not forget to add the option \CodeInline{-warn-unsigned-overflow}.
+Do not forget to add the options \CodeInline{-warn-unsigned-overflow} and
+\CodeInline{-warn-unsigned-downcast}.
 
 
 \CodeBlockInput{c}{ex-2-reverse.c}
@@ -204,8 +205,8 @@ Do not forget to add the option \CodeInline{-warn-unsigned-overflow}.
 
 
 Prove the absence of runtime errors for the following \CodeInline{bsearch}
-function using a minimal contracts approach. Do not forget to add the option
-\CodeInline{-warn-unsigned-overflow}.
+function using a minimal contracts approach. Do not forget to add the options
+\CodeInline{-warn-unsigned-overflow} and \CodeInline{-warn-unsigned-downcast}.
 
 
 \CodeBlockInput{c}{ex-3-binary-search.c}
@@ -217,7 +218,8 @@ function using a minimal contracts approach. Do not forget to add the option
 Prove the absence of runtime errors for the following \CodeInline{sort}
 function and its dependencies using a minimal contracts approach. Note that
 these dependencies should also be specified with minimal contracts only.
-Do not forget to add the option \CodeInline{-warn-unsigned-overflow}.
+Do not forget to add the options \CodeInline{-warn-unsigned-overflow} and
+\CodeInline{-warn-unsigned-downcast}.
 
 
 \CodeBlockInput{c}{ex-4-sort.c}

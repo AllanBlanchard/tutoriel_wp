@@ -252,6 +252,12 @@ We can also ask WP to add the RTE controls in a function by
 right-clicking on its name and then click ``Insert wp-rte guards''.
 
 
+\begin{Information}
+  By now, \CodeInline{-wp-rte} will always be activated to verify examples
+  except if we explicitly indicate the opposite.
+\end{Information}
+
+
 Finally, we execute the verification again (we can also click on the
 ``Reparse'' button of the toolbar, it will delete existing proofs).
 
@@ -553,44 +559,6 @@ the assumption \CodeInline{a < INT\_MIN}, and while we do not have a proof
 that it is true, we do not have a proof that is false neither. So, while
 \CodeInline{abs(INT\_MIN)} necessarily gives us the knowledge of ``false'',
 the call \CodeInline{abs(a)} does not, since it can succeed.
-
-
-\levelThreeTitle{Some elements about the use of WP and Frama-C}
-
-
-In the two preceding sections, we have seen a lot of notions about the
-use of the GUI to start proofs. In fact, we can ask WP to immediately
-prove everything at Frama-C's startup with the option \texttt{-wp}:
-
-
-
-\begin{CodeBlock}{bash}
-$ frama-c-gui file.c -wp
-\end{CodeBlock}
-
-
-
-Which will collect all properties to be proved in \texttt{file.c},
-generate all verification conditions and try to discharge them.
-
-About runtime-errors, it is generally advised to first verify the
-program without generating RTE assertions, and then to generate them to
-terminate the verification with WP. It allows WP to ``focus'' on the
-functional properties in a first step without having in its knowledge
-base purely technical properties, that are generally not useful for the
-proof of functional properties. Again, it is possible to directly
-produce this behavior using the command line:
-
-
-
-\begin{CodeBlock}{bash}
-$ frama-c-gui file.c -wp -then -wp -wp-rte
-\end{CodeBlock}
-
-
-
-``Start Frama-C with WP, then create assertions to verify the absence of
-RTE and start WP again''.
 
 
 

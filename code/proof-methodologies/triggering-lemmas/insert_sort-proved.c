@@ -134,7 +134,7 @@ void insertion_sort(int* a, size_t beg, size_t end){
     loop variant end-i ;
   */
   for(size_t i = beg+1; i < end; ++i) {
-    //@ ghost L:
+    //@ ghost L: ;
     insert(a, beg, i);
     //@ assert permutation{L, Here}(a, beg, i+1);
     //@ assert unchanged{L, Here}(a, i+1, end) ;

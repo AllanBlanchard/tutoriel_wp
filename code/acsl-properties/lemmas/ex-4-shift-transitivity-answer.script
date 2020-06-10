@@ -3,7 +3,7 @@
 Goal typed_lemma_shift_ptr.
 Hint property,shift_ptr.
 Proof.
-  intros fst lst s1 s2 ; intros M1 M2 array.
+  intros fst lst s1 s2 ; intros M1 M2 array tM1 tM2.
   split ; intros H i ; intros ; unfold P_shifted in H.
   + assert (exists pi, i = pi+s1) by (exists (i-s1) ; omega).
     inversion H2 ; subst.

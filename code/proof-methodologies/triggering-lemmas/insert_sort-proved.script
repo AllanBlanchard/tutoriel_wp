@@ -13,7 +13,7 @@ Proof.
   end).
   intros e from cut to.
   generalize dependent cut.
-  induction to using Z_induction with (m := from) ; intros cut mem page Hct Hfc He.
+  induction to using Z_induction with (m := from) ; intros cut mem page Hct Hfc He Hm.
   * repeat(rewrite A_Occurrences_Axiomatic.Q_occurrences_empty_range ; auto ; try omega).
   * assert(EqNeq: { mem.[ (shift_sint32 page to) ] = e } + { mem.[ (shift_sint32 page to) ] <> e }) by
       repeat(decide equality).
@@ -22,13 +22,13 @@ Proof.
       - rewrite <- Eq.
         replace (mem .[ shift_sint32 page to]) with (mem .[ shift_sint32 page (to + 1 - 1)]) by (norm ; auto).
         rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_with_element with (i := (to+1)%Z) ;
-        [ rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_with_element with (i := (to+1)%Z) | | | ] ;
+        [ rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_with_element with (i := (to+1)%Z) | | | | |] ;
           norm ; try rewrite Eq ; auto ; try omega.
         assert(Simpl: forall x y z : Z, (x + y = z)%Z -> (1 + x + y = 1 + z)%Z) by (intros ; omega).
         apply Simpl.
         apply IHto ; auto ; omega.
       - rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_without_element with (i := (to+1)%Z) ;
-        [ rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_without_element with (i := (to+1)%Z) | | | ] ;
+        [ rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_without_element with (i := (to+1)%Z) | | | | |] ;
           norm ; auto ; try omega.
         apply IHto ; auto ; omega.
     + rewrite Eq.
@@ -44,7 +44,7 @@ Proof.
   | [ _ : _ |- context [ (?i + 0)%Z ]] => replace (i + 0)%Z with i by omega
   end).
 
-  intros ba ea M1 M2 a Rot.
+  intros ba ea M1 M2 a M1_int M2_int Rot.
   unfold P_rotate_left in Rot.
   inversion_clear Rot as [ Same Rot' ].
   inversion_clear Rot' as [ Bound Shift ].
@@ -66,11 +66,10 @@ Proof.
     inversion_clear EqNeq as [ Eq | Neq ].
     + subst.
       rewrite <- Same.
-      rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_with_element ; 
-        norm ; try omega ; [| rewrite Same ; auto ].
+      rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_with_element ;
+        norm ; try omega ; auto ; rewrite Same.
       rewrite A_Occurrences_Axiomatic.Q_occurrences_empty_range ; 
-        norm ; try omega ; [| rewrite Same ; auto ].
-      rewrite Same.
+        norm ; try omega ; auto.
       replace(M1 .[ shift_sint32 a ba]) with (M1 .[ shift_sint32 a (ba + 1 - 1)]) by (norm ; auto).
       rewrite <- A_Occurrences_Axiomatic.Q_occurrences_positive_range_with_element ; norm ; try omega ; auto.
       rewrite A_Occurrences_Axiomatic.Q_occurrences_empty_range ; norm ; try omega ; auto.
@@ -94,7 +93,7 @@ Proof.
   | [ _ : _ |- context [ (?i + 1 - 1)%Z ]] => replace (i + 1 - 1)%Z with i by omega
   | [ _ : _ |- context [ (?x + (?i + 1) - 1)%Z ]] => replace (x + (i + 1) - 1)%Z with (x + i)%Z by omega
   end).
-  intros ba ea s v M2 M1 a Hv H.
+  intros ba ea s v M2 M1 a M2_int M1_int Hv H.
   induction ea using Z_induction with (m := ba).
   + rewrite A_Occurrences_Axiomatic.Q_occurrences_empty_range ; auto.
     rewrite A_Occurrences_Axiomatic.Q_occurrences_empty_range ; auto.
@@ -113,8 +112,7 @@ Proof.
       * subst ; rewrite <- Same.
         replace (M2 .[ shift_sint32 a (s + ea)]) with (M2 .[ shift_sint32 a (s + (ea + 1) - 1)]) by (norm ; auto).
         apply A_Occurrences_Axiomatic.Q_occurrences_positive_range_with_element ; 
-          norm ; subst ; try omega.
-        rewrite Same ; auto.
+          norm ; subst ; auto ; try omega.
       * subst.
         replace (M1 .[ shift_sint32 a ea]) with (M1 .[ shift_sint32 a (ea + 1 - 1)]) by (norm ; auto).
         apply A_Occurrences_Axiomatic.Q_occurrences_positive_range_with_element ; 
@@ -134,22 +132,22 @@ Qed.
 Goal typed_lemma_unchanged_is_permutation.
 Hint property,unchanged_is_permutation.
 Proof.
-   intros ; intros x ; intros.
-   replace (L_l_occurrences_of t x a i_1 i) 
-      with (L_l_occurrences_of t x a (0%Z + i_1) (0%Z + i)).
+   intros b e M1 M2 p M1_int M2_int Unchanged ; intros x ; intros.
+   replace (L_l_occurrences_of M2 x p b e) 
+      with (L_l_occurrences_of M2 x p (0%Z + b) (0%Z + e)).
    + eapply Q_shifted_maintains_occ ; auto.
-     intros p ; intros.
-     replace (0 + p)%Z with p by omega.
-     symmetry ; apply H ; auto.
-   + replace (0 + i)%Z with i by omega.
-     replace (0 + i_1)%Z with i_1 by omega.
+     intros p' ; intros.
+     replace (0 + p')%Z with p' by omega.
+     symmetry ; apply Unchanged ; auto.
+   + replace (0 + b)%Z with b by omega.
+     replace (0 + e)%Z with e by omega.
      auto.
 Qed.
 
 Goal typed_lemma_union_permutation.
 Hint property,union_permutation.
 Proof.
-  intros from split to M1 M2 a L H P1 P2.
+  intros from split to M1 M2 a L H  M1_int M2_int P1 P2.
   unfold P_permutation in * .
   intros i Hi.
   rewrite <- Q_l_occurrences_of_union with (t := M1)(i_1 := split) ; try omega ; auto.

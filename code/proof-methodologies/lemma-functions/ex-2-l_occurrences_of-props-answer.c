@@ -1,3 +1,4 @@
+#include <limits.h>
 #include <stddef.h>
 
 /*@
@@ -117,7 +118,7 @@
         return i ;
       }
     }
-    return -1;
+    return UINT_MAX;
   }
 */
 

@@ -267,6 +267,12 @@ contrôles par un clic droit sur le nom de la fonction puis
 « Insert wp-rte guards ».
 
 
+\begin{Information}
+  A partir de ce point du tutoriel, \CodeInline{-wp-rte} devra toujours être
+  activé pour traiter les exemples, sauf indication contraire.
+\end{Information}
+
+
 Enfin, nous relançons la vérification (nous pouvons également cliquer sur le
 bouton « \textit{Reparse} » de la barre d'outils, cela aura pour effet de supprimer les
 preuves déjà effectuées).
@@ -584,48 +590,6 @@ connaissance \CodeInline{a < INT\_MIN}, et tandis que nous n'avons pas de preuve
 que c'est vrai, nous n'en avons pas non plus que c'est faux. Donc si nous obtenons
 nécessairement une preuve de « faux » avec un appel \CodeInline{abs(INT\_MIN)}, ce n'est
 pas le cas de l'appel \CodeInline{abs(a)} qui peut aussi ne pas échouer.
-
-
-\levelThreeTitle{Quelques éléments sur l'usage de WP et Frama-C}
-
-
-Dans les deux sous-sections précédentes, nous avons vu un certain nombre
-d'éléments à propos de l'usage de la GUI pour lancer les preuves. En fait,
-il est possible de demander immédiatement à WP d'effectuer les preuves pendant
-le lancement de Frama-C avec la commande :
-
-
-
-\begin{CodeBlock}{bash}
-$ frama-c-gui file.c -wp
-\end{CodeBlock}
-
-
-
-Cela demande à WP d'immédiatement faire les calculs de plus faible précondition
-et de lancer les prouveurs sur les buts générés.
-
-
-
-Concernant les contrôles des RTE, il est généralement conseillé de commencer par
-vérifier le programme sans mettre les contrôles de RTE et ensuite seulement de
-générer les assertions correspondantes pour terminer la vérification avec WP.
-Cela permet à WP de se « concentrer » dans un premier temps sur les propriétés
-fonctionnelles sans avoir la connaissance de propriétés purement techniques dues
-à C, qui chargent inutilement la base de connaissances. Encore une fois, il est
-possible de produire ce comportement directement depuis la ligne de commande en
-écrivant :
-
-
-
-\begin{CodeBlock}{bash}
-$ frama-c-gui file.c -wp -then -wp -wp-rte
-\end{CodeBlock}
-
-
-
-« Lancer Frama-C avec WP, puis créer les assertions correspondant aux RTE, et
-lancer à nouveau WP ».
 
 
 \levelThreeTitle{Exercices}

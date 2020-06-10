@@ -178,7 +178,7 @@ $0$). Let us just highlight the \CodeInline{assigns} and
 
 
 The last example we will detail to illustrate the proof of functions
-with loops is the algorithm ``search and replace''. This algorithm 
+with loops is the algorithm ``search and replace''. This algorithm
 selectively modifies values in a range of memory locations. It is
 generally harder to guide the tool in such a case, because on one hand
 we must keep track of what is modified and what is not, and on the other
@@ -203,9 +203,9 @@ array and the potentially new values:
 
 \begin{CodeBlock}{c}
 /*@
-  loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) == old 
+  loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) == old
                    ==> array[j] == new;
-  loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) != old 
+  loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) != old
                    ==> array[j] == \at(array[j], Pre);
 */
 \end{CodeBlock}
@@ -256,8 +256,8 @@ And this time the proof succeeds.
 For all these exercises, use the following command line to start verification:
 
 \begin{CodeBlock}{bash}
-frama-c-gui -wp -wp-rte -warn-unsigned-overflow your-file.c
-\end{CodeBlock}  
+frama-c-gui -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast your-file.c
+\end{CodeBlock}
 
 \levelFourTitle{Non-mutating: Forall, Exists, ...}
 

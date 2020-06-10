@@ -3,7 +3,7 @@
 
 S'il y a une structure de données que nous traitons avec les boucles, c'est bien
 le tableau. C'est une bonne base d'exemples pour les boucles, car ils permettent
-rapidement de présenter des invariants intéressants et surtout, ils nous 
+rapidement de présenter des invariants intéressants et surtout, ils nous
 permettront d'introduire des constructions très importantes d'ACSL.
 
 
@@ -20,9 +20,9 @@ Cet exemple est suffisamment fourni pour introduire des notations importantes.
 
 
 
-D'abord, comme nous l'avons déjà mentionné, le prédicat \CodeInline{\textbackslash{}valid\_read} (de 
-même que \CodeInline{\textbackslash{}valid}) nous permet de spécifier non seulement la validité d'une 
-adresse en lecture mais également celle de tout un ensemble d'adresses 
+D'abord, comme nous l'avons déjà mentionné, le prédicat \CodeInline{\textbackslash{}valid\_read} (de
+même que \CodeInline{\textbackslash{}valid}) nous permet de spécifier non seulement la validité d'une
+adresse en lecture mais également celle de tout un ensemble d'adresses
 contiguës. C'est la notation que nous avons utilisée dans cette expression :
 
 
@@ -33,16 +33,16 @@ contiguës. C'est la notation que nous avons utilisée dans cette expression :
 
 
 
-Cette précondition nous atteste que les adresses \CodeInline{a+0}, 
+Cette précondition nous atteste que les adresses \CodeInline{a+0},
 \CodeInline{a+1}, \ldots{}, \CodeInline{a+length-1} sont valides en lecture.
 
 
 
-Nous avons également introduit deux notations qui vont nous être très utiles, à 
-savoir \CodeInline{\textbackslash{}forall} ($\forall$) et \CodeInline{\textbackslash{}exists} ($\exists$), les 
+Nous avons également introduit deux notations qui vont nous être très utiles, à
+savoir \CodeInline{\textbackslash{}forall} ($\forall$) et \CodeInline{\textbackslash{}exists} ($\exists$), les
 quantificateurs de la logique. Le premier nous servant à annoncer que pour tout
 élément, la propriété suivante est vraie. Le second pour annoncer qu'il existe
-un élément tel que la propriété est vraie. Si nous commentons les deux lignes en 
+un élément tel que la propriété est vraie. Si nous commentons les deux lignes en
 questions, nous pouvons les lire de cette façon :
 
 
@@ -63,31 +63,31 @@ questions, nous pouvons les lire de cette façon :
 
 Si nous devions résumer leur utilisation, nous pourrions dire que sur un certain
 ensemble d'éléments, une propriété est vraie, soit à propos d'au moins l'un
-d'eux, soit à propos de la totalité d'entre eux. Un schéma qui reviendra 
+d'eux, soit à propos de la totalité d'entre eux. Un schéma qui reviendra
 typiquement dans ce cas est que nous restreindrons cet ensemble à travers une
 première propriété (ici : \CodeInline{0 <= off < length}) puis nous voudrons prouver la
-propriété réelle qui nous intéresse à propos d'eux. \textbf{Mais il y a une 
+propriété réelle qui nous intéresse à propos d'eux. \textbf{Mais il y a une
 différence fondamentale entre l'usage de \CodeInline{exists} et celui de \CodeInline{forall}}.
 
 
 
 Avec \CodeInline{\textbackslash{}forall type a ; p(a) ==> q(a)}, la restriction (\CodeInline{p}) est suivie
-par une implication. Pour tout élément, s'il respecte une première propriété 
+par une implication. Pour tout élément, s'il respecte une première propriété
 (\CodeInline{p}), alors il doit vérifier la seconde propriété \CodeInline{q}. Si nous mettions un ET
-comme pour le « il existe » (que nous expliquerons ensuite), cela voudrait dire que 
-nous voulons que tout élément respecte à la fois les deux propriétés. Parfois, 
-cela peut être ce que nous voulons exprimer, mais cela ne correspond alors plus 
-à l'idée de restreindre un ensemble dont nous voulons montrer une propriété 
+comme pour le « il existe » (que nous expliquerons ensuite), cela voudrait dire que
+nous voulons que tout élément respecte à la fois les deux propriétés. Parfois,
+cela peut être ce que nous voulons exprimer, mais cela ne correspond alors plus
+à l'idée de restreindre un ensemble dont nous voulons montrer une propriété
 particulière.
 
 
 
 Avec \CodeInline{\textbackslash{}exists type a ; p(a) \&\& q(a)}, la restriction (\CodeInline{p}) est suivie
-par une conjonction, nous voulons qu'il existe un élément tel que cet élément 
-est dans un certain état (défini par \CodeInline{p}), tout en respectant l'autre 
-propriété \CodeInline{q}. Si nous mettions une implication comme pour le « pour tout », 
-alors une telle expression devient toujours vraie à moins que \CodeInline{p} soit une 
-tautologie ! Pourquoi ? Existe-t-il « a » tel que p(a) implique q(a) ? Prenons 
+par une conjonction, nous voulons qu'il existe un élément tel que cet élément
+est dans un certain état (défini par \CodeInline{p}), tout en respectant l'autre
+propriété \CodeInline{q}. Si nous mettions une implication comme pour le « pour tout »,
+alors une telle expression devient toujours vraie à moins que \CodeInline{p} soit une
+tautologie ! Pourquoi ? Existe-t-il « a » tel que p(a) implique q(a) ? Prenons
 n'importe quel « a » tel que p(a) est faux, l'implication devient vraie.
 
 
@@ -112,7 +112,7 @@ recherché.
 
 
 Le but de WP associé à la préservation de cet invariant est un peu compliqué, il
-n'est pour nous pas très intéressant de se pencher dessus. En revanche, la 
+n'est pour nous pas très intéressant de se pencher dessus. En revanche, la
 preuve de l'établissement de cet invariant est intéressante :
 
 
@@ -120,11 +120,11 @@ preuve de l'établissement de cet invariant est intéressante :
 \image{trivial}
 
 
-Nous constatons que cette propriété, pourtant complexe, est prouvée par 
-Qed sans aucun problème. Si nous regardons sur quelles parties du programme la 
-preuve se base, nous voyons l'instruction \CodeInline{i = 0} surlignée, et c'est 
+Nous constatons que cette propriété, pourtant complexe, est prouvée par
+Qed sans aucun problème. Si nous regardons sur quelles parties du programme la
+preuve se base, nous voyons l'instruction \CodeInline{i = 0} surlignée, et c'est
 bien la dernière instruction que nous effectuons sur \CodeInline{i} avant de commencer
-la boucle. Et donc effectivement, si nous faisons le remplacement dans la formule 
+la boucle. Et donc effectivement, si nous faisons le remplacement dans la formule
 de l'invariant :
 
 
@@ -143,7 +143,7 @@ nécessairement fausse. Notre implication est donc nécessairement vraie.
 \levelThreeTitle{Exemples avec tableaux mutables}
 
 
-Nous allons voir deux exemples avec la manipulation de tableaux en mutation. 
+Nous allons voir deux exemples avec la manipulation de tableaux en mutation.
 L'un avec une modification totale, l'autre en modification sélective.
 
 
@@ -164,7 +164,7 @@ Nous voyons que nous utilisons pour l'invariant une structure assez similaire
 invariant pour contraindre la valeur de \CodeInline{i}, et un autre qui exprime
 à chaque itération ce que nous avons appris depuis le début de l'exécution de la
 boucle (tous les éléments visités sont à $0$). Finalement, intéressons-nous à la
-clause \CodeInline{loop assigns}: à nouveau, nous utilisons la notation 
+clause \CodeInline{loop assigns}: à nouveau, nous utilisons la notation
 \CodeInline{n .. m} pour indiquer quelle partie du tableau a été modifiée.
 
 
@@ -173,15 +173,15 @@ clause \CodeInline{loop assigns}: à nouveau, nous utilisons la notation
 \label{l4:statements-loops-ex-search-and-replace}
 
 
-Le dernier exemple qui nous intéresse est l'algorithme « chercher et remplacer ». 
-C'est un algorithme qui modifie sélectivement des valeurs dans une 
-certaine plage d'adresses. Il est toujours un peu difficile de guider l'outil 
-dans ce genre de cas car, d'une part, nous devons garder « en mémoire » ce qui est modifié 
+Le dernier exemple qui nous intéresse est l'algorithme « chercher et remplacer ».
+C'est un algorithme qui modifie sélectivement des valeurs dans une
+certaine plage d'adresses. Il est toujours un peu difficile de guider l'outil
+dans ce genre de cas car, d'une part, nous devons garder « en mémoire » ce qui est modifié
 et ce qui ne l'est pas et, d'autre part, parce que l'induction repose sur ce fait.
 
 
 
-À titre d'exemple, la première spécification que nous pouvons réaliser pour 
+À titre d'exemple, la première spécification que nous pouvons réaliser pour
 cette fonction ressemblerait à ceci :
 
 
@@ -192,17 +192,17 @@ cette fonction ressemblerait à ceci :
 
 Nous utilisons la fonction logique \CodeInline{\textbackslash{}at(v, Label)} qui nous donne la valeur de
 la variable \CodeInline{v} au point de programme \CodeInline{Label}. Si nous regardons l'utilisation qui
-en est faite ici, nous voyons que dans l'invariant de boucle, nous cherchons à 
-établir une relation entre les anciennes valeurs du tableau et leurs potentielles 
+en est faite ici, nous voyons que dans l'invariant de boucle, nous cherchons à
+établir une relation entre les anciennes valeurs du tableau et leurs potentielles
 nouvelles valeurs :
 
 
 
 \begin{CodeBlock}{c}
 /*@
-  loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) == old 
+  loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) == old
                    ==> array[j] == new;
-  loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) != old 
+  loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) != old
                    ==> array[j] == \at(array[j], Pre);
 */
 \end{CodeBlock}
@@ -217,12 +217,12 @@ vraiment en tirer parti, dû à la manière dont cette clause est traitée. Nous
 donc utiliser un invariant et conserver une approximation des positions mémoire
 affectées.
 
- 
-En fait, si nous essayons de prouver l'invariant, WP n'y parvient pas. Dans ce genre de 
-cas, le plus simple est encore d'ajouter diverses assertions exprimant les 
-propriétés intermédiaires que nous nous attendons à voir facilement prouvées 
-et impliquant l'invariant. En fait, nous nous apercevons rapidement que WP 
-n'arrive pas à maintenir le fait que nous n'avons pas encore modifié la fin du 
+
+En fait, si nous essayons de prouver l'invariant, WP n'y parvient pas. Dans ce genre de
+cas, le plus simple est encore d'ajouter diverses assertions exprimant les
+propriétés intermédiaires que nous nous attendons à voir facilement prouvées
+et impliquant l'invariant. En fait, nous nous apercevons rapidement que WP
+n'arrive pas à maintenir le fait que nous n'avons pas encore modifié la fin du
 tableau :
 
 
@@ -244,7 +244,7 @@ Nous pouvons donc ajouter cette information comme invariant :
 
 
 
-Et cette fois, la preuve passera. 
+Et cette fois, la preuve passera.
 
 
 
@@ -254,8 +254,8 @@ Et cette fois, la preuve passera.
 Pour tous ces exercices, utiliser la commande suivante pour démarrer la vérification:
 
 \begin{CodeBlock}{bash}
-frama-c-gui -wp -wp-rte -warn-unsigned-overflow your-file.c
-\end{CodeBlock}  
+frama-c-gui -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast your-file.c
+\end{CodeBlock}
 
 
 \levelFourTitle{Fonctions sans modification : Forall, Exists, ...}
@@ -313,20 +313,20 @@ La fonction suivante cherche la position d'une valeur fournie en entrée dans
 un tableau, en supposant que le tableau est trié. D'abord, considérons que la
 longueur du tableau est fournie en tant qu'int et utilisons des valeurs de ce
 même type pour gérer les indices. Nous pouvons noter qu'il y a deux comportements
-à cette fonction : soit la valeur existe dans le tableau (et le résultat est 
+à cette fonction : soit la valeur existe dans le tableau (et le résultat est
 l'indice de cette valeur) ou pas (et le résultat est -1).
- 
- 
+
+
 \CodeBlockInput{c}{ex-3-binary-search.c}
 
 
 Cette fonction est un petit peu complexe à prouver, voici quelques conseils
 pour en venir à bout. D'abord, la longueur de la fonction est reçue en utilisant
-un type int, donc nous devons poser une restriction sur cette longueur en 
+un type int, donc nous devons poser une restriction sur cette longueur en
 précondition pour qu'elle soit cohérente. Ensuite, l'un des invariants de la
-boucle devrait indiquer les bornes des valeurs \CodeInline{low} et 
+boucle devrait indiquer les bornes des valeurs \CodeInline{low} et
 \CodeInline{up}, mais nous pouvons noter que pour chacune d'elles, l'une des
-bornes n'est pas nécessaire. Finalement, la seconde propriété invariante 
+bornes n'est pas nécessaire. Finalement, la seconde propriété invariante
 devrait indiquer que si l'un des indices du tableau correspond à la valeur
 recherchée, alors cet indice devrait être correctement borné.
 
@@ -385,7 +385,7 @@ dans la plage source :
 \begin{CodeBlock}{c}
 //@ requires \separated(&src[0 .. len-1], dst) ;
 \end{CodeBlock}
- 
+
 
 Essentiellement, en copiant des éléments dans cet ordre, nous pouvons les
 décaler depuis la fin d'une plage vers le début. En revanche, cela signifie que

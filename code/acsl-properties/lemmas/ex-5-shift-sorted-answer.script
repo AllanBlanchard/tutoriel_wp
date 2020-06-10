@@ -3,7 +3,7 @@
 Goal typed_lemma_shifted_still_sorted.
 Hint property,shifted_still_sorted.
 Proof.
-  intros len shift M1 M2 array Sorted Shifted.
+  intros len shift M1 M2 array tM1 tM2 Sorted Shifted.
   unfold P_shifted in Shifted.
   intros i j ; intros.
   assert(Hi: exists pi, i = shift + pi) by (exists (i - shift) ; omega).

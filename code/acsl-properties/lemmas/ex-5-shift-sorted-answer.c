@@ -28,7 +28,7 @@
   disjoint behaviors ;
 */
 size_t bsearch(int* arr, size_t beg, size_t end, int value){
-  if(end == beg) return -1 ;
+  if(end == beg) return UINT_MAX ;
   
   size_t low = beg ;
   size_t up = end ;
@@ -46,7 +46,7 @@ size_t bsearch(int* arr, size_t beg, size_t end, int value){
     else if(arr[mid] < value) low = mid+1 ;
     else return mid ;
   }
-  return -1 ;
+  return UINT_MAX ;
 }
 
 /*@

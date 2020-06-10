@@ -1,5 +1,7 @@
+#include <limits.h>
+
 /*@ 
-  requires x >= 0 ;
+  requires 0 <= x <= INT_MAX / 2;
   assigns  \nothing ;
   ensures  \result == 2 * x ;
 */

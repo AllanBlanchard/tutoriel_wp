@@ -3,14 +3,14 @@
 Goal typed_lemma_no_changes.
 Hint no_changes,property.
 Proof.
-  intros b e Mi Mi' arr H.
+  intros b e Mi Mi' arr tMi tMi' H.
   induction H ; intros Same.
   + constructor 1 ; auto.
   + unfold x in * ; clear x.
-    constructor 2 ; try omega.
+    constructor 2 ; auto ; try omega.
     - rewrite <- H ; symmetry.
       apply Same ; omega.
-    - apply IHP_zeroed.
+    - apply IHP_zeroed ; auto.
       intros i' ; intros.
       apply Same ; omega.
 Qed.
