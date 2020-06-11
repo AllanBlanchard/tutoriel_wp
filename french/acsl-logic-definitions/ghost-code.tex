@@ -661,6 +661,18 @@ dépassement, c'est cette valeur qui est renvoyée.
 \levelThreeTitle{Exercices}
 
 
+\levelFourTitle{Validité du code ghost}
+
+
+Dans ces fonctions, et sans exécuter Frama-C, expliquer en quoi le code fantôme
+pose problème. Lorsque Frama-C devrait rejeter le code, expliquer pourquoi.
+Notons qu'il est possible d'exécuter Frama-C sans contrôle du code fantôme en
+utilisant l'option \CodeInline{-kernel-warn-key ghost=inactive}.
+
+
+\CodeBlockInput{c}{ex-1-ghost-reject.c}
+
+
 \levelFourTitle{Multiplication par 2}
 
 
@@ -669,7 +681,7 @@ Utiliser une variable fantôme \CodeInline{i} pour exprimer comme invariant que
 la valeur de \CodeInline{r} est \CodeInline{i * 2} et compléter la preuve.
 
 
-\CodeBlockInput{c}{ex-1-times-2.c}
+\CodeBlockInput{c}{ex-2-times-2.c}
 
 
 \levelFourTitle{Tableaux}
@@ -681,7 +693,7 @@ Cependant, nous voudrions pouvoir prouver qu'en postcondition, le tableau n'a
 pas été modifié.
 
 
-\CodeBlockInput{c}{ex-2-array.c}
+\CodeBlockInput{c}{ex-3-array.c}
 
 
 Sans modifier la clause \CodeInline{assigns} de la boucle et sans utiliser le mot
@@ -689,3 +701,48 @@ clé \CodeInline{\textbackslash{}at}, prouver que la fonction ne modifie pas le
 contenu du tableau. Pour cela, compléter le code fantôme et l'invariant de boucle
 en assurant que le contenu du tableau \CodeInline{g} représente l'ancien contenu
 de \CodeInline{a}.
+
+
+Lorsque c'est fait, créer une fonction fantôme qui effectue cette même copie, et
+l'utiliser dans la fonction \CodeInline{foo} pour effectuer la même preuve.
+
+
+\levelFourTitle{Chercher et remplacer}
+
+
+Le programme suivant effectue une opération de recherche et remplacement :
+
+
+\CodeBlockInput{c}{ex-4-replace.c}
+
+
+En supposant que la fonction \CodeInline{replace} demande à ce que
+\CodeInline{old} et \CodeInline{new} soient différents, écrire un contrat pour
+\CodeInline{replace} et prouver que la fonction le satisfait.
+
+
+Maintenant, nous voudrions savoir quelles cellules du tableau ont été mises à
+jour par la fonction. Ajouter un paramètre fantôme à la fonction
+\CodeInline{replace} de manière à pouvoir recevoir un second tableau qui servira
+à enregistrer les cellules mise à jour (ou non) par la fonction. En ajoutant
+également le code suivant après l'appel à \CodeInline{replace} :
+
+
+\begin{CodeBlock}{c}
+  /*@ ghost
+    /@ loop invariant 0 <= i <= 40 ;
+       loop assigns i;
+       loop variant 40 - i ;
+    @/
+    for(size_t i = 0 ; i < 40 ; ++i){
+      if(updated[i]){
+        /@ assert a[i] != \at(a[\at(i, Here)], L); @/
+      } else {
+        /@ assert a[i] == \at(a[\at(i, Here)], L); @/
+      }
+    }
+  */
+  \end{CodeBlock}
+
+
+  Tout devrait être prouvé.
