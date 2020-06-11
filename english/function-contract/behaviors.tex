@@ -10,7 +10,7 @@ have two behaviors for the \texttt{abs} function: either the input is
 positive or it is negative.
 
 Behaviors allow us to specify the different cases for postconditions. We
-introduce them using the \texttt{behavior} keyword. Each behavior 
+introduce them using the \texttt{behavior} keyword. Each behavior
 is named. For a given behavior, we have different assumptions about the
 input of the function, they are introduced with the clause
 \texttt{assumes} (note that since they characterize the input, the
@@ -83,73 +83,75 @@ tedious and again error-prone.
 \levelThreeTitle{Exercises}
 
 
-
-\levelFourTitle{Distance}
-
+\levelFourTitle{Previous exercices}
 
 
-Take back the example about the computation of the distance between to
-integers. Considering that the written contract was:
+From previous sections, take back the examples:
 
 
-\CodeBlockInput{c}{ex-1-distance.c}
+\begin{itemize}
+\item about the computation of the distance between to integers,
+\item ``reset on condition'',
+\item ``days of the month'',
+\item ``Max of pointed values''.
+\end{itemize}
 
 
-Re-write it using behaviors.
+Considering that the contracts were:
 
 
-
-\levelFourTitle{Reset on condition}
-
+\CodeBlockInput{c}{ex-1-past.c}
 
 
-Take back the example ``reset on condition'' from the previous section.
-Considering that the written contract was:
+Re-write them using behaviors.
 
 
-
-\CodeBlockInput[1][13]{c}{ex-2-reset-on-cond.c}
-
+\levelFourTitle{Two other simple exercices}
 
 
-Re-write it using behaviors.
+Produce the code and the specification of the two following functions
+and the prove them. The specification should make use of behaviors.
 
 
-
-\levelFourTitle{Days of the month}
-
-
-Take back the example ``days of the month'' from the first section.
-Considering that the written contract was:
+First, a function that returns if a character is a vowel or a consonant,
+assume that the function receive lowercase letter.
 
 
-
-\CodeBlockInput{c}{ex-3-day-month.c}
-
-
-Re-write it using behaviors.
+\CodeBlockInput[1][5]{c}{ex-2-simple.c}
 
 
-\levelFourTitle{Max of pointer values, ordering}
+Then, a function that returns the quadrant of a given coordinate. When
+the coordinate is on an axis, arbitrary choose one of the quadrant.
 
 
-
-Take back the example ``Max of pointed values'' from the previous section,
-this time with the version that orders the values. Considering that the
-contract was:
+\CodeBlockInput[7][9]{c}{ex-2-simple.c}
 
 
-
-\CodeBlockInput[1][13]{c}{ex-4-max-ptr.c}
-
+\levelFourTitle{Triangle}
 
 
-Re-write it using behaviors.
+Complete the following functions that receive the lengths of the different
+sides of the triangle, and respectively return:
 
+\begin{itemize}
+\item if the triangle is scalene, isoscele, or equilateral,
+\item if the triangle is right, acute or obtuse.
+\end{itemize}
+
+
+Assuming (and it must be expressed) that:
+
+
+\begin{itemize}
+\item the received parameters indeed define a triangle,
+\item \CodeInline{a} is the hypotenuse of the triangle,
+\end{itemize}
+
+
+specify and prove that the functions do the right job.
 
 
 \levelFourTitle{Max of pointed values, returning the result}
-
 
 
 Take back the example ``Max of pointed values'' from the previous section,
@@ -158,7 +160,7 @@ the contract was:
 
 
 
-\CodeBlockInput[1][10]{c}{ex-5-max-ptr.c}
+\CodeBlockInput[1][10]{c}{ex-4-max-ptr.c}
 
 
 
@@ -183,7 +185,7 @@ Take back the example ``Order 3 values'' from the previous section. Considering
 that the contract was:
 
 
-\CodeBlockInput{c}{ex-6-order-3.c}
+\CodeBlockInput{c}{ex-5-order-3.c}
 
 
 Rewrite it using behaviors. Note that you should have one general behaviors
