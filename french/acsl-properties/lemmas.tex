@@ -1,7 +1,7 @@
 
-Les lemmes sont des propriétés générales à propos des prédicats ou encore des 
+Les lemmes sont des propriétés générales à propos des prédicats ou encore des
 fonctions. Une fois ces propriétés exprimées, la preuve peut être réalisée en
-isolation du reste de la preuve du programme, en utilisant des prouveurs 
+isolation du reste de la preuve du programme, en utilisant des prouveurs
 automatiques ou (plus souvent) des prouveurs interactifs. Une fois la preuve
 réalisée, la propriété énoncée peut être utilisée directement par les prouveurs
 automatiques sans que cela ne nécessite d'en réaliser la preuve à nouveau. Par
@@ -15,9 +15,9 @@ amène de $P$ à $Q$.
 
 Dans la section précédent, nous avons dit que les fonctions récursives logiques
 peuvent rendre les preuves plus difficile pour les solveurs SMT. Dans un tel cas,
-les lemmes peuvent nous aider. Nous pouvons écrire nous même les preuves qui 
+les lemmes peuvent nous aider. Nous pouvons écrire nous même les preuves qui
 nécessitent de raisonner par induction pour certaines propriétés que nous
-énonçons comme des lemmes, et ces lemmes peuvent ensuite être utilisés 
+énonçons comme des lemmes, et ces lemmes peuvent ensuite être utilisés
 efficacement par les prouveurs pour effectuer les autres preuves à propos du
 programme.
 
@@ -39,9 +39,9 @@ utilisée est la suivante :
 
 
 
-Cette fois les propriétés que nous voulons exprimer ne dépendent pas de 
-paramètres reçus (hors de nos \textit{labels} bien sûr). Ces propriétés seront donc 
-exprimées sur des variables quantifiées. Par exemple, nous pouvons poser ce 
+Cette fois les propriétés que nous voulons exprimer ne dépendent pas de
+paramètres reçus (hors de nos \textit{labels} bien sûr). Ces propriétés seront donc
+exprimées sur des variables quantifiées. Par exemple, nous pouvons poser ce
 lemme qui est vrai, même s'il est trivial :
 
 
@@ -55,7 +55,7 @@ lemme qui est vrai, même s'il est trivial :
 
 
 
-Cette preuve peut être effectuée en utilisant WP. La propriété est bien sûr 
+Cette preuve peut être effectuée en utilisant WP. La propriété est bien sûr
 trivialement prouvée par Qed.
 
 
@@ -63,7 +63,7 @@ trivialement prouvée par Qed.
 \levelThreeTitle{Exemple : propriété fonction affine}
 
 
-Nous pouvons par exemple reprendre nos fonctions affines et exprimer quelques 
+Nous pouvons par exemple reprendre nos fonctions affines et exprimer quelques
 propriétés intéressantes à leur sujet :
 
 
@@ -72,8 +72,8 @@ propriétés intéressantes à leur sujet :
 
 
 
-Pour ces preuves, il est fort possible qu'Alt-ergo ne parvienne pas à les 
-décharger. Dans ce cas, le prouveur Z3 devrait, lui, y arriver. Nous pouvons 
+Pour ces preuves, il est fort possible qu'Alt-ergo ne parvienne pas à les
+décharger. Dans ce cas, le prouveur Z3 devrait, lui, y arriver. Nous pouvons
 ensuite construire cet exemple de code :
 
 
@@ -82,10 +82,10 @@ ensuite construire cet exemple de code :
 
 
 
-Si nous ne renseignons pas les lemmes mentionnés plus tôt, il y a peu de chances 
+Si nous ne renseignons pas les lemmes mentionnés plus tôt, il y a peu de chances
 qu'Alt-ergo réussisse à produire la preuve que \CodeInline{fmin} est inférieur à \CodeInline{fmax}.
-Avec ces lemmes présents en revanche, il y parvient sans problème car cette 
-propriété est une simple instance du lemme \CodeInline{ax\_b\_monotonic\_pos}, la preuve 
+Avec ces lemmes présents en revanche, il y parvient sans problème car cette
+propriété est une simple instance du lemme \CodeInline{ax\_b\_monotonic\_pos}, la preuve
 étant ainsi triviale car notre lemme nous énonce cette propriété comme étant vraie.
 Notons que sur cette version généralisée, Z3 sera probablement plus efficace pour
 prouver l'absence d'erreurs à l'exécution.
@@ -137,7 +137,7 @@ preuve.
 
 
 Écrire un lemme qui énonce que pour trois entiers $x$, $y$ et $z$, si $x$ est
-plus grand ou égal à $0$, si $z$ est plus grand ou égal à $y$, alors $x * z$ 
+plus grand ou égal à $0$, si $z$ est plus grand ou égal à $y$, alors $x * z$
 est  plus grand ou égal à $x * y$.
 
 
@@ -158,7 +158,7 @@ puis appelle la fonction de recherche dichotomique.
 \CodeBlockInput[59][81]{c}{ex-2-sorted-link.c}
 
 
-Pour cet exercice, reprendre la solution de 
+Pour cet exercice, reprendre la solution de
 l'exercice~\ref{l4:acsl-properties-predicates-ex-bsearch} à propos de la recherche
 dichotomique. La précondition de cette recherche peut sembler plus forte que celle
 reçue par la précondition de de \CodeInline{bsearch\_callee}. La première demande
@@ -200,9 +200,11 @@ glissements successifs des éléments d'un même tableau.
 \CodeBlockInput{c}{ex-4-shift-transitivity.c}
 
 
-Compléter les prédicats \CodeInline{shifted} et \CodeInline{unchanged} (le second
-devrait utiliser le premier). Compléter le contrat de la fonction
-\CodeInline{shift\_array} et prouver sa correction avec WP.
+Compléter les prédicats \CodeInline{shifted} et \CodeInline{unchanged}.
+Le prédicat \CodeInline{shifted} doit utiliser \CodeInline{shifted\_cell}.
+Le prédicat \CodeInline{unchanged} doit utiliser \CodeInline{shifted}.
+Compléter le contrat de la fonction \CodeInline{shift\_array} et prouver
+sa correction avec WP.
 
 
 Exprimer deux lemmes à propos de la propriété \CodeInline{shifted}.
@@ -237,7 +239,7 @@ une recherche dichotomique.
 \CodeBlockInput{c}{ex-5-shift-sorted.c}
 
 
-Reprendre la solution de la recherche dichotomique de 
+Reprendre la solution de la recherche dichotomique de
 l'exercice~\ref{l4:acsl-properties-predicates-ex-bsearch}. Modifier cette
 recherche et sa spécification de façon à ce que la fonction permette de
 chercher dans toute plage triée de valeurs. La preuve doit toujours fonctionner.
@@ -247,12 +249,17 @@ Reprendre également la fonction prouvée \CodeInline{shift\_array} de l'exercic
 précédent.
 
 
-Compléter le contrat de la fonction \CodeInline{shift\_and\_search}. La 
-précondition qui demande à ce que le tableau soit trié avant la recherche ne 
-sera pas validée. Compléter le lemme \CodeInline{shifted\_still\_sorted} qui
-doit énoncer que si une plage de valeur est triée à un label, puis déplacée,
-alors elle reste triée.
+Compléter le contrat de la fonction \CodeInline{shift\_and\_search}. La
+précondition qui demande à ce que le tableau soit trié avant la recherche ne
+sera pas validée, ni la postcondition de l'appelant. Compléter le lemme
+\CodeInline{shifted\_still\_sorted} qui doit énoncer que si une plage de valeur
+est triée à un label, puis déplacée, alors elle reste triée. La précondition
+devrait maintenant être validée. Ensuite, compléter le lemme
+\CodeInline{in\_array\_shifted} qui doit énoncer que si une valeur est dans
+une plage de valeur, alors lorsque cette plage est déplacée, la valeur est
+toujours dans la nouvelle plage obtenue. La postcondition de l'appelant devrait
+maintenant être prouvée.
 
 
-Ce lemme ne sera probablement pas prouvé par un solveur SMT. Une solution et
-sa preuve Coq sont disponibles sur le GitHub de ce livre.
+Ces lemmes ne seront probablement pas prouvés par un solveur SMT. Une solution et
+les preuves Coq sont disponibles sur le GitHub de ce livre.

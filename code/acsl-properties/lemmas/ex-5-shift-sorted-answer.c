@@ -50,8 +50,11 @@ size_t bsearch(int* arr, size_t beg, size_t end, int value){
 }
 
 /*@
+  predicate shifted_cell{L1, L2}(int* p, integer shift) =
+    \at(p[0], L1) == \at(p[shift], L2) ;
+
   predicate shifted{L1, L2}(int* arr, integer fst, integer last, integer shift) =
-    \forall integer i ; fst <= i < last ==> \at(arr[i], L1) == \at(arr[i+shift], L2) ;
+    \forall integer i ; fst <= i < last ==> shifted_cell{L1, L2}(arr+i, shift) ;
 
   predicate unchanged{L1, L2}(int *a, integer begin, integer end) =
     shifted{L1, L2}(a, begin, end, 0) ;
@@ -82,6 +85,13 @@ void shift_array(int* array, size_t len, size_t shift){
       sorted{L1}(array, 0, len) ==>
       shifted{L1, L2}(array, 0, len, shift) ==> 
         sorted{L2}(array, shift, shift+len) ;
+*/
+/*@
+  lemma in_array_shifted{L1, L2}:
+    \forall int* array, integer len, integer shift, int value ;
+      in_array{L1}(value, array, 0, len) ==>
+      shifted{L1, L2}(array, 0, len, shift) ==>
+        in_array{L2}(value, array, shift, shift+len) ;
 */
 
 /*@

@@ -1,7 +1,14 @@
+/*@
+  predicate shifted_cell{L1, L2}(int* p, integer shift) =
+    \at(p[0], L1) == \at(p[shift], L2) ;
+*/
+
 size_t bsearch(int* arr, size_t beg, size_t end, int value);
 
 /*@
   // lemma shifted_still_sorted{...}:
+  // ...
+  // lemma in_array_shifted{...}:
   // ...
 */
 

@@ -2,6 +2,9 @@
 #include <limits.h>
 
 /*@
+  predicate shifted_cell{L1, L2}(int* p, integer shift) =
+    \at(p[0], L1) == \at(p[shift], L2) ;
+
   // predicate shifted{L1, L2}(int* arr, integer fst, integer last, integer shift) =
   // ...
 

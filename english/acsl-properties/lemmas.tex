@@ -191,9 +191,11 @@ shifts on the same array.
 \CodeBlockInput{c}{ex-4-shift-transitivity.c}
 
 
-Complete the predicates \CodeInline{shifted} and \CodeInline{unchanged} (the
-last should use the former). Complete the contract of the
-\CodeInline{shift\_array} function and prove it using WP.
+Complete the predicates \CodeInline{shifted} and \CodeInline{unchanged}.
+The \CodeInline{shifted} predicate should use \CodeInline{shifted\_cell}.
+The \CodeInline{unchanged} predicate should use \CodeInline{shifted}.
+Complete the contract of the \CodeInline{shift\_array} function and prove
+it using WP.
 
 
 Express two lemmas about the \CodeInline{shifted} property.
@@ -242,9 +244,14 @@ Use the \CodeInline{shift\_array} function proved in the previous exercise.
 
 Complete the contract of the function \CodeInline{shift\_and\_search}. You might
 notice that the precondition that requires the array to be sorted is not
-validated. Complete the lemma \CodeInline{shifted\_still\_sorted} that should
-state that if a range is sorted at some label and then shifted, the resulting
-range is still sorted.
+validated, nor the postcondition of the caller. First, complete the lemma
+\CodeInline{shifted\_still\_sorted} that should state that if a range is sorted
+at some label and then shifted, the resulting range is still sorted, the
+precondition should now be proved. Then, complete the lemma
+\CodeInline{in\_array\_shifted} that should state that if a value is a range of
+values and that is then shifted, it is still in the resulting new range. The
+postcondition of the caller should now be proved.
 
-The lemma does not have to be proved by SMT solvers. We provide a solution and
-the corresponding Coq proof on the GitHub repository of this book.
+
+The lemmas do not have to be proved by SMT solvers. We provide a solution and
+the corresponding Coq proofs on the GitHub repository of this book.

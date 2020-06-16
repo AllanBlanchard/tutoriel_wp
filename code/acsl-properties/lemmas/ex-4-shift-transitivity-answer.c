@@ -2,8 +2,11 @@
 #include <limits.h>
 
 /*@
+  predicate shifted_cell{L1, L2}(int* p, integer shift) =
+    \at(p[0], L1) == \at(p[shift], L2) ;
+
   predicate shifted{L1, L2}(int* arr, integer fst, integer last, integer shift) =
-    \forall integer i ; fst <= i < last ==> \at(arr[i], L1) == \at(arr[i+shift], L2) ;
+    \forall integer i ; fst <= i < last ==> shifted_cell{L1, L2}(arr+i, shift) ;
 
   predicate unchanged{L1, L2}(int *a, integer begin, integer end) =
     shifted{L1, L2}(a, begin, end, 0) ;
@@ -11,6 +14,12 @@
   lemma shift_ptr{L1, L2}:
     \forall int* arr, integer fst, integer last, integer s1, s2 ;
       shifted{L1, L2}(arr, fst+s1, last+s1, s2) <==> shifted{L1, L2}(arr+s1, fst, last, s2) ;
+
+  lemma shifted_cell_transitivity{L1, L2, L3}:
+    \forall int* p, integer s1, s2 ;
+      shifted_cell{L1, L2}(p, s1) ==>
+      shifted_cell{L2, L3}(p+s1, s2) ==>
+        shifted_cell{L1, L3}(p, s1+s2);
 
   lemma shift_transivity{L1, L2, L3}:
     \forall int* arr, integer fst, integer last, integer s1, s2 ;
