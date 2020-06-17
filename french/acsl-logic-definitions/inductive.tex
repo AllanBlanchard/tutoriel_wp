@@ -439,12 +439,12 @@ Dans cette version, nous exploitons deux propriétés de l'opérateur puissance 
 
 \begin{itemize}
 \item $(x^2)^n = x^{2n}$
-\item $x * (x^2)^n = x^{2n+1}$
+\item $x \times (x^2)^n = x^{2n+1}$
 \end{itemize}
 
 
 Qui permet de diviser $n$ par 2 à chaque tour de boucle au lieu de le décrémenter
-de un (ce qui permet à l'algorithme d'être en $0(log n)$ et pas $O(n)$). Exprimer
+de un (ce qui permet à l'algorithme d'être en $O(\log n)$ et pas $O(n)$). Exprimer
 les deux propriétés précédentes sous forme de lemmes :
 
 
@@ -461,7 +461,7 @@ si les solveurs SMT échouent.
 Finalement, compléter le contrat et l'invariant de la fonction \CodeInline{fast\_power}.
 Pour cela, notons qu'au début de la boucle $x^{old(n)} = p^n$, et que chaque itération
 utilise les propriétés précédentes pour mettre à jour $r$, au sens que nous avons
-$x^{old(n)} = r * p^n$ pendant toute la boucle, jusqu'à obtenir $n = 0$ et donc
+$x^{old(n)} = r \times p^n$ pendant toute la boucle, jusqu'à obtenir $n = 0$ et donc
 $p ^n = 1$.
 
 

@@ -391,12 +391,12 @@ In this version, we exploit two properties about the power operator:
 
 \begin{itemize}
 \item $(x^2)^n = x^{2n}$
-\item $x * (x^2)^n = x^{2n+1}$
+\item $x \times (x^2)^n = x^{2n+1}$
 \end{itemize}
 
 
 that allows us to divide $n$ by 2 at each step of the loop instead of decreasing
-it by one (which makes the algorithm $O(log\ n)$ instead of $O(n)$). Express the
+it by one (which makes the algorithm $O(\log n)$ instead of $O(n)$). Express the
 two previous properties in lemmas:
 
 
@@ -413,7 +413,7 @@ provided on the GitHub repository of this book, as well as the proof of the
 Finally, complete the contract and loop invariant of the \CodeInline{fast\_power}
 function. For this notice that at the beginning of the loop $x^{old(n)} = p^n$,
 and that each iteration uses the previous properties to update $r$, in the sense
-that we have $x^{old(n)} = r * p^n$ during all the loop, until we have $n = 0$ and
+that we have $x^{old(n)} = r \times p^n$ during all the loop, until we have $n = 0$ and
 thus $p^n = 1$.
 
 
