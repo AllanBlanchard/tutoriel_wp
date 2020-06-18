@@ -83,13 +83,14 @@ précondition.
 
 
 Pour cette catégorie particulière d'incohérences, une fonctionnalité utile de WP
-est l'option « détecteur de fumée » du greffon. Elle peut être utilisée pour
-détecter que des préconditions ne peuvent pas être satisfaites. Par exemple, ici,
-nous pouvons lancer cette ligne de commande :
+est l'option « *smoke tests* » du greffon. Ces tests préliminaires, effectués sur
+notre spécification sont utilisés pour détecter que des préconditions ne peuvent
+pas être satisfaites. Par exemple, ici, nous pouvons lancer cette ligne de
+commande :
 
 
 \begin{CodeBlock}{bash}
-    frama-c-gui -wp -wp-smoke-tests file.c
+  frama-c-gui -wp -wp-smoke-tests file.c
 \end{CodeBlock}
 
 
@@ -106,7 +107,7 @@ une pastille rouge dans la liste des obligations de preuve, indiquant qu'un
 prouveur a réussi à montrer que la précondition est incohérente.
 
 
-Notons que lorsque les tests du détecteur de fumée réussisse, par exemple si
+Notons que lorsque ces tests préliminaires réussissent, par exemple si
 nous corrigeons la précondition de cette façon :
 
 
