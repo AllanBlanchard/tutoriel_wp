@@ -155,10 +155,10 @@ Pour notre définition de \CodeInline{even\_natural}, cela donnerait :
 \CodeBlockInput[13][18]{c}{even-bad.c}
 
 
-Pendant la génération de l'obligation de preuve, nous demandons à Why3 de
+Pendant la génération de l'obligation de preuve, WP demande à Why3 de
 créer une définition inductive pour celle que nous avons écrit en ACSL.
 Comme Why3 est plus strict que Frama-C et WP pour ce type de définition,
-si le prédicat inductif est trop étrange (qu'il n'est pas bien fondé), il
+si le prédicat inductif est trop étrange (s'il n'est pas bien fondé), il
 sera rejeté avec une erreur. Et en effet, pour la propriété
 \CodeInline{even\_natural} que nous venons de définir, Why3 la refuse quand
 nous tentons de prouver \CodeInline{ensures \textbackslash{}false}, parce

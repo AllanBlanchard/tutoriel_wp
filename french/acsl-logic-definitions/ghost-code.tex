@@ -428,8 +428,9 @@ au mot clé \CodeInline{const} du C. Cependant, son comportement n'est pas
 exactement le même pour deux raisons.
 
 
-Tout d'abord, il n'est pas possible d'avoir une déclaration de la forme suivante,
-alors que le mot clé \CodeInline{const} n'interdit rien de tel :
+Tout d'abord, alors que la définition \CodeInline{const} suivante
+est autorisée,  il n'est pas possible d'avoir une déclaration de
+forme similaire avec le qualifieur \CodeInline{\textbackslash{}ghost} :
 
 
 \begin{CodeBlock}{c}
@@ -463,9 +464,10 @@ int const * p = a ;
 
 
 Ce code ne pose pas de problème car l'on ne fait que restreindre notre capacité
-à modifier les données lorsque l'on initialise \CodeInline{p} à \CodeInline{\&a[0]}.
-En revanche, les deux initialisations des pointeurs suivants sont refusées
-avec le qualifieur \CodeInline{\textbackslash{}ghost} :
+à modifier les données lorsque l'on initialise (ou affecte) \CodeInline{p} à
+\CodeInline{\&a[0]}. En revanche, les deux initialisations (ou affectations
+équivalentes) des pointeurs suivants sont refusées avec le qualifieur
+\CodeInline{\textbackslash{}ghost} :
 
 
 \begin{CodeBlock}{c}
@@ -489,7 +491,7 @@ par des moyens détournés pour provoquer un problème avec cette conversion :
 Ici, nous faisons une conversion qui pourrait sembler autorisée. En effet, nous
 passons l'adresse d'un pointeur sur une zone de mémoire ghost à une fonction qui
 attend un pointeur sur une zone de mémoire non-ghost, cela ne fait que restreindre
-l'accès à ce pointeur. Cependant, par cet appel de fonction, la fonction
+l'accès à la mémoire pointée. Cependant, par cet appel de fonction, la fonction
 \CodeInline{assign} assigne la valeur actuelle de \CodeInline{q} (qui est
 \CodeInline{\&x}) à \CodeInline{p} et nous permet donc, par la dernière opération
 de modifier \CodeInline{x} dans du code fantôme. En conséquence, une telle
