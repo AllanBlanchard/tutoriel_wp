@@ -265,7 +265,7 @@ an error will still be triggered:
 \end{CodeBlock}
 
 
-Finally, we can remark that there exists two way to change the control
+Finally, we can remark that there exists two ways to change the control
 flow. The first one is to use jumps (thus \CodeInline{break},
 \CodeInline{continue}, or \CodeInline{goto}), the second is to
 introduce a non terminating code. For this last one, unless the non
@@ -278,15 +278,15 @@ section~\ref{l3:acsl-logic-definitions-what-remains}.
 \levelFourTitle{Access to the memory}
 
 
-The ghost code is an observer for the normal code. Consequently, normal
+The ghost code is an observer of the normal code. Consequently, normal
 code is not authorized to access to ghost code, neither to its memory,
 nor to the functions. Ghost code can read the memory of the normal code,
 but cannot write it. Currently, ghost code cannot call normal functions,
 we will give more details about this restriction later in this section.
 
 
-Disallowing the ability to normal code to read ghost code has a very
-simple reason: if the normal code tries to access to ghost variables,
+The reason why normal code is not allowed tu read ghost codo is very
+simple: if the normal code tries to access to ghost variables,
 it would simply not compile: the compiler does not see the variables
 declared in annotations. For example:
 
@@ -334,7 +334,7 @@ Frama-C thus forbids such a code:
 
 
 Note that this verification is done thanks to the types of the different
-variables. A variable declared is normal code has a normal status, while
+variables. A variable declared in normal code has a normal status, while
 a variable declared in ghost code has a ghost status. Consequently, even
 if the ghost code does not really change the behavior of the program, any
 write on a normal variable in ghost code is forbidden:
@@ -409,8 +409,8 @@ But we immediately see that Frama-C does not like our way to do it:
 In particular, the first message indicates that we try to cast
 a pointer to \CodeInline{int \textbackslash{}ghost} into a pointer
 to \CodeInline{int}. Indeed, when a variable is declared in ghost
-code, only the variable is considered as ghost. Thus, for a pointer,
-the pointed memory is not considered as ghost (and thus here, while
+code, only the variable is considered to be ghost. Thus, for a pointer,
+the pointed memory is not considered to be ghost (and thus here, while
 \CodeInline{pe} is ghost, the memory pointed by \CodeInline{pe} is
 not). To solve this problem, Frama-C provides the
 \CodeInline{\textbackslash{}ghost} qualifier, that can be used to
@@ -425,8 +425,9 @@ looks like the \CodeInline{const} keyword. However, it does not
 behave exactly the same way for two main reasons.
 
 
-First, it is not allowed to have a definition like the one that
-follows, while it is allowed for the \CodeInline{ghost} keyword:
+First, while the following \CodeInline{const} definition is allowed,
+it is not allowed to write something similair with the
+\CodeInline{\textbackslash{}ghost} qualifier:
 
 
 \begin{CodeBlock}{c}
@@ -459,9 +460,10 @@ int const * p = a ;
 
 
 This code is valid as we only restrict our capacity to write memory
-locations when we initialize \CodeInline{p} to \CodeInline{\&a[0]}.
+locations when we initialize (or assign) \CodeInline{p} to \CodeInline{\&a[0]}.
 On the other hand, both the two following pointer initializations
-are forbidden with the \CodeInline{\textbackslash{}ghost} qualifier:
+(or equivalent assignments) are forbidden with the
+\CodeInline{\textbackslash{}ghost} qualifier:
 
 
 \begin{CodeBlock}{c}
@@ -486,7 +488,7 @@ this conversion:
 Here, we make a conversion that seems to be reasonable. Indeed, we give
 the address of a pointer to some ghost memory location to a function
 that takes a pointer to a normal memory, thus we only restrict our ability
-to access to this pointer. However, by this function call, the function
+to access to the pointed memory. However, by this function call, the function
 \CodeInline{assign} assigns the current value of \CodeInline{q} (which is
 \CodeInline{\&x}) to \CodeInline{p}. Thus, via the last instruction, we
 can write \CodeInline{x} in ghost code, which should be forbidden.
@@ -719,7 +721,7 @@ and prove that the function satisfies it.
 
 
 Now, we would like to know which cells have been updated by the function.
-Add a ghost parameter to \CodeInline{replace} so that it can receive an
+Add a ghost parameter to \CodeInline{replace} so that it can receive a
 second array that will record the updated (or not) cells. Adding also the
 following code after the call to replace:
 
