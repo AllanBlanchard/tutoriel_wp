@@ -88,7 +88,7 @@ able to prove everything. While we will give more details about axioms in the
 Section~\ref{l2:acsl-logic-definitions-axiomatic}, let us give two hints to
 avoid building such a bad definition.
 
-First, we can make sure that inductive predicates are well founded. This can
+First, we can make sure that inductive predicates are well-founded. This can
 be done by syntactically restricting what we allow in an inductive definition,
 by making sure that each case has the form:
 
@@ -111,7 +111,7 @@ This is for example verified by our previously defined predicate
 does not respect this constraint as the property \CodeInline{even\_natural}
 appears negatively on line~8.
 
-Second, we can simply write a function that have a contract that needs the
+Second, we can simply write a function that has a contract that needs the
 predicate \CodeInline{P}. For example, we can write a function:
 
 
@@ -138,11 +138,11 @@ For example for our definition of \CodeInline{even\_natural}, we would write:
 During the generation of the proof obligation, WP asks Why3 to create an
 inductive definition from the one written in ACSL. As Why3 is stricter than
 Frama-C and WP on this kind of definition, if the inductive predicate is too
-strange (if it is not well founded), it will be rejected with an error. And
+strange (if it is not well-founded), it will be rejected with an error. And
 indeed, with the bad definition of \CodeInline{even\_natural} we just proposed,
 Why3 complains when we try to prove the
 \CodeInline{ensures \textbackslash{}false}, because there exists a non
-positive occurrence of \CodeInline{P\_even\_natural}, that encodes the
+positive occurrence of \CodeInline{P\_even\_natural} that encodes the
 \CodeInline{even\_natural} we wrote in ACSL.
 
 \begin{CodeBlock}{bash}
@@ -156,7 +156,7 @@ frama-c-gui -wp -wp-prop=BAD file.c
 
 
 However, that does not mean that we cannot write an inconsistent inductive
-definition. For example, the following definition is well founded, while it
+definition. For example, the following definition is well-founded, while it
 allows us to prove false:
 
 
@@ -173,7 +173,7 @@ void foo(int *p){}
 
 
 Here, we could detect the problem as \CodeInline{-wp-smoke-tests} can detect
-that the precondition is unsatisfiable. But we must be careful when defining
+that the precondition is unsatisfiable. However, we must be careful when defining
 inductive definitions to not introduce a definition that can lead to a proof
 of false.
 
@@ -261,11 +261,11 @@ be to write this specification (which is correct!):
 \CodeBlockInput[6]{c}{sort-incomplete.c}
 
 
-\textbf{This specification is correct}. But if we recall correctly the part of the
-tutorial about specifications, we have to \emph{precisely} express what we expect
-of the program. With this specification, we do not prove all required properties
-expected for a sort function. For example, this function correctly answers to
-the specification:
+\textbf{This specification is correct}. However, if we recall correctly the part
+of the tutorial about specifications, we have to \emph{precisely} express what
+we expect of the program. With this specification, we do not prove all required
+properties expected for a sort function. For example, this function correctly
+answers to the specification:
 
 
 \CodeBlockInput[8]{c}{sort-false.c}

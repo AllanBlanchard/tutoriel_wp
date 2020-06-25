@@ -58,7 +58,7 @@ void foo(int a){
 \end{CodeBlock}
 
 
-We can declare ghost labels, that can be used into annotations (or to perform
+We can declare ghost labels that can be used into annotations (or to perform
 a \CodeInline{goto} from the ghost code itself, under some conditions that
 we will explain later):
 
@@ -88,7 +88,7 @@ void foo(int a){
 \end{CodeBlock}
 
 
-A function can be provided with ghost parameters, that can be used
+A function can be provided with ghost parameters that can be used
 to give more information for the verification of the function. For
 example, if we imagine the verification of a function that receives
 a linked list, we could provide a ghost parameter that represents
@@ -180,7 +180,7 @@ Frama-C verifies several properties about the ghost code we write:
 \end{itemize}
 
 
-By verifying these properties, our goal is to guarantee that for any
+Verifying these properties, our goal is to guarantee that for any
 program, for any input, its observable behavior is the same with or
 without the ghost code.
 
@@ -188,11 +188,11 @@ without the ghost code.
 \begin{Warning}
   Before Frama-C 21 Scandium, most of these properties were not
   verified by the Frama-C kernel. Thus, if we work with a previous
-  version, we have to assure that they are verified ourselves.
+  version, we have to ensure that they are verified ourselves.
 \end{Warning}
 
 
-If some of these properties are not verified, that would mean that
+If some of these properties are not verified, it would mean that
 the ghost code can change the behavior of the verified program.
 Let us have a closer look to each of these constraints.
 
@@ -229,7 +229,7 @@ program is rejected by Frama-C:
 
 
 It is important to note that when a ghost code changes the control
-flow, the instructions that is pointed by Frama-C is the starting
+flow, the instruction that is pointed by Frama-C is the starting
 point of the ghost code. For example, if we introduce a conditional
 around our \CodeInline{break} instruction:
 
@@ -279,14 +279,14 @@ section~\ref{l3:acsl-logic-definitions-what-remains}.
 
 
 The ghost code is an observer of the normal code. Consequently, normal
-code is not authorized to access to ghost code, neither to its memory,
+code is not authorized to access ghost code, neither to its memory,
 nor to the functions. Ghost code can read the memory of the normal code,
 but cannot write it. Currently, ghost code cannot call normal functions,
 we will give more details about this restriction later in this section.
 
 
-The reason why normal code is not allowed tu read ghost codo is very
-simple: if the normal code tries to access to ghost variables,
+Normal code is not allowed to read ghost code for a very simple reason:
+if the normal code tries to access ghost variables,
 it would simply not compile: the compiler does not see the variables
 declared in annotations. For example:
 
@@ -388,14 +388,14 @@ a ghost array to store some information:
 \CodeBlockInput{c}{ghost-array-1.c}
 
 
-Here, we use indices to access to our arrays, but we could for example
-access to their content using pointers:
+Here, we use indices to access our arrays, but we could for example
+access their content using pointers:
 
 
 \CodeBlockInput{c}{ghost-array-2.c}
 
 
-But we immediately see that Frama-C does not like our way to do it:
+However, we immediately see that Frama-C does not like our way to do it:
 
 
 \begin{CodeBlock}{text}
@@ -409,11 +409,11 @@ But we immediately see that Frama-C does not like our way to do it:
 In particular, the first message indicates that we try to cast
 a pointer to \CodeInline{int \textbackslash{}ghost} into a pointer
 to \CodeInline{int}. Indeed, when a variable is declared in ghost
-code, only the variable is considered to be ghost. Thus, for a pointer,
-the pointed memory is not considered to be ghost (and thus here, while
+code, only the variable is considered ghost. Thus, for a pointer,
+the pointed memory is not considered ghost (and thus here, while
 \CodeInline{pe} is ghost, the memory pointed by \CodeInline{pe} is
 not). To solve this problem, Frama-C provides the
-\CodeInline{\textbackslash{}ghost} qualifier, that can be used to
+\CodeInline{\textbackslash{}ghost} qualifier that can be used to
 add a ghost status to a type:
 
 
@@ -426,7 +426,7 @@ behave exactly the same way for two main reasons.
 
 
 First, while the following \CodeInline{const} definition is allowed,
-it is not allowed to write something similair with the
+it is not allowed to write something similar with the
 \CodeInline{\textbackslash{}ghost} qualifier:
 
 
@@ -476,7 +476,7 @@ int non_ghost_int ;
 
 
 While the reason why we refuse the first initialization is quite direct:
-it would allow to write normal memory from ghost code through
+it would allow to write into the normal memory from ghost code through
 \CodeInline{p}, the reason why we refuse the second one is not that
 intuitive. And, indeed, we must use workarounds to create a problem with
 this conversion:
@@ -506,7 +506,7 @@ not currently supported by Frama-C.
 
 Except for the restrictions mentioned in the previous section,
 ghost code is just normal C code. That means that if we want to
-verify the original program, we must take of at least two more
+verify the original program, we must take care of at least two more
 aspects:
 
 
@@ -525,9 +525,9 @@ As we said in section~\ref{l3:statements-loops-variant}, there are two
 kinds of correctness: partial and total correctness, the second one allowing
 to prove that a program terminates. For normal code, showing that the code
 terminates is not always something that we want. On the other hand, if we
-use some ghost code during verification, it is absolutely necessary to prove
-total correctness of this ghost code. Indeed, if it is non terminating (if
-is contains an infinite loop for example), it could allow us to prove
+use some ghost code during the verification, it is absolutely necessary to
+prove total correctness of this ghost code. Indeed, if it is non terminating
+(if it contains an infinite loop for example), it could allow us to prove
 anything about the program.
 
 
