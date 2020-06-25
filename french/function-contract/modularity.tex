@@ -169,8 +169,8 @@ et les prouver.
 
 Le but de cet exercice est d'écrire une fonction de rendu de monnaie. La
 fonction \CodeInline{make\_change} reçoit la valeur due, la quantité
-d'argent reçue et un buffer pour indiquer quelle quantité de chaque
-billet/pièce doit être retournée au client.
+d'argent reçue et un \textit{buffer} pour indiquer quelle quantité de
+chaque billet/pièce doit être retournée au client.
 
 
 Par exemple, pour une valeur due de 410 et une valeur reçue de 500, le
@@ -189,7 +189,7 @@ La fonction \CodeInline{remove\_max\_notes} reçoit une valeur de pièce ou
 billet et ce qu'il reste à convertir (via un pointeur), supposé être
 supérieur à 0. Elle calcule le nombre maximal de billet/pièce de cette
 valeur pouvant tenir dans le restant, diminue la valeur du restant
-conformément, et retourne ce nombre. La fonction \CodeInline{make\_change}
+conformément et retourne ce nombre. La fonction \CodeInline{make\_change}
 doit ensuite faire usage de cette fonction pour calculer le rendu de
 monnaie.
 
@@ -209,7 +209,7 @@ propriétés de triangles dans une structure. La fonction
 \CodeInline{b}, et \CodeInline{c}, en supposant que \CodeInline{a} est
 l'hypoténuse. Si ces valeurs ne correspondent pas à un triangle, la
 fonction retourne -1, et 0 si tout est OK. Les propriétés sont
-collectées dans un structure \CodeInline{info} reçue via un pointeur.
+collectées dans une structure \CodeInline{info} reçue via un pointeur.
 
 
 \CodeBlockInput{c}{ex-5-triangle.c}

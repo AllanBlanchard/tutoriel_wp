@@ -60,9 +60,9 @@ void foo(int a){
 \end{CodeBlock}
 
 
-Nous pouvons déclarer des \textit{labels} fantôme, que l'on peut utiliser dans
+Nous pouvons déclarer des \textit{labels} fantômes, que l'on peut utiliser dans
 nos annotations (ou même pour effectuer un \CodeInline{goto} depuis le code
-fantôme lui même, sous certaines conditions que nous expliquerons plus tard) :
+fantôme lui-même, sous certaines conditions que nous expliquerons plus tard) :
 
 
 \begin{CodeBlock}{c}
@@ -147,7 +147,7 @@ fantôme. En effet, il est souvent utile d'écrire des contrats ou des assertion
 dans du code fantôme. Comme nous devons écrire ces spécifications dans du code
 qui est déjà englobé dans des commentaires C, nous avons accès à une syntaxe
 spécifique pour fournir des contrats ou des assertions fantômes. Nous ouvrons
-une annotation fantôme avec la syntaxe \CodeInline{/@} et nous les fermons avec
+une annotation fantôme avec la syntaxe \CodeInline{/@} et nous la fermons avec
 \CodeInline{@/}. Cela s'applique aussi aux boucles dans le code fantôme par
 exemple :
 
@@ -186,14 +186,14 @@ Frama-C vérifie plusieurs propriétés à propos du code fantôme que nous écr
 
 
 Très simplement, ces propriétés cherchent à garantir que pour n'importe
-quel programme son comportement observable pour toute entrée est le même
+quel programme, son comportement observable pour toute entrée est le même
 avec ou sans le code fantôme.
 
 
 \begin{Warning}
   Avant Frama-C 21 Scandium, la plupart de ces propriétés n'étaient pas vérifiées
   par le noyau de Frama-C. Par conséquent, si l'on travaille avec une version
-  antérieure, il faut s'assurer soit même que ces propriétés sont vérifiées.
+  antérieure, il faut s'assurer soi-même que ces propriétés sont vérifiées.
 \end{Warning}
 
 
@@ -269,7 +269,7 @@ condition est toujours fausse, une erreur sera quand même levée :
 Finalement, remarquons qu'il existe deux manières générales d'altérer le flot de
 contrôle. La première est d'utiliser un saut (donc \CodeInline{break},
 \CodeInline{continue}, ou \CodeInline{goto}), la seconde est d'introduire un code
-non terminant. Pour ce dernier, à moins que le code soit trivialement non terminant
+non terminant. Pour ce dernier, à moins que le code soit trivialement non terminant,
 le noyau ne peut pas vérifier la non-altération du flot de contrôle, et ne le fait
 donc jamais. Nous traiterons cette question dans la
 section~\ref{l3:acsl-logic-definitions-what-remains}.
@@ -463,7 +463,7 @@ int const * p = a ;
 \end{CodeBlock}
 
 
-Ce code ne pose pas de problème car l'on ne fait que restreindre notre capacité
+Ce code ne pose pas de problème, car l'on ne fait que restreindre notre capacité
 à modifier les données lorsque l'on initialise (ou affecte) \CodeInline{p} à
 \CodeInline{\&a[0]}. En revanche, les deux initialisations (ou affectations
 équivalentes) des pointeurs suivants sont refusées avec le qualifieur
@@ -489,8 +489,8 @@ par des moyens détournés pour provoquer un problème avec cette conversion :
 
 
 Ici, nous faisons une conversion qui pourrait sembler autorisée. En effet, nous
-passons l'adresse d'un pointeur sur une zone de mémoire ghost à une fonction qui
-attend un pointeur sur une zone de mémoire non-ghost, cela ne fait que restreindre
+passons l'adresse d'un pointeur sur une zone de mémoire fantôme à une fonction qui
+attend un pointeur sur une zone de mémoire normale, cela ne fait que restreindre
 l'accès à la mémoire pointée. Cependant, par cet appel de fonction, la fonction
 \CodeInline{assign} assigne la valeur actuelle de \CodeInline{q} (qui est
 \CodeInline{\&x}) à \CodeInline{p} et nous permet donc, par la dernière opération
@@ -508,10 +508,10 @@ accepter plus de code, mais ce n'est actuellement pas supporté par Frama-C.
 \label{l3:acsl-logic-definitions-what-remains}
 
 
-Mis à part les restrictions que nous avons mentionné dans la section précédente,
+Mis à part les restrictions que nous avons mentionnées dans la section précédente,
 le code fantôme est juste du code C normal. Cela veut dire que si nous voulons
 faire la vérification de notre programme d'origine, nous devons faire attention,
-nous mêmes, à au moins deux aspects supplémentaires :
+nous-mêmes, à au moins deux aspects supplémentaires :
 
 
 \begin{itemize}
@@ -551,7 +551,7 @@ void foo(void){
 Le but du code fantôme est de rendre explicite des informations généralement
 implicites. Par exemple, dans la vérification de l'algorithme de tri, nous nous en
 sommes servi pour ajouter un \textit{label} dans le programme qui n'est pas
-visible par le compilateur mais que nous avons pu utiliser pour la vérification.
+visible par le compilateur, mais que nous avons pu utiliser pour la vérification.
 Le fait que les valeurs ont été échangées entre les deux points de programme était
 implicitement garanti par le contrat de la fonction d'échange, ajouter ce
 \textit{label} fantôme nous a donné la possibilité de rendre cette propriété
@@ -666,7 +666,7 @@ dépassement, c'est cette valeur qui est renvoyée.
 \levelFourTitle{Validité du code ghost}
 
 
-Dans ces fonctions, et sans exécuter Frama-C, expliquer en quoi le code fantôme
+Dans ces fonctions, sans exécuter Frama-C, expliquer en quoi le code fantôme
 pose problème. Lorsque Frama-C devrait rejeter le code, expliquer pourquoi.
 Notons qu'il est possible d'exécuter Frama-C sans contrôle du code fantôme en
 utilisant l'option \CodeInline{-kernel-warn-key ghost=inactive}.
@@ -726,7 +726,7 @@ En supposant que la fonction \CodeInline{replace} demande à ce que
 Maintenant, nous voudrions savoir quelles cellules du tableau ont été mises à
 jour par la fonction. Ajouter un paramètre fantôme à la fonction
 \CodeInline{replace} de manière à pouvoir recevoir un second tableau qui servira
-à enregistrer les cellules mise à jour (ou non) par la fonction. En ajoutant
+à enregistrer les cellules mises à jour (ou non) par la fonction. En ajoutant
 également le code suivant après l'appel à \CodeInline{replace} :
 
 
