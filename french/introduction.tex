@@ -32,15 +32,17 @@ Le reste vient de mon expérience personnelle avec Frama-C et WP.
 
 Les versions des outils utilisés dans ce tutoriel sont les suivantes :
 \begin{itemize}
-\item Frama-C 20 Calcium
-\item Why3 1.2.0
-\item Alt-Ergo 2.0.0
-\item Coq 8.9.0 (pour les scripts proposés, Coq n'est pas utilisé dans le tutoriel)
-\item Z3 4.8.1 (utilisés dans un exemple, il n'est pas absolument nécessaire)
+\item Frama-C 21.1 Scandium
+\item Why3 1.3.1
+\item Alt-Ergo 2.3.2
+\item Coq 8.11.2 (pour les scripts proposés, Coq n'est pas utilisé dans le tutoriel)
+\item Z3 4.8.4 (utilisés dans un exemple, il n'est pas absolument nécessaire)
 \end{itemize}
 Selon les versions utilisées par le lecteur, quelques différences pourraient
 apparaître avec ce qui est prouvé et ce qui ne l'est pas. Quelques fonctionnalités
 ne sont disponibles que dans les versions récentes de Frama-C.
+
+Les scripts Coq devraient fonctionner au moins de la version 8.7.2 à 8.11.2.
 
 \horizontalLine
 
@@ -58,7 +60,7 @@ utilisé. Il faut dire qu'il n'existe, pour ainsi dire, aucun langage qui soit
 disponible sur une aussi large variété de plateformes (matérielles et
 logicielles) différentes, que son orientation bas-niveau et les années
 d'optimisations investies dans ses compilateurs permettent de générer à
-partir de programme C des exécutables très performants (à condition bien sûr
+partir de programmes C des exécutables très performants (à condition bien sûr
 que le code le permette), et qu'il possède un nombre d'experts (et donc une
 base de connaissances) très conséquent.
 

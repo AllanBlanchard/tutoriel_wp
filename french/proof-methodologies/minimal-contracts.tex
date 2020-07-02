@@ -197,7 +197,8 @@ une approche par contrats minimaux :
 Prouver l'absence d'erreurs à l'exécution dans la fonction \CodeInline{reverse}
 suivante et ses dépendances en utilisant une approche par contrats minimaux.
 Notons que la fonction \CodeInline{swap} doit également être spécifiée par
-contrats minimaux. Ne pas oublier d'ajouter l'option \CodeInline{-warn-unsigned-overflow}.
+contrats minimaux. Ne pas oublier d'ajouter les options
+\CodeInline{-warn-unsigned-overflow} et \CodeInline{-warn-unsigned-downcast}.
 
 
 \CodeBlockInput{c}{ex-2-reverse.c}
@@ -209,7 +210,8 @@ contrats minimaux. Ne pas oublier d'ajouter l'option \CodeInline{-warn-unsigned-
 
 Prouver l'absence d'erreurs à l'exécution dans la fonction \CodeInline{bsearch}
 suivante en utilisant une approche par contrats minimaux. Ne pas oublier d'ajouter
-l'option \CodeInline{-warn-unsigned-overflow}.
+les options \CodeInline{-warn-unsigned-overflow} et
+\CodeInline{-warn-unsigned-downcast}.
 
 
 \CodeBlockInput{c}{ex-3-binary-search.c}
@@ -221,7 +223,8 @@ l'option \CodeInline{-warn-unsigned-overflow}.
 Prouver l'absence d'erreurs à l'exécution dans la fonction \CodeInline{sort}
 et ses dépendances en utilisant une approche par contrats minimaux. Notons que
 ces dépendances doivent également être spécifiées par contrats minimaux. Ne pas
-oublier d'ajouter l'option \CodeInline{-warn-unsigned-overflow}.
+oublier d'ajouter les options \CodeInline{-warn-unsigned-overflow} et
+\CodeInline{-warn-unsigned-downcast}.
 
 
 \CodeBlockInput{c}{ex-4-sort.c}

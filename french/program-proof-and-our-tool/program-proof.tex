@@ -59,7 +59,7 @@ their absence!
 
 
 
-Le test de programme peut-être utilisé pour montrer la présence de bugs mais
+Le test de programme peut être utilisé pour montrer la présence de bugs mais
 jamais pour montrer leur absence.
 
 
@@ -70,7 +70,7 @@ jamais pour montrer leur absence.
 Dans chaque nouvelle à propos d'attaque sur des systèmes informatiques, ou
 des virus, ou des bugs provoquant des crashs, il y a toujours la remarque
 séculaire « le programme inviolable/incassable/sans bugs n'existe pas ». Et
-il s'avère généralement que, bien qu'assez vraie, cette phrase soit assez
+il s'avère généralement que, bien qu'assez vraie, cette phrase est assez
 mal comprise.
 
 
@@ -88,16 +88,17 @@ séparer en trois catégories :
 \begin{itemize}
 \item le programme n’est pas conforme, ou son comportement non défini,
       d’après la spécification du langage (par exemple, le programme accède
-      en dehors d’un tableau pendant une recherche de minimum);
+      en dehors d’un tableau pendant une recherche de l'indice de la valeur
+      minimale) ;
 \item le programme n’est pas conforme à la spécification que nous en avons
       donné (par exemple, nous avons défini que le programme doit trouver
-      la plus petite valeur d’un tableau, mais en fait il ne regarde pas sa
-      dernière valeur à cause d’une erreur) ;
+      l'indice de la valeur minimale d’un tableau, mais en fait il ne
+      regarde pas sa dernière valeur à cause d’une erreur) ;
 \item la spécification ne reflète pas parfaitement « ce que nous voulons »,
       et par conséquent, le programme non plus (par exemple, nous avons
-      défini que le programme doit trouver la plus petite valeur d’un
-      tableau, mais nous n’avons pas spécifié que s’il y en a plusieurs, il
-      faut prendre la première, parce que cela me semblait trop évident,
+      défini que le programme doit trouver l'indice de la valeur minimale
+      d’un tableau, mais nous n’avons pas spécifié que s’il y en a plusieurs,
+      il faut prendre la première, parce que cela me semblait trop évident,
       mais du coup ce n’est pas ce que fait le programme).
 \end{itemize}
 
@@ -125,7 +126,7 @@ conformes :
 
 
 \begin{itemize}
-\item à la spécification de notre langage,
+\item à la spécification de notre langage ;
 \item à la spécification de ce que nous attendons d’eux.
 \end{itemize}
 

@@ -111,11 +111,10 @@ and annotations that carries a proof that some property we want to verify holds.
 
 
 Note that here, as we can write quite a lot of ghost code, we augment our risk
-to modify the behavior of the program by mistake. Most of the time we do not
-need to modify any memory location, thus taking care to check (few) assigned
-memory locations (for example, loop iterators), that we do not create a runtime
-error (through RTE plugin) and that the ghost code terminates is enough to be
-confident about the verification.
+to introduce a mistake that would change the properties of the verified code.
+We must thus verify that the ghost code we write terminates and that it does
+not contain runtime errors (through RTE plugin) to be confident about the
+verification.
 
 
 
@@ -172,7 +171,7 @@ is globally sorted:
 
 
 
-\CodeBlockInput[16][21]{c}{lemma-function-1-1.c}
+\CodeBlockInput[15][22]{c}{lemma-function-1-1.c}
 
 
 
@@ -186,7 +185,7 @@ prove the precondition of the call to \CodeInline{bsearch}:
 
 
 
-\CodeBlockInput[16][31]{c}{lemma-function-1-2.c}
+\CodeBlockInput[15][32]{c}{lemma-function-1-2.c}
 
 
 
@@ -225,7 +224,7 @@ example have written the contract like this:
 
 
 
-\CodeBlockInput[16][31]{c}{lemma-function-1-3.c}
+\CodeBlockInput[15][32]{c}{lemma-function-1-3.c}
 
 
 
@@ -237,7 +236,7 @@ to get from the premises still makes sense). Let us for example translate the
 
 
 
-\CodeBlockInput[34][41]{c}{lemma-function-1-3.c}
+\CodeBlockInput[34][43]{c}{lemma-function-1-3.c}
 
 
 
@@ -249,7 +248,7 @@ a new lemma:
 
 
 
-\CodeBlockInput[44][52]{c}{lemma-function-1-3.c}
+\CodeBlockInput[45][55]{c}{lemma-function-1-3.c}
 
 
 
@@ -287,7 +286,7 @@ function that returns it:
 
 
 
-\CodeBlockInput[24][42]{c}{lemma-function-2-2.c}
+\CodeBlockInput[24][44]{c}{lemma-function-2-2.c}
 
 
 
@@ -318,7 +317,7 @@ allows our assertion to be validated:
 
 
 
-\CodeBlockInput[44][53]{c}{lemma-function-2-2.c}
+\CodeBlockInput[46][55]{c}{lemma-function-2-2.c}
 
 
 
@@ -650,12 +649,14 @@ In order to show that the complete range is a permutation, we have to show that
 the number of occurrences did not change. We know that the first part of the
 array is a permutation of the same range at the beginning of the body of the loop.
 Thus, we already know that the number of occurrences of any $v$ did not change
-for a part of our array. Let us continue the occurrences counting for the rest
-of our array, knowing that the second part is unchanged (when \CodeInline{i+1}
-is lower than \CodeInline{end} as else, we do not have anything to count):
+for a part of our array. By using a loop with \CodeInline{j} from \CodeInline{i}
+to \CodeInline{end} with an invariant \CodeInline{permutation{L,PI}(a, beg, j)},
+let us continue the occurrences counting for the rest of our array, knowing that
+the second part is unchanged (when \CodeInline{i+1} is lower than \CodeInline{end}
+as else, we do not have anything to count):
 
 
-\CodeBlockInput[267][286]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[271][287]{c}{insert-sort-auto-proved.c}
 
 
 which is enough to ensure that the \CodeInline{insertion\_sort} function
@@ -686,13 +687,13 @@ First let us define a lemma function that allows to explicitly split a range of
 values into two subparts in which we can count separately.
 
 
-\CodeBlockInput[57][75]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[57][77]{c}{insert-sort-auto-proved.c}
 
 
 We can note that this property is proved in a way that is quite similar to what
 we wrote for the body of our loop in \CodeInline{insertion\_sort}, we start from
 the point where we want to count and show that the property remains true until
-the end of the array. 
+the end of the array.
 
 
 
@@ -705,7 +706,7 @@ array at any index, thus make the \CodeInline{split} variable a universally
 quantified variable, and use the previous function to prove that it is true:
 
 
-\CodeBlockInput[77][98]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[79][102]{c}{insert-sort-auto-proved.c}
 
 
 And we can split our original array and the new one:
@@ -741,7 +742,7 @@ property that we already almost exactly proved in the
 proof:
 
 
-\CodeBlockInput[138][154]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[142][158]{c}{insert-sort-auto-proved.c}
 
 
 The function \CodeInline{unchanged\_permutation\_premise} ensures that we have
@@ -750,7 +751,7 @@ unchanged from the precondition to the postcondition. We can build our
 lemma macro:
 
 
-\CodeBlockInput[125][135]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[131][139]{c}{insert-sort-auto-proved.c}
 
 
 Which almost corresponds to what we have written previously in the
@@ -758,7 +759,7 @@ Which almost corresponds to what we have written previously in the
 in the \CodeInline{insert} function.
 
 
-\CodeBlockInput[245][247]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[249][251]{c}{insert-sort-auto-proved.c}
 
 
 The only remaining property to prove is the hardest one and is about the
@@ -766,7 +767,7 @@ The only remaining property to prove is the hardest one and is about the
 the macro.
 
 
-\CodeBlockInput[183][200]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[187][204]{c}{insert-sort-auto-proved.c}
 
 
 How can we prove this property? Basically, one has to notice that since all the
@@ -778,14 +779,14 @@ last cell in the original array, and the first cell in the new array is the same
 function to count separately the elements that are shifted and the one which is
 moved from the end to the beginning. However, the call corresponding to the
 original array has again to be put before the code that modifies the memory (see
-line 194) in the previous code, and we will have to take that in account when we
+line 198) in the previous code, and we will have to take that in account when we
 will insert our use of the macro in the \CodeInline{insert} function.
 
 
 Let us now present the macro that we use to prove that the lemma holds:
 
 
-\CodeBlockInput[156][181]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[160][185]{c}{insert-sort-auto-proved.c}
 
 
 The loop invariant is pretty similar to what we have written so far, the only
@@ -801,22 +802,18 @@ proof:
 
 
 \begin{itemize}
-\item 171--175: we recall that in the original array we can split the last
+\item 175--179: we recall that in the original array we can split the last
   element,
-\item 176--180: we show that as the first element of the array is
-  the last element of the original array (176), the number of occurrences for
-  any value in these ranges is the same (177--179).
+\item 180--184: we show that as the first element of the array is
+  the last element of the original array (180), the number of occurrences for
+  any value in these ranges is the same (181--183).
 \end{itemize}
 
 
 We can use the macro in our program:
 
 
-\begin{CodeBlock}{c}
-//@ assert rotate_left{Pre, Here}(a, i, last+1) ;
-//@ ghost rotate_left_permutation(Pre, Here, a, i, last+1) ;
-//@ assert permutation{Pre, Here}(a, i, last+1) ;
-\end{CodeBlock}
+\CodeBlockInput[245][247]{c}{insert-sort-auto-proved.c}
 
 
 However, we have to show that the considered range at label \CodeInline{Pre} can
@@ -826,18 +823,18 @@ it is non empty):
 
 
 
-\CodeBlockInput[100][122]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[104][128]{c}{insert-sort-auto-proved.c}
 
 
 
 That we have to call before the loop in the \CodeInline{insert} function:
 
 
-\CodeBlockInput[211][216]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[215][220]{c}{insert-sort-auto-proved.c}
 
 
-Note that depending on the version of the solvers, the assertion on lines 176 to
-180 of the macro, about the element at the beginning/the end of the array might
+Note that depending on the version of the solvers, the assertion on lines 180 to
+184 of the macro, about the element at the beginning/the end of the array might
 fail due to the complexity of the proof context. Let us help the solvers a last
 time by adding a last lemma (automatically proved by SMT solvers) that states
 this relation for any array and position in the array:
@@ -851,16 +848,14 @@ which guarantees that our resulting annotated insertion function is entirely
 proved:
 
 
-\CodeBlockInput[202][250]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[206][254]{c}{insert-sort-auto-proved.c}
 
 
 We finally highlight how the proof context can make the proof harder for SMT
 solvers. Basically, if we swap the proofs for each part of the array, that is,
 starting with the ``unchanged'' part and after the ``rotate'' part, the proof has
 more chance to fail, since it would make the proof context bigger for the
-hardest proof. For the same reason, it is here almost needed (again depending
-on how powerful is the machine and the solvers) to separate the proof of the
-absence of runtime errors, else it pollutes the proof context and it may fail.
+hardest proof.
 
 
 \levelThreeTitle{Exercises}
@@ -880,7 +875,7 @@ invariant in order to be sure that the property does not contain any division
 for SMT solvers depending on the constraint that exists on the used values).
 
 
-\CodeBlockInput[1][12]{c}{ex-1-sum-of-n-integers.c}
+\CodeBlockInput[1][14]{c}{ex-1-sum-of-n-integers.c}
 
 
 Now, let us generalize to any bounds with the sum of all the integers between
@@ -889,13 +884,13 @@ contract. Write a body for the function such that the postcondition is proved.
 Note that again, we advise to express the invariant without division.
 
 
-\CodeBlockInput[14][26]{c}{ex-1-sum-of-n-integers.c}
+\CodeBlockInput[16][30]{c}{ex-1-sum-of-n-integers.c}
 
 
 Finally, let us prove this function:
 
 
-\CodeBlockInput[28][35]{c}{ex-1-sum-of-n-integers.c}
+\CodeBlockInput[32][39]{c}{ex-1-sum-of-n-integers.c}
 
 
 This should not be too hard, and what we obtain is a proof that we have written
@@ -947,8 +942,8 @@ previous function to obtain the proof for free.
 
 
 For all these functions, WP should be parameterized with the control of the
-absence of runtime errors as well as the option
-\CodeInline{-warn-unsigned-overflow}.
+absence of runtime errors as well as the options
+\CodeInline{-warn-unsigned-overflow} and \CodeInline{-warn-unsigned-downcast}.
 
 
 \levelFourTitle{An actual example with sum}

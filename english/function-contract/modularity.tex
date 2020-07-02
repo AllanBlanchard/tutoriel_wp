@@ -145,7 +145,7 @@ they are disjoint and complete.
 
 
 Taking back the function \CodeInline{max\_ptr} that orders two values,
-putting the maximum at the first location and the minimum at the second, 
+putting the maximum at the first location and the minimum at the second,
 write a function \CodeInline{min\_ptr} that uses this function and
 produces the opposite operation. Use these functions to complete the
 four functions that orders 3 values. For each variant (increasing and
@@ -156,3 +156,62 @@ these functions and prove them.
 
 
 \CodeBlockInput{c}{ex-3-order-3.c}
+
+
+\levelFourTitle{Give the change}
+
+
+The goal of this exercise is to write a function that computes the change
+on a purchase. The function \CodeInline{make\_change} receives the amount
+to pay, the received amount of money, and a buffer to indicate how
+many of each note must be returned to the client.
+
+
+For example, for an amount of 410 and a received amount of 500, the array
+should contain 1 in the cell \CodeInline{change[N50]} and 2 in the cell
+\CodeInline{change[N20]} after the call to the function.
+
+
+If the received amount is less than the price, the function should
+return -1 (and oppositely, 0 on success).
+
+
+\CodeBlockInput{c}{ex-4-change.c}
+
+
+The function \CodeInline{remove\_max\_notes} receives a note value and
+what remains to be changed (via a pointer), supposed to be greater than
+0. It computes the maximum number of this note that can fit into the
+remaining, decreases it accordingly and returns the number of notes.
+The function \CodeInline{make\_change} should then make use of this function
+to compute the change.
+
+
+Write the code of these functions and their specification and prove their
+correctness. Note that this should not use loop as we still do not know
+how to deal with them.
+
+
+\levelFourTitle{Triangle}
+
+
+In this exercise, we want to gather the results of the functions we have
+written in the previous section to get the properties of triangles into
+a structure. The function \CodeInline{classify} receives three lengths
+\CodeInline{a}, \CodeInline{b}, and \CodeInline{c}, assuming that
+\CodeInline{a} is the hypotenuse. If these values do not correspond to a
+triangle, the function should return -1, and 0 if everything is OK. The
+properties are collected into a structure \CodeInline{info} received via
+a pointer.
+
+
+\CodeBlockInput{c}{ex-5-triangle.c}
+
+
+Write, specify and prove all functions.
+
+
+Note there are quite a lot of behaviors to list and specify. You can try
+to write a version that does not require \CodeInline{a} to be the hypotenuse,
+but it could be hard to finish the proof automatically with
+Alt-Ergo because there are quite a lot of combinations to consider.

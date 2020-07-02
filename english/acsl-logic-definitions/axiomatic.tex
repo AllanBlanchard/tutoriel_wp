@@ -100,7 +100,7 @@ axiomatically as follows:
 /*@
   axiomatic Factorial{
     logic integer factorial(integer n);
-    
+
     axiom factorial_0:
       \forall integer i; i <= 0 ==> 1 == factorial(i) ;
 
@@ -227,9 +227,9 @@ and the value is not 0 anymore.
 
 
 
-Note that unlike inductive definitions, where Coq provides us a way to control
+Note that unlike inductive definitions, where Why3 provides us a way to control
 that what we write in ACSL is relatively well defined, we do not have such a
-mechanism for axiomatic definitions. Basically, even with Coq such a definition
+mechanism for axiomatic definitions. Basically, even with Why3 such a definition
 is translated into a list of axioms that are thus assumed.
 
 
@@ -314,7 +314,7 @@ string, that is to say, what we expect of our C function:
 
 \begin{CodeBlock}{c}
 /*@
-  logic integer strlen(char const* s) = // let's see later 
+  logic integer strlen(char const* s) = // let's see later
 */
 \end{CodeBlock}
 

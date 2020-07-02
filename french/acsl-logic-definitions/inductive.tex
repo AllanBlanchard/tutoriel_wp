@@ -134,9 +134,8 @@ ne respecte pas cette contrainte, car la propriété \CodeInline{even\_natural}
 apparaît négativement à la ligne~8.
 
 
-Ensuite, il est possible de demander la génération de la version Coq de la
-preuve d'une propriété qui nécessite le prédicat \CodeInline{P}. Par exemple,
-nous pouvons écrire une fonction :
+Ensuite, nous pouvons simplement écrire une fonction dont le contrat nécessite
+\CodeInline{P}. Par exemple, nous pouvons écrire la fonction suivante :
 
 
 
@@ -156,21 +155,23 @@ Pour notre définition de \CodeInline{even\_natural}, cela donnerait :
 \CodeBlockInput[13][18]{c}{even-bad.c}
 
 
-Comme Coq est plus strict que Frama-C et WP pour ce type de définitions, si
-le prédicat inductif est trop étrange (s'il n'est pas bien fondé), il sera
-refusé par Coq avec une erreur. En effet, pour la propriété
-\CodeInline{even\_natural} que nous venons de définir, Coq la refuse quand
+Pendant la génération de l'obligation de preuve, WP demande à Why3 de
+créer une définition inductive pour celle que nous avons écrit en ACSL.
+Comme Why3 est plus strict que Frama-C et WP pour ce type de définition,
+si le prédicat inductif est trop étrange (s'il n'est pas bien fondé), il
+sera rejeté avec une erreur. Et en effet, pour la propriété
+\CodeInline{even\_natural} que nous venons de définir, Why3 la refuse quand
 nous tentons de prouver \CodeInline{ensures \textbackslash{}false}, parce
 qu'il existe une occurrence non positive de \CodeInline{P\_even\_natural}
 qui encode le \CodeInline{even\_natural} que nous avons écrit en ACSL.
 
 \begin{CodeBlock}{bash}
-frama-c-gui -wp -wp-prop=BAD -wp-prover=native:coq file.c
+frama-c-gui -wp -wp-prop=BAD file.c
 \end{CodeBlock}
 
-\image{coq-failed}
+\image{why3-failed}
 
-\image{coq-failed-error}
+\image{why3-failed-error}
 
 
 Cependant, cela ne signifie pas que nous ne pouvons pas écrire une définition
@@ -179,18 +180,30 @@ fondée mais nous permet de prouver faux :
 
 
 \begin{CodeBlock}{c}
-/*@
-  inductive bad {
-    case always: \false ;
-  }
+/*@ inductive P(int* p){
+      case c: \forall int* p ; \valid(p) && p == (void*)0 ==> P(p);
+    }
 */
+
+/*@ requires P(p);
+    ensures \false ; */
+void foo(int *p){}
 \end{CodeBlock}
 
 
-Nous devons donc être prudents pendant la conception de définition inductive afin
-de ne pas introduire une définition qui nous permette de produire une preuve de
-faux.
+Ici nous pourrions détecter le problème avec \CodeInline{-wp-smoke-tests} qui
+trouverait que la précondition ne peut pas être satisfaite. Mais nous devons
+être prudents pendant la conception de définition inductive afin de ne pas
+introduire une définition qui nous permette de produire une preuve de faux.
 
+
+\begin{Warning}
+  Avant Frama-C 21 Scandium, les définitions inductives étaient traduites,
+  en Why3, grâce à des axiomes. Cela signifie que ces vérifications n'étaient
+  pas effectuées. En conséquence, pour avoir un comportement similaire avec
+  une version plus ancienne de Frama-C, il faut utiliser Coq et pas un prouveur
+  Why3.
+\end{Warning}
 
 \levelThreeTitle{Définitions de prédicats récursifs}
 
@@ -426,12 +439,12 @@ Dans cette version, nous exploitons deux propriétés de l'opérateur puissance 
 
 \begin{itemize}
 \item $(x^2)^n = x^{2n}$
-\item $x * (x^2)^n = x^{2n+1}$
+\item $x \times (x^2)^n = x^{2n+1}$
 \end{itemize}
 
 
 Qui permet de diviser $n$ par 2 à chaque tour de boucle au lieu de le décrémenter
-de un (ce qui permet à l'algorithme d'être en $0(log n)$ et pas $O(n)$). Exprimer
+de un (ce qui permet à l'algorithme d'être en $O(\log n)$ et pas $O(n)$). Exprimer
 les deux propriétés précédentes sous forme de lemmes :
 
 
@@ -448,7 +461,7 @@ si les solveurs SMT échouent.
 Finalement, compléter le contrat et l'invariant de la fonction \CodeInline{fast\_power}.
 Pour cela, notons qu'au début de la boucle $x^{old(n)} = p^n$, et que chaque itération
 utilise les propriétés précédentes pour mettre à jour $r$, au sens que nous avons
-$x^{old(n)} = r * p^n$ pendant toute la boucle, jusqu'à obtenir $n = 0$ et donc
+$x^{old(n)} = r \times p^n$ pendant toute la boucle, jusqu'à obtenir $n = 0$ et donc
 $p ^n = 1$.
 
 
@@ -458,7 +471,8 @@ $p ^n = 1$.
 
 
 Reprendre la définition des prédicats \CodeInline{shifted} et \CodeInline{unchanged}
-de l'exercice~\ref{l4:acsl-properties-lemmas-shift-trans}. Utiliser le prédicat
+de l'exercice~\ref{l4:acsl-properties-lemmas-shift-trans}. Le prédicat
+\CodeInline{shited\_cell} peut être \textit{inliné} et supprimé. Utiliser le prédicat
 \CodeInline{shifted} pour exprimer le prédicat \CodeInline{rotate} qui exprime que
 les éléments d'un tableau sont « tournés » vers la gauche, dans le sens où tous les
 éléments sont glissés vers la gauche, sauf le dernier qui est mis à la première

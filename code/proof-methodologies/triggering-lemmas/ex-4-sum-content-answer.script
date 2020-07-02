@@ -10,9 +10,9 @@ Proof.
   intros f i e Mi a.
   induction e using Z_induction with (m := i) ; intros.
   + assert (i = e) by omega ; subst.
-    rewrite A_Sum_array.Q_empty ; omega.
-  + repeat (rewrite <- A_Sum_array.Q_range with (i := e + 1) ; [ norm | omega ]).
-    omega.
+    rewrite A_Sum_array.Q_empty ; auto ; omega.
+  + repeat (rewrite <- A_Sum_array.Q_range with (i := e + 1) ; auto ; [ norm | omega ]).
+    apply IHe in H2 ; omega.
 Qed.
 
 Goal typed_lemma_unchanged_sum.
@@ -22,10 +22,10 @@ Proof.
   | [ _ : _ |- context [ (?e + 1 - 1)%Z ] ] => replace (e + 1 - 1)%Z with e by omega
   end.
 
-  intros b e Mi Mi' a U.
+  intros b e Mi Mi' a TMi TMi' U.
   induction e using Z_induction with (m := b).
-  + repeat(rewrite A_Sum_array.Q_empty) ; omega.
-  + repeat (rewrite <- A_Sum_array.Q_range with (i := e + 1) ; [ norm | omega ]).
+  + repeat(rewrite A_Sum_array.Q_empty) ; auto ; omega.
+  + repeat (rewrite <- A_Sum_array.Q_range with (i := e + 1) ; auto ; [ norm | omega ]).
     assert (Mi' .[ shift_sint32 a e] = Mi .[ shift_sint32 a e]) by (apply U ; omega).
     rewrite IHe ; [ omega | ].
     intros i ; intros ; apply U ; omega.

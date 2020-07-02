@@ -12,14 +12,14 @@
 */
 size_t bsearch(int* arr, size_t len, int value);
 
-
-/*@
-  requires element_level_sorted(arr, len) ;
-  assigns  \nothing ;
-  ensures  sorted(arr, len);
+/*@ ghost
+  /@
+    requires element_level_sorted(arr, len) ;
+    assigns  \nothing ;
+    ensures  sorted(arr, len);
+  @/
+  void element_level_sorted_implies_sorted(int* arr, size_t len);
 */
-void element_level_sorted_implies_sorted(int* arr, size_t len);
-
 
 /*@ requires \valid_read(arr + (0 .. len-1));
     requires element_level_sorted(arr, len) ;

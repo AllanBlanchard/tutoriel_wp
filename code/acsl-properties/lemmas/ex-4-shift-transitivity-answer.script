@@ -3,28 +3,49 @@
 Goal typed_lemma_shift_ptr.
 Hint property,shift_ptr.
 Proof.
-  intros fst lst s1 s2 ; intros M1 M2 array.
+  intros fst lst s1 s2 ; intros M1 M2 array tM1 tM2.
   split ; intros H i ; intros ; unfold P_shifted in H.
   + assert (exists pi, i = pi+s1) by (exists (i-s1) ; omega).
     inversion H2 ; subst.
-    replace (M2 .[ shift_sint32 array (x + s1)])
-       with (M2 .[ shift_sint32 (shift_sint32 array s1) x]).
-    rewrite <- H by omega.
+    replace (shift_sint32 array (x + s1))
+       with (shift_sint32 (shift_sint32 array s1) x).
+    apply H ; omega.
     - unfold shift_sint32 ; unfold shift ; destruct array ; simpl.
-      replace (z0 + (s2 + (x + s1))) with (z0 + s1 + (s2 + x)) by omega.
+      replace (z0 + (x + s1)) with (z0 + s1 + x) by omega.
       auto.
-    - unfold shift_sint32 ; unfold shift ; destruct array ; simpl.
-      replace (z0 + s1 + x) with (z0 + (x + s1)) by omega.
-      auto.
-  + replace (M2 .[ shift_sint32 (shift_sint32 array s1) i])
-       with (M2 .[ shift_sint32 array (s1 + i)]).
-    rewrite <- H by omega.
-    - unfold shift_sint32 ; unfold shift ; destruct array ; simpl.
-      replace (z0 + s1 + (s2 + i)) with (z0 + (s2 + (s1 + i))) by omega.
-      auto.
+  + replace (shift_sint32 (shift_sint32 array s1) i)
+       with (shift_sint32 array (s1 + i)).
+    apply H ; omega.
     - unfold shift_sint32 ; unfold shift ; destruct array ; simpl.
       replace (z0 + s1 + i) with (z0 + (s1 + i)) by omega.
       auto.
+Qed.
+
+Goal typed_lemma_shift_transivity.
+Hint property,shift_transivity.
+Proof.
+  intros b l s1 s2 M3 M2 M1 array tM3 tM2 tM1.
+  unfold P_shifted ; intros H12 H23 ; intros.
+  apply Q_shifted_cell_transitivity with (t_1 := M2) ; auto.
+  replace (shift_sint32 (shift_sint32 array i) s1)%Z
+     with (shift_sint32 array (i + s1))%Z.
+  apply H23 ; omega.
+  unfold shift_sint32 ; unfold shift ; simpl.
+  replace (offset array + i + s1)%Z
+     with (offset array + (i + s1))%Z
+       by omega.
+  auto.
+Qed.
+
+Goal typed_lemma_shifted_cell_transitivity.
+Hint property,shifted_cell_transitivity.
+Proof.
+  intros s2 s1 M3 M2 M1 p tM3 tM2 tM1.
+  unfold P_shifted_cell.
+  unfold shift_sint32.
+  unfold shift.
+  intros.
+(* auto with zarith. *)
 Qed.
 
 

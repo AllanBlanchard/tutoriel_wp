@@ -92,63 +92,81 @@ d'erreurs.
 \levelThreeTitle{Exercices}
 
 
-\levelFourTitle{Distance}
+\levelFourTitle{Exercices précédents}
 
 
-Reprendre l'exemple à propos du calcul de la distance entre deux entiers.
-En considérant que le contrat était :
+Dans les sections précédentes, reprendre les exemples :
 
 
-\CodeBlockInput{c}{ex-1-distance.c}
+\begin{itemize}
+\item à propos du calcul de la distance entre deux entiers ;
+\item « Remettre à zéro selon une condition » ;
+\item « Jours du mois » ;
+\item « Maximum des valeurs pointées ».
+\end{itemize}
 
 
-Le réécrire en utilisant des comportements.
+En considérant que les contrats étaient :
 
 
-\levelFourTitle{Remettre à zéro selon une condition}
+\CodeBlockInput{c}{ex-1-past.c}
 
 
-Reprendre l'exemple « Remettre à zéro selon une condition » de la section
-précédente. En considérant que le contrat était :
+Les réécrire en utilisant des comportements.
 
 
-
-\CodeBlockInput[1][13]{c}{ex-2-reset-on-cond.c}
-
-
-Le réécrire en utilisant des comportements.
-
-\levelFourTitle{Jours du mois}
+\levelFourTitle{Deux autres exercices simples}
 
 
-Reprendre l'exemple « Jours du mois » de la première section.
-En supposant que le contrat écrit était :
+Produire le code et la spécification des deux fonctions suivantes puis
+les prouver. La spécification devrait faire usage des comportements.
 
 
-
-\CodeBlockInput{c}{ex-3-day-month.c}
-
-
-Le réécrire en utilisant des comportements.
+Tout d'abord une fonction qui retourne si un caractère est une voyelle
+ou une consonne, supposer (et exprimer) que la fonction reçoit une
+lettre minuscule.
 
 
-\levelFourTitle{Maximum des valeurs pointées I}
+\CodeBlockInput[1][5]{c}{ex-2-simple.c}
 
 
-Reprendre l'exemple « Maximum des valeurs pointées » de la section
-précédente et plus précisément la version qui « ordonne » les valeurs
-pointées. En considérant que le contrat était :
+Puis une fonction qui renvoie à quel quadrant d'un repère appartient
+une coordonnée. Lorsque la coordonnée se trouve sur un axe, choisir
+arbitrairement l'un des quadrants qu'elle touche.
 
 
-
-\CodeBlockInput[1][13]{c}{ex-4-max-ptr.c}
-
-
-Le réécrire en utilisant des comportements.
+\CodeBlockInput[7][9]{c}{ex-2-simple.c}
 
 
+\levelFourTitle{Triangle}
 
-\levelFourTitle{Maximum des valeurs pointées II}
+
+Compléter les fonctions suivantes qui reçoivent la longueur des différents
+côtés et retournent respectivement :
+
+
+\begin{itemize}
+\item si le triangle est scalène, isocèle, ou équilatéral ;
+\item si le triangle est rectangle, acutangle ou obtusangle.
+\end{itemize}
+
+
+\CodeBlockInput{c}{ex-3-triangle.c}
+
+
+En supposant (et exprimant) que :
+
+
+\begin{itemize}
+\item les valeurs reçues forment bien un triangle,
+\item \CodeInline{a} est l'hypoténuse du triangle,
+\end{itemize}
+
+
+spécifier et prouver que les fonctions font la tâche prévue.
+
+
+\levelFourTitle{Maximum des valeurs pointées}
 
 
 Reprendre l'exemple « Maximum des valeurs pointées » de la section
@@ -156,7 +174,7 @@ précédente et plus précisément la version qui retourne la plus grande
 valeur. En considérant que le contrat était :
 
 
-\CodeBlockInput[1][10]{c}{ex-5-max-ptr.c}
+\CodeBlockInput[1][10]{c}{ex-4-max-ptr.c}
 
 
 \begin{enumerate}
@@ -185,7 +203,7 @@ Reprendre l'exemple « Ordonner trois valeurs » de la section
 précédente, en considérant que le contrat était :
 
 
-\CodeBlockInput{c}{ex-6-order-3.c}
+\CodeBlockInput{c}{ex-5-order-3.c}
 
 
 Le réécrire en utilisant des comportements. Notons que le contrat

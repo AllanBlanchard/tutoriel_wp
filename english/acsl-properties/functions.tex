@@ -129,10 +129,7 @@ If we ask for a proof on this input, Alt-ergo will probably fail,
 whereas Z3 can compute the proof in less than a second. The reason is
 that in this case, the heuristics that are used by Z3 consider that it
 is a good idea to spend a bit more time on the evaluation of the
-function. We can for example change the maximum value of \texttt{n} to
-see how the different provers behave. With an \texttt{n} fixed to 9,
-Alt-ergo produces a proof in less than 10 seconds, whereas with a value
-of 10, even a minute is not enough.
+function.
 
 
 
@@ -175,7 +172,8 @@ program. Use a \CodeInline{square} logic function.
 
 Take care of the types of the variables and do not over-constrain the input of
 the function. Furthermore, when verifying the absence of runtime errors, do not
-forget to provide the option \CodeInline{-warn-unsigned-overflow}.
+forget to provide the options \CodeInline{-warn-unsigned-overflow} and
+\CodeInline{-warn-unsigned-downcast}.
 
 
 \levelFourTitle{Iota}

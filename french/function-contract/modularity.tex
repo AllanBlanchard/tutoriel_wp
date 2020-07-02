@@ -135,14 +135,9 @@ l'année est bissextile.
 fournir le contrat de \CodeInline{is\_alpha\_num}.
 
 
-\begin{CodeBlock}{c}
-int is_alpha_num(char c){
-  return
-    is_lower_alpha(c) ||
-    is_upper_alpha(c) ||
-    is_digit(c) ;
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{ex-2-alphanum.c}
+
+
 
 Déclarer une énumération avec les valeurs \CodeInline{LOWER}, \CodeInline{UPPER},
 \CodeInline{DIGIT} et \CodeInline{OTHER}, et une fonction \CodeInline{character\_kind}
@@ -167,3 +162,63 @@ et les prouver.
 
 
 \CodeBlockInput{c}{ex-3-order-3.c}
+
+
+\levelFourTitle{Rendre la monnaie}
+
+
+Le but de cet exercice est d'écrire une fonction de rendu de monnaie. La
+fonction \CodeInline{make\_change} reçoit la valeur due, la quantité
+d'argent reçue et un \textit{buffer} pour indiquer quelle quantité de
+chaque billet/pièce doit être retournée au client.
+
+
+Par exemple, pour une valeur due de 410 et une valeur reçue de 500, le
+tableau devrait contenir 1 dans la cellule \CodeInline{change[N50]} et
+2 dans la cellule \CodeInline{change[N20]} après l'appel à la fonction.
+
+
+Si le montant reçu est inférieur au prix, la fonction devrait retourner
+-1 (et 0 si ce n'est pas le cas).
+
+
+\CodeBlockInput{c}{ex-4-change.c}
+
+
+La fonction \CodeInline{remove\_max\_notes} reçoit une valeur de pièce ou
+billet et ce qu'il reste à convertir (via un pointeur), supposé être
+supérieur à 0. Elle calcule le nombre maximal de billet/pièce de cette
+valeur pouvant tenir dans le restant, diminue la valeur du restant
+conformément et retourne ce nombre. La fonction \CodeInline{make\_change}
+doit ensuite faire usage de cette fonction pour calculer le rendu de
+monnaie.
+
+
+Écrire le code de ces fonctions et leur spécification, et prouver la
+correction. Notons que le code ne devrait pas faire usage de boucles
+puisque nous ne savons pas encore les traiter.
+
+
+\levelFourTitle{Triangle}
+
+
+Dans cet exercice, nous voulons rassembler les résultats des fonctions
+que nous avons écrites dans la section précédente pour obtenir les
+propriétés de triangles dans une structure. La fonction
+\CodeInline{classify} reçoit trois longueurs \CodeInline{a},
+\CodeInline{b}, et \CodeInline{c}, en supposant que \CodeInline{a} est
+l'hypoténuse. Si ces valeurs ne correspondent pas à un triangle, la
+fonction retourne -1, et 0 si tout est OK. Les propriétés sont
+collectées dans une structure \CodeInline{info} reçue via un pointeur.
+
+
+\CodeBlockInput{c}{ex-5-triangle.c}
+
+
+Écrire, spécifier et prouver toutes les fonctions.
+
+Notons qu'il y a beaucoup de comportements à lister et spécifier.
+Écrire une version qui ne requiert pas que \CodeInline{a} soit
+l'hypoténuse est possible. Par contre, il pourrait être difficile
+de terminer la preuve automatiquement avec Alt-Ergo parce qu'il y a
+vraiment beaucoup de combinaisons à considérer.

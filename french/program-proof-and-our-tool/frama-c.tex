@@ -33,7 +33,7 @@ L'analyse que nous allons utiliser ici est fournie par un plugin appelé WP pour
 la technique dont nous avons parlé plus tôt :
 à partir des annotations ACSL et du code source, le plugin génère ce que nous
 appelons des obligations de preuves, qui sont des formules logiques dont nous
-devons vérifier si elles sont vraies ou fausses (on parle de « satifiabilité »).
+devons vérifier si elles sont vraies ou fausses (on parle de « satisfiabilité »).
 Cette vérification peut être faite de manière
 manuelle ou automatique, ici nous n'utiliserons que des outils automatiques.
 
@@ -62,10 +62,10 @@ Linux, mais :
 \begin{itemize}
 \item le tutoriel présentera le fonctionnement sous Linux et l'auteur n'a pas
 expérimenté les différences d'utilisation qui pourraient exister avec
-Windows,
+Windows ;
 \item les versions récentes de Windows 10 permettent d'utiliser Windows Subsystem
   for Linux, en combinaison avec un Xserver installé sous Windows pour avoir la
-  GUI,
+  GUI ;
 \item La section « Bonus » un peu plus loin dans cette partie pourrait ne pas être
 accessible.
 \end{itemize}
@@ -105,7 +105,7 @@ pour les bibliothèques et applications OCaml.
 
 D'abord, Opam doit être installé et configuré sur votre distribution (voir
 leur documentation). Ensuite, il faut également que quelques paquets de votre
-distribution soit présents préalablement à l'installation de Frama-C. Sur la
+distribution soient présents préalablement à l'installation de Frama-C. Sur la
 plupart des distributions nous pouvons demander à Opam d'aller chercher les
 bonnes dépendances pour le paquet que nous voulons installer. Pour cela, nous
 utilisons l'outil depext d'Opam, qu'il faut d'abord installer :
@@ -352,7 +352,7 @@ doit être mise à jour :
 
 
 \begin{CodeBlock}{bash}
-why3 config --detect
+why3 config --full-config
 \end{CodeBlock}
 
 

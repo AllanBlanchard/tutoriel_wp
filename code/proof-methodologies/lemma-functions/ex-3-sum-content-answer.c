@@ -17,21 +17,23 @@
     \forall integer i ; begin <= i < end ==> \at(array[i], L1) == \at(array[i], L2) ;
 */
 
-/*@
-  requires begin <= split <= end ;
-  assigns  \nothing ;
-  ensures  sum(array, begin, end) == sum(array, begin, split) + sum(array, split, end) ;
+/*@ ghost
+  /@
+    requires begin <= split <= end ;
+    assigns  \nothing ;
+    ensures  sum(array, begin, end) == sum(array, begin, split) + sum(array, split, end) ;
+  @/
+  void sum_separable(int* array, size_t begin, size_t split, size_t end){
+    /@
+      loop invariant split <= i <= end ;
+      loop invariant 
+        sum(array, begin, i) == sum(array, begin, split) + sum(array, split, i) ;
+      loop assigns i ;
+      loop variant end - i ;
+    @/
+    for(size_t i = split ; i < end ; ++i);
+  }
 */
-void sum_separable(int* array, size_t begin, size_t split, size_t end){
-  /*@
-    loop invariant split <= i <= end ;
-    loop invariant 
-      sum(array, begin, i) == sum(array, begin, split) + sum(array, split, i) ;
-    loop assigns i ;
-    loop variant end - i ;
-  */
-  for(size_t i = split ; i < end ; ++i);
-}
 
 #define unchanged_sum(_L1, _L2, _arr, _beg, _end)                       \
   /@ assert unchanged{_L1, _L2}(_arr, _beg, _end) ; @/                  \

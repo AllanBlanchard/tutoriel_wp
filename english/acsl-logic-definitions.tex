@@ -16,9 +16,9 @@ explicitly modeled when they are harder to reason about when they are implicit.
 Using these notions, we expose ourselves to the possibility to make our
 proof irrelevant if we make mistakes writing specification with it. Inductive
 predicates and axiomatic definitions involve the risk to introduce ``false'' in
-our assumptions, or to write imprecise definitions. Ghost code opens the risk
-to silently modify the verified program \ldots{} making us prove another program,
-which is not the one we want to prove.
+our assumptions, or to write imprecise definitions. Ghost code, if it does not
+verify some properties, opens the risk to silently modify the verified program
+\ldots{} making us prove another program, which is not the one we want to prove.
 
 
 \begin{levelTwo}

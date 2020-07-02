@@ -1,15 +1,12 @@
 /*@
-  requires \valid(a) && \valid(b);
-  assigns  *a, *b ;
-  ensures  \old(*a) < \old(*b)  ==> *a == \old(*b) && *b == \old(*a) ;
-  ensures  \old(*a) >= \old(*b) ==> *a == \old(*a) && *b == \old(*b) ;
+  requires \valid_read(a) && \valid_read(b);
+  assigns  \nothing ;
+  ensures  *a <  *b ==> \result == *b ;
+  ensures  *a >= *b ==> \result == *a ;
+  ensures  \result == *a || \result == *b ;
 */
-void max_ptr(int* a, int* b){
-  if(*a < *b){
-    int tmp = *b ;
-    *b = *a ;
-    *a = tmp ;
-  }
+int max_ptr(int* a, int* b){
+  return (*a < *b) ? *b : *a ;
 }
 
 extern int h ;
@@ -20,8 +17,8 @@ int main(){
   int a = 24 ;
   int b = 42 ;
 
-  max_ptr(&a, &b) ;
-
-  //@ assert a == 42 && b == 24 ;
+  int x = max_ptr(&a, &b) ;
+  
+  //@ assert x == 42 ;
   //@ assert h == 42 ;
 }

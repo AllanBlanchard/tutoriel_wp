@@ -52,7 +52,7 @@ precisely express the difference between test and proof:
 
 
 \begin{Quotation}[Dijkstra]
-Program testing can be used to show the presence of bugs, but never to show 
+Program testing can be used to show the presence of bugs, but never to show
 their absence!
 \end{Quotation}
 
@@ -78,19 +78,19 @@ we can classify into three categories:
 \begin{itemize}
 \item the program is not correct, or does not have a defined behavior,
       according to the language specification (for example, a program
-      accesses out of the bounds of an array when searching the minimal
-      value of the array),
+      accesses out of the bounds of an array when searching the index of
+      the minimal value of the array),
 \item the program is not correct according to the specification that we
       defined for it (for example, we have defined that our program must
-      find the minimum value of an array, but in fact, due to an error, it
-      does not check the last value of the array),
+      find the index of the minimal value of an array, but in fact, due to
+      an error, it does not check the last value of the array),
 \item the specification does not exactly reflect what we had in mind for
       our function, and consequently, the program does not do what we really
       wanted (for example, we have defined that our function must find the
-      minimal value of the array, but we did not specified that if there
-      are multiple ones, we need the position of the first one, because it
-      seemed too straightforward, but consequently, this is not what the
-      program does.
+      index of the minimal value of the array, but we have not specified that
+      if there are multiple ones, we need the position of the first one,
+      because it seemed too straightforward, but consequently, this is not
+      what the program does).
 \end{itemize}
 
 
@@ -315,7 +315,7 @@ When we do nothing, the postcondition is the precondition.
 
 
 Along this tutorial, we will present the semantics of different program
-constructs (conditional blocks, loops, etc) using Hoare logic. So, 
+constructs (conditional blocks, loops, etc) using Hoare logic. So,
 let us skip these details now since we will work on it later. It is
 not necessary to memorize these notions nor to understand all the
 theoretical background, but it is still useful to have some ideas about

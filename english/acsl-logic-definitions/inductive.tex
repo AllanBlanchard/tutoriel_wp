@@ -88,7 +88,7 @@ able to prove everything. While we will give more details about axioms in the
 Section~\ref{l2:acsl-logic-definitions-axiomatic}, let us give two hints to
 avoid building such a bad definition.
 
-First, we can make sure that inductive predicates are well founded. This can
+First, we can make sure that inductive predicates are well-founded. This can
 be done by syntactically restricting what we allow in an inductive definition,
 by making sure that each case has the form:
 
@@ -111,9 +111,8 @@ This is for example verified by our previously defined predicate
 does not respect this constraint as the property \CodeInline{even\_natural}
 appears negatively on line~8.
 
-Second, it is possible to ask the generation of a Coq version of a proof
-obligation that needs the predicate \CodeInline{P}. For example, we can
-write a function:
+Second, we can simply write a function that has a contract that needs the
+predicate \CodeInline{P}. For example, we can write a function:
 
 
 
@@ -136,40 +135,55 @@ For example for our definition of \CodeInline{even\_natural}, we would write:
 
 
 
-As Coq is stricter than Frama-C and WP on this kind of definition, if the
-inductive predicate is too strange (if it is not well founded), it will be
-rejected with an error. And indeed, with the bad definition of
-\CodeInline{even\_natural} we just proposed, Coq complains when we try to prove
-the \CodeInline{ensures \textbackslash{}false}, because there exists a non
-positive occurrence of \CodeInline{P\_even\_natural}, that encodes the
+During the generation of the proof obligation, WP asks Why3 to create an
+inductive definition from the one written in ACSL. As Why3 is stricter than
+Frama-C and WP on this kind of definition, if the inductive predicate is too
+strange (if it is not well-founded), it will be rejected with an error. And
+indeed, with the bad definition of \CodeInline{even\_natural} we just proposed,
+Why3 complains when we try to prove the
+\CodeInline{ensures \textbackslash{}false}, because there exists a non
+positive occurrence of \CodeInline{P\_even\_natural} that encodes the
 \CodeInline{even\_natural} we wrote in ACSL.
 
 \begin{CodeBlock}{bash}
-frama-c-gui -wp -wp-prop=BAD -wp-prover=native:coq file.c
+frama-c-gui -wp -wp-prop=BAD file.c
 \end{CodeBlock}
 
 
-\image{coq-failed}
+\image{why3-failed}
 
-\image{coq-failed-error}
+\image{why3-failed-error}
 
 
 However, that does not mean that we cannot write an inconsistent inductive
-definition. For example, the following definition is well founded, while it
+definition. For example, the following definition is well-founded, while it
 allows us to prove false:
 
 
 \begin{CodeBlock}{c}
-/*@
-  inductive bad {
-    case always: \false ;
-  }
+/*@ inductive P(int* p){
+      case c: \forall int* p ; \valid(p) && p == (void*)0 ==> P(p);
+    }
 */
+
+/*@ requires P(p);
+    ensures \false ; */
+void foo(int *p){}
 \end{CodeBlock}
 
 
-Thus we must be careful when defining inductive definitions to not introduce a
-definition that can lead to a proof of false.
+Here, we could detect the problem as \CodeInline{-wp-smoke-tests} can detect
+that the precondition is unsatisfiable. However, we must be careful when defining
+inductive definitions to not introduce a definition that can lead to a proof
+of false.
+
+
+\begin{Warning}
+  Before Frama-C 21 Scandium, the inductive definitions were translated, in
+  Why3, as axioms. That means that this check was not performed. Thus, to
+  get a similar behavior with older Frama-C versions, one has to use Coq
+  and not a Why3 prover.
+\end{Warning}
 
 
 \levelThreeTitle{Recursive predicate definitions}
@@ -247,11 +261,11 @@ be to write this specification (which is correct!):
 \CodeBlockInput[6]{c}{sort-incomplete.c}
 
 
-\textbf{This specification is correct}. But if we recall correctly the part of the
-tutorial about specifications, we have to \emph{precisely} express what we expect
-of the program. With this specification, we do not prove all required properties
-expected for a sort function. For example, this function correctly answers to
-the specification:
+\textbf{This specification is correct}. However, if we recall correctly the part
+of the tutorial about specifications, we have to \emph{precisely} express what
+we expect of the program. With this specification, we do not prove all required
+properties expected for a sort function. For example, this function correctly
+answers to the specification:
 
 
 \CodeBlockInput[8]{c}{sort-false.c}
@@ -377,12 +391,12 @@ In this version, we exploit two properties about the power operator:
 
 \begin{itemize}
 \item $(x^2)^n = x^{2n}$
-\item $x * (x^2)^n = x^{2n+1}$
+\item $x \times (x^2)^n = x^{2n+1}$
 \end{itemize}
 
 
 that allows us to divide $n$ by 2 at each step of the loop instead of decreasing
-it by one (which makes the algorithm $O(log\ n)$ instead of $O(n)$). Express the
+it by one (which makes the algorithm $O(\log n)$ instead of $O(n)$). Express the
 two previous properties in lemmas:
 
 
@@ -399,7 +413,7 @@ provided on the GitHub repository of this book, as well as the proof of the
 Finally, complete the contract and loop invariant of the \CodeInline{fast\_power}
 function. For this notice that at the beginning of the loop $x^{old(n)} = p^n$,
 and that each iteration uses the previous properties to update $r$, in the sense
-that we have $x^{old(n)} = r * p^n$ during all the loop, until we have $n = 0$ and
+that we have $x^{old(n)} = r \times p^n$ during all the loop, until we have $n = 0$ and
 thus $p^n = 1$.
 
 
@@ -407,7 +421,8 @@ thus $p^n = 1$.
 
 
 Take back the definitions of the \CodeInline{shifted} and \CodeInline{unchanged}
-predicates from the exercise~\ref{l4:acsl-properties-lemmas-shift-trans}. Use the
+predicates from the exercise~\ref{l4:acsl-properties-lemmas-shift-trans}. The
+\CodeInline{shited\_cell} predicate can be inlined and removed. Use the
 shift predicate to express the rotate predicate that expresses that some elements
 of an array are rotated to the left in the sense that all elements are shifted of
 one element to the left except the last one that is put in the first cell of the

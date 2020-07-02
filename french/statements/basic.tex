@@ -684,7 +684,9 @@ et pas du calcul de plus faible précondition.
 
 Montrer que lorsqu'au lieu de la branche « \textit{else} », c'est la branche « \textit{then} » qui est
 vide, la postcondition de structure conditionnelle est vérifiée par la conjonction de
-la précondition et de la condition de notre structure conditionnelle.
+la précondition et de la condition de notre structure conditionnelle (puisque
+la branche « \textit{else} » est la seule à potentiellement modifier l'état de
+la mémoire).
 
 
 Montrer que si les deux branches sont vide, la structure conditionnelle est juste une

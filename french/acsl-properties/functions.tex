@@ -7,7 +7,7 @@ contrairement aux types machines.
 
 
 
-Comme les prédicats, elles peuvent recevoir divers \textit{labels} et valeurs en 
+Comme les prédicats, elles peuvent recevoir divers \textit{labels} et valeurs en
 paramètre.
 
 
@@ -77,7 +77,7 @@ de débordement :
 \CodeBlockInput[27][37]{c}{linear-1.c}
 
 
-Notons que comme dans la spécification, les calculs sont effectués à l'aide 
+Notons que comme dans la spécification, les calculs sont effectués à l'aide
 d'entiers mathématiques, nous n'avons pas à nous préoccuper d'un quelconque
 risque de débordement lorsque nous utilisons la fonction logique \CodeInline{ax\_b}:
 
@@ -96,10 +96,10 @@ débordements :
 
 
 Les fonctions logiques peuvent être définies récursivement. Cependant, une telle
-définition montrera très rapidement ses limites pour la preuve. En effet, 
-pendant les manipulations des prouveurs automatiques sur les propriétés 
+définition montrera très rapidement ses limites pour la preuve. En effet,
+pendant les manipulations des prouveurs automatiques sur les propriétés
 logiques, si l'usage d'une telle fonction est présente, elle devra être évaluée.
-Or, les prouveurs ne sont pas conçus pour faire ce genre d'évaluation, qui se 
+Or, les prouveurs ne sont pas conçus pour faire ce genre d'évaluation, qui se
 révélera donc généralement très coûteuse et produisant alors des temps de preuve
 trop longs menant à des \textit{timeouts}.
 
@@ -120,8 +120,8 @@ arithmétique sur la multiplication.
 
 
 
-Sur le type \CodeInline{int}, le maximum que nous pouvons calculer est la factorielle de 
-12. Au-delà, cela produit un dépassement. Nous pouvons donc ajouter cette 
+Sur le type \CodeInline{int}, le maximum que nous pouvons calculer est la factorielle de
+12. Au-delà, cela produit un dépassement. Nous pouvons donc ajouter cette
 précondition :
 
 
@@ -130,21 +130,17 @@ précondition :
 
 
 
-Si nous demandons la preuve avec cette entrée, Alt-ergo échouera pratiquement à 
+Si nous demandons la preuve avec cette entrée, Alt-ergo échouera pratiquement à
 coup sûr. En revanche, le prouveur Z3 produit la preuve en moins d'une seconde.
 Parce que dans ce cas précis, les heuristiques de Z3 considèrent que c'est une
-bonne idée de passer un peu plus de temps sur l'évaluation de la fonction. Nous
-pouvons par exemple changer la valeur maximale de \CodeInline{n} pour voir comment se 
-comporte les différents prouveurs. Avec un \CodeInline{n} maximal fixé à 9, Alt-ergo produit
-la preuve en moins de 10 secondes, tandis que pour une valeur à 10, même une 
-minute ne suffit pas.
+bonne idée de passer un peu plus de temps sur l'évaluation de la fonction.
 
 
 
 Les fonctions logiques peuvent donc être définies récursivement mais sans astuces
-supplémentaires, nous venons vite nous heurter au fait que les prouveurs vont au 
-choix devoir faire de l'évaluation, ou encore « raisonner » par induction, deux 
-tâches pour lesquelles ils ne sont pas du tout faits, ce qui limite nos 
+supplémentaires, nous venons vite nous heurter au fait que les prouveurs vont au
+choix devoir faire de l'évaluation, ou encore « raisonner » par induction, deux
+tâches pour lesquelles ils ne sont pas du tout faits, ce qui limite nos
 possibilités de preuve. Nous verrons plus tard dans ce tutoriel comment éviter
 cette limitation.
 
@@ -177,7 +173,8 @@ programme. Utiliser une fonction logique \CodeInline{square}.
 
 Attention aux types des différentes variables, de telle manière à ne pas
 sur-contraindre les entrées de la fonction. De plus, pour vérifier l'absence
-d'erreurs à l'exécution, utiliser l'option \CodeInline{-warn-unsigned-overflow}.
+d'erreurs à l'exécution, utiliser les options \CodeInline{-warn-unsigned-overflow}
+et \CodeInline{-warn-unsigned-downcast}.
 
 
 \levelFourTitle{Iota}
@@ -189,7 +186,7 @@ Voici une implémentation possible de la fonction \CodeInline{iota} :
 \CodeBlockInput{c}{ex-3-iota.c}
 
 
-Écrire une fonction logique qui retourne sa valeur d'entrée incrémentée de 1. 
+Écrire une fonction logique qui retourne sa valeur d'entrée incrémentée de 1.
 Prouver qu'après l'exécution de \CodeInline{iota}, la première valeur du tableau
 est celle reçue en entrée et que chaque valeur du tableau correspond à la valeur
 précédente plus 1 (en utilisant la fonction logique définie).
