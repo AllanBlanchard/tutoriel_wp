@@ -4,6 +4,11 @@ enum Sides { SCALENE, ISOSCELE, EQUILATERAL };
 enum Angles { RIGHT, ACUTE, OBTUSE };
 
 /*@
+  requires 0 <= a && 0 <= b && 0 <= c;
+  requires a >= b && a >= c; // Note that this condition is not
+                             // necessary for the function but
+                             // added for this exercise
+
   assigns \nothing;
 
   behavior equilateral:
@@ -18,14 +23,14 @@ enum Angles { RIGHT, ACUTE, OBTUSE };
   behavior scalene:
     assumes a != b && a != c && b != c ;
     ensures \result == SCALENE;
-  
+
   disjoint behaviors;
   complete behaviors;
 */
-enum Sides sides_kind(int a, int b, int c){
-  if(a == b && b == c){
+enum Sides sides_kind(int a, int b, int c) {
+  if (a == b && b == c) {
     return EQUILATERAL ;
-  } else if(a == b || b == c || a == c){
+  } else if (a == b || b == c || a == c) {
     return ISOSCELE ;
   } else {
     return SCALENE ;
@@ -37,7 +42,7 @@ enum Sides sides_kind(int a, int b, int c){
   requires 0 <= a && a*a <= INT_MAX;
   requires 0 <= b && b*b <= INT_MAX;
   requires 0 <= c && c*c <= INT_MAX;
-  
+
   assigns \nothing;
 
   behavior obtuse:
@@ -55,10 +60,10 @@ enum Sides sides_kind(int a, int b, int c){
   disjoint behaviors;
   complete behaviors;
 */
-enum Angles angles_kind(int a, int b, int c){
-  if(a*a - b*b > c*c){
+enum Angles angles_kind(int a, int b, int c) {
+  if (a * a - b * b > c * c) {
     return OBTUSE;
-  } else if(a*a - b*b < c*c){
+  } else if (a * a - b * b < c * c) {
     return ACUTE;
   } else {
     return RIGHT;
