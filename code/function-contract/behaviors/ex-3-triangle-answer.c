@@ -4,10 +4,10 @@ enum Sides { SCALENE, ISOSCELE, EQUILATERAL };
 enum Angles { RIGHT, ACUTE, OBTUSE };
 
 /*@
-  requires a <= b+c && a >= b && a >= c ;
-  requires 0 <= a && a*a <= INT_MAX;
-  requires 0 <= b && b*b <= INT_MAX;
-  requires 0 <= c && c*c <= INT_MAX;
+  requires 0 <= a && 0 <= b && 0 <= c;
+  requires a >= b && a >= c; // Note that this condition is not
+                             // necessary for the function but
+                             // added for this exercise
 
   assigns \nothing;
 
