@@ -28,13 +28,13 @@ enum Angles { RIGHT, ACUTE, OBTUSE };
   complete behaviors;
 */
 enum Sides sides_kind(int a, int b, int c) {
-    if (a == b && b == c) {
-        return EQUILATERAL ;
-    } else if (a == b || b == c || a == c) {
-        return ISOSCELE ;
-    } else {
-        return SCALENE ;
-    }
+  if (a == b && b == c) {
+    return EQUILATERAL ;
+  } else if (a == b || b == c || a == c) {
+    return ISOSCELE ;
+  } else {
+    return SCALENE ;
+  }
 }
 
 /*@
@@ -61,12 +61,12 @@ enum Sides sides_kind(int a, int b, int c) {
   complete behaviors;
 */
 enum Angles angles_kind(int a, int b, int c) {
-    if (a * a - b * b > c * c) {
-        return OBTUSE;
-    } else if (a * a - b * b < c * c) {
-        return ACUTE;
-    } else {
-        return RIGHT;
-    }
+  if (a * a - b * b > c * c) {
+    return OBTUSE;
+  } else if (a * a - b * b < c * c) {
+    return ACUTE;
+  } else {
+    return RIGHT;
+  }
 }
 
