@@ -4,4 +4,4 @@ Frama-C (FRAmework for Modular Analysis of C programs) is a set of interoperable
 
 It can be used for both learning and teaching, I hope you will have some fun with it :) .
 
-The last version is available on my website in [English](https://allan-blanchard.fr/publis/frama-c-wp-tutorial-20-calcium-en.pdf) and in [French](https://allan-blanchard.fr/publis/frama-c-wp-tutoriel-20-calcium-fr.pdf).
+The Calcium version is available on my website in [English](https://allan-blanchard.fr/publis/frama-c-wp-tutorial-20-calcium-en.pdf) and in [French](https://allan-blanchard.fr/publis/frama-c-wp-tutoriel-20-calcium-fr.pdf).
