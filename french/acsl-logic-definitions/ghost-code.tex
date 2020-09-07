@@ -211,7 +211,7 @@ plus exécuter certaines instructions du programme d'origine, alors le comportem
 du programme n'est plus le même, et nous ne vérifions donc plus le même programme.
 
 
-Par exemple, dans la fonction suivante calcule la somme des $n$ premiers entiers :
+Par exemple, la fonction suivante calcule la somme des $n$ premiers entiers :
 
 
 \CodeBlockInput{c}{control-flow-1.c}
@@ -219,8 +219,8 @@ Par exemple, dans la fonction suivante calcule la somme des $n$ premiers entiers
 
 Par l'introduction, dans du code fantôme, de l'instruction \CodeInline{break} dans
 le corps de la boucle, le programme n'a plus le même comportement : au lieu de
-parcourir l'ensemble des $i$ de $0$ à $n+1$, la boucle s'arrête dès le premier
-tour de la boucle. En conséquence, ce programme sera rejeté par Frama-C :
+parcourir l'ensemble des $i$ de $0$ à $n+1$, la boucle s'arrête dès la première
+itération. En conséquence, ce programme sera rejeté par Frama-C :
 
 
 \begin{CodeBlock}{text}
@@ -286,7 +286,7 @@ fonctions du code normal, nous parlerons de cette restriction à la fin de cette
 section.
 
 
-Refuser que le code normal voit le code fantôme a une raison toute simple, si le
+Refuser que le code normal voie le code fantôme a une raison toute simple. Si le
 code normal tentait d'accéder à des variables fantômes, il ne pourrait même pas
 être compilé : le compilateur ne voit pas les variables déclarées dans les
 annotations. Par exemple :
@@ -415,7 +415,7 @@ un pointeur sur \CodeInline{int \textbackslash{}ghost} en pointeur sur
 seule la variable est considérée fantôme. Donc dans le cas d'un pointeur, la mémoire
 pointée par ce pointeur, elle, n'est pas considérée comme fantôme (et donc ici, bien
 que \CodeInline{pe} soit fantôme, la mémoire pointée par \CodeInline{pe} ne l'est
-pas). Pour résoudre ce problème, Frama-C nous offre le qualifieur
+pas). Pour résoudre ce problème, Frama-C nous offre le qualificateur
 \CodeInline{\textbackslash{}ghost}, qui nous permet d'ajouter un caractère fantôme
 à un type :
 
@@ -423,14 +423,14 @@ pas). Pour résoudre ce problème, Frama-C nous offre le qualifieur
 \CodeBlockInput{c}{ghost-array-3.c}
 
 
-Sur certains aspects, le qualifieur \CodeInline{\textbackslash{}ghost} ressemble
-au mot clé \CodeInline{const} du C. Cependant, son comportement n'est pas
+Sur certains aspects, le qualificateur \CodeInline{\textbackslash{}ghost} ressemble
+au mot-clé \CodeInline{const} du C. Cependant, son comportement n'est pas
 exactement le même pour deux raisons.
 
 
 Tout d'abord, alors que la définition \CodeInline{const} suivante
 est autorisée,  il n'est pas possible d'avoir une déclaration de
-forme similaire avec le qualifieur \CodeInline{\textbackslash{}ghost} :
+forme similaire avec le qualificateur \CodeInline{\textbackslash{}ghost} :
 
 
 \begin{CodeBlock}{c}
@@ -448,7 +448,7 @@ int const * * const p ;
 
 Déclarer un pointeur constant sur une zone que l'on peut modifier et qui contient
 des pointeurs vers de la mémoire constante ne pose pas de problème. En revanche,
-il est impossible de faire de même avec le qualifieur
+il est impossible de faire de même avec le qualificateur
 \CodeInline{\textbackslash{}ghost}, cela signifierait que la mémoire normale
 contient des pointeurs vers la mémoire fantôme, ce qui n'est pas possible.
 
@@ -466,7 +466,7 @@ int const * p = a ;
 Ce code ne pose pas de problème, car l'on ne fait que restreindre notre capacité
 à modifier les données lorsque l'on initialise (ou affecte) \CodeInline{p} à
 \CodeInline{\&a[0]}. En revanche, les deux initialisations (ou affectations
-équivalentes) des pointeurs suivants sont refusées avec le qualifieur
+équivalentes) des pointeurs suivants sont refusées avec le qualificateur
 \CodeInline{\textbackslash{}ghost} :
 
 
