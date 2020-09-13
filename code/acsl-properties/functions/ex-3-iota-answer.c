@@ -7,7 +7,7 @@
 
 /*@
   requires \valid(array + (0 .. len));
-  requires value + len <= INT_MAX ;
+  requires value + len - 1 <= INT_MAX ;
   assigns array[0 .. len-1];
   ensures len > 0 ==> array[0] == value ;
   ensures \forall integer j ; 1 <= j < len ==> array[j] == inc(array[j-1]) ;
