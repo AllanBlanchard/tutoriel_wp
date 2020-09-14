@@ -4,7 +4,7 @@ void foo(){
   /*@
     loop invariant 0 <= i <= 19 ;
     loop assigns i ;
-    loop variant 20 - i ;
+    loop variant 19 - i ;
   */
   for(i = 0 ; i < 20 ; ++i){
     if(i == 19){
