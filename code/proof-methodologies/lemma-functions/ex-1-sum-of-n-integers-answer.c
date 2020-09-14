@@ -50,5 +50,6 @@
 */
 unsigned sum_n(unsigned n){
   //@ ghost lemma_value_of_sum_of_n_integers_2(n);
+  //@ assert n * (n+1) >= 0 ; // necessary in Scandium
   return (n*(n+1))/2 ;
 }
