@@ -26,8 +26,8 @@ int remove_max_notes(enum note n, int* rest){
   behavior change:
     assumes amount <= received ;
     ensures \result == 0;
-    ensures 
-      received - amount == 
+    ensures
+      received - amount ==
           change[N500] * values[N500]
         + change[N200] * values[N200]
         + change[N100] * values[N100]
@@ -37,6 +37,15 @@ int remove_max_notes(enum note n, int* rest){
         + change[N5]   * values[N5]
         + change[N2]   * values[N2]
         + change[N1]   * values[N1];
+    ensures
+         change[N1]   * values[N1]   < values[N2]
+      && change[N2]   * values[N2]   < values[N5]
+      && change[N5]   * values[N5]   < values[N10]
+      && change[N10]  * values[N10]  < values[N20]
+      && change[N20]  * values[N20]  < values[N50]
+      && change[N50]  * values[N50]  < values[N100]
+      && change[N100] * values[N100] < values[N200]
+      && change[N200] * values[N200] < values[N500];
 
   complete behaviors;
   disjoint behaviors;
@@ -55,6 +64,6 @@ int make_change(int amount, int received, int change[9]){
   change[N5]   = remove_max_notes(N5,   &rest);
   change[N2]   = remove_max_notes(N2,   &rest);
   change[N1]   = remove_max_notes(N1,   &rest);
-    
+
   return 0;
 }
