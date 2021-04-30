@@ -1,4 +1,4 @@
-#include <limits.h>
+#include <stdint.h>
 #include <stddef.h>
 
 /*@ 
@@ -22,13 +22,13 @@
 
   behavior does_not_exists:
     assumes !in_array(value, arr, beg, end);
-    ensures \result == UINT_MAX ;
+    ensures \result == end ;
 
   complete behaviors ;
   disjoint behaviors ;
 */
 size_t bsearch(int* arr, size_t beg, size_t end, int value){
-  if(end == beg) return UINT_MAX ;
+  if(end == beg) return end ;
   
   size_t low = beg ;
   size_t up = end ;
@@ -46,7 +46,7 @@ size_t bsearch(int* arr, size_t beg, size_t end, int value){
     else if(arr[mid] < value) low = mid+1 ;
     else return mid ;
   }
-  return UINT_MAX ;
+  return end ;
 }
 
 /*@
@@ -62,7 +62,7 @@ size_t bsearch(int* arr, size_t beg, size_t end, int value){
 
 /*@
   requires \valid(array+(0 .. len+shift-1)) ;
-  requires shift + len <= UINT_MAX ;
+  requires shift + len <= SIZE_MAX ;
   assigns array[shift .. shift+len-1];
   ensures shifted{Pre, Post}(array, 0, len, shift) ;
 */
@@ -95,7 +95,7 @@ void shift_array(int* array, size_t len, size_t shift){
 */
 
 /*@
-  requires len < UINT_MAX ;
+  requires len < SIZE_MAX ;
   requires sorted(array, 0, len) ;
   requires \valid(array + (0 .. len));
   requires in_array(value, array, 0, len) ;
@@ -104,7 +104,7 @@ void shift_array(int* array, size_t len, size_t shift){
   
   ensures 1 <= \result <= len ;
 */
-unsigned shift_and_search(int* array, size_t len, int value){
+size_t shift_and_search(int* array, size_t len, int value){
   shift_array(array, len, 1);
   return bsearch(array, 1, len+1, value);
 }

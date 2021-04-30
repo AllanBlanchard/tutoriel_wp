@@ -1,5 +1,5 @@
 #include <stddef.h>
-#include <limits.h>
+#include <stdint.h>
 /*@
   axiomatic Occurrences_Axiomatic{
     logic integer l_occurrences_of{L}(int value, int* in, integer from, integer to)
@@ -39,7 +39,7 @@
       if(in[i] == v) return i ;
     }
     /@ assert \false ; @/
-    return UINT_MAX ;
+    return SIZE_MAX ;
   }
 */
 

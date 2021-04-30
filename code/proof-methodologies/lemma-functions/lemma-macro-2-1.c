@@ -1,4 +1,4 @@
-#include <limits.h>
+#include <stdint.h>
 #include <stddef.h>
 
 /*@
@@ -12,7 +12,7 @@
 
 /*@
   requires \valid(array+(beg .. end+shift-1)) ;
-  requires shift + end <= UINT_MAX ;
+  requires shift + end <= SIZE_MAX ;
   assigns array[beg+shift .. end+shift-1];
   ensures shifted{Pre, Post}(array, beg, end, shift) ;
 */
@@ -20,7 +20,7 @@ void shift_array(int* array, size_t beg, size_t end, size_t shift);
 
 /*@
   requires \valid(array+(0 .. len+s1+s2-1)) ;
-  requires s1+s2 + len <= UINT_MAX ;
+  requires s1+s2 + len <= SIZE_MAX ;
   assigns array[s1 .. s1+s2+len-1];
   ensures shifted{Pre, Post}(array+s1, 0, len, s2) ;
 */

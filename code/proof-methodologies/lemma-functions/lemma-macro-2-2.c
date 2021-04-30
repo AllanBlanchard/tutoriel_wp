@@ -1,4 +1,4 @@
-#include <limits.h>
+#include <stdint.h>
 #include <stddef.h>
 
 /*@
@@ -27,7 +27,7 @@ void assign_array(int* arr, size_t fst, size_t last, size_t s1, size_t s2);
 
 /*@
   requires fst <= last ;
-  requires s1+s2+last <= UINT_MAX ;
+  requires s1+s2+last <= SIZE_MAX ;
 */
 void context_to_prove_shift_ptr(int* arr, size_t fst, size_t last, size_t s1, size_t s2){
  L1: ;
@@ -43,7 +43,7 @@ void context_to_prove_shift_ptr(int* arr, size_t fst, size_t last, size_t s1, si
 
 /*@
   requires \valid(array+(beg .. end+shift-1)) ;
-  requires shift + end <= UINT_MAX ;
+  requires shift + end <= SIZE_MAX ;
   assigns array[beg+shift .. end+shift-1];
   ensures shifted{Pre, Post}(array, beg, end, shift) ;
 */
@@ -51,7 +51,7 @@ void shift_array(int* array, size_t beg, size_t end, size_t shift);
 
 /*@
   requires \valid(array+(0 .. len+s1+s2-1)) ;
-  requires s1+s2 + len <= UINT_MAX ;
+  requires s1+s2 + len <= SIZE_MAX ;
   assigns array[s1 .. s1+s2+len-1];
   ensures shifted{Pre, Post}(array+s1, 0, len, s2) ;
 */
