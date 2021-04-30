@@ -1,5 +1,5 @@
 #include <stddef.h>
-#include <limits.h>
+#include <stdint.h>
 
 /*@
   predicate sorted(int* a, integer b, integer e) =
@@ -41,7 +41,7 @@
 */
 
 /*@
-  requires beg < last < UINT_MAX && \valid(a + (beg .. last));
+  requires beg < last < SIZE_MAX && \valid(a + (beg .. last));
   requires sorted(a, beg, last) ;
 
   assigns a[ beg .. last ] ;

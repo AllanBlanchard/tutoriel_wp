@@ -1,5 +1,5 @@
 #include <stddef.h>
-#include <limits.h>
+#include <stdint.h>
 
 /*@
   axiomatic Occurrences_Axiomatic{
@@ -204,7 +204,7 @@ void context_to_prove_rotate_left_permutation(int* arr, size_t fst, size_t last)
 }
 
 /*@
-  requires beg < last < UINT_MAX && \valid(a + (beg .. last));
+  requires beg < last < SIZE_MAX && \valid(a + (beg .. last));
   requires sorted(a, beg, last) ;
 
   assigns a[ beg .. last ] ;

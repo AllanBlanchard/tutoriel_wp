@@ -1,5 +1,5 @@
 #include <stddef.h>
-#include <limits.h>
+
 
 /*@
   requires \valid_read(arr + (0 .. len-1));
@@ -15,13 +15,13 @@
 
   behavior does_not_exists:
     assumes \forall integer j ; 0 <= j < len ==> arr[j] != value ;
-    ensures \result == UINT_MAX ;
+    ensures \result == len ;
 
   complete behaviors ;
   disjoint behaviors ;
 */
 size_t bsearch(int* arr, size_t len, int value){
-  if(len == 0) return UINT_MAX ;
+  if(len == 0) return 0 ;
   
   size_t low = 0 ;
   size_t up = len ;
@@ -39,5 +39,5 @@ size_t bsearch(int* arr, size_t len, int value){
     else if(arr[mid] < value) low = mid+1 ;
     else return mid ;
   }
-  return UINT_MAX ;
+  return len ;
 }

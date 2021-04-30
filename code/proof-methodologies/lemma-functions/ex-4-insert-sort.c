@@ -182,7 +182,7 @@ size_t find_last_inf(int value, int* a, size_t beg, size_t end){
 */
 
 /*@
-  requires beg < last < UINT_MAX && \valid(a + (beg .. last));
+  requires beg < last < SIZE_MAX && \valid(a + (beg .. last));
   requires sorted(a, beg, last) ;
 
   assigns a[ beg .. last ] ;
@@ -222,7 +222,7 @@ void insert(int* a, size_t beg, size_t last){
       \forall int v ;
       l_occurrences_of{Pre}(v, a, \at(i, Here), last+1) ==
         l_occurrences_of{Pre}(v, a, \at(i, Here), last) +
-	l_occurrences_of{Pre}(v, a, last, last +1);
+  l_occurrences_of{Pre}(v, a, last, last +1);
   */
 
   //@ assert rotate_left{Pre, Here}(a, i, last+1) ;
@@ -260,12 +260,12 @@ void insertion_sort(int* a, size_t beg, size_t end){
     /*@ ghost
       if(i+1 < end){
         /@ loop invariant i+1 <= j <= end ;
-	   loop invariant \forall int v ;
-	     l_occurrences_of{L}(v, a, beg, \at(j, Here)) ==
-	     l_occurrences_of(v, a, beg, j) ;
-	   loop assigns j ;
-	   loop variant end - j ;
-	@/
+           loop invariant \forall int v ;
+             l_occurrences_of{L}(v, a, beg, \at(j, Here)) ==
+             l_occurrences_of(v, a, beg, j) ;
+           loop assigns j ;
+           loop variant end - j ;
+        @/
         for(size_t j = i+1 ; j < end ; ++j);
       }
     */

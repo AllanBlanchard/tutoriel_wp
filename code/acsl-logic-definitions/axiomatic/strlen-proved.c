@@ -1,5 +1,5 @@
 #include <stddef.h>
-#include <limits.h>
+#include <stdint.h>
 
 /*@
   axiomatic StrLen {
@@ -30,7 +30,7 @@
 */
 
 /*@
-  requires valid_read_string(s) && strlen(s) <= UINT_MAX ;
+  requires valid_read_string(s) && strlen(s) <= SIZE_MAX ;
   assigns \nothing ;
   ensures \result == strlen(s) ;
 */

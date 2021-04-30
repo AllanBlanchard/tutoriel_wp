@@ -1,8 +1,8 @@
-#include <limits.h>
 #include <stddef.h>
 
+
 size_t bsearch(int* arr, size_t len, int value){
-  if(len == 0) return UINT_MAX ;
+  if(len == 0) return len ;
   
   size_t low = 0 ;
   size_t up = len ;
@@ -13,5 +13,5 @@ size_t bsearch(int* arr, size_t len, int value){
     else if(arr[mid] < value) low = mid+1 ;
     else return mid ;
   }
-  return UINT_MAX ;
+  return len ;
 }

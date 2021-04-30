@@ -1,5 +1,5 @@
 #include <stddef.h>
-#include <limits.h>
+#include <stdint.h>
 
 /*@
   predicate shifted_cell{L1, L2}(int* p, integer shift) =
@@ -30,7 +30,7 @@
 
 /*@
   requires \valid(array+(0 .. len+shift-1)) ;
-  requires shift + len <= UINT_MAX ;
+  requires shift + len <= SIZE_MAX ;
   assigns array[shift .. shift+len-1];
   ensures shifted{Pre, Post}(array, 0, len, shift) ;
 */
@@ -49,7 +49,7 @@ void shift_array(int* array, size_t len, size_t shift){
 
 /*@
   requires \valid(array+(0 .. len+s1+s2-1)) ;
-  requires s1+s2 + len <= UINT_MAX ;
+  requires s1+s2 + len <= SIZE_MAX ;
   assigns array[s1 .. s1+s2+len-1];
   ensures shifted{Pre, Post}(array, 0, len, s1+s2) ;
 */
