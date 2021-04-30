@@ -198,7 +198,7 @@ l'exemple d'un chronomètre simple. Une modélisation très abstraite du
 comportement de notre chronomètre est la suivante :
 
 
-\image{model-fr.png}[Modélisation très abstraite d'un chronomètre]
+\image{model-fr}[Modélisation très abstraite d'un chronomètre]
 
 
 Nous avons bien une modélisation du comportement de notre chronomètre avec
@@ -240,7 +240,10 @@ un modèle est précis, plus il est difficile d'avoir une vision globale du
 comportement qu'il définit. Notre diagramme est compréhensible en un coup d'oeil,
 le code demande un peu plus de temps, quant à l'exécutable ... Toute personne qui
 a déjà ouvert par erreur un exécutable avec un éditeur de texte sait que ce n'est
-pas très agréable à lire dans son ensemble\textsuperscript{\ref{footnote:1}}.
+pas très agréable à lire dans son ensemble\footnote{Il existe des analyses
+formelles cherchant à comprendre le fonctionnement des exécutables en code
+machine, par exemple pour comprendre ce que font des logiciels malveillants ou
+pour détecter des failles de sécurité introduites lors de la compilation.}.
 
 
 
@@ -262,14 +265,6 @@ se voit attribuer une sémantique, une représentation de son comportement dans
 un monde purement logique, mathématique. Le cadre logique qui nous intéresse
 ici, c'est la logique de Hoare adaptée pour le langage C et toutes ses
 subtilités (qui rendent donc le modèle final très concret).
-
-
-
-\footnotetext[1]{\label{footnote:1} Il existe des analyses formelles cherchant à comprendre le
-fonctionnement des exécutables en code machine, par exemple pour comprendre ce
-que font des logiciels malveillants ou pour détecter des failles de sécurité introduites lors
-de la compilation.}
-
 
 
 \levelThreeTitle{Les triplets de Hoare}
@@ -297,10 +292,8 @@ de Hoare :
 
 
 
+$$\{P\} \quad C \quad \{Q\}$$
 
-\begin{center}
-$\{P\}\ C\ \{Q\}$
-\end{center}
 
 
 Où $P$ et $Q$ sont des prédicats (c'est-à-dire des formules logiques) qui nous disent dans
@@ -309,15 +302,14 @@ commandes définissant un programme. Cette écriture nous dit « si nous sommes
 dans un état où $P$ est vrai, après exécution de $C$ et si $C$ termine,
 alors $Q$ sera vrai pour le nouvel état du programme ». Dis autrement, $P$ est
 une précondition suffisante pour que $C$ nous amène à la postcondition $Q$.
-Par exemple, le triplet correspondant à l'action « ne rien faire » (\textbf{skip})
-est le suivant :
+Par exemple, le triplet correspondant à l'action « ne rien faire »
+(\texttt{skip}) est le suivant :
 
 
 
 
-\begin{center}
-$\{P\}$ \textbf{skip} $\{P\}$
-\end{center}
+$$\{P\} \quad \texttt{skip} \quad \{P\}$$
+
 
 
 Quand nous ne faisons rien, la postcondition est la même que la précondition.
