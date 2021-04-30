@@ -5,6 +5,7 @@ enum Angles { RIGHT, ACUTE, OBTUSE };
 
 /*@
   requires 0 <= a && 0 <= b && 0 <= c;
+  requires a <= b+c;
   requires a >= b && a >= c; // Note that this condition is not
                              // necessary for the function but
                              // added for this exercise
