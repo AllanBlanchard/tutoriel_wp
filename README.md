@@ -7,3 +7,11 @@ It can be used for both learning and teaching, I hope you will have some fun wit
 The last version is available on my website in [English](https://allan-blanchard.fr/publis/frama-c-wp-tutorial-en.pdf) and in [French](https://allan-blanchard.fr/publis/frama-c-wp-tutoriel-fr.pdf).
 
 An online French version is available [on Zeste de Savoir](https://zestedesavoir.com/contenus/beta/885/introduction-a-la-preuve-de-programmes-c-avec-frama-c-et-son-greffon-wp/).
+
+## Building
+
+In order to build the files, you can use docker
+```sh
+docker build -t tutoriel_wp .
+docker run --rm -v $PWD:/mnt -w /mnt tutoriel_wp make
+```
