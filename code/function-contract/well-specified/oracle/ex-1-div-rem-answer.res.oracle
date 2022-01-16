@@ -1,0 +1,16 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-1-div-rem-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function div_rem
+[wp] 8 goals scheduled
+[wp] [Alt-Ergo] Goal typed_div_rem_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_div_rem_ensures_2 : Valid
+[wp] [Qed] Goal typed_div_rem_assert_rte_division_by_zero : Valid
+[wp] [Qed] Goal typed_div_rem_assert_rte_mem_access : Valid
+[wp] [Qed] Goal typed_div_rem_assert_rte_division_by_zero_2 : Valid
+[wp] [Qed] Goal typed_div_rem_assert_rte_mem_access_2 : Valid
+[wp] [Qed] Goal typed_div_rem_assigns_part1 : Valid
+[wp] [Qed] Goal typed_div_rem_assigns_part2 : Valid
+[wp] Proved goals:    8 / 8
+  Qed:             6 
+  Alt-Ergo:        2

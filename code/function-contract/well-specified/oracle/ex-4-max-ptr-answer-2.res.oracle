@@ -1,0 +1,25 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-4-max-ptr-answer-2.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function main
+[rte:annot] annotating function max_ptr
+[wp] 13 goals scheduled
+[wp] [Alt-Ergo] Goal typed_max_ptr_ensures : Valid
+[wp] [Qed] Goal typed_max_ptr_ensures_2 : Valid
+[wp] [Alt-Ergo] Goal typed_max_ptr_assert_rte_mem_access : Valid
+[wp] [Alt-Ergo] Goal typed_max_ptr_assert_rte_mem_access_2 : Valid
+[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_3 : Valid
+[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_4 : Valid
+[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_5 : Valid
+[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_6 : Valid
+[wp] [Qed] Goal typed_max_ptr_assigns_part1 : Valid
+[wp] [Qed] Goal typed_max_ptr_assigns_part2 : Valid
+[wp] [Qed] Goal typed_main_assert : Valid
+[wp] [Qed] Goal typed_main_assert_2 : Valid
+[wp] [Qed] Goal typed_main_call_max_ptr_requires : Valid
+[wp] Proved goals:   13 / 13
+  Qed:            10 
+  Alt-Ergo:        3
+[wp:pedantic-assigns] ex-4-max-ptr-answer-2.c:17: Warning: 
+  No 'assigns' specification for function 'main'.
+  Callers assumptions might be imprecise.

@@ -464,7 +464,7 @@ il faudrait définir le contexte dans lequel on souhaite l'utiliser et définir
 les préconditions qui nous garantissent l'absence de débordement en conséquence.
 
 
-\levelFourTitle{Écrire le bon contrat}
+\levelThreeTitle{Écrire le bon contrat}
 
 
 Trouver les bonnes préconditions à une fonction est parfois difficile. Il est
@@ -513,7 +513,7 @@ division et écrit ces deux valeurs à deux positions mémoire \CodeInline{p}
 et \CodeInline{q} :
 
 
-\CodeBlockInput{c}{ex-1-div-rem.c}
+\CodeBlockInput[5]{c}{ex-1-div-rem.c}
 
 
 Lancer la commande :
@@ -543,7 +543,7 @@ second est vraie. Ne pas oublier d'exprimer que la valeur pointée par le second
 paramètre doit rester la même :
 
 
-\CodeBlockInput{c}{ex-2-reset-on-cond.c}
+\CodeBlockInput[5]{c}{ex-2-reset-on-cond.c}
 
 
 Lancer la commande :
@@ -561,7 +561,7 @@ La fonction suivante reçoit deux pointeurs en entrée et retourne la
 somme des valeurs pointées. Écrire le contrat de cette fonction :
 
 
-\CodeBlockInput{c}{ex-3-add-ptr.c}
+\CodeBlockInput[5]{c}{ex-3-add-ptr.c}
 
 
 Lancer la commande :
@@ -595,7 +595,7 @@ Le code suivant calcule le maximum des valeurs pointées par \CodeInline{a}
 et \CodeInline{b}. Écrire le contrat de cette fonction :
 
 
-\CodeBlockInput{c}{ex-4-max-ptr.c}
+\CodeBlockInput[5]{c}{ex-4-max-ptr.c}
 
 
 Lancer la commande :
@@ -630,7 +630,7 @@ La fonction suivante doit ordonner trois valeurs reçues en entrée dans
 l'ordre croissant. Écrire le code correspondant et la spécification de la
 fonction :
 
-\CodeBlockInput{c}{ex-5-order-3.c}
+\CodeBlockInput[5]{c}{ex-5-order-3.c}
 
 
 Et lancer la commande :
