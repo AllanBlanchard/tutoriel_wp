@@ -1,0 +1,40 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-2-alphanum-answer-2.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function character_kind
+[rte:annot] annotating function is_digit
+[rte:annot] annotating function is_lower_alpha
+[rte:annot] annotating function is_upper_alpha
+[wp] 29 goals scheduled
+[wp] [Qed] Goal typed_is_lower_alpha_ensures : Valid
+[wp] [Qed] Goal typed_is_lower_alpha_assigns_part1 : Valid
+[wp] [Qed] Goal typed_is_lower_alpha_assigns_part2 : Valid
+[wp] [Qed] Goal typed_is_lower_alpha_assigns_part3 : Valid
+[wp] [Qed] Goal typed_is_upper_alpha_ensures : Valid
+[wp] [Qed] Goal typed_is_upper_alpha_assigns_part1 : Valid
+[wp] [Qed] Goal typed_is_upper_alpha_assigns_part2 : Valid
+[wp] [Qed] Goal typed_is_upper_alpha_assigns_part3 : Valid
+[wp] [Qed] Goal typed_is_digit_ensures : Valid
+[wp] [Qed] Goal typed_is_digit_assigns_part1 : Valid
+[wp] [Qed] Goal typed_is_digit_assigns_part2 : Valid
+[wp] [Qed] Goal typed_is_digit_assigns_part3 : Valid
+[wp] [Alt-Ergo] Goal typed_character_kind_complete_digit_lower_other_upper : Valid
+[wp] [Alt-Ergo] Goal typed_character_kind_disjoint_digit_lower_other_upper : Valid
+[wp] [Qed] Goal typed_character_kind_assigns_exit_part1 : Valid
+[wp] [Qed] Goal typed_character_kind_assigns_exit_part2 : Valid
+[wp] [Qed] Goal typed_character_kind_assigns_exit_part3 : Valid
+[wp] [Qed] Goal typed_character_kind_assigns_normal_part1 : Valid
+[wp] [Qed] Goal typed_character_kind_assigns_normal_part2 : Valid
+[wp] [Qed] Goal typed_character_kind_assigns_normal_part3 : Valid
+[wp] [Qed] Goal typed_character_kind_assigns_normal_part4 : Valid
+[wp] [Qed] Goal typed_character_kind_assigns_normal_part5 : Valid
+[wp] [Qed] Goal typed_character_kind_assigns_normal_part6 : Valid
+[wp] [Qed] Goal typed_character_kind_assigns_normal_part7 : Valid
+[wp] [Qed] Goal typed_character_kind_assigns_normal_part8 : Valid
+[wp] [Qed] Goal typed_character_kind_lower_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_character_kind_upper_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_character_kind_digit_ensures : Valid
+[wp] [Qed] Goal typed_character_kind_other_ensures : Valid
+[wp] Proved goals:   29 / 29
+  Qed:            25 
+  Alt-Ergo:        4

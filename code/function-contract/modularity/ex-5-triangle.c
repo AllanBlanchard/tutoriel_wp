@@ -1,3 +1,7 @@
+/* run.config
+   DONTRUN:
+*/
+
 #include <limits.h>
 
 enum Sides { SCALENE, ISOSCELE, EQUILATERAL };

@@ -1,3 +1,7 @@
+/* run.config
+   DONTRUN:
+*/
+
 void max_ptr(int* a, int* b){
   if(*a < *b){
     int tmp = *b ;

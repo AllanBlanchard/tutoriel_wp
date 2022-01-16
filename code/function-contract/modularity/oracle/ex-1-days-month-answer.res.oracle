@@ -1,0 +1,28 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-1-days-month-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function day_of
+[rte:annot] annotating function leap
+[wp] 19 goals scheduled
+[wp] [Qed] Goal typed_leap_ensures : Valid
+[wp] [Qed] Goal typed_leap_assigns_part1 : Valid
+[wp] [Qed] Goal typed_leap_assigns_part2 : Valid
+[wp] [Qed] Goal typed_leap_assigns_part3 : Valid
+[wp] [Alt-Ergo] Goal typed_day_of_complete_february_leap_february_not_leap_thirty : Valid
+[wp] [Alt-Ergo] Goal typed_day_of_disjoint_february_leap_february_not_leap_thirty : Valid
+[wp] [Alt-Ergo] Goal typed_day_of_assert_rte_index_bound : Valid
+[wp] [Alt-Ergo] Goal typed_day_of_assert_rte_index_bound_2 : Valid
+[wp] [Alt-Ergo] Goal typed_day_of_assert_rte_signed_overflow : Valid
+[wp] [Qed] Goal typed_day_of_assigns_exit : Valid
+[wp] [Qed] Goal typed_day_of_assigns_normal_part1 : Valid
+[wp] [Qed] Goal typed_day_of_assigns_normal_part2 : Valid
+[wp] [Qed] Goal typed_day_of_assigns_normal_part3 : Valid
+[wp] [Qed] Goal typed_day_of_assigns_normal_part4 : Valid
+[wp] [Qed] Goal typed_day_of_assigns_normal_part5 : Valid
+[wp] [Qed] Goal typed_day_of_february_leap_ensures : Valid
+[wp] [Qed] Goal typed_day_of_february_not_leap_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_day_of_thirty_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_day_of_thirty_one_ensures : Valid
+[wp] Proved goals:   19 / 19
+  Qed:            12 
+  Alt-Ergo:        7
