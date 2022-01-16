@@ -1,0 +1,14 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing bad-precond.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function foo
+[wp] 2 goals scheduled
+[wp] [Failed] Smoke-test typed_foo_wp_smoke_default_requires
+       Qed: Valid
+[wp] bad-precond.c:10: Warning: Failed smoke-test
+[wp] [Qed] Goal typed_foo_ensures : Valid
+[wp] Proved goals:    1 / 2
+  Qed:             1  (failed: 1)
+[wp:pedantic-assigns] bad-precond.c:10: Warning: 
+  No 'assigns' specification for function 'foo'.
+  Callers assumptions might be imprecise.
