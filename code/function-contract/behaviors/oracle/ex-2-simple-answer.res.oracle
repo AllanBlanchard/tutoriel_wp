@@ -1,0 +1,31 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-2-simple-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function kind_of_letter
+[rte:annot] annotating function quadrant
+[wp] 22 goals scheduled
+[wp] [Alt-Ergo] Goal typed_kind_of_letter_complete_consonant_vowel : Valid
+[wp] [Alt-Ergo] Goal typed_kind_of_letter_disjoint_consonant_vowel : Valid
+[wp] [Qed] Goal typed_kind_of_letter_assigns_part1 : Valid
+[wp] [Qed] Goal typed_kind_of_letter_assigns_part2 : Valid
+[wp] [Qed] Goal typed_kind_of_letter_assigns_part3 : Valid
+[wp] [Qed] Goal typed_kind_of_letter_assigns_part4 : Valid
+[wp] [Qed] Goal typed_kind_of_letter_assigns_part5 : Valid
+[wp] [Qed] Goal typed_kind_of_letter_assigns_part6 : Valid
+[wp] [Qed] Goal typed_kind_of_letter_assigns_part7 : Valid
+[wp] [Qed] Goal typed_kind_of_letter_vowel_ensures : Valid
+[wp] [Qed] Goal typed_kind_of_letter_consonant_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_quadrant_complete_I_II_III_IV : Valid
+[wp] [Qed] Goal typed_quadrant_disjoint_I_II_III_IV : Valid
+[wp] [Alt-Ergo] Goal typed_quadrant_ensures : Valid
+[wp] [Qed] Goal typed_quadrant_assigns_part1 : Valid
+[wp] [Qed] Goal typed_quadrant_assigns_part2 : Valid
+[wp] [Qed] Goal typed_quadrant_assigns_part3 : Valid
+[wp] [Qed] Goal typed_quadrant_assigns_part4 : Valid
+[wp] [Qed] Goal typed_quadrant_I_ensures : Valid
+[wp] [Qed] Goal typed_quadrant_II_ensures : Valid
+[wp] [Qed] Goal typed_quadrant_III_ensures : Valid
+[wp] [Qed] Goal typed_quadrant_IV_ensures : Valid
+[wp] Proved goals:   22 / 22
+  Qed:            18 
+  Alt-Ergo:        4
