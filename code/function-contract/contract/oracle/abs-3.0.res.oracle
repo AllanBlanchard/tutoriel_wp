@@ -1,0 +1,12 @@
+# frama-c -wp [...]
+[kernel] Parsing abs-3.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+[wp] 2 goals scheduled
+[wp] [Qed] Goal typed_abs_ensures_positive_value_function_result : Valid
+[wp] [Qed] Goal typed_abs_ensures : Valid
+[wp] Proved goals:    2 / 2
+  Qed:             2
+[wp:pedantic-assigns] abs-3.c:12: Warning: 
+  No 'assigns' specification for function 'abs'.
+  Callers assumptions might be imprecise.

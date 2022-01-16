@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:+"-wp-no-rte"
+*/
+
 /*@
   ensures \result >= 0;
 */
