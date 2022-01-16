@@ -129,11 +129,12 @@ in ACSL. In order to produce a correct specification of programs using
 pointers, it is necessary to detail the configuration of the considered
 memory.
 
-We can illustrate with a swap function for C integers:
+We can illustrate with a swap function for C integers (this version can
+only be verified without RTE checking for now):
 
 
 
-\CodeBlockInput{c}{swap-0.c}
+\CodeBlockInput[5]{c}{swap-0.c}
 
 
 
@@ -219,7 +220,7 @@ the value of the variable \CodeInline{x} at a program point where it does
 not exist:
 
 
-\CodeBlockInput[1][5]{c}{at-2.c}
+\CodeBlockInput[5][9]{c}{at-2.c}
 
 
 \image{2-at-1.png}
@@ -231,7 +232,7 @@ a syntactic analysis. For example, if the variable is declared but undefined
 or if we want the value of a pointed value:
 
 
-\CodeBlockInput[7][19]{c}{at-2.c}
+\CodeBlockInput[11][23]{c}{at-2.c}
 
 
 Here, it is easy to see the problem. However, the considered label is
@@ -240,7 +241,7 @@ innocent can have a surprising behavior if we do not keep this fact in mind.
 For example, in the following example:
 
 
-\CodeBlockInput[21][26]{c}{at-2.c}
+\CodeBlockInput[25][30]{c}{at-2.c}
 
 
 The first assertion is proved, and while the second assertion seems to
@@ -373,7 +374,7 @@ free. We specify this by giving \CodeInline{\textbackslash{}nothing} to
 
 
 
-\CodeBlockInput{c}{assigns-nothing.c}
+\CodeBlockInput[3]{c}{assigns-nothing.c}
 
 
 
@@ -393,11 +394,12 @@ sometimes it is not that simple:
 
 
 
-\CodeBlockInput{c}{incr_a_by_b-0.c}
+\CodeBlockInput[5]{c}{incr_a_by_b-0.c}
 
 
 
-If we ask WP to prove this function, we get the following result:
+If we ask WP to prove this function (let us ignore the verification of absence
+of RTEs for this example), we get the following result:
 
 
 
@@ -439,7 +441,7 @@ non-overlapping. Here, we specify:
 
 
 
-\CodeBlockInput{c}{incr_a_by_b-1.c}
+\CodeBlockInput[5]{c}{incr_a_by_b-1.c}
 
 
 

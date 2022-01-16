@@ -1,0 +1,30 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing at-2.c (with preprocessing)
+[kernel:annot-error] at-2.c:8: Warning: 
+  unbound logic variable x. Ignoring code annotation
+[wp] Running WP plugin...
+[rte:annot] annotating function example_1
+[rte:annot] annotating function example_2
+[rte:annot] annotating function example_3
+[rte:annot] annotating function example_4
+[wp] 5 goals scheduled
+[wp] [Alt-Ergo] Goal typed_example_2_assert : Unsuccess
+[wp] [Alt-Ergo] Goal typed_example_3_assert : Unsuccess
+[wp] [Alt-Ergo] Goal typed_example_4_assert_rte_mem_access : Unsuccess
+[wp] [Alt-Ergo] Goal typed_example_4_assert : Valid
+[wp] [Alt-Ergo] Goal typed_example_4_assert_2 : Unsuccess
+[wp] Proved goals:    1 / 5
+  Qed:             0 
+  Alt-Ergo:        1  (unsuccess: 4)
+[wp:pedantic-assigns] at-2.c:5: Warning: 
+  No 'assigns' specification for function 'example_1'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] at-2.c:11: Warning: 
+  No 'assigns' specification for function 'example_2'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] at-2.c:18: Warning: 
+  No 'assigns' specification for function 'example_3'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] at-2.c:26: Warning: 
+  No 'assigns' specification for function 'example_4'.
+  Callers assumptions might be imprecise.

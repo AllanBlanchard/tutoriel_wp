@@ -136,11 +136,12 @@ la configuration de la mémoire que l'on considère.
 
 
 
-Prenons par exemple une fonction \CodeInline{swap} pour les entiers :
+Prenons par exemple une fonction \CodeInline{swap} pour les entiers (pour
+le moment seulement vérifiable sans la vérification des RTEs) :
 
 
 
-\CodeBlockInput{c}{swap-0.c}
+\CodeBlockInput[5]{c}{swap-0.c}
 
 
 
@@ -148,16 +149,17 @@ Prenons par exemple une fonction \CodeInline{swap} pour les entiers :
 
 
 Ici, nous introduisons une première fonction logique fournie de base par
-ACSL : \CodeInline{\textbackslash{}old}, qui permet de parler de l'ancienne valeur d'un élément.
-Ce que nous dit donc la spécification c'est « la fonction doit assurer que
-\CodeInline{*a} soit égal à l'ancienne valeur (au sens : la valeur avant l'appel) de \CodeInline{*b}
-et inversement ».
+ACSL : \CodeInline{\textbackslash{}old}, qui permet de parler de l'ancienne
+valeur d'un élément. Ce que nous dit donc la spécification c'est « la fonction
+doit assurer que \CodeInline{*a} soit égal à l'ancienne valeur (au sens : la
+valeur avant l'appel) de \CodeInline{*b} et inversement ».
 
 
 
-La fonction \CodeInline{\textbackslash{}old} ne peut être utilisée que dans la postcondition d'une
-fonction. Si nous avons besoin de ce type d'information ailleurs, nous
-utilisons \CodeInline{\textbackslash{}at} qui nous permet d'exprimer des propriétés à propos de la
+La fonction \CodeInline{\textbackslash{}old} ne peut être utilisée que dans la
+postcondition d'une fonction. Si nous avons besoin de ce type d'information
+ailleurs, nous utilisons \CodeInline{\textbackslash{}at} qui nous permet
+d'exprimer des propriétés à propos de la
 valeur d'une variable à un point donné. Elle reçoit deux paramètres. Le premier
 est la variable (ou position mémoire) dont nous voulons obtenir la valeur et le
 second la position (sous la forme d'un label C) à laquelle nous voulons
@@ -226,7 +228,7 @@ Par exemple, dans le programme suivant, Frama-C détecte que nous demandons la v
 de la variable \CodeInline{x} à un point du programme où elle n'existe pas:
 
 
-\CodeBlockInput[1][5]{c}{at-2.c}
+\CodeBlockInput[5][9]{c}{at-2.c}
 
 
 \image{2-at-1}
@@ -239,7 +241,7 @@ est déclarée mais pas définie, ou si nous demandons la valeur d'une zone mém
 pointée :
 
 
-\CodeBlockInput[7][19]{c}{at-2.c}
+\CodeBlockInput[11][23]{c}{at-2.c}
 
 
 Ici, il est facile de remarquer le problème. Cependant, le label que nous
@@ -249,7 +251,7 @@ innocents peuvent en réalité nous donner des comportements surprenant si nous
 ne gardons pas cette idée en tête. Par exemple, dans le programme suivant :
 
 
-\CodeBlockInput[21][26]{c}{at-2.c}
+\CodeBlockInput[25][30]{c}{at-2.c}
 
 
 La première assertion est prouvée, et tandis que la seconde assertion a l'air
@@ -261,8 +263,9 @@ label est propagé à la sous-expression \CodeInline{*p}, pour laquelle nous ne
 connaissons pas la valeur au label \CodeInline{Pre} (qui n'est pas spécifié).
 
 
-Pour le moment, nous n'utiliserons pas \CodeInline{\textbackslash{}at}, mais elle peut rapidement se
-montrer indispensable pour écrire des spécifications précises.
+Pour le moment, nous n'utiliserons pas \CodeInline{\textbackslash{}at}, mais
+elle peut rapidement se montrer indispensable pour écrire des spécifications
+précises.
 
 
 
@@ -380,7 +383,7 @@ provoque pas d'effets de bords. Ce cas est précisé en donnant \CodeInline{\tex
 
 
 
-\CodeBlockInput{c}{assigns-nothing.c}
+\CodeBlockInput[3]{c}{assigns-nothing.c}
 
 
 
@@ -400,12 +403,12 @@ code source), dans d'autre cas, ce n'est pas si simple :
 
 
 
-\CodeBlockInput{c}{incr_a_by_b-0.c}
+\CodeBlockInput[5]{c}{incr_a_by_b-0.c}
 
 
 
-Si nous demandons à WP de prouver cette fonction, nous obtenons le
-résultat suivant :
+Si nous demandons à WP de prouver cette fonction (ignorons la vérification de
+l'absence de RTEs pour cet exemple), nous obtenons le résultat suivant :
 
 
 
@@ -443,7 +446,7 @@ disjoints. Ici, nous spécifierions :
 
 
 
-\CodeBlockInput{c}{incr_a_by_b-1.c}
+\CodeBlockInput[5]{c}{incr_a_by_b-1.c}
 
 
 

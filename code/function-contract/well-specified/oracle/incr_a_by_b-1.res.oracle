@@ -1,0 +1,11 @@
+# frama-c -wp [...]
+[kernel] Parsing incr_a_by_b-1.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+[wp] 3 goals scheduled
+[wp] [Alt-Ergo] Goal typed_incr_a_by_b_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_incr_a_by_b_ensures_2 : Valid
+[wp] [Qed] Goal typed_incr_a_by_b_assigns : Valid
+[wp] Proved goals:    3 / 3
+  Qed:             1 
+  Alt-Ergo:        2
