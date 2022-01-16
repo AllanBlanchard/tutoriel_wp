@@ -484,14 +484,7 @@ correctly respects the required precondition:
 
 
 
-\begin{CodeBlock}{c}
-void foo(int a){
-   int b = abs(42);
-   int c = abs(-42);
-   int d = abs(a);       // False : "a" can be INT_MIN
-   int e = abs(INT_MIN); // False : the parameter must be strictly greater than INT_MIN
-}
-\end{CodeBlock}
+\CodeBlockInput[15]{c}{abs-5.c}
 
 
 

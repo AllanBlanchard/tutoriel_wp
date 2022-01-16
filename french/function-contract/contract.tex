@@ -512,14 +512,7 @@ respecte bien la précondition qu'elle impose :
 
 
 
-\begin{CodeBlock}{c}
-void foo(int a){
-   int b = abs(42);
-   int c = abs(-42);
-   int d = abs(a);       // Faux : "a", vaut peut-être INT_MIN
-   int e = abs(INT_MIN); // Faux : le paramètre doit être strictement supérieur à INT_MIN
-}
-\end{CodeBlock}
+\CodeBlockInput[15]{c}{abs-5.c}
 
 
 
