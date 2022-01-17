@@ -1,4 +1,5 @@
 /*@
+  requires 0 <= a <= 100 ;
   ensures \result == \old(a) + 10;
 */
 int add_ten(int a){

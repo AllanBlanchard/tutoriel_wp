@@ -1,0 +1,18 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing first_loop-2.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function main
+[wp] first_loop-2.c:8: Warning: 
+  Missing assigns clause (assigns 'everything' instead)
+[wp] 5 goals scheduled
+[wp] [Alt-Ergo] Goal typed_main_loop_invariant_preserved : Valid
+[wp] [Qed] Goal typed_main_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_main_assert_rte_signed_overflow : Valid
+[wp] [Qed] Goal typed_main_assert : Valid
+[wp] [Alt-Ergo] Goal typed_main_assert_2 : Unsuccess
+[wp] Proved goals:    4 / 5
+  Qed:             2 
+  Alt-Ergo:        2  (unsuccess: 1)
+[wp:pedantic-assigns] first_loop-2.c:1: Warning: 
+  No 'assigns' specification for function 'main'.
+  Callers assumptions might be imprecise.

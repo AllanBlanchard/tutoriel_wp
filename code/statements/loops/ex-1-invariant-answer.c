@@ -1,3 +1,7 @@
+/* run.config
+   OPT:-wp -wp-par 1 -wp-cache update -wp-cache-env -wp-msg-key shell
+*/
+
 void foo(){
   int x = 0 ;
 
@@ -9,13 +13,13 @@ void foo(){
 
 /*
   -100 <= x <= 100 is a correct loop invariant.
-  
+
   ----  ESTABLISHMENT
   -100 <= 0 <= 100 is verified
 
   ----  PRESERVATION
   For any iteration, we have -100 <= x <= 100.
-  
+
   -  If x <= -10, we leave the loop and the invariant is verified
   -  If x >  -10, we have -10 < x <= 100.
      After the block of the loop, we have: -10 <= x < 100 which implies -100 <= x <= 100.

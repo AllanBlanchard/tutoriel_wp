@@ -1,3 +1,7 @@
+/* run.config
+   DONTRUN:
+*/
+
 void foo(){
   int x = -20 ;
 

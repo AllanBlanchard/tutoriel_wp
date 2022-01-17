@@ -1,0 +1,23 @@
+# frama-c -wp [...]
+[kernel] Parsing ex-2-variant-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+[wp] ex-2-variant-answer.c:11: Warning: 
+  Missing assigns clause (assigns 'everything' instead)
+[wp] ex-2-variant-answer.c:24: Warning: 
+  Missing assigns clause (assigns 'everything' instead)
+[wp] 6 goals scheduled
+[wp] [Qed] Goal typed_foo_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_foo_loop_variant_positive : Valid
+[wp] [Qed] Goal typed_bar_loop_invariant_preserved : Valid
+[wp] [Qed] Goal typed_bar_loop_invariant_established : Valid
+[wp] [Qed] Goal typed_bar_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_bar_loop_variant_positive : Valid
+[wp] Proved goals:    6 / 6
+  Qed:             6
+[wp:pedantic-assigns] ex-2-variant-answer.c:5: Warning: 
+  No 'assigns' specification for function 'foo'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] ex-2-variant-answer.c:16: Warning: 
+  No 'assigns' specification for function 'bar'.
+  Callers assumptions might be imprecise.

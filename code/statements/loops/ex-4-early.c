@@ -1,3 +1,7 @@
+/* run.config
+   DONTRUN:
+*/
+
 void foo(){
   int i ;
   int x = 0 ;

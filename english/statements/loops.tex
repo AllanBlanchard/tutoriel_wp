@@ -149,7 +149,7 @@ before the loop:
 
 
 
-\CodeBlockInput{c}{first_loop-1.c}
+\CodeBlockInput[5]{c}{first_loop-1.c}
 
 
 
@@ -244,7 +244,7 @@ in our program, we could modify the loop, removing the loop body:
   loop assigns i;
 */
 while(i < 30){
-   
+
 }
 \end{CodeBlock}
 
@@ -505,7 +505,7 @@ frama-c -wp your-file.c
 \end{CodeBlock}
 
 
-\CodeBlockInput[2][6]{c}{ex-1-invariant.c}
+\CodeBlockInput[6][10]{c}{ex-1-invariant.c}
 
 
 Is the property $-100 \leq x \leq 100$ a correct invariant? Explain why.
@@ -523,7 +523,7 @@ frama-c -wp your-file.c
 \end{CodeBlock}
 
 
-\CodeBlockInput[2][6]{c}{ex-2-variant.c}
+\CodeBlockInput[6][10]{c}{ex-2-variant.c}
 
 
 If your variant does not precisely state the number of remaining
@@ -536,12 +536,12 @@ iterations and use it as a variant. You might need to add an invariant.
 
 
 Write a suitable loop assigns clause for this loop such that the assertion
-on line 9 is proved as well as the assigns clause. Let us ignore runtime
+on line 8 is proved as well as the assigns clause. Let us ignore runtime
 errors in this proof.
 
 
 
-\CodeBlockInput[2][9]{c}{ex-3-assigns.c}
+\CodeBlockInput[6][13]{c}{ex-3-assigns.c}
 
 
 
@@ -559,4 +559,4 @@ Write a suitable contract for this loop such that the assertions on lines
 9 and 10 are proved as well as the contract of the loop.
 
 
-\CodeBlockInput[1][11]{c}{ex-4-early.c}
+\CodeBlockInput[6][15]{c}{ex-4-early.c}
