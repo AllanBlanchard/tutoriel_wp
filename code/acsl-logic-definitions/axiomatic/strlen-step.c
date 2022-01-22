@@ -1,3 +1,7 @@
+/* run.config
+   DONTRUN:
+*/
+
 #include <stddef.h>
 #include <limits.h>
 
@@ -13,7 +17,7 @@
 */
 
 /*@
-  requires valid_read_string(s) ; 
+  requires valid_read_string(s) ;
   assigns \nothing ;
   ensures \result == strlen(s) ;
 */

@@ -1,3 +1,7 @@
+/* run.config
+   DONTRUN:
+*/
+
 /*@
   axiomatic Permutation {
     // ...
@@ -11,7 +15,7 @@
 
 /*@
   requires beg < end && \valid(a + (beg .. end-1));
-  assigns  a[beg .. end-1];  
+  assigns  a[beg .. end-1];
   ensures sorted(a, beg, end);
   ensures permutation{Pre, Post}(a,beg,end);
 */

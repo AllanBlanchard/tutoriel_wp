@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:+"-wp-prover alt-ergo,coq -wp-session @PTEST_SUITE_DIR@/oracle@PTEST_CONFIG@/@PTEST_NAME@.session"
+*/
+
 #include <stddef.h>
 
 /*@
@@ -6,7 +10,7 @@
 
     axiom zeroed_empty{L}:
       \forall int* a, integer b, e; b >= e ==> zeroed{L}(a,b,e);
-      
+
     axiom zeroed_range{L}:
       \forall int* a, integer b, e; b < e ==>
         zeroed{L}(a,b,e-1) && a[e-1] == 0 <==> zeroed{L}(a,b,e);

@@ -1,6 +1,10 @@
+/* run.config
+   DONTRUN:
+*/
+
 #include <limits.h>
 
-/*@ 
+/*@
   axiomatic GCD {
     // ...
   }

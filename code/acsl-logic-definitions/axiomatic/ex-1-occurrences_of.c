@@ -1,3 +1,7 @@
+/* run.config
+   DONTRUN:
+*/
+
 #include <stddef.h>
 
 /*@
@@ -18,7 +22,7 @@
 */
 size_t occurrences_of(int value, int* in, size_t length){
   size_t result = 0;
-  
+
   for(size_t i = length; i > 0 ; --i)
     result += (in[i-1] == value) ? 1 : 0;
 

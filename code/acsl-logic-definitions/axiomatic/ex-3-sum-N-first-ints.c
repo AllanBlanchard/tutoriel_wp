@@ -1,3 +1,7 @@
+/* run.config
+   DONTRUN:
+*/
+
 #include <limits.h>
 
 /*@ axiomatic Sum_n {
@@ -7,7 +11,7 @@
 
 /*@ lemma sum_n_value: // ... */
 
-/*@ 
+/*@
   requires n >= 0 ;
   // requires ...
   // assigns ...

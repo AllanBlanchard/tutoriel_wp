@@ -130,7 +130,7 @@ d'une définition axiomatique qui prendra cette forme :
 
 
 
-\CodeBlockInput[1][12]{c}{reset-0.c}
+\CodeBlockInput[5][16]{c}{reset-0.c}
 
 
 Notons le \CodeInline{reads[b .. e-1]} qui spécifie la position mémoire dont le
@@ -282,7 +282,7 @@ mentionnées.
 Dans cette section, prouvons la fonction C \CodeInline{strlen}:
 
 
-\CodeBlockInput{c}{strlen-0.c}
+\CodeBlockInput[5]{c}{strlen-0.c}
 
 
 Premièrement, nous devons fournir un contrat adapté. Supposons que nous avons
@@ -313,7 +313,7 @@ car nous ne modifions pas la chaîne) pour fournir un contrat pour
 \CodeInline{strlen} :
 
 
-\CodeBlockInput[10][20]{c}{strlen-step.c}
+\CodeBlockInput[14][24]{c}{strlen-step.c}
 
 
 
@@ -412,7 +412,7 @@ Le programme suivant ne peut pas être prouvé avec la définition axiomatique
 que nous avons défini précédemment à propos du comptage d'occurrences :
 
 
-\CodeBlockInput[14][26]{c}{ex-1-occurrences_of.c}
+\CodeBlockInput[18][30]{c}{ex-1-occurrences_of.c}
 
 
 Ré-exprimer la définition axiomatique dans une forme qui permet de prouver le
@@ -427,7 +427,7 @@ d'une définition axiomatique et écrire le contrat de la fonction \CodeInline{g
 puis la prouver ;
 
 
-\CodeBlockInput{c}{ex-2-gcd.c}
+\CodeBlockInput[5]{c}{ex-2-gcd.c}
 
 
 \levelFourTitle{Somme des N premiers entiers}
@@ -438,7 +438,7 @@ d'une définition axiomatique. Écrire le contrat de la fonction \CodeInline{sum
 et la prouver :
 
 
-\CodeBlockInput{c}{ex-3-sum-N-first-ints.c}
+\CodeBlockInput[5]{c}{ex-3-sum-N-first-ints.c}
 
 
 \levelFourTitle{Permutation}
@@ -451,5 +451,4 @@ clause \CodeInline{reads} (en particulier, noter que le prédicat relie deux
 labels mémoire).
 
 
-\CodeBlockInput{c}{ex-4-sort.c}
-
+\CodeBlockInput[5]{c}{ex-4-sort.c}
