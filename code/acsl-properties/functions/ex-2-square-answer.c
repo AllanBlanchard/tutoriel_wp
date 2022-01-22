@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:#"-warn-unsigned-overflow -warn-unsigned-downcast"
+*/
+
 #include <limits.h>
 
 /*@
@@ -9,7 +13,7 @@
 
   assigns \nothing ;
 
-  ensures x >= 0 ==> \result == x ; 
+  ensures x >= 0 ==> \result == x ;
   ensures x < 0 ==> \result == -x ;
 */
 int abs(int x){

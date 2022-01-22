@@ -1,0 +1,13 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing linear-0.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function function
+[wp] 5 goals scheduled
+[wp] [Alt-Ergo] Goal typed_function_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_function_assert_rte_signed_overflow : Unsuccess
+[wp] [Alt-Ergo] Goal typed_function_assert_rte_signed_overflow_2 : Unsuccess
+[wp] [Alt-Ergo] Goal typed_function_assert_rte_signed_overflow_3 : Unsuccess
+[wp] [Qed] Goal typed_function_assigns : Valid
+[wp] Proved goals:    2 / 5
+  Qed:             1 
+  Alt-Ergo:        1  (unsuccess: 3)

@@ -1,3 +1,7 @@
+/* run.config
+   DONTRUN:
+*/
+
 #include <limits.h>
 #include <stddef.h>
 
