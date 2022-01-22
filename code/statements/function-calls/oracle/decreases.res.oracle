@@ -1,0 +1,14 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing decreases.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function ends
+[wp] 3 goals scheduled
+[wp] [Alt-Ergo] Goal typed_ends_assert_rte_signed_overflow : Valid
+[wp] [Qed] Goal typed_ends_variant : Valid
+[wp] [Qed] Goal typed_ends_call_ends_requires : Valid
+[wp] Proved goals:    3 / 3
+  Qed:             2 
+  Alt-Ergo:        1
+[wp:pedantic-assigns] decreases.c:4: Warning: 
+  No 'assigns' specification for function 'ends'.
+  Callers assumptions might be imprecise.
