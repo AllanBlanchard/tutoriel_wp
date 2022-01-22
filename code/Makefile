@@ -24,9 +24,7 @@ SUITES= \
   proof-methodologies/lemma-functions \
   proof-methodologies/minimal-contracts \
   statements/loops-examples \
-  statements/introduction \
   statements/loops \
-  statements/basic \
   statements/function-calls \
   acsl-logic-definitions/inductive \
   acsl-logic-definitions/ghost-code \
