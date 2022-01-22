@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:+"-wp-prover alt-ergo,coq -wp-session @PTEST_SUITE_DIR@/oracle@PTEST_CONFIG@/@PTEST_NAME@.session"
+*/
+
 #include <stddef.h>
 
 /*@

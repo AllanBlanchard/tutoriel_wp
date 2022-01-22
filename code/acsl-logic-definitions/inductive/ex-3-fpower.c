@@ -1,3 +1,7 @@
+/* run.config
+   DONTRUN:
+*/
+
 /*@
   inductive is_power(integer x, integer n, integer r) {
   case zero: // ...
@@ -23,7 +27,7 @@ int power(int x, int n){
   */
   for(int i = 1 ; i <= n ; ++i){
     r *= x ;
-  }  
+  }
   return r ;
 }
 
@@ -44,6 +48,6 @@ int fast_power(int x, int n){
     n /= 2 ;
   }
   //@ assert is_power(p, n, 1) ;
-  
+
   return r ;
 }

@@ -1,0 +1,30 @@
+# frama-c -wp [...]
+[kernel] Parsing ex-3-fpower-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+[wp] 21 goals scheduled
+[wp] [Coq] Goal typed_lemma_power_even : Valid
+[wp] [Coq] Goal typed_lemma_power_odd : Valid
+[wp] [Alt-Ergo] Goal typed_power_ensures : Valid
+[wp] [Qed] Goal typed_power_loop_invariant_preserved : Valid
+[wp] [Qed] Goal typed_power_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_power_loop_invariant_2_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_power_loop_invariant_2_established : Valid
+[wp] [Qed] Goal typed_power_loop_assigns : Valid
+[wp] [Qed] Goal typed_power_assigns : Valid
+[wp] [Qed] Goal typed_power_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_power_loop_variant_positive : Valid
+[wp] [Alt-Ergo] Goal typed_fast_power_ensures : Valid
+[wp] [Qed] Goal typed_fast_power_loop_invariant_preserved : Valid
+[wp] [Qed] Goal typed_fast_power_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_fast_power_loop_invariant_2_preserved : Valid
+[wp] [Qed] Goal typed_fast_power_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_fast_power_assert : Valid
+[wp] [Qed] Goal typed_fast_power_loop_assigns : Valid
+[wp] [Qed] Goal typed_fast_power_assigns : Valid
+[wp] [Alt-Ergo] Goal typed_fast_power_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_fast_power_loop_variant_positive : Valid
+[wp] Proved goals:   21 / 21
+  Qed:            12 
+  Alt-Ergo:        7  (unsuccess: 2)
+  Coq:             2

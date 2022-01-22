@@ -1,3 +1,7 @@
+/* run.config
+   DONTRUN:
+*/
+
 #include <limits.h>
 
 /*@ inductive is_gcd(integer a, integer b, integer div) {
@@ -14,7 +18,7 @@
 int gcd(int a, int b){
   /*@
     // loop invariant \forall integer t ; ... ;
-  */ 
+  */
   while (b != 0){
     int t = b;
     b = a % b;
