@@ -36,7 +36,7 @@ Nous pouvons par exemple définir le prédicat nous disant qu'un entier en mémo
 pas changé entre deux points particuliers du programme :
 
 
-\CodeBlockInput[1][4]{c}{unchanged-loc.c}
+\CodeBlockInput[6][9]{c}{unchanged-loc.c}
 
 
 \begin{Warning}
@@ -45,8 +45,8 @@ pas changé entre deux points particuliers du programme :
 
   \begin{CodeBlock}{c}
     /*@
-    predicate unchanged{L0, L1}(int i) =
-    \at(i, L0) == \at(i, L1);
+      predicate unchanged{L0, L1}(int i) =
+        \at(i, L0) == \at(i, L1);
     */
   \end{CodeBlock}
 
@@ -57,7 +57,7 @@ pas changé entre deux points particuliers du programme :
 Nous pouvons par exemple vérifier ce petit code :
 
 
-\CodeBlockInput[6][15]{c}{unchanged-loc.c}
+\CodeBlockInput[11][20]{c}{unchanged-loc.c}
 
 
 
@@ -78,7 +78,7 @@ coup d’œil.
 
 
 
-\CodeBlockInput[3]{c}{search.c}
+\CodeBlockInput[7]{c}{search.c}
 
 
 
@@ -105,7 +105,7 @@ nous pouvons écrire une surcharge qui utilise le prédicat précédent pour le
 cas particulier des plages qui commencent à 0 :
 
 
-\CodeBlockInput[3]{c}{search-overload.c}
+\CodeBlockInput[7]{c}{search-overload.c}
 
 
 
@@ -125,7 +125,7 @@ pourrions poser les spécifications nécessaires à la sûreté d'une pile de ta
 limitée. Et cela donnerait quelque chose comme :
 
 
-\CodeBlockInput{c}{stack.c}
+\CodeBlockInput[5]{c}{stack.c}
 
 
 (Notons qu'ici, nous ne fournissons pas la définition des prédicats car ce n'est
@@ -168,7 +168,7 @@ chiffres. Adapter les contrats des différentes fonctions en les utilisant.
 La fonction suivante retourne le maximum de 3 valeurs d'entrée :
 
 
-\CodeBlockInput{c}{ex-3-max-3.c}
+\CodeBlockInput[5]{c}{ex-3-max-3.c}
 
 
 Écrire un prédicat qui exprime qu'une valeur est l'une de trois valeurs pointées
@@ -177,8 +177,8 @@ La fonction suivante retourne le maximum de 3 valeurs d'entrée :
 
 \begin{CodeBlock}{c}
   /*@
-  predicate one_of{L}(int value, int *a, int *b, int *c) =
-  // ...
+    predicate one_of{L}(int value, int *a, int *b, int *c) =
+      // ...
   */
 \end{CodeBlock}
 

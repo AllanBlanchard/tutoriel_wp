@@ -1,0 +1,37 @@
+[kernel] Parsing unchanged-loc.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+------------------------------------------------------------
+  Function main
+------------------------------------------------------------
+
+Goal Assertion (file unchanged-loc.c, line 18):
+Let a = global(L_i_26).
+Assume {
+  (* Initializer *)
+  Init: Mint_0[a] = 13.
+  (* Initializer *)
+  Init: Mint_0[global(L_j_27)] = 37.
+}
+Prove: !P_unchanged(Mint_0[a <- 23], Mint_0, a).
+
+------------------------------------------------------------
+
+Goal Assertion (file unchanged-loc.c, line 19):
+Let a = global(L_i_26).
+Let m = Mint_0[a <- 23].
+Let a_1 = global(L_j_27).
+Assume {
+  (* Initializer *)
+  Init: Mint_0[a] = 13.
+  (* Initializer *)
+  Init: Mint_0[a_1] = 37.
+  (* Assertion *)
+  Have: !P_unchanged(m, Mint_0, a).
+}
+Prove: P_unchanged(m, Mint_0, a_1).
+
+------------------------------------------------------------
+[wp:pedantic-assigns] unchanged-loc.c:11: Warning: 
+  No 'assigns' specification for function 'main'.
+  Callers assumptions might be imprecise.

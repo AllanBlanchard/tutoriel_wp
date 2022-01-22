@@ -1,3 +1,7 @@
+/* run.config
+   DONTRUN:
+*/
+
 #include <stddef.h>
 #define MAX_SIZE 42
 
