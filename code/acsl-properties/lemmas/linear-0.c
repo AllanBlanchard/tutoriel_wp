@@ -1,4 +1,8 @@
-#include <limits.h> 
+/* run.config
+   STDOPT:+"-wp-prover alt-ergo,z3"
+*/
+
+#include <limits.h>
 
 /*@
   logic integer ax_b(integer a, integer x, integer b) =
@@ -21,13 +25,13 @@
   requires INT_MIN <= a*x <= INT_MAX ;
   requires INT_MIN <= ax_b(a,x,4) <= INT_MAX ;
   assigns \nothing ;
-  ensures \result == ax_b(a,x,4); 
+  ensures \result == ax_b(a,x,4);
 */
 int function(int a, int x){
   return a*x + 4;
 }
 
-/*@ 
+/*@
   requires INT_MIN <= a*x <= INT_MAX ;
   requires INT_MIN <= a*y <= INT_MAX ;
   requires a > 0;

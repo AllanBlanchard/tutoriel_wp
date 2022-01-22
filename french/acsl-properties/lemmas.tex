@@ -68,7 +68,7 @@ propriétés intéressantes à leur sujet :
 
 
 
-\CodeBlockInput[8][18]{c}{linear-0.c}
+\CodeBlockInput[12][22]{c}{linear-0.c}
 
 
 
@@ -78,7 +78,7 @@ ensuite construire cet exemple de code :
 
 
 
-\CodeBlockInput[20][48]{c}{linear-0.c}
+\CodeBlockInput[24][52]{c}{linear-0.c}
 
 
 
@@ -141,10 +141,8 @@ plus grand ou égal à $0$, si $z$ est plus grand ou égal à $y$, alors $x * z$
 est  plus grand ou égal à $x * y$.
 
 
-Ce lemme ne sera probablement pas prouvé par les solveurs SMT. En revanche, en
-demandant une preuve avec Coq, la tactique par défaut devrait la décharger
-automatiquement.
-
+Ce lemme ne sera probablement pas prouvé par les solveurs SMT. Une solution et
+la preuve Coq du lemme sont disponibles sur le GitHub de ce tutoriel.
 
 \levelFourTitle{Localement trié vers globalement trié}
 \label{l4:acsl-properties-lemmas-lsorted-gsorted}
@@ -155,7 +153,7 @@ trié au sens que chaque élément soit plus petit ou égal à l'élément qui l
 puis appelle la fonction de recherche dichotomique.
 
 
-\CodeBlockInput[59][81]{c}{ex-2-sorted-link.c}
+\CodeBlockInput[66]{c}{ex-2-sorted-link.c}
 
 
 Pour cet exercice, reprendre la solution de
@@ -197,7 +195,7 @@ glissements successifs des éléments d'un même tableau.
 
 
 
-\CodeBlockInput{c}{ex-4-shift-transitivity.c}
+\CodeBlockInput[5]{c}{ex-4-shift-transitivity.c}
 
 
 Compléter les prédicats \CodeInline{shifted} et \CodeInline{unchanged}.
@@ -236,7 +234,7 @@ Le programme suivant est composé de deux fonctions. La fonction
 une recherche dichotomique.
 
 
-\CodeBlockInput{c}{ex-5-shift-sorted.c}
+\CodeBlockInput[5]{c}{ex-5-shift-sorted.c}
 
 
 Reprendre la solution de la recherche dichotomique de

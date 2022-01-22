@@ -1,3 +1,9 @@
+/* run.config
+   DONTRUN:
+*/
+
+#include <stddef.h>
+
 /*@
   predicate shifted_cell{L1, L2}(int* p, integer shift) =
     \at(p[0], L1) == \at(p[shift], L2) ;
@@ -18,7 +24,7 @@ size_t bsearch(int* arr, size_t beg, size_t end, int value);
   requires in_array(value, array, 0, len) ;
 
   assigns array[1 .. len] ;
-  
+
   ensures 1 <= \result <= len ;
 */
 unsigned shift_and_search(int* array, size_t len, int value){

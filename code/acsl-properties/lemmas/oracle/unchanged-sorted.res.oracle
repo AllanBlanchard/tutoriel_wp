@@ -1,0 +1,8 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing unchanged-sorted.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] 1 goal scheduled
+[wp] [Alt-Ergo] Goal typed_lemma_unchanged_sorted : Valid
+[wp] Proved goals:    1 / 1
+  Qed:             0 
+  Alt-Ergo:        1

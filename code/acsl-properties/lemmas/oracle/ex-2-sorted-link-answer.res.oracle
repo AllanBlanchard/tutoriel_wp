@@ -1,0 +1,37 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-2-sorted-link-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function bsearch
+[rte:annot] annotating function bsearch_callee
+[wp] 27 goals scheduled
+[wp] [Coq] Goal typed_lemma_element_level_sorted_implies_sorted : Valid
+[wp] [Qed] Goal typed_bsearch_complete_does_not_exists_exists : Valid
+[wp] [Qed] Goal typed_bsearch_disjoint_does_not_exists_exists : Valid
+[wp] [Alt-Ergo] Goal typed_bsearch_loop_invariant_preserved : Valid
+[wp] [Qed] Goal typed_bsearch_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_bsearch_loop_invariant_2_preserved : Valid
+[wp] [Qed] Goal typed_bsearch_loop_invariant_2_established : Valid
+[wp] [Qed] Goal typed_bsearch_assert_rte_division_by_zero : Valid
+[wp] [Alt-Ergo] Goal typed_bsearch_assert_rte_mem_access : Valid
+[wp] [Qed] Goal typed_bsearch_assert_rte_mem_access_2 : Valid
+[wp] [Qed] Goal typed_bsearch_loop_assigns : Valid
+[wp] [Qed] Goal typed_bsearch_assigns_part1 : Valid
+[wp] [Qed] Goal typed_bsearch_assigns_part2 : Valid
+[wp] [Qed] Goal typed_bsearch_assigns_part3 : Valid
+[wp] [Qed] Goal typed_bsearch_assigns_part4 : Valid
+[wp] [Alt-Ergo] Goal typed_bsearch_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_bsearch_loop_variant_positive : Valid
+[wp] [Alt-Ergo] Goal typed_bsearch_exists_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_bsearch_exists_ensures_2 : Valid
+[wp] [Alt-Ergo] Goal typed_bsearch_does_not_exists_ensures : Valid
+[wp] [Qed] Goal typed_bsearch_callee_ensures : Valid
+[wp] [Qed] Goal typed_bsearch_callee_ensures_2 : Valid
+[wp] [Qed] Goal typed_bsearch_callee_assigns_exit : Valid
+[wp] [Qed] Goal typed_bsearch_callee_assigns_normal_part1 : Valid
+[wp] [Qed] Goal typed_bsearch_callee_assigns_normal_part2 : Valid
+[wp] [Qed] Goal typed_bsearch_callee_call_bsearch_requires : Valid
+[wp] [Alt-Ergo] Goal typed_bsearch_callee_call_bsearch_requires_2 : Valid
+[wp] Proved goals:   27 / 27
+  Qed:            18 
+  Alt-Ergo:        8  (unsuccess: 1)
+  Coq:             1

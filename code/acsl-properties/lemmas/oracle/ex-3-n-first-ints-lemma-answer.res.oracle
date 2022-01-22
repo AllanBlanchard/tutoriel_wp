@@ -1,0 +1,25 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-3-n-first-ints-lemma-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function sum_n
+[wp] 16 goals scheduled
+[wp] [Coq] Goal typed_lemma_sum_n_value : Valid
+[wp] [Alt-Ergo] Goal typed_lemma_sum_n_value_direct : Valid
+[wp] [Alt-Ergo] Goal typed_sum_n_ensures : Valid
+[wp] [Qed] Goal typed_sum_n_loop_invariant_preserved : Valid
+[wp] [Qed] Goal typed_sum_n_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_sum_n_loop_invariant_2_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_sum_n_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_sum_n_assert_rte_signed_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_sum_n_assert_rte_signed_overflow_2 : Valid
+[wp] [Alt-Ergo] Goal typed_sum_n_assert_rte_signed_overflow_3 : Valid
+[wp] [Qed] Goal typed_sum_n_loop_assigns : Valid
+[wp] [Qed] Goal typed_sum_n_assigns_part1 : Valid
+[wp] [Qed] Goal typed_sum_n_assigns_part2 : Valid
+[wp] [Qed] Goal typed_sum_n_assigns_part3 : Valid
+[wp] [Qed] Goal typed_sum_n_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_sum_n_loop_variant_positive : Valid
+[wp] Proved goals:   16 / 16
+  Qed:             8 
+  Alt-Ergo:        7  (unsuccess: 1)
+  Coq:             1
