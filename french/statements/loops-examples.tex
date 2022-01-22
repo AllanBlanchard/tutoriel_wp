@@ -266,7 +266,7 @@ Considérons que nous avons une fonction :
 
 
 
-\CodeBlockInput[3][9]{c}{ex-1-forall-exists.c}
+\CodeBlockInput[7][13]{c}{ex-1-forall-exists.c}
 
 
 Écrire un corps (au choix) pour cette fonction et un contrat l'accompagnant.
@@ -301,7 +301,7 @@ si et seulement si deux plages de valeurs sont différentes, votre postcondition
 devrait contenir un quantificateur existentiel.
 
 
-\CodeBlockInput[3][9]{c}{ex-2-equal.c}
+\CodeBlockInput[7][13]{c}{ex-2-equal.c}
 
 
 
@@ -317,7 +317,7 @@ même type pour gérer les indices. Nous pouvons noter qu'il y a deux comporteme
 l'indice de cette valeur) ou pas (et le résultat est -1).
 
 
-\CodeBlockInput{c}{ex-3-binary-search.c}
+\CodeBlockInput[5]{c}{ex-3-binary-search.c}
 
 
 Cette fonction est un petit peu complexe à prouver, voici quelques conseils
@@ -345,7 +345,7 @@ gérer le débordement des entiers. Considérer que le vecteur est résultant es
 spacialement séparé des vecteurs d'entrée. En revanche, le même vecteur devrait
 pouvoir être utilisé pour les deux vecteurs d'entrée.
 
-\CodeBlockInput[3][5]{c}{ex-4-add-vectors.c}
+\CodeBlockInput[7][9]{c}{ex-4-add-vectors.c}
 
 
 \levelFourTitle{Fonction avec modification : inverse}
@@ -356,7 +356,7 @@ Prendre garde à la partie non-modifiée du vecteur à une itération donnée de
 boucle. Utiliser la fonction \CodeInline{swap} précédemment prouvée.
 
 
-\CodeBlockInput[3][7]{c}{ex-5-reverse.c}
+\CodeBlockInput[7][11]{c}{ex-5-reverse.c}
 
 
 \levelFourTitle{Fonction avec modification : copie}
@@ -369,7 +369,7 @@ séparées.
 
 
 
-\CodeBlockInput[3][5]{c}{ex-6-copy.c}
+\CodeBlockInput[7][9]{c}{ex-6-copy.c}
 
 
 \textbf{Plus dur :} Les vraies fonctions \CodeInline{copy} et

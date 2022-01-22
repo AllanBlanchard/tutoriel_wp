@@ -1,3 +1,7 @@
+/* run.config
+   DONTRUN:
+*/
+
 #include <stddef.h>
 
 /*@
