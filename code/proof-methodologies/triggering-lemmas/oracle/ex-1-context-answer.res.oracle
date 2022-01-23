@@ -1,0 +1,16 @@
+# frama-c -wp [...]
+[kernel] Parsing ex-1-context-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+[wp] 5 goals scheduled
+[wp] [Alt-Ergo] Goal typed_exercise_assert : Valid
+[wp] [Alt-Ergo] Goal typed_exercise_assert_2 : Valid
+[wp] [Alt-Ergo] Goal typed_exercise_assert_3 : Valid
+[wp] [Alt-Ergo] Goal typed_exercise_assert_4 : Valid
+[wp] [Alt-Ergo] Goal typed_exercise_assert_5 : Valid
+[wp] Proved goals:    5 / 5
+  Qed:             0 
+  Alt-Ergo:        5
+[wp:pedantic-assigns] ex-1-context-answer.c:17: Warning: 
+  No 'assigns' specification for function 'exercise'.
+  Callers assumptions might be imprecise.

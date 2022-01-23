@@ -43,14 +43,14 @@ suivant (qui ressemble furieusement au théorème de Pythagore) :
 
 
 
-\CodeBlockInput[1][4]{c}{context.c}
+\CodeBlockInput[5][8]{c}{context.c}
 
 
 
 Regardons d'abord cet exemple :
 
 
-\CodeBlockInput[6][16]{c}{context.c}
+\CodeBlockInput[10][20]{c}{context.c}
 
 
 
@@ -90,7 +90,7 @@ telle manière à ce que le chemin qui mène à la seconde assertion saute le ch
 passe par la première, celle-ci n'apparaît pas dans le contexte de la seconde assertion.
 
 
-\CodeBlockInput[26][31]{c}{context.c}
+\CodeBlockInput[30][35]{c}{context.c}
 
 
 \image{context_e1p_a2}
@@ -102,7 +102,7 @@ pouvons modifier les différentes positions mémoire (en doublant chaque valeur)
 vérifier que le triangle résultant est rectangle.
 
 
-\CodeBlockInput[34][47]{c}{context.c}
+\CodeBlockInput[38][51]{c}{context.c}
 
 
 
@@ -118,7 +118,7 @@ annotations :
 
 
 
-\CodeBlockInput[49][68]{c}{context.c}
+\CodeBlockInput[53][72]{c}{context.c}
 
 
 
@@ -195,13 +195,13 @@ est vraie pour le premier label, alors elle est vraie pour le second.
 
 
 
-\CodeBlockInput[1][15]{c}{trigger_1_1.c}
+\CodeBlockInput[5][19]{c}{trigger_1_1.c}
 
 
 Et nous voulons prouver le programme suivant :
 
 
-\CodeBlockInput[17][27]{c}{trigger_1_1.c}
+\CodeBlockInput[21][31]{c}{trigger_1_1.c}
 
 
 Cependant, nous pouvons voir que la preuve échoue sur l'obligation de preuve
@@ -220,7 +220,7 @@ dans ce cas, cela veut dire qu'il n'arrive pas à montrer que cela implique
 arrive à montrer \CodeInline{P(x)} après l'appel :
 
 
-\CodeBlockInput[20][28]{c}{trigger_1_1p.c}
+\CodeBlockInput[24][32]{c}{trigger_1_1p.c}
 
 
 \image{trigger_1_1p}
@@ -234,7 +234,7 @@ notre obligation de preuve, le prouveur automatique n'utilise pas l'axiome
 automatique :
 
 
-\CodeBlockInput[20][28]{c}{trigger_1_2.c}
+\CodeBlockInput[24][32]{c}{trigger_1_2.c}
 
 
 
@@ -254,7 +254,7 @@ axiomatique réelle. Cette fois, nous nous intéresserons à montrer la correcti
 d'un tri par insertion :
 
 
-\CodeBlockInput{c}{insert_sort.c}
+\CodeBlockInput[5]{c}{insert_sort.c}
 
 
 La fonction \CodeInline{insertion\_sort} visite chaque valeur, du début du tableau
@@ -288,7 +288,7 @@ valeurs déjà visitées : nous insérons chaque valeur à la bonne position.
 
 
 
-\CodeBlockInput[63][81]{c}{insert_sort-contract.c}
+\CodeBlockInput[67][85]{c}{insert_sort-contract.c}
 
 
 
@@ -299,7 +299,7 @@ triée et soit une permutation des valeurs originales :
 
 
 
-\CodeBlockInput[43][61]{c}{insert_sort-contract.c}
+\CodeBlockInput[47][65]{c}{insert_sort-contract.c}
 
 
 
@@ -326,7 +326,7 @@ plage ne change pas d'un point de programme à un autre :
 
 
 
-\CodeBlockInput[37][41]{c}{insert_sort-proved.c}
+\CodeBlockInput[41][45]{c}{insert_sort-proved.c}
 
 
 
@@ -381,9 +381,9 @@ deux prédicats \CodeInline{shifted} et \CodeInline{unchanged}, le second
 tard) et exprimer qu'une plage inchangée est une permutation :
 
 
-\CodeBlockInput[48][55]{c}{insert_sort-proved.c}
+\CodeBlockInput[52][59]{c}{insert_sort-proved.c}
 
-\CodeBlockInput[67][70]{c}{insert_sort-proved.c}
+\CodeBlockInput[71][74]{c}{insert_sort-proved.c}
 
 
 Maintenant, nous pouvons vérifier que ces deux sous-tableaux sont des
@@ -392,7 +392,7 @@ plage allant de \CodeInline{i+1} à \CodeInline{end} est inchangée, afin de
 déclencher l'usage de notre lemme \CodeInline{unchanged\_is\_permutation}.
 
 
-\CodeBlockInput[129][142]{c}{insert_sort-proved.c}
+\CodeBlockInput[133][146]{c}{insert_sort-proved.c}
 
 
 Comme ces deux sous-parties du tableau sont des permutations, le tableau
@@ -401,7 +401,7 @@ l'itération. Cependant, cela n'est pas prouvé directement, nous ajoutons
 donc aussi un lemme pour cela :
 
 
-\CodeBlockInput[75][81]{c}{insert_sort-proved.c}
+\CodeBlockInput[79][85]{c}{insert_sort-proved.c}
 
 
 Maintenant, nous pouvons déduire qu'une itération de la boucle produit
@@ -429,7 +429,7 @@ qui est suffisant pour conclure \CodeInline{permutation\{Pre, Here\}(a, beg, end
 à la fin du bloc de la boucle en utilisant le lemme suivant :
 
 
-\CodeBlockInput[42][47]{c}{insert_sort-proved.c}
+\CodeBlockInput[46][51]{c}{insert_sort-proved.c}
 
 
 Maintenant, nous pouvons regarder de plus près notre fonction d'insertion en
@@ -502,8 +502,8 @@ Pour la dernière assertion, nous avons besoin d'un lemme à propos de la
 rotation des éléments :
 
 
-\CodeBlockInput[56][60]{c}{insert_sort-proved.c}
-\CodeBlockInput[71][74]{c}{insert_sort-proved.c}
+\CodeBlockInput[60][64]{c}{insert_sort-proved.c}
+\CodeBlockInput[75][78]{c}{insert_sort-proved.c}
 
 
 Nous devons également aider un peu les prouveurs automatiques pour montrer
@@ -517,7 +517,7 @@ la fonction \CodeInline{insert} complètement annotée suivante :
 
 
 
-\CodeBlockInput[83][119]{c}{insert_sort-proved.c}
+\CodeBlockInput[87][123]{c}{insert_sort-proved.c}
 
 
 
@@ -624,7 +624,7 @@ les propriétés générées qui peuvent amener à une autre preuve de l'asserti
 et expliquer comment :
 
 
-\CodeBlockInput{c}{ex-1-context.c}
+\CodeBlockInput[5]{c}{ex-1-context.c}
 
 
 \levelFourTitle{Déclencher les lemmes}
@@ -696,7 +696,7 @@ elle augmente aussi la valeur de la somme du contenu du tableau. Écrire un cont
 pour la fonction qui exprime ce fait :
 
 
-\CodeBlockInput{c}{ex-4-sum-content.c}
+\CodeBlockInput[5]{c}{ex-4-sum-content.c}
 
 
 Pour prouver que cette fonction remplit son contrat, nous avons besoin de fournir

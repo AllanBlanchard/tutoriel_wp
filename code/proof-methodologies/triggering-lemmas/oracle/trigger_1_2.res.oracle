@@ -1,0 +1,53 @@
+# frama-c -wp [...]
+[kernel] Parsing trigger_1_2.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+[wp] 2 goals scheduled
+[wp] [Alt-Ergo] Goal typed_example_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_example_assert : Valid
+[wp] Proved goals:    2 / 2
+  Qed:             0 
+  Alt-Ergo:        2
+------------------------------------------------------------
+  Function example
+------------------------------------------------------------
+
+Goal Post-condition (file trigger_1_2.c, line 27) in 'example':
+Let m = µ:Msint32@L3.
+Assume {
+  (* Heap *)
+  Type: (region(x@L1.base) <= 0) /\ (region(y@L1.base) <= 0).
+  Stmt { L1:  }
+  (* Pre-condition *)
+  Have: y@L1 != x@L1.
+  (* Pre-condition *)
+  Have: P_P(µ:Msint32@L1, x@L1).
+  Stmt { *y@L1 = `v;  }
+  Stmt { L3:  }
+  (* Assertion *)
+  Have: P_eq(`m, µ:Msint32@L1, x@L1).
+}
+Prove: P_Q(`m, x@L1).
+Prover Alt-Ergo returns Valid
+
+------------------------------------------------------------
+
+Goal Assertion (file trigger_1_2.c, line 31):
+Assume {
+  (* Heap *)
+  Type: (region(x@L1.base) <= 0) /\ (region(y@L1.base) <= 0).
+  Stmt { L1:  }
+  (* Pre-condition *)
+  Have: y@L1 != x@L1.
+  (* Pre-condition *)
+  Have: P_P(µ:Msint32@L1, x@L1).
+  Stmt { *y@L1 = `v;  }
+  Stmt { L3:  }
+}
+Prove: P_eq(µ:Msint32@L3, µ:Msint32@L1, x@L1).
+Prover Alt-Ergo returns Valid
+
+------------------------------------------------------------
+[wp:pedantic-assigns] trigger_1_2.c:29: Warning: 
+  No 'assigns' specification for function 'example'.
+  Callers assumptions might be imprecise.

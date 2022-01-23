@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:+"-wp-no-rte -wp-msg-key state -wp-print"
+*/
+
 /*@
   predicate eq{L1, L2}(int* x) =
     \at(*x, L1) == \at(*x, L2) ;
@@ -9,7 +13,7 @@
     predicate Q(int* x) reads *x ;
 
     axiom ax_1: \forall int* x ; P(x) ==> Q(x);
-    axiom ax_2{L1, L2}: 
+    axiom ax_2{L1, L2}:
       \forall int* x ; eq{L1, L2}(x) ==> P{L1}(x) ==> P{L2}(x);
   }
 */

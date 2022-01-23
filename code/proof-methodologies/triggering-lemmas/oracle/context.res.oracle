@@ -1,0 +1,354 @@
+# frama-c -wp [...]
+[kernel] Parsing context.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+[wp] [CFG] Goal example_1_p_assert : Valid (Unreachable)
+[wp] 9 goals scheduled
+[wp] [Alt-Ergo] Goal typed_example_1_assert : Valid
+[wp] [Alt-Ergo] Goal typed_example_1_assert_2 : Valid
+[wp] [Alt-Ergo] Goal typed_example_1_p_assert_2 : Valid
+[wp] [Alt-Ergo] Goal typed_example_2_assert : Valid
+[wp] [Alt-Ergo] Goal typed_example_3_assert : Valid
+[wp] [Alt-Ergo] Goal typed_example_3_assert_2 : Valid
+[wp] [Alt-Ergo] Goal typed_example_3_assert_3 : Valid
+[wp] [Alt-Ergo] Goal typed_example_3_assert_4 : Valid
+[wp] [Alt-Ergo] Goal typed_example_3_assert_5 : Valid
+[wp] Proved goals:   10 / 10
+  Qed:             0 
+  Alt-Ergo:        9
+------------------------------------------------------------
+  Function example_1
+------------------------------------------------------------
+
+Goal Assertion (file context.c, line 18):
+Let x_1 = « *y »@L1.
+Let x_2 = « *x »@L1.
+Let x_3 = « *z »@L1.
+Assume {
+  Type: is_sint32(`x_2) /\ is_sint32(`x_1) /\ is_sint32(`x_3).
+  (* Heap *)
+  Type: (region(x@L1.base) <= 0) /\ (region(y@L1.base) <= 0) /\
+      (region(z@L1.base) <= 0).
+  Stmt { L1:  }
+  (* Pre-condition *)
+  Have: (y@L1 != x@L1) /\ (z@L1 != x@L1) /\ (z@L1 != y@L1).
+  (* Pre-condition *)
+  Have: (3 <= `x_2) /\ (`x_2 <= 5).
+  (* Pre-condition *)
+  Have: (4 <= `x_1) /\ (`x_1 <= 5).
+  (* Pre-condition *)
+  Have: `x_3 <= 5.
+  (* Pre-condition *)
+  Have: (`x_1 = (1 + `x_2)) /\ (`x_3 = (1 + `x_1)).
+}
+Prove: P_rectangle(`x_2, `x_1, `x_3).
+Prover Alt-Ergo returns Valid
+
+------------------------------------------------------------
+
+Goal Assertion (file context.c, line 19):
+Let x_1 = « *x »@L1.
+Let x_2 = « *y »@L1.
+Let x_3 = « *z »@L1.
+Assume {
+  Type: is_sint32(`x_1) /\ is_sint32(`x_2) /\ is_sint32(`x_3).
+  (* Heap *)
+  Type: (region(x@L1.base) <= 0) /\ (region(y@L1.base) <= 0) /\
+      (region(z@L1.base) <= 0).
+  Stmt { L1:  }
+  (* Pre-condition *)
+  Have: (y@L1 != x@L1) /\ (z@L1 != x@L1) /\ (z@L1 != y@L1).
+  (* Pre-condition *)
+  Have: (3 <= `x_1) /\ (`x_1 <= 5).
+  (* Pre-condition *)
+  Have: (4 <= `x_2) /\ (`x_2 <= 5).
+  (* Pre-condition *)
+  Have: `x_3 <= 5.
+  (* Pre-condition *)
+  Have: (`x_2 = (1 + `x_1)) /\ (`x_3 = (1 + `x_2)).
+  (* Assertion *)
+  Have: P_rectangle(`x_1, `x_2, `x_3).
+}
+Prove: P_rectangle(2 * `x_1, 2 * `x_2, 2 * `x_3).
+Prover Alt-Ergo returns Valid
+
+------------------------------------------------------------
+------------------------------------------------------------
+  Function example_1_p
+------------------------------------------------------------
+
+Goal Assertion (file context.c, line 34):
+Let x_1 = « *y »@L1.
+Let x_2 = « *x »@L1.
+Let x_3 = « *z »@L1.
+Assume {
+  Type: is_sint32(`x_2) /\ is_sint32(`x_1) /\ is_sint32(`x_3).
+  (* Heap *)
+  Type: (region(x@L1.base) <= 0) /\ (region(y@L1.base) <= 0) /\
+      (region(z@L1.base) <= 0).
+  Stmt { L1:  }
+  (* Pre-condition *)
+  Have: (y@L1 != x@L1) /\ (z@L1 != x@L1) /\ (z@L1 != y@L1).
+  (* Pre-condition *)
+  Have: (3 <= `x_2) /\ (`x_2 <= 5).
+  (* Pre-condition *)
+  Have: (4 <= `x_1) /\ (`x_1 <= 5).
+  (* Pre-condition *)
+  Have: `x_3 <= 5.
+  (* Pre-condition *)
+  Have: (`x_1 = (1 + `x_2)) /\ (`x_3 = (1 + `x_1)).
+}
+Prove: P_rectangle(2 * `x_2, 2 * `x_1, 2 * `x_3).
+Prover Alt-Ergo returns Valid
+
+------------------------------------------------------------
+------------------------------------------------------------
+  Function example_2
+------------------------------------------------------------
+
+Goal Assertion (file context.c, line 50):
+Let x_1 = « *y »@L1.
+Let x_2 = « *x »@L1.
+Let x_3 = « *z »@L1.
+Let x_4 = « *z@L1 »@L4.
+Let x_5 = 5 + `x_4.
+Let x_6 = « *x@L1 »@L5.
+Let x_7 = « *y@L1 »@L5.
+Assume {
+  Type: is_sint32(`x_2) /\ is_sint32(`x_1) /\ is_sint32(`x_3) /\
+      is_sint32(« *y@L1 »@L3) /\ is_sint32(`x_4) /\ is_sint32(`x_5) /\
+      is_sint32(`x_6) /\ is_sint32(`x_7).
+  (* Heap *)
+  Type: (region(x@L1.base) <= 0) /\ (region(y@L1.base) <= 0) /\
+      (region(z@L1.base) <= 0).
+  Stmt { L1:  }
+  (* Pre-condition *)
+  Have: (y@L1 != x@L1) /\ (z@L1 != x@L1) /\ (z@L1 != y@L1).
+  (* Pre-condition *)
+  Have: (3 <= `x_2) /\ (`x_2 <= 5).
+  (* Pre-condition *)
+  Have: (4 <= `x_1) /\ (`x_1 <= 5).
+  (* Pre-condition *)
+  Have: `x_3 <= 5.
+  (* Pre-condition *)
+  Have: (`x_1 = (1 + `x_2)) /\ (`x_3 = (1 + `x_1)).
+  Stmt { *x@L1 = 3 + `x_2;  }
+  Stmt { L3: *y@L1 = 4 + *y@L1;  }
+  Stmt { L4: *z@L1 = `x_5;  }
+  Stmt { L5:  }
+}
+Prove: P_rectangle(`x_6, `x_7, `x_5).
+Prover Alt-Ergo returns Valid
+
+------------------------------------------------------------
+------------------------------------------------------------
+  Function example_3
+------------------------------------------------------------
+
+Goal Assertion (file context.c, line 61):
+Let x_1 = « *y »@L1.
+Let x_2 = « *x »@L1.
+Let x_3 = « *z »@L1.
+Assume {
+  Type: is_sint32(`x_2) /\ is_sint32(`x_1) /\ is_sint32(`x_3).
+  (* Heap *)
+  Type: (region(x@L1.base) <= 0) /\ (region(y@L1.base) <= 0) /\
+      (region(z@L1.base) <= 0).
+  Stmt { L1:  }
+  (* Pre-condition *)
+  Have: (y@L1 != x@L1) /\ (z@L1 != x@L1) /\ (z@L1 != y@L1).
+  (* Pre-condition *)
+  Have: (3 <= `x_2) /\ (`x_2 <= 5).
+  (* Pre-condition *)
+  Have: (4 <= `x_1) /\ (`x_1 <= 5).
+  (* Pre-condition *)
+  Have: `x_3 <= 5.
+  (* Pre-condition *)
+  Have: (`x_1 = (1 + `x_2)) /\ (`x_3 = (1 + `x_1)).
+}
+Prove: P_rectangle(2 * `x_2, 2 * `x_1, 2 * `x_3).
+Prover Alt-Ergo returns Valid
+
+------------------------------------------------------------
+
+Goal Assertion (file context.c, line 68):
+Let x_1 = « *x »@L1.
+Let x_2 = 2 * `x_1.
+Let x_3 = « *y »@L1.
+Let x_4 = « *z »@L1.
+Let x_5 = « *z@L1 »@L5.
+Let x_6 = « *x@L1 »@L6.
+Assume {
+  Type: is_sint32(`x_1) /\ is_sint32(`x_3) /\ is_sint32(`x_4) /\
+      is_sint32(« *y@L1 »@L4) /\ is_sint32(`x_5) /\ is_sint32(5 + `x_5) /\
+      is_sint32(`x_6) /\ is_sint32(« *y@L1 »@L6).
+  (* Heap *)
+  Type: (region(x@L1.base) <= 0) /\ (region(y@L1.base) <= 0) /\
+      (region(z@L1.base) <= 0).
+  Stmt { L1:  }
+  (* Pre-condition *)
+  Have: (y@L1 != x@L1) /\ (z@L1 != x@L1) /\ (z@L1 != y@L1).
+  (* Pre-condition *)
+  Have: (3 <= `x_1) /\ (`x_1 <= 5).
+  (* Pre-condition *)
+  Have: (4 <= `x_3) /\ (`x_3 <= 5).
+  (* Pre-condition *)
+  Have: `x_4 <= 5.
+  (* Pre-condition *)
+  Have: (`x_3 = (1 + `x_1)) /\ (`x_4 = (1 + `x_3)).
+  (* Assertion *)
+  Have: P_rectangle(`x_2, 2 * `x_3, 2 * `x_4).
+  Stmt { *x@L1 = 3 + `x_1;  }
+  Stmt { L4: *y@L1 = 4 + *y@L1;  }
+  Stmt { L5: *z@L1 = 5 + `x_5;  }
+  Stmt { L6:  }
+}
+Prove: `x_6 = `x_2.
+Prover Alt-Ergo returns Valid
+
+------------------------------------------------------------
+
+Goal Assertion (file context.c, line 69):
+Let x_1 = « *x »@L1.
+Let x_2 = « *z@L1 »@L5.
+Let x_3 = « *x@L1 »@L6.
+Let x_4 = 2 * `x_1.
+Let x_5 = « *y »@L1.
+Let x_6 = 2 * `x_5.
+Let x_7 = « *z »@L1.
+Let x_8 = « *y@L1 »@L6.
+Assume {
+  Type: is_sint32(`x_1) /\ is_sint32(`x_5) /\ is_sint32(`x_7) /\
+      is_sint32(« *y@L1 »@L4) /\ is_sint32(`x_2) /\ is_sint32(5 + `x_2) /\
+      is_sint32(`x_3) /\ is_sint32(`x_8).
+  (* Heap *)
+  Type: (region(x@L1.base) <= 0) /\ (region(y@L1.base) <= 0) /\
+      (region(z@L1.base) <= 0).
+  Stmt { L1:  }
+  (* Pre-condition *)
+  Have: (y@L1 != x@L1) /\ (z@L1 != x@L1) /\ (z@L1 != y@L1).
+  (* Pre-condition *)
+  Have: (3 <= `x_1) /\ (`x_1 <= 5).
+  (* Pre-condition *)
+  Have: (4 <= `x_5) /\ (`x_5 <= 5).
+  (* Pre-condition *)
+  Have: `x_7 <= 5.
+  (* Pre-condition *)
+  Have: (`x_5 = (1 + `x_1)) /\ (`x_7 = (1 + `x_5)).
+  (* Assertion *)
+  Have: P_rectangle(`x_4, `x_6, 2 * `x_7).
+  Stmt { *x@L1 = 3 + `x_1;  }
+  Stmt { L4: *y@L1 = 4 + *y@L1;  }
+  Stmt { L5: *z@L1 = 5 + `x_2;  }
+  Stmt { L6:  }
+  (* Assertion *)
+  Have: `x_3 = `x_4.
+}
+Prove: `x_8 = `x_6.
+Prover Alt-Ergo returns Valid
+
+------------------------------------------------------------
+
+Goal Assertion (file context.c, line 70):
+Let x_1 = « *x »@L1.
+Let x_2 = « *z@L1 »@L5.
+Let x_3 = 5 + `x_2.
+Let x_4 = « *y@L1 »@L6.
+Let x_5 = « *y »@L1.
+Let x_6 = 2 * `x_5.
+Let x_7 = « *x@L1 »@L6.
+Let x_8 = 2 * `x_1.
+Let x_9 = « *z »@L1.
+Let x_10 = 2 * `x_9.
+Assume {
+  Type: is_sint32(`x_1) /\ is_sint32(`x_5) /\ is_sint32(`x_9) /\
+      is_sint32(« *y@L1 »@L4) /\ is_sint32(`x_2) /\ is_sint32(`x_3) /\
+      is_sint32(`x_7) /\ is_sint32(`x_4).
+  (* Heap *)
+  Type: (region(x@L1.base) <= 0) /\ (region(y@L1.base) <= 0) /\
+      (region(z@L1.base) <= 0).
+  Stmt { L1:  }
+  (* Pre-condition *)
+  Have: (y@L1 != x@L1) /\ (z@L1 != x@L1) /\ (z@L1 != y@L1).
+  (* Pre-condition *)
+  Have: (3 <= `x_1) /\ (`x_1 <= 5).
+  (* Pre-condition *)
+  Have: (4 <= `x_5) /\ (`x_5 <= 5).
+  (* Pre-condition *)
+  Have: `x_9 <= 5.
+  (* Pre-condition *)
+  Have: (`x_5 = (1 + `x_1)) /\ (`x_9 = (1 + `x_5)).
+  (* Assertion *)
+  Have: P_rectangle(`x_8, `x_6, `x_10).
+  Stmt { *x@L1 = 3 + `x_1;  }
+  Stmt { L4: *y@L1 = 4 + *y@L1;  }
+  Stmt { L5: *z@L1 = `x_3;  }
+  Stmt { L6:  }
+  (* Assertion *)
+  Have: `x_7 = `x_8.
+  (* Assertion *)
+  Have: `x_4 = `x_6.
+}
+Prove: `x_3 = `x_10.
+Prover Alt-Ergo returns Valid
+
+------------------------------------------------------------
+
+Goal Assertion (file context.c, line 71):
+Let x_1 = « *x »@L1.
+Let x_2 = « *z@L1 »@L5.
+Let x_3 = 5 + `x_2.
+Let x_4 = « *z »@L1.
+Let x_5 = 2 * `x_4.
+Let x_6 = « *y@L1 »@L6.
+Let x_7 = « *y »@L1.
+Let x_8 = 2 * `x_7.
+Let x_9 = « *x@L1 »@L6.
+Let x_10 = 2 * `x_1.
+Assume {
+  Type: is_sint32(`x_1) /\ is_sint32(`x_7) /\ is_sint32(`x_4) /\
+      is_sint32(« *y@L1 »@L4) /\ is_sint32(`x_2) /\ is_sint32(`x_3) /\
+      is_sint32(`x_9) /\ is_sint32(`x_6).
+  (* Heap *)
+  Type: (region(x@L1.base) <= 0) /\ (region(y@L1.base) <= 0) /\
+      (region(z@L1.base) <= 0).
+  Stmt { L1:  }
+  (* Pre-condition *)
+  Have: (y@L1 != x@L1) /\ (z@L1 != x@L1) /\ (z@L1 != y@L1).
+  (* Pre-condition *)
+  Have: (3 <= `x_1) /\ (`x_1 <= 5).
+  (* Pre-condition *)
+  Have: (4 <= `x_7) /\ (`x_7 <= 5).
+  (* Pre-condition *)
+  Have: `x_4 <= 5.
+  (* Pre-condition *)
+  Have: (`x_7 = (1 + `x_1)) /\ (`x_4 = (1 + `x_7)).
+  (* Assertion *)
+  Have: P_rectangle(`x_10, `x_8, `x_5).
+  Stmt { *x@L1 = 3 + `x_1;  }
+  Stmt { L4: *y@L1 = 4 + *y@L1;  }
+  Stmt { L5: *z@L1 = `x_3;  }
+  Stmt { L6:  }
+  (* Assertion *)
+  Have: `x_9 = `x_10.
+  (* Assertion *)
+  Have: `x_6 = `x_8.
+  (* Assertion *)
+  Have: `x_3 = `x_5.
+}
+Prove: P_rectangle(`x_9, `x_6, `x_3).
+Prover Alt-Ergo returns Valid
+
+------------------------------------------------------------
+[wp:pedantic-assigns] context.c:17: Warning: 
+  No 'assigns' specification for function 'example_1'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] context.c:30: Warning: 
+  No 'assigns' specification for function 'example_1_p'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] context.c:45: Warning: 
+  No 'assigns' specification for function 'example_2'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] context.c:60: Warning: 
+  No 'assigns' specification for function 'example_3'.
+  Callers assumptions might be imprecise.

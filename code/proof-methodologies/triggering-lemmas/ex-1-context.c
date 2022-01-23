@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:+"-wp-no-rte"
+*/
+
 /*@
   predicate rectangle{L}(integer c1, integer c2, integer h) =
     c1 * c1 + c2 * c2 == h * h ;

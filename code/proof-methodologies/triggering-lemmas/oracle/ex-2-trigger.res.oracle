@@ -1,0 +1,11 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-2-trigger.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function g
+[wp] 1 goal scheduled
+[wp] [Alt-Ergo] Goal typed_g_ensures : Unsuccess
+[wp] Proved goals:    0 / 1
+  Alt-Ergo:        0  (unsuccess: 1)
+[wp:pedantic-assigns] ex-2-trigger.c:24: Warning: 
+  No 'assigns' specification for function 'g'.
+  Callers assumptions might be imprecise.
