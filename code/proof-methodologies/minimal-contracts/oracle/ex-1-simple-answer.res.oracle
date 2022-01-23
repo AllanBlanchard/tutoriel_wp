@@ -1,0 +1,37 @@
+# frama-c -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast [...]
+[kernel] Parsing ex-1-simple-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function incr_a_by_b
+[rte:annot] annotating function max_ptr
+[rte:annot] annotating function min_ptr
+[rte:annot] annotating function order_3_inc_min
+[wp] 26 goals scheduled
+[wp] [Alt-Ergo] Goal typed_max_ptr_assert_rte_mem_access : Valid
+[wp] [Alt-Ergo] Goal typed_max_ptr_assert_rte_mem_access_2 : Valid
+[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_3 : Valid
+[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_4 : Valid
+[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_5 : Valid
+[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_6 : Valid
+[wp] [Qed] Goal typed_max_ptr_assigns_part1 : Valid
+[wp] [Qed] Goal typed_max_ptr_assigns_part2 : Valid
+[wp] [Qed] Goal typed_min_ptr_assigns_exit : Valid
+[wp] [Qed] Goal typed_min_ptr_assigns_normal : Valid
+[wp] [Qed] Goal typed_min_ptr_call_max_ptr_requires : Valid
+[wp] [Qed] Goal typed_order_3_inc_min_assigns_exit_part1 : Valid
+[wp] [Qed] Goal typed_order_3_inc_min_assigns_exit_part2 : Valid
+[wp] [Qed] Goal typed_order_3_inc_min_assigns_exit_part3 : Valid
+[wp] [Qed] Goal typed_order_3_inc_min_assigns_normal_part1 : Valid
+[wp] [Qed] Goal typed_order_3_inc_min_assigns_normal_part2 : Valid
+[wp] [Qed] Goal typed_order_3_inc_min_assigns_normal_part3 : Valid
+[wp] [Qed] Goal typed_order_3_inc_min_call_min_ptr_requires : Valid
+[wp] [Qed] Goal typed_order_3_inc_min_call_min_ptr_2_requires : Valid
+[wp] [Qed] Goal typed_order_3_inc_min_call_min_ptr_3_requires : Valid
+[wp] [Qed] Goal typed_incr_a_by_b_assert_rte_mem_access : Valid
+[wp] [Alt-Ergo] Goal typed_incr_a_by_b_assert_rte_mem_access_2 : Valid
+[wp] [Qed] Goal typed_incr_a_by_b_assert_rte_mem_access_3 : Valid
+[wp] [Qed] Goal typed_incr_a_by_b_assert_rte_signed_overflow : Valid
+[wp] [Qed] Goal typed_incr_a_by_b_assert_rte_signed_overflow_2 : Valid
+[wp] [Qed] Goal typed_incr_a_by_b_assigns : Valid
+[wp] Proved goals:   26 / 26
+  Qed:            23 
+  Alt-Ergo:        3

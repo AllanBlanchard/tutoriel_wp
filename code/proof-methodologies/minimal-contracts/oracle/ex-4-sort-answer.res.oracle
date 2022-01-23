@@ -1,0 +1,44 @@
+# frama-c -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast [...]
+[kernel] Parsing ex-4-sort-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function min_idx_in
+[rte:annot] annotating function sort
+[rte:annot] annotating function swap
+[wp] 34 goals scheduled
+[wp] [Qed] Goal typed_min_idx_in_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_min_idx_in_assert_rte_unsigned_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_min_idx_in_assert_rte_unsigned_overflow_2 : Valid
+[wp] [Alt-Ergo] Goal typed_min_idx_in_loop_invariant_preserved : Valid
+[wp] [Qed] Goal typed_min_idx_in_loop_invariant_established : Valid
+[wp] [Qed] Goal typed_min_idx_in_loop_invariant_2_preserved : Valid
+[wp] [Qed] Goal typed_min_idx_in_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_min_idx_in_assert_rte_mem_access : Valid
+[wp] [Alt-Ergo] Goal typed_min_idx_in_assert_rte_mem_access_2 : Valid
+[wp] [Alt-Ergo] Goal typed_min_idx_in_assert_rte_unsigned_overflow_3 : Valid
+[wp] [Alt-Ergo] Goal typed_min_idx_in_assert_rte_unsigned_overflow_4 : Valid
+[wp] [Qed] Goal typed_min_idx_in_loop_assigns : Valid
+[wp] [Qed] Goal typed_min_idx_in_assigns : Valid
+[wp] [Alt-Ergo] Goal typed_swap_assert_rte_mem_access : Valid
+[wp] [Qed] Goal typed_swap_assert_rte_mem_access_2 : Valid
+[wp] [Alt-Ergo] Goal typed_swap_assert_rte_mem_access_3 : Valid
+[wp] [Qed] Goal typed_swap_assert_rte_mem_access_4 : Valid
+[wp] [Qed] Goal typed_swap_assigns_part1 : Valid
+[wp] [Qed] Goal typed_swap_assigns_part2 : Valid
+[wp] [Alt-Ergo] Goal typed_sort_loop_invariant_preserved : Valid
+[wp] [Qed] Goal typed_sort_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_sort_assert_rte_unsigned_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_sort_assert_rte_unsigned_overflow_2 : Valid
+[wp] [Qed] Goal typed_sort_loop_assigns_part1 : Valid
+[wp] [Qed] Goal typed_sort_loop_assigns_part2 : Valid
+[wp] [Alt-Ergo] Goal typed_sort_loop_assigns_part3 : Valid
+[wp] [Qed] Goal typed_sort_assigns_exit_part1 : Valid
+[wp] [Qed] Goal typed_sort_assigns_exit_part2 : Valid
+[wp] [Qed] Goal typed_sort_assigns_exit_part3 : Valid
+[wp] [Alt-Ergo] Goal typed_sort_assigns_exit_part4 : Valid
+[wp] [Qed] Goal typed_sort_assigns_normal : Valid
+[wp] [Qed] Goal typed_sort_call_min_idx_in_requires : Valid
+[wp] [Alt-Ergo] Goal typed_sort_call_min_idx_in_requires_2 : Valid
+[wp] [Alt-Ergo] Goal typed_sort_call_swap_requires : Valid
+[wp] Proved goals:   34 / 34
+  Qed:            18 
+  Alt-Ergo:       16

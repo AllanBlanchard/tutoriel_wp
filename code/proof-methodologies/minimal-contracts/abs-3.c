@@ -1,4 +1,6 @@
-/*@ 
+#include <limits.h>
+
+/*@
   requires x > INT_MIN ;
 */
 int abs(int x){

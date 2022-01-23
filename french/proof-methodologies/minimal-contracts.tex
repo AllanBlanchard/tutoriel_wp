@@ -28,21 +28,21 @@ pour prouver la correction fonctionnelle du programme.
 Commençons par un exemple simple avec la fonction valeur absolue.
 
 
-\CodeBlockInput{c}{abs-1.c}
+\CodeBlockInput[5]{c}{abs-1.c}
 
 
 Ici, nous pouvons générer les assertions nécessaires à prouver pour montrer
 l'absence d'erreurs à l'exécution, ce qui génère ce programme :
 
 
-\CodeBlockInput{c}{abs-2.c}
+\CodeBlockInput[5]{c}{abs-2.c}
 
 
 Donc nous avons seulement besoin de spécifier la précondition qui nous dit que
 \CodeInline{x} doit être plus grand que \CodeInline{INT\_MIN} :
 
 
-\CodeBlockInput{c}{abs-3.c}
+\CodeBlockInput[3]{c}{abs-3.c}
 
 
 Cette condition est suffisante pour montrer l'absence d'erreurs à l'exécution
@@ -61,7 +61,7 @@ a besoin d'une valeur positive. En réalité, le contrat ressemblera probablemen
 ceci :
 
 
-\CodeBlockInput{c}{abs-4.c}
+\CodeBlockInput[3]{c}{abs-4.c}
 
 
 Mais cette addition ne devrait être guidée que par la vérification du ou des
@@ -76,14 +76,14 @@ Maintenant que nous avons le principe en tête, travaillons avec un exemple un p
 plus complexe, Celui-ci en particulier nécessite une boucle.
 
 
-\CodeBlockInput{c}{search-1.c}
+\CodeBlockInput[5]{c}{search-1.c}
 
 
 Lorsque nous générons les assertions liées aux erreurs à l'exécution, nous
 obtenons le programme suivant :
 
 
-\CodeBlockInput{c}{search-2.c}
+\CodeBlockInput[5]{c}{search-2.c}
 
 
 Nous devons prouver que toute cellule visitée par le programme peut être lue,
@@ -97,26 +97,26 @@ voulons aussi probablement prouver que la boucle termine.
 Nous obtenons donc la fonction suivante, spécifiée minimalement :
 
 
-\CodeBlockInput{c}{search-3.c}
+\CodeBlockInput[1][15]{c}{search-3.c}
 
 
 
 Ce contrat peut être comparé avec le contrat fourni pour la fonction de recherche
-de la section~\ref{l3:statements-loops-example}, et nous pouvons voir qu'il est
+de la section~\ref{l3:statements-loops-examples-ro}, et nous pouvons voir qu'il est
 beaucoup plus simple.
 
 
 Maintenant imaginons que cette fonction est utilisée dans le programme suivant :
 
 
-\CodeBlockInput{c}{search-foo-1.c}
+\CodeBlockInput[17][22]{c}{search-3.c}
 
 
 Nous devons à nouveau fournir un invariant pour cette fonction, à nouveau en
 regardant l'assertion générée par le plugin RTE :
 
 
-\CodeBlockInput[26][35]{c}{search-4.c}
+\CodeBlockInput[30][39]{c}{search-4.c}
 
 
 Nous devons donc vérifier que :
@@ -188,7 +188,7 @@ Prouver l'absence d'erreurs à l'exécution dans le programme suivant en utilisa
 une approche par contrats minimaux :
 
 
-\CodeBlockInput{c}{ex-1-simple.c}
+\CodeBlockInput[5]{c}{ex-1-simple.c}
 
 
 \levelFourTitle{Inverse}
@@ -201,7 +201,7 @@ contrats minimaux. Ne pas oublier d'ajouter les options
 \CodeInline{-warn-unsigned-overflow} et \CodeInline{-warn-unsigned-downcast}.
 
 
-\CodeBlockInput{c}{ex-2-reverse.c}
+\CodeBlockInput[5]{c}{ex-2-reverse.c}
 
 
 
@@ -214,7 +214,7 @@ les options \CodeInline{-warn-unsigned-overflow} et
 \CodeInline{-warn-unsigned-downcast}.
 
 
-\CodeBlockInput{c}{ex-3-binary-search.c}
+\CodeBlockInput[5]{c}{ex-3-binary-search.c}
 
 
 \levelFourTitle{Tri}
@@ -227,4 +227,4 @@ oublier d'ajouter les options \CodeInline{-warn-unsigned-overflow} et
 \CodeInline{-warn-unsigned-downcast}.
 
 
-\CodeBlockInput{c}{ex-4-sort.c}
+\CodeBlockInput[5]{c}{ex-4-sort.c}
