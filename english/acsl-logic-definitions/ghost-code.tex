@@ -210,7 +210,7 @@ verifying the same program.
 For example, this function compute the sum of the $n$ first integers :
 
 
-\CodeBlockInput{c}{control-flow-1.c}
+\CodeBlockInput[6]{c}{control-flow-1.c}
 
 
 By introducing, in ghost code, the instruction \CodeInline{break} in
@@ -234,7 +234,7 @@ point of the ghost code. For example, if we introduce a conditional
 around our \CodeInline{break} instruction:
 
 
-\CodeBlockInput{c}{control-flow-2.c}
+\CodeBlockInput[6]{c}{control-flow-2.c}
 
 
 The error message will point to the enclosing \CodeInline{if}:
@@ -254,7 +254,7 @@ code is done in a purely syntactic way. For example, if the
 an error will still be triggered:
 
 
-\CodeBlockInput{c}{control-flow-3.c}
+\CodeBlockInput[6]{c}{control-flow-3.c}
 
 
 \begin{CodeBlock}{text}
@@ -291,7 +291,7 @@ it would simply not compile: the compiler does not see the variables
 declared in annotations. For example:
 
 
-\CodeBlockInput{c}{non-ghost-access-ghost.c}
+\CodeBlockInput[6]{c}{non-ghost-access-ghost.c}
 
 
 cannot be compiled:
@@ -320,7 +320,7 @@ would imply that we can change the result of a program by just
 adding ghost code. For example, in the following code:
 
 
-\CodeBlockInput{c}{ghost-access-non-ghost-1.c}
+\CodeBlockInput[6]{c}{ghost-access-non-ghost-1.c}
 
 
 The result would not be the same with or without the ghost code.
@@ -340,7 +340,7 @@ if the ghost code does not really change the behavior of the program, any
 write on a normal variable in ghost code is forbidden:
 
 
-\CodeBlockInput[3]{c}{ghost-access-non-ghost-2.c}
+\CodeBlockInput[8]{c}{ghost-access-non-ghost-2.c}
 
 
 \begin{CodeBlock}{text}
@@ -355,7 +355,7 @@ This also applies to the \CodeInline{assigns} clause when it is
 in ghost code:
 
 
-\CodeBlockInput{c}{assigns-clause-1.c}
+\CodeBlockInput[6]{c}{assigns-clause-1.c}
 
 
 \begin{CodeBlock}{text}
@@ -392,7 +392,7 @@ Here, we use indices to access our arrays, but we could for example
 access their content using pointers:
 
 
-\CodeBlockInput{c}{ghost-array-2.c}
+\CodeBlockInput[6]{c}{ghost-array-2.c}
 
 
 However, we immediately see that Frama-C does not like our way to do it:
@@ -482,7 +482,7 @@ intuitive. And, indeed, we must use workarounds to create a problem with
 this conversion:
 
 
-\CodeBlockInput{c}{why-not-const.c}
+\CodeBlockInput[6]{c}{why-not-const.c}
 
 
 Here, we make a conversion that seems to be reasonable. Indeed, we give
@@ -568,7 +568,7 @@ the function would then return 6.
 
 
 
-\CodeBlockInput[3]{c}{max_subarray-0.c}
+\CodeBlockInput[7]{c}{max_subarray-0.c}
 
 
 
@@ -578,7 +578,7 @@ can express the needed axioms as an exercise:
 
 
 
-\CodeBlockInput[3][5]{c}{max_subarray-1.c}
+\CodeBlockInput[7][9]{c}{max_subarray-1.c}
 
 
 
@@ -590,7 +590,7 @@ The specification of the function is the following:
 
 
 
-\CodeBlockInput[14][19]{c}{max_subarray-1.c}
+\CodeBlockInput[18][23]{c}{max_subarray-1.c}
 
 
 
@@ -625,7 +625,7 @@ bound being the variable \CodeInline{i} of the loop.
 
 
 
-\CodeBlockInput[14][50]{c}{max_subarray-1.c}
+\CodeBlockInput[18][54]{c}{max_subarray-1.c}
 
 
 
@@ -668,7 +668,7 @@ why. Note that one can execute Frama-C without checking ghost code validity
 using the option \CodeInline{-kernel-warn-key ghost=inactive}.
 
 
-\CodeBlockInput{c}{ex-1-ghost-reject.c}
+\CodeBlockInput[5]{c}{ex-1-ghost-reject.c}
 
 
 \levelFourTitle{Two times}
@@ -679,7 +679,7 @@ This program computes \CodeInline{2 * x} using a loop. Use a ghost variable
 is \CodeInline{i * 2} and complete the proof.
 
 
-\CodeBlockInput{c}{ex-2-times-2.c}
+\CodeBlockInput[5]{c}{ex-2-times-2.c}
 
 
 
@@ -692,7 +692,7 @@ we would like to prove in postcondition that the array has not been modified.
 
 
 
-\CodeBlockInput{c}{ex-3-array.c}
+\CodeBlockInput[5]{c}{ex-3-array.c}
 
 
 Without modifying the \CodeInline{assigns} clause of the loop and without using
@@ -712,7 +712,7 @@ Once it is done, create a ghost function that performs the copy and use it in
 The following program performs a search and replace:
 
 
-\CodeBlockInput{c}{ex-4-replace.c}
+\CodeBlockInput[5]{c}{ex-4-replace.c}
 
 
 Assuming that the function \CodeInline{replace} requires \CodeInline{old} and

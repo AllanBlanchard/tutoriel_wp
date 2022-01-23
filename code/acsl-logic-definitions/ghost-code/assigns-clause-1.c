@@ -1,3 +1,8 @@
+/* run.config
+   EXIT: 1
+   STDOPT:
+*/
+
 int x ;
 
 /*@ ghost
@@ -7,7 +12,7 @@ int x ;
 
 void foo(void){
   /*@ ghost
-    /@ assigns x ; @/
+    /@ loop assigns x ; @/
     for(int i = 0; i < 10; ++i);
   */
 }

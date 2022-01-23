@@ -1,3 +1,7 @@
+/* run.config
+   DONTRUN:
+*/
+
 /*@
   requires \valid(a + (0 .. 9)) ;
   assigns  a[0 .. 9] ;
@@ -8,7 +12,7 @@ void foo(int a[10]){
   /*@ ghost
     ...
   */
-  
+
   /*@
     loop invariant 0 <= i <= 10 ;
     loop invariant // ...

@@ -1,3 +1,8 @@
+/* run.config
+   EXIT: 1
+   STDOPT:
+*/
+
 void function(int a[5]){
   //@ ghost int even[5] = { 0 };
   //@ ghost int *pe = even ;

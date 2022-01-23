@@ -1,3 +1,7 @@
+/* run.config
+   DONTRUN:
+*/
+
 #include <stddef.h>
 #include <limits.h>
 
@@ -45,7 +49,7 @@ int null_vector(int* a, size_t len){
 	// This loop does not terminate thus it hides the fact that the
 	// function does not return the right value when all cells are
 	// 0.
-  /*@ ghost 
+  /*@ ghost
     /@ loop assigns \nothing ; @/
     while(value >= len);
   */

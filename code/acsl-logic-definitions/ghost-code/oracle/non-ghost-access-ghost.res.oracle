@@ -1,0 +1,7 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing non-ghost-access-ghost.c (with preprocessing)
+[kernel] non-ghost-access-ghost.c:10: User Error: 
+  Variable r is a ghost symbol. It cannot be used in non-ghost context. Did you forget a /*@ ghost ... /?
+[kernel] User Error: stopping on file "non-ghost-access-ghost.c" that has errors. Add
+  '-kernel-msg-key pp' for preprocessing command.
+[kernel] Frama-C aborted: invalid user input.

@@ -1,4 +1,8 @@
-/*@ 
+/* run.config
+   DONTRUN:
+*/
+
+/*@
   requires x >= 0 ;
   assigns  \nothing ;
   ensures  \result == 2 * x ;
