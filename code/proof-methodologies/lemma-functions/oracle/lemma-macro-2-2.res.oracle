@@ -1,0 +1,40 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing lemma-macro-2-2.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function callee
+[rte:annot] annotating function context_to_prove_shift_ptr
+[wp] 28 goals scheduled
+[wp] [Qed] Goal typed_context_to_prove_shift_ptr_assert : Valid
+[wp] [Qed] Goal typed_context_to_prove_shift_ptr_assert_2 : Valid
+[wp] [Alt-Ergo] Goal typed_context_to_prove_shift_ptr_loop_invariant_preserved : Valid
+[wp] [Qed] Goal typed_context_to_prove_shift_ptr_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_context_to_prove_shift_ptr_loop_invariant_2_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_context_to_prove_shift_ptr_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_context_to_prove_shift_ptr_assert_3 : Valid
+[wp] [Alt-Ergo] Goal typed_context_to_prove_shift_ptr_assert_4 : Valid
+[wp] [Qed] Goal typed_context_to_prove_shift_ptr_assert_5 : Valid
+[wp] [Qed] Goal typed_context_to_prove_shift_ptr_loop_assigns : Valid
+[wp] [Alt-Ergo] Goal typed_context_to_prove_shift_ptr_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_context_to_prove_shift_ptr_loop_variant_positive : Valid
+[wp] [Qed] Goal typed_callee_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_callee_assert : Valid
+[wp] [Alt-Ergo] Goal typed_callee_loop_invariant_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_callee_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_callee_loop_invariant_2_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_callee_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_callee_assert_2 : Valid
+[wp] [Alt-Ergo] Goal typed_callee_assert_3 : Valid
+[wp] [Qed] Goal typed_callee_loop_assigns : Valid
+[wp] [Alt-Ergo] Goal typed_callee_assigns_exit : Valid
+[wp] [Alt-Ergo] Goal typed_callee_assigns_normal_part1 : Valid
+[wp] [Qed] Goal typed_callee_assigns_normal_part2 : Valid
+[wp] [Alt-Ergo] Goal typed_callee_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_callee_loop_variant_positive : Valid
+[wp] [Alt-Ergo] Goal typed_callee_call_shift_array_requires : Valid
+[wp] [Alt-Ergo] Goal typed_callee_call_shift_array_requires_2 : Valid
+[wp] Proved goals:   28 / 28
+  Qed:            10 
+  Alt-Ergo:       18
+[wp:pedantic-assigns] lemma-macro-2-2.c:32: Warning: 
+  No 'assigns' specification for function 'context_to_prove_shift_ptr'.
+  Callers assumptions might be imprecise.

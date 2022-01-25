@@ -1,3 +1,7 @@
+/* run.config
+   DONTRUN:
+*/
+
 /*@
   logic integer sum_of_n_integers(integer n) =
     (n <= 0) ? 0 : sum_of_n_integers(n-1) + n ;

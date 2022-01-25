@@ -90,7 +90,7 @@ current element is greater than the one that precedes it):
 
 
 
-\CodeBlockInput[15][31]{c}{ghost-code-usage-2.c}
+\CodeBlockInput[20][36]{c}{ghost-code-usage-2.c}
 
 
 
@@ -171,7 +171,7 @@ is globally sorted:
 
 
 
-\CodeBlockInput[15][22]{c}{lemma-function-1-1.c}
+\CodeBlockInput[19][26]{c}{lemma-function-1-1.c}
 
 
 
@@ -274,7 +274,7 @@ assertion from the precondition:
 
 
 
-\CodeBlockInput[24][32]{c}{lemma-function-2-1.c}
+\CodeBlockInput[28][36]{c}{lemma-function-2-1.c}
 
 
 
@@ -455,15 +455,15 @@ of \CodeInline{assign\_array}, we see that it assigns the array (which
 guarantees the creation of a new memory label) and in postcondition, it ensures
 that the content of the array, between the pre and the postcondition (thus, when
 we call it: \CodeInline{L1} and \CodeInline{L2}) respects the premise of our
-lemma (which we repeat on line 36, by adding an assertion). Then we use our
+lemma (which we repeat on line 15, by adding an assertion). Then we use our
 \CodeInline{shift\_ptr} macro (that will later contain the proof carrying code),
-and we then expect to be able to prove the postcondition of our lemma (line 40).
+and we then expect to be able to prove the postcondition of our lemma (line 19).
 
 
 
 By doing this, we ensure that we built a context that only contains the
 information we need to build the proof carrying code that allows us to deduce
-the conclusion (line 40) from the premise (line 36). Now let us write the macro.
+the conclusion (line 19) from the premise (line 15). Now let us write the macro.
 
 
 
@@ -474,7 +474,7 @@ the conclusion (line 40) from the premise (line 36). Now let us write the macro.
 We will not detail this code which is quite similar to what we have written in
 the beginning of this section. the only small subtlety is the assert that helps
 the SMT solvers to relate the memory locations between \CodeInline{L1} and
-\CodeInline{L2} together on lines 16--17. With this macro, we can see that the
+\CodeInline{L2} together on lines 8--9. With this macro, we can see that the
 assertion at the end of the function \CodeInline{context\_to\_prove\_shift\_ptr}
 is correctly, proved. Thus, we expect the macro to help the provers to get a
 similar conclusion in a similar context (that is to say, a context were we now
@@ -656,7 +656,7 @@ the second part is unchanged (when \CodeInline{i+1} is lower than \CodeInline{en
 as else, we do not have anything to count):
 
 
-\CodeBlockInput[271][287]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[275][291]{c}{insert-sort-auto-proved.c}
 
 
 which is enough to ensure that the \CodeInline{insertion\_sort} function
@@ -687,7 +687,7 @@ First let us define a lemma function that allows to explicitly split a range of
 values into two subparts in which we can count separately.
 
 
-\CodeBlockInput[57][77]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[61][81]{c}{insert-sort-auto-proved.c}
 
 
 We can note that this property is proved in a way that is quite similar to what
@@ -706,7 +706,7 @@ array at any index, thus make the \CodeInline{split} variable a universally
 quantified variable, and use the previous function to prove that it is true:
 
 
-\CodeBlockInput[79][102]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[83][106]{c}{insert-sort-auto-proved.c}
 
 
 And we can split our original array and the new one:
@@ -742,7 +742,7 @@ property that we already almost exactly proved in the
 proof:
 
 
-\CodeBlockInput[142][158]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[146][162]{c}{insert-sort-auto-proved.c}
 
 
 The function \CodeInline{unchanged\_permutation\_premise} ensures that we have
@@ -751,7 +751,7 @@ unchanged from the precondition to the postcondition. We can build our
 lemma macro:
 
 
-\CodeBlockInput[131][139]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[135][143]{c}{insert-sort-auto-proved.c}
 
 
 Which almost corresponds to what we have written previously in the
@@ -759,7 +759,7 @@ Which almost corresponds to what we have written previously in the
 in the \CodeInline{insert} function.
 
 
-\CodeBlockInput[249][251]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[253][255]{c}{insert-sort-auto-proved.c}
 
 
 The only remaining property to prove is the hardest one and is about the
@@ -767,7 +767,7 @@ The only remaining property to prove is the hardest one and is about the
 the macro.
 
 
-\CodeBlockInput[187][204]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[191][208]{c}{insert-sort-auto-proved.c}
 
 
 How can we prove this property? Basically, one has to notice that since all the
@@ -779,14 +779,14 @@ last cell in the original array, and the first cell in the new array is the same
 function to count separately the elements that are shifted and the one which is
 moved from the end to the beginning. However, the call corresponding to the
 original array has again to be put before the code that modifies the memory (see
-line 198) in the previous code, and we will have to take that in account when we
+line 12) in the previous code, and we will have to take that in account when we
 will insert our use of the macro in the \CodeInline{insert} function.
 
 
 Let us now present the macro that we use to prove that the lemma holds:
 
 
-\CodeBlockInput[160][185]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[164][189]{c}{insert-sort-auto-proved.c}
 
 
 The loop invariant is pretty similar to what we have written so far, the only
@@ -796,24 +796,24 @@ that the last element of both ranges is the same (note however that depending
 on the versions of the solvers or how powerful is the machine, this might be
 unneeded sometimes). A more important difference compared to our previous
 examples is that here, we need to provide more information to SMT solvers by
-adding other ghost functions calls (line 170, in order to split the first
+adding other ghost functions calls (line 15, in order to split the first
 element of the array), as well as assertions to guide the last steps of the
 proof:
 
 
 \begin{itemize}
-\item 175--179: we recall that in the original array we can split the last
+\item 16--20: we recall that in the original array we can split the last
   element,
-\item 180--184: we show that as the first element of the array is
-  the last element of the original array (180), the number of occurrences for
-  any value in these ranges is the same (181--183).
+\item 21--25: we show that as the first element of the array is
+  the last element of the original array (21), the number of occurrences for
+  any value in these ranges is the same (22--24).
 \end{itemize}
 
 
 We can use the macro in our program:
 
 
-\CodeBlockInput[245][247]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[249][251]{c}{insert-sort-auto-proved.c}
 
 
 However, we have to show that the considered range at label \CodeInline{Pre} can
@@ -823,32 +823,32 @@ it is non empty):
 
 
 
-\CodeBlockInput[104][128]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[108][132]{c}{insert-sort-auto-proved.c}
 
 
 
 That we have to call before the loop in the \CodeInline{insert} function:
 
 
-\CodeBlockInput[215][220]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[219][224]{c}{insert-sort-auto-proved.c}
 
 
-Note that depending on the version of the solvers, the assertion on lines 180 to
-184 of the macro, about the element at the beginning/the end of the array might
+Note that depending on the version of the solvers, the assertion on lines 21 to
+25 of the macro, about the element at the beginning/the end of the array might
 fail due to the complexity of the proof context. Let us help the solvers a last
 time by adding a last lemma (automatically proved by SMT solvers) that states
 this relation for any array and position in the array:
 
 
 
-\CodeBlockInput[49][54]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[53][57]{c}{insert-sort-auto-proved.c}
 
 
 which guarantees that our resulting annotated insertion function is entirely
 proved:
 
 
-\CodeBlockInput[206][254]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[210][258]{c}{insert-sort-auto-proved.c}
 
 
 We finally highlight how the proof context can make the proof harder for SMT
@@ -875,7 +875,7 @@ invariant in order to be sure that the property does not contain any division
 for SMT solvers depending on the constraint that exists on the used values).
 
 
-\CodeBlockInput[1][14]{c}{ex-1-sum-of-n-integers.c}
+\CodeBlockInput[5][18]{c}{ex-1-sum-of-n-integers.c}
 
 
 Now, let us generalize to any bounds with the sum of all the integers between
@@ -884,13 +884,13 @@ contract. Write a body for the function such that the postcondition is proved.
 Note that again, we advise to express the invariant without division.
 
 
-\CodeBlockInput[16][30]{c}{ex-1-sum-of-n-integers.c}
+\CodeBlockInput[20][34]{c}{ex-1-sum-of-n-integers.c}
 
 
 Finally, let us prove this function:
 
 
-\CodeBlockInput[32][39]{c}{ex-1-sum-of-n-integers.c}
+\CodeBlockInput[36][43]{c}{ex-1-sum-of-n-integers.c}
 
 
 This should not be too hard, and what we obtain is a proof that we have written
@@ -905,7 +905,7 @@ In this exercise, we want to prove some interesting properties about the
 axiomatically defined logic function \CodeInline{l\_occurrences\_of}:
 
 
-\CodeBlockInput{c}{ex-2-l_occurrences_of-props.c}
+\CodeBlockInput[5]{c}{ex-2-l_occurrences_of-props.c}
 
 
 The function \CodeInline{occ\_bounds} should state that the number of
@@ -955,4 +955,4 @@ the annotations in order to ensure that no more classic lemmas are necessary.
 The skeleton of the file follows:
 
 
-\CodeBlockInput{c}{ex-3-sum-content.c}
+\CodeBlockInput[5]{c}{ex-3-sum-content.c}

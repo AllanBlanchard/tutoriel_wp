@@ -1,0 +1,28 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing lemma-function-2-2.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function foo
+[rte:annot] annotating function occ_not_zero_some_is_v
+[wp] 16 goals scheduled
+[wp] [Qed] Goal typed_occ_not_zero_some_is_v_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_occ_not_zero_some_is_v_loop_invariant_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_occ_not_zero_some_is_v_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_occ_not_zero_some_is_v_loop_invariant_2_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_occ_not_zero_some_is_v_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_occ_not_zero_some_is_v_assert_rte_mem_access : Valid
+[wp] [Qed] Goal typed_occ_not_zero_some_is_v_assert : Valid
+[wp] [Qed] Goal typed_occ_not_zero_some_is_v_loop_assigns : Valid
+[wp] [Qed] Goal typed_occ_not_zero_some_is_v_assigns_part1 : Valid
+[wp] [Qed] Goal typed_occ_not_zero_some_is_v_assigns_part2 : Valid
+[wp] [Qed] Goal typed_occ_not_zero_some_is_v_assigns_part3 : Valid
+[wp] [Alt-Ergo] Goal typed_occ_not_zero_some_is_v_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_occ_not_zero_some_is_v_loop_variant_positive : Valid
+[wp] [Alt-Ergo] Goal typed_foo_assert : Valid
+[wp] [Qed] Goal typed_foo_call_occ_not_zero_some_is_v_requires : Valid
+[wp] [Qed] Goal typed_foo_call_occ_not_zero_some_is_v_requires_2 : Valid
+[wp] Proved goals:   16 / 16
+  Qed:             9 
+  Alt-Ergo:        7
+[wp:pedantic-assigns] lemma-function-2-2.c:50: Warning: 
+  No 'assigns' specification for function 'foo'.
+  Callers assumptions might be imprecise.

@@ -1,0 +1,30 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing lemma-function-1-2.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function bsearch_callee
+[rte:annot] annotating function element_level_sorted_implies_sorted
+[kernel] lemma-function-1-2.c:37: Warning: 
+  No code nor implicit assigns clause for function bsearch, generating default assigns from the prototype
+[wp] 13 goals scheduled
+[wp] [Qed] Goal typed_element_level_sorted_implies_sorted_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_element_level_sorted_implies_sorted_loop_invariant_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_element_level_sorted_implies_sorted_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_element_level_sorted_implies_sorted_loop_invariant_2_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_element_level_sorted_implies_sorted_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_element_level_sorted_implies_sorted_assert : Valid
+[wp] [Qed] Goal typed_element_level_sorted_implies_sorted_loop_assigns : Valid
+[wp] [Qed] Goal typed_element_level_sorted_implies_sorted_assigns : Valid
+[wp] [Alt-Ergo] Goal typed_element_level_sorted_implies_sorted_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_element_level_sorted_implies_sorted_loop_variant_positive : Valid
+[wp] [Qed] Goal typed_bsearch_callee_call_element_level_sorted_implies_sorted_requires : Valid
+[wp] [Qed] Goal typed_bsearch_callee_call_bsearch_requires : Valid
+[wp] [Qed] Goal typed_bsearch_callee_call_bsearch_requires_2 : Valid
+[wp] Proved goals:   13 / 13
+  Qed:             7 
+  Alt-Ergo:        6
+[wp:pedantic-assigns] lemma-function-1-2.c:13: Warning: 
+  No 'assigns' specification for function 'bsearch'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] lemma-function-1-2.c:37: Warning: 
+  No 'assigns' specification for function 'bsearch_callee'.
+  Callers assumptions might be imprecise.
