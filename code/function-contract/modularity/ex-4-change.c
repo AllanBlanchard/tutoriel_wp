@@ -1,5 +1,5 @@
 /* run.config
-   DONTRUN:
+   OPT:
 */
 
 enum note { N500, N200, N100, N50, N20, N10, N5, N2, N1 };

@@ -1,5 +1,5 @@
 /* run.config
-   DONTRUN:
+   OPT:
 */
 
 int add(int *p, int *q){

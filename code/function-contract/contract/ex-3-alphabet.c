@@ -1,5 +1,5 @@
 /* run.config
-   DONTRUN:
+   OPT:
 */
 
 int alphabet_letter(char c){

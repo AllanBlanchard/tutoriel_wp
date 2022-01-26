@@ -1,5 +1,5 @@
 /* run.config
-   DONTRUN:
+   OPT:-kernel-warn-key ghost=active
 */
 
 #include <stddef.h>

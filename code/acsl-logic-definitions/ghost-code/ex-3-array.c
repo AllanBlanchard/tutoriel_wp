@@ -1,5 +1,5 @@
 /* run.config
-   DONTRUN:
+   OPT:
 */
 
 /*@
@@ -10,12 +10,12 @@
 void foo(int a[10]){
   //@ ghost int g[10] ;
   /*@ ghost
-    ...
+    ; // to complete
   */
 
   /*@
     loop invariant 0 <= i <= 10 ;
-    loop invariant // ...
+    loop invariant \true ; // to complete
     loop assigns i, a[0 .. 9] ;
     loop variant 10 - i ;
   */

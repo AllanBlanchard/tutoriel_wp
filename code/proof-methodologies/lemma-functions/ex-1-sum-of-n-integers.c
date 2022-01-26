@@ -1,6 +1,8 @@
 /* run.config
-   DONTRUN:
+   OPT:
 */
+
+#include <limits.h>
 
 /*@
   logic integer sum_of_n_integers(integer n) =
@@ -10,7 +12,7 @@
 /*@ ghost
   /@
     assigns \nothing ;
-    ensures ... ;
+    ensures \true ; // to complete
   @/
   void lemma_value_of_sum_of_n_integers_2(unsigned n){
     // ...

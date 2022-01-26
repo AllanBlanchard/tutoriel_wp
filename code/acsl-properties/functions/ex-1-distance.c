@@ -1,5 +1,5 @@
 /* run.config
-   DONTRUN:
+   OPT:
 */
 
 int distance(int a, int b){

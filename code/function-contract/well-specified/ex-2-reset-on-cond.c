@@ -1,5 +1,5 @@
 /* run.config
-   DONTRUN:
+   OPT:
 */
 
 void reset_1st_if_2nd_is_true(int* a, int const* b){

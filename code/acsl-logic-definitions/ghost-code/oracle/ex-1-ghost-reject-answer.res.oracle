@@ -1,0 +1,7 @@
+[kernel] Parsing ex-1-ghost-reject-answer.c (with preprocessing)
+[kernel:ghost:bad-use] ex-1-ghost-reject-answer.c:17: Warning: 
+  'r' is a non-ghost lvalue, it cannot be assigned in ghost code
+[kernel:ghost:bad-use] ex-1-ghost-reject-answer.c:17: Warning: 
+  'r' is a non-ghost lvalue, it cannot be assigned in ghost code
+[kernel:ghost:bad-use] ex-1-ghost-reject-answer.c:30: Warning: 
+  Invalid cast of 'b' from 'int *' to 'int \ghost *'

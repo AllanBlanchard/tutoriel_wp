@@ -1,5 +1,5 @@
 /* run.config
-   DONTRUN:
+   OPT:
 */
 
 int abs(int x){
@@ -7,5 +7,5 @@ int abs(int x){
 }
 
 unsigned square(int x){
-
+  return 0 ; // to complete
 }

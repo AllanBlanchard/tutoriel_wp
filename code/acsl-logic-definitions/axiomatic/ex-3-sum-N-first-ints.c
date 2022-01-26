@@ -1,5 +1,5 @@
 /* run.config
-   DONTRUN:
+   OPT:
 */
 
 #include <limits.h>
@@ -9,7 +9,7 @@
     }
 */
 
-/*@ lemma sum_n_value: // ... */
+/*@ lemma sum_n_value: \true; // to complete */
 
 /*@
   requires n >= 0 ;

@@ -1,5 +1,5 @@
 /* run.config
-   DONTRUN:
+   OPT:
 */
 
 #include <stddef.h>
@@ -64,8 +64,8 @@ size_t bsearch(int* arr, size_t len, int value){
     \forall integer i ; fst <= i < end-1 ==> array[i] <= array[i+1] ;
 */
 /*@
-  //lemma element_level_sorted_implies_sorted:
-  // ...
+  lemma element_level_sorted_implies_sorted:
+    \true ; // to complete
 */
 
 /*@

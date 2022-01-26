@@ -1,5 +1,5 @@
 /* run.config
-   DONTRUN:
+   OPT:
 */
 
 #include <stddef.h>
@@ -22,10 +22,10 @@
 /*@
   lemma sum_separable:
     \forall int* array, integer begin, split, end ;
-      begin <= split <= end ==> sum(array, begin, end) == ... ?
+      begin <= split <= end ==> sum(array, begin, end) == 0 ; // to complete
   lemma unchanged_sum{L1, L2}:
     \forall int* array, integer begin, end ;
-      unchanged{L1, L2}(array, begin, end) ==> ... ?
+      unchanged{L1, L2}(array, begin, end) ==> \true ; // to complete
 */
 
 void inc_cell(int* array, size_t len, size_t i){

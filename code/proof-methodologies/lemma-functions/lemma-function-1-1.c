@@ -1,5 +1,5 @@
 /* run.config
-   DONTRUN:
+   STDOPT:
 */
 
 #include <stddef.h>

@@ -1,0 +1,7 @@
+[kernel] Parsing ex-2-alphanum.c (with preprocessing)
+[kernel:typing:implicit-function-declaration] ex-2-alphanum.c:7: Warning: 
+  Calling undeclared function is_lower_alpha. Old style K&R code?
+[kernel:typing:implicit-function-declaration] ex-2-alphanum.c:8: Warning: 
+  Calling undeclared function is_upper_alpha. Old style K&R code?
+[kernel:typing:implicit-function-declaration] ex-2-alphanum.c:9: Warning: 
+  Calling undeclared function is_digit. Old style K&R code?

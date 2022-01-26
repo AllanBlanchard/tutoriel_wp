@@ -1,0 +1,5 @@
+[kernel] Parsing ex-2-simple.c (with preprocessing)
+[kernel:CERT:MSC:37] ex-2-simple.c:7: Warning: 
+  Body of function kind_of_letter falls-through. Adding a return statement
+[kernel:CERT:MSC:37] ex-2-simple.c:11: Warning: 
+  Body of function quadrant falls-through. Adding a return statement

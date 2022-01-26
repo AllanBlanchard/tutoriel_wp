@@ -1,5 +1,5 @@
 /* run.config
-   DONTRUN:
+   OPT:
 */
 
 #include <stddef.h>
@@ -9,9 +9,9 @@
     logic integer l_occurrences_of{L}(int value, int* in, integer from, integer to)
       reads in[from .. to-1];
 
-    axiom occurrences_empty_range{L}: // ...
-    axiom occurrences_positive_range_with_element{L}: // ...
-    axiom occurrences_positive_range_without_element{L}: // ...
+    axiom occurrences_empty_range{L}: \true; // to complete
+    axiom occurrences_positive_range_with_element{L}: \true; // to complete
+    axiom occurrences_positive_range_without_element{L}: \true; // to complete
   }
 */
 

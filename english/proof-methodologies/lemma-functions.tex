@@ -875,7 +875,7 @@ invariant in order to be sure that the property does not contain any division
 for SMT solvers depending on the constraint that exists on the used values).
 
 
-\CodeBlockInput[5][18]{c}{ex-1-sum-of-n-integers.c}
+\CodeBlockInput[7][20]{c}{ex-1-sum-of-n-integers.c}
 
 
 Now, let us generalize to any bounds with the sum of all the integers between
@@ -884,13 +884,13 @@ contract. Write a body for the function such that the postcondition is proved.
 Note that again, we advise to express the invariant without division.
 
 
-\CodeBlockInput[20][34]{c}{ex-1-sum-of-n-integers.c}
+\CodeBlockInput[22][36]{c}{ex-1-sum-of-n-integers.c}
 
 
 Finally, let us prove this function:
 
 
-\CodeBlockInput[36][43]{c}{ex-1-sum-of-n-integers.c}
+\CodeBlockInput[38][45]{c}{ex-1-sum-of-n-integers.c}
 
 
 This should not be too hard, and what we obtain is a proof that we have written

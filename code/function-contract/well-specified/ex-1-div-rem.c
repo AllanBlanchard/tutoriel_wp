@@ -1,5 +1,5 @@
 /* run.config
-   DONTRUN:
+   OPT:
 */
 
 void div_rem(unsigned x, unsigned y, unsigned* q, unsigned* r){

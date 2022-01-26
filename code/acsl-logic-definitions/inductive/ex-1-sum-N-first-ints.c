@@ -1,12 +1,12 @@
 /* run.config
-   DONTRUN:
+   OPT:
 */
 
 #include <limits.h>
 
 /*@
   inductive is_sum_n(integer n, integer res) {
-    // ...
+  case C: \true; // to complete
   }
 */
 
