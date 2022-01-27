@@ -1,15 +1,19 @@
+/* run.config
+   OPT:
+*/
+
 #include <limits.h>
 
 /*@
   inductive is_sum_n(integer n, integer res) {
-    // ...
+  case C: \true; // to complete
   }
 */
 
-/*@ 
+/*@
   requires n*(n+1) <= 2*INT_MAX ;
   assigns \nothing ;
-  // ensures ... ; 
+  // ensures ... ;
 */
 int sum_n(int n){
   if(n < 1) return 0 ;
@@ -17,7 +21,7 @@ int sum_n(int n){
   int res = 0 ;
   /*@
     loop invariant 1 <= i <= n+1 ;
-    // loop invariant ... ; 
+    // loop invariant ... ;
     loop assigns i, res ;
     loop variant n - i ;
   */

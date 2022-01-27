@@ -1,3 +1,7 @@
+/* run.config
+   OPT:
+*/
+
 void foo(){
   int x = -20 ;
 

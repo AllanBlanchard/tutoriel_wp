@@ -1,0 +1,25 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing search-3.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function foo
+[rte:annot] annotating function search
+[wp] 10 goals scheduled
+[wp] [Alt-Ergo] Goal typed_search_loop_invariant_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_search_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_search_assert_rte_mem_access : Valid
+[wp] [Qed] Goal typed_search_loop_assigns : Valid
+[wp] [Alt-Ergo] Goal typed_search_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_search_loop_variant_positive : Valid
+[wp] [Alt-Ergo] Goal typed_foo_assert_rte_mem_access : Unsuccess
+[wp] [Alt-Ergo] Goal typed_foo_assert_rte_mem_access_2 : Unsuccess
+[wp] [Alt-Ergo] Goal typed_foo_assert_rte_signed_overflow : Unsuccess
+[wp] [Alt-Ergo] Goal typed_foo_call_search_requires : Unsuccess
+[wp] Proved goals:    6 / 10
+  Qed:             2 
+  Alt-Ergo:        4  (unsuccess: 4)
+[wp:pedantic-assigns] search-3.c:6: Warning: 
+  No 'assigns' specification for function 'search'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] search-3.c:17: Warning: 
+  No 'assigns' specification for function 'foo'.
+  Callers assumptions might be imprecise.

@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:+"-kernel-warn-key annot-error=active"
+*/
+
 void example_1(void){
  L: ;
   int x = 1 ;

@@ -88,7 +88,7 @@ précèdent) :
 
 
 
-\CodeBlockInput[15][31]{c}{ghost-code-usage-2.c}
+\CodeBlockInput[20][36]{c}{ghost-code-usage-2.c}
 
 
 
@@ -125,7 +125,7 @@ nouveau. Rendons cela plus simple et modulaire avec des « fonctions lemmes »
 
 
 
-\levelThreeTitle{fonction lemme}
+\levelThreeTitle{Fonction lemme}
 
 
 Le principe des « fonctions lemmes » est le même que celui des lemmes : à
@@ -169,7 +169,7 @@ exemple à propos des valeurs triées. Depuis la propriété
 qu'il est trié globalement :
 
 
-\CodeBlockInput[15][22]{c}{lemma-function-1-1.c}
+\CodeBlockInput[19][26]{c}{lemma-function-1-1.c}
 
 
 Notons que cette fonction doit affecter \CodeInline{\textbackslash{}nothing}.
@@ -267,7 +267,7 @@ imaginons qu'à un certain point de notre programme, nous voulons prouver
 l'assertion suivante à partir de la précondition :
 
 
-\CodeBlockInput[24][32]{c}{lemma-function-2-1.c}
+\CodeBlockInput[28][36]{c}{lemma-function-2-1.c}
 
 
 Bien sûr, il existe un indice \CodeInline{n} tel que \CodeInline{in[n]} est
@@ -435,15 +435,15 @@ d'établir les prémisses. En effet, si nous regardons le contrat de
 garantit la création d'un nouvel état mémoire) et en postcondition, elle assure
 que le contenu du tableau, entre la pré et la postcondition (donc, quand nous
 l'appelons : \CodeInline{L1} et \CodeInline{L2}), respecte les prémisses de notre
-lemme (que l'on répète en ligne 36, en ajoutant une assertion). Ensuite nous
+lemme (que l'on répète en ligne 15, en ajoutant une assertion). Ensuite nous
 utilisons notre macro \CodeInline{shift\_ptr} (qui contiendra par la suite notre
 code de preuve), et nous voulons être capables de prouver la postcondition de
-notre lemme (ligne 40).
+notre lemme (ligne 19).
 
 
 En faisant cela, nous assurons que nous avons construit un contexte qui ne
 contient que les informations nécessaires pour construire le code de preuve
-permettant de déduire la conclusion (ligne 40) depuis les prémisses (ligne 36).
+permettant de déduire la conclusion (ligne 19) depuis les prémisses (ligne 15).
 Maintenant écrivons la macro.
 
 
@@ -453,7 +453,7 @@ Maintenant écrivons la macro.
 Nous ne détaillerons pas ce code, car il est très similaire à ce que nous avons
 écrit au début de cette section. La seule petite subtilité est l'assertion qui
 permet d'aider les solveurs SMT à relier les positions mémoire entre
-\CodeInline{L1} et \CodeInline{L2} aux lignes 16--17. Avec cette macro, nous
+\CodeInline{L1} et \CodeInline{L2} aux lignes 8--9. Avec cette macro, nous
 pouvons voir que l'assertion à la fin de la fonction
 \CodeInline{context\_to\_prove\_shift\_ptr} est correctement validée. Par
 conséquent, nous pouvons espérer qu'elle sera capable d'aider les prouveurs à
@@ -642,7 +642,7 @@ pas changé (quand \CodeInline{i+1} est plus petit que \CodeInline{end} sinon
 nous n'avons simplement plus rien à compter):
 
 
-\CodeBlockInput[271][287]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[275][291]{c}{insert-sort-auto-proved.c}
 
 
 ce qui est suffisant pour assurer que la fonction \CodeInline{insertion\_sort}
@@ -677,7 +677,7 @@ couper une plage de valeur en deux sous-parties dans lesquelles nous pouvons
 compter séparément :
 
 
-\CodeBlockInput[57][77]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[61][81]{c}{insert-sort-auto-proved.c}
 
 
 Nous pouvons noter que cette propriété est prouvée d'une manière qui est très
@@ -698,7 +698,7 @@ et utilisons la fonction précédente pour montrer que cette nouvelle propriét�
 vraie.
 
 
-\CodeBlockInput[79][102]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[83][106]{c}{insert-sort-auto-proved.c}
 
 
 Et nous pouvons souper notre tableau original et le nouveau :
@@ -733,7 +733,7 @@ le tableau inchangé, que l'on a prouvé quasiment à l'identique dans la foncti
 preuve :
 
 
-\CodeBlockInput[142][158]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[146][162]{c}{insert-sort-auto-proved.c}
 
 
 La fonction \CodeInline{unchanged\_permutation\_premise} assure que nous avons
@@ -742,7 +742,7 @@ inchangé entre la précondition et la postcondition. Nous pouvons construire
 notre macro lemme :
 
 
-\CodeBlockInput[131][139]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[135][143]{c}{insert-sort-auto-proved.c}
 
 
 qui correspond presque à ce que nous avons écrit pour \CodeInline{insert\_sort},
@@ -750,7 +750,7 @@ et utiliser cette macro là où nous en avons besoin dans la fonction
 \CodeInline{insert}.
 
 
-\CodeBlockInput[249][251]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[253][255]{c}{insert-sort-auto-proved.c}
 
 
 La seule propriété restante est la plus complexe et concerne le prédicat
@@ -758,7 +758,7 @@ La seule propriété restante est la plus complexe et concerne le prédicat
 macro.
 
 
-\CodeBlockInput[187][204]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[191][208]{c}{insert-sort-auto-proved.c}
 
 
 Comment pouvons-nous prouver cette propriété ? Nous devons d'abord constater
@@ -770,7 +770,7 @@ cellule du nouveau tableau est le même (puisque l'élément correspondant est l
 même). À nouveau, nous nous reposons sur la fonction \CodeInline{split} pour compter
 séparément les éléments décalés et l'élément qui est déplacé de la fin vers le
 début. Cependant, l'appel correspondant dans le tableau original doit à nouveau
-être réalisée avant le code qui modifie le tableau original (voir ligne 198) dans
+être réalisée avant le code qui modifie le tableau original (voir ligne 12) dans
 le code précédent, et nouvs devons prendre cela en compte quand nous insérerons
 notre utilisation de la macro dans la fonction \CodeInline{insert}.
 
@@ -779,7 +779,7 @@ Présentons maintenant la macro qui est utilisée pour prouver que notre lemme
 est valide :
 
 
-\CodeBlockInput[160][185]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[164][189]{c}{insert-sort-auto-proved.c}
 
 
 L'invariant de boucle est très similaire à ce que nous avons écrit jusqu'à
@@ -790,23 +790,23 @@ chaque plage est le même (notons que selon les versions des prouveurs ou la
 puissance de la machine, cela peut parfois ne pas être nécessaire). Une différence
 plus importante comparativement à nos exemples précédents est le fait qu'ici, nous
 devons fournir plus d'information aux SMT solveurs en ajoutant d'autres appels
-de fonction fantôme (ligne 170, pour couper le premier élément du tableau), ainsi
+de fonction fantôme (ligne 15, pour couper le premier élément du tableau), ainsi
 que des assertions pour guider les dernières étapes de preuve :
 
 
 \begin{itemize}
-    \item 175--179 : nous rappelons que le tableau original peut être coupé au
+    \item 16--29 : nous rappelons que le tableau original peut être coupé au
           niveau du dernier élément,
-    \item 180--184 : nous montrons que comme le premier élément du tableau est le
-          dernier élément du tableau original (182), le nombre d'occurrences pour
-          toute valeur dans ces plages est le même (183--185).
+    \item 21--25 : nous montrons que comme le premier élément du tableau est le
+          dernier élément du tableau original (21), le nombre d'occurrences pour
+          toute valeur dans ces plages est le même (22--24).
 \end{itemize}
 
 
 Nous pouvons utiliser cette macro dans notre programme :
 
 
-\CodeBlockInput[245][247]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[249][251]{c}{insert-sort-auto-proved.c}
 
 
 Cependant, nous avons besoin de montrer que la plage au label \CodeInline{Pre} peut
@@ -815,30 +815,30 @@ fonction \CodeInline{split}, qui montre que toute sous-plage peut être coupée 
 le dernier élément (si elle n'est pas vide) :
 
 
-\CodeBlockInput[104][128]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[108][132]{c}{insert-sort-auto-proved.c}
 
 
 que nous pouvons ensuite appeler avant la boucle de la fonction \CodeInline{insert} :
 
 
-\CodeBlockInput[215][220]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[219][224]{c}{insert-sort-auto-proved.c}
 
 
 Notons que selon les versions des prouveurs automatiques, les assertions en lignes
-180 à 184 de la macro, à propos de l'élément au début et à la fin du tableau,
+21 à 25 de la macro, à propos de l'élément au début et à la fin du tableau,
 pourraient ne pas être prouvées à cause de la complexité du contexte de preuve.
 Aidons les solveurs une dernière fois en ajoutant un dernier lemme, automatiquement
 prouvé par les solveurs SMT, qui nous énonce la relation en question pour tout
 tableau et toute position du tableau :
 
 
-\CodeBlockInput[49][54]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[53][57]{c}{insert-sort-auto-proved.c}
 
 
 qui nous garantit que la fonction annotée résultante est entièrement prouvée :
 
 
-\CodeBlockInput[206][254]{c}{insert-sort-auto-proved.c}
+\CodeBlockInput[210][258]{c}{insert-sort-auto-proved.c}
 
 
 Nous mettons finalement en valeur le fait que le contexte de preuve peut rendre
@@ -866,7 +866,7 @@ certaines propriétés qui rendent son utilisation difficile avec des solveurs S
 en fonction des contraintes qui existent sur les valeurs utilisées).
 
 
-\CodeBlockInput[1][12]{c}{ex-1-sum-of-n-integers.c}
+\CodeBlockInput[7][20]{c}{ex-1-sum-of-n-integers.c}
 
 
 Maintenant, généralisons à toutes bornes avec la somme de tous les entiers entre
@@ -875,13 +875,13 @@ logique et le contrat, à vous d'écrire le corps de la fonction de manière à 
 la postcondition. À nouveau, nous conseillons d'exprimer l'invariant sans division.
 
 
-\CodeBlockInput[16][30]{c}{ex-1-sum-of-n-integers.c}
+\CodeBlockInput[22][36]{c}{ex-1-sum-of-n-integers.c}
 
 
 Finalement, prouver cette fonction :
 
 
-\CodeBlockInput[32][39]{c}{ex-1-sum-of-n-integers.c}
+\CodeBlockInput[38][45]{c}{ex-1-sum-of-n-integers.c}
 
 
 Cela ne devrait pas être trop difficile, et ce que nous obtenons est une preuve
@@ -896,7 +896,7 @@ Dans cet exercice, nous voulons prouver un ensemble de propriétés intéressant
 à propos de notre définition logique \CodeInline{l\_occurrences\_of} :
 
 
-\CodeBlockInput{c}{ex-2-l_occurrences_of-props.c}
+\CodeBlockInput[5]{c}{ex-2-l_occurrences_of-props.c}
 
 
 La fonction \CodeInline{occ\_bounds} doit énoncer que le nombre d'occurrences
@@ -945,4 +945,4 @@ Voici un squelette pour le fichier :
 
 
 
-\CodeBlockInput{c}{ex-3-sum-content.c}
+\CodeBlockInput[5]{c}{ex-3-sum-content.c}

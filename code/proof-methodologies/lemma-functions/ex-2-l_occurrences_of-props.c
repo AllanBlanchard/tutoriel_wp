@@ -1,3 +1,7 @@
+/* run.config
+   OPT:
+*/
+
 #include <stddef.h>
 
 /*@ ghost

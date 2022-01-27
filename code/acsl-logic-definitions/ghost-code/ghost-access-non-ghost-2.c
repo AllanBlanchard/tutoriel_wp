@@ -1,3 +1,8 @@
+/* run.config
+   EXIT: 1
+   STDOPT:
+*/
+
 #include <limits.h>
 
 int sum(int n){
@@ -7,7 +12,7 @@ int sum(int n){
     /*@ ghost
       if (x < INT_MAX){
         x++;
-	x--; // assure that x remains coherent
+        x--; // assure that x remains coherent
       }
     */
   }

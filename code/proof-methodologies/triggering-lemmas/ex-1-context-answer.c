@@ -1,10 +1,14 @@
+/* run.config
+   STDOPT:+"-wp-no-rte"
+*/
+
 /*@
   predicate rectangle{L}(integer c1, integer c2, integer h) =
     c1 * c1 + c2 * c2 == h * h ;
 */
 
 /*@
-  requires \separated(x, y , z);
+  requires \separated(x, y, z);
   requires 3 <= *x <= 5 ;
   requires 4 <= *y <= 5 ;
   requires *z <= 5 ;

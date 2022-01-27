@@ -1,13 +1,17 @@
+/* run.config
+   OPT:
+*/
+
 /*@
   inductive is_power(integer x, integer n, integer r) {
-  case zero: // ...
-  case N: // ...
+  case zero: \true; // to complete
+  case N: \true; // to complete
   }
 */
 
 /*@
-  lemma power_even: ...
-  lemma power_odd: ...
+  lemma power_even: \true; // to complete
+  lemma power_odd: \true; // to complete
 */
 
 /*@
@@ -23,7 +27,7 @@ int power(int x, int n){
   */
   for(int i = 1 ; i <= n ; ++i){
     r *= x ;
-  }  
+  }
   return r ;
 }
 
@@ -36,7 +40,7 @@ int fast_power(int x, int n){
   int r = 1 ;
   int p = x ;
   /*@
-    loop invariant \forall integer v ; // ...
+    loop invariant \forall integer v ; \true; // to complete
   */
   while(n > 0){
     if(n % 2 == 1) r = r * p ;
@@ -44,6 +48,6 @@ int fast_power(int x, int n){
     n /= 2 ;
   }
   //@ assert is_power(p, n, 1) ;
-  
+
   return r ;
 }

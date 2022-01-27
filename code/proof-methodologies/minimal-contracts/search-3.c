@@ -13,3 +13,10 @@ int* search(int* array, size_t length, int element){
     if(array[i] == element) return &array[i];
   return NULL;
 }
+
+void foo(int* array, size_t length){
+  int* p = search(array, length, 0) ;
+  if(p){
+    *p += 1 ;
+  }
+}

@@ -1,7 +1,10 @@
+/* run.config
+   OPT:
+*/
+
 #include <stddef.h>
 
-
-/*@ 
+/*@
   predicate sorted(int* arr, integer begin, integer end) =
     \forall integer i, j ; begin <= i <= j < end ==> arr[i] <= arr[j] ;
 
@@ -35,13 +38,13 @@
 */
 size_t bsearch(int* arr, size_t len, int value){
   if(len == 0) return len ;
-  
+
   size_t low = 0 ;
   size_t up = len ;
 
   /*@
     loop invariant 0 <= low && up <= len ;
-    loop invariant 
+    loop invariant
       \forall integer i ; 0 <= i < len && arr[i] == value ==> low <= i < up ;
     loop assigns low, up ;
     loop variant up - low ;
@@ -61,8 +64,8 @@ size_t bsearch(int* arr, size_t len, int value){
     \forall integer i ; fst <= i < end-1 ==> array[i] <= array[i+1] ;
 */
 /*@
-  //lemma element_level_sorted_implies_sorted:
-  // ...
+  lemma element_level_sorted_implies_sorted:
+    \true ; // to complete
 */
 
 /*@

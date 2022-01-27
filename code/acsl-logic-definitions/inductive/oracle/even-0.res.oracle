@@ -1,0 +1,4 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing even-0.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: No goal generated

@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:+"-wp-no-rte -wp-msg-key state -wp-print"
+*/
+
 /*@
   predicate rectangle{L}(integer c1, integer c2, integer h) =
     c1 * c1 + c2 * c2 == h * h ;
@@ -56,7 +60,7 @@ void example_2(int* x, int* y, int* z){
 void example_3(int* x, int* y, int* z){
   //@ assert rectangle(2* (*x), 2* (*y), 2* (*z));
   //@ ghost L: ;
-  
+
   *x += 3 ;
   *y += 4 ;
   *z += 5 ;

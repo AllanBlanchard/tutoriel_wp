@@ -1,0 +1,17 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-2-distance-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function distance
+[wp] 6 goals scheduled
+[wp] [Qed] Goal typed_distance_ensures : Valid
+[wp] [Qed] Goal typed_distance_ensures_2 : Valid
+[wp] [Alt-Ergo] Goal typed_distance_assert_rte_signed_overflow : Valid
+[wp] [Qed] Goal typed_distance_assert_rte_signed_overflow_2 : Valid
+[wp] [Alt-Ergo] Goal typed_distance_assert_rte_signed_overflow_3 : Valid
+[wp] [Qed] Goal typed_distance_assert_rte_signed_overflow_4 : Valid
+[wp] Proved goals:    6 / 6
+  Qed:             4 
+  Alt-Ergo:        2
+[wp:pedantic-assigns] ex-2-distance-answer.c:10: Warning: 
+  No 'assigns' specification for function 'distance'.
+  Callers assumptions might be imprecise.

@@ -1,11 +1,15 @@
+/* run.config
+   OPT:
+*/
+
 #include <limits.h>
 #include <stddef.h>
 
 /*@
   axiomatic Sum_array{
     logic integer sum(int* array, integer begin, integer end) reads array[begin .. (end-1)];
-   
-    axiom empty: 
+
+    axiom empty:
       \forall int* a, integer b, e; b >= e ==> sum(a,b,e) == 0;
     axiom range:
       \forall int* a, integer b, e; b < e ==> sum(a,b,e) == sum(a,b,e-1)+a[e-1];

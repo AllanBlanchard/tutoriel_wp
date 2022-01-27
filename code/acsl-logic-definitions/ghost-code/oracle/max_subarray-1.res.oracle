@@ -1,0 +1,22 @@
+# frama-c -wp [...]
+[kernel] Parsing max_subarray-1.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+[wp] 14 goals scheduled
+[wp] [Alt-Ergo] Goal typed_max_subarray_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_max_subarray_ensures_2 : Valid
+[wp] [Alt-Ergo] Goal typed_max_subarray_loop_invariant_BOUNDS_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_max_subarray_loop_invariant_BOUNDS_established : Valid
+[wp] [Alt-Ergo] Goal typed_max_subarray_loop_invariant_POST_preserved : Valid
+[wp] [Qed] Goal typed_max_subarray_loop_invariant_POST_established : Valid
+[wp] [Alt-Ergo] Goal typed_max_subarray_loop_invariant_POST_2_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_max_subarray_loop_invariant_POST_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_max_subarray_loop_invariant_REL_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_max_subarray_loop_invariant_REL_established : Valid
+[wp] [Qed] Goal typed_max_subarray_loop_assigns : Valid
+[wp] [Qed] Goal typed_max_subarray_assigns : Valid
+[wp] [Alt-Ergo] Goal typed_max_subarray_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_max_subarray_loop_variant_positive : Valid
+[wp] Proved goals:   14 / 14
+  Qed:             4 
+  Alt-Ergo:       10

@@ -1,0 +1,49 @@
+[kernel] Parsing abs-6.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+------------------------------------------------------------
+  Function abs
+------------------------------------------------------------
+
+Goal Post-condition (file abs-6.c, line 11) in 'abs':
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Post-condition (file abs-6.c, line 12) in 'abs':
+Prove: true.
+
+------------------------------------------------------------
+------------------------------------------------------------
+  Function foo
+------------------------------------------------------------
+
+Goal Instance of 'Pre-condition (file abs-6.c, line 9) in 'abs'' in 'foo' at initialization of 'b' (file abs-6.c, line 21)
+:
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Instance of 'Pre-condition (file abs-6.c, line 9) in 'abs'' in 'foo' at initialization of 'c' (file abs-6.c, line 22)
+:
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Instance of 'Pre-condition (file abs-6.c, line 9) in 'abs'' in 'foo' at initialization of 'e' (file abs-6.c, line 23)
+:
+Prove: false.
+
+------------------------------------------------------------
+
+Goal Instance of 'Pre-condition (file abs-6.c, line 9) in 'abs'' in 'foo' at initialization of 'd' (file abs-6.c, line 24)
+:
+Prove: true.
+
+------------------------------------------------------------
+[wp:pedantic-assigns] abs-6.c:15: Warning: 
+  No 'assigns' specification for function 'abs'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] abs-6.c:20: Warning: 
+  No 'assigns' specification for function 'foo'.
+  Callers assumptions might be imprecise.

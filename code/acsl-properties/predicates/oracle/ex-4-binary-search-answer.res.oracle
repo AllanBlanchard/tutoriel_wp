@@ -1,0 +1,27 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-4-binary-search-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function bsearch
+[wp] 19 goals scheduled
+[wp] [Qed] Goal typed_bsearch_complete_does_not_exists_exists : Valid
+[wp] [Qed] Goal typed_bsearch_disjoint_does_not_exists_exists : Valid
+[wp] [Alt-Ergo] Goal typed_bsearch_loop_invariant_preserved : Valid
+[wp] [Qed] Goal typed_bsearch_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_bsearch_loop_invariant_2_preserved : Valid
+[wp] [Qed] Goal typed_bsearch_loop_invariant_2_established : Valid
+[wp] [Qed] Goal typed_bsearch_assert_rte_division_by_zero : Valid
+[wp] [Alt-Ergo] Goal typed_bsearch_assert_rte_mem_access : Valid
+[wp] [Qed] Goal typed_bsearch_assert_rte_mem_access_2 : Valid
+[wp] [Qed] Goal typed_bsearch_loop_assigns : Valid
+[wp] [Qed] Goal typed_bsearch_assigns_part1 : Valid
+[wp] [Qed] Goal typed_bsearch_assigns_part2 : Valid
+[wp] [Qed] Goal typed_bsearch_assigns_part3 : Valid
+[wp] [Qed] Goal typed_bsearch_assigns_part4 : Valid
+[wp] [Alt-Ergo] Goal typed_bsearch_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_bsearch_loop_variant_positive : Valid
+[wp] [Alt-Ergo] Goal typed_bsearch_exists_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_bsearch_exists_ensures_2 : Valid
+[wp] [Alt-Ergo] Goal typed_bsearch_does_not_exists_ensures : Valid
+[wp] Proved goals:   19 / 19
+  Qed:            12 
+  Alt-Ergo:        7

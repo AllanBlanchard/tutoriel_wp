@@ -426,6 +426,7 @@
      fontsize=\scriptsize,
      firstline=#1,
      lastline=#2,
+     firstnumber=1,
      numbersep=3mm
    }, % Removed: highlightlines={#2}
    enhanced,
@@ -624,7 +625,7 @@
 \NewDocumentCommand{\image}{m}{%
   \begin{center}
   \includegraphics[scale=.5, max size={\textwidth}{0.9\textheight}, keepaspectratio]{\currentInput/#1}
-  \end{center}  
+  \end{center}
 }
 
 %%% SMILEYS

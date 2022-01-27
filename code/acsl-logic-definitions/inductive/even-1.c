@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:+"-wp-prover alt-ergo,z3"
+*/
+
 /*@
   inductive even_natural{L}(integer n) {
   case even_nul{L}:

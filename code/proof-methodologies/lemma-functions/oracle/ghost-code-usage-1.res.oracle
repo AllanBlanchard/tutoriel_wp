@@ -1,0 +1,18 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ghost-code-usage-1.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function bsearch_callee
+[kernel] ghost-code-usage-1.c:18: Warning: 
+  No code nor implicit assigns clause for function bsearch, generating default assigns from the prototype
+[wp] 2 goals scheduled
+[wp] [Qed] Goal typed_bsearch_callee_call_bsearch_requires : Valid
+[wp] [Alt-Ergo] Goal typed_bsearch_callee_call_bsearch_requires_2 : Unsuccess
+[wp] Proved goals:    1 / 2
+  Qed:             1 
+  Alt-Ergo:        0  (unsuccess: 1)
+[wp:pedantic-assigns] ghost-code-usage-1.c:13: Warning: 
+  No 'assigns' specification for function 'bsearch'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] ghost-code-usage-1.c:18: Warning: 
+  No 'assigns' specification for function 'bsearch_callee'.
+  Callers assumptions might be imprecise.

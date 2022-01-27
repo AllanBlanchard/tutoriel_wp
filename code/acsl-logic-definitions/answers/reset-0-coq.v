@@ -1,49 +1,45 @@
-Inductive P_zeroed : farray addr Z -> addr -> Z -> Z -> Prop :=
-    | Q_zeroed_empty: forall (i_1 i : Z), forall (t : farray addr Z),
-        forall (a : addr), ((i <= i_1)%Z) -> ((P_zeroed t a i_1%Z i%Z))
-    | Q_zeroed_range: forall (i_1 i : Z), forall (t : farray addr Z),
-        forall (a : addr), let x := (i%Z - 1%Z)%Z in
-        (((t.[ (shift_sint32 a x) ]) = 0)%Z) -> ((i_1 < i)%Z) ->
-        ((P_zeroed t a i_1%Z x)) -> ((P_zeroed t a i_1%Z i%Z)).
+Inductive P_zeroed: (addr -> Z) -> addr ->
+  Z -> Z -> Prop :=
+  | Q_zeroed_empty : forall (Mint:addr -> Z) (a:addr) (b:Z) (e:Z),
+      (e <= b)%Z -> is_sint32_chunk Mint -> P_zeroed Mint a b e
+  | Q_zeroed_range : forall (Mint:addr -> Z) (a:addr) (b:Z) (e:Z),
+      let x := ((-1%Z)%Z + e)%Z in
+      let x1 := Mint (shift a x) in
+      (x1 = 0%Z) -> (b < e)%Z -> is_sint32_chunk Mint ->
+      P_zeroed Mint a b x -> is_sint32 x1 -> P_zeroed Mint a b e.
 
-Definition P_same_elems (Mint_0 : farray addr Z) (Mint_1 : farray addr Z)
-    (a : addr) (b : Z) (e : Z) : Prop :=
-    forall (i : Z), let a_1 := (shift_sint32 a i%Z) in ((b <= i)%Z) ->
-      ((i < e)%Z) -> (((Mint_1.[ a_1 ]) = (Mint_0.[ a_1 ]))%Z).
+Definition P_same_elems (Mint:addr -> Z)
+    (Mint1:addr -> Z) (a:addr) (b:Z) (e:Z) : Prop :=
+  forall (i:Z),
+  let a1 := shift a i in (b <= i)%Z -> (i < e)%Z -> ((Mint1 a1) = (Mint a1)).
 
 (* The property to prove *)
-Goal
-  forall (i_1 i : Z),
-  forall (t_1 t : farray addr Z),
-  forall (a : addr),
-  ((P_zeroed t a i_1%Z i%Z)) ->
-  ((P_same_elems t_1 t a i_1%Z i%Z)) ->
-  ((P_zeroed t_1 a i_1%Z i%Z)).
-
+Theorem wp_goal :
+  forall (t:addr -> Z) (t1:addr -> Z) (a:addr) (i:Z) (i1:Z),
+  is_sint32_chunk t1 -> is_sint32_chunk t -> P_zeroed t1 a i i1 ->
+  P_same_elems t t1 a i i1 -> P_zeroed t a i i1.
 Proof.
+  Require Import Psatz. (* Used for reasoning on integers *)
+
   (* We introduce our variable and the main hypothese *)
-  intros b e Mi Mi' arr H.
+  intros Mi' Mi arr b e tMi tMi' H.
   (* We reason by induction on our first (inductive) hypothese *)
   induction H ; intros Same.
-  (* Base case, by using the first case of the inductive predicate *)
-  + constructor 1.
-    (* The only premise to prove is a trivial relation between the bounds *)
-    omega.
+  + (* Base case, immediate by using the first case of the inductive predicate *)
+    constructor 1 ; auto.
   + unfold x in * ; clear x.
-    (* Induction case, by using the second case of the inductive predicate*)
-    constructor 2.
-    (* We have three premises *)
-    - (* First: the first cell in new memory must be zero, we replace 0 with 
+    (* Induction case, by using the second case of the inductive predicate.
+       Most premises are trivial or just simple integers relations. *)
+      constructor 2 ; auto ; try lia.
+    - (* First: the first cell in new memory must be zero, we replace 0 with
          the cell in old memory *)
       rewrite <- H ; symmetry.
       (* And show that the cells are the same *)
-      apply Same ; omega.
-    - (* Second, we have to prove a trivial relation about the bounds *)
-      omega.
+      apply Same ; lia.
     - (* Third we use our induction hypothesis to show that the property
          holds on the first part of the array *)
-      apply IHP_zeroed.
-      intros i' ; intros.
-      apply Same ; omega.
-Qed.
 
+      apply IHP_zeroed ; auto.
+      intros i' ; intros.
+      apply Same ; lia.
+Qed.

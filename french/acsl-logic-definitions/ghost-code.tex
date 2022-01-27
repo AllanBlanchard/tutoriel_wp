@@ -214,7 +214,7 @@ du programme n'est plus le même, et nous ne vérifions donc plus le même progr
 Par exemple, la fonction suivante calcule la somme des $n$ premiers entiers :
 
 
-\CodeBlockInput{c}{control-flow-1.c}
+\CodeBlockInput[6]{c}{control-flow-1.c}
 
 
 Par l'introduction, dans du code fantôme, de l'instruction \CodeInline{break} dans
@@ -236,7 +236,7 @@ c'est le point de départ du code fantôme qui est pointé par l'erreur, par exe
 si nous introduisons une conditionnelle autour de notre \CodeInline{break} :
 
 
-\CodeBlockInput{c}{control-flow-2.c}
+\CodeBlockInput[6]{c}{control-flow-2.c}
 
 
 Le problème est indiqué pour le \CodeInline{if} englobant :
@@ -255,7 +255,7 @@ syntaxique. Par exemple, si le \CodeInline{break} est inatteignable parce que la
 condition est toujours fausse, une erreur sera quand même levée :
 
 
-\CodeBlockInput{c}{control-flow-3.c}
+\CodeBlockInput[6]{c}{control-flow-3.c}
 
 
 \begin{CodeBlock}{text}
@@ -292,7 +292,7 @@ code normal tentait d'accéder à des variables fantômes, il ne pourrait même 
 annotations. Par exemple :
 
 
-\CodeBlockInput{c}{non-ghost-access-ghost.c}
+\CodeBlockInput[6]{c}{non-ghost-access-ghost.c}
 
 
 ne peut pas être compilé :
@@ -321,7 +321,7 @@ cela impliquerait de pouvoir par exemple modifier le résultat d'un programme en
 ajoutant du code fantôme. Par exemple dans le code suivant :
 
 
-\CodeBlockInput{c}{ghost-access-non-ghost-1.c}
+\CodeBlockInput[6]{c}{ghost-access-non-ghost-1.c}
 
 
 Le résultat du programme ne serait pas le même avec ou sans le code fantôme.
@@ -342,7 +342,7 @@ n'altère pas le comportement du programme, toute écriture d'une variable norma
 dans le code fantôme est interdite :
 
 
-\CodeBlockInput[3]{c}{ghost-access-non-ghost-2.c}
+\CodeBlockInput[8]{c}{ghost-access-non-ghost-2.c}
 
 
 \begin{CodeBlock}{text}
@@ -357,7 +357,7 @@ Cela s'applique également à la clause \CodeInline{assigns} lorsqu'elle est dan
 du code fantôme :
 
 
-\CodeBlockInput{c}{assigns-clause-1.c}
+\CodeBlockInput[6]{c}{assigns-clause-1.c}
 
 
 \begin{CodeBlock}{text}
@@ -394,7 +394,7 @@ Ici, nous utilisons des indices pour accéder à nos tableaux, mais nous pourrio
 par exemple vouloir y accéder en utilisant un pointeur :
 
 
-\CodeBlockInput{c}{ghost-array-2.c}
+\CodeBlockInput[6]{c}{ghost-array-2.c}
 
 
 Mais nous voyons immédiatement que Frama-C n'est pas d'accord avec notre manière
@@ -485,7 +485,7 @@ refuser la seconde peut être un peu moins intuitif. Et en effet, nous devons pa
 par des moyens détournés pour provoquer un problème avec cette conversion :
 
 
-\CodeBlockInput{c}{why-not-const.c}
+\CodeBlockInput[6]{c}{why-not-const.c}
 
 
 Ici, nous faisons une conversion qui pourrait sembler autorisée. En effet, nous
@@ -572,7 +572,7 @@ renverra donc 6.
 
 
 
-\CodeBlockInput[3]{c}{max_subarray-0.c}
+\CodeBlockInput[7]{c}{max_subarray-0.c}
 
 
 
@@ -583,7 +583,7 @@ axiomatique :
 
 
 
-\CodeBlockInput[3][5]{c}{max_subarray-1.c}
+\CodeBlockInput[7][9]{c}{max_subarray-1.c}
 
 
 
@@ -594,7 +594,7 @@ La spécification de notre fonction est la suivante :
 
 
 
-\CodeBlockInput[14][19]{c}{max_subarray-1.c}
+\CodeBlockInput[18][23]{c}{max_subarray-1.c}
 
 
 
@@ -631,7 +631,7 @@ boucle.
 
 
 
-\CodeBlockInput[14][50]{c}{max_subarray-1.c}
+\CodeBlockInput[18][54]{c}{max_subarray-1.c}
 
 
 
@@ -672,7 +672,7 @@ Notons qu'il est possible d'exécuter Frama-C sans contrôle du code fantôme en
 utilisant l'option \CodeInline{-kernel-warn-key ghost=inactive}.
 
 
-\CodeBlockInput{c}{ex-1-ghost-reject.c}
+\CodeBlockInput[5]{c}{ex-1-ghost-reject.c}
 
 
 \levelFourTitle{Multiplication par 2}
@@ -683,7 +683,7 @@ Utiliser une variable fantôme \CodeInline{i} pour exprimer comme invariant que
 la valeur de \CodeInline{r} est \CodeInline{i * 2} et compléter la preuve.
 
 
-\CodeBlockInput{c}{ex-2-times-2.c}
+\CodeBlockInput[5]{c}{ex-2-times-2.c}
 
 
 \levelFourTitle{Tableaux}
@@ -695,7 +695,7 @@ Cependant, nous voudrions pouvoir prouver qu'en postcondition, le tableau n'a
 pas été modifié.
 
 
-\CodeBlockInput{c}{ex-3-array.c}
+\CodeBlockInput[5]{c}{ex-3-array.c}
 
 
 Sans modifier la clause \CodeInline{assigns} de la boucle et sans utiliser le mot
@@ -715,7 +715,7 @@ l'utiliser dans la fonction \CodeInline{foo} pour effectuer la même preuve.
 Le programme suivant effectue une opération de recherche et remplacement :
 
 
-\CodeBlockInput{c}{ex-4-replace.c}
+\CodeBlockInput[5]{c}{ex-4-replace.c}
 
 
 En supposant que la fonction \CodeInline{replace} demande à ce que

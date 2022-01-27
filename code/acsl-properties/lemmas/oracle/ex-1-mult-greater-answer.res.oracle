@@ -1,0 +1,9 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-1-mult-greater-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] 1 goal scheduled
+[wp] [Coq] Goal typed_lemma_mult_greater : Valid
+[wp] Proved goals:    1 / 1
+  Qed:             0 
+  Alt-Ergo:        0  (unsuccess: 1)
+  Coq:             1

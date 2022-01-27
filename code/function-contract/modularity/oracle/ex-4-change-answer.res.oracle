@@ -1,0 +1,108 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-4-change-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function make_change
+[rte:annot] annotating function remove_max_notes
+[wp] 86 goals scheduled
+[wp] [Qed] Goal typed_remove_max_notes_ensures : Valid
+[wp] [Qed] Goal typed_remove_max_notes_ensures_2 : Valid
+[wp] [Alt-Ergo] Goal typed_remove_max_notes_assert_rte_division_by_zero : Valid
+[wp] [Qed] Goal typed_remove_max_notes_assert_rte_index_bound : Valid
+[wp] [Alt-Ergo] Goal typed_remove_max_notes_assert_rte_mem_access : Valid
+[wp] [Alt-Ergo] Goal typed_remove_max_notes_assert_rte_signed_overflow : Valid
+[wp] [Qed] Goal typed_remove_max_notes_assert_rte_index_bound_2 : Valid
+[wp] [Qed] Goal typed_remove_max_notes_assert_rte_mem_access_2 : Valid
+[wp] [Qed] Goal typed_remove_max_notes_assert_rte_mem_access_3 : Valid
+[wp] [Alt-Ergo] Goal typed_remove_max_notes_assert_rte_signed_overflow_2 : Valid
+[wp] [Alt-Ergo] Goal typed_remove_max_notes_assert_rte_signed_overflow_3 : Valid
+[wp] [Alt-Ergo] Goal typed_remove_max_notes_assert_rte_signed_overflow_4 : Valid
+[wp] [Alt-Ergo] Goal typed_remove_max_notes_assert_rte_signed_overflow_5 : Valid
+[wp] [Qed] Goal typed_remove_max_notes_assigns : Valid
+[wp] [Qed] Goal typed_make_change_complete_change_not_enough : Valid
+[wp] [Qed] Goal typed_make_change_disjoint_change_not_enough : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_assert_rte_signed_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_assert_rte_signed_overflow_2 : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_assert_rte_mem_access : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_assert_rte_mem_access_2 : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_assert_rte_mem_access_3 : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_assert_rte_mem_access_4 : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_assert_rte_mem_access_5 : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_assert_rte_mem_access_6 : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_assert_rte_mem_access_7 : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_assert_rte_mem_access_8 : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_assert_rte_mem_access_9 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part01 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part02 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part03 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part04 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part05 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part06 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part07 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part08 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part09 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part10 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part11 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part12 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part13 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part14 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part15 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part16 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_exit_part17 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part01 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part02 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part03 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part04 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part05 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part06 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part07 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part08 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part09 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part10 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part11 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part12 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part13 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part14 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part15 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part16 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part17 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part18 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part19 : Valid
+[wp] [Qed] Goal typed_make_change_assigns_normal_part20 : Valid
+[wp] [Qed] Goal typed_make_change_call_remove_max_notes_requires : Valid
+[wp] [Qed] Goal typed_make_change_call_remove_max_notes_requires_2 : Valid
+[wp] [Qed] Goal typed_make_change_call_remove_max_notes_2_requires : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_call_remove_max_notes_2_requires_2 : Valid
+[wp] [Qed] Goal typed_make_change_call_remove_max_notes_3_requires : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_call_remove_max_notes_3_requires_2 : Valid
+[wp] [Qed] Goal typed_make_change_call_remove_max_notes_4_requires : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_call_remove_max_notes_4_requires_2 : Valid
+[wp] [Qed] Goal typed_make_change_call_remove_max_notes_5_requires : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_call_remove_max_notes_5_requires_2 : Valid
+[wp] [Qed] Goal typed_make_change_call_remove_max_notes_6_requires : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_call_remove_max_notes_6_requires_2 : Valid
+[wp] [Qed] Goal typed_make_change_call_remove_max_notes_7_requires : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_call_remove_max_notes_7_requires_2 : Valid
+[wp] [Qed] Goal typed_make_change_call_remove_max_notes_8_requires : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_call_remove_max_notes_8_requires_2 : Valid
+[wp] [Qed] Goal typed_make_change_call_remove_max_notes_9_requires : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_call_remove_max_notes_9_requires_2 : Valid
+[wp] [Qed] Goal typed_make_change_not_enough_ensures : Valid
+[wp] [Qed] Goal typed_make_change_change_ensures : Valid
+[wp] [Qed] Goal typed_make_change_change_ensures_2 : Valid
+[wp] [Alt-Ergo] Goal typed_make_change_change_ensures_3 : Valid
+[wp] Proved goals:   86 / 86
+  Qed:            59 
+  Alt-Ergo:       27
+[wp] ex-4-change-answer.c:11: Warning: 
+  Memory model hypotheses for function 'remove_max_notes':
+  /*@ behavior wp_typed:
+        requires \separated(rest, (int const *)values + (..)); */
+  int remove_max_notes(enum note n, int *rest);
+[wp] ex-4-change-answer.c:53: Warning: 
+  Memory model hypotheses for function 'make_change':
+  /*@
+     behavior wp_typed:
+       requires \separated(change + (..), (int const *)values + (..));
+       requires \separated(change + (0 .. 8), (int const *)values + (..));
+     */
+  int make_change(int amount, int received, int change[9]);

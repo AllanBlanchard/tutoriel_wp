@@ -1,11 +1,11 @@
 Les boucles ont besoin d'un traitement de faveur dans la vérification déductive
 de programmes. Ce sont les seules structures de contrôle qui vont nécessiter un
-travail conséquent de notre part. Nous ne pouvons pas y échapper car sans les 
+travail conséquent de notre part. Nous ne pouvons pas y échapper car sans les
 boucles nous pouvons difficilement prouver des programmes intéressants.
 
 
 
-Avant de s'intéresser à la spécification des boucles, il est légitime de se 
+Avant de s'intéresser à la spécification des boucles, il est légitime de se
 poser la question suivante : pourquoi les boucles sont-elles compliquées ?
 
 
@@ -14,19 +14,19 @@ poser la question suivante : pourquoi les boucles sont-elles compliquées ?
 \label{l3:statements-loops-invariant}
 
 
-La nature des boucles rend leur analyse difficile. Lorsque nous faisons nos 
+La nature des boucles rend leur analyse difficile. Lorsque nous faisons nos
 raisonnements arrières, il nous faut une règle capable de dire à partir de la
-postcondition quelle est la précondition d'une certaine séquence 
-d'instructions. Problème : nous ne pouvons \textit{a priori} pas déduire combien de 
-fois la boucle s'exécutera et donc, nous ne pouvons pas non 
+postcondition quelle est la précondition d'une certaine séquence
+d'instructions. Problème : nous ne pouvons \textit{a priori} pas déduire combien de
+fois la boucle s'exécutera et donc, nous ne pouvons pas non
 plus savoir combien de fois les variables ont été modifiées.
 
 
 
 Nous procéderons en raisonnant par induction. Nous devons trouver une
 propriété qui est vraie avant de commencer la boucle et qui, si elle est vraie
-au début d'un tour de boucle, sera vraie à la fin (et donc par extension, au 
-début du tour suivant). Quand la boucle termine, nous gagnons la connaissance 
+au début d'un tour de boucle, sera vraie à la fin (et donc par extension, au
+début du tour suivant). Quand la boucle termine, nous gagnons la connaissance
 que la condition de boucle est fausse qui, en conjonction avec l'invariant,
 doit nous permettre de prouver que la postcondition de la boucle est vérifiée.
 
@@ -45,12 +45,12 @@ for(int i = 0 ; i < 10 ; ++i){ /* */ }
 
 
 
-La propriété $0 \leq \texttt{i} \leq 10$ est un invariant de la boucle. La 
+La propriété $0 \leq \texttt{i} \leq 10$ est un invariant de la boucle. La
 propriété  $-42 \leq \texttt{i} \leq 42$ est également un invariant de la boucle
 (qui est nettement plus imprécis néanmoins). La propriété $0 < \texttt{i} \leq 10$
 n'est pas un invariant, elle n'est pas vraie à l'entrée de la boucle. La propriété
 $0 \leq \texttt{i} < 10$ \textbf{n'est pas un invariant de la boucle}, elle n'est
-pas vraie à la fin du dernier tour de la boucle qui met la valeur $\texttt{i}$ à 
+pas vraie à la fin du dernier tour de la boucle qui met la valeur $\texttt{i}$ à
 $10$.
 
 
@@ -68,7 +68,7 @@ Le raisonnement produit par l'outil pour vérifier un invariant $I$ sera donc :
 \levelFourTitle{Formel - Règle d'inférence}
 
 
-En notant l'invariant $I$, la règle d'inférence correspondant à la boucle est 
+En notant l'invariant $I$, la règle d'inférence correspondant à la boucle est
 définie comme suit :
 $$\dfrac{\{I \wedge B \}\ c\ \{I\}}{\{I\}\ while(B)\{c\}\ \{I \wedge \neg B\}}$$
 
@@ -82,7 +82,7 @@ Détaillons cette formule :
 
 
 \begin{itemize}
-\item (1) le premier $I$ correspond à l'établissement de l'invariant, c'est 
+\item (1) le premier $I$ correspond à l'établissement de l'invariant, c'est
 vulgairement la « précondition » de la boucle,
 \item la deuxième partie de la conjonction ($(B \wedge I) \Rightarrow wp(c, I)$)
 correspond à la vérification du travail effectué par le corps de la boucle :
@@ -91,26 +91,26 @@ correspond à la vérification du travail effectué par le corps de la boucle :
 \item la précondition que nous connaissons du corps de la boucle (notons $KWP$,
 « \textit{Known WP} ») est ($KWP = B \wedge I$). Soit le fait que nous sommes
 rentrés dedans ($B$ est vrai), et que l'invariant est respecté à ce moment
-($I$, qui est vrai avant de commencer la boucle par (1), et dont veut 
+($I$, qui est vrai avant de commencer la boucle par (1), et dont veut
 vérifier qu'il sera vrai en fin de bloc de la boucle (2)),
-\item (2) ce qu'il nous reste à vérifier c'est que $KWP$ implique la 
-précondition réelle* du bloc de code de la boucle 
-  ($KWP \Rightarrow wp(c, Post)$). Ce que nous voulons en fin de bloc, 
+\item (2) ce qu'il nous reste à vérifier c'est que $KWP$ implique la
+précondition réelle* du bloc de code de la boucle
+  ($KWP \Rightarrow wp(c, Post)$). Ce que nous voulons en fin de bloc,
   c'est avoir maintenu l'invariant $I$ ($B$ n'est peut-être plus vrai en
-  revanche). Donc 
+  revanche). Donc
 $KWP \Rightarrow wp(c, I)$, soit $(B \wedge I) \Rightarrow wp(c, I)$,
 \item * cela correspond à une application de la règle de conséquence expliquée
 précédemment.
 \end{itemize}
 \item finalement, la dernière partie ($(\neg B \wedge I) \Rightarrow Post$)
-nous dit que le fait d'être sorti de la boucle ($\neg B$), tout en ayant 
-maintenu l'invariant $I$, doit impliquer la postcondition voulue pour la 
+nous dit que le fait d'être sorti de la boucle ($\neg B$), tout en ayant
+maintenu l'invariant $I$, doit impliquer la postcondition voulue pour la
 boucle.
 \end{itemize}
 
 
 Dans ce calcul, nous pouvons noter que la fonction $wp$ ne nous donne aucune
-indication sur le moyen d'obtenir l'invariant $I$. Nous allons donc devoir 
+indication sur le moyen d'obtenir l'invariant $I$. Nous allons donc devoir
 spécifier manuellement de telles propriétés à propos de nos boucles.
 
 
@@ -120,16 +120,16 @@ spécifier manuellement de telles propriétés à propos de nos boucles.
 
 Il existe des outils capables d'inférer des invariants (pour peu qu'ils soient
 simples, les outils automatiques restent limités). Ce n'est pas le cas de WP.
-Il nous faut donc écrire nos invariants à la main. Trouver et écrire les 
+Il nous faut donc écrire nos invariants à la main. Trouver et écrire les
 invariants des boucles de nos programmes sera toujours la partie la plus difficile
 de notre travail lorsque nous chercherons à prouver des programmes.
 
 
 
-En effet, si en l'absence de boucle, la fonction de calcul de plus faible 
+En effet, si en l'absence de boucle, la fonction de calcul de plus faible
 précondition peut nous fournir automatiquement les propriétés vérifiables de nos
-programmes, ce n'est pas le cas pour les invariants de boucle pour lesquels 
-nous n'avons pas accès à une procédure automatique de calcul. Nous devons donc 
+programmes, ce n'est pas le cas pour les invariants de boucle pour lesquels
+nous n'avons pas accès à une procédure automatique de calcul. Nous devons donc
 trouver et formuler correctement ces invariants, et selon l'algorithme, celui-ci
 peut parfois être très subtil.
 
@@ -140,7 +140,7 @@ en début de boucle :
 
 
 
-\CodeBlockInput{c}{first_loop-1.c}
+\CodeBlockInput[5]{c}{first_loop-1.c}
 
 
 
@@ -150,23 +150,23 @@ en début de boucle :
 
 
 Pourquoi ? Parce que tout au long de la boucle \CodeInline{i} sera bien compris entre
-0 et 30 \textbf{inclus}. 30 est même la valeur qui nous permettra de sortir de la 
+0 et 30 \textbf{inclus}. 30 est même la valeur qui nous permettra de sortir de la
 boucle. Plus encore, une des propriétés demandées par le calcul de plus faible
 préconditions sur les boucles est que lorsque l'on invalide la condition de la
-boucle, par la connaissance de l'invariant, on peut prouver la postcondition 
+boucle, par la connaissance de l'invariant, on peut prouver la postcondition
 (Formellement : $(\neg B \wedge I) \Rightarrow Post$).
 
 
 
 La postcondition de notre boucle est $\texttt{i} = 30$ et doit être impliquée par
-$\neg \texttt{i} < 30 \wedge 0 \leq \texttt{i} \leq 30$. Ici, cela fonctionne 
-bien : 
+$\neg \texttt{i} < 30 \wedge 0 \leq \texttt{i} \leq 30$. Ici, cela fonctionne
+bien :
 $$\texttt{i} \geq 30 \wedge 0 \leq \texttt{i} \leq 30 \Rightarrow \texttt{i} = 30$$
 Si l'invariant excluait l'égalité à 30, la postcondition ne serait pas atteignable.
 
 
 
-Une nouvelle fois, nous pouvons jeter un œil à la liste des buts dans « \textit{WP 
+Une nouvelle fois, nous pouvons jeter un œil à la liste des buts dans « \textit{WP
 Goals} » :
 
 
@@ -174,12 +174,12 @@ Goals} » :
 \image{i_30-1}
 
 
-Nous remarquons bien que WP décompose la preuve de l'invariant en deux parties : 
-l'établissement de l'invariant et sa préservation. WP produit exactement le 
+Nous remarquons bien que WP décompose la preuve de l'invariant en deux parties :
+l'établissement de l'invariant et sa préservation. WP produit exactement le
 raisonnement décrit plus haut pour la preuve de l'assertion. Dans les versions
 récentes de Frama-C, Qed est devenu particulièrement puissant, et l'obligation de
-preuve générée ne le montre pas (affichant simplement « \textit{True} »). En utilisant 
-l'option \CodeInline{-wp-no-simpl} au lancement, nous pouvons quand même voir 
+preuve générée ne le montre pas (affichant simplement « \textit{True} »). En utilisant
+l'option \CodeInline{-wp-no-simpl} au lancement, nous pouvons quand même voir
 l'obligation correspondante :
 
 
@@ -209,11 +209,11 @@ Il semble que non.
 \levelThreeTitle{La clause « assigns » ... pour les boucles}
 
 
-En fait, à propos des boucles, WP ne considère vraiment \textit{que} ce que lui 
+En fait, à propos des boucles, WP ne considère vraiment \textit{que} ce que lui
 fournit l'utilisateur pour faire ses déductions. Et ici l'invariant ne nous dit
-rien à propos de l'évolution de la valeur de \CodeInline{h}. Nous pourrions signaler 
-l'invariance de toute variable du programme mais ce serait beaucoup d'efforts. 
-ACSL nous propose plus simplement d'ajouter des annotations \CodeInline{assigns} pour 
+rien à propos de l'évolution de la valeur de \CodeInline{h}. Nous pourrions signaler
+l'invariance de toute variable du programme mais ce serait beaucoup d'efforts.
+ACSL nous propose plus simplement d'ajouter des annotations \CodeInline{assigns} pour
 les boucles. Toute autre variable est considérée invariante. Par exemple :
 
 
@@ -221,9 +221,9 @@ les boucles. Toute autre variable est considérée invariante. Par exemple :
 
 
 
-Cette fois, nous pouvons établir la preuve de correction de la boucle. Par contre, 
-rien ne nous prouve sa terminaison. L'invariant de boucle n'est pas suffisant pour 
-effectuer une telle preuve. Par exemple, dans notre programme, si nous réécrivons 
+Cette fois, nous pouvons établir la preuve de correction de la boucle. Par contre,
+rien ne nous prouve sa terminaison. L'invariant de boucle n'est pas suffisant pour
+effectuer une telle preuve. Par exemple, dans notre programme, si nous réécrivons
 la boucle comme ceci :
 
 
@@ -234,7 +234,7 @@ la boucle comme ceci :
   loop assigns i;
 */
 while(i < 30){
-   
+
 }
 \end{CodeBlock}
 
@@ -248,11 +248,11 @@ que la boucle se termine : elle est infinie.
 \levelThreeTitle{Correction partielle et correction totale - Variant de boucle}
 
 
-En vérification déductive, il y a deux types de correction, la correction 
-partielle et la correction totale. Dans le premier cas, la formulation est 
-« si la précondition est validée et \textbf{si} le calcul termine, alors la 
-postcondition est validée ». Dans le second cas, « si la précondition est 
-validée, alors le calcul termine et la postcondition est validée ». WP 
+En vérification déductive, il y a deux types de correction, la correction
+partielle et la correction totale. Dans le premier cas, la formulation est
+« si la précondition est validée et \textbf{si} le calcul termine, alors la
+postcondition est validée ». Dans le second cas, « si la précondition est
+validée, alors le calcul termine et la postcondition est validée ». WP
 s'intéresse par défaut à de la preuve de correction partielle :
 
 
@@ -279,22 +279,22 @@ soit prouvée.
 
 
 \begin{Information}
-À noter qu'une assertion inatteignable est toujours prouvée comme vraie de cette 
+À noter qu'une assertion inatteignable est toujours prouvée comme vraie de cette
 manière :
-\inlineImage{goto_end}
+\image{goto_end}
 
 C'est également le cas lorsque l'on sait trivialement qu'une instruction
-produit nécessairement une erreur d'exécution (par exemple en déréférençant 
+produit nécessairement une erreur d'exécution (par exemple en déréférençant
 la valeur \CodeInline{NULL}), comme nous avions déjà pu le constater avec l'exemple
 de l'appel à \CodeInline{abs} avec la valeur \CodeInline{INT\_MIN}.
 \end{Information}
 
 
-Pour prouver la terminaison d'une boucle, nous utilisons la notion de variant de 
-boucle. Le variant de boucle n'est pas une propriété mais une valeur. C'est une 
+Pour prouver la terminaison d'une boucle, nous utilisons la notion de variant de
+boucle. Le variant de boucle n'est pas une propriété mais une valeur. C'est une
 expression faisant intervenir des éléments modifiés par la boucle et donnant une
 borne supérieure sur le nombre d'itérations restant à effectuer à un tour de la
-boucle. C'est donc une expression supérieure à 0 et strictement décroissante d'un 
+boucle. C'est donc une expression supérieure à 0 et strictement décroissante d'un
 tour de boucle à l'autre (cela sera également vérifié par induction par WP).
 
 
@@ -315,7 +315,7 @@ Une nouvelle fois nous pouvons regarder les buts générés :
 \image{i_30-4}
 
 
-Le variant nous génère bien deux obligations au niveau de la vérification : 
+Le variant nous génère bien deux obligations au niveau de la vérification :
 assurer que la valeur est positive, et assurer qu'elle décroît strictement pendant
 l'exécution de la boucle. Si nous supprimons la ligne de code qui incrémente
 \CodeInline{i}, WP ne peut plus prouver que la valeur \CodeInline{30 - i} décroît strictement.
@@ -335,13 +335,13 @@ connaissance aussi précise du comportement de notre programme. Nous pouvons par
 
 
 Ici, à chaque tour de boucle, nous diminuons la valeur de la variable \CodeInline{i} par une
-valeur dont nous savons qu'elle se trouve entre 1 et \CodeInline{i}. Nous pouvons donc bien 
-assurer que la valeur de \CodeInline{i} est positive et décroît strictement, mais nous ne 
-pouvons pas dire combien de tours de boucles vont être réalisés pendant une 
+valeur dont nous savons qu'elle se trouve entre 1 et \CodeInline{i}. Nous pouvons donc bien
+assurer que la valeur de \CodeInline{i} est positive et décroît strictement, mais nous ne
+pouvons pas dire combien de tours de boucles vont être réalisés pendant une
 exécution.
 
 
-Le variant n'est donc bien qu'une borne supérieure sur le nombre d'itérations 
+Le variant n'est donc bien qu'une borne supérieure sur le nombre d'itérations
 de la boucle.
 
 
@@ -399,7 +399,7 @@ informations à propos de \CodeInline{a}. À l'inverse, comme mentionné plus t�
 de la boucle WP, ne considérera que les informations fournies par notre
 invariant. Par conséquent, notre fonction \CodeInline{add\_ten} ne peut pas être prouvée
 en l'état : l'invariant ne mentionne rien à propos de \CodeInline{a}. Pour lier notre
-postcondition à l'invariant, il faut ajouter une telle information. Par 
+postcondition à l'invariant, il faut ajouter une telle information. Par
 exemple :
 
 
@@ -410,12 +410,12 @@ exemple :
 
 \begin{Information}
 Ce besoin peut apparaître comme une contrainte très forte. Il ne l'est en fait pas
-tant que cela. Il existe des analyses fortement automatiques capables de 
-calculer les invariants de boucles. Par exemple, sans spécification, une 
-interprétation abstraite calculera assez facilement \CodeInline{0 <= i <= 10} et 
+tant que cela. Il existe des analyses fortement automatiques capables de
+calculer les invariants de boucles. Par exemple, sans spécification, une
+interprétation abstraite calculera assez facilement \CodeInline{0 <= i <= 10} et
 \CodeInline{\textbackslash{}old(a) <= a <= \textbackslash{}old(a)+10}. En revanche, il est souvent bien plus difficile
-de calculer les relations qui existent entre des variables différentes qui 
-évoluent dans le même programme, par exemple l'égalité mentionnée par notre 
+de calculer les relations qui existent entre des variables différentes qui
+évoluent dans le même programme, par exemple l'égalité mentionnée par notre
 invariant ajouté.
 \end{Information}
 
@@ -433,7 +433,7 @@ exemple.
 
 
 Dans cette fonction, quand la boucle atteint l'indice 30, elle effectue une opération
-\CodeInline{break} avant que la condition de la boucle soit à nouveau testée. 
+\CodeInline{break} avant que la condition de la boucle soit à nouveau testée.
 L'invariant que nous avons écrit est bien sûr vérifié, mais nous pouvons en fait le
 restreindre encore.
 
@@ -445,7 +445,7 @@ restreindre encore.
 
 Ici, nous pouvons voir que nous avons exclu 30 de la plage des valeurs de
 \CodeInline{i} et la fonction est correctement vérifiée par WP. Cette propriété
-est particulièrement intéressante, car elle ne s'applique pas qu'à l'invariant. 
+est particulièrement intéressante, car elle ne s'applique pas qu'à l'invariant.
 Aucune des propriétés de la boucle n'ont besoin d'être vérifiées pendant l'itération
 qui mène au \CodeInline{break}. Par exemple, nous pouvons écrire ce code qui est
 également vérifié :
@@ -467,7 +467,7 @@ exactement comme si nous avions écrit :
 
 
 C'est un schéma très pratique. Il correspond à tout algorithme qui cherche, à l'aide
-d'une boucle, une condition vérifiée par un élément particulier dans une structure 
+d'une boucle, une condition vérifiée par un élément particulier dans une structure
 de données et s'arrête quand cet élément est trouvé afin d'effectuer certaines
 opérations qui ne sont finalement pas vraiment des opérations de la boucle. D'un
 point de vue vérification, cela nous permet de simplifier le contrat associé à
@@ -491,7 +491,7 @@ frama-c -wp your-file.c
 \end{CodeBlock}
 
 
-\CodeBlockInput[2][6]{c}{ex-1-invariant.c}
+\CodeBlockInput[6][10]{c}{ex-1-invariant.c}
 
 
 Est-ce que la propriété $-100 \leq x \leq 100$ est un invariant correct ?
@@ -510,7 +510,7 @@ frama-c -wp your-file.c
 \end{CodeBlock}
 
 
-\CodeBlockInput[2][6]{c}{ex-2-variant.c}
+\CodeBlockInput[6][10]{c}{ex-2-variant.c}
 
 
 Si le variant ne donne pas précisément le nombre d'itérations restantes, ajouter
@@ -523,12 +523,12 @@ comme variant. Il est possible qu'un invariant supplémentaire soit nécessaire.
 
 
 Écrire une clause \CodeInline{loop assigns} pour cette boucle, de manière à ce
-que l'assertion ligne 9 soit prouvée ainsi que la clause \CodeInline{loop assigns}.
+que l'assertion ligne 8 soit prouvée ainsi que la clause \CodeInline{loop assigns}.
 Ignorons les erreurs à l'exécution dans cet exercice.
 
 
 
-\CodeBlockInput[2][9]{c}{ex-3-assigns.c}
+\CodeBlockInput[6][13]{c}{ex-3-assigns.c}
 
 
 Lorsque la preuve réussit, supprimer la clause \CodeInline{loop assigns} et
@@ -544,5 +544,4 @@ le code). Que peut-on déduire à propos de la clause \CodeInline{loop assigns} 
 assertions aux lignes 9 et 10 ainsi que le contrat de boucle.
 
 
-\CodeBlockInput[2][11]{c}{ex-4-early.c}
-
+\CodeBlockInput[6][15]{c}{ex-4-early.c}

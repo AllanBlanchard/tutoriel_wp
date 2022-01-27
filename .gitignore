@@ -10,6 +10,11 @@
 *.pdf
 *.thm
 *.toc
+*.html
 *~
 \#*\#
 code/*/*/.frama-c
+code/**/result
+code/ptests_config
+code/tests
+code/cache

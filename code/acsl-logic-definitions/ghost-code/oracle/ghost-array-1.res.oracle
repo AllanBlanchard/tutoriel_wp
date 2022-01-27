@@ -1,0 +1,17 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ghost-array-1.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function function
+[wp] ghost-array-1.c:4: Warning: 
+  Missing assigns clause (assigns 'everything' instead)
+[wp] 4 goals scheduled
+[wp] [Alt-Ergo] Goal typed_function_assert_rte_mem_access : Unsuccess
+[wp] [Alt-Ergo] Goal typed_function_assert_rte_index_bound : Unsuccess
+[wp] [Qed] Goal typed_function_assert_rte_index_bound_2 : Valid
+[wp] [Alt-Ergo] Goal typed_function_assert_rte_signed_overflow : Valid
+[wp] Proved goals:    2 / 4
+  Qed:             1 
+  Alt-Ergo:        1  (unsuccess: 2)
+[wp:pedantic-assigns] ghost-array-1.c:1: Warning: 
+  No 'assigns' specification for function 'function'.
+  Callers assumptions might be imprecise.

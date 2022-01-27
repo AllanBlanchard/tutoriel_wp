@@ -1,0 +1,41 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-3-triangle-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function angles_kind
+[rte:annot] annotating function sides_kind
+[wp] 32 goals scheduled
+[wp] [Alt-Ergo] Goal typed_sides_kind_complete_equilateral_isocele_scalene : Valid
+[wp] [Alt-Ergo] Goal typed_sides_kind_disjoint_equilateral_isocele_scalene : Valid
+[wp] [Qed] Goal typed_sides_kind_assigns_part1 : Valid
+[wp] [Qed] Goal typed_sides_kind_assigns_part2 : Valid
+[wp] [Qed] Goal typed_sides_kind_assigns_part3 : Valid
+[wp] [Qed] Goal typed_sides_kind_equilateral_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_sides_kind_isocele_ensures : Valid
+[wp] [Qed] Goal typed_sides_kind_scalene_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_angles_kind_complete_acute_obtuse_right : Valid
+[wp] [Alt-Ergo] Goal typed_angles_kind_disjoint_acute_obtuse_right : Valid
+[wp] [Alt-Ergo] Goal typed_angles_kind_assert_rte_signed_overflow : Valid
+[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_2 : Valid
+[wp] [Alt-Ergo] Goal typed_angles_kind_assert_rte_signed_overflow_3 : Valid
+[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_4 : Valid
+[wp] [Alt-Ergo] Goal typed_angles_kind_assert_rte_signed_overflow_5 : Valid
+[wp] [Alt-Ergo] Goal typed_angles_kind_assert_rte_signed_overflow_6 : Valid
+[wp] [Alt-Ergo] Goal typed_angles_kind_assert_rte_signed_overflow_7 : Valid
+[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_8 : Valid
+[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_9 : Valid
+[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_10 : Valid
+[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_11 : Valid
+[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_12 : Valid
+[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_13 : Valid
+[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_14 : Valid
+[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_15 : Valid
+[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_16 : Valid
+[wp] [Qed] Goal typed_angles_kind_assigns_part1 : Valid
+[wp] [Qed] Goal typed_angles_kind_assigns_part2 : Valid
+[wp] [Qed] Goal typed_angles_kind_assigns_part3 : Valid
+[wp] [Qed] Goal typed_angles_kind_obtuse_ensures : Valid
+[wp] [Qed] Goal typed_angles_kind_acute_ensures : Valid
+[wp] [Qed] Goal typed_angles_kind_right_ensures : Valid
+[wp] Proved goals:   32 / 32
+  Qed:            22 
+  Alt-Ergo:       10

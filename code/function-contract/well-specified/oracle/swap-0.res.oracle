@@ -1,0 +1,12 @@
+# frama-c -wp [...]
+[kernel] Parsing swap-0.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+[wp] 1 goal scheduled
+[wp] [Alt-Ergo] Goal typed_swap_ensures : Valid
+[wp] Proved goals:    1 / 1
+  Qed:             0 
+  Alt-Ergo:        1
+[wp:pedantic-assigns] swap-0.c:8: Warning: 
+  No 'assigns' specification for function 'swap'.
+  Callers assumptions might be imprecise.

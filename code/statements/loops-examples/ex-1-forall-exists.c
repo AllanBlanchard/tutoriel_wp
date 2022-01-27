@@ -1,8 +1,12 @@
+/* run.config
+   OPT:
+*/
+
 #include <stddef.h>
 
 /*@
   assigns \nothing ;
-  ensures \result <==> // some property about value
+  ensures \result <==> \true ; // some property about value instead
 */
 int pred(int value){
   // your code

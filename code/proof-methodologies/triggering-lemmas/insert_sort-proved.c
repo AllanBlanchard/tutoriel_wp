@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:+"-wp-prover alt-ergo,coq -warn-unsigned-overflow -warn-unsigned-downcast -wp-session @PTEST_SUITE_DIR@/oracle@PTEST_CONFIG@/@PTEST_NAME@.session"
+*/
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -26,7 +30,7 @@
       l_occurrences_of(v,in,from,to) == l_occurrences_of(v,in,from,to-1);
   }
 */
-/*@ 
+/*@
   lemma l_occurrences_of_union:
     \forall int v, int* in, integer from, split, to;
     from <= split <= to ==>
@@ -41,8 +45,8 @@
 */
 /*@ lemma transitive_permutation{L1, L2, L3}:
   \forall int* a, integer beg, integer end ;
-    permutation{L1, L2}(a, beg, end) ==> 
-    permutation{L2, L3}(a, beg, end) ==> 
+    permutation{L1, L2}(a, beg, end) ==>
+    permutation{L2, L3}(a, beg, end) ==>
       permutation{L1, L3}(a, beg, end) ;
 */
 /*@
@@ -61,7 +65,7 @@
 
 /*@ lemma shifted_maintains_occ{L1, L2}:
   \forall int* a, integer beg, end, s, int v ;
-    shifted{L1, L2}(s, a, beg, end) ==> 
+    shifted{L1, L2}(s, a, beg, end) ==>
        l_occurrences_of{L1}(v, a, beg, end) == l_occurrences_of{L2}(v, a, s+beg, s+end) ;
 */
 /*@ lemma unchanged_is_permutation{L1, L2}:
@@ -75,7 +79,7 @@
 /*@ lemma union_permutation{L1, L2}:
   \forall int* a, integer beg, split, end, int v ;
     beg <= split <= end ==>
-    permutation{L1, L2}(a, beg, split) ==> 
+    permutation{L1, L2}(a, beg, split) ==>
     permutation{L1, L2}(a, split, end) ==>
       permutation{L1, L2}(a, beg, end) ;
 */
@@ -85,7 +89,7 @@
   requires sorted(a, beg, last) ;
 
   assigns a[ beg .. last ] ;
-  
+
   ensures permutation{Pre, Post}(a, beg, last+1);
   ensures sorted(a, beg, last+1) ;
 */

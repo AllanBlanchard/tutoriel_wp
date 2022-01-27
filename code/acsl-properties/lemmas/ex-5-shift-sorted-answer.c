@@ -1,7 +1,11 @@
+/* run.config
+   STDOPT:+"-wp-prover alt-ergo,coq -wp-session @PTEST_SUITE_DIR@/oracle@PTEST_CONFIG@/@PTEST_NAME@.session"
+*/
+
 #include <stdint.h>
 #include <stddef.h>
 
-/*@ 
+/*@
   predicate sorted(int* arr, integer begin, integer end) =
     \forall integer i, j ; begin <= i <= j < end ==> arr[i] <= arr[j] ;
 
@@ -29,13 +33,13 @@
 */
 size_t bsearch(int* arr, size_t beg, size_t end, int value){
   if(end == beg) return end ;
-  
+
   size_t low = beg ;
   size_t up = end ;
 
   /*@
     loop invariant beg <= low && up <= end ;
-    loop invariant 
+    loop invariant
       \forall integer i ; beg <= i < end && arr[i] == value ==> low <= i < up ;
     loop assigns low, up ;
     loop variant up - low ;
@@ -83,7 +87,7 @@ void shift_array(int* array, size_t len, size_t shift){
   lemma shifted_still_sorted{L1, L2}:
     \forall int* array, integer len, integer shift ;
       sorted{L1}(array, 0, len) ==>
-      shifted{L1, L2}(array, 0, len, shift) ==> 
+      shifted{L1, L2}(array, 0, len, shift) ==>
         sorted{L2}(array, shift, shift+len) ;
 */
 /*@
@@ -101,7 +105,7 @@ void shift_array(int* array, size_t len, size_t shift){
   requires in_array(value, array, 0, len) ;
 
   assigns array[1 .. len] ;
-  
+
   ensures 1 <= \result <= len ;
 */
 size_t shift_and_search(int* array, size_t len, int value){

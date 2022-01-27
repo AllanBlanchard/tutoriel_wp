@@ -1,3 +1,7 @@
+/* run.config
+   OPT:
+*/
+
 void foo(){
   int h = 42 ;
   int x = 0 ;

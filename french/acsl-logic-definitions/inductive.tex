@@ -62,7 +62,7 @@ comment faire ? D'abord vérifier s'il est égal à 0, et si ce n'est pas le cas
 vérifier qu'il est plus grand que 0, et dans ce cas, vérifier que $n-2$ est pair :
 
 
-\CodeBlockInput[1][9]{c}{even-1.c}
+\CodeBlockInput[5][13]{c}{even-1.c}
 
 
 Ici nous distinguons à nouveau deux cas :
@@ -84,7 +84,7 @@ arriver cette conclusion dans le cas de WP).
 
 
 
-\CodeBlockInput[11][14]{c}{even-1.c}
+\CodeBlockInput[15][18]{c}{even-1.c}
 
 
 Bien sûr, définir la notion d'entier naturel pair par induction n'est pas une
@@ -127,7 +127,7 @@ Cette propriété est par exemple vérifiée pour notre définition précédente
 prédicat \CodeInline{even\_natural}. Tandis qu'une définition comme :
 
 
-\CodeBlockInput[1][11]{c}{even-bad.c}
+\CodeBlockInput[5][15]{c}{even-bad.c}
 
 
 ne respecte pas cette contrainte, car la propriété \CodeInline{even\_natural}
@@ -152,7 +152,7 @@ Ensuite, nous pouvons simplement écrire une fonction dont le contrat nécessite
 Pour notre définition de \CodeInline{even\_natural}, cela donnerait :
 
 
-\CodeBlockInput[13][18]{c}{even-bad.c}
+\CodeBlockInput[17][22]{c}{even-bad.c}
 
 
 Pendant la génération de l'obligation de preuve, WP demande à Why3 de
@@ -238,7 +238,7 @@ n'a pas changé, alors la propriété est toujours vérifiée :
 
 
 
-\CodeBlockInput[13][20]{c}{reset-1.c}
+\CodeBlockInput[17][24]{c}{reset-1.c}
 
 
 
@@ -249,7 +249,7 @@ assertion à la fin) :
 
 
 
-\CodeBlockInput[35][39]{c}{reset-1.c}
+\CodeBlockInput[39][43]{c}{reset-1.c}
 
 
 
@@ -279,7 +279,7 @@ Nous allons prouver un simple tri par sélection :
 
 
 
-\CodeBlockInput[3]{c}{sort-0.c}
+\CodeBlockInput[7]{c}{sort-0.c}
 
 
 Le lecteur pourra s'exercer en spécifiant et en prouvant les fonctions de
@@ -294,7 +294,7 @@ du tri est de poser cette spécification (qui est vraie !) :
 
 
 
-\CodeBlockInput[6]{c}{sort-incomplete.c}
+\CodeBlockInput[10]{c}{sort-incomplete.c}
 
 
 
@@ -372,7 +372,7 @@ N premiers entiers.
 
 
 
-\CodeBlockInput{c}{ex-1-sum-N-first-ints.c}
+\CodeBlockInput[5]{c}{ex-1-sum-N-first-ints.c}
 
 
 Adapter le contrat de la fonction et le(s) lemme(s). Notons que les lemmes ne
@@ -399,7 +399,7 @@ considérons deux cas pour le prédicat inductif :
 \end{itemize}
 
 
-\CodeBlockInput{c}{ex-2-gcd.c}
+\CodeBlockInput[5]{c}{ex-2-gcd.c}
 
 
 Exprimer la postcondition de la fonction et compléter l'invariant pour prouver
@@ -419,19 +419,19 @@ Dans cet exercice, nous ne considérerons pas les RTE.
 là, la valeur de \CodeInline{r} est reliée à la valeur $x^{n-1}$.
 
 
-\CodeBlockInput[1][6]{c}{ex-3-fpower.c}
+\CodeBlockInput[5][10]{c}{ex-3-fpower.c}
 
 
 Prouver d'abord la version naïve de la fonction puissance :
 
 
-\CodeBlockInput[13][28]{c}{ex-3-fpower.c}
+\CodeBlockInput[17][32]{c}{ex-3-fpower.c}
 
 
 Maintenant tentons de prouver une version plus rapide de la fonction puissance :
 
 
-\CodeBlockInput[30][49]{c}{ex-3-fpower.c}
+\CodeBlockInput[34][53]{c}{ex-3-fpower.c}
 
 
 Dans cette version, nous exploitons deux propriétés de l'opérateur puissance :
@@ -448,7 +448,7 @@ de un (ce qui permet à l'algorithme d'être en $O(\log n)$ et pas $O(n)$). Expr
 les deux propriétés précédentes sous forme de lemmes :
 
 
-\CodeBlockInput[8][11]{c}{ex-3-fpower.c}
+\CodeBlockInput[12][15]{c}{ex-3-fpower.c}
 
 
 Exprimer d'abord le lemme \CodeInline{power\_even}, les solveurs SMT pourraient
@@ -481,7 +481,7 @@ cellule de la plage de valeur. Utiliser ce prédicat pour prouver la fonction
 
 
 
-\CodeBlockInput[12][27]{c}{ex-4-rotate-permutation.c}
+\CodeBlockInput[16][31]{c}{ex-4-rotate-permutation.c}
 
 
 Exprimer une nouvelle version de la notion de permutation avec un prédicat inductif
@@ -497,7 +497,7 @@ qui considère les cas suivants :
 \end{itemize}
 
 
-\CodeBlockInput[30][37]{c}{ex-4-rotate-permutation.c}
+\CodeBlockInput[34][41]{c}{ex-4-rotate-permutation.c}
 
 
 Compléter le contrat de la fonction \CodeInline{two\_rotates} qui fait des
@@ -505,4 +505,4 @@ rotations successives, de la première et la seconde moitié de la plage
 considérée, et prouver qu'elle maintient la permutation.
 
 
-\CodeBlockInput[43][47]{c}{ex-4-rotate-permutation.c}
+\CodeBlockInput[47][51]{c}{ex-4-rotate-permutation.c}

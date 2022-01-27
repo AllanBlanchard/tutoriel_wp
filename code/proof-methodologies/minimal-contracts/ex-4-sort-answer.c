@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:#"-warn-unsigned-overflow -warn-unsigned-downcast"
+*/
+
 #include <stddef.h>
 
 /*@

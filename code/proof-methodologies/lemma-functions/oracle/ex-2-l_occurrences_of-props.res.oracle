@@ -1,0 +1,3 @@
+[kernel] Parsing ex-2-l_occurrences_of-props.c (with preprocessing)
+[kernel:CERT:MSC:37] ex-2-l_occurrences_of-props.c:25: Warning: 
+  Body of function occ_pos_find falls-through. Adding a return statement

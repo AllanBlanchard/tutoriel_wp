@@ -1,0 +1,24 @@
+# frama-c -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast [...]
+[kernel] Parsing ex-2-square-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function abs
+[rte:annot] annotating function square
+[wp] 15 goals scheduled
+[wp] [Qed] Goal typed_abs_ensures : Valid
+[wp] [Qed] Goal typed_abs_ensures_2 : Valid
+[wp] [Qed] Goal typed_abs_assert_rte_signed_overflow : Valid
+[wp] [Qed] Goal typed_abs_assigns_part1 : Valid
+[wp] [Qed] Goal typed_abs_assigns_part2 : Valid
+[wp] [Alt-Ergo] Goal typed_square_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_square_assert_rte_unsigned_downcast : Valid
+[wp] [Alt-Ergo] Goal typed_square_assert_rte_unsigned_downcast_2 : Valid
+[wp] [Alt-Ergo] Goal typed_square_assert_rte_unsigned_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_square_assert_rte_unsigned_overflow_2 : Valid
+[wp] [Qed] Goal typed_square_assigns_exit : Valid
+[wp] [Qed] Goal typed_square_assigns_normal_part1 : Valid
+[wp] [Qed] Goal typed_square_assigns_normal_part2 : Valid
+[wp] [Qed] Goal typed_square_assigns_normal_part3 : Valid
+[wp] [Alt-Ergo] Goal typed_square_call_abs_requires : Valid
+[wp] Proved goals:   15 / 15
+  Qed:             9 
+  Alt-Ergo:        6

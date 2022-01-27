@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:+"-wp-prover alt-ergo,coq -wp-session @PTEST_SUITE_DIR@/oracle@PTEST_CONFIG@/@PTEST_NAME@.session"
+*/
+
 #include <limits.h>
 
 /*@
@@ -14,10 +18,10 @@
       n >= 0 ==> sum_n(n) == (n*(n+1))/2 ;
 */
 
-/*@ 
+/*@
   requires n*(n+1) <= 2*INT_MAX ;
   assigns \nothing ;
-  ensures \result == sum_n(n) ; 
+  ensures \result == sum_n(n) ;
 */
 int sum_n(int n){
   if(n < 1) return 0 ;

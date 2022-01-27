@@ -62,7 +62,7 @@ properties about them:
 
 
 
-\CodeBlockInput[8][18]{c}{linear-0.c}
+\CodeBlockInput[12][22]{c}{linear-0.c}
 
 
 
@@ -72,7 +72,7 @@ it. We can then write the following example code:
 
 
 
-\CodeBlockInput[20][48]{c}{linear-0.c}
+\CodeBlockInput[24][52]{c}{linear-0.c}
 
 
 
@@ -135,9 +135,8 @@ greater or equals to $0$, if $z$ is greater or equals to $y$, then $x * z$ is
 greater or equals to $x * y$.
 
 
-This lemma will not be proved by SMT solvers, however if you ask a proof with
-Coq, the default tactic will probably discharge this verification condition
-automatically.
+This lemma will not be proved by SMT solvers. We provide a solution and the
+corresponding Coq proof on the GitHub repository of this book.
 
 
 \levelFourTitle{Locally sorted to globally sorted}
@@ -149,7 +148,7 @@ in the sense that each element is lower or equals to the element that follows it
 and calls the binary search function.
 
 
-\CodeBlockInput[59][81]{c}{ex-2-sorted-link.c}
+\CodeBlockInput[66]{c}{ex-2-sorted-link.c}
 
 
 Take back your proved binary search function from the
@@ -188,7 +187,7 @@ given offset (named \CodeInline{shift}). The second performs two successive
 shifts on the same array.
 
 
-\CodeBlockInput{c}{ex-4-shift-transitivity.c}
+\CodeBlockInput[5]{c}{ex-4-shift-transitivity.c}
 
 
 Complete the predicates \CodeInline{shifted} and \CodeInline{unchanged}.
@@ -230,7 +229,7 @@ The following program is composed of two functions. The function
 performs a binary search.
 
 
-\CodeBlockInput{c}{ex-5-shift-sorted.c}
+\CodeBlockInput[5]{c}{ex-5-shift-sorted.c}
 
 
 Take back your proved binary search function from the

@@ -1,0 +1,36 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-4-max-ptr-answer-4.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function main
+[rte:annot] annotating function max_ptr
+[wp] 24 goals scheduled
+[wp] [Alt-Ergo] Goal typed_max_ptr_complete_a_null_b_null_both_null_is_a_is_b : Valid
+[wp] [Qed] Goal typed_max_ptr_disjoint_a_null_b_null_both_null_is_a_is_b : Valid
+[wp] [Alt-Ergo] Goal typed_max_ptr_ensures : Valid
+[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access : Valid
+[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_2 : Valid
+[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_3 : Valid
+[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_4 : Valid
+[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_5 : Valid
+[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_6 : Valid
+[wp] [Qed] Goal typed_max_ptr_assigns_part1 : Valid
+[wp] [Qed] Goal typed_max_ptr_assigns_part2 : Valid
+[wp] [Qed] Goal typed_max_ptr_assigns_part3 : Valid
+[wp] [Qed] Goal typed_max_ptr_assigns_part4 : Valid
+[wp] [Qed] Goal typed_max_ptr_assigns_part5 : Valid
+[wp] [Qed] Goal typed_max_ptr_assigns_part6 : Valid
+[wp] [Qed] Goal typed_max_ptr_both_null_ensures : Valid
+[wp] [Qed] Goal typed_max_ptr_a_null_ensures : Valid
+[wp] [Qed] Goal typed_max_ptr_b_null_ensures : Valid
+[wp] [Qed] Goal typed_max_ptr_is_a_ensures : Valid
+[wp] [Qed] Goal typed_max_ptr_is_b_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_main_assert : Valid
+[wp] [Qed] Goal typed_main_assert_2 : Valid
+[wp] [Qed] Goal typed_main_call_max_ptr_requires : Valid
+[wp] [Qed] Goal typed_main_call_max_ptr_requires_2 : Valid
+[wp] Proved goals:   24 / 24
+  Qed:            21 
+  Alt-Ergo:        3
+[wp:pedantic-assigns] ex-4-max-ptr-answer-4.c:44: Warning: 
+  No 'assigns' specification for function 'main'.
+  Callers assumptions might be imprecise.

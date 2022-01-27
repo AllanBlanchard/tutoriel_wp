@@ -1,0 +1,94 @@
+# frama-c -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast [...]
+[kernel] Parsing ex-2-l_occurrences_of-props-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function not_in_occ_0
+[rte:annot] annotating function occ_0_not_in
+[rte:annot] annotating function occ_bounds
+[rte:annot] annotating function occ_monotonic
+[rte:annot] annotating function occ_pos_exists
+[rte:annot] annotating function occ_pos_find
+[wp] 81 goals scheduled
+[wp] [Qed] Goal typed_occ_bounds_ensures : Valid
+[wp] [Qed] Goal typed_occ_bounds_loop_invariant_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_occ_bounds_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_occ_bounds_loop_invariant_2_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_occ_bounds_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_occ_bounds_assert_rte_unsigned_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_occ_bounds_assert_rte_unsigned_overflow_2 : Valid
+[wp] [Qed] Goal typed_occ_bounds_loop_assigns : Valid
+[wp] [Qed] Goal typed_occ_bounds_assigns : Valid
+[wp] [Qed] Goal typed_occ_bounds_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_occ_bounds_loop_variant_positive : Valid
+[wp] [Qed] Goal typed_not_in_occ_0_ensures : Valid
+[wp] [Qed] Goal typed_not_in_occ_0_loop_invariant_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_not_in_occ_0_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_not_in_occ_0_loop_invariant_2_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_not_in_occ_0_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_not_in_occ_0_assert_rte_unsigned_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_not_in_occ_0_assert_rte_unsigned_overflow_2 : Valid
+[wp] [Qed] Goal typed_not_in_occ_0_loop_assigns : Valid
+[wp] [Qed] Goal typed_not_in_occ_0_assigns : Valid
+[wp] [Qed] Goal typed_not_in_occ_0_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_not_in_occ_0_loop_variant_positive : Valid
+[wp] [Qed] Goal typed_occ_monotonic_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_occ_monotonic_loop_invariant_preserved : Valid
+[wp] [Qed] Goal typed_occ_monotonic_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_occ_monotonic_loop_invariant_2_preserved : Valid
+[wp] [Qed] Goal typed_occ_monotonic_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_occ_monotonic_assert_rte_unsigned_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_occ_monotonic_assert_rte_unsigned_overflow_2 : Valid
+[wp] [Qed] Goal typed_occ_monotonic_loop_assigns : Valid
+[wp] [Qed] Goal typed_occ_monotonic_assigns : Valid
+[wp] [Qed] Goal typed_occ_monotonic_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_occ_monotonic_loop_variant_positive : Valid
+[wp] [Alt-Ergo] Goal typed_occ_0_not_in_ensures : Valid
+[wp] [Qed] Goal typed_occ_0_not_in_loop_invariant_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_occ_0_not_in_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_occ_0_not_in_loop_invariant_2_preserved : Valid
+[wp] [Qed] Goal typed_occ_0_not_in_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_occ_0_not_in_loop_invariant_3_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_occ_0_not_in_loop_invariant_3_established : Valid
+[wp] [Alt-Ergo] Goal typed_occ_0_not_in_assert_rte_mem_access : Valid
+[wp] [Alt-Ergo] Goal typed_occ_0_not_in_assert_rte_unsigned_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_occ_0_not_in_assert_rte_unsigned_overflow_2 : Valid
+[wp] [Alt-Ergo] Goal typed_occ_0_not_in_assert_rte_unsigned_overflow_3 : Valid
+[wp] [Alt-Ergo] Goal typed_occ_0_not_in_assert_rte_unsigned_overflow_4 : Valid
+[wp] [Qed] Goal typed_occ_0_not_in_loop_assigns : Valid
+[wp] [Qed] Goal typed_occ_0_not_in_assigns_exit_part1 : Valid
+[wp] [Qed] Goal typed_occ_0_not_in_assigns_exit_part2 : Valid
+[wp] [Qed] Goal typed_occ_0_not_in_assigns_normal_part1 : Valid
+[wp] [Qed] Goal typed_occ_0_not_in_assigns_normal_part2 : Valid
+[wp] [Qed] Goal typed_occ_0_not_in_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_occ_0_not_in_loop_variant_positive : Valid
+[wp] [Qed] Goal typed_occ_0_not_in_call_occ_monotonic_requires : Valid
+[wp] [Alt-Ergo] Goal typed_occ_pos_find_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_occ_pos_find_ensures_2 : Valid
+[wp] [Qed] Goal typed_occ_pos_find_loop_invariant_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_occ_pos_find_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_occ_pos_find_loop_invariant_2_preserved : Valid
+[wp] [Qed] Goal typed_occ_pos_find_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_occ_pos_find_loop_invariant_3_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_occ_pos_find_loop_invariant_3_established : Valid
+[wp] [Alt-Ergo] Goal typed_occ_pos_find_assert_rte_mem_access : Valid
+[wp] [Alt-Ergo] Goal typed_occ_pos_find_assert_rte_unsigned_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_occ_pos_find_assert_rte_unsigned_overflow_2 : Valid
+[wp] [Alt-Ergo] Goal typed_occ_pos_find_assert_rte_unsigned_overflow_3 : Valid
+[wp] [Alt-Ergo] Goal typed_occ_pos_find_assert_rte_unsigned_overflow_4 : Valid
+[wp] [Qed] Goal typed_occ_pos_find_loop_assigns : Valid
+[wp] [Qed] Goal typed_occ_pos_find_assigns_exit_part1 : Valid
+[wp] [Qed] Goal typed_occ_pos_find_assigns_exit_part2 : Valid
+[wp] [Qed] Goal typed_occ_pos_find_assigns_normal_part1 : Valid
+[wp] [Qed] Goal typed_occ_pos_find_assigns_normal_part2 : Valid
+[wp] [Qed] Goal typed_occ_pos_find_assigns_normal_part3 : Valid
+[wp] [Qed] Goal typed_occ_pos_find_assigns_normal_part4 : Valid
+[wp] [Qed] Goal typed_occ_pos_find_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_occ_pos_find_loop_variant_positive : Valid
+[wp] [Qed] Goal typed_occ_pos_find_call_occ_monotonic_requires : Valid
+[wp] [Alt-Ergo] Goal typed_occ_pos_exists_ensures : Valid
+[wp] [Qed] Goal typed_occ_pos_exists_assigns_exit : Valid
+[wp] [Qed] Goal typed_occ_pos_exists_assigns_normal : Valid
+[wp] [Qed] Goal typed_occ_pos_exists_call_occ_pos_find_requires : Valid
+[wp] [Qed] Goal typed_occ_pos_exists_call_occ_pos_find_requires_2 : Valid
+[wp] Proved goals:   81 / 81
+  Qed:            45 
+  Alt-Ergo:       36

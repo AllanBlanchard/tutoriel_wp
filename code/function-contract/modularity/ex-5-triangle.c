@@ -1,3 +1,7 @@
+/* run.config
+   OPT:
+*/
+
 #include <limits.h>
 
 enum Sides { SCALENE, ISOSCELE, EQUILATERAL };

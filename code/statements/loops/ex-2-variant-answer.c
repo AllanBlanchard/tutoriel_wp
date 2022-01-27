@@ -1,3 +1,7 @@
+/* run.config
+   OPT:-wp -wp-par 1 -wp-cache update -wp-cache-env -wp-msg-key shell
+*/
+
 void foo(){
   int x = -20 ;
 
@@ -12,7 +16,7 @@ void foo(){
 void bar(){
   int x = -20 ;
   int i = 5 ;
-  
+
   /*@
     loop invariant (-i) * 4 == x ;
     loop variant i ;

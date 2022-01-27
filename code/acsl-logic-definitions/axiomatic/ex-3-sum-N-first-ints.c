@@ -1,3 +1,7 @@
+/* run.config
+   OPT:
+*/
+
 #include <limits.h>
 
 /*@ axiomatic Sum_n {
@@ -5,9 +9,9 @@
     }
 */
 
-/*@ lemma sum_n_value: // ... */
+/*@ lemma sum_n_value: \true; // to complete */
 
-/*@ 
+/*@
   requires n >= 0 ;
   // requires ...
   // assigns ...

@@ -1,0 +1,20 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing occurrences_of.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function occurrences_of
+[wp] 12 goals scheduled
+[wp] [Qed] Goal typed_occurrences_of_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_occurrences_of_loop_invariant_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_occurrences_of_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_occurrences_of_loop_invariant_2_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_occurrences_of_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_occurrences_of_assert_rte_mem_access : Valid
+[wp] [Qed] Goal typed_occurrences_of_loop_assigns_part1 : Valid
+[wp] [Qed] Goal typed_occurrences_of_loop_assigns_part2 : Valid
+[wp] [Qed] Goal typed_occurrences_of_loop_assigns_part3 : Valid
+[wp] [Qed] Goal typed_occurrences_of_assigns : Valid
+[wp] [Alt-Ergo] Goal typed_occurrences_of_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_occurrences_of_loop_variant_positive : Valid
+[wp] Proved goals:   12 / 12
+  Qed:             6 
+  Alt-Ergo:        6

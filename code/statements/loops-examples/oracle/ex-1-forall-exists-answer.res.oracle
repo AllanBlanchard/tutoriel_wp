@@ -1,0 +1,68 @@
+# frama-c -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast [...]
+[kernel] Parsing ex-1-forall-exists-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function exists_pred
+[rte:annot] annotating function forall_pred
+[rte:annot] annotating function none_pred
+[rte:annot] annotating function pred
+[rte:annot] annotating function some_not_pred
+[wp] 56 goals scheduled
+[wp] [Qed] Goal typed_pred_ensures : Valid
+[wp] [Qed] Goal typed_pred_assigns_part1 : Valid
+[wp] [Qed] Goal typed_pred_assigns_part2 : Valid
+[wp] [Qed] Goal typed_pred_assigns_part3 : Valid
+[wp] [Alt-Ergo] Goal typed_forall_pred_ensures : Valid
+[wp] [Qed] Goal typed_forall_pred_loop_invariant_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_forall_pred_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_forall_pred_loop_invariant_2_preserved : Valid
+[wp] [Qed] Goal typed_forall_pred_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_forall_pred_assert_rte_mem_access : Valid
+[wp] [Alt-Ergo] Goal typed_forall_pred_assert_rte_unsigned_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_forall_pred_assert_rte_unsigned_overflow_2 : Valid
+[wp] [Qed] Goal typed_forall_pred_loop_assigns_part1 : Valid
+[wp] [Qed] Goal typed_forall_pred_loop_assigns_part2 : Valid
+[wp] [Qed] Goal typed_forall_pred_assigns_exit_part1 : Valid
+[wp] [Qed] Goal typed_forall_pred_assigns_exit_part2 : Valid
+[wp] [Qed] Goal typed_forall_pred_assigns_normal_part1 : Valid
+[wp] [Qed] Goal typed_forall_pred_assigns_normal_part2 : Valid
+[wp] [Qed] Goal typed_forall_pred_assigns_normal_part3 : Valid
+[wp] [Qed] Goal typed_forall_pred_assigns_normal_part4 : Valid
+[wp] [Qed] Goal typed_forall_pred_assigns_normal_part5 : Valid
+[wp] [Qed] Goal typed_forall_pred_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_forall_pred_loop_variant_positive : Valid
+[wp] [Alt-Ergo] Goal typed_exists_pred_ensures : Valid
+[wp] [Qed] Goal typed_exists_pred_loop_invariant_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_exists_pred_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_exists_pred_loop_invariant_2_preserved : Valid
+[wp] [Qed] Goal typed_exists_pred_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_exists_pred_assert_rte_mem_access : Valid
+[wp] [Alt-Ergo] Goal typed_exists_pred_assert_rte_unsigned_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_exists_pred_assert_rte_unsigned_overflow_2 : Valid
+[wp] [Qed] Goal typed_exists_pred_loop_assigns_part1 : Valid
+[wp] [Qed] Goal typed_exists_pred_loop_assigns_part2 : Valid
+[wp] [Qed] Goal typed_exists_pred_assigns_exit_part1 : Valid
+[wp] [Qed] Goal typed_exists_pred_assigns_exit_part2 : Valid
+[wp] [Qed] Goal typed_exists_pred_assigns_normal_part1 : Valid
+[wp] [Qed] Goal typed_exists_pred_assigns_normal_part2 : Valid
+[wp] [Qed] Goal typed_exists_pred_assigns_normal_part3 : Valid
+[wp] [Qed] Goal typed_exists_pred_assigns_normal_part4 : Valid
+[wp] [Qed] Goal typed_exists_pred_assigns_normal_part5 : Valid
+[wp] [Qed] Goal typed_exists_pred_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_exists_pred_loop_variant_positive : Valid
+[wp] [Alt-Ergo] Goal typed_none_pred_ensures : Valid
+[wp] [Qed] Goal typed_none_pred_assigns_exit : Valid
+[wp] [Qed] Goal typed_none_pred_assigns_normal_part1 : Valid
+[wp] [Qed] Goal typed_none_pred_assigns_normal_part2 : Valid
+[wp] [Qed] Goal typed_none_pred_assigns_normal_part3 : Valid
+[wp] [Qed] Goal typed_none_pred_assigns_normal_part4 : Valid
+[wp] [Qed] Goal typed_none_pred_call_exists_pred_requires : Valid
+[wp] [Qed] Goal typed_some_not_pred_ensures : Valid
+[wp] [Qed] Goal typed_some_not_pred_assigns_exit : Valid
+[wp] [Qed] Goal typed_some_not_pred_assigns_normal_part1 : Valid
+[wp] [Qed] Goal typed_some_not_pred_assigns_normal_part2 : Valid
+[wp] [Qed] Goal typed_some_not_pred_assigns_normal_part3 : Valid
+[wp] [Qed] Goal typed_some_not_pred_assigns_normal_part4 : Valid
+[wp] [Qed] Goal typed_some_not_pred_call_forall_pred_requires : Valid
+[wp] Proved goals:   56 / 56
+  Qed:            43 
+  Alt-Ergo:       13

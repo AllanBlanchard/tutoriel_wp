@@ -1,9 +1,12 @@
-#include <stddef.h>
+/* run.config
+   OPT:
+*/
 
+#include <stddef.h>
 
 size_t bsearch(int* arr, size_t len, int value){
   if(len == 0) return len ;
-  
+
   size_t low = 0 ;
   size_t up = len ;
 

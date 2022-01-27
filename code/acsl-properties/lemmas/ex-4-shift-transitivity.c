@@ -1,3 +1,7 @@
+/* run.config
+   OPT:
+*/
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -5,17 +9,17 @@
   predicate shifted_cell{L1, L2}(int* p, integer shift) =
     \at(p[0], L1) == \at(p[shift], L2) ;
 
-  // predicate shifted{L1, L2}(int* arr, integer fst, integer last, integer shift) =
-  // ...
+  predicate shifted{L1, L2}(int* arr, integer fst, integer last, integer shift) =
+    \true ; // to complete
 
-  // predicate unchanged{L1, L2}(int *a, integer begin, integer end) =
-  // ...
+  predicate unchanged{L1, L2}(int *a, integer begin, integer end) =
+    \true ; // to complete
 
-  // lemma shift_ptr{...}:
-  // ...
+  lemma shift_ptr { TO_COMPLETE }:
+    \true ; // to complete
 
-  // lemma shift_transivity{...}:
-  // ...
+  lemma shift_transivity{ TO_COMPLETE }:
+    \true ; // to complete
 */
 
 void shift_array(int* array, size_t len, size_t shift){

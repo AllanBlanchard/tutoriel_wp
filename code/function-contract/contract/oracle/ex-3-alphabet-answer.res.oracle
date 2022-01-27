@@ -1,0 +1,20 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-3-alphabet-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function alphabet_letter
+[rte:annot] annotating function main
+[wp] 8 goals scheduled
+[wp] [Alt-Ergo] Goal typed_alphabet_letter_ensures : Valid
+[wp] [Qed] Goal typed_alphabet_letter_assigns_part1 : Valid
+[wp] [Qed] Goal typed_alphabet_letter_assigns_part2 : Valid
+[wp] [Qed] Goal typed_alphabet_letter_assigns_part3 : Valid
+[wp] [Qed] Goal typed_alphabet_letter_assigns_part4 : Valid
+[wp] [Qed] Goal typed_main_assert : Valid
+[wp] [Qed] Goal typed_main_assert_2 : Valid
+[wp] [Qed] Goal typed_main_assert_3 : Valid
+[wp] Proved goals:    8 / 8
+  Qed:             7 
+  Alt-Ergo:        1
+[wp:pedantic-assigns] ex-3-alphabet-answer.c:10: Warning: 
+  No 'assigns' specification for function 'main'.
+  Callers assumptions might be imprecise.

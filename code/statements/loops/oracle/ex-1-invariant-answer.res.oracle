@@ -1,0 +1,22 @@
+# frama-c -wp [...]
+[kernel] Parsing ex-1-invariant-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+[wp] ex-1-invariant-answer.c:9: Warning: 
+  Missing assigns clause (assigns 'everything' instead)
+[wp] ex-1-invariant-answer.c:32: Warning: 
+  Missing assigns clause (assigns 'everything' instead)
+[wp] 4 goals scheduled
+[wp] [Alt-Ergo] Goal typed_foo_loop_invariant_preserved : Valid
+[wp] [Qed] Goal typed_foo_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_bar_loop_invariant_preserved : Valid
+[wp] [Qed] Goal typed_bar_loop_invariant_established : Valid
+[wp] Proved goals:    4 / 4
+  Qed:             2 
+  Alt-Ergo:        2
+[wp:pedantic-assigns] ex-1-invariant-answer.c:5: Warning: 
+  No 'assigns' specification for function 'foo'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] ex-1-invariant-answer.c:28: Warning: 
+  No 'assigns' specification for function 'bar'.
+  Callers assumptions might be imprecise.

@@ -1,5 +1,5 @@
 \levelThreeTitle{Example with read-only arrays}
-\label{l3:statements-loops-example}
+\label{l3:statements-loops-examples-ro}
 
 
 The array is the most common data structure when we are working with loops.
@@ -266,7 +266,7 @@ Currently, function pointers are not supported by WP. Let us consider that
 we have a function:
 
 
-\CodeBlockInput[3][9]{c}{ex-1-forall-exists.c}
+\CodeBlockInput[7][13]{c}{ex-1-forall-exists.c}
 
 
 Write your own code and corresponding postcondition and then write the
@@ -299,7 +299,7 @@ code of \CodeInline{different} that returns true if two ranges are different,
 your postcondition should contain an existential quantifier.
 
 
-\CodeBlockInput[3][9]{c}{ex-2-equal.c}
+\CodeBlockInput[7][13]{c}{ex-2-equal.c}
 
 
 \levelFourTitle{Binary Search}
@@ -312,7 +312,7 @@ could note that there are two behavior: either the value exists in the array
 (and the result is the index of this value) or not (and the result is -1).
 
 
-\CodeBlockInput{c}{ex-3-binary-search.c}
+\CodeBlockInput[5]{c}{ex-3-binary-search.c}
 
 
 This function is a bit tricky to prove, so let us provide some hints. First,
@@ -339,7 +339,7 @@ the resulting vector is entirely separated from the input vectors, however
 the same vector should be usable for both input vectors.
 
 
-\CodeBlockInput[3][5]{c}{ex-4-add-vectors.c}
+\CodeBlockInput[7][9]{c}{ex-4-add-vectors.c}
 
 
 \levelFourTitle{Mutating: Reverse}
@@ -350,7 +350,7 @@ care of the unmodified part of the vector at some iteration of the loop.
 Use the previously proved \CodeInline{swap} function.
 
 
-\CodeBlockInput[3][7]{c}{ex-5-reverse.c}
+\CodeBlockInput[7][11]{c}{ex-5-reverse.c}
 
 
 \levelFourTitle{Mutating: Copy}
@@ -361,7 +361,7 @@ of values into another array, starting from the first cell of the array.
 First consider (and specify) that the two ranges are entirely separated.
 
 
-\CodeBlockInput[3][5]{c}{ex-6-copy.c}
+\CodeBlockInput[7][9]{c}{ex-6-copy.c}
 
 
 \textbf{Harder:} The true copy and copy backward functions

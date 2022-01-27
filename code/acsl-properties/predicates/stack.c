@@ -1,3 +1,7 @@
+/* run.config
+   OPT:
+*/
+
 #include <stddef.h>
 #define MAX_SIZE 42
 

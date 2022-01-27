@@ -1,0 +1,14 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing abs.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function abs
+[wp] 7 goals scheduled
+[wp] [Qed] Goal typed_abs_complete_neg_pos : Valid
+[wp] [Qed] Goal typed_abs_disjoint_neg_pos : Valid
+[wp] [Qed] Goal typed_abs_assert_rte_signed_overflow : Valid
+[wp] [Qed] Goal typed_abs_assigns_part1 : Valid
+[wp] [Qed] Goal typed_abs_assigns_part2 : Valid
+[wp] [Qed] Goal typed_abs_pos_ensures : Valid
+[wp] [Qed] Goal typed_abs_neg_ensures : Valid
+[wp] Proved goals:    7 / 7
+  Qed:             7

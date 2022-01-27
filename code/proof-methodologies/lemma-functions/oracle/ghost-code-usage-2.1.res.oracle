@@ -1,0 +1,186 @@
+[kernel] Parsing ghost-code-usage-2.c (with preprocessing)
+[wp] Running WP plugin...
+[kernel] ghost-code-usage-2.c:23: Warning: 
+  No code nor implicit assigns clause for function bsearch, generating default assigns from the prototype
+[wp] Warning: Missing RTE guards
+------------------------------------------------------------
+  Function bsearch_callee
+------------------------------------------------------------
+
+Goal Preservation of Invariant (file ghost-code-usage-2.c, line 26):
+Let x = Mint_0[shift_sint32(arr_0, i - 1)].
+Let x_1 = Mint_0[shift_sint32(arr_0, i)].
+Assume {
+  Type: is_uint64(i) /\ is_uint64(len_0) /\ is_sint32(x_1) /\ is_sint32(x).
+  (* Heap *)
+  Type: (region(arr_0.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: valid_rd(Malloc_0, shift_sint32(arr_0, 0), len_0).
+  (* Pre-condition *)
+  Have: P_element_level_sorted(Mint_0, arr_0, len_0).
+  (* Invariant *)
+  Have: 0 <= len_0.
+  (* Invariant *)
+  Have: P_sorted(Mint_0, arr_0, 0).
+  (* Invariant *)
+  Have: (0 <= i) /\ (i <= len_0).
+  (* Invariant *)
+  Have: P_sorted(Mint_0, arr_0, i).
+  (* Then *)
+  Have: i < len_0.
+  (* Assertion *)
+  Have: ((0 < i) -> (x <= x_1)).
+}
+Prove: to_uint64(1 + i) <= len_0.
+
+------------------------------------------------------------
+
+Goal Establishment of Invariant (file ghost-code-usage-2.c, line 26):
+Assume {
+  Type: is_uint64(len_0).
+  (* Heap *)
+  Type: (region(arr_0.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: valid_rd(Malloc_0, shift_sint32(arr_0, 0), len_0).
+  (* Pre-condition *)
+  Have: P_element_level_sorted(Mint_0, arr_0, len_0).
+}
+Prove: 0 <= len_0.
+
+------------------------------------------------------------
+
+Goal Preservation of Invariant (file ghost-code-usage-2.c, line 27):
+Let x = to_uint64(1 + i).
+Let x_1 = Mint_0[shift_sint32(arr_0, i - 1)].
+Let x_2 = Mint_0[shift_sint32(arr_0, i)].
+Assume {
+  Type: is_uint64(i) /\ is_uint64(len_0) /\ is_sint32(x_2) /\ is_sint32(x_1).
+  (* Heap *)
+  Type: (region(arr_0.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: valid_rd(Malloc_0, shift_sint32(arr_0, 0), len_0).
+  (* Pre-condition *)
+  Have: P_element_level_sorted(Mint_0, arr_0, len_0).
+  (* Invariant *)
+  Have: 0 <= len_0.
+  (* Invariant *)
+  Have: P_sorted(Mint_0, arr_0, 0).
+  (* Invariant *)
+  Have: (0 <= i) /\ (i <= len_0).
+  (* Invariant *)
+  Have: P_sorted(Mint_0, arr_0, i).
+  (* Then *)
+  Have: i < len_0.
+  (* Assertion *)
+  Have: ((0 < i) -> (x_1 <= x_2)).
+  (* Invariant *)
+  Have: x <= len_0.
+}
+Prove: P_sorted(Mint_0, arr_0, x).
+
+------------------------------------------------------------
+
+Goal Establishment of Invariant (file ghost-code-usage-2.c, line 27):
+Assume {
+  Type: is_uint64(len_0).
+  (* Heap *)
+  Type: (region(arr_0.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: valid_rd(Malloc_0, shift_sint32(arr_0, 0), len_0).
+  (* Pre-condition *)
+  Have: P_element_level_sorted(Mint_0, arr_0, len_0).
+  (* Invariant *)
+  Have: 0 <= len_0.
+}
+Prove: P_sorted(Mint_0, arr_0, 0).
+
+------------------------------------------------------------
+
+Goal Assertion (file ghost-code-usage-2.c, line 32):
+Let x = Mint_0[shift_sint32(arr_0, i)].
+Let x_1 = Mint_0[shift_sint32(arr_0, i - 1)].
+Assume {
+  Type: is_uint64(i) /\ is_uint64(len_0) /\ is_sint32(x) /\ is_sint32(x_1).
+  (* Heap *)
+  Type: (region(arr_0.base) <= 0) /\ linked(Malloc_0).
+  (* Goal *)
+  When: 0 < i.
+  (* Pre-condition *)
+  Have: valid_rd(Malloc_0, shift_sint32(arr_0, 0), len_0).
+  (* Pre-condition *)
+  Have: P_element_level_sorted(Mint_0, arr_0, len_0).
+  (* Invariant *)
+  Have: 0 <= len_0.
+  (* Invariant *)
+  Have: P_sorted(Mint_0, arr_0, 0).
+  (* Invariant *)
+  Have: i <= len_0.
+  (* Invariant *)
+  Have: P_sorted(Mint_0, arr_0, i).
+  (* Then *)
+  Have: i < len_0.
+}
+Prove: x_1 <= x.
+
+------------------------------------------------------------
+
+Goal Loop assigns (file ghost-code-usage-2.c, line 28):
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Decreasing of Loop variant at loop (file ghost-code-usage-2.c, line 31):
+Let x = to_uint64(1 + i).
+Let x_1 = Mint_0[shift_sint32(arr_0, i - 1)].
+Let x_2 = Mint_0[shift_sint32(arr_0, i)].
+Assume {
+  Type: is_uint64(i) /\ is_uint64(len_0) /\ is_sint32(x_2) /\ is_sint32(x_1).
+  (* Heap *)
+  Type: (region(arr_0.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: valid_rd(Malloc_0, shift_sint32(arr_0, 0), len_0).
+  (* Pre-condition *)
+  Have: P_element_level_sorted(Mint_0, arr_0, len_0).
+  (* Invariant *)
+  Have: 0 <= len_0.
+  (* Invariant *)
+  Have: P_sorted(Mint_0, arr_0, 0).
+  (* Invariant *)
+  Have: (0 <= i) /\ (i <= len_0).
+  (* Invariant *)
+  Have: P_sorted(Mint_0, arr_0, i).
+  (* Then *)
+  Have: i < len_0.
+  (* Assertion *)
+  Have: ((0 < i) -> (x_1 <= x_2)).
+  (* Invariant *)
+  Have: x <= len_0.
+  (* Invariant *)
+  Have: P_sorted(Mint_0, arr_0, x).
+}
+Prove: i < x.
+
+------------------------------------------------------------
+
+Goal Positivity of Loop variant at loop (file ghost-code-usage-2.c, line 31):
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Instance of 'Pre-condition (file ghost-code-usage-2.c, line 15) in 'bsearch'' in 'bsearch_callee' at call 'bsearch' (file ghost-code-usage-2.c, line 35)
+:
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Instance of 'Pre-condition (file ghost-code-usage-2.c, line 16) in 'bsearch'' in 'bsearch_callee' at call 'bsearch' (file ghost-code-usage-2.c, line 35)
+:
+Prove: true.
+
+------------------------------------------------------------
+[wp:pedantic-assigns] ghost-code-usage-2.c:18: Warning: 
+  No 'assigns' specification for function 'bsearch'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] ghost-code-usage-2.c:23: Warning: 
+  No 'assigns' specification for function 'bsearch_callee'.
+  Callers assumptions might be imprecise.

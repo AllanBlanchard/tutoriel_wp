@@ -137,7 +137,7 @@ written like this:
 
 
 
-\CodeBlockInput[1][12]{c}{reset-0.c}
+\CodeBlockInput[5][16]{c}{reset-0.c}
 
 
 
@@ -304,7 +304,7 @@ proof.
 In this section, let us prove the C \CodeInline{strlen} function:
 
 
-\CodeBlockInput{c}{strlen-0.c}
+\CodeBlockInput[5]{c}{strlen-0.c}
 
 
 First, we have to provide a suitable contract. Let us suppose that we
@@ -336,7 +336,7 @@ a contract for \CodeInline{strlen}:
 
 
 
-\CodeBlockInput[10][20]{c}{strlen-step.c}
+\CodeBlockInput[14][24]{c}{strlen-step.c}
 
 
 
@@ -444,7 +444,7 @@ The following program cannot be proved with the axiomatic definition we
 previously defined about occurrences counting:
 
 
-\CodeBlockInput[14][26]{c}{ex-1-occurrences_of.c}
+\CodeBlockInput[18][30]{c}{ex-1-occurrences_of.c}
 
 
 Re-express the axiomatic definition in a form that allows to prove the
@@ -459,7 +459,7 @@ an axiomatic definition, write the contract of the \CodeInline{gcd} function and
 prove it:
 
 
-\CodeBlockInput{c}{ex-2-gcd.c}
+\CodeBlockInput[5]{c}{ex-2-gcd.c}
 
 
 \levelFourTitle{Sum of the N first integers}
@@ -470,7 +470,7 @@ integers as an axiomatic definition. Write the contract of the following
 \CodeInline{sum\_n} function and prove it:
 
 
-\CodeBlockInput{c}{ex-3-sum-N-first-ints.c}
+\CodeBlockInput[5]{c}{ex-3-sum-N-first-ints.c}
 
 
 \levelFourTitle{Permutation}
@@ -483,4 +483,4 @@ permutation predicate using an axiomatic definition. Take care of the
 two memory labels).
 
 
-\CodeBlockInput{c}{ex-4-sort.c}
+\CodeBlockInput[5]{c}{ex-4-sort.c}

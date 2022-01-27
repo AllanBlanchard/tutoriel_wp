@@ -71,7 +71,7 @@ is that the result (which is denoted with the keyword
 
 
 
-\CodeBlockInput{c}{abs-1.c}
+\CodeBlockInput[5]{c}{abs-1.c}
 
 
 
@@ -88,7 +88,7 @@ clause, as we illustrate here:
 
 
 
-\CodeBlockInput{c}{abs-2.c}
+\CodeBlockInput[5]{c}{abs-2.c}
 
 
 
@@ -156,7 +156,7 @@ properties. For example, we could write this:
 
 
 
-\CodeBlockInput{c}{abs-3.c}
+\CodeBlockInput[7]{c}{abs-3.c}
 
 
 
@@ -173,7 +173,7 @@ will not use it during this tutorial) by using this command line:
 
 
 \begin{CodeBlock}{bash}
-$ frama-c-gui
+frama-c-gui
 \end{CodeBlock}
 
 
@@ -195,7 +195,7 @@ terminal command line passing them to Frama-C as parameter(s):
 
 
 \begin{CodeBlock}{bash}
-$ frama-c-gui abs.c
+frama-c-gui abs.c
 \end{CodeBlock}
 
 
@@ -484,14 +484,7 @@ correctly respects the required precondition:
 
 
 
-\begin{CodeBlock}{c}
-void foo(int a){
-   int b = abs(42);
-   int c = abs(-42);
-   int d = abs(a);       // False : "a" can be INT_MIN
-   int e = abs(INT_MIN); // False : the parameter must be strictly greater than INT_MIN
-}
-\end{CodeBlock}
+\CodeBlockInput[15]{c}{abs-5.c}
 
 
 
@@ -579,7 +572,7 @@ that can be sometimes useful.
 Write the postcondtion of the following addition function:
 
 
-\CodeBlockInput{c}{ex-1-addition.c}
+\CodeBlockInput[5]{c}{ex-1-addition.c}
 
 
 And run the command:
@@ -609,7 +602,7 @@ the value of \CodeInline{b} in terms of \CodeInline{a} and
 \CodeInline{\textbackslash{}result}:
 
 
-\CodeBlockInput{c}{ex-2-distance.c}
+\CodeBlockInput[5]{c}{ex-2-distance.c}
 
 
 And run the command:
@@ -642,7 +635,7 @@ operator \CodeInline{<==>}.
 
 
 
-\CodeBlockInput{c}{ex-3-alphabet.c}
+\CodeBlockInput[5]{c}{ex-3-alphabet.c}
 
 
 And run the command:
@@ -669,7 +662,7 @@ when it has 28 days, we will see later how to solve this problem:
 
 
 
-\CodeBlockInput{c}{ex-4-day-month.c}
+\CodeBlockInput[5]{c}{ex-4-day-month.c}
 
 
 And run the command:
@@ -725,7 +718,7 @@ Write the postcondition that expresses that the sum of the three angles is
 
 
 
-\CodeBlockInput{c}{ex-5-last-angle.c}
+\CodeBlockInput[5]{c}{ex-5-last-angle.c}
 
 
 And run the command:

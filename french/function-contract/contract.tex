@@ -73,7 +73,7 @@ mot-clé \CodeInline{\textbackslash{}result}) est supérieur ou égal à 0.
 
 
 
-\CodeBlockInput{c}{abs-1.c}
+\CodeBlockInput[5]{c}{abs-1.c}
 
 
 
@@ -94,7 +94,7 @@ comme illustré ci-dessous.
 
 
 
-\CodeBlockInput{c}{abs-2.c}
+\CodeBlockInput[5]{c}{abs-2.c}
 
 
 
@@ -160,7 +160,7 @@ catégoriser nos propriétés. Par exemple, nous pouvons écrire ceci :
 
 
 
-\CodeBlockInput{c}{abs-3.c}
+\CodeBlockInput[7]{c}{abs-3.c}
 
 
 
@@ -183,7 +183,7 @@ dans ce tutoriel) soit par cette commande :
 
 
 \begin{CodeBlock}{bash}
-$ frama-c-gui
+frama-c-gui
 \end{CodeBlock}
 
 
@@ -205,12 +205,12 @@ depuis la ligne de commande en le(s) passant en argument(s) de \CodeInline{frama
 
 
 \begin{CodeBlock}{bash}
-$ frama-c-gui abs.c
+frama-c-gui abs.c
 \end{CodeBlock}
 
 
 
-\image{1-abs-1.png}[Le volet latéral liste l’arbre des fichiers et des fonctions]
+\image{1-abs-1.png}
 
 
 La fenêtre de Frama-C s'ouvre, dans le volet correspondant aux fichiers et aux
@@ -512,14 +512,7 @@ respecte bien la précondition qu'elle impose :
 
 
 
-\begin{CodeBlock}{c}
-void foo(int a){
-   int b = abs(42);
-   int c = abs(-42);
-   int d = abs(a);       // Faux : "a", vaut peut-être INT_MIN
-   int e = abs(INT_MIN); // Faux : le paramètre doit être strictement supérieur à INT_MIN
-}
-\end{CodeBlock}
+\CodeBlockInput[15]{c}{abs-5.c}
 
 
 
@@ -607,7 +600,7 @@ une notation qui peut parfois d'avérer utile.
 Écrire la postcondition de la fonction d'addition suivante :
 
 
-\CodeBlockInput{c}{ex-1-addition.c}
+\CodeBlockInput[5]{c}{ex-1-addition.c}
 
 
 Lancer la commande :
@@ -636,7 +629,7 @@ la valeur de \CodeInline{b} en fonction de \CodeInline{a} et
 \CodeInline{\textbackslash{}result} :
 
 
-\CodeBlockInput{c}{ex-2-distance.c}
+\CodeBlockInput[5]{c}{ex-2-distance.c}
 
 
 Lancer la commande :
@@ -666,7 +659,7 @@ caractère reçu en entrée est une lettre de l'alphabet. Utiliser la relation
 d'équivalence  \CodeInline{<==>}.
 
 
-\CodeBlockInput{c}{ex-3-alphabet.c}
+\CodeBlockInput[5]{c}{ex-3-alphabet.c}
 
 
 Lancer la commande :
@@ -690,7 +683,7 @@ reçu est entre 1 et 12), pour février, nous considérons uniquement le cas
 où il a 28 jours, nous verrons plus tard comment régler ce problème :
 
 
-\CodeBlockInput{c}{ex-4-day-month.c}
+\CodeBlockInput[5]{c}{ex-4-day-month.c}
 
 
 Lancer la commande :
@@ -723,7 +716,7 @@ Par exemple :
 \begin{CodeBlock}{c}
 //@ assert 13 \in { 1, 2, 3, 4, 5 } ; // FAUX
 //@ assert 3  \in { 1, 2, 3, 4, 5 } ; // VRAI
-+\end{CodeBlock}
+\end{CodeBlock}
 
 
 Modifier la postcondition en utilisant cette notation.
@@ -739,7 +732,7 @@ reposant sur la propriété que la somme des angles d'un triangle vaut
 angle vaut 180.
 
 
-\CodeBlockInput{c}{ex-5-last-angle.c}
+\CodeBlockInput[5]{c}{ex-5-last-angle.c}
 
 
 Lancer la commande :

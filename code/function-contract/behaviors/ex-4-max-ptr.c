@@ -18,7 +18,7 @@ int main(){
   int b = 42 ;
 
   int x = max_ptr(&a, &b) ;
-  
+
   //@ assert x == 42 ;
   //@ assert h == 42 ;
 }

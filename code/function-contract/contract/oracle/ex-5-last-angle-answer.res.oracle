@@ -1,0 +1,16 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-5-last-angle-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function last_angle
+[wp] 5 goals scheduled
+[wp] [Qed] Goal typed_last_angle_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_last_angle_ensures_2 : Valid
+[wp] [Alt-Ergo] Goal typed_last_angle_assert_rte_signed_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_last_angle_assert_rte_signed_overflow_2 : Valid
+[wp] [Alt-Ergo] Goal typed_last_angle_assert_rte_signed_overflow_3 : Valid
+[wp] Proved goals:    5 / 5
+  Qed:             1 
+  Alt-Ergo:        4
+[wp:pedantic-assigns] ex-5-last-angle-answer.c:9: Warning: 
+  No 'assigns' specification for function 'last_angle'.
+  Callers assumptions might be imprecise.

@@ -1,0 +1,29 @@
+# frama-c -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast [...]
+[kernel] Parsing ex-2-reverse-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function reverse
+[rte:annot] annotating function swap
+[wp] 20 goals scheduled
+[wp] [Alt-Ergo] Goal typed_swap_assert_rte_mem_access : Valid
+[wp] [Qed] Goal typed_swap_assert_rte_mem_access_2 : Valid
+[wp] [Alt-Ergo] Goal typed_swap_assert_rte_mem_access_3 : Valid
+[wp] [Qed] Goal typed_swap_assert_rte_mem_access_4 : Valid
+[wp] [Qed] Goal typed_swap_assigns_part1 : Valid
+[wp] [Qed] Goal typed_swap_assigns_part2 : Valid
+[wp] [Qed] Goal typed_reverse_loop_invariant_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_reverse_loop_invariant_established : Valid
+[wp] [Qed] Goal typed_reverse_assert_rte_division_by_zero : Valid
+[wp] [Alt-Ergo] Goal typed_reverse_assert_rte_unsigned_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_reverse_assert_rte_unsigned_overflow_2 : Valid
+[wp] [Qed] Goal typed_reverse_loop_assigns_part1 : Valid
+[wp] [Qed] Goal typed_reverse_loop_assigns_part2 : Valid
+[wp] [Alt-Ergo] Goal typed_reverse_loop_assigns_part3 : Valid
+[wp] [Qed] Goal typed_reverse_assigns_exit_part1 : Valid
+[wp] [Alt-Ergo] Goal typed_reverse_assigns_exit_part2 : Valid
+[wp] [Qed] Goal typed_reverse_assigns_normal : Valid
+[wp] [Qed] Goal typed_reverse_loop_variant_decrease : Valid
+[wp] [Alt-Ergo] Goal typed_reverse_loop_variant_positive : Valid
+[wp] [Alt-Ergo] Goal typed_reverse_call_swap_requires : Valid
+[wp] Proved goals:   20 / 20
+  Qed:            11 
+  Alt-Ergo:        9

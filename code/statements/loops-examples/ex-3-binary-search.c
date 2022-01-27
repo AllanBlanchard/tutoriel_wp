@@ -1,12 +1,16 @@
+/* run.config
+   OPT:
+*/
+
 #include <stddef.h>
 
-/*@  
+/*@
   requires Sorted:
     \forall integer i, j ; 0 <= i <= j < len ==> arr[i] <= arr[j] ;
 */
 int bsearch(int* arr, int len, int value){
   if(len == 0) return -1 ;
-  
+
   int low = 0 ;
   int up = len-1 ;
 

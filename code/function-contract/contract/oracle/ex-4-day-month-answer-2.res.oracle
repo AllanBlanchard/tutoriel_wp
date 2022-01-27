@@ -1,0 +1,17 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-4-day-month-answer-2.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function day_of
+[wp] 6 goals scheduled
+[wp] [Qed] Goal typed_day_of_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_day_of_ensures_2 : Valid
+[wp] [Alt-Ergo] Goal typed_day_of_ensures_3 : Valid
+[wp] [Alt-Ergo] Goal typed_day_of_assert_rte_index_bound : Valid
+[wp] [Alt-Ergo] Goal typed_day_of_assert_rte_index_bound_2 : Valid
+[wp] [Alt-Ergo] Goal typed_day_of_assert_rte_signed_overflow : Valid
+[wp] Proved goals:    6 / 6
+  Qed:             1 
+  Alt-Ergo:        5
+[wp:pedantic-assigns] ex-4-day-month-answer-2.c:7: Warning: 
+  No 'assigns' specification for function 'day_of'.
+  Callers assumptions might be imprecise.

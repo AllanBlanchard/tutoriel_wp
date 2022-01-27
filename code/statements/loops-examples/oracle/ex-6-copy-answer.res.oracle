@@ -1,0 +1,64 @@
+# frama-c -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast [...]
+[kernel] Parsing ex-6-copy-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function copy
+[rte:annot] annotating function copy_backward
+[rte:annot] annotating function first_copy
+[wp] 54 goals scheduled
+[wp] [Alt-Ergo] Goal typed_first_copy_ensures : Valid
+[wp] [Qed] Goal typed_first_copy_loop_invariant_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_first_copy_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_first_copy_loop_invariant_2_preserved : Valid
+[wp] [Qed] Goal typed_first_copy_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_first_copy_loop_invariant_3_preserved : Valid
+[wp] [Qed] Goal typed_first_copy_loop_invariant_3_established : Valid
+[wp] [Alt-Ergo] Goal typed_first_copy_assert_rte_mem_access : Valid
+[wp] [Alt-Ergo] Goal typed_first_copy_assert_rte_mem_access_2 : Valid
+[wp] [Alt-Ergo] Goal typed_first_copy_assert_rte_unsigned_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_first_copy_assert_rte_unsigned_overflow_2 : Valid
+[wp] [Qed] Goal typed_first_copy_loop_assigns_part1 : Valid
+[wp] [Qed] Goal typed_first_copy_loop_assigns_part2 : Valid
+[wp] [Alt-Ergo] Goal typed_first_copy_loop_assigns_part3 : Valid
+[wp] [Qed] Goal typed_first_copy_assigns : Valid
+[wp] [Qed] Goal typed_first_copy_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_first_copy_loop_variant_positive : Valid
+[wp] [Alt-Ergo] Goal typed_copy_ensures : Valid
+[wp] [Qed] Goal typed_copy_loop_invariant_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_copy_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_copy_loop_invariant_2_preserved : Valid
+[wp] [Qed] Goal typed_copy_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_copy_loop_invariant_3_preserved : Valid
+[wp] [Qed] Goal typed_copy_loop_invariant_3_established : Valid
+[wp] [Alt-Ergo] Goal typed_copy_assert_rte_mem_access : Valid
+[wp] [Alt-Ergo] Goal typed_copy_assert_rte_mem_access_2 : Valid
+[wp] [Alt-Ergo] Goal typed_copy_assert_rte_unsigned_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_copy_assert_rte_unsigned_overflow_2 : Valid
+[wp] [Qed] Goal typed_copy_loop_assigns_part1 : Valid
+[wp] [Qed] Goal typed_copy_loop_assigns_part2 : Valid
+[wp] [Alt-Ergo] Goal typed_copy_loop_assigns_part3 : Valid
+[wp] [Qed] Goal typed_copy_assigns : Valid
+[wp] [Qed] Goal typed_copy_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_copy_loop_variant_positive : Valid
+[wp] [Alt-Ergo] Goal typed_copy_backward_ensures : Valid
+[wp] [Alt-Ergo] Goal typed_copy_backward_loop_invariant_preserved : Valid
+[wp] [Alt-Ergo] Goal typed_copy_backward_loop_invariant_established : Valid
+[wp] [Alt-Ergo] Goal typed_copy_backward_loop_invariant_2_preserved : Valid
+[wp] [Qed] Goal typed_copy_backward_loop_invariant_2_established : Valid
+[wp] [Alt-Ergo] Goal typed_copy_backward_loop_invariant_3_preserved : Valid
+[wp] [Qed] Goal typed_copy_backward_loop_invariant_3_established : Valid
+[wp] [Alt-Ergo] Goal typed_copy_backward_assert_rte_mem_access : Valid
+[wp] [Alt-Ergo] Goal typed_copy_backward_assert_rte_mem_access_2 : Valid
+[wp] [Qed] Goal typed_copy_backward_assert_rte_unsigned_overflow : Valid
+[wp] [Alt-Ergo] Goal typed_copy_backward_assert_rte_unsigned_overflow_2 : Valid
+[wp] [Qed] Goal typed_copy_backward_assert_rte_unsigned_overflow_3 : Valid
+[wp] [Alt-Ergo] Goal typed_copy_backward_assert_rte_unsigned_overflow_4 : Valid
+[wp] [Qed] Goal typed_copy_backward_assert_rte_unsigned_overflow_5 : Valid
+[wp] [Qed] Goal typed_copy_backward_assert_rte_unsigned_overflow_6 : Valid
+[wp] [Qed] Goal typed_copy_backward_loop_assigns_part1 : Valid
+[wp] [Alt-Ergo] Goal typed_copy_backward_loop_assigns_part2 : Valid
+[wp] [Qed] Goal typed_copy_backward_assigns : Valid
+[wp] [Qed] Goal typed_copy_backward_loop_variant_decrease : Valid
+[wp] [Qed] Goal typed_copy_backward_loop_variant_positive : Valid
+[wp] Proved goals:   54 / 54
+  Qed:            26 
+  Alt-Ergo:       28

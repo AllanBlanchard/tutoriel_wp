@@ -1,3 +1,7 @@
+/* run.config
+   OPT:
+*/
+
 #include <stddef.h>
 
 size_t min_idx_in(int* a, size_t beg, size_t end){

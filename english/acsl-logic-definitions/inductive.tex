@@ -53,7 +53,7 @@ is even:
 
 
 
-\CodeBlockInput[1][9]{c}{even-1.c}
+\CodeBlockInput[5][13]{c}{even-1.c}
 
 
 
@@ -71,7 +71,7 @@ deduce that the property is false (however, we will see later that in the
 case of WP, we need the Coq proof assistant).
 
 
-\CodeBlockInput[11][14]{c}{even-1.c}
+\CodeBlockInput[15][18]{c}{even-1.c}
 
 
 
@@ -106,7 +106,7 @@ occurrences of \CodeInline{P} for some parameters which would be incoherent.
 This is for example verified by our previously defined predicate
 \CodeInline{even\_natural}. While a definition like:
 
-\CodeBlockInput[1][11]{c}{even-bad.c}
+\CodeBlockInput[5][15]{c}{even-bad.c}
 
 does not respect this constraint as the property \CodeInline{even\_natural}
 appears negatively on line~8.
@@ -131,7 +131,7 @@ For example for our definition of \CodeInline{even\_natural}, we would write:
 
 
 
-\CodeBlockInput[13][18]{c}{even-bad.c}
+\CodeBlockInput[17][22]{c}{even-bad.c}
 
 
 
@@ -212,7 +212,7 @@ the first one being a point where the property "zeroed" is verified, then the
 property is still verified at the second program point.
 
 
-\CodeBlockInput[13][20]{c}{reset-1.c}
+\CodeBlockInput[17][24]{c}{reset-1.c}
 
 
 Then we can add an assertion to specify what did not change between the
@@ -220,7 +220,7 @@ beginning of the loop block (pointed by the label \CodeInline{L} in the code)
 and the end (which is \CodeInline{Here} since we state the property at the end):
 
 
-\CodeBlockInput[35][39]{c}{reset-1.c}
+\CodeBlockInput[39][43]{c}{reset-1.c}
 
 
 Note that in this new version of the code, the property stated by our lemma is
@@ -245,7 +245,7 @@ example.
 Let us prove a simple selection sort:
 
 
-\CodeBlockInput[3]{c}{sort-0.c}
+\CodeBlockInput[7]{c}{sort-0.c}
 
 
 The reader can exercise by specifying and proving the search of the minimum and
@@ -258,7 +258,7 @@ Indeed, a common error we could do, trying to prove a sort function, would
 be to write this specification (which is correct!):
 
 
-\CodeBlockInput[6]{c}{sort-incomplete.c}
+\CodeBlockInput[10]{c}{sort-incomplete.c}
 
 
 \textbf{This specification is correct}. However, if we recall correctly the part
@@ -324,7 +324,7 @@ first integers. Rewrite the logic function using an inductive predicate that
 states that some integer equals the sum of the N first integers.
 
 
-\CodeBlockInput{c}{ex-1-sum-N-first-ints.c}
+\CodeBlockInput[5] {c}{ex-1-sum-N-first-ints.c}
 
 
 Adapt the contract of the function and the lemma(s). Note that lemma(s) could
@@ -351,7 +351,7 @@ the inductive predicate:
 \end{itemize}
 
 
-\CodeBlockInput{c}{ex-2-gcd.c}
+\CodeBlockInput[5]{c}{ex-2-gcd.c}
 
 
 Express the postcondition of the function, and complete the invariant to prove
@@ -371,19 +371,19 @@ to $x^n$. Consider the two cases: either $n$ is 0 or it is greater and then it
 should be related to the value $x^{n-1}$.
 
 
-\CodeBlockInput[1][6]{c}{ex-3-fpower.c}
+\CodeBlockInput[5][10]{c}{ex-3-fpower.c}
 
 
 First prove the naive version of the power function:
 
 
-\CodeBlockInput[13][28]{c}{ex-3-fpower.c}
+\CodeBlockInput[17][32]{c}{ex-3-fpower.c}
 
 
 Now, let us prove a faster version of the power function:
 
 
-\CodeBlockInput[30][49]{c}{ex-3-fpower.c}
+\CodeBlockInput[34][53]{c}{ex-3-fpower.c}
 
 
 In this version, we exploit two properties about the power operator:
@@ -400,7 +400,7 @@ it by one (which makes the algorithm $O(\log n)$ instead of $O(n)$). Express the
 two previous properties in lemmas:
 
 
-\CodeBlockInput[8][11]{c}{ex-3-fpower.c}
+\CodeBlockInput[12][15]{c}{ex-3-fpower.c}
 
 
 First express the lemma \CodeInline{power\_even}, the SMT solver might be able
@@ -429,7 +429,7 @@ one element to the left except the last one that is put in the first cell of the
 range. Use this predicate to prove the rotate function:
 
 
-\CodeBlockInput[12][27]{c}{ex-4-rotate-permutation.c}
+\CodeBlockInput[16][31]{c}{ex-4-rotate-permutation.c}
 
 
 Express a new version of the notion of permutation with an inductive predicate
@@ -445,7 +445,7 @@ that considers four cases:
 \end{itemize}
 
 
-\CodeBlockInput[30][37]{c}{ex-4-rotate-permutation.c}
+\CodeBlockInput[34][41]{c}{ex-4-rotate-permutation.c}
 
 
 Complete the contract of \CodeInline{two\_rotates} that successively rotates the
@@ -453,4 +453,4 @@ first half of the array and then the second half and prove that it maintains the
 permutation.
 
 
-\CodeBlockInput[43][47]{c}{ex-4-rotate-permutation.c}
+\CodeBlockInput[47][51]{c}{ex-4-rotate-permutation.c}
