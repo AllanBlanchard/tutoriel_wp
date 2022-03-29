@@ -31,6 +31,6 @@ void bar(){
 
 /*
   We can deduce that the loop assigns clause is a particular class of
-  loop invariant, exactly as assigns are a particula class of post-condition:
+  loop invariant, exactly as assigns are a particular class of post-condition:
   any variable that is not mentioned in this list keeps its old value.
 */

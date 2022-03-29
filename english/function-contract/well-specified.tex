@@ -9,7 +9,7 @@ not try to express \emph{how} we answer to our need but \emph{what} is
 exactly our need. To prove that our code implements what we need, we
 must be able to describe exactly what we need.
 
-From now, let us use an other example, the \texttt{max} function:
+From now, let us use another example, the \texttt{max} function:
 
 
 
@@ -213,7 +213,7 @@ by Frama-C, we can see that in the postcondition, the pointers are enclosed into
 
 
 For the built-in \CodeInline{\textbackslash{}at}, we have to take care of this
-more explicitely. In particular,
+more explicitly. In particular,
 the specified label must make sense with respect to the scope of the
 value. For example, in the following program, Frama-C detects that we ask
 the value of the variable \CodeInline{x} at a program point where it does
@@ -236,7 +236,7 @@ or if we want the value of a pointed value:
 
 
 Here, it is easy to see the problem. However, the considered label is
-propagated to subexpressions. Thus, sometimes, terms that seems to be
+propagated to subexpressions. Thus, sometimes, terms that seem to be
 innocent can have a surprising behavior if we do not keep this fact in mind.
 For example, in the following example:
 
@@ -532,7 +532,7 @@ If it fails, complete the contract by adding the right precondition.
 
 
 
-Provide a contract for the following function that reset its first parameter
+Provide a contract for the following function that resets its first parameter
 if and only if the second is true. Be sure to express that the second parameter
 remains unmodified:
 
@@ -577,13 +577,13 @@ signature of the function add as follows:
 
 
 \begin{CodeBlock}{c}
-void add(int* a, int* b, int* r);
+void add(int* p, int* q, int* r);
 \end{CodeBlock}
 
 
 Now the result of the sum should be stored at \CodeInline{r}. Accordingly
 modify the calls in the main function as well as the code and the contract
-of \CodeInline{add}. \CodeInline{*a} and \CodeInline{*b} should remain
+of \CodeInline{add}. \CodeInline{*p} and \CodeInline{*q} should remain
 unchanged.
 
 
