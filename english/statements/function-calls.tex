@@ -271,18 +271,9 @@ the same rules.
 \levelThreeTitle{Recursive functions}
 
 
-
-For now, WP does not check function termination. Of course, if a function is
-only composed of loops that terminate (that have a verified variant) and
-calls to functions that terminate, it terminates. However, one particular
-case requires more reasoning: recursive and mutually recursive functions.
-Currently termination of such functions is not supported with WP.
-
-
-
-That basically means that using a function that does not terminate we can
-prove anything. For example:
-
+Just as it is easy to prove anything about a function if it contains an
+infinite loop, it is easy to prove anything about a function that does an
+infinite recursion:
 
 
 \CodeBlockInput{c}{trick.c}
@@ -292,15 +283,15 @@ prove anything. For example:
 
 
 We can see that the function and the assertion are proved. And indeed the
-proof is correct: we consider partial correctness and we face a function
+proof is correct: we consider partial correctness, and we face a function
 that does not terminate: anything that follows a call to this function would
 be true.
 
 
-
 Thus, the question is: what could we do in such a case? Again, we could use
-some kind of variant to bound the number of recursive calls. In ACSL, this is
-the role of the \CodeInline{decreases} clause:
+some kind of variant to bound the depth of the recursive calls. In ACSL, it is
+expressed through the \CodeInline{decreases} clause:
+
 
 
 \CodeBlockInput{c}{decreases.c}
@@ -308,6 +299,96 @@ the role of the \CodeInline{decreases} clause:
 
 This clause expresses exactly the same idea as a \CodeInline{loop variant}.
 The expression considered by a \CodeInline{decreases} clause is a positive
-expression that strictly decreases when the function is called again. However,
-it is still not supported by WP. Thus, for the moment, a recursive function
-cannot be totally proved with WP.
+integer expression (or an expression equipped with a relation) that strictly
+decreases when the function is called again.
+
+
+
+Let us emphasize on the fact that the \CodeInline{decreases} clause really
+bounds the depth of the recursion and not the number of calls:
+
+
+
+\begin{CodeBlock}{c}
+/*@ requires n >= 0 ;
+    decreases n ;
+*/
+void ends(int n){
+  if(n > 0) ends(n-1); // Ok: 0 <= n-1 < n
+  if(n > 0) ends(n-1); // Ok: 0 <= n-1 < n, no need to be less than call on l.5
+}
+\end{CodeBlock}
+
+
+
+Note than, just like evaluation of the \CodeInline{terminates} clause, the
+clause of the function under verification is evaluated at \CodeInline{Pre}
+state:
+
+
+\begin{CodeBlock}{c}
+/*@ requires *p >= 0 ;
+    decreases *p ;
+*/
+void ends(int *p){
+  if(*p > 0){
+    (*p)-- ;
+    ends(p); // Ok: 0 <= *p < \at(*p, Pre);
+  }
+}
+\end{CodeBlock}
+
+
+
+Of course, recursive functions can be mutually recursive thus the
+\CodeInline{decreases} can be used to bound recursive function calls in this
+situation. But, we only want to do so {\em only} for functions that are indeed
+in the set of functions that are involved in the recursion. For this, WP
+computes the strongly connected components from the set of functions, this is
+called a {\em cluster}.
+
+
+\begin{Information}
+  Note that this is done syntactically, for now we do not cover function
+  pointers in this tutorial, but one can refer to the option
+  \CodeInline{-wp-dynamic} in the WP manual.
+\end{Information}
+
+
+Thus, let us be more precise about the verification of the \CodeInline{decreases}
+clause. When a function is (mutually) recursive, it must be equipped with such
+a clause to prove that it terminates. Verifying that the \CodeInline{decreases}
+clause of a function \CodeInline{f} gives a measure is done by checking for each
+call to a function {\em that belongs to the same cluster as \CodeInline{f}},
+that the expression is indeed positive and decreasing. And thus, no proof
+obligation is generated when calling a recursive function that does not belong
+to the same cluster:
+
+
+\begin{CodeBlock}{c}
+//@ decreases v ;
+void s(unsigned v){
+  if(v > 0) s(v-1); // OK: 0 <= v-1 < v
+}
+
+//@ decreases k-1 ;
+void m2(unsigned k);
+
+//@ decreases n ;
+void m1(unsigned n){
+  if(n > 1) m2(n-1); // OK: 0 <= (n-1)-1 < n ;
+}
+
+void m2(unsigned k){
+  if(k > 1) m1(k-2); // OK: 0 <= (k-2) < k-1 ;
+  s(k+1) ; // no verification needed, s in not in the cluster
+}
+\end{CodeBlock}
+
+
+Finally, if a function of a cluster does not have a \CodeInline{decreases}
+clause, a \CodeInline{\textbackslash{}false} verification condition is generated
+and a warning is emitted by WP.
+
+
+% add an example
