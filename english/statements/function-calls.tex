@@ -392,3 +392,318 @@ and a warning is emitted by WP.
 
 
 % add an example
+\levelThreeTitle{Specifying and proving function termination}
+
+
+
+A desirable property of function is often that it should terminate. Indeed, in
+most programs, all functions must terminate and when it is not the case and that
+some functions can loop forever, it is highly common that there is a single
+function that is allowed to loop forever (so almost all functions in this
+program must terminate).
+
+
+
+\levelFourTitle{Syntax and description}
+
+
+
+ACSL provides a way to specify that a function must terminate when some property
+is verified in precondition. The syntax is:
+
+
+
+\begin{CodeBlock}{c}
+//@ terminates condition ;
+void function(void){
+  // ...
+}
+\end{CodeBlock}
+
+
+
+It states that when \CodeInline{condition} is verified in precondition, then
+the function must terminate. For example, function \CodeInline{abs} must always
+terminate:
+
+
+
+\begin{CodeBlock}{c}
+//@ terminates \true ;
+int abs(int x){
+  return (x < 0) ? -x : x ;
+}
+\end{CodeBlock}
+
+
+
+while function \CodeInline{main\_loop} may not:
+
+
+
+\begin{CodeBlock}{c}
+int debug_steps = -1 ;
+
+/*@ requires debug_steps >= -1 ;
+    terminates debug_steps > 0 ;
+ */
+void main_loop(void){
+  /*@ loop invariant debug_steps == -1
+                  || 0 <= debug_steps <= \at(debug_steps, Pre) ;
+      loop assigns debug_steps ;
+      loop variant debug_steps ; */
+  while(1){
+    if(debug_steps == 0) return ;
+    else debug_steps -- ;
+
+    // actual code
+  }
+}
+\end{CodeBlock}
+
+
+
+Let us emphasize on the fact that the function {\em may not} terminate, it is
+not {\em forced to loop forever}. For example, in the following function, the
+\CodeInline{terminates} clause is verified since
+{\em when the termination condition is verified} (never), the function
+terminates (always):
+
+
+
+\begin{CodeBlock}{c}
+//@ terminates \false ;
+void function(void){
+
+}
+\end{CodeBlock}
+
+
+
+\begin{Information}
+  If one really wants to verify that some function never terminates, it can be
+  done by specifying that the \CodeInline{return} and the \CodeInline{exit}
+  conditions are unreachable:
+  \begin{CodeBlock}{c}
+/*@ terminates \false;
+    exits \false;
+    ensures \false;
+*/
+void does_not_terminate(void){
+  //@ loop assigns some_variables ;
+  while(1){
+    // ... code
+  }
+}\end{CodeBlock}
+\end{Information}
+
+
+
+\levelFourTitle{Verification}
+
+
+
+Verifying that a function terminates asks to verify that all reachable
+statements of the function terminate. Assignments trivially terminate, thus
+we do not have something particular to do for them. A conditional statement
+terminates if all statements in different branches terminate, thus we just
+have to verify that these statements terminate. The remaining statements are
+loops and function calls. Thus, we have to verify that:
+
+
+
+\begin{itemize}
+  \item all loops have a (verified) \CodeInline{loop variant} clause,
+  \item all functions that are called terminate with the given parameters,
+  \item all recursive functions have a (verified) \CodeInline{decreases} clause,
+  \item (or that there are no loops or calls in the function).
+\end{itemize}
+
+
+
+However, we only have to do that when the termination condition of the function
+is verified. So let us now explain what are the generated verification
+conditions and when does WP generate them.
+
+
+
+When a function has a \CodeInline{terminates} clause, WP visits all statements
+and collects the loops that do not have a \CodeInline{loop variant} clause and
+the function calls. If there are none of them, the \CodeInline{terminates}
+clause is trivially verified.
+
+
+
+% add a screenshot here
+
+
+
+When there are such statements, their termination must be verified {\em when}
+the function must terminate (say, when \CodeInline{T}). Thus, the verification
+conditions are of the form
+\CodeInline{\textbackslash{}at(T, Pre)} $\Rightarrow$ \CodeInline{<statement termination>}.
+One should note that the premise of the implication is evaluated at the
+\CodeInline{Pre} state. Thus, in this code:
+
+
+
+\begin{CodeBlock}{c}
+//@ terminates r > 0 ;
+void function(int r){
+  r -- ;
+  call();
+}
+\end{CodeBlock}
+
+
+
+Even if \CodeInline{r} has been decremented, the verification of the
+termination of \CodeInline{call()} is done with \CodeInline{r > 0} as a
+premise.
+
+
+
+Note also that it means that when we reach a program point when \CodeInline{T}
+is false, the verification condition is always verified:
+
+
+
+\begin{CodeBlock}{c}
+//@ terminates r > 0 ;
+void function(int r){
+  if(r <= 0){ // if we enter here, r > 0 is false at Pre
+    // here statements are not force to terminate: FALSE ==> P is always true
+  }
+}
+\end{CodeBlock}
+
+
+
+\paragraph{Function call}
+
+
+
+Verifying that a function call terminates is done by verifying that when it is
+called, its termination condition is true. For example:
+
+
+
+\begin{CodeBlock}{c}
+//@ terminates value > 0 ;
+void callee(int value);
+
+//@ terminates p > 0 ;
+void caller(int p){
+  // goal: p > 0 ==> p+1 > 0 ; (provable)
+  callee(p+1);
+  // goal: p > 0 ==> p-1 > 0 ; (not provable, the function may not terminate)
+  callee(p-1);
+}
+\end{CodeBlock}
+
+
+
+% add screenshots
+% PO  provable
+% PO !provable
+
+
+
+When the called function does not have a \CodeInline{terminates} clause, it
+is considered to be \CodeInline{\textbackslash{}false}, that is: unless a
+\CodeInline{terminates} clause is provided, the function may not terminate.
+
+
+% add screenshot
+
+
+\begin{Information}
+  In ACSL, it is specified that when a function does not have a
+  \CodeInline{terminates} clause, the default is
+  \CodeInline{terminates \textbackslash{}true}, however it is still not
+  implemented by the Frama-C kernel. This behavior can be enabled in WP
+  by using the options:
+  \begin{itemize}
+  \item \CodeInline{-wp-definitions-terminate} (for functions with definition),
+  \item \CodeInline{-wp-declarations-terminate} (for functions without definition),
+  \item \CodeInline{-wp-frama-c-stdlib-terminate} (for functions of the Frama-C stdlib).
+  \end{itemize}
+  to claim that, unless a clause is provided, they must terminate (and thus
+  for functions with a definition, the verification must be performed.
+\end{Information}
+
+
+\paragraph{Loop variant}
+
+
+
+When a function contains a loop that does not have a \CodeInline{loop variant}
+clause, its termination cannot be verified, thus WP asks us to verify that when
+the termination condition is verified, this loop is unreachable.
+
+
+
+\begin{CodeBlock}{c}
+//@ terminates value > 0 ;
+void function(int value){
+  if(value <= 0){
+    //@ loop assigns world ;
+    while(1){
+      // code
+    }
+  }
+}
+\end{CodeBlock}
+
+
+
+In the previous code, the loop does not have a \CodeInline{loop variant}
+clause, thus we have to verify \CodeInline{value > 0 ==> \textbackslash{}false}
+at the loop location, which is OK: this code is unreachable when
+\CodeInline{value > 0}.
+
+
+
+Finally, when a loop has a \CodeInline{loop variant} clause, it must be
+verified {\em only when} the function must terminate. So in the example
+we presented at the beginning of this section:
+
+
+
+% example with main loop
+
+
+
+We have to verify that the loop variant is positive decreasing value only
+when \CodeInline{debug\_steps} is not $-1$. However, this is not the default
+behavior of WP (that always verify loop variants by default), this can
+be enabled using the option \CodeInline{-wp-variant-with-terminates} and
+in this case our function is entirely verified:
+
+
+
+% add screenshot
+
+
+\paragraph{Recursion}
+
+
+The behavior for recursive functions is similar to loops: a recursive function
+should have a \CodeInline{decreases} clause when its specification states that
+it terminates. If such a clause is missing, a verification condition:
+\CodeInline{\textbackslash{}at(T, Pre)} $\Rightarrow$ \CodeInline{\textbackslash{}false}
+is generated.
+
+
+% add an example
+
+
+Again in ACSL, the verification of the \CodeInline{decreases} clause
+verification is required only when the termination condition is verified in
+\CodeInline{Pre} state. The behavior of WP on this aspect is similar to the
+\CodeInline{loop variant}. By default, the verification is always tried, the
+ACSL specified behavior is enabled via the option
+\CodeInline{-wp-variant-with-terminates}.
+
+
+% add an example
