@@ -294,7 +294,7 @@ expressed through the \CodeInline{decreases} clause:
 
 
 
-\CodeBlockInput{c}{decreases.c}
+\CodeBlockInput[1][6]{c}{decreases.c}
 
 
 This clause expresses exactly the same idea as a \CodeInline{loop variant}.
@@ -309,15 +309,7 @@ bounds the depth of the recursion and not the number of calls:
 
 
 
-\begin{CodeBlock}{c}
-/*@ requires n >= 0 ;
-    decreases n ;
-*/
-void ends(int n){
-  if(n > 0) ends(n-1); // Ok: 0 <= n-1 < n
-  if(n > 0) ends(n-1); // Ok: 0 <= n-1 < n, no need to be less than call on l.5
-}
-\end{CodeBlock}
+\CodeBlockInput[8][14]{c}{decreases.c}
 
 
 
@@ -326,17 +318,7 @@ clause of the function under verification is evaluated at \CodeInline{Pre}
 state:
 
 
-\begin{CodeBlock}{c}
-/*@ requires *p >= 0 ;
-    decreases *p ;
-*/
-void ends(int *p){
-  if(*p > 0){
-    (*p)-- ;
-    ends(p); // Ok: 0 <= *p < \at(*p, Pre);
-  }
-}
-\end{CodeBlock}
+\CodeBlockInput[16][24]{c}{decreases.c}
 
 
 
@@ -365,25 +347,9 @@ obligation is generated when calling a recursive function that does not belong
 to the same cluster:
 
 
-\begin{CodeBlock}{c}
-//@ decreases v ;
-void s(unsigned v){
-  if(v > 0) s(v-1); // OK: 0 <= v-1 < v
-}
 
-//@ decreases k-1 ;
-void m2(unsigned k);
+\CodeBlockInput[26][42]{c}{decreases.c}
 
-//@ decreases n ;
-void m1(unsigned n){
-  if(n > 1) m2(n-1); // OK: 0 <= (n-1)-1 < n ;
-}
-
-void m2(unsigned k){
-  if(k > 1) m1(k-2); // OK: 0 <= (k-2) < k-1 ;
-  s(k+1) ; // no verification needed, s in not in the cluster
-}
-\end{CodeBlock}
 
 
 Finally, if a function of a cluster does not have a \CodeInline{decreases}
@@ -392,6 +358,8 @@ and a warning is emitted by WP.
 
 
 % add an example
+
+
 \levelThreeTitle{Specifying and proving function termination}
 
 
@@ -428,12 +396,7 @@ terminate:
 
 
 
-\begin{CodeBlock}{c}
-//@ terminates \true ;
-int abs(int x){
-  return (x < 0) ? -x : x ;
-}
-\end{CodeBlock}
+\CodeBlockInput[3][8]{c}{terminates_abs.c}
 
 
 
@@ -441,42 +404,19 @@ while function \CodeInline{main\_loop} may not:
 
 
 
-\begin{CodeBlock}{c}
-int debug_steps = -1 ;
-
-/*@ requires debug_steps >= -1 ;
-    terminates debug_steps > 0 ;
- */
-void main_loop(void){
-  /*@ loop invariant debug_steps == -1
-                  || 0 <= debug_steps <= \at(debug_steps, Pre) ;
-      loop assigns debug_steps ;
-      loop variant debug_steps ; */
-  while(1){
-    if(debug_steps == 0) return ;
-    else debug_steps -- ;
-
-    // actual code
-  }
-}
-\end{CodeBlock}
+\CodeBlockInput{c}{main_loop.c}
 
 
 
 Let us emphasize on the fact that the function {\em may not} terminate, it is
 not {\em forced to loop forever}. For example, in the following function, the
 \CodeInline{terminates} clause is verified since
-{\em when the termination condition is verified} (never), the function
+{\em whenever the termination condition is verified} (never), the function
 terminates (always):
 
 
 
-\begin{CodeBlock}{c}
-//@ terminates \false ;
-void function(void){
-
-}
-\end{CodeBlock}
+\CodeBlockInput[5][8]{c}{terminates.c}
 
 
 
@@ -484,17 +424,7 @@ void function(void){
   If one really wants to verify that some function never terminates, it can be
   done by specifying that the \CodeInline{return} and the \CodeInline{exit}
   conditions are unreachable:
-  \begin{CodeBlock}{c}
-/*@ terminates \false;
-    exits \false;
-    ensures \false;
-*/
-void does_not_terminate(void){
-  //@ loop assigns some_variables ;
-  while(1){
-    // ... code
-  }
-}\end{CodeBlock}
+  \CodeBlockInput{c}{no_terminates.c}
 \end{Information}
 
 
@@ -547,13 +477,7 @@ One should note that the premise of the implication is evaluated at the
 
 
 
-\begin{CodeBlock}{c}
-//@ terminates r > 0 ;
-void function(int r){
-  r -- ;
-  call();
-}
-\end{CodeBlock}
+\CodeBlockInput[10][14]{c}{terminates.c}
 
 
 
@@ -568,14 +492,7 @@ is false, the verification condition is always verified:
 
 
 
-\begin{CodeBlock}{c}
-//@ terminates r > 0 ;
-void function(int r){
-  if(r <= 0){ // if we enter here, r > 0 is false at Pre
-    // here statements are not force to terminate: FALSE ==> P is always true
-  }
-}
-\end{CodeBlock}
+\CodeBlockInput[16][22]{c}{terminates.c}
 
 
 
@@ -588,18 +505,7 @@ called, its termination condition is true. For example:
 
 
 
-\begin{CodeBlock}{c}
-//@ terminates value > 0 ;
-void callee(int value);
-
-//@ terminates p > 0 ;
-void caller(int p){
-  // goal: p > 0 ==> p+1 > 0 ; (provable)
-  callee(p+1);
-  // goal: p > 0 ==> p-1 > 0 ; (not provable, the function may not terminate)
-  callee(p-1);
-}
-\end{CodeBlock}
+\CodeBlockInput[24][33]{c}{terminates.c}
 
 
 
@@ -643,17 +549,7 @@ the termination condition is verified, this loop is unreachable.
 
 
 
-\begin{CodeBlock}{c}
-//@ terminates value > 0 ;
-void function(int value){
-  if(value <= 0){
-    //@ loop assigns world ;
-    while(1){
-      // code
-    }
-  }
-}
-\end{CodeBlock}
+\CodeBlockInput[35][43]{c}{terminates.c}
 
 
 
