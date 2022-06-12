@@ -603,3 +603,71 @@ ACSL specified behavior is enabled via the option
 
 
 % add an example
+
+
+\section{Exercises}
+
+
+\subsection{Explain proof failures}
+
+
+In the following program, some verification conditions are not verified:
+
+
+\CodeBlockInput{c}{ex-1-proof-failures.c}
+
+
+Explain why they are not verified and propose a way to fix the specification so
+that everything is verified.
+
+
+\subsection{Explain termination proof results}
+
+
+In the following program:
+
+
+\CodeBlockInput{c}{ex-2-terminates.c}
+
+
+Explain why termination clauses are verified or not. Modify the specification so
+that all of them are verified.
+
+
+\subsection{Search}
+
+
+Specify and prove the following recursive search function:
+
+
+\CodeBlockInput[5]{c}{ex-3-search.c}
+
+
+The specification should include the termination condition.
+
+
+\subsection{Sum integers}
+
+
+The following program computes the sum of the integers between \CodeInline{fst}
+and \CodeInline{lst}:
+
+
+\CodeBlockInput[5]{c}{ex-4-sum.c}
+
+
+Prove that this function terminates. Proving the correct behavior of the
+function or the absence of runtime errors is not asked.
+
+
+\subsection{Power}
+
+
+The following program computes the power of \CodeInline{x} to \CodeInline{n}:
+
+
+\CodeBlockInput[5]{c}{ex-5-power.c}
+
+
+Prove that this function terminates. Proving the correct behavior of the
+function or the absence of runtime errors is not asked.
