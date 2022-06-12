@@ -43,7 +43,7 @@ function, we can still write something like this:
 */
 void my_function(int* a, int b){
   //this is indeed the  "assert" defined in "assert.h"
-  assert(/*properties on a*/ && "must respect properties on a");  
+  assert(/*properties on a*/ && "must respect properties on a");
   assert(/*properties on b*/ && "must respect properties on b");
 }
 \end{CodeBlock}
@@ -99,8 +99,8 @@ academic and industrial world, in which we can read:
 
 \begin{Quotation}[Formal Methods for Security, 2016]
 Adoption of formal methods in various areas (including verification of hardware
-and embedded systems, and analysis and testing of software) has dramatically 
-improved the quality of computer systems.  We anticipate that formal methods 
+and embedded systems, and analysis and testing of software) has dramatically
+improved the quality of computer systems.  We anticipate that formal methods
 can provide similar improvement in the security of computer systems.
 
 ...
@@ -158,7 +158,7 @@ the source code and Frama-C allows to build them as easily as possible.
 \levelThreeTitle{With deductive proof}
 
 
-Along this tutorial we used WP to generate proof obligation starting
+Along this tutorial we used WP to generate verification conditions starting
 from programs with their specification. Next we have used automatic
 solvers to assure that these properties were indeed verified.
 
@@ -176,7 +176,7 @@ interesting to study
 this language. In the context of Frama-C, we can produce reusable lemmas
 libraries proved with Coq. But Coq can also be used for many
 different tasks, including programming. Note that Why3 can also extract
-its proof obligations to Isabelle or PVS that are also proof assistants.
+its verification conditions to Isabelle or PVS that are also proof assistants.
 
 Finally, there exists other program logics, for example separation logic
 or concurrent program logics. Again these notions are interesting to know
