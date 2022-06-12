@@ -20,8 +20,8 @@ the computed precondition.
 
 
 
-Second, in C, a function can have side-effects. Thus, the values of the
-variables referenced in input are not necessarily the same as they was after the
+Second, in C, a function can have side effects. Thus, the values of the
+variables referenced in input are not necessarily the same as they were after the
 call to the function, and the contract may express some property about those
 values before and after the call. So, if we have labels in the postcondition,
 we must correctly replace them.
@@ -66,7 +66,7 @@ follows the call, while we need to explicitly mention the old state to speak
 about the values before the call. For example, considering the contract of
 \CodeInline{inc} when we call it in \CodeInline{foo}, \CodeInline{*x} in the
 precondition is \CodeInline{*a} at \CodeInline{L1}, while \CodeInline{*x} in the
-postcondition is \CodeInline{*a} at \CodeInline{L2}. Consequently the pre and
+postcondition is \CodeInline{*a} at \CodeInline{L2}. Consequently, the pre and
 the postcondition must be considered slightly differently when it comes to
 mutable memory location. Note that for the value of the parameter \CodeInline{x}
 itself, there is no such consideration: this value cannot be modified by the
@@ -104,7 +104,7 @@ the postcondition:
 \end{center}
 
 
-We can detail a little bit the reasoning for each part of this formula.
+We can detail a bit the reasoning for each part of this formula.
 
 
 First, note that in both pre and postcondition, each named parameter $x_i$ is
@@ -290,7 +290,7 @@ be true.
 
 Thus, the question is: what could we do in such a case? Again, we could use
 some kind of variant to bound the depth of the recursive calls. In ACSL, it is
-expressed through the \CodeInline{decreases} clause:
+expressed thanks to the \CodeInline{decreases} clause:
 
 
 \CodeBlockInput[1][6]{c}{decreases.c}
@@ -300,7 +300,7 @@ This clause expresses exactly the same idea as a \CodeInline{loop variant}.
 The expression considered by a \CodeInline{decreases} clause is, when the
 function is called again, a positive integer expression (or an expression
 equipped with a relation) that strictly decreases. Note that it means that
-in when we reach the maximum recursion depth, the expression might be negative:
+when we reach the maximum recursion depth, the expression might be negative:
 
 
 \CodeBlockInput[8][12]{c}{decreases.c}
@@ -313,7 +313,9 @@ redundant information in the screenshot):
 \image{go_negative}
 
 
-Note that \CodeInline{n - 10 < n} is formulated \CodeInline{n\_1 (= n) <= 9 + n}.
+Here, the condition \CodeInline{n - 10 < n} is formulated
+\CodeInline{n\_1 (= n) <= 9 + n} because of the normalization of the
+formula.
 
 
 Let us emphasize on the fact that the \CodeInline{decreases} clause really
@@ -325,9 +327,10 @@ bounds the depth of the recursion and not the number of calls:
 
 
 
-Note that the \CodeInline{decreases} expression is considered at
-\CodeInline{Pre} state: the value of the expression when a recursive call is
-done must be smaller that the value of the expression at \CodeInline{Pre} state.
+The \CodeInline{decreases} expression associated to the function under proof is
+considered at \CodeInline{Pre} state: the value of the expression when a
+recursive call is done must be smaller that the value of the expression at
+\CodeInline{Pre} state.
 
 
 \CodeBlockInput[22][30]{c}{decreases.c}
@@ -341,14 +344,6 @@ in the set of functions that are involved in the recursion. For this, WP
 computes the strongly connected components from the set of functions, this is
 called a {\em cluster}.
 
-
-\begin{Information}
-  Note that this is done syntactically, for now we do not cover function
-  pointers in this tutorial, but one can refer to the option
-  \CodeInline{-wp-dynamic} in the WP manual.
-\end{Information}
-
-
 Thus, let us be more precise about the verification of the \CodeInline{decreases}
 clause. When a function is (mutually) recursive, it must be equipped with such
 a clause to prove that it terminates. Verifying that the \CodeInline{decreases}
@@ -359,9 +354,14 @@ obligation is generated when calling a recursive function that does not belong
 to the same cluster:
 
 
-
 \CodeBlockInput[32][48]{c}{decreases.c}
 
+
+\begin{Information}
+  Note that the computation of the cluster is done syntactically, for now we do
+  not cover function pointers in this tutorial, but one can refer to the option
+  \CodeInline{-wp-dynamic} in the WP manual.
+\end{Information}
 
 
 Finally, if a function of a cluster does not have a \CodeInline{decreases}
@@ -379,8 +379,8 @@ and a warning is emitted by WP.
 
 
 
-A desirable property of function is often that it should terminate. Indeed, in
-most programs, all functions must terminate and when it is not the case and that
+A desirable property for a function is often that it should terminate. Indeed,
+in most programs, all functions must terminate and when it is not the case and
 some functions can loop forever, it is highly common that there is a single
 function that is allowed to loop forever (so almost all functions in this
 program must terminate).
@@ -416,7 +416,7 @@ terminate:
 
 
 while function \CodeInline{main\_loop} may not (note that with default options,
-the variant will not be verified, we will explain why later):
+the variant is not verified, we will explain why later):
 
 
 
@@ -438,8 +438,9 @@ terminates (always):
 
 \begin{Information}
   If one really wants to verify that some function never terminates, it can be
-  done by specifying that the \CodeInline{return} and the \CodeInline{exit}
-  conditions are unreachable:
+  done by specifying that the function never returns and never exits. That is:
+  the post-conditions states associated to these kinds of termination are
+  unreachable:
   \CodeBlockInput{c}{no_terminates.c}
 \end{Information}
 
@@ -457,7 +458,7 @@ terminates (always):
   \item \CodeInline{-wp-frama-c-stdlib-terminate} (for functions of the Frama-C stdlib).
   \end{itemize}
   to claim that, unless a clause is provided, they must terminate (and thus
-  for functions with a definition, the verification must be performed.
+  for functions with a definition, the verification must be performed).
 \end{Information}
 
 
@@ -477,9 +478,9 @@ loops and function calls. Thus, we have to verify that:
 
 \begin{itemize}
   \item all loops have a (verified) \CodeInline{loop variant} clause,
-  \item all functions that are called terminate with the given parameters,
+  \item all called functions terminate with the given parameters,
   \item all recursive functions have a (verified) \CodeInline{decreases} clause,
-  \item (or that there are no loops or calls in the function).
+  \item (or that there are no loops nor calls in the function).
 \end{itemize}
 
 
@@ -553,6 +554,9 @@ to disable simplifications):
 \image{call_terminates_2}
 
 
+Where the first call termination is indeed verified while the second is not.
+
+
 When the called function does not have a \CodeInline{terminates} clause, it
 is considered to be \CodeInline{\textbackslash{}false}, that is: unless a
 \CodeInline{terminates} clause is provided, the function may not terminate.
@@ -599,7 +603,7 @@ we presented at the beginning of this section:
 \CodeBlockInput[6]{c}{main_loop.c}
 
 
-We have to verify that the loop variant is positive decreasing value only
+We have to verify that the loop variant is a positive decreasing value only
 when \CodeInline{debug\_steps} is not $-1$. However, this is not the default
 behavior of WP (that always verify loop variants by default), this can
 be enabled using the option \CodeInline{-wp-variant-with-terminates} and
@@ -642,10 +646,20 @@ ACSL specified behavior is enabled via the option
 \CodeBlockInput[53][60]{c}{terminates.c}
 
 
-\section{Exercises}
+\begin{Information}
+  When a function under proof does not have \CodeInline{terminates}
+  specification, whenever a verification condition needs it, the clause is
+  considered to be \CodeInline{\textbackslash{}true} since it makes sure that
+  we have more things to prove. For example, when the option
+  \CodeInline{-wp-variant-with-terminates} is used and a function contains a
+  \CodeInline{loop variant}, it guarantees that WP tries to prove it.
+\end{Information}
 
 
-\subsection{Explain proof failures}
+\levelThreeTitle{Exercises}
+
+
+\levelFourTitle{Explain proof failures}
 
 
 In the following program, some verification conditions are not verified:
@@ -658,7 +672,7 @@ Explain why they are not verified and propose a way to fix the specification so
 that everything is verified.
 
 
-\subsection{Explain termination proof results}
+\levelFourTitle{Explain termination proof results}
 
 
 In the following program:
@@ -671,7 +685,7 @@ Explain why termination clauses are verified or not. Modify the specification so
 that all of them are verified.
 
 
-\subsection{Search}
+\levelFourTitle{Search}
 
 
 Specify and prove the following recursive search function:
@@ -683,7 +697,7 @@ Specify and prove the following recursive search function:
 The specification should include the termination condition.
 
 
-\subsection{Sum integers}
+\levelFourTitle{Sum integers}
 
 
 The following program computes the sum of the integers between \CodeInline{fst}
@@ -697,7 +711,7 @@ Prove that this function terminates. Proving the correct behavior of the
 function or the absence of runtime errors is not asked.
 
 
-\subsection{Power}
+\levelFourTitle{Power}
 
 
 The following program computes the power of \CodeInline{x} to \CodeInline{n}:

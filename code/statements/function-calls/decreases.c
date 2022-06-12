@@ -53,11 +53,11 @@ void fail_mutual_1(unsigned k);
 void fail_mutual_2(unsigned k){
   if(k > 0) fail_mutual_1(k-1);
 }
+/* Warning:
+  [wp] file.c:5: Warning:
+    No decreases clause for fail_mutual_1
+*/
 
 void fail_mutual_1(unsigned k){
   if(k > 0) fail_mutual_2(k-1);
 }
-/* Warning:
-  [wp] <file>.c:<line>: Warning:
-    No decreases clause for fail_mutual_1
-*/
