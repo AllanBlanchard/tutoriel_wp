@@ -1,16 +1,19 @@
-
-
-
+/* run.config
+   STDOPT:+"-wp-no-rte"
+   STDOPT:+"-wp-no-rte -wp-variant-with-terminates"
+*/
 
 //@ terminates \false ;
 void may_not_terminate(void){
 
 }
 
+void call(int r);
+
 //@ terminates r > 0 ;
 void simple(int r){
   r -- ;
-  call();
+  call(r);
 }
 
 //@ terminates r > 0 ;
@@ -40,4 +43,18 @@ void with_loop(int value){
       // code
     }
   }
+}
+
+//@ terminates n > 0 ;
+void missing_decreases(int n){
+  missing_decreases(n);
+}
+
+/*@ requires n >= -1 ;
+    terminates n >= 0 ;
+    decreases n ; // is verified only with option -wp-variant-with-terminates
+*/
+void recursive(int n){
+  if(n == -1) recursive(n) ;
+  else if(n > 0) recursive(n - 1);
 }

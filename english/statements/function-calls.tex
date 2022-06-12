@@ -313,7 +313,7 @@ redundant information in the screenshot):
 \image{go_negative}
 
 
-Note that \CodeInline{n - 10 < n} is formulated \CodeInline{n_1 (= n) <= 9 + n}.
+Note that \CodeInline{n - 10 < n} is formulated \CodeInline{n\_1 (= n) <= 9 + n}.
 
 
 Let us emphasize on the fact that the \CodeInline{decreases} clause really
@@ -372,7 +372,7 @@ and a warning is emitted by WP.
 \CodeBlockInput[50][63]{c}{decreases.c}
 
 
-\image{fail_mutual}
+\image{fail-mutual-vc}
 
 
 \levelThreeTitle{Specifying and proving function termination}
@@ -415,11 +415,12 @@ terminate:
 
 
 
-while function \CodeInline{main\_loop} may not:
+while function \CodeInline{main\_loop} may not (note that with default options,
+the variant will not be verified, we will explain why later):
 
 
 
-\CodeBlockInput{c}{main_loop.c}
+\CodeBlockInput[6]{c}{main_loop.c}
 
 
 
@@ -431,7 +432,7 @@ terminates (always):
 
 
 
-\CodeBlockInput[5][8]{c}{terminates.c}
+\CodeBlockInput[6][9]{c}{terminates.c}
 
 
 
@@ -496,7 +497,7 @@ clause is trivially verified.
 
 
 
-% add a screenshot here
+\image{trivial_terminates}
 
 
 
@@ -509,13 +510,14 @@ One should note that the premise of the implication is evaluated at the
 
 
 
-\CodeBlockInput[10][14]{c}{terminates.c}
+\CodeBlockInput[11][17]{c}{terminates.c}
 
 
 
 Even if \CodeInline{r} has been decremented, the verification of the
-termination of \CodeInline{call()} is done with \CodeInline{r > 0} as a
-premise.
+termination of \CodeInline{call(r)} is done with
+\CodeInline{\textbackslash{}at(r, Pre) > 0} as a premise. We will see in the
+next section the verification condition generated for a call.
 
 
 
@@ -524,7 +526,7 @@ is false, the verification condition is always verified:
 
 
 
-\CodeBlockInput[16][22]{c}{terminates.c}
+\CodeBlockInput[19][25]{c}{terminates.c}
 
 
 
@@ -533,18 +535,22 @@ is false, the verification condition is always verified:
 
 
 Verifying that a function call terminates is done by verifying that when it is
-called, its termination condition is true. For example:
+called, its termination condition is true. For example, from the following
+program:
 
 
 
-\CodeBlockInput[24][33]{c}{terminates.c}
+\CodeBlockInput[27][36]{c}{terminates.c}
 
 
+We get the following verification conditions (by using \CodeInline{-wp-no-let}
+to disable simplifications):
 
-% add screenshots
-% PO  provable
-% PO !provable
 
+\image{call_terminates_1}
+
+
+\image{call_terminates_2}
 
 
 When the called function does not have a \CodeInline{terminates} clause, it
@@ -552,7 +558,16 @@ is considered to be \CodeInline{\textbackslash{}false}, that is: unless a
 \CodeInline{terminates} clause is provided, the function may not terminate.
 
 
-% add screenshot
+For example with our previous \CodeInline{simple} function, we get the message
+``Missing terminates clause on call to call, defaults to \textbackslash{}false''
+and we fail to prove termination:
+
+
+\image{simple_terminates_fails}
+
+
+Note that the formula $\mathtt{r} > 0 \Rightarrow false$ is translated into
+$\mathtt{r} <= 0$.
 
 
 \paragraph{Loop variant}
@@ -565,7 +580,7 @@ the termination condition is verified, this loop is unreachable.
 
 
 
-\CodeBlockInput[35][43]{c}{terminates.c}
+\CodeBlockInput[38][46]{c}{terminates.c}
 
 
 
@@ -581,9 +596,7 @@ verified {\em only when} the function must terminate. So in the example
 we presented at the beginning of this section:
 
 
-
-% example with main loop
-
+\CodeBlockInput[6]{c}{main_loop.c}
 
 
 We have to verify that the loop variant is positive decreasing value only
@@ -593,21 +606,29 @@ be enabled using the option \CodeInline{-wp-variant-with-terminates} and
 in this case our function is entirely verified:
 
 
-
-% add screenshot
+\image{main_loop_variant_terminates}
 
 
 \paragraph{Recursion}
 
 
-The behavior for recursive functions is similar to loops: a recursive function
-should have a \CodeInline{decreases} clause when its specification states that
-it terminates. If such a clause is missing, a verification condition:
-\CodeInline{\textbackslash{}at(T, Pre)} $\Rightarrow$ \CodeInline{\textbackslash{}false}
-is generated.
+A recursive function should have a \CodeInline{decreases} clause when its
+specification states that it terminates. If such a clause is missing, a
+verification condition \CodeInline{\textbackslash{}false} is generated.
 
 
-% add an example
+\CodeBlockInput[48][51]{c}{terminates.c}
+
+
+Note that this code generates two verification conditions:
+
+
+\image{missing_decreases_vcs}
+
+
+The first one corresponds to the rule associated to a function call explained
+earlier. The second corresponds to the fact that the \CodeInline{decreases}
+clause is missing and is not verified.
 
 
 Again in ACSL, the verification of the \CodeInline{decreases} clause
@@ -618,7 +639,7 @@ ACSL specified behavior is enabled via the option
 \CodeInline{-wp-variant-with-terminates}.
 
 
-% add an example
+\CodeBlockInput[53][60]{c}{terminates.c}
 
 
 \section{Exercises}
