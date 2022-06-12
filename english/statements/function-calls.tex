@@ -293,15 +293,27 @@ some kind of variant to bound the depth of the recursive calls. In ACSL, it is
 expressed through the \CodeInline{decreases} clause:
 
 
-
 \CodeBlockInput[1][6]{c}{decreases.c}
 
 
 This clause expresses exactly the same idea as a \CodeInline{loop variant}.
-The expression considered by a \CodeInline{decreases} clause is a positive
-integer expression (or an expression equipped with a relation) that strictly
-decreases when the function is called again.
+The expression considered by a \CodeInline{decreases} clause is, when the
+function is called again, a positive integer expression (or an expression
+equipped with a relation) that strictly decreases. Note that it means that
+in when we reach the maximum recursion depth, the expression might be negative:
 
+
+\CodeBlockInput[8][12]{c}{decreases.c}
+
+
+We can see the generated verification condition for the previous example by
+disabling goal simplifications (option \CodeInline{-wp-no-let}, we removed
+redundant information in the screenshot):
+
+\image{go_negative}
+
+
+Note that \CodeInline{n - 10 < n} is formulated \CodeInline{n_1 (= n) <= 9 + n}.
 
 
 Let us emphasize on the fact that the \CodeInline{decreases} clause really
@@ -309,16 +321,16 @@ bounds the depth of the recursion and not the number of calls:
 
 
 
-\CodeBlockInput[8][14]{c}{decreases.c}
+\CodeBlockInput[14][20]{c}{decreases.c}
 
 
 
-Note than, just like evaluation of the \CodeInline{terminates} clause, the
-clause of the function under verification is evaluated at \CodeInline{Pre}
-state:
+Note that the \CodeInline{decreases} expression is considered at
+\CodeInline{Pre} state: the value of the expression when a recursive call is
+done must be smaller that the value of the expression at \CodeInline{Pre} state.
 
 
-\CodeBlockInput[16][24]{c}{decreases.c}
+\CodeBlockInput[22][30]{c}{decreases.c}
 
 
 
@@ -348,7 +360,7 @@ to the same cluster:
 
 
 
-\CodeBlockInput[26][42]{c}{decreases.c}
+\CodeBlockInput[32][48]{c}{decreases.c}
 
 
 
@@ -357,7 +369,10 @@ clause, a \CodeInline{\textbackslash{}false} verification condition is generated
 and a warning is emitted by WP.
 
 
-% add an example
+\CodeBlockInput[50][63]{c}{decreases.c}
+
+
+\image{fail_mutual}
 
 
 \levelThreeTitle{Specifying and proving function termination}
@@ -425,6 +440,23 @@ terminates (always):
   done by specifying that the \CodeInline{return} and the \CodeInline{exit}
   conditions are unreachable:
   \CodeBlockInput{c}{no_terminates.c}
+\end{Information}
+
+
+
+\begin{Information}
+  In ACSL, it is specified that when a function does not have a
+  \CodeInline{terminates} clause, the default is
+  \CodeInline{terminates \textbackslash{}true}, however it is still not
+  implemented by the Frama-C kernel. This behavior can be enabled in WP
+  by using the options:
+  \begin{itemize}
+  \item \CodeInline{-wp-definitions-terminate} (for functions with definition),
+  \item \CodeInline{-wp-declarations-terminate} (for functions without definition),
+  \item \CodeInline{-wp-frama-c-stdlib-terminate} (for functions of the Frama-C stdlib).
+  \end{itemize}
+  to claim that, unless a clause is provided, they must terminate (and thus
+  for functions with a definition, the verification must be performed.
 \end{Information}
 
 
@@ -521,22 +553,6 @@ is considered to be \CodeInline{\textbackslash{}false}, that is: unless a
 
 
 % add screenshot
-
-
-\begin{Information}
-  In ACSL, it is specified that when a function does not have a
-  \CodeInline{terminates} clause, the default is
-  \CodeInline{terminates \textbackslash{}true}, however it is still not
-  implemented by the Frama-C kernel. This behavior can be enabled in WP
-  by using the options:
-  \begin{itemize}
-  \item \CodeInline{-wp-definitions-terminate} (for functions with definition),
-  \item \CodeInline{-wp-declarations-terminate} (for functions without definition),
-  \item \CodeInline{-wp-frama-c-stdlib-terminate} (for functions of the Frama-C stdlib).
-  \end{itemize}
-  to claim that, unless a clause is provided, they must terminate (and thus
-  for functions with a definition, the verification must be performed.
-\end{Information}
 
 
 \paragraph{Loop variant}
