@@ -220,13 +220,13 @@ function and ``Prove function annotations by WP'':
 
 We can see that blue circles become green bullets, indicating that the
 specification is indeed ensured by the program. We can also prove
-properties one by one by right-clicking on them and not on the name of
+properties one by one, by right-clicking on them and not on the name of
 the function.
 
 
 
-But is our code really bug free? WP gives us a way to ensure that a
-code respects a specification, but it does not directly check the absence
+But is our code really bug free? WP gives us a way to ensure that a code
+conforms to a specification, but it does not directly check the absence
 of runtime errors (RTE) if we do not ask it. Another plugin of Frama-C,
 called RTE, can be used to generate some ACSL annotations that can be verified
 by the other plugins. Its purpose is to add, in the program, some controls to
@@ -480,7 +480,7 @@ everything is validated by WP, our implementation is proved:
 
 
 We can also verify that a function that would call \CodeInline{abs}
-correctly respects the required precondition:
+conforms to the required precondition:
 
 
 

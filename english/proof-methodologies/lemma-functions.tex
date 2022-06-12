@@ -281,7 +281,7 @@ assertion from the precondition:
 Of course, there exists some index \CodeInline{n} such that \CodeInline{in[n]}
 is \CodeInline{v}, else the number of occurrences of this value would be $0$.
 But, instead of just proving that such an index exists, let us directly find
-some index that respects the constraints on \CodeInline{n} by using a lemma
+some index that satisfies the constraints on \CodeInline{n} by using a lemma
 function that returns it:
 
 
@@ -299,7 +299,7 @@ a value \CodeInline{v}.
 
 
 
-We prove that the second behavior respects the postcondition by showing that it
+We prove that the second behavior ensures the postcondition by showing that it
 leads to a contradiction. If there is no cell of value \CodeInline{v}, then
 the number of occurrences of \CodeInline{v} is 0, this is expressed by the
 second invariant that shows that as we have not met any \CodeInline{v} from
@@ -454,7 +454,7 @@ same), and to establish our premises. Indeed, if we have a look at the contract
 of \CodeInline{assign\_array}, we see that it assigns the array (which
 guarantees the creation of a new memory label) and in postcondition, it ensures
 that the content of the array, between the pre and the postcondition (thus, when
-we call it: \CodeInline{L1} and \CodeInline{L2}) respects the premise of our
+we call it: \CodeInline{L1} and \CodeInline{L2}) verifies the premise of our
 lemma (which we repeat on line 15, by adding an assertion). Then we use our
 \CodeInline{shift\_ptr} macro (that will later contain the proof carrying code),
 and we then expect to be able to prove the postcondition of our lemma (line 19).
@@ -660,7 +660,7 @@ as else, we do not have anything to count):
 
 
 which is enough to ensure that the \CodeInline{insertion\_sort} function
-respects its specification as long as we finish the proof of the function
+conforms to its specification as long as we finish the proof of the function
 \CodeInline{insert}. This second function makes a more complex action. Let us
 depart from this annotated version:
 
