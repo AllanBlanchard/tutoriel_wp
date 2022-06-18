@@ -1,7 +1,7 @@
 Nous avons vu que la preuve d'un programme permet de vérifier deux aspects
 principaux à propos de sa correction ; d'abord que le programme ne contient pas
 d'erreur d'exécution, et ensuite que le programme répond correctement à sa
-spécification. Cependant, il est parfois difficile d'obtenir le second aspect,
+spécification. Cependant, il est parfois difficile d'obtenir le second aspect
 et le premier est déjà une étape intéressante pour la correction de notre programme.
 
 
@@ -69,7 +69,7 @@ contextes dans lesquels la fonction est appelée, une fois que nous avons
 prouvée l'absence d'erreur d'exécution dans cette fonction.
 
 
-\levelThreeTitle{Exemple: la fonction recherche}
+\levelThreeTitle{Exemple : la fonction recherche}
 
 
 Maintenant que nous avons le principe en tête, travaillons avec un exemple un peu
@@ -120,11 +120,10 @@ regardant l'assertion générée par le plugin RTE :
 
 
 Nous devons donc vérifier que :
-
 \begin{itemize}
-\item le pointeur que nous avons reçu est valide,
+\item le pointeur que la fonction reçoit est valide,
 \item \CodeInline{*p+1} ne fait pas de débordement,
-\item nous respectons le contrat de la fonction \CodeInline{search}.
+\item la précondition de la fonction \CodeInline{search} est satisfaite.
 \end{itemize}
 
 
@@ -149,8 +148,9 @@ L'avantage le plus évident de cette approche est le fait qu'elle permet de gara
 qu'un programme ne contient pas d'erreurs à l'exécution dans toute fonction d'un
 module ou d'un programme en (relative) isolation des autres fonctions. De plus,
 cette absence d'erreurs à l'exécution est garantie pour tout usage de la fonction
-dont l'appel respecte ses préconditions. Cela permet de gagner une certaine confiance
-dans un système avec une approche dont le coût est relativement raisonnable.
+dont l'appel satisfait ses préconditions. Cela permet de gagner une certaine
+confiance dans un système avec une approche dont le coût est relativement
+raisonnable.
 
 
 

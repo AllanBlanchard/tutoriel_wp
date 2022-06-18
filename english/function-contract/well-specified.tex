@@ -74,7 +74,7 @@ false:
 
 If we ask WP to prove this function, it will accept it without any problem
 since the property we ask in precondition is necessarily false.
-However, we will not be able to give an input that respects the
+However, we will not be able to give an input that satisfies the
 precondition.
 
 
@@ -104,11 +104,7 @@ precondition is inconsistent.
 
 Note that when the smoke tests succeed, for example if we fix the
 precondition like this:
-
-
- \image{2-smoke-success}
-
-
+\image{2-smoke-success}
 it does not necessarily mean that the precondition is consistent, just
 that the prover was unable to prove that it was inconsistent.
 
@@ -212,8 +208,8 @@ by Frama-C, we can see that in the postcondition, the pointers are enclosed into
 \image{2-old-swap}
 
 
-For the built-in \CodeInline{\textbackslash{}at}, we have to take care of this
-more explicitly. In particular,
+For the built-in \CodeInline{\textbackslash{}at} function, we have to take care
+of this more explicitly. In particular,
 the specified label must make sense with respect to the scope of the
 value. For example, in the following program, Frama-C detects that we ask
 the value of the variable \CodeInline{x} at a program point where it does
@@ -227,7 +223,7 @@ not exist:
 
 
 However, in some other cases, we only reach a proof failure since determining
-that the value does not exists at some particular label cannot be done by
+that the value does not exist at some particular label cannot be done by
 a syntactic analysis. For example, if the variable is declared but undefined
 or if we want the value of a pointed value:
 
@@ -236,7 +232,7 @@ or if we want the value of a pointed value:
 
 
 Here, it is easy to see the problem. However, the considered label is
-propagated to subexpressions. Thus, sometimes, terms that seem to be
+propagated to sub-expressions. Thus, sometimes, terms that seem to be
 innocent can have a surprising behavior if we do not keep this fact in mind.
 For example, in the following example:
 
@@ -248,12 +244,12 @@ The first assertion is proved, and while the second assertion seems to
 express the same property, it cannot be proved. Because, it in fact does not
 express the same property. The expression
 \CodeInline{\textbackslash{}at(x[*p], Pre)} must be seen as
-\CodeInline{\textbackslash{}at(x[\textbackslash{}at(*p)], Pre)} as the
-label is propagated to the subexpression \CodeInline{*p}, for which we do
+\CodeInline{\textbackslash{}at(x[\textbackslash{}at(*p)], Pre)}, since the
+label is propagated to the sub-expression \CodeInline{*p}, for which we do
 not know the value at label \CodeInline{Pre} (since it is not specified).
 
 
-For the moment, we do not need \CodeInline{\textbackslash{}at} but it can
+For the moment, we do not need \CodeInline{\textbackslash{}at}, but it can
 often be useful, if not essential, when we want to make our
 specification precise.
 
@@ -466,7 +462,7 @@ Writing a specification that is precise enough can sometimes be a bit tricky.
 Interestingly, a good way to check if a specification is precise enough is to
 write tests. And in fact, this is basically what we have done for our examples
 \CodeInline{max} and \CodeInline{swap}. We have written a first version of the
-specification and we have written some code with a call to the corresponding
+specification, and we have written some code with a call to the corresponding
 function to determine whether we could prove some properties that we expected to
 be easily provable from the contract of the function.
 
@@ -592,7 +588,7 @@ unchanged.
 
 
 
-The following functions computes the maximum of the values pointed by
+The following function computes the maximum of the values pointed by
 \CodeInline{a} and \CodeInline{b}. Write the contract of the function:
 
 
@@ -649,7 +645,7 @@ frama-c-gui your-file.c -wp -wp-rte
 
 
 Remember that ordering values is not just ensuring that resulting values
-are sorted increasing order that each pointed value must be one the original
+are sorted increasing order that each pointed value must be one of the original
 ones. All original values should still be there after the sorting operation:
 new values are a permutation of the original ones. To express this idea, one
 can rely on the set datatype. For example, this property is true:

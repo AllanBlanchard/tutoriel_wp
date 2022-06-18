@@ -12,9 +12,9 @@ Tout au long de ce tutoriel, nous avons vu comment utiliser ces outils
 pour spécifier ce que nous attendons de nos programmes et vérifier que le code
 produit correspond effectivement à la spécification que nous en
 avons faite. Cette spécification passe par l'annotation de nos fonctions avec
-le contrat qu'elle doit respecter, c'est-à-dire les propriétés que doivent
-respecter les entrées de la fonction pour garantir son bon fonctionnement et
-les propriétés que celle-ci s'engage à assurer sur les sorties en retour,
+le contrat auquel elle doit se conformer, c'est-à-dire les propriétés que
+doivent vérifier les entrées de la fonction pour garantir son bon fonctionnement
+et les propriétés que celle-ci s'engage à assurer sur les sorties en retour,
 associées aux contrôles que nous impose l'outil à propos des problèmes
 spécifiques au langage C (plus particulièrement, montrer l'absence de
 \textit{runtime errors}).
@@ -54,7 +54,7 @@ void ma_fonction(int* a, int b){
 
 
 Ce qui nous permet ainsi de bénéficier de la robustesse de notre fonction tout en
-ayant la possibilité de débugger un appel incorrect dans un code que nous ne
+ayant la possibilité de déboguer un appel incorrect dans un code que nous ne
 voulons ou pouvons pas prouver.
 
 
@@ -86,7 +86,7 @@ ont cela pour elles. Qu'y a-t-il de plus terrible que lire une spécification
 rallonge, de verbes conjugués à la forme conditionnelle, de termes imprécis,
 d'ambiguïtés, compilée dans des documents administratifs de centaines de pages,
 et dans laquelle nous devons chercher pour déterminer « bon alors cette fonction,
-elle doit faire quoi ? Et qu'est-ce qu'il faut valider à son sujet ? ».
+elle doit faire quoi ? Et que faut-il valider à son sujet ? ».
 
 
 
@@ -147,13 +147,10 @@ toujours fragile.}
 \levelThreeTitle{Avec Frama-C}
 
 
-Frama-C propose divers moyen d'analyser les programmes. Dans les outils les
+Frama-C propose divers moyens d'analyser les programmes. Dans les outils les
 plus courants qui sont intéressants à connaître d'un point de vue vérification
 statique et dynamique pour l'évaluation du bon fonctionnement d'un programme,
 on peut citer :
-
-
-
 \begin{itemize}
 \item l'analyse par interprétation abstraite avec
 \externalLink{EVA}{http://frama-c.com/value.html},
@@ -199,14 +196,14 @@ l'analyse du code source et Frama-C permet de forger différentes analyses.
 \levelThreeTitle{Avec la preuve déductive}
 
 
-Tout au long du tutoriel, nous avons utilisé WP pour générer des obligations de
-preuve à partir de programmes et de leurs spécifications. Par la suite, nous avons
-utilisé des solveurs automatiques pour assurer que les propriétés en question sont
-bien vérifiées.
+Tout au long du tutoriel, nous avons utilisé WP pour générer des conditions de
+vérification à partir de programmes et de leurs spécifications. Par la suite,
+nous avons utilisé des solveurs automatiques pour assurer que les propriétés en
+question sont bien vérifiées.
 
 
 
-Lorsque nous passons par d'autres solveurs que Alt-Ergo, le dialogue avec ceux-ci
+Lorsque nous passons par d'autres solveurs qu'Alt-Ergo, le dialogue avec ceux-ci
 est assuré par une traduction vers le langage de Why3 qui fait ensuite le pont
 avec les prouveurs automatiques. Mais ce n'est pas la seule manière d'utiliser
 Why3. Celui-ci peut tout à fait être utilisé seul pour écrire et prouver des
@@ -216,12 +213,12 @@ certain nombre de structures de données.
 
 
 Il y a un certain nombre de preuves qui ne peuvent être déchargées par les
-prouveurs automatiques. Dans ce genre de cas, nous devons nous rabattre sur de la
-preuve interactive. WP comme Why3 peuvent extraire vers Coq, et il est très
-intéressant d'étudier ce langage, il peut par exemple servir à constituer des
-bibliothèques de lemmes génériques et prouvés. À noter que Why3 peut également
-extraire ses obligations vers Isabelle ou PVS qui sont d'autres assistants de
-preuve.
+prouveurs automatiques. Dans ce genre de cas, nous devons nous rabattre sur de
+la preuve interactive. Why3 peut par extraire des conditions de vérification
+vers Coq, et il est très intéressant d'étudier ce langage, il peut par exemple
+servir à constituer des bibliothèques de lemmes génériques et prouvés. À noter
+que Why3 peut également extraire ses conditions de vérification vers Isabelle ou
+PVS qui sont d'autres assistants de preuve.
 
 
 

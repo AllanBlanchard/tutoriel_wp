@@ -44,11 +44,11 @@ Which perfectly describes the two cases:
 
 However, this definition is not completely satisfying. For example, we cannot
 deduce that an odd number is not even. If we try to prove that 1 is even, we
-will have to check if -1 is even, and then -3, -5, etc, infinitely. Moreover,
+will have to check if -1 is even, and then -3, -5, etc., infinitely. Moreover,
 we generally prefer to define the induction cases the opposite way: defining
 the condition under which the wanted conclusion is true. For example, here,
 how can we verify that some $n$ is natural and even? We first check whether it
-is 0, if not, we check if $n$ is greater than $0$ and then we verify that $n-2$
+is 0, if not, we check if $n$ is greater than $0$, and then we verify that $n-2$
 is even:
 
 
@@ -91,13 +91,11 @@ avoid building such a bad definition.
 First, we can make sure that inductive predicates are well-founded. This can
 be done by syntactically restricting what we allow in an inductive definition,
 by making sure that each case has the form:
-
 \begin{CodeBlock}{c}
 /*@
   \forall y1,...,ym ; h1 ==> ··· ==> hl ==> P(t1,...,tn) ;
 */
 \end{CodeBlock}
-
 where the predicate \CodeInline{P} can only appear positively (so not negated
 with \CodeInline{!} - $\neg$) in the different hypotheses \CodeInline{hx}.
 Basically, it ensures that we cannot build both positive and negative
@@ -105,9 +103,7 @@ occurrences of \CodeInline{P} for some parameters which would be incoherent.
 
 This is for example verified by our previously defined predicate
 \CodeInline{even\_natural}. While a definition like:
-
 \CodeBlockInput[5][15]{c}{even-bad.c}
-
 does not respect this constraint as the property \CodeInline{even\_natural}
 appears negatively on line~8.
 
@@ -135,15 +131,15 @@ For example for our definition of \CodeInline{even\_natural}, we would write:
 
 
 
-During the generation of the proof obligation, WP asks Why3 to create an
+During the generation of the verification conditions, WP asks Why3 to create an
 inductive definition from the one written in ACSL. As Why3 is stricter than
 Frama-C and WP on this kind of definition, if the inductive predicate is too
 strange (if it is not well-founded), it will be rejected with an error. And
 indeed, with the bad definition of \CodeInline{even\_natural} we just proposed,
 Why3 complains when we try to prove the
-\CodeInline{ensures \textbackslash{}false}, because there exists a non
-positive occurrence of \CodeInline{P\_even\_natural} that encodes the
-\CodeInline{even\_natural} we wrote in ACSL.
+\CodeInline{ensures \textbackslash{}false} clause, because there exists a
+non-positive occurrence of \CodeInline{P\_even\_natural} that encodes the
+\CodeInline{even\_natural} predicate we wrote in ACSL.
 
 \begin{CodeBlock}{bash}
 frama-c-gui -wp -wp-prop=BAD file.c
@@ -304,8 +300,8 @@ This time, our property is precisely defined, the proof is relatively easy to
 produce, only requiring to add an assertion in the block of the loop to state
 that it only performs a swap of values in the array (and then giving
 the transition to the next permutation). To define this swap notion, we use
-a particular annotation (at line 16), introduced using the keyword
-\CodeInline{ghost}. Here, the goal is to introduce a label in the code that in
+a particular annotation (at line 16), introduced using the \CodeInline{ghost}
+keyword. Here, the goal is to introduce a label in the code that in
 fact does not exist from the program point of view, and is only visible from
 a specification point of view. We present the ``ghost'' features in the final
 section of this chapter, for now let us focus on axiomatic definitions.
@@ -340,7 +336,7 @@ divisor of two others. The goal of the exercise is to prove that the function
 \CodeInline{gcd} computes the greatest common divisor. Thus, we do not have to
 specify all the cases for the predicate. Indeed, a close look at the loop shows
 us that after the first iteration \CodeInline{a} is greater or equals to
-\CodeInline{b} and it is maintained by the loop. Thus, we consider two cases for
+\CodeInline{b}, and it is maintained by the loop. Thus, we consider two cases for
 the inductive predicate:
 
 
@@ -367,7 +363,7 @@ In this exercise, we do not consider RTEs.
 
 
 Write an inductive predicate that states that some integer \CodeInline{r} equals
-to $x^n$. Consider the two cases: either $n$ is 0 or it is greater and then it
+to $x^n$. Consider the two cases: either $n$ is 0 or it is greater, and then it
 should be related to the value $x^{n-1}$.
 
 
@@ -423,10 +419,10 @@ thus $p^n = 1$.
 Take back the definitions of the \CodeInline{shifted} and \CodeInline{unchanged}
 predicates from the exercise~\ref{l4:acsl-properties-lemmas-shift-trans}. The
 \CodeInline{shited\_cell} predicate can be inlined and removed. Use the
-shift predicate to express the rotate predicate that expresses that some elements
-of an array are rotated to the left in the sense that all elements are shifted of
-one element to the left except the last one that is put in the first cell of the
-range. Use this predicate to prove the rotate function:
+shift predicate to express the \CodeInline{rotate} predicate that expresses that
+some elements of an array are rotated to the left in the sense that all elements
+are shifted of one element to the left except the last one that is put in the
+first cell of the range. Use this predicate to prove the rotate function:
 
 
 \CodeBlockInput[16][31]{c}{ex-4-rotate-permutation.c}
@@ -434,7 +430,6 @@ range. Use this predicate to prove the rotate function:
 
 Express a new version of the notion of permutation with an inductive predicate
 that considers four cases:
-
 \begin{itemize}
 \item permutation is reflexive,
 \item if the left part of the range (until an index of the range) is rotated

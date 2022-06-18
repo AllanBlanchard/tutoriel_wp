@@ -18,8 +18,8 @@ keyword \CodeInline{\textbackslash{}old} cannot be used there). However,
 the properties expressed by this clause do not have to be verified before
 the call, they can be verified and in this case, the postcondition
 specified in our behavior applies. The postconditions of a particular
-behavior are introduced using \texttt{ensures}. Finally, we can ask WP to
-verify that behaviors are disjoint (to guarantee determinism) and
+behavior are introduced using a \texttt{ensures} clause. Finally, we can ask WP
+to verify that behaviors are disjoint (to guarantee determinism) and
 complete (to guarantee that we cover all possible input).
 
 Behaviors are disjoint if for any (valid) input of the function, it
@@ -41,9 +41,8 @@ return a positive value.
 
 
 
-Let us now slighlty modify the assumptions of each behavior to illustrate
+Let us now slightly modify the assumptions of each behavior to illustrate
 the meaning of \CodeInline{complete} and \CodeInline{disjoint}:
-
 \begin{itemize}
 \item
   replace the assumption of \CodeInline{pos} with
@@ -64,7 +63,7 @@ the meaning of \CodeInline{complete} and \CodeInline{disjoint}:
   \begin{itemize}
   \item put our \CodeInline{assigns} before the behaviors (as we have done in our
     example) with all potentially modified non-local elements,
-  \item add in postcondition of each behaviors the elements that are in fact
+  \item add in postcondition of each behavior the elements that are in fact
     not modified by indicating their new value to be equal to the
     \CodeInline{\textbackslash{}old} one.
   \end{itemize}
@@ -83,12 +82,10 @@ tedious and again error-prone.
 \levelThreeTitle{Exercises}
 
 
-\levelFourTitle{Previous exercices}
+\levelFourTitle{Previous exercises}
 
 
 From previous sections, take back the examples:
-
-
 \begin{itemize}
 \item about the computation of the distance between to integers,
 \item ``reset on condition'',
@@ -106,7 +103,7 @@ Considering that the contracts were:
 Re-write them using behaviors.
 
 
-\levelFourTitle{Two other simple exercices}
+\levelFourTitle{Two other simple exercises}
 
 
 Produce the code and the specification of the two following functions
@@ -133,7 +130,6 @@ the coordinate is on an axis, arbitrary choose one of the quadrants.
 
 Complete the following functions that receive the lengths of the different
 sides of a triangle, and respectively return:
-
 \begin{itemize}
 \item if the triangle is scalene, isosceles, or equilateral,
 \item if the triangle is right, acute or obtuse.
@@ -170,13 +166,13 @@ the contract was:
 
 \begin{enumerate}
 \item Rewrite it using behaviors
-\item Modify the contract of 1. in order to make the behaviors non-disjoint,
+\item Modify the contract of 1 in order to make the behaviors non-disjoint,
   except this property, the contract should remain verified,
-\item Modify the contract of 1. in order to make the behaviors incomplete,
+\item Modify the contract of 1 in order to make the behaviors incomplete,
   add a new behavior that makes the contract complete again,
-\item Modify the function of 1. in order to accept \CodeInline{NULL} pointers
-  for both \CodeInline{a} and \CodeInline{b}. If both of them are nul pointers,
-  return \CodeInline{INT\_MIN}, if one is a nul pointer, return the value of
+\item Modify the function of 1 in order to accept \CodeInline{NULL} pointers
+  for both \CodeInline{a} and \CodeInline{b}. If both of them are null pointers,
+  return \CodeInline{INT\_MIN}, if one is a null pointer, return the value of
   the other, else, return the maximum of them. Modify the contract accordingly
   by adding new behaviors. Be sure that they are disjoint and complete.
 \end{enumerate}

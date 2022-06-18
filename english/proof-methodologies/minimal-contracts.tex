@@ -1,7 +1,7 @@
-We have seen that program proof allows to verify two main aspects of program
+We have seen that program proof allows verifying two main aspects of program
 correctness: first that programs do not contain runtime errors, second that
 programs correctly implement their specification. However, it is sometimes hard
-to guarantee the later, and the former is already an interesting step for
+to guarantee the latter, and the former is already an interesting step for
 program correctness.
 
 Indeed, runtime errors often cause the presence of so-called ``undefined
@@ -18,7 +18,7 @@ The minimal contracts approach is guided by the RTE plugin. Basically, the idea
 is to generate the assertions related to absence of runtime errors for all the
 functions of a module or a project and to write the minimal set of (correct)
 contracts that are sufficient to prove that the runtime errors cannot happen.
-Most of the time, we need far less lines of specification that what is usually
+Most of the time, we need far fewer lines of specification that what is usually
 required to prove the functional correctness of the program.
 
 
@@ -114,9 +114,7 @@ a look at the assertion that RTE asks us to verify:
 \CodeBlockInput[30][39]{c}{search-4.c}
 
 
-Thus we have to verify that:
-
-
+Thus, we have to verify that:
 \begin{itemize}
 \item the pointer we received from \CodeInline{search} is valid,
 \item \CodeInline{*p + 1} does not overflow,
@@ -152,7 +150,7 @@ with a relatively low-cost approach.
 
 However, as we have seen, when we use a function it can change the knowledge
 we need about its behavior, requiring to make the contract richer and richer.
-Thus we can progressively reach a state where we basically proved the functional
+Thus, we can progressively reach a state where we basically proved the functional
 correctness of the function.
 
 

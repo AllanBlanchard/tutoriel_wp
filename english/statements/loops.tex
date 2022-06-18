@@ -54,7 +54,6 @@ end of the last iteration that sets the value of \CodeInline{i} to $10$.
 
 To verify an invariant $I$, WP then produces the following
 ``reasoning'':
-
 \begin{itemize}
 \item
   verify that $I$ is true at the beginning of the loop (establishment)
@@ -72,20 +71,18 @@ $$\dfrac{\{I \wedge B \}\ c\ \{I\}}{\{I\}\ while(B)\{c\}\ \{I \wedge \neg B\}}$$
 And the weakest precondition calculus is the following:
 $$wp(while (B) \{ c \}, Post) := I \wedge ((B \wedge I) \Rightarrow wp(c, I)) \wedge ((\neg B \wedge I) \Rightarrow Post)$$
 Let us detail this formula:
-
 \begin{itemize}
 \item
   \begin{enumerate}
   \def\labelenumi{(\arabic{enumi})}
   \item
-    the first $I$ corresponds to the establishment of the invariant,
-    in layman's terms, this is the ``precondition'' of the loop,
+    The first $I$ corresponds to the establishment of the invariant,
+    in layman's terms, this is the ``precondition'' of the loop.
   \end{enumerate}
 \item
-  the second part of the conjunction
+  The second part of the conjunction
   ($(B \wedge I) \Rightarrow wp(c, I)$) corresponds to the
   verification of the operation performed by the body of the loop:
-
   \begin{itemize}
   \item
     the precondition that we know of the loop body (let us note $KWP$,
@@ -111,7 +108,7 @@ Let us detail this formula:
     previously explained.
   \end{itemize}
 \item
-  finally, the last part ($(\neg B \wedge I) \Rightarrow Post$)
+  Finally, the last part ($(\neg B \wedge I) \Rightarrow Post$)
   expresses the fact that when the loop ends($\neg B$), and the
   invariant $I$ has been maintained, it must imply that the wanted
   postcondition of the loop is verified.
@@ -214,14 +211,14 @@ It seems not.
 
 
 
-\levelThreeTitle{The assigns clause \ldots{} for loops}
+\levelThreeTitle{The \texttt{assigns} clause \ldots{} for loops}
 
 
 In fact, considering loops, WP \textbf{only} reasons about what is
 provided by the user to perform its reasoning. And here, the invariant
 does not specify anything about the way the value of \CodeInline{h} is
 modified (or not). We could specify the invariant of all program
-variables, but it would be a lot of work. ACSL simply allows to add
+variables, but it would be a lot of work. ACSL simply allows adding
 \CodeInline{assigns} annotations for loops. Any other variable is considered
 to keep its old value. For example:
 
@@ -286,7 +283,7 @@ The assertion ``False'' is proved! For a very simple reason: since the
 condition of the loop is ``True'' and no instruction of the loop body
 allows to leave the loop, it does not terminate. As we are proving the
 code with partial correctness, and as the execution does not terminate,
-we can prove anything about the code that follows the non terminating
+we can prove anything about the code that follows the non-terminating
 part of the code. However, if the termination is not trivially provable,
 the assertion will probably not be proved.
 
@@ -385,7 +382,7 @@ that this function returns the old value of \CodeInline{a} plus 10.
 
 
 
-The weakest precondition calculus does not allow to deduce information
+The weakest precondition calculus does not allow deducing information
 that is not part of the loop invariant. In a code like:
 
 
@@ -482,7 +479,7 @@ as if we had written:
 
 
 This is an interesting scheme. It basically corresponds to any algorithm
-that searches, using a loop, a particular condition respected by an element
+that searches, using a loop, a particular condition verified by an element
 in a given data-structure and stops when it founds it to perform some
 operations that are thus not really part of the loop. From a verification
 point of view, it allows us to simplify the contract of the loop: we know
@@ -536,8 +533,8 @@ iterations and use it as a variant. You might need to add an invariant.
 
 
 Write a suitable loop assigns clause for this loop such that the assertion
-on line 8 is proved as well as the assigns clause. Let us ignore runtime
-errors in this proof.
+on line 8 is proved as well as the \CodeInline{assigns} clause. Let us ignore
+runtime errors in this proof.
 
 
 

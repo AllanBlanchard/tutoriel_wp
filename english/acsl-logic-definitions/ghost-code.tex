@@ -171,14 +171,11 @@ void foo(unsigned n){
 
 
 Frama-C verifies several properties about the ghost code we write:
-
-
 \begin{itemize}
 \item the ghost code cannot modify the control flow graph of the program,
 \item the normal code cannot access to the ghost memory,
 \item the ghost code can only write the ghost memory.
 \end{itemize}
-
 
 Verifying these properties, our goal is to guarantee that for any
 program, for any input, its observable behavior is the same with or
@@ -268,8 +265,8 @@ an error will still be triggered:
 Finally, we can remark that there exists two ways to change the control
 flow. The first one is to use jumps (thus \CodeInline{break},
 \CodeInline{continue}, or \CodeInline{goto}), the second is to
-introduce a non terminating code. For this last one, unless the non
-termination is trivial, the kernel cannot verify that the control
+introduce a non-terminating code. For this last one, unless the non-termination
+is trivial, the kernel cannot verify that the control
 flow is changed (and thus, it never does, this is delegated to plugins).
 We will treat this question in
 section~\ref{l3:acsl-logic-definitions-what-remains}.
@@ -461,7 +458,7 @@ int const * p = a ;
 
 This code is valid as we only restrict our capacity to write memory
 locations when we initialize (or assign) \CodeInline{p} to \CodeInline{\&a[0]}.
-On the other hand, both the two following pointer initializations
+On the other hand, both the two following pointer initialization
 (or equivalent assignments) are forbidden with the
 \CodeInline{\textbackslash{}ghost} qualifier:
 
@@ -476,7 +473,7 @@ int non_ghost_int ;
 
 
 While the reason why we refuse the first initialization is quite direct:
-it would allow to write into the normal memory from ghost code through
+it would allow writing into the normal memory from ghost code through
 \CodeInline{p}, the reason why we refuse the second one is not that
 intuitive. And, indeed, we must use workarounds to create a problem with
 this conversion:
@@ -501,15 +498,13 @@ not currently supported by Frama-C.
 
 
 \levelThreeTitle{Ghost code validity, what remains to be verified}
-\label{l3:acsl-logic-definitions-what-remains}.
+\label{l3:acsl-logic-definitions-what-remains}
 
 
 Except for the restrictions mentioned in the previous section,
 ghost code is just normal C code. That means that if we want to
 verify the original program, we must take care of at least two more
 aspects:
-
-
 \begin{itemize}
 \item absence of runtime errors,
 \item ghost code termination.
@@ -526,7 +521,7 @@ kinds of correctness: partial and total correctness, the second one allowing
 to prove that a program terminates. For normal code, showing that the code
 terminates is not always something that we want. On the other hand, if we
 use some ghost code during the verification, it is absolutely necessary to
-prove total correctness of this ghost code. Indeed, if it is non terminating
+prove total correctness of this ghost code. Indeed, if it is non-terminating
 (if it contains an infinite loop for example), it could allow us to prove
 anything about the program.
 
@@ -545,8 +540,8 @@ void foo(void){
 \levelThreeTitle{Make a logical state explicit}
 
 
-The goal of ghost code is to make explicit some information that would else
-be implicit. For example, in the verification of the sort algorithm, we used it
+The goal of ghost code is to make explicit some information that would be else
+implicit. For example, in the verification of the sort algorithm, we used it
 to create a label in the program that is not visible by the compiler but that
 we can use in the verification. The fact that the values were swapped between the
 two labels was implicitly provided by the contract of the function, adding this
@@ -599,8 +594,8 @@ equal to the sum of the elements between these bounds, and there must
 exist some bounds such that the returned value is exactly the sum of the
 elements between these bounds. About this specification, when we want to
 add the loop invariant, we realize that we miss some information.
-We want to express what are the values \CodeInline{max} and \CodeInline{cur} and
-what are the relations between them, but we cannot do it!
+We want to express what are the values \CodeInline{max} and \CodeInline{cur},
+and what are the relations between them, but we cannot do it!
 
 
 Basically, in order to prove our postcondition, we need to know that there
@@ -617,7 +612,7 @@ of the maximum sum range, let us call them \CodeInline{low} and
 \CodeInline{high}. Every time we find a range where the sum is greater
 than the current one, we update our ghost variables. These bounds
 then correspond to the sum currently stored by \CodeInline{max}. That
-induces that we need other bounds: the ones that corresponds to the sum
+induces that we need other bounds: the ones that correspond to the sum
 stored by the variable \CodeInline{cur} from which we build the bounds
 corresponding to \CodeInline{max}. For these bounds, we only add a
 single ghost variable: the current low bound \CodeInline{cur\_low}, the high

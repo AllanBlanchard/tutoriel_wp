@@ -36,7 +36,7 @@ Nous découpons en mettant le contrat de la fonction dans le \textit{header}. Le
 but est de pouvoir importer la spécification en même temps que la déclaration
 celle-ci lorsque nous aurons besoin de la fonction dans un autre fichier. En
 effet, WP en aura besoin pour montrer que les appels à cette
-fonction sont valides. D'abord pour prouver que la précondition est respectée
+fonction sont valides. D'abord pour prouver que la précondition est satisfaite
 (et donc que l'appel est légal) et ensuite pour savoir ce qu'il peut apprendre
 en retour (à savoir la postcondition) afin de pouvoir l'utiliser pour prouver
 la fonction appelante.
@@ -44,7 +44,7 @@ la fonction appelante.
 
 
 Nous pouvons créer un fichier sous le même formatage pour la fonction \CodeInline{max}.
-Dans les deux cas, nous pouvons ré-ouvrir le fichier source (pas besoin de
+Dans les deux cas, nous pouvons rouvrir le fichier source (pas besoin de
 spécifier les fichiers \textit{headers} dans la ligne de commande) avec Frama-C et
 remarquer que la spécification est bien associée à la fonction et que nous
 pouvons la prouver.
@@ -59,7 +59,7 @@ Maintenant, nous pouvons préparer le terrain pour la fonction \CodeInline{max\_
 
 
 
-et dans le source :
+et dans le fichier source :
 
 
 
@@ -100,7 +100,7 @@ Finalement, le lecteur pourra essayer de spécifier la fonction \CodeInline{max\
 
 
 
-La spécification peut ressembler à ceci:
+La spécification peut ressembler à ceci :
 
 
 
@@ -118,7 +118,7 @@ La spécification peut ressembler à ceci:
 
 Spécifier la fonction année bissextile qui retourne vrai si l'année reçue
 en entrée est bissextile. Utiliser cette fonction pour compéter la fonction
-jours du mois de façon à retourner le nombre de jour du mois reçu en entrée,
+jours du mois de façon à retourner le nombre de jours du mois reçu en entrée,
 incluant le bon comportement lorsque le mois en question est février et que
 l'année est bissextile.
 
@@ -194,7 +194,7 @@ doit ensuite faire usage de cette fonction pour calculer le rendu de
 monnaie.
 
 
-Écrire le code de ces fonctions et leur spécification, et prouver la
+Écrire le code de ces fonctions et leur spécification puis prouver la
 correction. Notons que le code ne devrait pas faire usage de boucles
 puisque nous ne savons pas encore les traiter.
 

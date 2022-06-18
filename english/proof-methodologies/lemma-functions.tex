@@ -34,7 +34,7 @@ induction. What is this sorcery?!
 
 In fact, it is quite simple. When we prove a loop invariant by induction using
 SMT solvers, they do not have to perform the reasoning by induction themselves.
-The job of splitting the proof into two subproofs, one for the establishment of
+The job of splitting the proof into two sub-proofs, one for the establishment of
 the invariant (the base case of the proof), and one for the preservation (the
 induction case) is performed by the verification condition generator. So when
 the verification conditions are transmitted to the SMT solvers, this work is not
@@ -208,26 +208,14 @@ precondition for the call to \CodeInline{bsearch}).
 
 
 As we explained, when universally quantified variables are bounded to both
-conclusion and premises, they must be parameters, and it is the case here for
+conclusion and premises. They must be parameters, and it is the case here for
 the variables \CodeInline{arr} and \CodeInline{len}. Whereas the quantified
 variable that are used in the predicates:
-
-
-
 \CodeBlockInput[4][8]{c}{lemma-function-1-2.c}
-
-
-
 as they are only bound to respectively the premise and the conclusion remain
 universally quantified (even if it is hidden by the predicate). We could for
 example have written the contract like this:
-
-
-
 \CodeBlockInput[15][32]{c}{lemma-function-1-3.c}
-
-
-
 where we perfectly see that variables are still universally quantified. However,
 we are not forced to maintain them universally quantified, and we could
 perfectly translate them into parameters (provided that the conclusion we want
@@ -240,7 +228,7 @@ to get from the premises still makes sense). Let us for example translate the
 
 
 
-Which is also perfectly fine and we could for example use this function to
+Which is also perfectly fine, and we could for example use this function to
 deduce some properties about the content of the array. Note that here, we use a
 call to the previous lemma function to make the proof easier. We even can go
 further by transferring the ``premise of our conclusion'' as another premise of
@@ -281,7 +269,7 @@ assertion from the precondition:
 Of course, there exists some index \CodeInline{n} such that \CodeInline{in[n]}
 is \CodeInline{v}, else the number of occurrences of this value would be $0$.
 But, instead of just proving that such an index exists, let us directly find
-some index that respects the constraints on \CodeInline{n} by using a lemma
+some index that satisfies the constraints on \CodeInline{n} by using a lemma
 function that returns it:
 
 
@@ -299,14 +287,14 @@ a value \CodeInline{v}.
 
 
 
-We prove that the second behavior respects the postcondition by showing that it
+We prove that the second behavior ensures the postcondition by showing that it
 leads to a contradiction. If there is no cell of value \CodeInline{v}, then
 the number of occurrences of \CodeInline{v} is 0, this is expressed by the
 second invariant that shows that as we have not met any \CodeInline{v} from
 the beginning of the loop,
 the number of occurrences is 0. However, the precondition of the
 function states that the number of occurrences is more than $0$ which leads to
-a contradiction that we model model by an assertion of false (note that this is
+a contradiction that we model by an assertion of false (note that this is
 not necessary, we explicitly write it for our explanation) which means here that
 this path is infeasible.
 
@@ -322,7 +310,7 @@ allows our assertion to be validated:
 
 
 The use of lemma functions makes reasoning by induction feasible for lemmas
-without the need of interactive proof. Furthermore, the triggerring of lemmas
+without the need of interactive proof. Furthermore, triggering lemmas
 becomes more predictable as we instantiate them by hand. However, while lemmas
 can consider multiple labels:
 
@@ -349,7 +337,7 @@ do when we need such a construct.
 When we have to deal with multiple labels, the idea is to directly ``inject''
 the proof carrying code at the place where it is needed exactly as we did at the
 beginning of the section. However, we do not want to write this code by hand
-everytime we need such a proof, so let us use macros to do it.
+every time we need such a proof, so let us use macros to do it.
 
 
 
@@ -378,7 +366,7 @@ directly injected in the function \CodeInline{bsearch\_callee}.
 
 
 So in fact, we use the macro to generate the code we previously wrote. In this
-case, it is not really interesting as a function call allows us to make things
+case, it is not interesting, since a function call allows us to make things
 more modular. So let us study a case where we do not have any other choice than
 using a macro.
 
@@ -446,15 +434,15 @@ Let us decompose this code, starting from the context function. In input, we
 receive all the variables of the lemma. We also state some properties about the
 bounds of the integer values we consider, basically these should be requirements
 that are not related to memory states, or related to the first one. Then, we
-introduce the label
-\CodeInline{L1} and we call the function \CodeInline{assign\_array} that leads
+introduce the label \CodeInline{L1},
+and we call the function \CodeInline{assign\_array} that leads
 us to the label \CodeInline{L2}. The role of this call is to ensure that WP will
 create a new memory label (thus, it will not consider that the memory is the
 same), and to establish our premises. Indeed, if we have a look at the contract
 of \CodeInline{assign\_array}, we see that it assigns the array (which
 guarantees the creation of a new memory label) and in postcondition, it ensures
 that the content of the array, between the pre and the postcondition (thus, when
-we call it: \CodeInline{L1} and \CodeInline{L2}) respects the premise of our
+we call it: \CodeInline{L1} and \CodeInline{L2}) satisfies the premise of our
 lemma (which we repeat on line 15, by adding an assertion). Then we use our
 \CodeInline{shift\_ptr} macro (that will later contain the proof carrying code),
 and we then expect to be able to prove the postcondition of our lemma (line 19).
@@ -472,8 +460,8 @@ the conclusion (line 19) from the premise (line 15). Now let us write the macro.
 
 
 We will not detail this code which is quite similar to what we have written in
-the beginning of this section. the only small subtlety is the assert that helps
-the SMT solvers to relate the memory locations between \CodeInline{L1} and
+the beginning of this section. The only small subtlety is the assertion that
+helps the SMT solvers to relate the memory locations between \CodeInline{L1} and
 \CodeInline{L2} together on lines 8--9. With this macro, we can see that the
 assertion at the end of the function \CodeInline{context\_to\_prove\_shift\_ptr}
 is correctly, proved. Thus, we expect the macro to help the provers to get a
@@ -509,7 +497,7 @@ we have to do the proof again.
 
 All of this can make the proof context bigger, and harder to use for SMT solvers.
 There are other limitations to this technique and the careful reader might have
-notice them. Let us now talk about it.
+noticed them. Let us now talk about it.
 
 
 
@@ -560,13 +548,13 @@ an invariant that would allow us to prove this property.
 The other limitation is related to lemma macros and what we already mentioned
 in the previous part about assertions. By adding too many assertions, the proof
 context can become too big and complex, thus hard to manipulate for SMT
-solvers. Using lemma macros that can generate quite a lot code and annotations
+solvers. Using lemma macros that can generate quite a lot of code and annotations
 can lead to bigger proof contexts, thus it should be used with care.
 
 
 Finally, depending on the property to prove, it can be hard to find a proof
 carrying code. Indeed, proof assistants like Coq have been designed to be able
-to express proofs even for complex properties, mainly relying on an high level
+to express proofs even for complex properties, mainly relying on a high level
 view of our problems, while C has been designed to write programs, and with
 really detailed low level view of our problems. Thus, it can be sometimes
 difficult to write a C program to handle some properties and even more to find
@@ -585,11 +573,9 @@ reader can refer to the version proposed in the book ACSL by Example which can
 be adapted with a similar technique and is easier to prove). Thus, in
 this example, we push the solvers to their limit because of big proof contexts.
 With this example, depending on how powerful the machine is, we might need to
-increase the proof timeout to 120 seconds (which is already quite long for a
+increase the proof timeout to 120 seconds (which is already quite long for an
 SMT solver). In this example, we will illustrate three actual usage of ghost
 code that we have seen so far:
-
-
 \begin{itemize}
 \item directly writing code to build a proof,
 \item writing (and using) lemma functions,
@@ -624,9 +610,9 @@ function, we made use of three assertions:
 
 
 The first one makes sure that the part of the array where we just inserted a
-value is a permutation of the same range of values before the call to
-\CodeInline{insert}, as this is the postcondition of the function, it is not
-necessary but let us keep it for illustration. The last assertion is the
+value is a permutation of the same range of values before the call to the
+\CodeInline{insert} function, as this is the postcondition of the function, it
+is not necessary but let us keep it for illustration. The last assertion is the
 property we want to prove in order to get enough knowledge to use the lemma that
 states that permutation is transitive (and show that after the block of the loop
 since our array is a permutation of the array at the beginning, which is itself
@@ -640,7 +626,7 @@ want to use this knowledge to show that the number of occurrences of the values
 is unchanged. Here we could use a combination of lemma functions and macros to
 prove that the complete range is a permutation (as we will do for the other
 function) however, directly writing the code is here a bit simpler (requires
-less proofs, as we will see later) so let us directly write the code that will
+fewer proofs, as we will see later) so let us directly write the code that will
 create the proof of our property.
 
 
@@ -654,15 +640,11 @@ to \CodeInline{end} with an invariant \CodeInline{permutation{L,PI}(a, beg, j)},
 let us continue the occurrences counting for the rest of our array, knowing that
 the second part is unchanged (when \CodeInline{i+1} is lower than \CodeInline{end}
 as else, we do not have anything to count):
-
-
 \CodeBlockInput[275][291]{c}{insert-sort-auto-proved.c}
-
-
 which is enough to ensure that the \CodeInline{insertion\_sort} function
-respects its specification as long as we finish the proof of the function
-\CodeInline{insert}. This second function makes a more complex action. Let us
-depart from this annotated version:
+conforms to its specification as long as we finish the proof of the
+\CodeInline{insert} function. This second function makes a more complex action.
+Let us depart from this annotated version:
 
 
 \CodeBlockInput[50][84]{c}{insert-sort-auto.c}
@@ -675,7 +657,6 @@ for \CodeInline{insertion\_sort} is not so easy here. Indeed, the second part
 of the array has been rotated which makes the properties slightly more
 complex. So, let us show that we can split the array at the position where
 we insert into two parts, in which we respectively show that:
-
 \begin{itemize}
 \item for the first part, since it is unchanged, for any $v$, the number of
   occurrences did not change either,
@@ -755,7 +736,7 @@ lemma macro:
 
 
 Which almost corresponds to what we have written previously in the
-\CodeInline{insert\_sort} function and we can use the macro where it is needed
+\CodeInline{insert\_sort} function, and we can use the macro where it is needed
 in the \CodeInline{insert} function.
 
 
@@ -818,8 +799,8 @@ We can use the macro in our program:
 
 However, we have to show that the considered range at label \CodeInline{Pre} can
 be split at \CodeInline{last}. For this, we use another variant of the split
-function, that shows that any subrange can be split before the last element (if
-it is non empty):
+function, that shows that any sub-range can be split before the last element (if
+it is non-empty):
 
 
 
@@ -936,7 +917,7 @@ number of occurrences of \CodeInline{v} is positive. Note that you will
 probably need to use \CodeInline{occ\_monotonic}.
 
 
-Finally the function \CodeInline{occ\_pos\_exists} should translate the contract
+Finally, the function \CodeInline{occ\_pos\_exists} should translate the contract
 of the previous function using an existentially quantified variable, and use the
 previous function to obtain the proof for free.
 

@@ -112,7 +112,7 @@ axiomatically as follows:
 
 
 
-In this axiomatic definition, our function has no body. Its
+In this axiomatic definition, our function does not have a body. Its
 behavior is only defined by the axioms we have stated about it.
 Except this, nothing changes, in particular the logic function can
 be used in our specification just as before.
@@ -152,7 +152,7 @@ an information for axiomatically defined properties.
 
 By adding axioms to our knowledge base, we can produce more complex
 proofs since some part of these proofs, expressed by axioms, do not need
-to be proved anymore (they are already specified to be true) shortening
+to be proved (they are already specified to be true) shortening
 the proof process. However, using axiomatic definitions, \textbf{we must
 be extremely careful}. Indeed, even a small error could introduce false
 in the knowledge base, making our whole reasoning futile. Our reasoning
@@ -215,20 +215,14 @@ axiomatic definition, removing the specification of the values that are
 read by the predicate (\CodeInline{reads a[b .. e-1]}), the proof
 will still be performed, but will not prove anything about the content
 of the arrays. For example, the following function:
-
-
-
 \CodeBlockInput[16][25]{c}{all-zeroes-bad.c}
-
-
-
 is proved to be correct, while we obviously changed a value in the array
 and the value is not 0 anymore.
 
 
 
 Note that unlike inductive definitions, where Why3 provides us a way to control
-that what we write in ACSL is relatively well defined, we do not have such a
+that what we write in ACSL is relatively well-defined, we do not have such a
 mechanism for axiomatic definitions. Basically, even with Why3 such a definition
 is translated into a list of axioms that are thus assumed.
 
@@ -248,7 +242,6 @@ what is the number of occurrences of a value in an array:
 
 
 We have three different cases:
-
 \begin{itemize}
 \item
   the considered range of values is empty: the number of occurrences is
@@ -262,7 +255,6 @@ We have three different cases:
   not the one we are searching for: the number of occurrences is the number
   of occurrences in the current range without the last element.
 \end{itemize}
-
 Then, we can write the C function that computes the number of
 occurrences of a value in an array and prove it:
 
@@ -298,7 +290,7 @@ Here, we still have to realize the proof of the lemma to get a complete
 proof.
 
 
-\levelThreeTitle{Example: The strlen function}
+\levelThreeTitle{Example: The \texttt{strlen} function}
 
 
 In this section, let us prove the C \CodeInline{strlen} function:
@@ -340,7 +332,7 @@ a contract for \CodeInline{strlen}:
 
 
 
-Defining the logic function \CodeInline{strlen} is a bit tricky. Indeed
+Defining the logic function \CodeInline{strlen} is a bit tricky. Indeed,
 we want to compute the length of a string by finding the character
 \CodeInline{'\textbackslash{}0'}, we expect to find it but in fact, we
 can easily imagine that we receive a string of infinite length. In this case,
@@ -388,7 +380,6 @@ the variant corresponds to the distance between \CodeInline{i} and
 correctness of the function, it fails. And to get more information
 we can try a verification asking RTE with the verification that unsigned
 integers do not overflow:
-
 
 
 
