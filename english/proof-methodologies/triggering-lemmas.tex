@@ -81,7 +81,7 @@ what is important, the other properties can just be ignored in our case):
 
 
 Here, we can see that for the proof of the second assertion, WP has collected
-and added the first assertion to the assumptions. Thus WP considers that SMT
+and added the first assertion to the assumptions. Thus, WP considers that SMT
 solvers can assume this assertion. That means that they can rely on it, but also
 that it should be proved to be sure that the current verification condition is
 verified.
@@ -100,7 +100,7 @@ verification condition.
 \image{context_e1p_a2}
 
 
-Now let us modify the example a little bit in order to illustrate how assertions
+Now let us modify the example a bit in order to illustrate how assertions
 can change the way to prove a program. For example, let us first modify the
 different memory locations (doubling each value) and check that the resulting
 triangle is a right triangle.
@@ -219,7 +219,7 @@ condition (again we have removed what is not useful for our explanations):
 
 Thus, the SMT solver seems to be unable to use one of the two axioms of our
 definition: either it cannot show that after the call to \CodeInline{g(y)},
-\CodeInline{P(x)} is still true, or it can and thus it cannot show that it
+\CodeInline{P(x)} is still true, or it can, and thus it cannot show that it
 implies that \CodeInline{Q(x)} is true. Let us try to add an assertion so that
 we verify that we can prove \CodeInline{P(x)} after the call:
 
@@ -267,7 +267,7 @@ definitions. This time, we will prove the insertion sort function:
 
 The \CodeInline{insertion\_sort} function visits each value, from the beginning
 of the array, to the end. For each value $v$, it is inserted (using the
-function \CodeInline{insert}) at the right place in the range of the already
+\CodeInline{insert} function) at the right place in the range of the already
 sorted values (at the beginning of the array), by shifting them until it meets
 a value that is smaller than $v$ or the first cell of the array.
 
@@ -316,7 +316,7 @@ Then, we need to provide a suitable invariant to the loop of the
 previously defined permutation predicate, we are in trouble.
 Indeed, our inductive definition of the permutation specifies three cases: a
 range is permutation of itself, or two (and only two) values have been swapped,
-or the permutation is transitive. But none of this cases can be applied to our
+or the permutation is transitive. But none of these cases can be applied to our
 \CodeInline{insert} function, since the shifted range is not obtained by
 successively exchanging values, and that the other cases obviously do not apply
 here.
@@ -347,11 +347,11 @@ And it is of course also possible for our shifted range.
 
 
 
-Let us determine what are the required lemmas by first considering the function
-\CodeInline{insert\_sort}. The only property that is not proved is the invariant
-of the loop that expresses the fact that the array is a permutation of the
-original array. How can we deduce it? (We will consider the proofs of the lemmas
-later).
+Let us determine what are the required lemmas by first considering the
+\CodeInline{insert\_sort} function. The only property that is not proved is the
+invariant of the loop that expresses the fact that the array is a permutation of
+the original array. How can we deduce it? (We will consider the proofs of the
+lemmas later).
 
 
 
@@ -384,7 +384,7 @@ not:
 
 
 So we need a first lemma for this property. Let us define two predicates
-\CodeInline{shifted} and \CodeInline{unchanged}, the later being used to
+\CodeInline{shifted} and \CodeInline{unchanged}, the latter being used to
 define the former (we will see why later) and express that an unchanged
 range is a permutation.
 
@@ -458,19 +458,17 @@ unchanged, so this is a permutation. We have a lemma for this, but we also have
 to state that the values are unchanged as an invariant of the loop. The second
 part of the array is a permutation because we rotate the elements, we need a
 lemma to express this, and to state at least that the element are shifted by the
-loop as an invariant. Finally the union of the two permutations is a
+loop as an invariant. Finally, the union of the two permutations is a
 permutation, and we also have a lemma for this.
 
 
 
 So first, we can give a suitable invariant for the permutation:
-
 \begin{itemize}
 \item we provide the bounds of \CodeInline{i}
 \item we state that the first part is left unchanged
 \item we state that the last part is shifted to the left
 \end{itemize}
-
 as well as some assertions that we want to be verified:
 \begin{itemize}
 \item first in order to trigger \CodeInline{unchanged\_permutation}, we place
@@ -479,7 +477,7 @@ as well as some assertions that we want to be verified:
 \item the second one that asserts that the first part of the array is a
   permutation of the original one, and is used in combination  with ...
 \item the third one that asserts that the second part of the array is a
-  permutation of the original one (which allows to trigger
+  permutation of the original one (which allows triggering
   \CodeInline{union\_permutation} and prove the postcondition).
 \end{itemize}
 
@@ -515,7 +513,7 @@ elements:
 \CodeBlockInput[60][64]{c}{insert_sort-proved.c}
 \CodeBlockInput[75][78]{c}{insert_sort-proved.c}
 
-We also have to help a little bit the provers to show that the range is
+We also have to help a bit the provers to show that the range is
 sorted after the insertion. For this, we provide a new invariant to show
 that the shifted values are greater than the value to insert, and then
 we add some assertions to show that the array is sorted before the
@@ -549,7 +547,7 @@ To prove \CodeInline{l\_occurrences\_union}, we reason by induction on the size
 of the second part of the array, the basic case is trivial: if the size is 0, we
 immediately have the equality since \CodeInline{split == to}. So now, we have
 to prove that if it is true for a range of size $i$, it is true for a range of
-size $i+1$. As we know that it is true until $i$ by our induction hypothese, we
+size $i+1$. As we know that it is true until $i$ by our induction hypotheses, we
 simply analyze the different cases for the last element of the range: either this
 element is the one we count or not, and it adds the same value on both sides of
 the equality.
@@ -562,9 +560,9 @@ same.
 
 
 The property \CodeInline{unchanged\_is\_permutation} is proved by SMT solvers
-thank to the fact that we have expressed it using \CodeInline{shifted}, then the
+thanks to the fact that we have expressed it using \CodeInline{shifted}, then the
 solver can immediately instantiate the previous lemma. If it is not the case
-(depending on the version of the prover), the proof is done by instanciating
+(depending on the version of the prover), the proof is done by instantiating
 \CodeInline{shifted\_maintains\_occ} with a value of 0 for the shift property.
 
 
@@ -580,7 +578,7 @@ and that the number of occurrences in \CodeInline{beg .. beg+1} at
 case analysis (and using the fact that the values equal).
 
 
-For \CodeInline{union\_permutation}, we intantiate the lemma
+For \CodeInline{union\_permutation}, we instantiate the lemma
 \CodeInline{l\_occurrences\_union}. Finally, the lemma
 \CodeInline{transitive\_permutation} is automatically proved by SMT solvers
 thanks to the transitivity of equality.
@@ -593,10 +591,10 @@ There is no perfect guideline on when we should use assertions or not. Most of
 the time we use them to first understand why some proof fails at some point by
 expressing properties that we expect to be true at some program point. Moreover,
 most of the time, the verification conditions are too long and complex to be read
-directly and we somewhat have to keep in mind the different lemmas we have
+directly, and we somewhat have to keep in mind the different lemmas we have
 already expressed and to determine whether some deduction requires the use of
 a lemma that we already expressed, or if it requires to reason by induction on
-some property or value such that SMT solvers cannot make this deduction and thus
+some property or value such that SMT solvers cannot make this deduction, and thus
 we might need to add another lemma.
 
 
@@ -706,8 +704,7 @@ been modified in this part of the array, and same for the cells that follow the
 modified cell.
 
 
-Thus we need two lemmas:
-
+Thus, we need two lemmas:
 \begin{itemize}
 \item \CodeInline{sum\_separable} should express that we can split an array into
   two subparts, count in each of them and sum the results to get the sum of the

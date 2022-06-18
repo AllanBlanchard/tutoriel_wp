@@ -42,19 +42,13 @@ x = 43 * c ;
 In order to compute the precondition of the assignment we have replaced
 each occurrence of $x$ in the postcondition by the assigned value
 $E = 43*c$. If our program were of the form:
-
-
-
 \begin{CodeBlock}{c}
 int c = 6 ;
 // { 43*c = 258 }
 x = 43 * c ;
 // { x = 258 }
 \end{CodeBlock}
-
-
-
-we could submit the formula " $43*6 = 258$ " to our automatic prover
+we could submit the formula $43*6 = 258$ to our automatic prover
 in order to determine whether it is really valid. The answer would of
 course be ``yes'' because the property is easy to verify. If we had,
 however, given the value 7 to the variable \texttt{c} the prover's reply
@@ -76,18 +70,12 @@ come into play.
 
 
 For example, we can ask Frama-C to verify the following line:
-
-
-
 \begin{CodeBlock}{c}
 int a = 42;
 //@ assert a == 42;
 \end{CodeBlock}
-
-
-
 which is, of course, directly proven by Qed, since it is a simple
-applications of the assignment rule.
+application of the assignment rule.
 
 
 
@@ -124,7 +112,7 @@ this simple Hoare triple:
 
 This Hoare triple is correct, since \CodeInline{p} and \CodeInline{q} are in
 alias, modifying \CodeInline{*p} also modifies \CodeInline{*q}, thus both these
-expression evaluate to $1$ and the postcondition is true. However let us apply
+expressions evaluate to $1$ and the postcondition is true. However, let us apply
 the weakest precondition calculus from the postcondition:
 
 
@@ -140,7 +128,7 @@ We get the weakest precondition: \CodeInline{1 + *q == 2}, and thus we could
 deduce that the weakest precondition is \CodeInline{*q == 1}, which is true, but
 does not allow us to conclude that the program is correct, since in our formula
 we do not have anything that models that \CodeInline{p == q ==> *q == 1}. In
-fact, here, we would like to be able to compute a weakest precondition like:
+fact, here, we would like to be able to compute the weakest precondition like:
 
 
 
@@ -182,7 +170,7 @@ a function, the memory context can be populated with the memory locations for
 which a value is known to be defined.
 
 
-Now, we can change a little bit the weakest precondition calculus for assignment
+Now, we can change a bit the weakest precondition calculus for assignment
 of pointed memory location. For this, we consider that we have an implicit
 variable $M$ that models the memory, and we define the assignment of a memory
 location as an update of the memory such that now the corresponding pointer points
@@ -191,10 +179,8 @@ $$wp(*x = E, Q) := Q[M \leftarrow M[x \mapsto E]]$$
 
 
 And evaluating a pointed value $*x$ in a formula now requires us to use the
-get operator to ask the right value. Thus we can for example compute the weakest
+get operator to ask the right value. Thus, we can for example compute the weakest
 precondition of our previous program:
-
-
 \begin{tabular}{lll}
   $wp(*p = 1, *p + *q = 2)$
   & $= (*p + *q = 2)[M \leftarrow M[p \mapsto 1]]$ & (1)\\
@@ -205,8 +191,6 @@ precondition of our previous program:
   & $= (\texttt{if}\ q = p\ \texttt{then}\ 1+1 = 2\ \texttt{else}\ 1+M[q] = 2)$ & (6)\\
   & $= (q = p \vee M[q] = 1)$ & (7)
 \end{tabular}
-
-
 \begin{enumerate}
 \item we have to apply the rule of assignment for pointers, but for this we need
   to introduce $M$,
@@ -481,7 +465,7 @@ strengthen the postcondition with an assertion that at the end
 \CodeInline{res}, the result, is between 0 and 90. The calculation of the
 weakest precondition of this property together with the assignment
 \CodeInline{res = 10 * a} yields a weaker precondition
-\CodeInline{1 <= a <= 9} and we know that
+\CodeInline{1 <= a <= 9}, and we know that
 \CodeInline{2 <= a <= 8} gives us the desired
 guarantee.
 
@@ -617,11 +601,11 @@ $Q \Rightarrow Q \wedge R$ hold.
 
 
 
-\levelThreeTitle{Exercices}
+\levelThreeTitle{Exercises}
 
 
 
-\levelFourTitle{A serie of assignment}
+\levelFourTitle{A series of assignment}
 
 
 Compute by hand the weakest precondition of the following program:
@@ -650,10 +634,10 @@ right rule.
 \levelFourTitle{Empty ``then'' branch in conditional}
 
 
-We previously shown that when a conditional structure has an empty ``else''
+We have previously shown that when a conditional structure has an empty ``else''
 branch, that means that the conjunction of the precondition and the negation
 of the condition must be enough to verify the postcondition of the complete
-condtional structure.
+conditional structure.
 For both of the following question, we only need the inference rules and
 no WP calculus.
 
@@ -697,7 +681,7 @@ if(cond1){
 Show that on those two source code, the weakest precondition calculus
 generates an equivalent weakest precondition for equivalent for any code
 in the ``then'' block. Note that we assume the conditions to be pure
-expressions (without side-effects).
+expressions (without side effects).
 
 
 

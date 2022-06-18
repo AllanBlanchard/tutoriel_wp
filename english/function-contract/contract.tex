@@ -9,9 +9,6 @@ for the output. The expectation of the function is called the
 These properties are expressed with ACSL. The syntax is relatively
 simple if one has already developed in C language since it shares most
 of the syntax of boolean expressions in C. However, it also provides:
-
-
-
 \begin{itemize}
 \item
   some logic constructs and connectors that do not exist in C, to ease
@@ -63,7 +60,7 @@ later see how to express precondition).
 \levelThreeTitle{Postcondition}
 
 
-The postcondition of a function is introduced with the clause \CodeInline{ensures}.
+The postcondition of a function is introduced with the \CodeInline{ensures} clause.
 Let us illustrate its use with the following function
 that returns the absolute value of an input value. One of its postconditions
 is that the result (which is denoted with the keyword
@@ -82,7 +79,7 @@ the general behavior of a function returning the absolute value. That
 is: if the value is positive or 0, the function returns the same value,
 else it returns the opposite of the value.
 
-We can specify multiple postconditions, first by combining them with a
+We can specify multiple postconditions, first by combining them with an operator
 \CodeInline{\&\&} as we do in C, or by introducing a new \CodeInline{ensures}
 clause, as we illustrate here:
 
@@ -148,9 +145,10 @@ $T$ & $T$ & $F$ & $T$ & $T$ & $T$ & $T$ \\ \hline
 
 
 We can come back to our specification. As our files become longer and
-contains a lot of specifications, if can be useful to name the
+contains a lot of specifications, it can be useful to name the
 properties we want to verify. So, in ACSL, we can specify a name
-(without spaces) followed by a \CodeInline{:}, before stating the property.
+(without spaces) followed by a \CodeInline{:} character, before stating the
+property.
 It is possible to put multiple levels of names to categorize our
 properties. For example, we could write this:
 
@@ -161,13 +159,13 @@ properties. For example, we could write this:
 
 
 In most of this tutorial, we will not name the properties we want to
-prove, since they will be generally quite simple and we will not have
+prove, since they will be generally quite simple, and we will not have
 too many of them, names would not give us much information.
 
 We can copy and paste the function \CodeInline{abs} and its specification in
 a file \CodeInline{abs.c} and use Frama-C to determine if the implementation
 is correct with respect to the specification. We can start the GUI of Frama-C
-(it is also possible to use the command line interface of Frama-C but we
+(it is also possible to use the command line interface of Frama-C, but we
 will not use it during this tutorial) by using this command line:
 
 
@@ -204,7 +202,7 @@ frama-c-gui abs.c
 
 
 The window of Frama-C opens and in the panel dedicated to files and
-functions, we can select the function \texttt{abs}. At each
+functions, we can select the \texttt{abs} function. At each
 \texttt{ensures} line, we can see a blue circle, it indicates that no
 verification has been attempted for these properties.
 
@@ -219,7 +217,7 @@ function and ``Prove function annotations by WP'':
 
 
 We can see that blue circles become green bullets, indicating that the
-specification is indeed ensured by the program. We can also prove
+specification is indeed ensured by the program. Furthermore, we can also prove
 properties one by one, by right-clicking on them and not on the name of
 the function.
 
@@ -231,7 +229,7 @@ of runtime errors (RTE) if we do not ask it. Another plugin of Frama-C,
 called RTE, can be used to generate some ACSL annotations that can be verified
 by the other plugins. Its purpose is to add, in the program, some controls to
 ensure that the program cannot create runtime errors (integer overflow,
-invalid pointer dereferencing, 0 division, etc).
+invalid pointer dereferencing, 0 division, etc.).
 
 
 
@@ -316,9 +314,6 @@ so far.
 
 The orange color indicates that no prover could determine if the
 property is verified. There are two possibles reasons:
-
-
-
 \begin{itemize}
 \item the prover did not have the information needed to terminate the proof,
 \item the prover did not have enough time to compute the proof and
@@ -330,7 +325,7 @@ In the bottom panel, we can select the ``WP Goals'' tab, it shows the list of
 verification conditions, and for each prover the result is symbolized
 by a logo that indicates if the proof has been tried and if it
 succeeded, failed or met a timeout. Note that it
-may require to select ``All Results'' in the squared field to see all
+may require selecting ``All Results'' in the squared field to see all
 verification conditions.
 
 
@@ -379,14 +374,14 @@ the property that we want to verify.
 
 
 What does WP do using these properties? In fact, it transforms them
-into a logic formula and then asks to different provers if it is
+into a logic formula and then asks different provers if it is
 possible to satisfy this formula (to find for each variable, a value
 that can make the formula true), and it determines if the property can
 be proved. But before sending the formula to provers, WP uses a module
 called Qed, which is able to perform different simplifications about it.
-Sometimes, as this is the case for the other properties about
-\CodeInline{abs}, these simplifications are enough to determine that the
-property is true, in such a case, WP do not need the help of the
+Sometimes, as this is the case for the other properties about the
+\CodeInline{abs} function, these simplifications are enough to determine that
+the property is true, in such a case, WP do not need the help of the
 automatic solvers.
 
 
@@ -560,7 +555,7 @@ the call \CodeInline{abs(a)} does not, since it can succeed.
 
 
 While these exercises are not absolutely necessary to read the next chapters
-of the tutorial we strongly suggest to practice them. Note that we also
+of the tutorial we strongly suggest practicing them. Note that we also
 suggest to, at least, read the fourth exercise that introduces a notation
 that can be sometimes useful.
 
@@ -569,7 +564,7 @@ that can be sometimes useful.
 \levelFourTitle{Addition}
 
 
-Write the postcondtion of the following addition function:
+Write the postcondition of the following addition function:
 
 
 \CodeBlockInput[5]{c}{ex-1-addition.c}

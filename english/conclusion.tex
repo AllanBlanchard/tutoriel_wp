@@ -20,8 +20,8 @@ to the use of C (namely, the absence of runtime errors).
 Starting from specified programs, WP is able to produce the weakest
 precondition of our functions, provided what we want in postcondition,
 and to ask some provers if the specified precondition is compatible with
-the computed one. The reasoning is completely modular, which allows to
-prove functions in isolation from each other and to compose the results.
+the computed one. The reasoning is completely modular, which allows
+proving functions in isolation from each other and to compose the results.
 
 
 WP cannot currently work with dynamic allocation. A function that would use it
@@ -55,7 +55,7 @@ the possibility to debug an incorrect call in a source code that we
 cannot or do not want to prove.
 
 Writing specifications is sometimes long or tedious. Higher-level
-features of ACSL (predicates, logic functions, axiomatizations) allow us
+features of ACSL (predicates, logic functions, axioms) allow us
 to lighten this work, as well as our programming languages allow us to
 define types containing other types, functions calling functions, bringing
 us to the final program. But, despite this, write specification in a
@@ -83,14 +83,14 @@ based on ideas born at the beginning of the tools, 30 years ago. Our tools
 evolve, the ways we develop change, probably faster than in any other
 technical domain. Saying that these tools could never be
 used for real life programs would certainly be a too big shortcut. After
-all, we see everyday how much development is different from what it were
+all, we see every day how much development is different from what it were
 10 years, 20 years, 40 years ago and can barely imagine how much it will
 be different in 10 years, 20 years, 40 years.
 
 During the past few years, safety and security questions have become
 more and more visible and crucial. Formal methods also progressed a lot,
 and the improvement they bring for these questions are greatly
-appreciated. For example, this
+appreciated. For example,
 \externalLink{this link}{http://sfm.seas.harvard.edu/report.html} brings to the
 report of a conference about security that brought together people from
 academic and industrial world, in which we can read:
@@ -116,10 +116,9 @@ can provide similar improvement in the security of computer systems.
 \levelThreeTitle{With Frama-C}
 
 
-Frama-C provides different ways to analyse programs. Among these tools, the
+Frama-C provides different ways to analyze programs. Among these tools, the
 most commonly used and interesting to know from a static and dynamic
-verification point of view are certainly those ones:
-
+verification point of view are certainly those:
 \begin{itemize}
 \item abstract interpretation analysis using
 \externalLink{EVA}{http://frama-c.com/value.html},
@@ -130,15 +129,15 @@ verification point of view are certainly those ones:
 The goal of the first one is to compute the domain of the different
 variables at each program point. When we precisely know these domains,
 we can determine if these variables can produce errors when they are
-used. However this analysis is executed on the whole program and not
+used. However, this analysis is executed on the whole program and not
 modularly. It is also strongly dependent of the type of domain we use (we
 will not enter into details here) and it is not so good at keeping the
 relations between variables. On the other side, it is really completely
 automatic, we do not even need to give loop invariant! The most manual
-part of the work is to determine whether or not an alarm is a true error
+part of the work is to determine whether an alarm is a true error
 or a false positive.
 
-The second analysis allows to generate from an original program, a new
+The second analysis allows generating from an original program, a new
 program where the assertions are transformed into runtime verifications.
 If these assertions fail, the program fails. If they are valid, the
 program has the same behavior it would have without the assertions. An
@@ -175,7 +174,7 @@ Why3, can extract its verification conditions to Coq, and it is very
 interesting to study
 this language. In the context of Frama-C, we can produce reusable lemmas
 libraries proved with Coq. But Coq can also be used for many
-different tasks, including programming. Note that Why3 can also extract
+tasks, including programming. Note that Why3 can also extract
 its verification conditions to Isabelle or PVS that are also proof assistants.
 
 Finally, there exists other program logics, for example separation logic

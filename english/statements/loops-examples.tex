@@ -46,7 +46,7 @@ ACSL, the keywords \CodeInline{\textbackslash{}forall} ($\forall$) and
 \CodeInline{\textbackslash{}exists} ($\exists$), the universal logic
 quantifiers. The first one allows to state that for any element, some
 property is true, the second one allows to say that there exists some
-element such that the property is true. If we comment a little bit the
+element such that the property is true. If we comment a bit the
 corresponding lines in our specification, we can read them this way:
 
 
@@ -64,7 +64,7 @@ corresponding lines in our specification, we can read them this way:
 
 
 
-If we want to summarize the use of these keyword, we would say that on a
+If we want to summarize the use of these keywords, we would say that on a
 range of values, a property is true, either about at least one of them
 or about all of them. A common scheme is to constrain this set using
 another property (here: \CodeInline{0 <= off < length}) and to prove the
@@ -90,9 +90,9 @@ With \CodeInline{\textbackslash{}exists type a ; p(a) \&\& q(a)}, the
 constraint \texttt{p} is followed by a conjunction. We say there exists
 an element such that it satisfies the property \texttt{p} at the same
 time it also satisfies \texttt{q}. If we use an implication, as we do
-for ``forall'', such an expression will always be true if \texttt{p} is
-not a tautology! Why? Is there an ``a'' such that p(a) implies q(a)? Let
-us take any ``a'' such that p(a) is false, then the implication is true.
+for \CodeInline{\textbackslash{}forall}, such an expression will always be true
+if \texttt{p} is not a tautology! Why? Is there an ``a'' such that p(a) implies
+q(a)? Let us take any ``a'' such that p(a) is false, then the implication is true.
 
 
 
@@ -114,7 +114,7 @@ location to visit (\CodeInline{i} excluded), the memory location contains a
 value different from the element we are looking for.
 
 The verification condition associated to the preservation of this invariant is
-a bit complex and it is not really interesting to precisely look at it,
+a bit complex, and it is not interesting to precisely look at it,
 on the contrary, the proof that the invariant is established before
 executing the loop is interesting:
 
@@ -217,7 +217,7 @@ contain the new value. All other values must remain unchanged. While we
 previously relied on the \CodeInline{assigns} clauses for this kind of properties,
 here, we do not have this possibility because while the ACSL language provides
 some facilities that we could use to write a very precise \CodeInline{assigns}
-clause, WP would not perfectly exploit it. Thus we have to use an invariant and
+clause, WP would not perfectly exploit it. Thus, we have to use an invariant and
 keep an approximation of the assigned memory location.
 
 If we try to prove this invariant with WP, it fails. In such a case, the simpler
@@ -259,7 +259,7 @@ For all these exercises, use the following command line to start verification:
 frama-c-gui -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast your-file.c
 \end{CodeBlock}
 
-\levelFourTitle{Non-mutating: Forall, Exists, ...}
+\levelFourTitle{Non-mutating: For all, Exists, ...}
 
 
 Currently, function pointers are not supported by WP. Let us consider that
@@ -326,7 +326,7 @@ value, this index must be correctly bounded.
 
 \textbf{Harder:} Modify this function in order to receive \CodeInline{len}
 as a \CodeInline{size\_t}. You will have to slightly modify the algorithm
-and the proof. As an hint, we advise making \CodeInline{up} an excluded
+and the proof. As a hint, we advise making \CodeInline{up} an excluded
 bound for the search.
 
 
@@ -386,6 +386,6 @@ from the \CodeInline{i}$^{th}$ we are visiting to the end.
 
 
 Finally, it is also possible to write a function that copies the elements from
-the end to the beginning, in this case, again, arrays can overlap but the
+the end to the beginning, in this case, again, arrays can overlap, but the
 condition is not exactly the same. Write, specify and prove the function
 \CodeInline{copy\_backward} that copies elements in the reverse order.

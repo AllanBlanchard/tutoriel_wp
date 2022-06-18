@@ -4,7 +4,7 @@ can be proved in isolation of the rest of the proof of a program by automatic or
 it states can be safely used to simplify the reasoning in other, more complex
 proofs, without having to prove it again. For example, if we state a lemma $L$
 that says $P \Rightarrow Q$ in any case, if at some point in another proof, we
-have to prove $Q$ and we know $P$, we can directly conclude by using the lemma
+have to prove $Q$, and we know $P$, we can directly conclude by using the lemma
 $L$ without having to perform again the reasoning that brings us from $P$ to
 $Q$.
 
@@ -154,7 +154,7 @@ follows it and calls the binary search function.
 Take back your proved binary search function from the
 exercise~\ref{l4:acsl-properties-predicates-ex-bsearch}. You might notice that
 the precondition of the binary search function is stronger than what we know in
-precondition of the \CodeInline{bsearch\_callee}. However, our precondition
+precondition of the \CodeInline{bsearch\_callee} function. However, our precondition
 implies that the array is globally sorted. Write a lemma that states that if
 an array is \CodeInline{element\_level\_sorted} then it is \CodeInline{sorted}.
 This lemma will probably not be proved by SMT solvers, all remaining properties
