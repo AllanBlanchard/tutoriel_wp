@@ -141,8 +141,8 @@ Frama-C and WP on this kind of definition, if the inductive predicate is too
 strange (if it is not well-founded), it will be rejected with an error. And
 indeed, with the bad definition of \CodeInline{even\_natural} we just proposed,
 Why3 complains when we try to prove the
-\CodeInline{ensures \textbackslash{}false}, because there exists a non
-positive occurrence of \CodeInline{P\_even\_natural} that encodes the
+\CodeInline{ensures \textbackslash{}false}, because there exists a
+non-positive occurrence of \CodeInline{P\_even\_natural} that encodes the
 \CodeInline{even\_natural} we wrote in ACSL.
 
 \begin{CodeBlock}{bash}
