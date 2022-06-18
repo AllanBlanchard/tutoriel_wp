@@ -1,4 +1,4 @@
-\levelThreeTitle{Exemple avec un tableau read-only}
+\levelThreeTitle{Exemple avec un tableau en lecture seule}
 \label{l3:statements-loops-examples-ro}
 
 
@@ -23,7 +23,7 @@ Cet exemple est suffisamment fourni pour introduire des notations importantes.
 
 D'abord, comme nous l'avons déjà mentionné, le prédicat \CodeInline{\textbackslash{}valid\_read} (de
 même que \CodeInline{\textbackslash{}valid}) nous permet de spécifier non seulement la validité d'une
-adresse en lecture mais également celle de tout un ensemble d'adresses
+adresse en lecture, mais également celle de tout un ensemble d'adresses
 contiguës. C'est la notation que nous avons utilisée dans cette expression :
 
 
@@ -161,7 +161,7 @@ Regardons la fonction effectuant la remise à zéro d'un tableau.
 
 
 Nous voyons que nous utilisons pour l'invariant une structure assez similaire
-à ce que nous avons utilisé pour l'exemple précédent: nous indiquons un premier
+à ce que nous avons utilisé pour l'exemple précédent : nous indiquons un premier
 invariant pour contraindre la valeur de \CodeInline{i}, et un autre qui exprime
 à chaque itération ce que nous avons appris depuis le début de l'exécution de la
 boucle (tous les éléments visités sont à $0$). Finalement, intéressons-nous à la
@@ -252,14 +252,14 @@ Et cette fois, la preuve passera.
 \levelThreeTitle{Exercices}
 
 
-Pour tous ces exercices, utiliser la commande suivante pour démarrer la vérification:
+Pour tous ces exercices, utiliser la commande suivante pour démarrer la vérification :
 
 \begin{CodeBlock}{bash}
 frama-c-gui -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast your-file.c
 \end{CodeBlock}
 
 
-\levelFourTitle{Fonctions sans modification : Forall, Exists, ...}
+\levelFourTitle{Fonctions sans modification : For all, Exists, ...}
 
 
 Actuellement, les pointeurs de fonction ne sont pas directement supportés par WP.
@@ -312,7 +312,7 @@ devrait contenir un quantificateur existentiel.
 
 La fonction suivante cherche la position d'une valeur fournie en entrée dans
 un tableau, en supposant que le tableau est trié. D'abord, considérons que la
-longueur du tableau est fournie en tant qu'int et utilisons des valeurs de ce
+longueur du tableau est fournie en tant qu'\CodeInline{int} et utilisons des valeurs de ce
 même type pour gérer les indices. Nous pouvons noter qu'il y a deux comportements
 à cette fonction : soit la valeur existe dans le tableau (et le résultat est
 l'indice de cette valeur) ou pas (et le résultat est -1).
@@ -323,7 +323,7 @@ l'indice de cette valeur) ou pas (et le résultat est -1).
 
 Cette fonction est un petit peu complexe à prouver, voici quelques conseils
 pour en venir à bout. D'abord, la longueur de la fonction est reçue en utilisant
-un type int, donc nous devons poser une restriction sur cette longueur en
+un type \CodeInline{int}, donc nous devons poser une restriction sur cette longueur en
 précondition pour qu'elle soit cohérente. Ensuite, l'un des invariants de la
 boucle devrait indiquer les bornes des valeurs \CodeInline{low} et
 \CodeInline{up}, mais nous pouvons noter que pour chacune d'elles, l'une des
@@ -343,7 +343,7 @@ soit une borne exclue de la recherche.
 Écrire, spécifier et prouver la fonction qui ajoute deux vecteurs dans un
 troisième. Fixer des contraintes arbitraires sur les valeurs d'entrée pour
 gérer le débordement des entiers. Considérer que le vecteur est résultant est
-spacialement séparé des vecteurs d'entrée. En revanche, le même vecteur devrait
+spatialement séparé des vecteurs d'entrée. En revanche, le même vecteur devrait
 pouvoir être utilisé pour les deux vecteurs d'entrée.
 
 \CodeBlockInput[7][9]{c}{ex-4-add-vectors.c}
@@ -353,7 +353,7 @@ pouvoir être utilisé pour les deux vecteurs d'entrée.
 
 
 Écrire, spécifier et prouver la fonction qui inverse un vecteur en place.
-Prendre garde à la partie non-modifiée du vecteur à une itération donnée de la
+Prendre garde à la partie non modifiée du vecteur à une itération donnée de la
 boucle. Utiliser la fonction \CodeInline{swap} précédemment prouvée.
 
 
@@ -391,7 +391,7 @@ dans la plage source :
 Essentiellement, en copiant des éléments dans cet ordre, nous pouvons les
 décaler depuis la fin d'une plage vers le début. En revanche, cela signifie que
 nous devons être plus précis dans notre contrat : nous ne garantissons plus une
-égalité avec le tableau source mais avec les \emph{anciennes} valeurs du tableau
+égalité avec le tableau source, mais avec les \emph{anciennes} valeurs du tableau
 source. Nous devons également être plus précis dans notre invariant, d'abord en
 spécifiant aussi la relation avec l'état précédent de la mémoire, et ensuite en
 ajoutant un invariant qui nous dit que le tableau source n'est pas modifié entre

@@ -136,7 +136,7 @@ pouvons regarder la condition de vérification générée pour la dernière asse
 
 Alors que nous devons prouver exactement la même propriété qu'avant (avec un peu
 de renommage), nous pouvons voir que nous avons une autre manière de la prouver.
-En effet en combinant ces propriétés :
+En effet, en combinant ces propriétés :
 
 
 \begin{CodeBlock}{text}
@@ -262,7 +262,7 @@ La fonction \CodeInline{insertion\_sort} visite chaque valeur, du début du tabl
 jusqu'à la fin. Pour chaque valeur $v$, elle est insérée (en utilisant la fonction
 \CodeInline{insert}) à la bonne place dans la plage des valeurs déjà triées (et qui
 se trouvent dans le début du tableau), en décalant les éléments jusqu'à
-recontrer un élément qui est plus petit que $v$, ou le début du tableau.
+rencontrer un élément qui est plus petit que $v$, ou le début du tableau.
 
 
 
@@ -295,7 +295,7 @@ valeurs déjà visitées : nous insérons chaque valeur à la bonne position.
 
 Maintenant, nous pouvons fournir un contrat à la fonction d'insertion. La
 fonction requière que la plage de valeurs considérée soit triée du début jusqu'à
-l'avant dernière valeur. En échange elle doit garantir que la plage finale soit
+l'avant-dernière valeur. En échange elle doit garantir que la plage finale soit
 triée et soit une permutation des valeurs originales :
 
 
@@ -312,7 +312,7 @@ cas : une plage de valeur est une permutation d'elle-même, ou deux (et seulemen
 deux) valeurs ont été changées, ou finalement la permutation d'une permutation est
 une permutation. Mais aucun de ces cas ne peut être appliqué à notre fonction
 d'insertion puisque la plage obtenue ne l'est pas par une succession d'échanges de
-valeurs, et les deux autres cas ne peuvent évidemment pas s'appliquer ici.
+valeurs et les deux autres cas ne peuvent évidemment pas s'appliquer ici.
 
 
 
@@ -341,7 +341,7 @@ entendu aussi le cas pour notre plage de valeur « décalée ».
 
 
 Déterminons quels sont les lemmes requis en considérant d'abord la fonction
-\CodeInline{insert\_sort}. La seule propriété non-prouvée est l'invariant qui
+\CodeInline{insert\_sort}. La seule propriété non prouvée est l'invariant qui
 exprime que le tableau est une permutation du tableau original. Comment
 pouvons-nous le déduire ? (Nous nous intéresserons aux preuves de ces lemmes
 plus tard).
@@ -453,14 +453,11 @@ pour cela.
 
 
 Tout d'abord, donnons un invariant pour la permutation :
-
 \begin{itemize}
     \item nous fournissons les bornes de \CodeInline{i},
     \item nous indiquons que la première partie du tableau est inchangée,
-    \item nous indiquons que la seconde partie est décalée vers la gauche.
+    \item nous indiquons que la seconde partie est décalée vers la gauche,
 \end{itemize}
-
-
 et nous ajoutons quelques assertions pour vérifier quelques propriétés d'intérêt :
 \begin{itemize}
     \item d'abord, pour déclencher \CodeInline{unchanged\_permutation}, nous
@@ -580,7 +577,7 @@ la même).
 
 Pour prouver \CodeInline{union\_permutation}, nous instancions le lemme
 \CodeInline{l\_occurrences\_union}. Finalement, le lemme
-\CodeInline{transitive\_permutation} est prouvée automatiquement par transitivité
+\CodeInline{transitive\_permutation} est prouvé automatiquement par transitivité
 de l'égalité.
 
 
@@ -709,7 +706,6 @@ cellules qui suivent la cellule modifiée.
 
 
 Nous avons donc besoin de deux lemmes :
-
 \begin{itemize}
     \item \CodeInline{sum\_separable} doit exprimer que nous pouvons séparer le
           tableau en deux sous parties, compter dans chaque partie et sommer les

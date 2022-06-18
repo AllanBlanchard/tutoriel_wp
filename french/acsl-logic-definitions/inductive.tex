@@ -15,7 +15,6 @@ naturel supérieur à 0 est pair, on peut regarder si ce naturel moins 2 est pai
 
 
 Pour le moment, introduisons la syntaxe des prédicats inductifs :
-
 \begin{CodeBlock}{c}
 /*@
   inductive property{ Label0, ..., LabelN }(type0 a0, ..., typeN aN) {
@@ -25,15 +24,13 @@ Pour le moment, introduisons la syntaxe des prédicats inductifs :
   }
 */
 \end{CodeBlock}
-
-
 où tous les \CodeInline{c\_i} sont des noms et tous les \CodeInline{p\_i} sont
 des formules logiques où \CodeInline{property} apparaît en conclusion. Pour résumer,
 \CodeInline{property} est vraie pour certains paramètres et labels mémoire, s'ils
 valident l'un des cas du prédicat inductif.
 
 
-Jetons un oeil à la petite propriété dont nous parlions plus tôt : comment définir
+Jetons un \oe{}il à la petite propriété dont nous parlions plus tôt : comment définir
 qu'un entier naturel est pair par induction ? Nous pouvons traduire la phrase :
 « 0 est un naturel pair, et si $n$ est un naturel pair, alors $n+2$ est aussi un
 naturel pair ».
@@ -74,7 +71,7 @@ Ici nous distinguons à nouveau deux cas :
 \end{itemize}
 
 
-Pour un entier naturel donné, s'il est plus grand que 0, nous déminuerons
+Pour un entier naturel donné, s'il est plus grand que 0, nous diminuerons
 récursivement sa valeur jusqu'à atteindre 0 ou -1. Dans le cas 0, l'entier
 naturel est pair. Dans le cas -1, nous n'aurons aucun cas du prédicat inductif
 qui corresponde
@@ -107,14 +104,11 @@ conseils pour ne pas construire une mauvaise définition.
 D'abord, nous pouvons nous assurer que les prédicats inductifs sont bien fondés.
 Cela peut être fait en restreignant syntaxiquement ce que nous acceptons dans
 une définition inductive en nous assurant que chaque cas est de la forme :
-
 \begin{CodeBlock}{c}
 /*@
   \forall y1,...,ym ; h1 ==> ··· ==> hl ==> P(t1,...,tn) ;
 */
 \end{CodeBlock}
-
-
 où le prédicat \CodeInline{P} ne peut apparaître que positivement (donc sans la
 négation \CodeInline{!} - $\neg$) dans les différentes hypothèses \CodeInline{hx}.
 Intuitivement, cela assure que nous ne pouvons pas construire des occurrences à la
@@ -125,11 +119,7 @@ fois positives et négatives de \CodeInline{P} pour un ensemble de paramètres d
 
 Cette propriété est par exemple vérifiée pour notre définition précédente du
 prédicat \CodeInline{even\_natural}. Tandis qu'une définition comme :
-
-
 \CodeBlockInput[5][15]{c}{even-bad.c}
-
-
 ne respecte pas cette contrainte, car la propriété \CodeInline{even\_natural}
 apparaît négativement à la ligne~8.
 
@@ -176,7 +166,7 @@ frama-c-gui -wp -wp-prop=BAD file.c
 
 Cependant, cela ne signifie pas que nous ne pouvons pas écrire une définition
 inductive inconsistante. Par exemple, la définition inductive suivante est bien
-fondée mais nous permet de prouver faux :
+fondée, mais nous permet de prouver faux :
 
 
 \begin{CodeBlock}{c}
@@ -284,7 +274,7 @@ Nous allons prouver un simple tri par sélection :
 
 Le lecteur pourra s'exercer en spécifiant et en prouvant les fonctions de
 recherche de minimum et d'échange de valeur. Nous cachons la correction
-(Réponses:~\ref{l2:acsl-logic-definitions-answers}) et nous nous concentrerons
+(Réponses :~\ref{l2:acsl-logic-definitions-answers}) et nous nous concentrerons
 plutôt sur la spécification et la preuve de la fonction de tri qui sont une
 illustration intéressante de l'usage des définitions inductives.
 
@@ -323,9 +313,9 @@ extrêmement bien par l'utilisation d'une définition inductive. En effet, pour
 déterminer qu'un tableau est la permutation d'un autre, les cas sont très limités.
 Premièrement, le tableau est une permutation de lui-même, puis l'échange de
 deux valeurs sans changer les autres est également une permutation, et
-finalement si nous créons la permutation $p_2$ d'une permutation $p_1$, puis que
-nous créons la permutation $p_3$ de $p_2$, alors par transitivité $p_3$ est une
-permutation de $p_1$.
+finalement si nous créons la permutation $p_2$ d'une permutation $p_1$, puis
+la permutation $p_3$ de $p_2$, alors par transitivité $p_3$ est une permutation
+de $p_1$.
 
 
 
@@ -391,7 +381,6 @@ commun de deux autres. Le but de cet exercice est de prouver que la fonction
 nous pouvons voir qu'après la première itération, \CodeInline{a} est supérieur ou
 égal à \CodeInline{b}, et que cette propriété est maintenue par la boucle. Donc,
 considérons deux cas pour le prédicat inductif :
-
 \begin{itemize}
 \item \CodeInline{b} est 0,
 \item si une valeur \CodeInline{d} est le PGCD de \CodeInline{b} et \CodeInline{a \% b},
@@ -415,8 +404,8 @@ Dans cet exercice, nous ne considérerons pas les RTE.
 
 
 Écrire un prédicat inductif qui exprime qu'un entier \CodeInline{r} est égal
-à $x^n$. Considérer deux cas : soit $n$ est 0, soit il est plus grand et à ce moment
-là, la valeur de \CodeInline{r} est reliée à la valeur $x^{n-1}$.
+à $x^n$. Considérer deux cas : soit $n$ est 0, soit il est plus grand et à ce
+moment-là, la valeur de \CodeInline{r} est reliée à la valeur $x^{n-1}$.
 
 
 \CodeBlockInput[5][10]{c}{ex-3-fpower.c}
@@ -444,7 +433,7 @@ Dans cette version, nous exploitons deux propriétés de l'opérateur puissance 
 
 
 Qui permet de diviser $n$ par 2 à chaque tour de boucle au lieu de le décrémenter
-de un (ce qui permet à l'algorithme d'être en $O(\log n)$ et pas $O(n)$). Exprimer
+de 1 (ce qui permet à l'algorithme d'être en $O(\log n)$ et pas $O(n)$). Exprimer
 les deux propriétés précédentes sous forme de lemmes :
 
 
@@ -486,7 +475,6 @@ cellule de la plage de valeur. Utiliser ce prédicat pour prouver la fonction
 
 Exprimer une nouvelle version de la notion de permutation avec un prédicat inductif
 qui considère les cas suivants :
-
 \begin{itemize}
 \item la permutation est réflexive ;
 \item si la partie gauche d'une plage de valeur (jusqu'à un certain indice) est

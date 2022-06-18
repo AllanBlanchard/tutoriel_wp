@@ -1,8 +1,8 @@
-Les techniques que nous avons vu précédemment dans ce chapitre ont pour but de
+Les techniques que nous avons vues précédemment dans ce chapitre ont pour but de
 rendre la spécification plus abstraite. Le rôle du code fantôme est inverse. Ici,
 nous enrichirons nos spécifications à l'aide d'information exprimées
 en langage C. L'idée est d'ajouter des variables et du code source qui
-n'intervient pas dans le programme réel mais permettant de créer des états
+n'intervient pas dans le programme réel, mais permettant de créer des états
 logiques qui ne seront visibles que depuis la preuve. Par cet intermédiaire,
 nous pouvons rendre explicites des propriétés logiques qui étaient auparavant
 implicites.
@@ -25,7 +25,7 @@ du code C ainsi que la mention \CodeInline{ghost}.
 
 
 Dans un code fantôme, nous écrivons du C normal. Nous expliquerons certaines
-petites subtilités plus tard. Pour l'instant, intéressons nous aux éléments
+petites subtilités plus tard. Pour l'instant, intéressons-nous aux éléments
 basiques que nous pouvons écrire avec du code fantôme.
 
 
@@ -118,7 +118,7 @@ void another_function(struct list* l){
 
 
 Notons que si une fonction prend des paramètres fantômes, tous les appels doivent
-fournir les arguments fantômes correspondant.
+fournir les arguments fantômes correspondants.
 
 
 Une fonction toute entière peut être fantôme. Par exemple, nous pourrions avoir
@@ -175,8 +175,6 @@ void foo(unsigned n){
 
 
 Frama-C vérifie plusieurs propriétés à propos du code fantôme que nous écrivons :
-
-
 \begin{itemize}
 \item le code fantôme ne peut pas modifier le graphe de flot de contrôle
       du programme ;
@@ -231,7 +229,7 @@ itération. En conséquence, ce programme sera rejeté par Frama-C :
 \end{CodeBlock}
 
 
-Il est important de noter que lorsqu'un code fantôme altère le flot de contrôle
+Il est important de noter que lorsqu'un code fantôme altère le flot de contrôle,
 c'est le point de départ du code fantôme qui est pointé par l'erreur, par exemple
 si nous introduisons une conditionnelle autour de notre \CodeInline{break} :
 
@@ -290,14 +288,8 @@ Refuser que le code normal voie le code fantôme a une raison toute simple. Si l
 code normal tentait d'accéder à des variables fantômes, il ne pourrait même pas
 être compilé : le compilateur ne voit pas les variables déclarées dans les
 annotations. Par exemple :
-
-
 \CodeBlockInput[6]{c}{non-ghost-access-ghost.c}
-
-
 ne peut pas être compilé :
-
-
 \begin{CodeBlock}{text}
 # gcc -c file.c
 file.c: In function ‘sum_42’:
@@ -305,11 +297,7 @@ file.c:5:10: error: ‘r’ undeclared (first use in this function)
     5 |     x += r;
       |          ^
 \end{CodeBlock}
-
-
 et n'est donc pas accepté par Frama-C non plus :
-
-
 \begin{CodeBlock}{text}
 [kernel] file.c:5: User Error:
   Variable r is a ghost symbol. It cannot be used in non-ghost context. Did you forget a /*@ ghost ... /?
@@ -498,10 +486,11 @@ de modifier \CodeInline{x} dans du code fantôme. En conséquence, une telle
 conversion n'est jamais autorisée.
 
 
-Finalement, le code fantôme ne peut actuellement pas appeler de fonction non
-fantôme, pour des raisons semblables à celle évoquée pour l'interdiction de toutes
-les conversions. Certains cas particuliers pourraient être traités de manière à
-accepter plus de code, mais ce n'est actuellement pas supporté par Frama-C.
+Finalement, le code fantôme ne peut actuellement pas appeler de fonction qui
+n'est pas fantôme, pour des raisons semblables à celle évoquée pour
+l'interdiction de toutes les conversions. Certains cas particuliers pourraient
+être traités de manière à accepter plus de code, mais ce n'est actuellement pas
+supporté par Frama-C.
 
 
 \levelThreeTitle{Validité du code fantôme, ce qu'il reste à vérifier}
@@ -512,8 +501,6 @@ Mis à part les restrictions que nous avons mentionnées dans la section précé
 le code fantôme est juste du code C normal. Cela veut dire que si nous voulons
 faire la vérification de notre programme d'origine, nous devons faire attention,
 nous-mêmes, à au moins deux aspects supplémentaires :
-
-
 \begin{itemize}
 \item l'absence d'erreurs à l'exécution,
 \item la terminaison du code fantôme.
@@ -530,7 +517,7 @@ a deux sortes de correction : la correction partielle et la correction totale,
 la seconde permettant de prouver qu'un programme termine. Dans le cas du code
 normal, montrer la terminaison n'est pas toujours souhaitable pour l'ensemble
 du programme. En revanche, si nous utilisons du code fantôme pour aider la
-vérification, montrer que la correction est totale est absolument nécessaire
+vérification, montrer que la correction est totale est absolument nécessaire,
 car une boucle infinie dans le code fantôme peut nous permettre de prouver
 n'importe quoi à propos du programme.
 
@@ -577,7 +564,7 @@ renverra donc 6.
 
 
 Pour spécifier la fonction précédente, nous aurons besoin d'exprimer
-axiomatiquement la somme. Ce n'est pas très complexe, et le lecteur pourra
+axiomatiquement la somme. Ce n'est pas très complexe et le lecteur pourra
 s'exercer en exprimant les axiomes nécessaires au bon fonctionnement de cette
 axiomatique :
 
@@ -604,8 +591,8 @@ une paire de bornes telle que la somme des éléments entre ces bornes est
 exactement la valeur retournée par la fonction. Par rapport à cette spécification,
 si nous devons ajouter les invariants de boucles, nous nous apercevons rapidement
 qu'il nous manquera des informations. Nous avons besoin d'exprimer ce que sont
-les valeurs \CodeInline{max} et \CodeInline{cur} et quelles relations existent entre elles,
-mais rien ne nous le permet !
+les valeurs \CodeInline{max} et \CodeInline{cur}, et quelles relations existent
+entre elles, mais rien ne nous le permet !
 
 
 

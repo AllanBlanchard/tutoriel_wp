@@ -5,7 +5,7 @@ C'est certainement notre tâche la plus difficile. En soi, la programmation est
 déjà un effort consistant à écrire des algorithmes qui répondent à notre
 besoin. La spécification nous demande également de faire ce travail, la
 différence est que nous ne nous occupons plus de préciser la manière de répondre
-au besoin mais le besoin lui-même. Pour prouver que la réalisation implémente
+au besoin, mais le besoin lui-même. Pour prouver que la réalisation implémente
 bien ce que nous attendons, il faut donc être capable de décrire précisément le
 besoin.
 
@@ -52,7 +52,7 @@ quant à la spécification :
 Même si elle est correcte, notre spécification est trop permissive. Il faut que nous
 soyons plus précis.
 Nous attendons du résultat non seulement qu'il soit supérieur ou égal à nos
-deux paramètres mais également qu'il soit exactement l'un des deux :
+deux paramètres, mais également qu'il soit exactement l'un des deux :
 
 
 
@@ -114,7 +114,7 @@ nous corrigeons la précondition de cette façon :
 \image{2-smoke-success}
 
 
-cela ne signifie pas que la précondition est nécessairement cohérente, juste
+Cela ne signifie pas que la précondition est nécessairement cohérente, juste
 qu'aucun prouveur n'a été capable de montrer qu'elle est incohérente.
 
 
@@ -150,7 +150,7 @@ le moment seulement vérifiable sans la vérification des RTEs) :
 
 Ici, nous introduisons une première fonction logique fournie de base par
 ACSL : \CodeInline{\textbackslash{}old}, qui permet de parler de l'ancienne
-valeur d'un élément. Ce que nous dit donc la spécification c'est « la fonction
+valeur d'un élément. Ce que nous dit donc la spécification est « la fonction
 doit assurer que \CodeInline{*a} soit égal à l'ancienne valeur (au sens : la
 valeur avant l'appel) de \CodeInline{*b} et inversement ».
 
@@ -176,7 +176,7 @@ Par exemple, nous pourrions écrire :
 
 
 En plus des labels que nous pouvons nous-mêmes créer, il existe 6 labels
-qu'ACSL nous propose par défaut:
+qu'ACSL nous propose par défaut :
 
 
 
@@ -207,7 +207,7 @@ disponibles que dans le contexte de boucles (dont nous parlerons plus loin dans
 le tutoriel).
 
 
-Notons qu'il est important de s'assurer que l'on utilise \CodeInline{\textbackslash{}old} at
+Notons qu'il est important de s'assurer que l'on utilise \CodeInline{\textbackslash{}old} et
 \CodeInline{\textbackslash{}at} pour des valeurs qui ont du sens. C'est pourquoi par
 exemple dans un contrat, toutes les valeurs reçues en entrée sont placées dans un
 appel à \CodeInline{\textbackslash{}old} par Frama-C lorsqu'elles sont utilisées dans
@@ -221,11 +221,11 @@ la postcondition, chaque pointeur se trouve dans un appel à \CodeInline{\textba
 \image{2-old-swap}
 
 
-Pour la fonction built-in \CodeInline{\textbackslash{}at}, nous devons plus
+Pour la fonction \CodeInline{\textbackslash{}at}, nous devons plus
 explicitement faire attention à cela. En particulier, le label transmis en entrée
 doit avoir un sens par rapport à la portée de la variable que l'on lui transmet.
 Par exemple, dans le programme suivant, Frama-C détecte que nous demandons la valeur
-de la variable \CodeInline{x} à un point du programme où elle n'existe pas:
+de la variable \CodeInline{x} à un point du programme où elle n'existe pas :
 
 
 \CodeBlockInput[5][9]{c}{at-2.c}
@@ -237,7 +237,7 @@ de la variable \CodeInline{x} à un point du programme où elle n'existe pas:
 Cependant, dans certains cas, tout ce que nous pouvons obtenir est un échec de
 la preuve, parce que déterminer si la valeur existe ou non à un label particulier
 ne peut être fait par une analyse purement syntaxique. Par exemple, si la variable
-est déclarée mais pas définie, ou si nous demandons la valeur d'une zone mémoire
+est déclarée, mais pas définie, ou si nous demandons la valeur d'une zone mémoire
 pointée :
 
 
@@ -273,7 +273,7 @@ précises.
 
 
 Si nous essayons de prouver le fonctionnement de \CodeInline{swap} (en activant
-la vérification des RTE), notre postcondition est bien vérifiée mais WP nous
+la vérification des RTE), notre postcondition est bien vérifiée, mais WP nous
 indique qu'il y a un certain nombre de possibilités de \textit{runtime-error}. Ce qui
 est normal, car nous n'avons pas précisé à WP que les pointeurs que nous
 recevons en entrée de fonction sont valides.
@@ -290,7 +290,7 @@ reçoit un pointeur en entrée :
 
 
 À partir de là, les déréférencements qui sont effectués par la suite sont
-acceptés car la fonction demande à ce que les pointeurs d'entrée soient
+acceptés, car la fonction demande à ce que les pointeurs d'entrée soient
 valides.
 
 
@@ -309,7 +309,7 @@ de \CodeInline{\textbackslash{}valid} sous le nom \CodeInline{\textbackslash{}va
 celui-ci assure qu'il est uniquement nécessaire que le pointeur puisse
 être déréférencé en lecture et pas forcément en écriture, pour pouvoir
 réaliser l'opération de lecture. Cette subtilité est due au fait qu'en C, le
-\textit{downcast} de pointeur vers un élément \CodeInline{const} est très facile à faire mais
+\textit{downcast} de pointeur vers un élément \CodeInline{const} est très facile à faire, mais
 n'est pas forcément légal.
 
 
@@ -424,7 +424,7 @@ différent du pointeur \CodeInline{b}. Or, si les pointeurs sont égaux,
 \item la propriété \CodeInline{*a == \textbackslash{}old(*a) + *b} signifie en fait
 \CodeInline{*a == \textbackslash{}old(*a) + *a}, ce qui ne peut être vrai que si l'ancienne valeur
 pointée par \CodeInline{a} était 0, ce qu'on ne sait pas,
-\item la propriété \CodeInline{*b == \textbackslash{}old(*b)} n'est pas validée car potentiellement,
+\item la propriété \CodeInline{*b == \textbackslash{}old(*b)} n'est pas validée, car potentiellement,
 nous la modifions.
 \end{itemize}
 
@@ -497,7 +497,7 @@ et notre matériel. Cela concerne principalement nos préconditions. Par exemple
 la fonction valeur absolue n'a, au fond, pas  vraiment de précondition à
 satisfaire : c'est la machine cible qui détermine qu'une condition supplémentaire
 doit être vérifiée en raison du complément à deux. Comme nous le verrons dans le
-chapitre \ref{l1:proof-methodologies}, vérifier l'absence de {\em runtime errors}
+chapitre \ref{l1:proof-methodologies}, vérifier l'absence de \emph{runtime-errors}
 peut aussi impacter nos postconditions, pour l'instant laissons cela de côté.
 
 
@@ -656,11 +656,9 @@ exemple :
 
 Nous pouvons l'utiliser pour exprimer que l'ensemble des valeurs d'entrée et
 de sortie est le même. Cependant, ce n'est pas la seule chose à prendre en
-compte car un ensemble ne contient qu'une occurrence de chaque valeur. Donc,
+compte, car un ensemble ne contient qu'une occurrence de chaque valeur. Donc,
 si \CodeInline{*a == *b == 1}, alors \CodeInline{\{ *a, *b \} == \{ 1 \}}.
-Par conséquent nous devons considérer trois autres cas particuliers:
-
-
+Par conséquent, nous devons considérer trois autres cas particuliers :
 \begin{itemize}
 \item toutes les valeurs d'origine sont les mêmes ;
 \item deux valeurs d'origine sont les mêmes, la dernière est plus grande ;

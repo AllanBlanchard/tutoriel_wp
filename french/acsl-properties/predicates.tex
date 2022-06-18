@@ -42,14 +42,12 @@ pas changé entre deux points particuliers du programme :
 \begin{Warning}
   Il faut bien garder en mémoire que le passage se fait, comme en C, par valeur.
   Nous ne pouvons pas écrire ce prédicat en passant directement \CodeInline{i} :
-
   \begin{CodeBlock}{c}
     /*@
       predicate unchanged{L0, L1}(int i) =
         \at(i, L0) == \at(i, L1);
     */
   \end{CodeBlock}
-
   car \CodeInline{i} est juste une copie de la variable reçue en paramètre.
 \end{Warning}
 
@@ -71,7 +69,7 @@ déroulé par WP. Ce sera au prouveur de déterminer s'il veut raisonner avec.
 
 Comme nous l'avons dit plus tôt, une des utilités des prédicats et fonctions (que
 nous verrons un peu plus tard) est de rendre plus lisible nos spécifications et
-de les factoriser. Un exemple est l''écriture d'un prédicat pour la validité en
+de les factoriser. Un exemple est l'écriture d'un prédicat pour la validité en
 lecture/écriture d'un tableau sur une plage particulière. Cela nous évite d'avoir
 à réécrire l'expression en question qui est moins compréhensible au premier
 coup d’œil.
@@ -128,11 +126,11 @@ limitée. Et cela donnerait quelque chose comme :
 \CodeBlockInput[5]{c}{stack.c}
 
 
-(Notons qu'ici, nous ne fournissons pas la définition des prédicats car ce n'est
+(Notons qu'ici, nous ne fournissons pas la définition des prédicats, car ce n'est
 pas l'objet de cet exemple. Le lecteur pourra considérer ceci comme un exercice.)
 
 Ici, la spécification n'exprime pas de propriétés fonctionnelles. Par exemple,
-rien ne nous spécifie que lorsque nous faisons un \textit{push} d'une valeur puis que nous
+rien ne nous spécifie que lorsque nous faisons un \textit{push} d'une valeur puis
 demandons \textit{top}, nous auront effectivement cette valeur. Mais elle nous donne
 déjà tout ce dont nous avons besoin pour produire un code où, à défaut d'avoir
 exactement les résultats que nous attendons (des comportements tels que « si
@@ -158,7 +156,7 @@ de façon à l'utiliser.
 
 Reprendre la solution de l'exercice~\ref{l4:contract-modularity-ex-alpha-num} à
 propos des caractères alpha-numériques. Écrire des prédicats pour exprimer qu'un
-caractères est une majuscule, une autre pour les minuscules, et un dernier pour les
+caractère est une majuscule, une autre pour les minuscules et un dernier pour les
 chiffres. Adapter les contrats des différentes fonctions en les utilisant.
 
 
@@ -193,7 +191,7 @@ qu'elle le vérifie.
 
 
 Reprendre la solution de l'exercice~\ref{l4:statements-loops-ex-bsearch} à propos
-de la recherche dichotomique utilisant des indices non-signés. Écrire un prédicat
+de la recherche dichotomique utilisant des indices non signés. Écrire un prédicat
 qui exprime qu'une plage de valeur est triée entre \CodeInline{begin} et
 \CodeInline{end} (exclu). Écrire une surcharge de ce prédicat pour rendre
 \CodeInline{begin} optionnel avec une valeur par défaut à $0$. Écrire un prédicat
@@ -214,7 +212,6 @@ Reprendre l'exemple~\ref{l4:statements-loops-ex-search-and-replace}, à propos d
 la fonction « chercher et remplacer ». Écrire des prédicats qui exprime qu'une plage
 de valeurs dans un tableau pour des indices compris entre \CodeInline{begin} et
 \CodeInline{end} (exclu), les valeurs :
-
 \begin{itemize}
   \item restent inchangées entre deux états mémoire,
   \item sont remplacées par une valeur si elles sont égales à une valeur donnée,

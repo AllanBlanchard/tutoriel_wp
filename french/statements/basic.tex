@@ -3,10 +3,8 @@
 
 L'affectation est l'opération la plus basique que l'on puisse avoir dans un
 langage (mise à part l'opération « ne rien faire » qui manque singulièrement
-d'intérêt). Le calcul de plus faible précondition associé est le suivant :
+d'intérêt). Le calcul de plus faible précondition associée est le suivant :
 $$wp(x = E , Post) := Post[x \leftarrow E]$$
-
-
 où la notation $P[x \leftarrow E]$ signifie « la propriété $P$ où $x$ est remplacé
 par $E$ ». Ce qui correspond ici à « la postcondition $Post$ où $x$ a été
 remplacé par $E$ ». Dans l'idée, pour que la formule en postcondition d'une
@@ -40,19 +38,13 @@ x = 43 * c ;
 
 Pour calculer la précondition de l'affectation, nous avons remplacé chaque
 occurrence de $x$ dans la postcondition, par la valeur $E = 43*c$ affectée.
-Si notre programme était de la forme:
-
-
-
+Si notre programme était de la forme :
 \begin{CodeBlock}{c}
 int c = 6 ;
 // { 43*c = 258 }
 x = 43 * c ;
 // { x = 258 }
 \end{CodeBlock}
-
-
-
 nous pourrions alors fournir la formule « $43*6 = 258$ » à notre prouveur automatique
 afin qu'il détermine si cette formule peut effectivement être satisfaite. Ce à quoi
 il répondrait évidemment « oui », puisque cette propriété est très simple à vérifier.
@@ -123,7 +115,7 @@ Ce triplet de Hoare est correct, puisque \CodeInline{p} et \CodeInline{q} sont e
 alias, modifier la valeur \CodeInline{*p} modifie aussi la valeur \CodeInline{*q},
 par conséquent, ces deux expressions s'évaluent à $1$ et la postcondition est
 vraie. Cependant, regardons ce que nous obtenons en appliquant le calcul de plus
-faible précondition précédemment défini pour l'affectation sur cet exemple:
+faible précondition précédemment défini pour l'affectation sur cet exemple :
 
 
 \begin{tabular}{ll}
@@ -132,12 +124,12 @@ $wp(*p = 1, *p + *q = 2)$ & $= (*p + *q = 2)[*p \leftarrow 1]$\\
 \end{tabular}
 
 
-Nous obtenons la plus faible précondition: \CodeInline{1 + *q == 2}, et donc
+Nous obtenons la plus faible précondition : \CodeInline{1 + *q == 2}, et donc
 nous pourrions déduire que la plus faible précondition est \CodeInline{*q == 1}
 (ce qui est vrai), mais nous ne sommes pas en mesure de conclure que le programme
-est correct, car rien dans notre formule ne nous indique quelque chose comme:
+est correct, car rien dans notre formule ne nous indique quelque chose comme :
 \CodeInline{p == q ==> *q == 1}. En fait, ici, nous voudrions être capable de
-calculer une plus faible précondition de la forme:
+calculer une plus faible précondition de la forme :
 
 
 \begin{tabular}{ll}
@@ -148,7 +140,7 @@ $wp(*p = 1, *p + *q = 2)$ & $= (1 + *q = 2 \vee q = p)$\\
 
 Pour cela, nous devons faire attention à la notion d'aliasing. Une manière
 commune de le faire est de considérer que la mémoire est une variable particulière
-du programme (nommons la $M$) sur laquelle nous pouvons effectuer deux opérations :
+du programme (nommons-la $M$) sur laquelle nous pouvons effectuer deux opérations :
 obtenir la valeur d'un emplacement particulier $m$ en mémoire (qui nous retourne une
 expression) et changer la valeur à une position mémoire $l$ pour y placer une nouvelle
 valeur $v$ (qui nous retourne la nouvelle mémoire obtenue).
@@ -191,8 +183,6 @@ $$wp(*x = E, Q) = Q[M \leftarrow M[x \mapsto E]]$$
 Évaluer une valeur pointée $*x$ dans une formule consiste maintenant à utiliser
 l'opération $get$ pour demander la valeur à la mémoire. Nous pouvons donc
 appliquer notre calcul de plus faible précondition à notre programme précédent :
-
-
 \begin{tabular}{lll}
   $wp(*p = 1, *p + *q = 2)$
   & $= (*p + *q = 2)[M \leftarrow M[p \mapsto 1]]$ & (1)\\
@@ -203,7 +193,6 @@ appliquer notre calcul de plus faible précondition à notre programme précéde
   & $= (\texttt{if}\ q = p\ \texttt{then}\ 1+1 = 2\ \texttt{else}\ 1+M[q] = 2)$ & (6)\\
   & $= (q = p \vee M[q] = 1)$ & (7)
 \end{tabular}
-
 \begin{enumerate}
 \item nous devons appliquer la règle pour l'affectation de valeur pointée, mais
   pour cela, nous devons d'abord introduire $M$,
@@ -213,10 +202,9 @@ appliquer notre calcul de plus faible précondition à notre programme précéde
 \item nous utilisons la définition de $get$ pour $q$\\
   ($M[p \mapsto 1][q] = \texttt{if}\ q = p\ \texttt{then}\ 1\ \texttt{else}\ M[q]$)
 \item nous appliquons quelques simplifications sur la formule \dots
-\item \dots et nous pouvons finalement conclure que $M[q] = 1$ ou $p = q$.
+\item \dots et nous pouvons finalement conclure que $M[q] = 1$ ou $p = q$,
 \end{enumerate}
-
-et comme dans notre programme nous savons que $p = q$, nous pouvons conclure que
+et comme dans notre programme, nous savons que $p = q$, nous pouvons conclure que
 le programme est correct.
 
 
@@ -233,7 +221,7 @@ postcondition de la fonction \CodeInline{swap} :
 Nous pouvons voir, au début de la définition de cette condition de vérification qu'une
 variable \CodeInline{Mint\_0} représentant une mémoire pour les valeurs de type entier
 a été créée, et que cette mémoire est mise à jour et accédée à l'aide des opérateurs que
-nous avons défini précédemment (voir par exemple la définition de la variable
+nous avons définis précédemment (voir par exemple la définition de la variable
 \CodeInline{x\_2}).
 
 
@@ -251,7 +239,7 @@ etc.
 
 
 La règle d'inférence correspondant à cette idée, utilisant les triplets de
-Hoare est la suivante:
+Hoare est la suivante :
 $$\dfrac{\{P\}\quad S1 \quad \{R\} \ \ \ \{R\}\quad S2 \quad \{Q\}}{\{P\}\quad S1 ;\ S2 \quad \{Q\}}$$
 
 
@@ -505,9 +493,9 @@ et avec l'affectation \CodeInline{res = 10*a} nous produit une plus faible préc
 
 
 Quand une preuve a du mal à être réalisée sur un code plus complexe, écrire des
-assertions produisant des postconditions plus fortes mais qui forment des formules
+assertions produisant des postconditions plus fortes, mais qui forment des formules
 plus simples peut souvent nous aider. Notons que dans le code précédent, les lignes
-\CodeInline{P\_imply\_WP} et \CodeInline{SQ\_imply\_Q} ne sont jamais utiles car c'est le raisonnement par
+\CodeInline{P\_imply\_WP} et \CodeInline{SQ\_imply\_Q} ne sont jamais utiles, car c'est le raisonnement par
 défaut produit par WP, elles sont juste présentes pour l'illustration.
 
 
@@ -519,7 +507,7 @@ défaut produit par WP, elles sont juste présentes pour l'illustration.
 Certaines séquences d'instructions peuvent concerner et faire intervenir des
 variables différentes. Ainsi, il peut arriver que nous initialisions et manipulions
 un certain nombre de variables, que nous commencions à utiliser certaines d'entre
-elles, puis que nous les délaissions au profit d'autres pendant un temps. Quand un
+elles, puis les délaissions au profit d'autres pendant un temps. Quand un
 tel cas apparaît, nous avons envie que l'outil ne se préoccupe que des variables
 qui sont susceptibles d'être modifiées pour avoir des propriétés les plus légères
 possibles.
@@ -528,9 +516,6 @@ possibles.
 
 La règle d'inférence qui définit ce raisonnement est la suivante :
 $$\dfrac{\{P\}\quad c\quad \{Q\}}{\{P \wedge R\}\quad c\quad \{Q \wedge R\}}$$
-
-
-
 où $c$ ne modifie aucune variable entrant en jeu dans $R$. Ce qui nous dit : « pour
 vérifier le triplet, débarrassons-nous des parties de la formule qui concernent des
 variables qui ne sont pas manipulées par $c$ et prouvons le nouveau triplet ».
@@ -619,7 +604,7 @@ int foo(int a, int b){
 Dans le bloc \CodeInline{else}, n'ayant que connaissance du fait que \CodeInline{a} est compris
 entre -99 et 0, et ne sachant rien à propos de \CodeInline{b}, nous pourrions
 difficilement savoir si le calcul \CodeInline{a += b} produit une valeur supérieure
-strict à 0 pour \CodeInline{a}.
+stricte à 0 pour \CodeInline{a}.
 
 
 
@@ -682,14 +667,14 @@ Pour les deux questions qui suivent, nous avons uniquement besoin des règles d'
 et pas du calcul de plus faible précondition.
 
 
-Montrer que lorsqu'au lieu de la branche « \textit{else} », c'est la branche « \textit{then} » qui est
+Montrer que lorsque, au lieu de la branche « \textit{else} », c'est la branche « \textit{then} » qui est
 vide, la postcondition de structure conditionnelle est vérifiée par la conjonction de
 la précondition et de la condition de notre structure conditionnelle (puisque
 la branche « \textit{else} » est la seule à potentiellement modifier l'état de
 la mémoire).
 
 
-Montrer que si les deux branches sont vide, la structure conditionnelle est juste une
+Montrer que si les deux branches sont vides, la structure conditionnelle est juste une
 instruction \textit{skip}.
 
 

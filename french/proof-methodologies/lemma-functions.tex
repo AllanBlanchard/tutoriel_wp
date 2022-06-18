@@ -14,7 +14,7 @@ utilisées pour rendre tout cela plus prédictible et nous éviter d'utiliser
 l'assistant de preuve Coq. Tandis que ces techniques ne peuvent pas toujours
 être utilisées (et nous expliquerons quand cela n'est pas applicable), elles
 sont généralement efficaces pour obtenir de la preuve presque complètement
-automatiques. Cela repose sur l'usage de code fantôme.
+automatique. Cela repose sur l'usage de code fantôme.
 
 
 \levelThreeTitle{Preuve par induction}
@@ -136,7 +136,7 @@ preuve à nouveau, en instanciant les valeurs nécessaires.
 
 
 La manière de faire cela est d'utiliser une fonction, en utilisant les clauses
-\CodeInline{requires} pour exprimer les prémisses du lemme, et les clauses
+\CodeInline{requires} pour exprimer les prémisses du lemme et les clauses
 \CodeInline{ensures} pour exprimer la conclusion du lemme. Les variables
 quantifiées universellement peuvent rester quantifiées ou correspondre à un
 paramètre de la fonction. Plus précisément, si une variable est uniquement liée
@@ -144,7 +144,7 @@ aux prémisses ou uniquement aux conclusions, elle peut rester une variable
 quantifiée, à supposer qu'il ne soit pas nécessaire de la lier à une variable
 du code de preuve (puisque qu'une variable quantifiée n'est pas visible depuis
 le code C). Si elle est liée aux prémisses et conclusions, elle doit être un
-paramètre de la fonction (puisqu'ACSL ne nous permet pas de quantifier une
+paramètre de la fonction (puisque ACSL ne nous permet pas de quantifier une
 variable pour un contrat de fonction entier).
 
 
@@ -208,21 +208,11 @@ sont liés à la fois aux prémisses et aux conclusions, elles doivent être des
 paramètres, c'est par exemple le cas ici pour les variables \CodeInline{arr}
 et \CodeInline{len}, tandis que pour les variables quantifiées dans les
 prédicats :
-
-
-
 \CodeBlockInput[4][8]{c}{lemma-function-1-2.c}
-
-
 puisqu'elles ne sont respectivement liées qu'aux prémisses et aux conclusions
 restent universellement quantifiées (même si elles sont cachées dans les
-prédicats). Nous pourrions avoir écris le contrat comme ceci :
-
-
-
+prédicats). Nous pourrions avoir écrit le contrat comme ceci :
 \CodeBlockInput[15][32]{c}{lemma-function-1-3.c}
-
-
 où nous voyons parfaitement que les variables sont toujours universellement
 quantifiées. Cependant, nous ne sommes pas obligés de les maintenir quantifiées
 universellement, et nous pourrions parfaitement les transformer en paramètres
@@ -246,12 +236,12 @@ notre conclusion » en tant que prémisse d'un nouveau lemme :
 
 
 Tous ces lemmes énoncent la même relation globale, la différence est liée à la
-quantité d'information requises pour les instancier (et par conséquent la
+quantité d'informations requises pour les instancier (et par conséquent la
 précision de la propriété que nous obtenons en retour).
 
 
 Finalement, présentons un dernier usage des fonctions lemmes. Dans tous les
-exemples précédent, nous avons considéré des variables universellement quantifiées.
+exemples précédents, nous avons considéré des variables universellement quantifiées.
 En fait, ce que nous avons dit précédemment est aussi applicable aux variables
 existentiellement quantifiées : si elles sont liées aux prémisses et aux
 conclusions, elles doivent être des paramètres, sinon elles peuvent donner lieu
@@ -322,7 +312,7 @@ plusieurs labels :
 \end{CodeBlock}
 
 
-Les fonctions lemmes ne nous fournissent pas de mécanisme équivalent
+Les fonctions lemmes ne nous fournissent pas de mécanisme équivalent,
 car elles sont simplement des fonctions C normales, qui ne peuvent pas prendre
 de labels comme entrée. Regardons ce que nous pouvons faire à ce sujet.
 
@@ -371,22 +361,18 @@ Nous utiliserons le lemme suivant :
 \CodeBlockInput[4][11]{c}{lemma-macro-2-1.c}
 
 
-Avec pour objectif de prouver le programme suivante :
-
-
+Avec pour objectif de prouver le programme suivant :
 \CodeBlockInput[13][29]{c}{lemma-macro-2-1.c}
-
-
 où le lemme \CodeInline{shift\_ptr} est nécessaire pour prouver que la
 postcondition de \CodeInline{callee} depuis la postcondition de
 \CodeInline{shift\_array}. Notre but est bien sûr de ne pas avoir besoin du
-lemme en le remplaçant par une macro lemme.
+lemme en le remplaçant par une macro-lemme.
 
 
 Il n'y a pas de guide précis pour concevoir une macro utilisée pour injecter
 un code de preuve. Cependant, la plupart des lemmes énoncés à propos de labels
 multiples sont relativement similaires dans leur manière de lier les labels.
-Illustrons donc avec cet exemple ; la plupart du temps concevoir une macro dans
+Illustrons donc avec cet exemple ; la plupart du temps, concevoir une macro dans
 une telle situation suivra plus ou moins ce schéma.
 
 
@@ -425,7 +411,7 @@ Ensuite nous créons notre fonction de contexte :
 Décomposons ce code, en commençant par la fonction de contexte. En entrée, nous
 recevons les variables du lemme. Nous énonçons également quelques propriétés à
 propos des bornes des entiers considérés, généralement cela devrait simplement
-être les préconditions qui ne sont pas liées aux états mémoire, ou liées au
+être les préconditions qui ne sont pas liées aux états mémoire ou liées au
 premier état mémoire. Ensuite, nous introduisons le label \CodeInline{L1} et nous
 appelons la fonction \CodeInline{assign\_array} qui nous amène au label
 \CodeInline{L2}. Le rôle de cet appel est de s'assurer que WP créera un nouvel
@@ -508,7 +494,7 @@ notre fonction ne peut être utilisée que pour les types qui peuvent être
 convertis de manière sure vers \CodeInline{size\_t}. Cependant, cette limitation
 n'est généralement pas un problème : nous avons juste à exprimer notre
 spécification dans le type le plus gros que nous avons à considérer dans notre
-programme et la plupart du temps cela sera suffisant. Et si ce n'est pas le cas,
+programme et la plupart du temps, cela sera suffisant. Et si ce n'est pas le cas,
 nous pouvons par exemple dupliquer le lemme pour les types qui nous intéressent.
 La plupart du temps cette limitation est largement gérable puisque nous
 travaillons avec les types utilisés dans le programme à prouver.
@@ -572,10 +558,8 @@ gros contextes de preuve. En fonction de la puissance de la machine sur laquelle
 la preuve est lancée, la preuve pourrait approcher les 120 secondes (ce qui est
 déjà long pour un solveur SMT). Dans cet exemple, nous illustrerons les trois
 cas d'usage que nous avons vu du code fantôme jusqu'ici :
-
-
 \begin{itemize}
-    \item écris directement un code pour construire une preuve,
+    \item écrire directement un code pour construire une preuve,
     \item écrire (et utiliser) des fonctions lemmes,
     \item écrire (et utiliser) des macros lemmes.
 \end{itemize}
@@ -585,14 +569,10 @@ Nous utilisons également des assertions pour rendre le contexte de preuve plus
 riche afin que les solveurs SMT puissent prouver les propriétés qui nous intéressent.
 Certaines parties des annotations que nous avons écrites précédemment seront
 équivalentes à ce que nous avons fait précédemment. Nous rappellerons leur
-but dans chaque fonction. Ensuite, nous utilisons la même définition axiomatiques
+but dans chaque fonction. Ensuite, nous utilisons la même définition axiomatique
 pour le comptage d'occurrences. De plus, nous conservons ces définitions de
 prédicats :
-
-
 \CodeBlockInput[25][42]{c}{insert-sort-auto.c}
-
-
 puisque nous en avons besoin, ainsi que le lemme à propos de la transitivité du
 comptage d'occurrences, puisqu'il était prouvé automatiquement par les solveurs
 SMT (nous pouvons donc le garder puisqu'il ne nécessite pas de preuve interactive
@@ -612,7 +592,7 @@ nous avons écrit trois assertions :
 La première nous assure que le début du tableau où nous avons inséré une valeur
 est une permutation de la même plage de valeur avant l'appel à \CodeInline{insert}.
 Comme c'est la postcondition de la fonction, elle n'est pas nécessaire, mais nous
-la conservons la pour illustration. La dernière assertion est la propriété que
+la conservons pour illustration. La dernière assertion est la propriété que
 nous voulons prouver pour obtenir suffisamment de connaissance pour que le
 lemme à propos de la transitivité de la permutation soit utilisé (et montre qu'à
 la fin du bloc de la boucle, puisque le tableau est une permutation du tableau
@@ -624,7 +604,7 @@ La seconde assertion dit que la seconde partie du tableau reste inchangée, et n
 voulons utiliser cette connaissance pour montrer que le nombre d'occurrences des
 valeurs n'a pas changé. Ici, nous pourrions utiliser une combinaison des
 fonctions et macros lemmes pour prouver que la plage complète est une
-permutation (comme nous le ferons pour l'autre fonction). Cependant ici, écrire
+permutation (comme nous le ferons pour l'autre fonction). Cependant, écrire
 directement le code est un peu plus simple et requiert moins de preuves (comme
 nous le verrons plus tard), écrivons donc directement le code qui permet de
 prouver notre propriété.
@@ -639,12 +619,8 @@ changé pour une partie de notre tableau. En utilisant une boucle avec
 \CodeInline{permutation{L,PI}(a, beg, j)}, nous pouvons continuer le comptage des
 occurrences pour le reste de notre tableau, avec la connaissance que la fin n'a
 pas changé (quand \CodeInline{i+1} est plus petit que \CodeInline{end} sinon
-nous n'avons simplement plus rien à compter):
-
-
+nous n'avons simplement plus rien à compter) :
 \CodeBlockInput[275][291]{c}{insert-sort-auto-proved.c}
-
-
 ce qui est suffisant pour assurer que la fonction \CodeInline{insertion\_sort}
 est conforme à sa spécification à condition de finir la preuve de la fonction
 \CodeInline{insert}. Cette seconde fonction réalise des actions plus
@@ -662,8 +638,6 @@ simple ici. En effet, la seconde partie du tableau a été « tournée » ce qui
 rend la propriété un peu plus complexe. Du coup, commençons par séparer notre
 tableau à la position d'insertion en deux parties, où nous montrons
 respectivement que :
-
-
 \begin{itemize}
     \item pour la première partie, puisqu'elle est inchangée, pour tout $v$
           le nombre d'occurrences n'a pas changé non plus ;
@@ -693,7 +667,7 @@ du tableau. En effet, pour établir cela pour le tableau original, nous devons
 appeler la fonction sur le tableau original pour lequel nous ne connaissons pas
 encore la valeur de $i$. Par conséquent, écrivons une autre version de la
 propriété « \textit{split} » qui nous montrer que nous pouvons couper le tableau à toute
-position, donc rendons la variable \CodeInline{split} universellement quantifiée,
+position, donc rendons la variable \CodeInline{split} universellement quantifiée
 et utilisons la fonction précédente pour montrer que cette nouvelle propriété est
 vraie.
 
@@ -740,11 +714,7 @@ La fonction \CodeInline{unchanged\_permutation\_premise} assure que nous avons
 modifié le tableau (et donc créé un nouvel état mémoire) et que le tableau est
 inchangé entre la précondition et la postcondition. Nous pouvons construire
 notre macro lemme :
-
-
 \CodeBlockInput[135][143]{c}{insert-sort-auto-proved.c}
-
-
 qui correspond presque à ce que nous avons écrit pour \CodeInline{insert\_sort},
 et utiliser cette macro là où nous en avons besoin dans la fonction
 \CodeInline{insert}.
@@ -771,7 +741,7 @@ même). À nouveau, nous nous reposons sur la fonction \CodeInline{split} pour c
 séparément les éléments décalés et l'élément qui est déplacé de la fin vers le
 début. Cependant, l'appel correspondant dans le tableau original doit à nouveau
 être réalisée avant le code qui modifie le tableau original (voir ligne 12) dans
-le code précédent, et nouvs devons prendre cela en compte quand nous insérerons
+le code précédent, et nous devons prendre cela en compte quand nous insérerons
 notre utilisation de la macro dans la fonction \CodeInline{insert}.
 
 
@@ -926,7 +896,7 @@ d'occurrences de \CodeInline{v} est positif. \CodeInline{occ\_monotonic} peut
 
 
 Finalement, la fonction \CodeInline{occ\_pos\_exists} doit traduire le contrat
-de la fonction précédente en utilisant une variable quantifiée existentitellement,
+de la fonction précédente en utilisant une variable quantifiée existentiellement
 et utiliser la fonction précédente pour obtenir gratuitement la preuve.
 
 

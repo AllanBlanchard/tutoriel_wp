@@ -85,7 +85,7 @@ dérouler la récursion quand c'est possible.
 
 
 
-L'idée est alors de ne pas définir directement la fonction ou le prédicat mais
+L'idée est alors de ne pas définir directement la fonction ou le prédicat, mais
 plutôt de la déclarer puis de définir des axiomes spécifiant son comportement.
 Si nous reprenons par exemple la factorielle, nous pouvons la définir
 axiomatiquement de cette manière :
@@ -133,7 +133,8 @@ d'une définition axiomatique qui prendra cette forme :
 \CodeBlockInput[5][16]{c}{reset-0.c}
 
 
-Notons le \CodeInline{reads[b .. e-1]} qui spécifie la position mémoire dont le
+Notons la présence de la clause \CodeInline{reads[b .. e-1]} qui spécifie la
+position mémoire dont le
 prédicat dépend. Tandis que nous n'avons pas besoin de spécifier les positions
 mémoires « lues » par une définition inductive, nous devons spécifier ces propriétés
 pour les propriétés définies axiomatiquement.
@@ -143,7 +144,7 @@ pour les propriétés définies axiomatiquement.
 
 
 En ajoutant des axiomes à notre base de connaissances, nous pouvons produire des
-preuves plus complexes car certaines parties de cette preuve, mentionnées par
+preuves plus complexes, car certaines parties de cette preuve, mentionnées par
 les axiomes, ne nécessiteront plus de preuves qui allongeraient le processus
 complet. Seulement, en faisant cela \textbf{nous devons être extrêmement prudents}.
 En effet, la moindre hypothèse fausse introduite dans la base pourraient rendre
@@ -152,7 +153,7 @@ basé sur des connaissances fausses, il ne nous apprendrait donc plus rien de co
 
 
 
-L'exemple le plus simple à produire est le suivant:
+L'exemple le plus simple à produire est le suivant :
 
 
 
@@ -190,7 +191,7 @@ consistance de l'axiomatique. En effet, comme mentionné précédemment, si nous
 n'exprimons pas les valeurs lues dans le cas de l'usage d'un pointeur, la
 modification d'une valeur du tableau n'invalide pas une propriété que l'on
 connaîtrait à propos du contenu du tableau par exemple. Dans un tel cas, la
-preuve passe mais l'axiome n'exprimant pas le contenu, nous ne prouvons rien.
+preuve passe, mais l'axiome n'exprimant pas le contenu, nous ne prouvons rien.
 
 
 
@@ -199,11 +200,7 @@ la définition de notre axiomatique en retirant la mention des valeurs dont
 dépendent le prédicat : \CodeInline{reads a[b .. e-1]}. La preuve passera toujours,
 mais n'exprimera plus rien à propos du contenu des tableaux considérés.
 Par exemple, la fonction suivante :
-
-
 \CodeBlockInput[16][25]{c}{all-zeroes-bad.c}
-
-
 est prouvée correcte alors qu'une valeur a changé dans le tableau et donc elle
 n'est plus 0.
 
@@ -227,9 +224,6 @@ axiomatiquement la notion de comptage dans un tableau :
 
 
 Nous avons trois cas à gérer :
-
-
-
 \begin{itemize}
 \item la plage de valeur concernée est vide : le nombre d'occurrences est 0 ;
 \item la plage de valeur n'est pas vide et le dernier élément est celui recherché :
@@ -276,7 +270,7 @@ erreurs. Ici, nous devrons quand même réaliser les preuves des propriétés
 mentionnées.
 
 
-\levelThreeTitle{Exemple: la fonction \CodeInline{strlen}}
+\levelThreeTitle{Exemple : la fonction \CodeInline{strlen}}
 
 
 Dans cette section, prouvons la fonction C \CodeInline{strlen}:
@@ -303,12 +297,12 @@ fonction logique \CodeInline{strlen} appliquée à cette chaîne. Bien sûr,
 cette fonction n'affecte rien. Définir ce qu'est une chaîne valide n'est
 pas si simple. En effet, précédemment dans ce tutoriel, nous avons uniquement
 travaillé avec des tableaux, en recevant en entrée à la fois un pointeur
-vers le tableau et la taille du dit tableau. Cependant ici, et tel que
+vers le tableau et la taille du tableau. Cependant, tel que
 c'est généralement fait en C, nous supposons que la chaîne termine avec
 un caractère \CodeInline{'\textbackslash{}0'}. Cela signifie que nous
 avons en fait besoin de la fonction logique \CodeInline{strlen} pour
 définir ce qu'est une chaîne valide. Utilisons d'abord cette définition
-(notons que nous utilisons \CodeInline{\textbackslash{}valid\_read}
+(notons que nous utilisons \CodeInline{\textbackslash{}valid\_read},
 car nous ne modifions pas la chaîne) pour fournir un contrat pour
 \CodeInline{strlen} :
 
@@ -319,7 +313,7 @@ car nous ne modifions pas la chaîne) pour fournir un contrat pour
 
 Définir la fonction logique \CodeInline{strlen} n'est pas si simple. En effet,
 nous devons calculer la fonction d'une chaîne en trouvant le caractère
-\CodeInline{'\textbackslash{}0'}, et nous espérons le trouver mais en fait,
+\CodeInline{'\textbackslash{}0'}, et nous espérons le trouver, mais en fait,
 nous pouvons facilement imaginer une chaîne qui n'en contiendrait pas. Dans
 ce cas, nous voudrions avoir une valeur d'erreur, mais il est impossible de
 garantir que le calcul termine : une fonction logique ne peut donc pas être
@@ -329,10 +323,10 @@ utilisée pour exprimer cette propriété.
 
 Définissons donc cette fonction axiomatiquement. D'abord définissons ce qui
 est lu par la fonction, à savoir : toute position mémoire depuis le pointeur
-jusqu'à un plage infinie d'adresses. Ensuite, considérons deux cas : la chaîne
+jusqu'à une plage infinie d'adresses. Ensuite, considérons deux cas : la chaîne
 est finie, ou elle ne l'est pas, ce qui nous amène à deux axiomes :
 \CodeInline{strlen} retourne une valeur positive qui correspond à l'indice
-du premier caractère \CodeInline{'\textbackslash{}0'}, et retourne une valeur
+du premier caractère \CodeInline{'\textbackslash{}0'} et retourne une valeur
 négative s'il n'y a pas de tel caractère.
 
 
@@ -344,7 +338,7 @@ négative s'il n'y a pas de tel caractère.
 Maintenant, nous pouvons être plus précis dans notre définition de
 \CodeInline{\textbackslash{}valid\_read\_string}, une chaîne valide est une
 chaîne telle qu'est valide depuis le premier indice jusqu'à \CodeInline{strlen}
-de la chaîne, et telle que cette valeur est plus grande que 0 (puisqu'une
+de la chaîne et telle que cette valeur est plus grande que 0 (puisqu'une
 chaîne infinie n'est pas valide) :
 
 
@@ -359,8 +353,8 @@ toute valeur entre 0 et \CodeInline{i}, elles sont différentes de
 et le variant correspond à la distance entre \CodeInline{i} et
 \CodeInline{strlen(s)}. Cependant, si nous essayons de prouver cette fonction,
 la preuve échoue. Pour avoir plus d'information, nous pouvons relancer la
-preuve avec la vérification d'absence de RTE, avec la vérification de non
-débordement des entiers non signés :
+preuve avec la vérification d'absence de RTE, avec la vérification de
+non-débordement des entiers non signés :
 
 
 
@@ -444,7 +438,7 @@ et la prouver :
 \levelFourTitle{Permutation}
 
 
-Reprendre l'exemple à propos du tri pr sélection
+Reprendre l'exemple à propos du tri par sélection
 (section~\ref{l3:acsl-logic-definitions-inductive-sort}). Ré-exprimer le
 prédicat de permutation comme une définition axiomatique. Prendre garde à la
 clause \CodeInline{reads} (en particulier, noter que le prédicat relie deux

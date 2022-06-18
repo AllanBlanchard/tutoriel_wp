@@ -54,7 +54,7 @@ void ma_fonction(int* a, int b){
 
 
 Ce qui nous permet ainsi de bénéficier de la robustesse de notre fonction tout en
-ayant la possibilité de débugger un appel incorrect dans un code que nous ne
+ayant la possibilité de déboguer un appel incorrect dans un code que nous ne
 voulons ou pouvons pas prouver.
 
 
@@ -86,7 +86,7 @@ ont cela pour elles. Qu'y a-t-il de plus terrible que lire une spécification
 rallonge, de verbes conjugués à la forme conditionnelle, de termes imprécis,
 d'ambiguïtés, compilée dans des documents administratifs de centaines de pages,
 et dans laquelle nous devons chercher pour déterminer « bon alors cette fonction,
-elle doit faire quoi ? Et qu'est-ce qu'il faut valider à son sujet ? ».
+elle doit faire quoi ? Et que faut-il valider à son sujet ? ».
 
 
 
@@ -147,13 +147,10 @@ toujours fragile.}
 \levelThreeTitle{Avec Frama-C}
 
 
-Frama-C propose divers moyen d'analyser les programmes. Dans les outils les
+Frama-C propose divers moyens d'analyser les programmes. Dans les outils les
 plus courants qui sont intéressants à connaître d'un point de vue vérification
 statique et dynamique pour l'évaluation du bon fonctionnement d'un programme,
 on peut citer :
-
-
-
 \begin{itemize}
 \item l'analyse par interprétation abstraite avec
 \externalLink{EVA}{http://frama-c.com/value.html},
@@ -206,7 +203,7 @@ question sont bien vérifiées.
 
 
 
-Lorsque nous passons par d'autres solveurs que Alt-Ergo, le dialogue avec ceux-ci
+Lorsque nous passons par d'autres solveurs qu'Alt-Ergo, le dialogue avec ceux-ci
 est assuré par une traduction vers le langage de Why3 qui fait ensuite le pont
 avec les prouveurs automatiques. Mais ce n'est pas la seule manière d'utiliser
 Why3. Celui-ci peut tout à fait être utilisé seul pour écrire et prouver des

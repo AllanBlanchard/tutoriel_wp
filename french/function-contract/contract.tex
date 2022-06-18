@@ -1,7 +1,5 @@
 Le principe d'un contrat de fonction est de poser les conditions selon
 lesquelles la fonction s'exécutera. On distinguera deux parties :
-
-
 \begin{itemize}
 \item \textbf{la précondition}, c'est-à-dire ce que doit assurer le code
       appelant à propos des variables passées en paramètres et de l'état de
@@ -15,9 +13,6 @@ lesquelles la fonction s'exécutera. On distinguera deux parties :
 Ces propriétés sont exprimées en langage ACSL dont la syntaxe est relativement
 simple pour qui a déjà fait du C, puisqu'elle reprend la syntaxe des expressions
 booléennes du C. Cependant, elle ajoute également :
-
-
-
 \begin{itemize}
 \item certaines constructions et connecteurs logiques qui ne sont pas présents
 originellement en C pour faciliter l'écriture ;
@@ -225,7 +220,7 @@ un clic droit sur le nom de la fonction et « \textit{Prove function annotations
 
 
 
-\image{1-abs-2.png}[Lancer la vérification de abs avec WP]
+\image{1-abs-2.png}
 
 
 Nous pouvons voir que les cercles bleus deviennent des pastilles vertes,
@@ -235,9 +230,9 @@ et pas sur le nom de la fonction.
 
 
 
-Mais le code est-il vraiment sans erreur pour autant ? WP nous permet de nous
+Mais le code est-il vraiment sans erreurs pour autant ? WP nous permet de nous
 assurer que le code répond à la spécification, mais il ne fait pas de contrôle
-d'erreur à l'exécution (\textit{runtime error}, abrégé RTE) si nous le demandons
+d'erreur à l'exécution (\textit{runtime error}, abrégé RTE) si nous ne le demandons
 pas. Un autre \textit{plugin} de Frama-C, appelé sobrement RTE, peut être
 utilisé pour générer des annotations ACSL qui peuvent ensuite être vérifiées par
 d'autres \textit{plugins}.
@@ -268,7 +263,7 @@ contrôles par un clic droit sur le nom de la fonction puis
 
 
 \begin{Information}
-  A partir de ce point du tutoriel, \CodeInline{-wp-rte} devra toujours être
+  À partir de ce point du tutoriel, \CodeInline{-wp-rte} devra toujours être
   activé pour traiter les exemples, sauf indication contraire.
 \end{Information}
 
@@ -289,7 +284,7 @@ que -\CodeInline{INT\_MIN} ($-2^{31}$) > \CodeInline{INT\_MAX} ($2^{31}-1$).
 
 
 \begin{Information}
-Il est bon de noter que le risque de dépassement est pour nous réel car nos
+Il est bon de noter que le risque de dépassement est pour nous réel, car nos
 machines (dont Frama-C détecte la configuration) fonctionne en
 \externalLink{complément à deux}{https://fr.wikipedia.org/wiki/Compl\%C3\%A9ment\_\%C3\%A0\_deux}
 pour lequel le dépassement n'est pas défini par la norme C.
@@ -338,9 +333,6 @@ en supposant que $S_3$ est vraie, pour laquelle nous n'avons actuellement pas
 
 La couleur orange nous signale qu'aucun prouveur n'a pu déterminer si la
 propriété est vérifiable. Les deux raisons peuvent être :
-
-
-
 \begin{itemize}
 \item qu'il n'a pas assez d'information pour le déterminer ;
 \item que malgré toutes ses recherches, il n'a pas pu trouver un résultat à
@@ -613,12 +605,9 @@ frama-c-gui your-file.c -wp
 
 Lorsque la preuve que la fonction est conforme à son contrat est établie, lancer
 la commande :
-
 \begin{CodeBlock}{bash}
 frama-c-gui your-file.c -wp -wp-rte
 \end{CodeBlock}
-
-
 qui devrait échouer. Adapter le contrat en ajoutant la bonne précondition.
 
 
@@ -643,12 +632,9 @@ frama-c-gui your-file.c -wp
 
 Lorsque la preuve que la fonction est conforme à son contrat est établie, lancer
 la commande :
-
 \begin{CodeBlock}{bash}
 frama-c-gui your-file.c -wp -wp-rte
 \end{CodeBlock}
-
-
 qui devrait échouer. Adapter le contrat en ajoutant la bonne précondition.
 
 
@@ -679,7 +665,7 @@ assertions dans la fonction main.
 
 
 Écrire la postcondition de la fonction suivante qui retourne le nombre de
-jours en fonction du mois reçu en entrée (NB: nous considérons que le mois
+jours en fonction du mois reçu en entrée (NB : nous considérons que le mois
 reçu est entre 1 et 12), pour février, nous considérons uniquement le cas
 où il a 28 jours, nous verrons plus tard comment régler ce problème :
 
@@ -730,7 +716,7 @@ Cette fonction reçoit deux valeurs d'angle en entrée et retourne
 la valeur du dernier angle composant le triangle correspondant en se
 reposant sur la propriété que la somme des angles d'un triangle vaut
 180 degrés. Écrire la postcondition qui exprime que la somme des trois
-angle vaut 180.
+angles vaut 180.
 
 
 \CodeBlockInput[5]{c}{ex-5-last-angle.c}
