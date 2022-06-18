@@ -32,9 +32,9 @@ L'analyse que nous allons utiliser ici est fournie par un plugin appelé WP pour
 \textit{Weakest Precondition}, un plugin de vérification déduction. Il implémente
 la technique dont nous avons parlé plus tôt :
 à partir des annotations ACSL et du code source, le plugin génère ce que nous
-appelons des obligations de preuves, qui sont des formules logiques dont nous
-devons vérifier si elles sont vraies ou fausses (on parle de « satisfiabilité »).
-Cette vérification peut être faite de manière
+appelons des conditions de vérification (ou obligations de preuves), qui sont
+des formules logiques dont nous devons vérifier si elles sont vraies ou fausses
+(on parle de « satisfiabilité »). Cette vérification peut être faite de manière
 manuelle ou automatique, ici nous n'utiliserons que des outils automatiques.
 
 
@@ -51,7 +51,7 @@ OCamlPro.
 \levelThreeTitle{Installation}
 
 
-Frama-C est un logiciel développé sous Linux et OSX. Son support est donc bien
+Frama-C est un logiciel développé sous Linux et macOS. Son support est donc bien
 meilleur sous ces derniers. Il existe quand même de quoi faire une installation
 sous Windows et en théorie l'utilisation sera sensiblement la même que sous
 Linux, mais :
@@ -385,7 +385,7 @@ Pourquoi aurait-on besoin d'un tel outil ? Il se peut parfois que les
 propriétés que nous voulons prouver soient trop complexes pour un prouveur
 automatique, typiquement lorsqu'elles nécessitent des raisonnements par
 induction avec des choix minutieux à chaque étape. Auquel cas, WP pourra
-générer des obligations de preuve traduites en Coq et nous laisser écrire
+générer des conditions de vérification traduites en Coq et nous laisser écrire
 la preuve en question.
 
 

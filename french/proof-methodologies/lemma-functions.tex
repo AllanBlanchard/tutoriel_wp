@@ -1,9 +1,9 @@
 Les assertions nous permettent de donner des indices au générateur
-d'obligation de preuves pour les solveurs SMT obtiennent assez d'information
+de conditions de vérification pour les solveurs SMT obtiennent assez d'information
 pour produire la preuve dont nous avons besoin. Cependant, il est parfois
 difficile d'écrire une assertion qui créera exactement la propriété dont le
 solveur SMT a besoin pour déclencher le bon lemme (par exemple, puisque le
-générateur effectue des optimisations sur les obligations de preuve, ils peuvent
+générateur effectue des optimisations sur les conditions de vérification, ils peuvent
 légèrement la modifier, ainsi que le contexte de preuve). De plus, nous
 reposons sur des lemmes qui ont souvent besoin d'être prouvés en Coq, et pour
 cela nous avons besoin d'apprendre Coq.
@@ -31,13 +31,13 @@ invariant de boucle, nous procédons ... par induction. L'auteur de ce tutoriel
 aurait-il honteusement menti au lecteur pendant tout ce temps ?
 
 
-En fait non, et la raison est plutôt simple. Lorsque nous prouvons un
+En fait non. La raison est plutôt simple. Lorsque nous prouvons un
 invariant de boucle par induction en utilisant des solveurs SMT, ils n'ont pas
 besoin d'effectuer le raisonnement par induction eux-mêmes. Le travail qui
 consiste à séparer la preuve en deux sous-preuves, la première pour
 l'établissement de l'invariant (le cas de base de la preuve), et la seconde pour
 la préservation (le cas d'induction) est effectué par le générateur
-d'obligations de preuve. Par conséquent, quand les obligations de preuves sont
+de conditions de vérification. Par conséquent, quand les conditions de vérifications sont
 transmises aux solveurs SMT, ce travail n'est plus nécessaire.
 
 
@@ -75,12 +75,12 @@ plage donnée de taille $i$ avec $i < length$ ($length$ étant la taille de la
 plage complète) est globalement triée et montrons que si c'est le cas, alors la
 plage de taille $i+1$ est triée. C'est facile parce que, d'après notre
 précondition, nous savons que le $i^{ième}$ élément est supérieur ou égal au
-$(i-1)^{ième}$ élément, qui est lui même plus grand que tous les éléments qui
-précède.
+$(i-1)^{ième}$ élément, qui est lui-même plus grand que tous les éléments qui
+le précèdent.
 
 
 Comment pouvons-nous traduire cela en code fantôme ? Nous écrivons une boucle qui
-vas de $0$ (notre cas de base), à la fin \CodeInline{len} et nous fournissons
+va de $0$ (notre cas de base), à la fin \CodeInline{len} et nous fournissons
 un invariant montrant que le tableau est globalement trié depuis $0$ jusqu'à la
 cellule actuellement visitée. Nous ajoutons également une assertion pour aider le
 prouveur (qui nous dit que l'élément courant est plus grand que les éléments qui
@@ -92,9 +92,9 @@ précèdent) :
 
 
 
-Nous pouvons voir que toutes les obligations de preuve sont facilement
+Nous pouvons voir que toutes les conditions de vérification sont facilement
 vérifiées par les solveurs SMT, sans que cela ne nécessite d'écrire une preuve Coq
-ou un lemme. Les obligations de preuve respectivement créées pour
+ou un lemme. Les conditions de vérification respectivement créées pour
 l'établissement et la préservation de l'invariant correspondent aux deux cas que
 nous avions besoin dans notre preuve par induction :
 

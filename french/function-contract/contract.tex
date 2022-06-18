@@ -310,7 +310,7 @@ pour les pastilles : vert + marron et orange.
 
 
 
-La couleur vert + marron nous indique que la preuve a été effectuée mais
+La couleur verte et marron nous indique que la preuve a été effectuée, mais
 qu'elle dépend potentiellement de propriétés pour lesquelles ce n'est pas le
 cas.
 
@@ -324,8 +324,8 @@ cette propriété puisqu'elle n'existait pas.
 
 
 
-En effet, lorsque WP transmet une obligation de preuve à un prouveur automatique,
-il transmet deux types de propriétés : $G$, le but, la propriété
+En effet, lorsque WP transmet une condition de vérification à un prouveur
+automatique, il transmet deux types de propriétés : $G$, le but, la propriété
 que l'on cherche à prouver, et $S_1$ ... $S_n$ les diverses suppositions que l'on
 peut faire à propos de l'état du programme au point où l'on cherche à vérifier $G$.
 Cependant, il ne reçoit pas, en retour, quelles propriétés ont été utilisées par
@@ -350,10 +350,10 @@ dans le volet de WP.
 
 
 Dans le volet inférieur, nous pouvons sélectionner l'onglet « \textit{WP Goals} »,
-celui-ci nous affiche la liste des obligations de preuve et pour chaque
+celui-ci nous affiche la liste des conditions de vérification et pour chaque
 prouveur indique un petit logo si la preuve a été tentée et si elle a été
 réussie, échouée ou a rencontré un \textit{timeout} (logo avec les ciseaux).
-Pour voir la totalité des obligations de preuves, il
+Pour voir la totalité des conditions de vérification, il
 faut s'assurer que « \textit{All Results} » est bien sélectionné dans le champ encadré
 dans la capture.
 
@@ -362,8 +362,8 @@ dans la capture.
 \image{1-abs-5.png}
 
 
-Le tableau est découpé comme suit, en première colonne nous avons le nom de la
-fonction où se trouve le but à prouver. En seconde colonne nous trouvons le nom
+Le tableau est découpé comme suit, en première colonne, nous avons le nom de la
+fonction où se trouve le but à prouver. En seconde colonne, nous trouvons le nom
 du but. Ici par exemple notre postcondition nommée est estampillée
 « postcondition 'positive\textit{value,function}result' », nous pouvons d'ailleurs noter
 que lorsqu'une propriété est sélectionnée dans le tableau, elle est également
@@ -395,7 +395,7 @@ nous pouvons voir ceci (si ce n'est pas le cas, il faut s'assurer que
 \image{1-abs-6.png}
 
 
-C'est l'obligation de preuve que génère WP par rapport à notre propriété et
+C'est la condition de vérification que génère WP par rapport à notre propriété et
 notre programme, il n'est pas nécessaire de comprendre tout ce qu'il s'y passe,
 juste d'avoir une idée globale. Elle contient (dans la partie « \textit{Assume} ») les
 suppositions que nous avons pu donner et celles que WP a pu déduire des
@@ -419,22 +419,22 @@ pas appel aux prouveurs.
 Lorsque les prouveurs automatiques ne parviennent pas à assurer que nos
 propriétés sont bien vérifiées, il est parfois difficile de comprendre
 pourquoi. En effet, les prouveurs sont généralement incapables de nous
-répondre autre chose que « oui », « non » ou « inconnu », ils sont pas
+répondre autre chose que « oui », « non » ou « inconnu », ils ne sont pas
 incapables d'extraire le « pourquoi » d'un « non » ou d'un « inconnu ». Il
 existe des outils qui
 sont capables d'explorer les arbres de preuve pour en extraire ce type
 d'information, Frama-C n'en possède pas à l'heure actuelle. La lecture des
-obligations de preuve peut parfois nous aider, mais cela demande un peu
+conditions de vérification peut parfois nous aider, mais cela demande un peu
 d'habitude pour pouvoir les déchiffrer facilement. Finalement, le meilleur
 moyen de comprendre la raison d'un échec est d'effectuer la preuve de manière
 interactive avec Coq. En revanche, il faut déjà avoir une certaine habitude de
-ce langage pour ne pas être perdu devant les obligations de preuve générées par
+ce langage pour ne pas être perdu devant les conditions de vérification générées par
 WP, étant donné que celles-ci encodent les éléments de la sémantique de C, ce
 qui rend le code souvent indigeste.
 
 
 
-Si nous retournons dans notre tableau des obligations de preuve (bouton
+Si nous retournons dans notre tableau des conditions de vérification (bouton
 encadré en rouge dans la capture d'écran précédente), nous pouvons donc voir
 que les hypothèses n'ont pas suffi aux prouveurs pour déterminer que la
 propriété  « absence de débordement » est vraie (et nous l'avons dit : c'est
@@ -554,8 +554,9 @@ de même que « vrai » est vrai. Donc tout est vrai.
 
 
 
-En prenant le programme modifié, nous pouvons d'ailleurs regarder les obligations
-de preuve générées par WP pour l'appel fautif et l'appel prouvé par conséquent :
+En prenant le programme modifié, nous pouvons d'ailleurs regarder les conditions
+de vérification générées par WP pour l'appel fautif et l'appel prouvé par
+conséquent :
 
 
 
@@ -670,7 +671,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Toutes les obligations de preuve devraient être prouvées, y compris les
+Toutes les conditions de vérification devraient être prouvées, y compris les
 assertions dans la fonction main.
 
 
