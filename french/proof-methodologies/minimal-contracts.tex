@@ -122,9 +122,9 @@ regardant l'assertion générée par le plugin RTE :
 Nous devons donc vérifier que :
 
 \begin{itemize}
-\item le pointeur que nous avons reçu est valide,
+\item le pointeur que la fonction reçoit est valide,
 \item \CodeInline{*p+1} ne fait pas de débordement,
-\item nous respectons le contrat de la fonction \CodeInline{search}.
+\item la précondition de la fonction \CodeInline{search} est satisfaite.
 \end{itemize}
 
 
@@ -149,8 +149,9 @@ L'avantage le plus évident de cette approche est le fait qu'elle permet de gara
 qu'un programme ne contient pas d'erreurs à l'exécution dans toute fonction d'un
 module ou d'un programme en (relative) isolation des autres fonctions. De plus,
 cette absence d'erreurs à l'exécution est garantie pour tout usage de la fonction
-dont l'appel respecte ses préconditions. Cela permet de gagner une certaine confiance
-dans un système avec une approche dont le coût est relativement raisonnable.
+dont l'appel satisfait ses préconditions. Cela permet de gagner une certaine
+confiance dans un système avec une approche dont le coût est relativement
+raisonnable.
 
 
 

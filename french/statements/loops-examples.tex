@@ -73,10 +73,10 @@ différence fondamentale entre l'usage de \CodeInline{exists} et celui de \CodeI
 
 
 Avec \CodeInline{\textbackslash{}forall type a ; p(a) ==> q(a)}, la restriction (\CodeInline{p}) est suivie
-par une implication. Pour tout élément, s'il respecte une première propriété
+par une implication. Pour tout élément, s'il satisfait une première propriété
 (\CodeInline{p}), alors il doit vérifier la seconde propriété \CodeInline{q}. Si nous mettions un ET
 comme pour le « il existe » (que nous expliquerons ensuite), cela voudrait dire que
-nous voulons que tout élément respecte à la fois les deux propriétés. Parfois,
+nous voulons que tout élément vérifie à la fois les deux propriétés. Parfois,
 cela peut être ce que nous voulons exprimer, mais cela ne correspond alors plus
 à l'idée de restreindre un ensemble dont nous voulons montrer une propriété
 particulière.
@@ -85,7 +85,7 @@ particulière.
 
 Avec \CodeInline{\textbackslash{}exists type a ; p(a) \&\& q(a)}, la restriction (\CodeInline{p}) est suivie
 par une conjonction, nous voulons qu'il existe un élément tel que cet élément
-est dans un certain état (défini par \CodeInline{p}), tout en respectant l'autre
+est dans un certain état (défini par \CodeInline{p}), tout en satisfaisant l'autre
 propriété \CodeInline{q}. Si nous mettions une implication comme pour le « pour tout »,
 alors une telle expression devient toujours vraie à moins que \CodeInline{p} soit une
 tautologie ! Pourquoi ? Existe-t-il « a » tel que p(a) implique q(a) ? Prenons

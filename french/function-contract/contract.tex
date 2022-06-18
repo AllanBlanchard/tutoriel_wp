@@ -3,10 +3,10 @@ lesquelles la fonction s'exécutera. On distinguera deux parties :
 
 
 \begin{itemize}
-\item \textbf{la précondition}, c'est-à-dire ce que doit respecter le code
+\item \textbf{la précondition}, c'est-à-dire ce que doit assurer le code
       appelant à propos des variables passées en paramètres et de l'état de
       la mémoire globale pour que la fonction s'exécute correctement ;
-\item \textbf{la postcondition}, c'est-à-dire ce que s'engage à respecter la
+\item \textbf{la postcondition}, c'est-à-dire ce que s'engage à fournir la
       fonction en retour à propos de l'état de la mémoire et de la valeur de
       retour.
 \end{itemize}
@@ -508,7 +508,7 @@ implémentation est prouvée :
 
 
 Nous pouvons également vérifier qu'une fonction qui appellerait \CodeInline{abs}
-respecte bien la précondition qu'elle impose :
+assure bien la précondition qu'elle impose :
 
 
 
@@ -610,7 +610,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Lorsque la preuve que la fonction respecte son contrat est établie, lancer
+Lorsque la preuve que la fonction est conforme à son contrat est établie, lancer
 la commande :
 
 \begin{CodeBlock}{bash}
@@ -640,7 +640,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Lorsque la preuve que la fonction respecte son contrat est établie, lancer
+Lorsque la preuve que la fonction est conforme à son contrat est établie, lancer
 la commande :
 
 \begin{CodeBlock}{bash}
@@ -694,7 +694,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Lorsque la preuve que la fonction respecte son contrat est établie, lancer
+Lorsque la preuve que la fonction est conforme à contrat est établie, lancer
 la commande :
 
 \begin{CodeBlock}{bash}
@@ -743,7 +743,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Lorsque la preuve que la fonction respecte son contrat est établie, lancer
+Lorsque la preuve que la fonction est conforme à son contrat est établie, lancer
 la commande :
 
 \begin{CodeBlock}{bash}

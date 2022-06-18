@@ -78,7 +78,7 @@ FAUX :
 
 Si nous demandons à WP de prouver cette fonction. Il l'acceptera sans rechigner,
 car la propriété que nous lui donnons comme précondition est nécessairement fausse.
-Par contre, nous aurons bien du mal à lui donner une valeur en entrée qui respecte
+Par contre, nous aurons bien du mal à lui donner une valeur en entrée qui satisfait
 la précondition.
 
 
@@ -494,11 +494,11 @@ préalablement s'accorder sur une spécification textuelle par exemple).
 Une fois que le contrat est posé, alors seulement, nous nous intéressons aux
 spécifications dues au fait que nous sommes soumis aux contraintes de notre langage
 et notre matériel. Cela concerne principalement nos préconditions. Par exemple,
-la fonction valeur absolue n'a, au fond, pas  vraiment de précondition à respecter,
-c'est la machine cible qui détermine qu'une condition supplémentaire doit être
-respectée en raison du complément à deux. Comme nous le verrons dans le chapitre
-\ref{l1:proof-methodologies}, vérifier l'absence de runtime errors peut aussi
-impacter nos postconditions, pour l'instant laissons cela de côté.
+la fonction valeur absolue n'a, au fond, pas  vraiment de précondition à
+satisfaire : c'est la machine cible qui détermine qu'une condition supplémentaire
+doit être vérifiée en raison du complément à deux. Comme nous le verrons dans le
+chapitre \ref{l1:proof-methodologies}, vérifier l'absence de {\em runtime errors}
+peut aussi impacter nos postconditions, pour l'instant laissons cela de côté.
 
 
 \levelThreeTitle{Exercices}

@@ -288,7 +288,7 @@ découverte n'est effectuée que dans une branche où l'on a trouvé une cellule
 correspond à la valeur recherchée.
 
 
-Nous prouvons que le second comportement respecte la postcondition en montrant
+Nous prouvons que le second comportement satisfait la postcondition en montrant
 qu'il mène à une contradiction. S'il n'y a pas de cellule dont la valeur est
 \CodeInline{v}, alors le nombre d'occurrences de \CodeInline{v} est 0. C'est
 exprimé grâce au second invariant qui nous dit qu'aucun \CodeInline{v} n'a été
@@ -434,7 +434,7 @@ d'établir les prémisses. En effet, si nous regardons le contrat de
 \CodeInline{assign\_array}, nous voyons qu'elle assigne le tableau (ce qui
 garantit la création d'un nouvel état mémoire) et en postcondition, elle assure
 que le contenu du tableau, entre la pré et la postcondition (donc, quand nous
-l'appelons : \CodeInline{L1} et \CodeInline{L2}), respecte les prémisses de notre
+l'appelons, \CodeInline{L1} et \CodeInline{L2}) satisfont les prémisses de notre
 lemme (que l'on répète en ligne 15, en ajoutant une assertion). Ensuite nous
 utilisons notre macro \CodeInline{shift\_ptr} (qui contiendra par la suite notre
 code de preuve), et nous voulons être capables de prouver la postcondition de
@@ -646,7 +646,7 @@ nous n'avons simplement plus rien à compter):
 
 
 ce qui est suffisant pour assurer que la fonction \CodeInline{insertion\_sort}
-respecte sa spécification à condition de finir la preuve de la fonction
+est conforme à sa spécification à condition de finir la preuve de la fonction
 \CodeInline{insert}. Cette seconde fonction réalise des actions plus
 complexes, nous partirons de cette version annotée :
 
