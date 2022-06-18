@@ -442,7 +442,7 @@ same), and to establish our premises. Indeed, if we have a look at the contract
 of \CodeInline{assign\_array}, we see that it assigns the array (which
 guarantees the creation of a new memory label) and in postcondition, it ensures
 that the content of the array, between the pre and the postcondition (thus, when
-we call it: \CodeInline{L1} and \CodeInline{L2}) verifies the premise of our
+we call it: \CodeInline{L1} and \CodeInline{L2}) satisfies the premise of our
 lemma (which we repeat on line 15, by adding an assertion). Then we use our
 \CodeInline{shift\_ptr} macro (that will later contain the proof carrying code),
 and we then expect to be able to prove the postcondition of our lemma (line 19).
