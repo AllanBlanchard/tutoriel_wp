@@ -338,9 +338,9 @@ recursive call is done must be smaller that the value of the expression at
 
 
 Of course, recursive functions can be mutually recursive thus the
-\CodeInline{decreases} can be used to bound recursive function calls in this
-situation. But, we only want to do so {\em only} for functions that are indeed
-in the set of functions that are involved in the recursion. For this, WP
+\CodeInline{decreases} clause can be used to bound recursive function calls in
+this situation. But, we only want to do so {\em only} for functions that are
+indeed in the set of functions that are involved in the recursion. For this, WP
 computes the strongly connected components from the set of functions, this is
 called a {\em cluster}.
 
@@ -455,7 +455,7 @@ terminates (always):
   \begin{itemize}
   \item \CodeInline{-wp-definitions-terminate} (for functions with definition),
   \item \CodeInline{-wp-declarations-terminate} (for functions without definition),
-  \item \CodeInline{-wp-frama-c-stdlib-terminate} (for functions of the Frama-C stdlib).
+  \item \CodeInline{-wp-frama-c-stdlib-terminate} (for functions of the Frama-C stdlib),
   \end{itemize}
   to claim that, unless a clause is provided, they must terminate (and thus
   for functions with a definition, the verification must be performed).
@@ -473,9 +473,6 @@ we do not have something particular to do for them. A conditional statement
 terminates if all statements in different branches terminate, thus we just
 have to verify that these statements terminate. The remaining statements are
 loops and function calls. Thus, we have to verify that:
-
-
-
 \begin{itemize}
   \item all loops have a (verified) \CodeInline{loop variant} clause,
   \item all called functions terminate with the given parameters,
