@@ -271,9 +271,9 @@ the same rules.
 \levelThreeTitle{Recursive functions}
 
 
-Just as it is easy to prove anything about a function if it contains an
-infinite loop, it is easy to prove anything about a function that does an
-infinite recursion:
+Just as it is easy to prove anything about the postcondition of a function if it
+contains an infinite loop, it is easy to prove anything about the postcondition
+of a function that does an infinite recursion:
 
 
 \CodeBlockInput{c}{trick.c}
@@ -326,11 +326,14 @@ bounds the depth of the recursion and not the number of calls:
 \CodeBlockInput[14][20]{c}{decreases.c}
 
 
+When proving the correctness of the \CodeInline{decreases} clause of a particular
+function (and for a call to this same function), the expression is evaluated at
+for two entities : the function under proof and the call instruction. The state
+where the expression is evaluated for the function under proof is
+\CodeInline{Pre}, the state the expression is evaluated for the call instruction
+is \CodeInline{Here}. The value of the expression at call point must be less
+than the value of the expression in \CodeInline{Pre} state.
 
-The \CodeInline{decreases} expression associated to the function under proof is
-considered at \CodeInline{Pre} state: the value of the expression when a
-recursive call is done must be smaller that the value of the expression at
-\CodeInline{Pre} state.
 
 
 \CodeBlockInput[22][30]{c}{decreases.c}
@@ -344,14 +347,15 @@ indeed in the set of functions that are involved in the recursion. For this, WP
 computes the strongly connected components from the set of functions, this is
 called a {\em cluster}.
 
-Thus, let us be more precise about the verification of the \CodeInline{decreases}
-clause. When a function is (mutually) recursive, it must be equipped with such
-a clause to prove that it terminates. Verifying that the \CodeInline{decreases}
-clause of a function \CodeInline{f} gives a measure is done by checking for each
-call to a function {\em that belongs to the same cluster as \CodeInline{f}},
-that the expression is indeed positive and decreasing. And thus, no proof
-obligation is generated when calling a recursive function that does not belong
-to the same cluster:
+Thus, let us be more precise about how we proceed to verify of the
+correction of a \CodeInline{decreases} clause. When a function is (mutually)
+recursive, its specification must be equipped with such a clause to prove that
+it terminates. Verifying that the \CodeInline{decreases} clause of a function
+\CodeInline{f} gives a measure of the depth of recursion is done by checking for
+each call to a function \emph{that belongs to the same cluster as
+\CodeInline{f}}, that the expression is indeed positive and decreasing. And
+thus, no verification condition is generated when calling a recursive function
+that does not belong to the same cluster:
 
 
 \CodeBlockInput[32][48]{c}{decreases.c}
@@ -391,8 +395,8 @@ program must terminate).
 
 
 
-ACSL provides a way to specify that a function must terminate when some property
-is verified in precondition. The syntax is:
+ACSL provides the \CodeInline{terminates} clause to specify that a function must
+terminate when some property is verified in precondition. The syntax is:
 
 
 
@@ -470,9 +474,10 @@ terminates (always):
 Verifying that a function terminates asks to verify that all reachable
 statements of the function terminate. Assignments trivially terminate, thus
 we do not have something particular to do for them. A conditional statement
-terminates if all statements in different branches terminate, thus we just
-have to verify that these statements terminate. The remaining statements are
-loops and function calls. Thus, we have to verify that:
+terminates if all statements in the different (reachable) branches terminate,
+thus we just have to verify that these statements terminate (or are unreachable).
+The remaining statements are loops and function calls. Thus, we have to verify
+that:
 \begin{itemize}
   \item all loops have a (verified) \CodeInline{loop variant} clause,
   \item all called functions terminate with the given parameters,
