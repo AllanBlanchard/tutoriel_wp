@@ -7,14 +7,14 @@ déterminer la précondition de l'appel, mais il est important de garder en têt
 aspects important pour exprimer le calcul de plus faible précondition.
 
 
-Premièrement, la postcondition d'une fonction $f$ qui serait appelée dans un 
+Premièrement, la postcondition d'une fonction $f$ qui serait appelée dans un
 programme n'est pas nécessairement directement la précondition calculée pour le code
-qui suit l'appel à $f$. Par exemple, si nous avons un programme:
+qui suit l'appel à $f$. Par exemple, si nous avons un programme :
 \CodeInline{x = f() ; c }, et si $wp(\texttt{c}, Q) = 0 \leq x \leq 10$ alors que
 la postcondition de la fonction \CodeInline{f} est $1 \leq x \leq 9$, nous avons
 besoin d'exprimer l'affaiblissement de la précondition réelle de \CodeInline{c}
 vers celle que l'on a calculé. Pour cela, nous renvoyons à la
-section~\ref{l3:statements-basic-consequence}, l'idée est simplement de vérifier 
+section~\ref{l3:statements-basic-consequence}, l'idée est simplement de vérifier
 que la postcondition de la fonction implique la précondition calculée.
 
 
@@ -28,7 +28,7 @@ lieu d'appel.
 
 
 
-Pour définir le calcul de plus faible précondition associé aux fonctions, introduisons
+Pour définir le calcul de plus faible précondition associée aux fonctions, introduisons
 d'abord quelques notations pour rendre les explications plus claires. Pour cela,
 considérons l'exemple suivant :
 
@@ -48,7 +48,7 @@ void foo(int* a){
 
 Le calcul de plus faible précondition de l'appel de fonction nous demande de
 considérer le contrat de la fonction appelée (ici, dans \CodeInline{foo}, quand
-nous appelons la fonction \CodeInline{inc}). Bien sûr, avant l'appel de la fonction
+nous appelons la fonction \CodeInline{inc}). Bien sûr, avant l'appel de la fonction,
 nous devons vérifier sa précondition, qui fait donc partie de la plus faible
 précondition. Mais nous devons aussi considérer la postcondition de la fonction,
 sinon cela voudrait dire que nous ne prenons pas en compte son effet sur l'état du
@@ -57,7 +57,7 @@ programme.
 
 Par conséquent, il est important de noter que dans la précondition, l'état mémoire
 considéré est bien celui pour lequel la plus faible précondition doit être vraie,
-tandis que pour la postcondition, ce n'est pas le cas: l'état considéré est celui
+tandis que pour la postcondition, ce n'est pas le cas : l'état considéré est celui
 qui suit l'appel, alors que dans la postcondition, lorsque nous parlons des valeurs
 avant l'appel nous devons explicitement ajouter le mot-clé
 \CodeInline{\textbackslash{}old}. Par exemple, pour le contrat de \CodeInline{inc}
@@ -66,13 +66,13 @@ précondition est \CodeInline{*a} au label \CodeInline{L1}, alors que \CodeInlin
 dans la postcondition est \CodeInline{*a} au label \CodeInline{L2}. Par conséquent,
 la pré et la postcondition doivent être considérées de manières légèrement différentes
 lorsque nous devons parler des positions mémoire mutables. Notons que pour la valeur
-du paramètre \CodeInline{x} lui même, ce n'est pas le cas : cette valeur ne peut pas
+du paramètre \CodeInline{x} lui-même, ce n'est pas le cas : cette valeur ne peut pas
 être modifiée par l'appel (du point de vue de l'appelant).
- 
+
 
 
 Maintenant, définissons le calcul de plus faible précondition d'un appel de fonction.
-Pour cela, notons:
+Pour cela, notons :
 
 \begin{itemize}
 \item $\vec{v}$ un vecteur de valeurs $v_1, ..., v_n$ et $v_i$ la $i^{ème}$ valeur,
@@ -80,7 +80,7 @@ Pour cela, notons:
 \item $\vec{x}$ les paramètres dans la définition de la fonction,
 \item $\vec{a}$ les valeurs modifiées (vues de l'extérieur, une fois instanciées),
 \item $here(x)$ une valeur en postcondition,
-\item $old(x)$ une valeur en précondition. 
+\item $old(x)$ une valeur en précondition.
 \end{itemize}
 
 Nous nommons $\texttt{f:Pre}$ la précondition de la fonction, et $\texttt{f:Post}$,
@@ -113,9 +113,9 @@ Ensuite, dans la partie de notre formule qui correspond à la postcondition, nou
 pouvons voir que nous introduisons un $\forall \vec{v}$. Le but ici est de modéliser
 la possibilité que la fonction change la valeur des positions mémoire spécifiées par
 la clause \CodeInline{assigns} du contrat. Donc, pour chaque position potentiellement
-modifiée $a_j$ (qui est, pour notre exemple d'appel à \CodeInline{inc}, 
+modifiée $a_j$ (qui est, pour notre exemple d'appel à \CodeInline{inc},
 \CodeInline{*(\&a)}), nous générons une valeur $v_j$ qui représente sa valeur après
-l'appel. Mais si nous voulons vérifier que la postcondition nous donne le bon 
+l'appel. Mais si nous voulons vérifier que la postcondition nous donne le bon
 résultat, nous ne pouvons pas accepter \emph{toute valeur} pour les positions mémoire
 modifiées, nous voulons celles \emph{qui permettent de satisfaire la postcondition}.
 
@@ -162,7 +162,7 @@ $$wp(swap(\&a, \&b), a = 2 \wedge b = 4)$$
 
 
 Par la clause \CodeInline{assigns}, nous savons que les valeurs modifiées par la
-fonction sont $*(\&a) = a$ et $*(\&b) = b$. (nous raccourcissons $here$ avec $H$ 
+fonction sont $*(\&a) = a$ et $*(\&b) = b$. (nous raccourcissons $here$ avec $H$
 et $old$ avec $O$).
 
 \begin{tabular}{rl}
@@ -192,7 +192,7 @@ $$v_a = b \wedge v_b = a \Rightarrow v_a = 2 \wedge v_b = 4$$
 
 Donc, $wp(swap(\&a, \&b), a = 2 \wedge b = 4)$ est :
 $$P: valid(\&a) \wedge valid(\&b) \wedge \forall v_a, v_b, \quad v_a = b \wedge v_b = a \Rightarrow v_a = 2 \wedge v_b = 4$$
-Nous pouvons immédiatement simplifier cette formule en constatant que les propriétés
+nous pouvons immédiatement simplifier cette formule en constatant que les propriétés
 de validité sont trivialement vraies (puisque les variables sont allouées sur la pile
 juste avant) :
 $$P: \forall v_a, v_b, \quad v_a = b \wedge v_b = a \Rightarrow v_a = 2 \wedge v_b = 4$$
@@ -246,23 +246,17 @@ l'idée est plutôt de montrer que notre précondition est assez forte pour assu
 que le code nous amène à la postcondition. Cependant, premièrement, cette vision
 est plus facile à comprendre et deuxièmement, un greffon comme WP (et comme n'importe
 quel outil réaliste pour la preuve de programme) ne suit pas strictement un calcul
-de plus faible précondition mais une manière fortement optimisée de calculer les
+de plus faible précondition, mais une manière fortement optimisée de calculer les
 conditions de vérification qui ne suit pas exactement les mêmes règles.
 
 
 \levelThreeTitle{Fonctions récursives}
 
 
-WP ne vérifie pas encore la terminaison des fonctions. Bien sûr, si
-une fonction est seulement composée de boucles qui terminent (dont le variant 
-indiqué est vérifié) et d'appels de fonctions qui elles-mêmes terminent, elle
-termine. En revanche, parfois ce raisonnement est insuffisant, comme dans le cas
-des fonctions récursives et mutuellement récursives. C'est la terminaison de ces
-fonctions qui n'est pas encore vérifiée par WP.
-
-
-Cela signifie que nous pouvons, par mégarde, prouver n'importe quoi, si l'on 
-définit et prouve une fonction qui ne termine pas.
+De la même manière que nous pouvons prouver n'importe quoi à propos de la
+postcondition d'une fonction qui contient une boucle infinie, il est très simple
+de prouver n'importe quoi à propos de la postcondition d'une fonction qui
+produit une récursion infinie :
 
 
 \CodeBlockInput{c}{trick.c}
@@ -277,16 +271,430 @@ pouvons pas prouver la terminaison), et cette fonction ne termine pas. Toute
 assertion suivant cette fonction est vraie : elle est inatteignable.
 
 
-Une question que l'on peut alors se poser est : que peut-on faire dans un tel 
-cas ? Nous pouvons à nouveau utiliser une notion de variant pour borner le nombre
-d'appels récursifs. En ACSL, c'est le rôle de la clause \CodeInline{decreases} :
+Une question que l'on peut alors se poser est : que peut-on faire dans un tel
+cas ? Nous pouvons à nouveau utiliser une notion de variant pour borner la
+profondeur de récursion. En ACSL, c'est le rôle de la clause
+\CodeInline{decreases} :
 
 
 \CodeBlockInput{c}{decreases.c}
 
 
 Cette clause exprime essentiellement la même idée que le \CodeInline{loop variant}.
-L'expression spécifiée par la clause \CodeInline{decreases} est une valeur positive
-qui décroît strictement à chaque nouvel appel récursif de la fonction. Cependant,
-cette clause n'est pas encore supportée par WP, donc nous ne pouvons pas encore 
-faire la preuve totale d'une fonction récursive avec le greffon WP.
+L'expression spécifiée par la clause \CodeInline{decreases} est, lorsque la
+fonction est à nouveau appelée, une valeur positive (ou une expression équipée
+avec une relation), qui décroît strictement. Notons que cela signifie que
+lorsque nous atteignons la profondeur maximale de récursion, cette expression
+peut être négative :
+
+
+\CodeBlockInput[8][12]{c}{decreases.c}
+
+
+Nous pouvons voir la condition de vérification générée pour l'exemple précédent
+en désactivant la simplification du but (option \CodeInline{-wp-no-let}, ici,
+nous avons supprimé les informations redondantes de la capture d'écran) :
+
+
+\image{go_negative}
+
+
+Ici, la condition \CodeInline{n - 10 < n} est reformulée en
+\CodeInline{n\_1 (= n) <= 9 + n} à cause de la normalisation des formules.
+
+
+Soulignons que la clause \CodeInline{decreases} borne bien la profondeur de
+récursion et pas le nombre d'appels à la fonction :
+
+
+\CodeBlockInput[14][20]{c}{decreases.c}
+
+
+Lorsque nous sommes en train de prouver la correction de la clause
+\CodeInline{decreases} d'une fonction (pour un appel de cette fonction),
+l'expression est évaluée pour deux entités : la fonction sous preuve et
+l'instruction d'appel. L'état d'évaluation de l'expression pour la fonction
+sous preuve est \CodeInline{Pre}, l'état d'évaluation de l'expression pour
+l'appel est \CodeInline{Here}. La valeur de l'expression lors de l'appel doit
+être plus petite que la valeur de l'expression associée à l'état \CodeInline{Pre}.
+
+
+\CodeBlockInput[22][30]{c}{decreases.c}
+
+
+Bien sûr, des fonctions récursives peuvent être mutuellement récursives. Par
+conséquent, la clause \CodeInline{decreases} peut être utilisée pour borner la
+profondeur d'appels récursifs dans cette situation. Cependant, nous ne voulons
+le faire \emph{que} pour les fonctions qui sont effectivement dans l'ensemble de
+fonctions mises en jeu dans la récursion. Pour cela, WP calcule les composantes
+fortement connexes depuis l'ensemble complet des fonctions, dans la terminologie
+ACSL, on appelle ces composants des \emph{clusters}.
+
+
+Nous pouvons donc préciser un peu comment est vérifiée la correction d'une clause
+\CodeInline{decreases}. Lorsqu'une fonction est (mutuellement) récursive, sa
+spécification doit être équipée avec une telle clause afin de prouver qu'elle
+termine. Vérifier que la clause \CodeInline{decreases} d'une fonction
+\CodeInline{f} donne une mesure de sa profondeur de récursion consiste à vérifier,
+pour chaque appel à une fonction \emph{qui appartient au même cluster que
+\CodeInline{f}}, que l'expression fournie par la clause est effectivement positive
+et décroissante. Et par conséquent, aucune condition de vérification n'est
+générée lorsqu'une fonction récursive n'appartenant pas au même \emph{cluster}
+est appelée :
+
+
+\CodeBlockInput[32][48]{c}{decreases.c}
+
+
+\begin{Information}
+  Notons que le calcul des \emph{clusters} est basé sur un critère syntaxique.
+  Pour le moment, nous ne parlons par des pointeurs de fonctions dans ce tutoriel,
+  le lecteur peut se référer à la documentation de l'option
+  \CodeInline{-wp-dynamic} dans le manuel de WP.
+\end{Information}
+
+
+Finalement, si une fonction d'un \emph{cluster} ne fournit pas de clause
+\CodeInline{decreases}, une condition de vérification
+\CodeInline{\textbackslash{}false} est générée et WP émet un avertissement ;
+
+
+\CodeBlockInput[50][63]{c}{decreases.c}
+
+
+\image{fail-mutual-vc}
+
+
+\levelThreeTitle{Spécifier et prouver la terminaison des fonctions}
+
+
+Une propriété désirable pour une fonction est souvent qu'elle doit terminer.
+En effet, dans la plupart des programmes, toutes les fonctions doivent terminer,
+et quand ce n'est pas le cas, il est très probable qu'en réalité, une seule
+fonction puisse boucle à l'infini (donc la quasi-totalité des fonctions dans le
+programme terminent).
+
+
+\levelFourTitle{Syntaxe et description}
+
+
+ACSL fournit une clause \CodeInline{terminates} pour spécifier qu'une fonction
+doit terminer quand une propriété particulière est vérifiée en précondition. La
+syntaxe est la suivante :
+
+
+
+\begin{CodeBlock}{c}
+//@ terminates condition ;
+void function(void){
+  // ...
+}
+\end{CodeBlock}
+
+
+Ici, le contrat énonce que quand \CodeInline{condition} est vérifiée en
+précondition, alors la fonction doit terminer. Par exemple, la fonction
+\CodeInline{abs} doit toujours terminer :
+
+
+\CodeBlockInput[3][8]{c}{terminates_abs.c}
+
+
+alors que pour la fonction \CodeInline{main\_loop} cela peut ne pas être le cas
+(notons qu'avec les options par défaut, le variant de la boucle n'est pas
+vérifié, nous expliquerons pourquoi plus tard) :
+
+
+
+\CodeBlockInput[6]{c}{main_loop.c}
+
+
+Soulignons que la fonction \emph{pourrait ne pas} terminer, elle n'est pas
+\emph{forcée de boucler à l'infini}. Par exemple, dans la fonction suivante,
+la clause \CodeInline{terminates} est vérifiée, car
+\emph{lorsque la condition de terminaison est vérifiée} (jamais), la fonction
+termine (toujours) :
+
+
+\CodeBlockInput[6][9]{c}{terminates.c}
+
+
+
+\begin{Information}
+  Si l'on veut vraiment vérifier qu'une fonction ne termine jamais, nous pouvons
+  spécifier que la fonction ne retourne jamais, et ne quitte (\texttt{exits})
+  jamais. C'est-à-dire : les postconditions associées à ces types de terminaison
+  sont inatteignables :
+
+  \CodeBlockInput{c}{no_terminates.c}
+\end{Information}
+
+
+
+\begin{Information}
+  En ACSL, il est spécifié que lorsqu'une fonction n'a pas de clause
+  \CodeInline{terminates}, le comportement par défaut
+  \CodeInline{terminates \textbackslash{}true}. Cependant, cela n'est pas
+  encore implémenté par le noyau de Frama-C. Ce comportement peut être activé
+  dans WP en utilisant les options :
+  \begin{itemize}
+  \item \CodeInline{-wp-definitions-terminate} (pour les définitions de fonction),
+  \item \CodeInline{-wp-declarations-terminate} (pour les fonctions sans définition),
+  \item \CodeInline{-wp-frama-c-stdlib-terminate} (pour les fonctions de la stdlib de Frama-C),
+  \end{itemize}
+  pour dire que, à moins qu'une clause soit déjà fournie, les fonctions doivent
+  terminer (et pour les fonctions qui ont une définition cela doit être vérifié).
+\end{Information}
+
+
+
+\levelFourTitle{Vérification}
+
+
+Vérifier qu'une fonction termine demande de vérifier que toutes les instructions
+atteignables d'une fonction termine. Les affectations terminent trivialement,
+donc nous n'avons rien de particulier à vérifier à leur sujet. Une instruction
+conditionnelle termine si toutes les instructions des différentes branches
+(atteignables) terminent, donc nous avons juste à vérifier que ces instructions
+terminent (ou sont inatteignables). Les instructions restantes sont les boucles
+et les appels de fonctions. Donc nous devons vérifier que :
+\begin{itemize}
+  \item toutes les boucles ont une clause \CodeInline{loop variant} (vérifiée),
+  \item toutes les fonctions appelées terminent avec leurs paramètres d'entrée,
+  \item toutes les fonctions récursives ont une clause \CodeInline{decreases} (vérifiée),
+  \item (ou qu'il n'y a pas de boucles ou d'appels atteignables dans la fonction).
+\end{itemize}
+
+
+Cependant, nous devons seulement faire ces vérifications lorsque la condition de
+terminaison de la fonction est vérifiée. Voyons donc maintenant quelles sont les
+conditions de vérification générées et quand WP les génère.
+
+
+Lorsqu'une fonction a une clause \CodeInline{terminates}, WP visite toutes les
+instructions de la fonction et collecte les boucles pour lesquelles aucune
+clause \CodeInline{loop variant} n'est spécifiée et les appels de fonctions. Si
+aucune instruction de ce type n'est présente, la fonction termine trivialement.
+
+
+\image{trivial_terminates}
+
+
+S'il existe de telles instructions, leur terminaison doit être vérifiée
+\emph{lorsque} la fonction doit terminer (disons, lorsque \CodeInline{T}). Donc,
+les conditions de vérification sont de la forme
+\CodeInline{\textbackslash{}at(T, Pre)} $\Rightarrow$ \CodeInline{<statement termination>}.
+Notons que la prémisse de l'implication doit être évaluée dans l'état
+\CodeInline{Pre}. Donc, dans ce code :
+
+
+\CodeBlockInput[11][17]{c}{terminates.c}
+
+
+Même si \CodeInline{r} a été décrémenté, la vérification de la condition de
+la terminaison de \CodeInline{call(r)} est faite en prenant
+\CodeInline{\textbackslash{}at(r, Pre) > 0} comme prémisse. Nous verrons dans
+la section suivante la condition de vérification complète générée pour un appel.
+
+
+Notons aussi que cela signifie que lorsque nous atteignons un point de programme
+où \CodeInline{T} est fausse, la condition de vérification est toujours
+vérifiée :
+
+
+\CodeBlockInput[19][25]{c}{terminates.c}
+
+
+\paragraph{Appel de fonction}
+
+
+Pour vérifier qu'un appel de fonction termine, nous vérifions lorsque la
+fonction est appelée, la condition de terminaison est vraie. Par exemple, à
+partir du programme suivant :
+
+
+\CodeBlockInput[27][36]{c}{terminates.c}
+
+
+Nous obtenons les conditions de vérification suivante (en utilisant l'option
+\CodeInline{-wp-no-let} pour désactiver les simplifications du but) :
+
+
+\image{call_terminates_1}
+
+
+\image{call_terminates_2}
+
+
+Où la terminaison du premier appel est en effet vérifiée, tandis que la
+terminaison du second ne l'est pas.
+
+
+Quand la fonction appelée n'a pas de clause \CodeInline{terminates}, elle est
+considérée par défaut comme ayant une clause \CodeInline{\textbackslash{}false},
+c'est-à-dire : à moins qu'une clause \CodeInline{terminates} soit spécifiée,
+la fonction pourrait ne pas terminer.
+
+
+Par exemple, pour notre fonction \CodeInline{simple} précédemment présentée,
+nous recevons ce message
+« \emph{Missing terminates clause on call to call, defaults to \textbackslash{}false} »
+et nous échouons à prouver la terminaison :
+
+
+\image{simple_terminates_fails}
+
+
+Notons que la formule $\mathtt{r} > 0 \Rightarrow false$ est traduite en
+$\mathtt{r} <= 0$.
+
+
+
+\paragraph{Variant de boucle}
+
+
+Lorsqu'une fonction contient une boucle qui n'a pas de clause
+\CodeInline{loop variant}, sa terminaison ne peut pas être vérifiée, donc WP
+nous demande de vérifier que lorsque la condition de terminaison est vérifiée,
+la boucle est inatteignable.
+
+
+\CodeBlockInput[38][46]{c}{terminates.c}
+
+
+Dans le code précédent, la boucle n'a pas de clause \CodeInline{loop variant},
+donc nous devons vérifier \CodeInline{value > 0 ==> \textbackslash{}false} à
+la position de la boucle, ce qui est bon : le code est inatteignable lorsque
+\CodeInline{value > 0}.
+
+
+Finalement, lorsqu'une boucle a une clause \CodeInline{loop variant}, elle doit
+être vérifiée \emph{seulement quand} la fonction doit terminer. Donc, si nous
+reprenons l'exemple présenté au début de cette section :
+
+
+\CodeBlockInput[6]{c}{main_loop.c}
+
+
+Nous devons vérifier que le variant de boucle est une valeur positive et
+décroissante seulement lorsque \CodeInline{debug\_steps} n'est pas $-1$. Par
+contre, ce n'est pas le comportement par défaut de WP (qui cherche toujours à
+montrer que les variants de boucles sont corrects par défaut), cela peut être
+activé en utilisant l'option \CodeInline{-wp-variant-with-terminates} et dans
+ce cas, la fonction est entièrement vérifiée :
+
+
+\image{main_loop_variant_terminates}
+
+
+\paragraph{Récursion}
+
+
+Une fonction récursive doit avoir une clause \CodeInline{decreases} lorsque sa
+spécification indique qu'elle termine. Si une telle clause est manquante, une
+condition de vérification \CodeInline{\textbackslash{}false} est générée.
+
+
+\CodeBlockInput[48][51]{c}{terminates.c}
+
+
+Notons que ce code génère deux conditions de vérification :
+
+
+\image{missing_decreases_vcs}
+
+
+La première correspond à la règle associée à la terminaison d'un appel de
+fonction précédemment présentée. La seconde correspond au fait que la clause
+\CodeInline{decreases} est manquante et donc non vérifiée.
+
+
+À nouveau en ACSL, la vérification de la clause \CodeInline{decreases} n'est
+requise que lorsque la condition de terminaison est vérifiée dans l'état
+\CodeInline{Pre}. Le comportement de WP sur cet aspect est similaire au cas
+des variants de boucle. Par défaut, la vérification est toujours demandée, le
+comportement ACSL est activé via l'option
+\CodeInline{-wp-variant-with-terminates}.
+
+
+\CodeBlockInput[53][60]{c}{terminates.c}
+
+
+\begin{Information}
+  Lorsqu'une fonction sous preuve n'a pas de clause \CodeInline{terminates},
+  lorsqu'une condition de vérification en a besoin, la clause est considérée
+  comme étant \CodeInline{\textbackslash{}true} puisque cela assure que nous
+  avons plus de choses à prouver. Par exemple, lorsque l'option
+  \CodeInline{-wp-variant-with-terminates} est utilisée et qu'une fonction
+  contient un variant de boucle à prouver, cela garantit que WP essaie
+  effectivement de le prouver.
+\end{Information}
+
+
+\levelThreeTitle{Exercices}
+
+
+\levelFourTitle{Expliquer les échecs de preuve}
+
+
+Dans le programme suivant, quelques conditions de vérification ne sont pas
+vérifiées :
+
+
+\CodeBlockInput{c}{ex-1-proof-failures.c}
+
+
+Expliquer pourquoi elles ne sont pas vérifiées et proposer une manière de
+corriger la spécification pour que tout soit vérifié.
+
+
+\levelFourTitle{Expliquer les résultats des preuves de terminaison}
+
+
+Dans le programme suivant :
+
+
+\CodeBlockInput{c}{ex-2-terminates.c}
+
+
+Expliquer pourquoi les clauses de terminaison sont vérifiées ou pas. Modifier
+les spécifications pour que tout soit vérifié.
+
+
+\levelFourTitle{Recherche}
+
+
+Spécifier et prouver la fonction de recherche récursive suivante :
+
+
+\CodeBlockInput[5]{c}{ex-3-search.c}
+
+
+La spécification doit inclure la condition de terminaison.
+
+
+\levelFourTitle{Somme des entiers}
+
+
+Le programme suivant calcule la somme des entiers entre \CodeInline{fst} et
+\CodeInline{lst}:
+
+
+\CodeBlockInput[5]{c}{ex-4-sum.c}
+
+
+Prouver que la fonction termine. La preuve que la fonction calcule bien la
+somme des entiers et l'absence d'erreurs à l'exécution ne sont pas demandées.
+
+
+\levelFourTitle{Puissance}
+
+
+Le programme suivant calcule \CodeInline{x} à la puissance \CodeInline{n}:
+
+
+\CodeBlockInput[5]{c}{ex-5-power.c}
+
+
+Prouver que la fonction termine. La preuve que la fonction calcule bien la
+puissance et l'absence d'erreurs à l'exécution ne sont pas demandées.
