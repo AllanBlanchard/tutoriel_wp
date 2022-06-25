@@ -7,10 +7,6 @@
   ensures *a <= *b <= *c ;
   ensures { *a, *b, *c } == \old({ *a, *b, *c }) ;
 
-  behavior all_same:
-    assumes *a == *b == *c ;
-    ensures *a == *b == *c ;
-
   behavior two_same_lt:
     assumes *a == *b < *c || *a == *c < *b || *b == *c < *a ;
     ensures *a == *b ;
@@ -20,7 +16,9 @@
     ensures *b == *c ;
 
   disjoint behaviors ;
-  // complete behaviors ; Missing case *a != *b && *b != *c && *c != *a
+  // complete behaviors ;
+  // Missing case *a != *b && *b != *c && *c != *a
+  // Missing case *a == *b == *c
 */
 void order_3(int* a, int* b, int* c){
   if(*a > *b){ int tmp = *b ; *b = *a ; *a = tmp ; }
