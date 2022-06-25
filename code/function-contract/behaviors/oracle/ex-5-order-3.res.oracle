@@ -2,12 +2,11 @@
 [kernel] Parsing ex-5-order-3.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function order_3
-[wp] 29 goals scheduled
+[wp] 28 goals scheduled
 [wp] [Alt-Ergo] Goal typed_order_3_ensures : Valid
 [wp] [Alt-Ergo] Goal typed_order_3_ensures_2 : Valid
 [wp] [Alt-Ergo] Goal typed_order_3_ensures_3 : Valid
 [wp] [Alt-Ergo] Goal typed_order_3_ensures_4 : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_ensures_5 : Valid
 [wp] [Alt-Ergo] Goal typed_order_3_assert_rte_mem_access : Valid
 [wp] [Alt-Ergo] Goal typed_order_3_assert_rte_mem_access_2 : Valid
 [wp] [Qed] Goal typed_order_3_assert_rte_mem_access_3 : Valid
@@ -32,6 +31,6 @@
 [wp] [Qed] Goal typed_order_3_assigns_part4 : Valid
 [wp] [Qed] Goal typed_order_3_assigns_part5 : Valid
 [wp] [Qed] Goal typed_order_3_assigns_part6 : Valid
-[wp] Proved goals:   29 / 29
+[wp] Proved goals:   28 / 28
   Qed:            21 
-  Alt-Ergo:        8
+  Alt-Ergo:        7

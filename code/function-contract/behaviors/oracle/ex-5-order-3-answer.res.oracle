@@ -3,8 +3,8 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function order_3
 [rte:annot] annotating function test
-[wp] 42 goals scheduled
-[wp] [Alt-Ergo] Goal typed_order_3_disjoint_all_same_two_same_gt_two_same_lt : Valid
+[wp] 41 goals scheduled
+[wp] [Alt-Ergo] Goal typed_order_3_disjoint_two_same_gt_two_same_lt : Valid
 [wp] [Alt-Ergo] Goal typed_order_3_ensures : Valid
 [wp] [Alt-Ergo] Goal typed_order_3_ensures_2 : Valid
 [wp] [Alt-Ergo] Goal typed_order_3_assert_rte_mem_access : Valid
@@ -31,7 +31,6 @@
 [wp] [Qed] Goal typed_order_3_assigns_part4 : Valid
 [wp] [Qed] Goal typed_order_3_assigns_part5 : Valid
 [wp] [Qed] Goal typed_order_3_assigns_part6 : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_all_same_ensures : Valid
 [wp] [Alt-Ergo] Goal typed_order_3_two_same_lt_ensures : Valid
 [wp] [Alt-Ergo] Goal typed_order_3_two_same_gt_ensures : Valid
 [wp] [Alt-Ergo] Goal typed_test_assert : Valid
@@ -46,9 +45,9 @@
 [wp] [Qed] Goal typed_test_call_order_3_3_requires_2 : Valid
 [wp] [Qed] Goal typed_test_call_order_3_4_requires : Valid
 [wp] [Qed] Goal typed_test_call_order_3_4_requires_2 : Valid
-[wp] Proved goals:   42 / 42
+[wp] Proved goals:   41 / 41
   Qed:            30 
-  Alt-Ergo:       12
-[wp:pedantic-assigns] ex-5-order-3-answer.c:32: Warning: 
+  Alt-Ergo:       11
+[wp:pedantic-assigns] ex-5-order-3-answer.c:30: Warning: 
   No 'assigns' specification for function 'test'.
   Callers assumptions might be imprecise.

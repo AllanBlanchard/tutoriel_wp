@@ -48,8 +48,7 @@ void min_ptr(int* a, int* b){
 
   ensures *a <= *b <= *c ;
   ensures { *a, *b, *c } == \old({ *a, *b, *c }) ;
-  
-  ensures \old(*a == *b == *c) ==> *a == *b == *c ;
+
   ensures \old(*a == *b < *c || *a == *c < *b || *b == *c < *a) ==> *a == *b ;
   ensures \old(*a == *b > *c || *a == *c > *b || *b == *c > *a) ==> *b == *c ;
 */
@@ -67,8 +66,7 @@ void order_3_inc_max(int* a, int* b, int* c){
 
   ensures *a <= *b <= *c ;
   ensures { *a, *b, *c } == \old({ *a, *b, *c }) ;
-  
-  ensures \old(*a == *b == *c) ==> *a == *b == *c ;
+
   ensures \old(*a == *b < *c || *a == *c < *b || *b == *c < *a) ==> *a == *b ;
   ensures \old(*a == *b > *c || *a == *c > *b || *b == *c > *a) ==> *b == *c ;
 */
@@ -86,8 +84,7 @@ void order_3_inc_min(int* a, int* b, int* c){
 
   ensures *a >= *b >= *c ;
   ensures { *a, *b, *c } == \old({ *a, *b, *c }) ;
-  
-  ensures \old(*a == *b == *c) ==> *a == *b == *c ;
+
   ensures \old(*a == *b < *c || *a == *c < *b || *b == *c < *a) ==> *b == *c ;
   ensures \old(*a == *b > *c || *a == *c > *b || *b == *c > *a) ==> *a == *b ;
 */
@@ -105,8 +102,7 @@ void order_3_dec_max(int* a, int* b, int* c){
 
   ensures *a >= *b >= *c ;
   ensures { *a, *b, *c } == \old({ *a, *b, *c }) ;
-  
-  ensures \old(*a == *b == *c) ==> *a == *b == *c ;
+
   ensures \old(*a == *b < *c || *a == *c < *b || *b == *c < *a) ==> *b == *c ;
   ensures \old(*a == *b > *c || *a == *c > *b || *b == *c > *a) ==> *a == *b ;
 */
