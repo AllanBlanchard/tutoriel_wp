@@ -5,6 +5,7 @@
 [wp] [CFG] Goal foo_assert : Valid (Unreachable)
 [wp] Warning: No goal generated
 [wp] Proved goals:    1 / 1
+  Unreachable:     1
 [wp:pedantic-assigns] infinite.c:1: Warning: 
   No 'assigns' specification for function 'foo'.
   Callers assumptions might be imprecise.

@@ -9,12 +9,12 @@
 [wp] control-flow-2.c:8: Warning: 
   Missing assigns clause (assigns 'everything' instead)
 [wp] 3 goals scheduled
-[wp] [Alt-Ergo] Goal typed_sum_assert_rte_signed_overflow : Valid
-[wp] [Alt-Ergo] Goal typed_sum_assert_rte_signed_overflow_2 : Unsuccess
-[wp] [Alt-Ergo] Goal typed_sum_assert_rte_signed_overflow_3 : Unsuccess
+[wp] [Valid] typed_sum_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_sum_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_sum_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
 [wp] Proved goals:    1 / 3
-  Qed:             0 
-  Alt-Ergo:        1  (unsuccess: 2)
+  Alt-Ergo:        1
+  Unsuccess:       2
 [wp:pedantic-assigns] control-flow-2.c:6: Warning: 
   No 'assigns' specification for function 'sum'.
   Callers assumptions might be imprecise.

@@ -3,20 +3,20 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function times_2
 [wp] 14 goals scheduled
-[wp] [Qed] Goal typed_times_2_ensures : Valid
-[wp] [Qed] Goal typed_times_2_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_times_2_loop_invariant_established : Valid
-[wp] [Qed] Goal typed_times_2_loop_invariant_2_preserved : Valid
-[wp] [Qed] Goal typed_times_2_loop_invariant_2_established : Valid
-[wp] [Qed] Goal typed_times_2_loop_invariant_3_preserved : Valid
-[wp] [Qed] Goal typed_times_2_loop_invariant_3_established : Valid
-[wp] [Alt-Ergo] Goal typed_times_2_assert_rte_signed_overflow : Valid
-[wp] [Alt-Ergo] Goal typed_times_2_assert_rte_signed_overflow_2 : Valid
-[wp] [Alt-Ergo] Goal typed_times_2_assert_rte_signed_overflow_3 : Valid
-[wp] [Qed] Goal typed_times_2_loop_assigns : Valid
-[wp] [Qed] Goal typed_times_2_assigns : Valid
-[wp] [Qed] Goal typed_times_2_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_times_2_loop_variant_positive : Valid
+[wp] [Valid] typed_times_2_ensures (Qed)
+[wp] [Valid] typed_times_2_loop_invariant_preserved (Qed)
+[wp] [Valid] typed_times_2_loop_invariant_established (Qed)
+[wp] [Valid] typed_times_2_loop_invariant_2_preserved (Qed)
+[wp] [Valid] typed_times_2_loop_invariant_2_established (Qed)
+[wp] [Valid] typed_times_2_loop_invariant_3_preserved (Qed)
+[wp] [Valid] typed_times_2_loop_invariant_3_established (Qed)
+[wp] [Valid] typed_times_2_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Valid] typed_times_2_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_times_2_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_times_2_loop_assigns (Qed)
+[wp] [Valid] typed_times_2_assigns (Qed)
+[wp] [Valid] typed_times_2_loop_variant_decrease (Qed)
+[wp] [Valid] typed_times_2_loop_variant_positive (Qed)
 [wp] Proved goals:   14 / 14
-  Qed:            11 
+  Qed:            11
   Alt-Ergo:        3

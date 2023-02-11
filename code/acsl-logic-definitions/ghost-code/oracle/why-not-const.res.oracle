@@ -6,14 +6,15 @@
 [rte:annot] annotating function assign
 [rte:annot] annotating function caller
 [wp] 5 goals scheduled
-[wp] [Qed] Goal typed_assign_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_assign_assert_rte_mem_access : Unsuccess
-[wp] [Alt-Ergo] Goal typed_assign_assert_rte_mem_access_2 : Unsuccess
-[wp] [Qed] Goal typed_assign_assigns : Valid
-[wp] [Alt-Ergo] Goal typed_caller_assert_rte_mem_access : Valid
+[wp] [Valid] typed_assign_ensures (Qed)
+[wp] [Unsuccess] typed_assign_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_assign_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_assign_assigns (Qed)
+[wp] [Valid] typed_caller_assert_rte_mem_access (Alt-Ergo) (Cached)
 [wp] Proved goals:    3 / 5
-  Qed:             2 
-  Alt-Ergo:        1  (unsuccess: 2)
+  Qed:             2
+  Alt-Ergo:        1
+  Unsuccess:       2
 [wp:pedantic-assigns] why-not-const.c:7: Warning: 
   No \from specification for assigned pointer '*p'.
   Callers assumptions might be imprecise.

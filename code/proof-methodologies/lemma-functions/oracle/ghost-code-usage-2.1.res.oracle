@@ -1,7 +1,7 @@
 [kernel] Parsing ghost-code-usage-2.c (with preprocessing)
 [wp] Running WP plugin...
-[kernel] ghost-code-usage-2.c:23: Warning: 
-  No code nor implicit assigns clause for function bsearch, generating default assigns from the prototype
+[kernel:annot:missing-spec] ghost-code-usage-2.c:23: Warning: 
+  Neither code nor implicit assigns clause for function bsearch, generating default assigns from the prototype
 [wp] Warning: Missing RTE guards
 ------------------------------------------------------------
   Function bsearch_callee
@@ -36,16 +36,7 @@ Prove: to_uint64(1 + i) <= len_0.
 ------------------------------------------------------------
 
 Goal Establishment of Invariant (file ghost-code-usage-2.c, line 26):
-Assume {
-  Type: is_uint64(len_0).
-  (* Heap *)
-  Type: (region(arr_0.base) <= 0) /\ linked(Malloc_0).
-  (* Pre-condition *)
-  Have: valid_rd(Malloc_0, shift_sint32(arr_0, 0), len_0).
-  (* Pre-condition *)
-  Have: P_element_level_sorted(Mint_0, arr_0, len_0).
-}
-Prove: 0 <= len_0.
+Prove: true.
 
 ------------------------------------------------------------
 

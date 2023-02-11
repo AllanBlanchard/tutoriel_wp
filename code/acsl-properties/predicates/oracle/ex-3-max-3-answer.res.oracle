@@ -3,22 +3,22 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function max_of
 [wp] 16 goals scheduled
-[wp] [Alt-Ergo] Goal typed_max_of_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_max_of_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_max_of_assert_rte_mem_access : Valid
-[wp] [Alt-Ergo] Goal typed_max_of_assert_rte_mem_access_2 : Valid
-[wp] [Qed] Goal typed_max_of_assert_rte_mem_access_3 : Valid
-[wp] [Alt-Ergo] Goal typed_max_of_assert_rte_mem_access_4 : Valid
-[wp] [Qed] Goal typed_max_of_assert_rte_mem_access_5 : Valid
-[wp] [Qed] Goal typed_max_of_assert_rte_mem_access_6 : Valid
-[wp] [Qed] Goal typed_max_of_assert_rte_mem_access_7 : Valid
-[wp] [Qed] Goal typed_max_of_assert_rte_mem_access_8 : Valid
-[wp] [Alt-Ergo] Goal typed_max_of_assert_rte_mem_access_9 : Valid
-[wp] [Qed] Goal typed_max_of_assert_rte_mem_access_10 : Valid
-[wp] [Qed] Goal typed_max_of_assert_rte_mem_access_11 : Valid
-[wp] [Qed] Goal typed_max_of_assigns_part1 : Valid
-[wp] [Qed] Goal typed_max_of_assigns_part2 : Valid
-[wp] [Qed] Goal typed_max_of_assigns_part3 : Valid
+[wp] [Valid] typed_max_of_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_of_ensures_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_of_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_of_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_of_assert_rte_mem_access_3 (Qed)
+[wp] [Valid] typed_max_of_assert_rte_mem_access_4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_of_assert_rte_mem_access_5 (Qed)
+[wp] [Valid] typed_max_of_assert_rte_mem_access_6 (Qed)
+[wp] [Valid] typed_max_of_assert_rte_mem_access_7 (Qed)
+[wp] [Valid] typed_max_of_assert_rte_mem_access_8 (Qed)
+[wp] [Valid] typed_max_of_assert_rte_mem_access_9 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_of_assert_rte_mem_access_10 (Qed)
+[wp] [Valid] typed_max_of_assert_rte_mem_access_11 (Qed)
+[wp] [Valid] typed_max_of_assigns_part1 (Qed)
+[wp] [Valid] typed_max_of_assigns_part2 (Qed)
+[wp] [Valid] typed_max_of_assigns_part3 (Qed)
 [wp] Proved goals:   16 / 16
-  Qed:            10 
+  Qed:            10
   Alt-Ergo:        6

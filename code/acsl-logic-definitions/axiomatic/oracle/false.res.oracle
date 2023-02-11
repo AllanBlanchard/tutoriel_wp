@@ -3,12 +3,12 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function main
 [wp] 4 goals scheduled
-[wp] [Alt-Ergo] Goal typed_main_assert : Valid
-[wp] [Qed] Goal typed_main_assert_2 : Valid
-[wp] [Qed] Goal typed_main_assert_3 : Valid
-[wp] [Qed] Goal typed_main_assert_rte_mem_access : Valid
+[wp] [Valid] typed_main_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_main_assert_2 (Qed)
+[wp] [Valid] typed_main_assert_3 (Qed)
+[wp] [Valid] typed_main_assert_rte_mem_access (Qed)
 [wp] Proved goals:    4 / 4
-  Qed:             3 
+  Qed:             3
   Alt-Ergo:        1
 [wp:pedantic-assigns] false.c:7: Warning: 
   No 'assigns' specification for function 'main'.

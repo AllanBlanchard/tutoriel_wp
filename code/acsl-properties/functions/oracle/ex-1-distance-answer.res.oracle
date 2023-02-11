@@ -3,13 +3,13 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function distance
 [wp] 7 goals scheduled
-[wp] [Alt-Ergo] Goal typed_distance_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_distance_assert_rte_signed_overflow : Valid
-[wp] [Alt-Ergo] Goal typed_distance_assert_rte_signed_overflow_2 : Valid
-[wp] [Alt-Ergo] Goal typed_distance_assert_rte_signed_overflow_3 : Valid
-[wp] [Alt-Ergo] Goal typed_distance_assert_rte_signed_overflow_4 : Valid
-[wp] [Qed] Goal typed_distance_assigns_part1 : Valid
-[wp] [Qed] Goal typed_distance_assigns_part2 : Valid
+[wp] [Valid] typed_distance_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distance_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distance_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distance_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distance_assert_rte_signed_overflow_4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distance_assigns_part1 (Qed)
+[wp] [Valid] typed_distance_assigns_part2 (Qed)
 [wp] Proved goals:    7 / 7
-  Qed:             2 
+  Qed:             2
   Alt-Ergo:        5

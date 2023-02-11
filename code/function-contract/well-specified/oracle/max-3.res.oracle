@@ -4,11 +4,11 @@
 [rte:annot] annotating function foo
 [rte:annot] annotating function max
 [wp] 3 goals scheduled
-[wp] [Qed] Goal typed_max_ensures : Valid
-[wp] [Qed] Goal typed_max_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_foo_assert : Valid
+[wp] [Valid] typed_max_ensures (Qed)
+[wp] [Valid] typed_max_ensures_2 (Qed)
+[wp] [Valid] typed_foo_assert (Alt-Ergo) (Cached)
 [wp] Proved goals:    3 / 3
-  Qed:             2 
+  Qed:             2
   Alt-Ergo:        1
 [wp:pedantic-assigns] max-3.c:5: Warning: 
   No 'assigns' specification for function 'max'.

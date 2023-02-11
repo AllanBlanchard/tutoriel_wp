@@ -3,13 +3,12 @@
 [wp] Running WP plugin...
 [wp] Warning: Missing RTE guards
 [wp] 5 goals scheduled
-[wp] [Alt-Ergo] Goal typed_exercise_assert : Valid
-[wp] [Alt-Ergo] Goal typed_exercise_assert_2 : Valid
-[wp] [Alt-Ergo] Goal typed_exercise_assert_3 : Valid
-[wp] [Alt-Ergo] Goal typed_exercise_assert_4 : Valid
-[wp] [Alt-Ergo] Goal typed_exercise_assert_5 : Valid
+[wp] [Valid] typed_exercise_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_exercise_assert_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_exercise_assert_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_exercise_assert_4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_exercise_assert_5 (Alt-Ergo) (Cached)
 [wp] Proved goals:    5 / 5
-  Qed:             0 
   Alt-Ergo:        5
 [wp:pedantic-assigns] ex-1-context-answer.c:17: Warning: 
   No 'assigns' specification for function 'exercise'.

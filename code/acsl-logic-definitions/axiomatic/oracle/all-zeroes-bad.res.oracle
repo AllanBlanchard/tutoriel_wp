@@ -4,9 +4,9 @@
 [rte:annot] annotating function bad_function
 [wp] Warning: No definition for 'zeroed' interpreted as reads nothing
 [wp] 3 goals scheduled
-[wp] [Qed] Goal typed_bad_function_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_bad_function_assert_rte_mem_access : Valid
-[wp] [Alt-Ergo] Goal typed_bad_function_assigns : Valid
+[wp] [Valid] typed_bad_function_ensures (Qed)
+[wp] [Valid] typed_bad_function_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bad_function_assigns (Alt-Ergo) (Cached)
 [wp] Proved goals:    3 / 3
-  Qed:             1 
+  Qed:             1
   Alt-Ergo:        2

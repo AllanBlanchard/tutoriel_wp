@@ -3,14 +3,14 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function last_angle
 [wp] 5 goals scheduled
-[wp] [Qed] Goal typed_last_angle_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_last_angle_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_last_angle_assert_rte_signed_overflow : Valid
-[wp] [Alt-Ergo] Goal typed_last_angle_assert_rte_signed_overflow_2 : Valid
-[wp] [Alt-Ergo] Goal typed_last_angle_assert_rte_signed_overflow_3 : Valid
+[wp] [Valid] typed_last_angle_ensures (Qed)
+[wp] [Valid] typed_last_angle_ensures_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_last_angle_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_last_angle_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_last_angle_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
 [wp] Proved goals:    5 / 5
-  Qed:             1 
-  Alt-Ergo:        4
+  Qed:             2
+  Alt-Ergo:        3
 [wp:pedantic-assigns] ex-5-last-angle-answer.c:9: Warning: 
   No 'assigns' specification for function 'last_angle'.
   Callers assumptions might be imprecise.

@@ -5,48 +5,48 @@
 [rte:annot] annotating function sort
 [rte:annot] annotating function swap
 [wp] 42 goals scheduled
-[wp] [Alt-Ergo] Goal typed_min_idx_in_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_min_idx_in_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_min_idx_in_loop_invariant_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_min_idx_in_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_min_idx_in_loop_invariant_2_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_min_idx_in_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_min_idx_in_assert_rte_mem_access : Valid
-[wp] [Alt-Ergo] Goal typed_min_idx_in_assert_rte_mem_access_2 : Valid
-[wp] [Qed] Goal typed_min_idx_in_loop_assigns : Valid
-[wp] [Qed] Goal typed_min_idx_in_assigns : Valid
-[wp] [Alt-Ergo] Goal typed_min_idx_in_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_min_idx_in_loop_variant_positive : Valid
-[wp] [Alt-Ergo] Goal typed_swap_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_swap_assert_rte_mem_access : Valid
-[wp] [Qed] Goal typed_swap_assert_rte_mem_access_2 : Valid
-[wp] [Alt-Ergo] Goal typed_swap_assert_rte_mem_access_3 : Valid
-[wp] [Qed] Goal typed_swap_assert_rte_mem_access_4 : Valid
-[wp] [Qed] Goal typed_swap_assigns_part1 : Valid
-[wp] [Qed] Goal typed_swap_assigns_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_sort_ensures : Valid
-[wp] [Qed] Goal typed_sort_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_sort_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_sort_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_sort_loop_invariant_2_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_sort_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_sort_loop_invariant_3_preserved : Valid
-[wp] [Qed] Goal typed_sort_loop_invariant_3_established : Valid
-[wp] [Alt-Ergo] Goal typed_sort_assert : Valid
-[wp] [Qed] Goal typed_sort_loop_assigns_part1 : Valid
-[wp] [Qed] Goal typed_sort_loop_assigns_part2 : Valid
-[wp] [Qed] Goal typed_sort_loop_assigns_part3 : Valid
-[wp] [Alt-Ergo] Goal typed_sort_loop_assigns_part4 : Valid
-[wp] [Qed] Goal typed_sort_assigns_exit_part1 : Valid
-[wp] [Qed] Goal typed_sort_assigns_exit_part2 : Valid
-[wp] [Qed] Goal typed_sort_assigns_exit_part3 : Valid
-[wp] [Alt-Ergo] Goal typed_sort_assigns_exit_part4 : Valid
-[wp] [Qed] Goal typed_sort_assigns_normal : Valid
-[wp] [Alt-Ergo] Goal typed_sort_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_sort_loop_variant_positive : Valid
-[wp] [Alt-Ergo] Goal typed_sort_call_min_idx_in_requires : Valid
-[wp] [Qed] Goal typed_sort_call_min_idx_in_requires_2 : Valid
-[wp] [Alt-Ergo] Goal typed_sort_call_swap_requires : Valid
+[wp] [Valid] typed_min_idx_in_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_min_idx_in_ensures_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_min_idx_in_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_min_idx_in_loop_invariant_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_min_idx_in_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_min_idx_in_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_min_idx_in_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_min_idx_in_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_min_idx_in_loop_assigns (Qed)
+[wp] [Valid] typed_min_idx_in_assigns (Qed)
+[wp] [Valid] typed_min_idx_in_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_min_idx_in_loop_variant_positive (Qed)
+[wp] [Valid] typed_swap_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_swap_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_swap_assert_rte_mem_access_2 (Qed)
+[wp] [Valid] typed_swap_assert_rte_mem_access_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_swap_assert_rte_mem_access_4 (Qed)
+[wp] [Valid] typed_swap_assigns_part1 (Qed)
+[wp] [Valid] typed_swap_assigns_part2 (Qed)
+[wp] [Valid] typed_sort_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sort_ensures_2 (Qed)
+[wp] [Valid] typed_sort_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sort_loop_invariant_established (Qed)
+[wp] [Valid] typed_sort_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sort_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sort_loop_invariant_3_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sort_loop_invariant_3_established (Qed)
+[wp] [Valid] typed_sort_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sort_loop_assigns_part1 (Qed)
+[wp] [Valid] typed_sort_loop_assigns_part2 (Qed)
+[wp] [Valid] typed_sort_loop_assigns_part3 (Qed)
+[wp] [Valid] typed_sort_loop_assigns_part4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sort_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_sort_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_sort_assigns_exit_part3 (Qed)
+[wp] [Valid] typed_sort_assigns_exit_part4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sort_assigns_normal (Qed)
+[wp] [Valid] typed_sort_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sort_loop_variant_positive (Qed)
+[wp] [Valid] typed_sort_call_min_idx_in_requires (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sort_call_min_idx_in_requires_2 (Qed)
+[wp] [Valid] typed_sort_call_swap_requires (Alt-Ergo) (Cached)
 [wp] Proved goals:   42 / 42
-  Qed:            19 
+  Qed:            19
   Alt-Ergo:       23

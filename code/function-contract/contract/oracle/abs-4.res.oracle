@@ -3,9 +3,9 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function abs
 [wp] 3 goals scheduled
-[wp] [Qed] Goal typed_abs_ensures : Valid
-[wp] [Qed] Goal typed_abs_ensures_2 : Valid
-[wp] [Qed] Goal typed_abs_assert_rte_signed_overflow : Valid
+[wp] [Valid] typed_abs_ensures (Qed)
+[wp] [Valid] typed_abs_ensures_2 (Qed)
+[wp] [Valid] typed_abs_assert_rte_signed_overflow (Qed)
 [wp] Proved goals:    3 / 3
   Qed:             3
 [wp:pedantic-assigns] abs-4.c:10: Warning: 

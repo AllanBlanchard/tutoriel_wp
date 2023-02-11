@@ -3,25 +3,25 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function iota
 [wp] 19 goals scheduled
-[wp] [Alt-Ergo] Goal typed_iota_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_iota_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_iota_assert_rte_mem_access : Valid
-[wp] [Alt-Ergo] Goal typed_iota_loop_invariant_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_iota_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_iota_loop_invariant_2_preserved : Valid
-[wp] [Qed] Goal typed_iota_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_iota_loop_invariant_3_preserved : Valid
-[wp] [Qed] Goal typed_iota_loop_invariant_3_established : Valid
-[wp] [Alt-Ergo] Goal typed_iota_assert_rte_mem_access_2 : Valid
-[wp] [Alt-Ergo] Goal typed_iota_assert_rte_mem_access_3 : Valid
-[wp] [Alt-Ergo] Goal typed_iota_assert_rte_signed_overflow : Valid
-[wp] [Qed] Goal typed_iota_loop_assigns_part1 : Valid
-[wp] [Qed] Goal typed_iota_loop_assigns_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_iota_loop_assigns_part3 : Valid
-[wp] [Alt-Ergo] Goal typed_iota_assigns_part1 : Valid
-[wp] [Alt-Ergo] Goal typed_iota_assigns_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_iota_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_iota_loop_variant_positive : Valid
+[wp] [Valid] typed_iota_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_iota_ensures_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_iota_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_iota_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_iota_loop_invariant_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_iota_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_iota_loop_invariant_2_established (Qed)
+[wp] [Valid] typed_iota_loop_invariant_3_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_iota_loop_invariant_3_established (Qed)
+[wp] [Valid] typed_iota_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_iota_assert_rte_mem_access_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_iota_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Valid] typed_iota_loop_assigns_part1 (Qed)
+[wp] [Valid] typed_iota_loop_assigns_part2 (Qed)
+[wp] [Valid] typed_iota_loop_assigns_part3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_iota_assigns_part1 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_iota_assigns_part2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_iota_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_iota_loop_variant_positive (Qed)
 [wp] Proved goals:   19 / 19
-  Qed:             5 
+  Qed:             5
   Alt-Ergo:       14

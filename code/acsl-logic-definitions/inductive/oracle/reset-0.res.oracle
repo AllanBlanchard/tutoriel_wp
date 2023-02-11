@@ -3,18 +3,19 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function reset
 [wp] 12 goals scheduled
-[wp] [Qed] Goal typed_reset_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_reset_loop_invariant_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_reset_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_reset_loop_invariant_2_preserved : Unsuccess
-[wp] [Alt-Ergo] Goal typed_reset_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_reset_assert_rte_mem_access : Valid
-[wp] [Qed] Goal typed_reset_loop_assigns_part1 : Valid
-[wp] [Qed] Goal typed_reset_loop_assigns_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_reset_loop_assigns_part3 : Valid
-[wp] [Qed] Goal typed_reset_assigns : Valid
-[wp] [Alt-Ergo] Goal typed_reset_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_reset_loop_variant_positive : Valid
+[wp] [Valid] typed_reset_ensures (Qed)
+[wp] [Valid] typed_reset_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_loop_invariant_established (Qed)
+[wp] [Unsuccess] typed_reset_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_loop_assigns_part1 (Qed)
+[wp] [Valid] typed_reset_loop_assigns_part2 (Qed)
+[wp] [Valid] typed_reset_loop_assigns_part3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_assigns (Qed)
+[wp] [Valid] typed_reset_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_loop_variant_positive (Qed)
 [wp] Proved goals:   11 / 12
-  Qed:             5 
-  Alt-Ergo:        6  (unsuccess: 1)
+  Qed:             6
+  Alt-Ergo:        5
+  Unsuccess:       1

@@ -4,17 +4,17 @@
 [wp] Warning: Missing RTE guards
 [wp] [CFG] Goal example_1_p_assert : Valid (Unreachable)
 [wp] 9 goals scheduled
-[wp] [Alt-Ergo] Goal typed_example_1_assert : Valid
-[wp] [Alt-Ergo] Goal typed_example_1_assert_2 : Valid
-[wp] [Alt-Ergo] Goal typed_example_1_p_assert_2 : Valid
-[wp] [Alt-Ergo] Goal typed_example_2_assert : Valid
-[wp] [Alt-Ergo] Goal typed_example_3_assert : Valid
-[wp] [Alt-Ergo] Goal typed_example_3_assert_2 : Valid
-[wp] [Alt-Ergo] Goal typed_example_3_assert_3 : Valid
-[wp] [Alt-Ergo] Goal typed_example_3_assert_4 : Valid
-[wp] [Alt-Ergo] Goal typed_example_3_assert_5 : Valid
+[wp] [Valid] typed_example_1_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_example_1_assert_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_example_1_p_assert_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_example_2_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_example_3_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_example_3_assert_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_example_3_assert_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_example_3_assert_4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_example_3_assert_5 (Alt-Ergo) (Cached)
 [wp] Proved goals:   10 / 10
-  Qed:             0 
+  Unreachable:     1
   Alt-Ergo:        9
 ------------------------------------------------------------
   Function example_1

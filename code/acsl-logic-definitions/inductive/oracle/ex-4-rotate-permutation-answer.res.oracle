@@ -3,35 +3,33 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function rotate
 [rte:annot] annotating function two_rotates
-[wp] 28 goals scheduled
-[wp] [Alt-Ergo] Goal typed_rotate_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_rotate_assert_rte_mem_access : Valid
-[wp] [Alt-Ergo] Goal typed_rotate_loop_invariant_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_rotate_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_rotate_loop_invariant_2_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_rotate_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_rotate_loop_invariant_3_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_rotate_loop_invariant_3_established : Valid
-[wp] [Alt-Ergo] Goal typed_rotate_assert_rte_mem_access_2 : Valid
-[wp] [Alt-Ergo] Goal typed_rotate_assert_rte_mem_access_3 : Valid
-[wp] [Alt-Ergo] Goal typed_rotate_assert_rte_mem_access_4 : Valid
-[wp] [Qed] Goal typed_rotate_loop_assigns_part1 : Valid
-[wp] [Qed] Goal typed_rotate_loop_assigns_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_rotate_loop_assigns_part3 : Valid
-[wp] [Alt-Ergo] Goal typed_rotate_assigns_part1 : Valid
-[wp] [Qed] Goal typed_rotate_assigns_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_rotate_loop_variant_decrease : Valid
-[wp] [Alt-Ergo] Goal typed_rotate_loop_variant_positive : Valid
-[wp] [Alt-Ergo] Goal typed_two_rotates_ensures : Valid
-[wp] [Qed] Goal typed_two_rotates_assert_rte_division_by_zero : Valid
-[wp] [Alt-Ergo] Goal typed_two_rotates_assert : Valid
-[wp] [Qed] Goal typed_two_rotates_assert_rte_division_by_zero_2 : Valid
-[wp] [Alt-Ergo] Goal typed_two_rotates_assigns_exit_part1 : Valid
-[wp] [Alt-Ergo] Goal typed_two_rotates_assigns_exit_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_two_rotates_assigns_normal_part1 : Valid
-[wp] [Alt-Ergo] Goal typed_two_rotates_assigns_normal_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_two_rotates_call_rotate_requires : Valid
-[wp] [Alt-Ergo] Goal typed_two_rotates_call_rotate_2_requires : Valid
-[wp] Proved goals:   28 / 28
-  Qed:             5 
-  Alt-Ergo:       23
+[wp] 26 goals scheduled
+[wp] [Valid] typed_rotate_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_rotate_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_rotate_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_rotate_loop_invariant_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_rotate_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_rotate_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_rotate_loop_invariant_3_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_rotate_loop_invariant_3_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_rotate_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_rotate_assert_rte_mem_access_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_rotate_assert_rte_mem_access_4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_rotate_loop_assigns_part1 (Qed)
+[wp] [Valid] typed_rotate_loop_assigns_part2 (Qed)
+[wp] [Valid] typed_rotate_loop_assigns_part3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_rotate_assigns_part1 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_rotate_assigns_part2 (Qed)
+[wp] [Valid] typed_rotate_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_rotate_loop_variant_positive (Qed)
+[wp] [Valid] typed_two_rotates_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_two_rotates_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_two_rotates_assigns_exit_part1 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_two_rotates_assigns_exit_part2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_two_rotates_assigns_normal_part1 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_two_rotates_assigns_normal_part2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_two_rotates_call_rotate_requires (Alt-Ergo) (Cached)
+[wp] [Valid] typed_two_rotates_call_rotate_2_requires (Alt-Ergo) (Cached)
+[wp] Proved goals:   26 / 26
+  Qed:             4
+  Alt-Ergo:       22

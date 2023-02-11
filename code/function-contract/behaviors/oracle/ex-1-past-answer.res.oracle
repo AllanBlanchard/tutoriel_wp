@@ -6,45 +6,45 @@
 [rte:annot] annotating function max_ptr
 [rte:annot] annotating function reset_1st_if_2nd_is_true
 [wp] 39 goals scheduled
-[wp] [Qed] Goal typed_distance_complete_inf_sup : Valid
-[wp] [Qed] Goal typed_distance_disjoint_inf_sup : Valid
-[wp] [Alt-Ergo] Goal typed_distance_assert_rte_signed_overflow : Valid
-[wp] [Qed] Goal typed_distance_assert_rte_signed_overflow_2 : Valid
-[wp] [Alt-Ergo] Goal typed_distance_assert_rte_signed_overflow_3 : Valid
-[wp] [Qed] Goal typed_distance_assert_rte_signed_overflow_4 : Valid
-[wp] [Qed] Goal typed_distance_assigns_part1 : Valid
-[wp] [Qed] Goal typed_distance_assigns_part2 : Valid
-[wp] [Qed] Goal typed_distance_inf_ensures : Valid
-[wp] [Qed] Goal typed_distance_sup_ensures : Valid
-[wp] [Qed] Goal typed_reset_1st_if_2nd_is_true_complete_const_reset : Valid
-[wp] [Qed] Goal typed_reset_1st_if_2nd_is_true_disjoint_const_reset : Valid
-[wp] [Alt-Ergo] Goal typed_reset_1st_if_2nd_is_true_ensures : Valid
-[wp] [Qed] Goal typed_reset_1st_if_2nd_is_true_assert_rte_mem_access : Valid
-[wp] [Qed] Goal typed_reset_1st_if_2nd_is_true_assert_rte_mem_access_2 : Valid
-[wp] [Qed] Goal typed_reset_1st_if_2nd_is_true_assigns : Valid
-[wp] [Qed] Goal typed_reset_1st_if_2nd_is_true_reset_ensures : Valid
-[wp] [Qed] Goal typed_reset_1st_if_2nd_is_true_const_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_day_of_complete_february_thirty_thirty_one : Valid
-[wp] [Alt-Ergo] Goal typed_day_of_disjoint_february_thirty_thirty_one : Valid
-[wp] [Alt-Ergo] Goal typed_day_of_assert_rte_index_bound : Valid
-[wp] [Alt-Ergo] Goal typed_day_of_assert_rte_index_bound_2 : Valid
-[wp] [Alt-Ergo] Goal typed_day_of_assert_rte_signed_overflow : Valid
-[wp] [Qed] Goal typed_day_of_assigns : Valid
-[wp] [Qed] Goal typed_day_of_february_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_day_of_thirty_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_day_of_thirty_one_ensures : Valid
-[wp] [Qed] Goal typed_max_ptr_complete_do_not_change_reorder : Valid
-[wp] [Qed] Goal typed_max_ptr_disjoint_do_not_change_reorder : Valid
-[wp] [Alt-Ergo] Goal typed_max_ptr_assert_rte_mem_access : Valid
-[wp] [Alt-Ergo] Goal typed_max_ptr_assert_rte_mem_access_2 : Valid
-[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_3 : Valid
-[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_4 : Valid
-[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_5 : Valid
-[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_6 : Valid
-[wp] [Qed] Goal typed_max_ptr_assigns_part1 : Valid
-[wp] [Qed] Goal typed_max_ptr_assigns_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_max_ptr_reorder_ensures : Valid
-[wp] [Qed] Goal typed_max_ptr_do_not_change_ensures : Valid
+[wp] [Valid] typed_distance_complete_inf_sup (Qed)
+[wp] [Valid] typed_distance_disjoint_inf_sup (Qed)
+[wp] [Valid] typed_distance_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distance_assert_rte_signed_overflow_2 (Qed)
+[wp] [Valid] typed_distance_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distance_assert_rte_signed_overflow_4 (Qed)
+[wp] [Valid] typed_distance_assigns_part1 (Qed)
+[wp] [Valid] typed_distance_assigns_part2 (Qed)
+[wp] [Valid] typed_distance_inf_ensures (Qed)
+[wp] [Valid] typed_distance_sup_ensures (Qed)
+[wp] [Valid] typed_reset_1st_if_2nd_is_true_complete_const_reset (Qed)
+[wp] [Valid] typed_reset_1st_if_2nd_is_true_disjoint_const_reset (Qed)
+[wp] [Valid] typed_reset_1st_if_2nd_is_true_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_1st_if_2nd_is_true_assert_rte_mem_access (Qed)
+[wp] [Valid] typed_reset_1st_if_2nd_is_true_assert_rte_mem_access_2 (Qed)
+[wp] [Valid] typed_reset_1st_if_2nd_is_true_assigns (Qed)
+[wp] [Valid] typed_reset_1st_if_2nd_is_true_reset_ensures (Qed)
+[wp] [Valid] typed_reset_1st_if_2nd_is_true_const_ensures (Qed)
+[wp] [Valid] typed_day_of_complete_february_thirty_thirty_one (Alt-Ergo) (Cached)
+[wp] [Valid] typed_day_of_disjoint_february_thirty_thirty_one (Alt-Ergo) (Cached)
+[wp] [Valid] typed_day_of_assert_rte_index_bound (Alt-Ergo) (Cached)
+[wp] [Valid] typed_day_of_assert_rte_index_bound_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_day_of_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_day_of_assigns (Qed)
+[wp] [Valid] typed_day_of_february_ensures (Qed)
+[wp] [Valid] typed_day_of_thirty_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_day_of_thirty_one_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_ptr_complete_do_not_change_reorder (Qed)
+[wp] [Valid] typed_max_ptr_disjoint_do_not_change_reorder (Qed)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_3 (Qed)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_4 (Qed)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_5 (Qed)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_6 (Qed)
+[wp] [Valid] typed_max_ptr_assigns_part1 (Qed)
+[wp] [Valid] typed_max_ptr_assigns_part2 (Qed)
+[wp] [Valid] typed_max_ptr_reorder_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_ptr_do_not_change_ensures (Qed)
 [wp] Proved goals:   39 / 39
-  Qed:            26 
-  Alt-Ergo:       13
+  Qed:            27
+  Alt-Ergo:       12

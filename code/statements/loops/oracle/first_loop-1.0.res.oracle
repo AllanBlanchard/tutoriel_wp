@@ -5,13 +5,12 @@
 [wp] first_loop-1.c:12: Warning: 
   Missing assigns clause (assigns 'everything' instead)
 [wp] 4 goals scheduled
-[wp] [Alt-Ergo] Goal typed_main_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_main_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_main_assert_rte_signed_overflow : Valid
-[wp] [Qed] Goal typed_main_assert : Valid
+[wp] [Valid] typed_main_loop_invariant_preserved (Qed)
+[wp] [Valid] typed_main_loop_invariant_established (Qed)
+[wp] [Valid] typed_main_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_main_assert (Qed)
 [wp] Proved goals:    4 / 4
-  Qed:             2 
-  Alt-Ergo:        2
+  Qed:             4
 [wp:pedantic-assigns] first_loop-1.c:6: Warning: 
   No 'assigns' specification for function 'main'.
   Callers assumptions might be imprecise.

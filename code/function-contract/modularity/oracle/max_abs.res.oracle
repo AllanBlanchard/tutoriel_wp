@@ -3,18 +3,18 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function max_abs
 [wp] 12 goals scheduled
-[wp] [Alt-Ergo] Goal typed_max_abs_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_max_abs_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_max_abs_ensures_3 : Valid
-[wp] [Qed] Goal typed_max_abs_assigns_exit_part1 : Valid
-[wp] [Qed] Goal typed_max_abs_assigns_exit_part2 : Valid
-[wp] [Qed] Goal typed_max_abs_assigns_exit_part3 : Valid
-[wp] [Qed] Goal typed_max_abs_assigns_normal_part1 : Valid
-[wp] [Qed] Goal typed_max_abs_assigns_normal_part2 : Valid
-[wp] [Qed] Goal typed_max_abs_assigns_normal_part3 : Valid
-[wp] [Qed] Goal typed_max_abs_assigns_normal_part4 : Valid
-[wp] [Qed] Goal typed_max_abs_call_abs_requires : Valid
-[wp] [Qed] Goal typed_max_abs_call_abs_2_requires : Valid
+[wp] [Valid] typed_max_abs_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_abs_ensures_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_abs_ensures_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_abs_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_max_abs_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_max_abs_assigns_exit_part3 (Qed)
+[wp] [Valid] typed_max_abs_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_max_abs_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_max_abs_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_max_abs_assigns_normal_part4 (Qed)
+[wp] [Valid] typed_max_abs_call_abs_requires (Qed)
+[wp] [Valid] typed_max_abs_call_abs_2_requires (Qed)
 [wp] Proved goals:   12 / 12
-  Qed:             9 
+  Qed:             9
   Alt-Ergo:        3

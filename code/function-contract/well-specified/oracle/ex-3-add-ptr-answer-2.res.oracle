@@ -4,27 +4,27 @@
 [rte:annot] annotating function add
 [rte:annot] annotating function main
 [wp] 19 goals scheduled
-[wp] [Alt-Ergo] Goal typed_add_ensures : Valid
-[wp] [Qed] Goal typed_add_assert_rte_mem_access : Valid
-[wp] [Qed] Goal typed_add_assert_rte_mem_access_2 : Valid
-[wp] [Qed] Goal typed_add_assert_rte_mem_access_3 : Valid
-[wp] [Qed] Goal typed_add_assert_rte_signed_overflow : Valid
-[wp] [Qed] Goal typed_add_assert_rte_signed_overflow_2 : Valid
-[wp] [Qed] Goal typed_add_assigns : Valid
-[wp] [Qed] Goal typed_main_assert : Valid
-[wp] [Qed] Goal typed_main_assert_2 : Valid
-[wp] [Qed] Goal typed_main_assert_3 : Valid
-[wp] [Qed] Goal typed_main_assert_4 : Valid
-[wp] [Qed] Goal typed_main_call_add_requires : Valid
-[wp] [Qed] Goal typed_main_call_add_requires_2 : Valid
-[wp] [Qed] Goal typed_main_call_add_requires_3 : Valid
-[wp] [Qed] Goal typed_main_call_add_requires_4 : Valid
-[wp] [Qed] Goal typed_main_call_add_2_requires : Valid
-[wp] [Qed] Goal typed_main_call_add_2_requires_2 : Valid
-[wp] [Qed] Goal typed_main_call_add_2_requires_3 : Valid
-[wp] [Qed] Goal typed_main_call_add_2_requires_4 : Valid
+[wp] [Valid] typed_add_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_add_assert_rte_mem_access (Qed)
+[wp] [Valid] typed_add_assert_rte_mem_access_2 (Qed)
+[wp] [Valid] typed_add_assert_rte_mem_access_3 (Qed)
+[wp] [Valid] typed_add_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_add_assert_rte_signed_overflow_2 (Qed)
+[wp] [Valid] typed_add_assigns (Qed)
+[wp] [Valid] typed_main_assert (Qed)
+[wp] [Valid] typed_main_assert_2 (Qed)
+[wp] [Valid] typed_main_assert_3 (Qed)
+[wp] [Valid] typed_main_assert_4 (Qed)
+[wp] [Valid] typed_main_call_add_requires (Qed)
+[wp] [Valid] typed_main_call_add_requires_2 (Qed)
+[wp] [Valid] typed_main_call_add_requires_3 (Qed)
+[wp] [Valid] typed_main_call_add_requires_4 (Qed)
+[wp] [Valid] typed_main_call_add_2_requires (Qed)
+[wp] [Valid] typed_main_call_add_2_requires_2 (Qed)
+[wp] [Valid] typed_main_call_add_2_requires_3 (Qed)
+[wp] [Valid] typed_main_call_add_2_requires_4 (Qed)
 [wp] Proved goals:   19 / 19
-  Qed:            18 
+  Qed:            18
   Alt-Ergo:        1
 [wp:pedantic-assigns] ex-3-add-ptr-answer-2.c:15: Warning: 
   No 'assigns' specification for function 'main'.

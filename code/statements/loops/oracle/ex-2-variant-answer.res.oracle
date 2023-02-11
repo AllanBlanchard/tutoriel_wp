@@ -7,12 +7,12 @@
 [wp] ex-2-variant-answer.c:24: Warning: 
   Missing assigns clause (assigns 'everything' instead)
 [wp] 6 goals scheduled
-[wp] [Qed] Goal typed_foo_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_foo_loop_variant_positive : Valid
-[wp] [Qed] Goal typed_bar_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_bar_loop_invariant_established : Valid
-[wp] [Qed] Goal typed_bar_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_bar_loop_variant_positive : Valid
+[wp] [Valid] typed_foo_loop_variant_decrease (Qed)
+[wp] [Valid] typed_foo_loop_variant_positive (Qed)
+[wp] [Valid] typed_bar_loop_invariant_preserved (Qed)
+[wp] [Valid] typed_bar_loop_invariant_established (Qed)
+[wp] [Valid] typed_bar_loop_variant_decrease (Qed)
+[wp] [Valid] typed_bar_loop_variant_positive (Qed)
 [wp] Proved goals:    6 / 6
   Qed:             6
 [wp:pedantic-assigns] ex-2-variant-answer.c:5: Warning: 

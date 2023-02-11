@@ -3,13 +3,13 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function abs
 [wp] 8 goals scheduled
-[wp] [Qed] Goal typed_abs_complete_neg_pos : Valid
-[wp] [Qed] Goal typed_abs_disjoint_neg_pos : Valid
-[wp] [Qed] Goal typed_abs_ensures : Valid
-[wp] [Qed] Goal typed_abs_assert_rte_signed_overflow : Valid
-[wp] [Qed] Goal typed_abs_assigns_part1 : Valid
-[wp] [Qed] Goal typed_abs_assigns_part2 : Valid
-[wp] [Qed] Goal typed_abs_pos_ensures : Valid
-[wp] [Qed] Goal typed_abs_neg_ensures : Valid
+[wp] [Valid] typed_abs_complete_neg_pos (Qed)
+[wp] [Valid] typed_abs_disjoint_neg_pos (Qed)
+[wp] [Valid] typed_abs_ensures (Qed)
+[wp] [Valid] typed_abs_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_abs_assigns_part1 (Qed)
+[wp] [Valid] typed_abs_assigns_part2 (Qed)
+[wp] [Valid] typed_abs_pos_ensures (Qed)
+[wp] [Valid] typed_abs_neg_ensures (Qed)
 [wp] Proved goals:    8 / 8
   Qed:             8

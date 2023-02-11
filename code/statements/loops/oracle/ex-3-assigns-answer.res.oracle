@@ -5,11 +5,11 @@
 [wp] ex-3-assigns-answer.c:24: Warning: 
   Missing assigns clause (assigns 'everything' instead)
 [wp] 5 goals scheduled
-[wp] [Qed] Goal typed_foo_assert : Valid
-[wp] [Qed] Goal typed_foo_loop_assigns : Valid
-[wp] [Qed] Goal typed_bar_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_bar_loop_invariant_established : Valid
-[wp] [Qed] Goal typed_bar_assert : Valid
+[wp] [Valid] typed_foo_assert (Qed)
+[wp] [Valid] typed_foo_loop_assigns (Qed)
+[wp] [Valid] typed_bar_loop_invariant_preserved (Qed)
+[wp] [Valid] typed_bar_loop_invariant_established (Qed)
+[wp] [Valid] typed_bar_assert (Qed)
 [wp] Proved goals:    5 / 5
   Qed:             5
 [wp:pedantic-assigns] ex-3-assigns-answer.c:5: Warning: 

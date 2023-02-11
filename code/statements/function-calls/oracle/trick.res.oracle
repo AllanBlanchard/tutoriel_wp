@@ -3,13 +3,11 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function main
 [rte:annot] annotating function trick
-[wp] trick.c:9: Warning: 
-  No 'decreases' clause on recursive function 'trick', cannot prove termination
 [wp] 4 goals scheduled
-[wp] [Qed] Goal typed_trick_ensures : Valid
-[wp] [Qed] Goal typed_trick_assigns_exit : Valid
-[wp] [Qed] Goal typed_trick_assigns_normal : Valid
-[wp] [Qed] Goal typed_main_assert : Valid
+[wp] [Valid] typed_trick_ensures (Qed)
+[wp] [Valid] typed_trick_assigns_exit (Qed)
+[wp] [Valid] typed_trick_assigns_normal (Qed)
+[wp] [Valid] typed_main_assert (Qed)
 [wp] Proved goals:    4 / 4
   Qed:             4
 [wp:pedantic-assigns] trick.c:9: Warning: 

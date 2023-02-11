@@ -5,30 +5,30 @@
 [rte:annot] annotating function lemma_value_of_sum_of_range_of_integers
 [rte:annot] annotating function sum_n
 [wp] 24 goals scheduled
-[wp] [Alt-Ergo] Goal typed_lemma_value_of_sum_of_n_integers_2_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_lemma_value_of_sum_of_n_integers_2_loop_invariant_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_lemma_value_of_sum_of_n_integers_2_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_lemma_value_of_sum_of_n_integers_2_loop_invariant_2_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_lemma_value_of_sum_of_n_integers_2_loop_invariant_2_established : Valid
-[wp] [Qed] Goal typed_lemma_value_of_sum_of_n_integers_2_loop_assigns : Valid
-[wp] [Qed] Goal typed_lemma_value_of_sum_of_n_integers_2_assigns : Valid
-[wp] [Alt-Ergo] Goal typed_lemma_value_of_sum_of_n_integers_2_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_lemma_value_of_sum_of_n_integers_2_loop_variant_positive : Valid
-[wp] [Alt-Ergo] Goal typed_lemma_value_of_sum_of_range_of_integers_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_lemma_value_of_sum_of_range_of_integers_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_lemma_value_of_sum_of_range_of_integers_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_lemma_value_of_sum_of_range_of_integers_loop_invariant_2_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_lemma_value_of_sum_of_range_of_integers_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_lemma_value_of_sum_of_range_of_integers_assert_rte_signed : Valid
-[wp] [Qed] Goal typed_lemma_value_of_sum_of_range_of_integers_loop_assigns : Valid
-[wp] [Qed] Goal typed_lemma_value_of_sum_of_range_of_integers_assigns : Valid
-[wp] [Qed] Goal typed_lemma_value_of_sum_of_range_of_integers_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_lemma_value_of_sum_of_range_of_integers_loop_variant_positive : Valid
-[wp] [Alt-Ergo] Goal typed_sum_n_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_sum_n_assert : Valid
-[wp] [Qed] Goal typed_sum_n_assigns_exit : Valid
-[wp] [Qed] Goal typed_sum_n_assigns_normal_part1 : Valid
-[wp] [Qed] Goal typed_sum_n_assigns_normal_part2 : Valid
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_loop_invariant_established (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_loop_assigns (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_assigns (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_loop_variant_positive (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_loop_invariant_established (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_assert_rte_signed (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_loop_assigns (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_assigns (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_loop_variant_decrease (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_loop_variant_positive (Qed)
+[wp] [Valid] typed_sum_n_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sum_n_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sum_n_assigns_exit (Qed)
+[wp] [Valid] typed_sum_n_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_sum_n_assigns_normal_part2 (Qed)
 [wp] Proved goals:   24 / 24
-  Qed:            11 
-  Alt-Ergo:       13
+  Qed:            13
+  Alt-Ergo:       11

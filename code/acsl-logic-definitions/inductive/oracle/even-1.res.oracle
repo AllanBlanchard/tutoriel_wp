@@ -4,12 +4,11 @@
 [rte:annot] annotating function bar
 [rte:annot] annotating function foo
 [wp] 3 goals scheduled
-[wp] [Alt-Ergo] Goal typed_lemma_inversion : Valid
-[wp] [Z3] Goal typed_foo_assert : Valid
-[wp] [Alt-Ergo] Goal typed_bar_assert : Valid
+[wp] [Valid] typed_lemma_inversion (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_assert (Z3) (Cached)
+[wp] [Valid] typed_bar_assert (Alt-Ergo) (Cached)
 [wp] Proved goals:    3 / 3
-  Qed:             0 
-  Alt-Ergo:        2  (unsuccess: 1)
+  Alt-Ergo:        2
   Z3:              1
 [wp:pedantic-assigns] even-1.c:15: Warning: 
   No 'assigns' specification for function 'foo'.

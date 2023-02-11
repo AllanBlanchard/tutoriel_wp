@@ -2,24 +2,24 @@
 [kernel] Parsing lemma-macro-1.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function bsearch_callee
-[kernel] lemma-macro-1.c:30: Warning: 
-  No code nor implicit assigns clause for function bsearch, generating default assigns from the prototype
+[kernel:annot:missing-spec] lemma-macro-1.c:30: Warning: 
+  Neither code nor implicit assigns clause for function bsearch, generating default assigns from the prototype
 [wp] 12 goals scheduled
-[wp] [Qed] Goal typed_bsearch_callee_assert : Valid
-[wp] [Alt-Ergo] Goal typed_bsearch_callee_loop_invariant_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_bsearch_callee_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_bsearch_callee_loop_invariant_2_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_bsearch_callee_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_bsearch_callee_assert_2 : Valid
-[wp] [Qed] Goal typed_bsearch_callee_assert_3 : Valid
-[wp] [Qed] Goal typed_bsearch_callee_loop_assigns : Valid
-[wp] [Alt-Ergo] Goal typed_bsearch_callee_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_bsearch_callee_loop_variant_positive : Valid
-[wp] [Qed] Goal typed_bsearch_callee_call_bsearch_requires : Valid
-[wp] [Qed] Goal typed_bsearch_callee_call_bsearch_requires_2 : Valid
+[wp] [Valid] typed_bsearch_callee_assert (Qed)
+[wp] [Valid] typed_bsearch_callee_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_callee_loop_invariant_established (Qed)
+[wp] [Valid] typed_bsearch_callee_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_callee_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_callee_assert_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_callee_assert_3 (Qed)
+[wp] [Valid] typed_bsearch_callee_loop_assigns (Qed)
+[wp] [Valid] typed_bsearch_callee_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_callee_loop_variant_positive (Qed)
+[wp] [Valid] typed_bsearch_callee_call_bsearch_requires (Qed)
+[wp] [Valid] typed_bsearch_callee_call_bsearch_requires_2 (Qed)
 [wp] Proved goals:   12 / 12
-  Qed:             6 
-  Alt-Ergo:        6
+  Qed:             7
+  Alt-Ergo:        5
 [wp:pedantic-assigns] lemma-macro-1.c:13: Warning: 
   No 'assigns' specification for function 'bsearch'.
   Callers assumptions might be imprecise.

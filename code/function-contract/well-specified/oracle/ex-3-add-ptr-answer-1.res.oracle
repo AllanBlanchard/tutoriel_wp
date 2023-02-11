@@ -4,20 +4,20 @@
 [rte:annot] annotating function add
 [rte:annot] annotating function main
 [wp] 14 goals scheduled
-[wp] [Qed] Goal typed_add_ensures : Valid
-[wp] [Qed] Goal typed_add_assert_rte_mem_access : Valid
-[wp] [Qed] Goal typed_add_assert_rte_mem_access_2 : Valid
-[wp] [Qed] Goal typed_add_assert_rte_signed_overflow : Valid
-[wp] [Qed] Goal typed_add_assert_rte_signed_overflow_2 : Valid
-[wp] [Qed] Goal typed_add_assigns : Valid
-[wp] [Qed] Goal typed_main_assert : Valid
-[wp] [Qed] Goal typed_main_assert_2 : Valid
-[wp] [Qed] Goal typed_main_assert_3 : Valid
-[wp] [Qed] Goal typed_main_assert_4 : Valid
-[wp] [Qed] Goal typed_main_call_add_requires : Valid
-[wp] [Qed] Goal typed_main_call_add_requires_2 : Valid
-[wp] [Qed] Goal typed_main_call_add_2_requires : Valid
-[wp] [Qed] Goal typed_main_call_add_2_requires_2 : Valid
+[wp] [Valid] typed_add_ensures (Qed)
+[wp] [Valid] typed_add_assert_rte_mem_access (Qed)
+[wp] [Valid] typed_add_assert_rte_mem_access_2 (Qed)
+[wp] [Valid] typed_add_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_add_assert_rte_signed_overflow_2 (Qed)
+[wp] [Valid] typed_add_assigns (Qed)
+[wp] [Valid] typed_main_assert (Qed)
+[wp] [Valid] typed_main_assert_2 (Qed)
+[wp] [Valid] typed_main_assert_3 (Qed)
+[wp] [Valid] typed_main_assert_4 (Qed)
+[wp] [Valid] typed_main_call_add_requires (Qed)
+[wp] [Valid] typed_main_call_add_requires_2 (Qed)
+[wp] [Valid] typed_main_call_add_2_requires (Qed)
+[wp] [Valid] typed_main_call_add_2_requires_2 (Qed)
 [wp] Proved goals:   14 / 14
   Qed:            14
 [wp:pedantic-assigns] ex-3-add-ptr-answer-1.c:13: Warning: 

@@ -3,17 +3,17 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function main
 [wp] 8 goals scheduled
-[wp] [Alt-Ergo] Goal typed_main_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_main_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_main_assert_rte_signed_overflow : Valid
-[wp] [Qed] Goal typed_main_assert : Valid
-[wp] [Qed] Goal typed_main_assert_2 : Valid
-[wp] [Qed] Goal typed_main_loop_assigns : Valid
-[wp] [Qed] Goal typed_main_loop_variant_decrease : Valid
-[wp] [Alt-Ergo] Goal typed_main_loop_variant_positive : Valid
+[wp] [Valid] typed_main_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_main_loop_invariant_established (Qed)
+[wp] [Valid] typed_main_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_main_assert (Qed)
+[wp] [Valid] typed_main_assert_2 (Qed)
+[wp] [Valid] typed_main_loop_assigns (Qed)
+[wp] [Valid] typed_main_loop_variant_decrease (Qed)
+[wp] [Valid] typed_main_loop_variant_positive (Qed)
 [wp] Proved goals:    8 / 8
-  Qed:             5 
-  Alt-Ergo:        3
+  Qed:             7
+  Alt-Ergo:        1
 [wp:pedantic-assigns] first_loop-non-term-2.c:1: Warning: 
   No 'assigns' specification for function 'main'.
   Callers assumptions might be imprecise.

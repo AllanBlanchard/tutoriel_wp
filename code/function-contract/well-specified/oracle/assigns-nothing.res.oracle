@@ -3,9 +3,9 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function plus_5
 [wp] 4 goals scheduled
-[wp] [Qed] Goal typed_plus_5_ensures : Valid
-[wp] [Qed] Goal typed_plus_5_assert_rte_mem_access : Valid
-[wp] [Qed] Goal typed_plus_5_assert_rte_signed_overflow : Valid
-[wp] [Qed] Goal typed_plus_5_assigns : Valid
+[wp] [Valid] typed_plus_5_ensures (Qed)
+[wp] [Valid] typed_plus_5_assert_rte_mem_access (Qed)
+[wp] [Valid] typed_plus_5_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_plus_5_assigns (Qed)
 [wp] Proved goals:    4 / 4
   Qed:             4

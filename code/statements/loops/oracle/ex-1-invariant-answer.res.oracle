@@ -7,13 +7,13 @@
 [wp] ex-1-invariant-answer.c:32: Warning: 
   Missing assigns clause (assigns 'everything' instead)
 [wp] 4 goals scheduled
-[wp] [Alt-Ergo] Goal typed_foo_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_foo_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_bar_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_bar_loop_invariant_established : Valid
+[wp] [Valid] typed_foo_loop_invariant_preserved (Qed)
+[wp] [Valid] typed_foo_loop_invariant_established (Qed)
+[wp] [Valid] typed_bar_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bar_loop_invariant_established (Qed)
 [wp] Proved goals:    4 / 4
-  Qed:             2 
-  Alt-Ergo:        2
+  Qed:             3
+  Alt-Ergo:        1
 [wp:pedantic-assigns] ex-1-invariant-answer.c:5: Warning: 
   No 'assigns' specification for function 'foo'.
   Callers assumptions might be imprecise.

@@ -3,17 +3,17 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function add_ten
 [wp] 8 goals scheduled
-[wp] [Alt-Ergo] Goal typed_add_ten_ensures : Unsuccess
-[wp] [Alt-Ergo] Goal typed_add_ten_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_add_ten_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_add_ten_assert_rte_signed_overflow : Unsuccess
-[wp] [Alt-Ergo] Goal typed_add_ten_assert_rte_signed_overflow_2 : Valid
-[wp] [Qed] Goal typed_add_ten_loop_assigns : Valid
-[wp] [Qed] Goal typed_add_ten_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_add_ten_loop_variant_positive : Valid
+[wp] [Unsuccess] typed_add_ten_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_add_ten_loop_invariant_preserved (Qed)
+[wp] [Valid] typed_add_ten_loop_invariant_established (Qed)
+[wp] [Unsuccess] typed_add_ten_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Valid] typed_add_ten_assert_rte_signed_overflow_2 (Qed)
+[wp] [Valid] typed_add_ten_loop_assigns (Qed)
+[wp] [Valid] typed_add_ten_loop_variant_decrease (Qed)
+[wp] [Valid] typed_add_ten_loop_variant_positive (Qed)
 [wp] Proved goals:    6 / 8
-  Qed:             4 
-  Alt-Ergo:        2  (unsuccess: 2)
+  Qed:             6
+  Unsuccess:       2
 [wp:pedantic-assigns] add_ten-0.c:5: Warning: 
   No 'assigns' specification for function 'add_ten'.
   Callers assumptions might be imprecise.

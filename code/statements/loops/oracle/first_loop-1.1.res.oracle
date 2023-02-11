@@ -8,14 +8,7 @@
 ------------------------------------------------------------
 
 Goal Preservation of Invariant (file first_loop-1.c, line 10):
-Assume {
-  Type: is_sint32(i) /\ is_sint32(1 + i).
-  (* Invariant *)
-  Have: (0 <= i) /\ (i <= 30).
-  (* Then *)
-  Have: i <= 29.
-}
-Prove: (-1) <= i.
+Prove: true.
 
 ------------------------------------------------------------
 
