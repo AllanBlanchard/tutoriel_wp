@@ -45,6 +45,8 @@ void inc_cell(int* array, size_t len, size_t i){
   //@ assert sum(array, 0, len) == sum(array, 0, i)+sum(array, i, len) ;
   //@ assert sum(array, i, len) == sum(array, i, i+1)+sum(array, i+1, len) ;
   array[i]++ ;
+  //@ assert sum(array, 0, len) == sum(array, 0, i)+sum(array, i, len) ;
+  //@ assert sum(array, i, len) == sum(array, i, i+1)+sum(array, i+1, len) ;
 
   //@ assert unchanged{Pre, Here}(array, 0, i);
   //@ assert unchanged{Pre, Here}(array, i+1, len);
