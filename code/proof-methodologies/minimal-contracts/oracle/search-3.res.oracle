@@ -4,19 +4,20 @@
 [rte:annot] annotating function foo
 [rte:annot] annotating function search
 [wp] 10 goals scheduled
-[wp] [Alt-Ergo] Goal typed_search_loop_invariant_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_search_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_search_assert_rte_mem_access : Valid
-[wp] [Qed] Goal typed_search_loop_assigns : Valid
-[wp] [Alt-Ergo] Goal typed_search_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_search_loop_variant_positive : Valid
-[wp] [Alt-Ergo] Goal typed_foo_assert_rte_mem_access : Unsuccess
-[wp] [Alt-Ergo] Goal typed_foo_assert_rte_mem_access_2 : Unsuccess
-[wp] [Alt-Ergo] Goal typed_foo_assert_rte_signed_overflow : Unsuccess
-[wp] [Alt-Ergo] Goal typed_foo_call_search_requires : Unsuccess
-[wp] Proved goals:    6 / 10
-  Qed:             2 
-  Alt-Ergo:        4  (unsuccess: 4)
+[wp] [Valid] typed_search_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_loop_invariant_established (Qed)
+[wp] [Valid] typed_search_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_loop_assigns (Qed)
+[wp] [Valid] typed_search_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_loop_variant_positive (Qed)
+[wp] [Unsuccess] typed_foo_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_foo_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_foo_call_search_requires (Alt-Ergo) (Cached)
+[wp] Proved goals:    7 / 10
+  Qed:             3
+  Alt-Ergo:        4
+  Unsuccess:       3
 [wp:pedantic-assigns] search-3.c:6: Warning: 
   No 'assigns' specification for function 'search'.
   Callers assumptions might be imprecise.
