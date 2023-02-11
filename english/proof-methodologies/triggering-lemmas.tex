@@ -283,7 +283,9 @@ the current visited cell is sorted. All these properties are ensured by the
 see that it records the value to insert (which is at the end of the range) in
 the variable \CodeInline{value} and starting from this last position it shifts
 all value until it meets a value that is smaller than the one we want to insert
-or the first cell of the array, and finally inserts the value.
+or the first cell of the array, and finally inserts the value. For this proof,
+we enable the options \CodeInline{-warn-unsigned-overflow} and
+\CodeInline{-warn-unsigned-downcast}.
 
 
 

@@ -1,58 +1,64 @@
-# frama-c -wp -wp-rte [...]
+# frama-c -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast [...]
 [kernel] Parsing insert-sort-auto.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function insert
 [rte:annot] annotating function insertion_sort
-[wp] 49 goals scheduled
-[wp] [Alt-Ergo] Goal typed_lemma_transitive_permutation : Valid
-[wp] [Alt-Ergo] Goal typed_insert_ensures : Unsuccess
-[wp] [Qed] Goal typed_insert_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_rte_mem_access : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_insert_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_invariant_2_preserved : Valid
-[wp] [Qed] Goal typed_insert_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_invariant_3_preserved : Valid
-[wp] [Qed] Goal typed_insert_loop_invariant_3_established : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_invariant_4_preserved : Valid
-[wp] [Qed] Goal typed_insert_loop_invariant_4_established : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_rte_mem_access_2 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_rte_mem_access_3 : Valid
-[wp] [Qed] Goal typed_insert_assert_rte_mem_access_4 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_rte_mem_access_5 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_2 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_3 : Unsuccess
-[wp] [Alt-Ergo] Goal typed_insert_assert_4 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_5 : Unsuccess
-[wp] [Qed] Goal typed_insert_loop_assigns_part1 : Valid
-[wp] [Qed] Goal typed_insert_loop_assigns_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_assigns_part3 : Valid
-[wp] [Qed] Goal typed_insert_assigns_part1 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assigns_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_variant_decrease : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_variant_positive : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_ensures : Valid
-[wp] [Qed] Goal typed_insertion_sort_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_invariant_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_invariant_2_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_invariant_3_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_invariant_3_established : Valid
-[wp] [Qed] Goal typed_insertion_sort_assert : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_assert_2 : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_assert_3 : Unsuccess
-[wp] [Qed] Goal typed_insertion_sort_loop_assigns_part1 : Valid
-[wp] [Qed] Goal typed_insertion_sort_loop_assigns_part2 : Valid
-[wp] [Qed] Goal typed_insertion_sort_loop_assigns_part3 : Valid
-[wp] [Qed] Goal typed_insertion_sort_assigns_exit_part1 : Valid
-[wp] [Qed] Goal typed_insertion_sort_assigns_exit_part2 : Valid
-[wp] [Qed] Goal typed_insertion_sort_assigns_normal : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_insertion_sort_loop_variant_positive : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_call_insert_requires : Valid
-[wp] [Qed] Goal typed_insertion_sort_call_insert_requires_2 : Valid
-[wp] Proved goals:   45 / 49
-  Qed:            19 
-  Alt-Ergo:       26  (unsuccess: 4)
+[wp] 54 goals scheduled
+[wp] [Valid] typed_lemma_transitive_permutation (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_insert_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_ensures_2 (Qed)
+[wp] [Valid] typed_insert_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_loop_invariant_established (Qed)
+[wp] [Valid] typed_insert_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_loop_invariant_2_established (Qed)
+[wp] [Valid] typed_insert_loop_invariant_3_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_loop_invariant_3_established (Qed)
+[wp] [Valid] typed_insert_loop_invariant_4_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_loop_invariant_4_established (Qed)
+[wp] [Valid] typed_insert_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_rte_unsigned_overflow (Qed)
+[wp] [Valid] typed_insert_assert_rte_mem_access_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_rte_mem_access_4 (Qed)
+[wp] [Valid] typed_insert_assert_rte_unsigned_overflow_2 (Qed)
+[wp] [Valid] typed_insert_assert_rte_unsigned_overflow_3 (Qed)
+[wp] [Valid] typed_insert_assert_rte_mem_access_5 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_2 (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_insert_assert_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_4 (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_insert_assert_5 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_loop_assigns_part1 (Qed)
+[wp] [Valid] typed_insert_loop_assigns_part2 (Qed)
+[wp] [Valid] typed_insert_loop_assigns_part3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assigns_part1 (Qed)
+[wp] [Valid] typed_insert_assigns_part2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_loop_variant_decrease (Qed)
+[wp] [Valid] typed_insert_loop_variant_positive (Qed)
+[wp] [Valid] typed_insertion_sort_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_ensures_2 (Qed)
+[wp] [Valid] typed_insertion_sort_assert_rte_unsigned_overflow (Qed)
+[wp] [Valid] typed_insertion_sort_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_loop_invariant_established (Qed)
+[wp] [Valid] typed_insertion_sort_loop_invariant_2_preserved (Qed)
+[wp] [Valid] typed_insertion_sort_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_loop_invariant_3_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_loop_invariant_3_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_assert (Qed)
+[wp] [Valid] typed_insertion_sort_assert_2 (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_insertion_sort_assert_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_assert_rte_unsigned_overflow_2 (Qed)
+[wp] [Valid] typed_insertion_sort_loop_assigns_part1 (Qed)
+[wp] [Valid] typed_insertion_sort_loop_assigns_part2 (Qed)
+[wp] [Valid] typed_insertion_sort_loop_assigns_part3 (Qed)
+[wp] [Valid] typed_insertion_sort_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_insertion_sort_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_insertion_sort_assigns_normal (Qed)
+[wp] [Valid] typed_insertion_sort_loop_variant_decrease (Qed)
+[wp] [Valid] typed_insertion_sort_loop_variant_positive (Qed)
+[wp] [Valid] typed_insertion_sort_call_insert_requires (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_call_insert_requires_2 (Qed)
+[wp] Proved goals:   50 / 54
+  Qed:            29
+  Alt-Ergo:       21
+  Unsuccess:       4

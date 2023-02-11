@@ -276,7 +276,9 @@ regarde cette fonction de plus près, nous voyons qu'elle enregistre la
 valeur à insérer (qui se trouve à la fin de la plage de valeurs) dans une variable
 \CodeInline{value}, et en commençant à la fin de la plage, décale itérativement
 les valeurs rencontrées jusqu'à rencontrer une valeur plus petite que la valeur à
-insérer ou la première cellule du tableau, et insère ensuite la valeur.
+insérer ou la première cellule du tableau, et insère ensuite la valeur. Pour cette
+preuve, nous activons les options \CodeInline{-warn-unsigned-overflow} et
+\CodeInline{-warn-unsigned-downcast}.
 
 
 

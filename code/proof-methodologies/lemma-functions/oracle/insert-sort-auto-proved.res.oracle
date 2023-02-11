@@ -1,4 +1,4 @@
-# frama-c -wp -wp-rte -wp-timeout 20 [...]
+# frama-c -wp -wp-rte -wp-timeout 20 -warn-unsigned-overflow -warn-unsigned-downcast [...]
 [kernel] Parsing insert-sort-auto-proved.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function context_to_prove_rotate_left_permutation
@@ -8,159 +8,186 @@
 [rte:annot] annotating function l_occurrences_of_explicit_split
 [rte:annot] annotating function l_occurrences_of_from_any_split_last
 [rte:annot] annotating function l_occurrences_of_split
-[wp] 149 goals scheduled
-[wp] [Alt-Ergo] Goal typed_lemma_one_same_element_same_count : Valid
-[wp] [Alt-Ergo] Goal typed_lemma_transitive_permutation : Valid
-[wp] [Alt-Ergo] Goal typed_l_occurrences_of_explicit_split_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_l_occurrences_of_explicit_split_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_explicit_split_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_l_occurrences_of_explicit_split_loop_invariant_2_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_l_occurrences_of_explicit_split_loop_invariant_2_established : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_explicit_split_loop_assigns : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_explicit_split_assigns : Valid
-[wp] [Alt-Ergo] Goal typed_l_occurrences_of_explicit_split_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_explicit_split_loop_variant_positive : Valid
-[wp] [Alt-Ergo] Goal typed_l_occurrences_of_split_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_l_occurrences_of_split_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_split_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_l_occurrences_of_split_loop_invariant_2_preserved : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_split_loop_invariant_2_established : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_split_loop_assigns : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_split_assigns_exit_part1 : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_split_assigns_exit_part2 : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_split_assigns_normal : Valid
-[wp] [Alt-Ergo] Goal typed_l_occurrences_of_split_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_split_loop_variant_positive : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_split_call_l_occurrences_of_explicit_split_requires : Valid
-[wp] [Alt-Ergo] Goal typed_l_occurrences_of_from_any_split_last_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_l_occurrences_of_from_any_split_last_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_from_any_split_last_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_l_occurrences_of_from_any_split_last_loop_invariant_2_preserved : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_from_any_split_last_loop_invariant_2_established : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_from_any_split_last_loop_assigns : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_from_any_split_last_assigns_exit_part1 : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_from_any_split_last_assigns_exit_part2 : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_from_any_split_last_assigns_normal : Valid
-[wp] [Alt-Ergo] Goal typed_l_occurrences_of_from_any_split_last_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_l_occurrences_of_from_any_split_last_loop_variant_positive : Valid
-[wp] [Alt-Ergo] Goal typed_l_occurrences_of_from_any_split_last_call_l_occurrences_of_explicit_split_requires : Valid
-[wp] [Qed] Goal typed_context_to_prove_unchanged_permutation_assert : Valid
-[wp] [Alt-Ergo] Goal typed_context_to_prove_unchanged_permutation_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_context_to_prove_unchanged_permutation_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_context_to_prove_unchanged_permutation_loop_invariant_2_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_context_to_prove_unchanged_permutation_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_context_to_prove_unchanged_permutation_assert_2 : Valid
-[wp] [Qed] Goal typed_context_to_prove_unchanged_permutation_assert_3 : Valid
-[wp] [Qed] Goal typed_context_to_prove_unchanged_permutation_loop_assigns : Valid
-[wp] [Alt-Ergo] Goal typed_context_to_prove_unchanged_permutation_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_context_to_prove_unchanged_permutation_loop_variant_positive : Valid
-[wp] [Qed] Goal typed_context_to_prove_rotate_left_permutation_assert : Valid
-[wp] [Alt-Ergo] Goal typed_context_to_prove_rotate_left_permutation_loop_invariant_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_context_to_prove_rotate_left_permutation_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_context_to_prove_rotate_left_permutation_loop_invariant_2_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_context_to_prove_rotate_left_permutation_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_context_to_prove_rotate_left_permutation_assert_2 : Valid
-[wp] [Alt-Ergo] Goal typed_context_to_prove_rotate_left_permutation_assert_3 : Valid
-[wp] [Alt-Ergo] Goal typed_context_to_prove_rotate_left_permutation_assert_4 : Valid
-[wp] [Alt-Ergo] Goal typed_context_to_prove_rotate_left_permutation_assert_5 : Valid
-[wp] [Qed] Goal typed_context_to_prove_rotate_left_permutation_assert_6 : Valid
-[wp] [Qed] Goal typed_context_to_prove_rotate_left_permutation_loop_assigns : Valid
-[wp] [Alt-Ergo] Goal typed_context_to_prove_rotate_left_permutation_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_context_to_prove_rotate_left_permutation_loop_variant_positive : Valid
-[wp] [Alt-Ergo] Goal typed_context_to_prove_rotate_left_permutation_call_l_occurrences_of_explicit_split_requires : Valid
-[wp] [Qed] Goal typed_context_to_prove_rotate_left_permutation_call_l_occurrences_of_explicit_split_2_requires : Valid
-[wp] [Alt-Ergo] Goal typed_insert_ensures : Valid
-[wp] [Qed] Goal typed_insert_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_rte_mem_access : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_insert_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_invariant_2_preserved : Valid
-[wp] [Qed] Goal typed_insert_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_invariant_3_preserved : Valid
-[wp] [Qed] Goal typed_insert_loop_invariant_3_established : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_invariant_4_preserved : Valid
-[wp] [Qed] Goal typed_insert_loop_invariant_4_established : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_rte_mem_access_2 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_rte_mem_access_3 : Valid
-[wp] [Qed] Goal typed_insert_assert_rte_mem_access_4 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_rte_mem_access_5 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_2 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_3 : Valid
-[wp] [Qed] Goal typed_insert_assert_4 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_invariant_5_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_invariant_5_established : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_invariant_6_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_invariant_6_established : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_5 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_6 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_7 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_8 : Valid
-[wp] [Qed] Goal typed_insert_assert_9 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_10 : Valid
-[wp] [Qed] Goal typed_insert_assert_11 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_invariant_7_preserved : Valid
-[wp] [Qed] Goal typed_insert_loop_invariant_7_established : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_invariant_8_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_invariant_8_established : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assert_12 : Valid
-[wp] [Qed] Goal typed_insert_assert_13 : Valid
-[wp] [Qed] Goal typed_insert_loop_assigns_part1 : Valid
-[wp] [Qed] Goal typed_insert_loop_assigns_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_assigns_part3 : Valid
-[wp] [Qed] Goal typed_insert_loop_assigns_2 : Valid
-[wp] [Qed] Goal typed_insert_loop_assigns_3 : Valid
-[wp] [Qed] Goal typed_insert_assigns_exit_part1 : Valid
-[wp] [Qed] Goal typed_insert_assigns_exit_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assigns_exit_part3 : Valid
-[wp] [Qed] Goal typed_insert_assigns_exit_part4 : Valid
-[wp] [Qed] Goal typed_insert_assigns_exit_part5 : Valid
-[wp] [Qed] Goal typed_insert_assigns_normal_part1 : Valid
-[wp] [Qed] Goal typed_insert_assigns_normal_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_assigns_normal_part3 : Valid
-[wp] [Qed] Goal typed_insert_assigns_normal_part4 : Valid
-[wp] [Qed] Goal typed_insert_assigns_normal_part5 : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_variant_decrease : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_variant_positive : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_variant_2_decrease : Valid
-[wp] [Qed] Goal typed_insert_loop_variant_2_positive : Valid
-[wp] [Alt-Ergo] Goal typed_insert_loop_variant_3_decrease : Valid
-[wp] [Qed] Goal typed_insert_loop_variant_3_positive : Valid
-[wp] [Alt-Ergo] Goal typed_insert_call_l_occurrences_of_split_requires : Valid
-[wp] [Alt-Ergo] Goal typed_insert_call_l_occurrences_of_from_any_split_last_requires : Valid
-[wp] [Alt-Ergo] Goal typed_insert_call_l_occurrences_of_explicit_split_requires : Valid
-[wp] [Alt-Ergo] Goal typed_insert_call_l_occurrences_of_explicit_split_2_requires : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_ensures : Valid
-[wp] [Qed] Goal typed_insertion_sort_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_invariant_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_invariant_2_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_invariant_3_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_invariant_3_established : Valid
-[wp] [Qed] Goal typed_insertion_sort_assert : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_assert_2 : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_invariant_4_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_invariant_4_established : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_invariant_5_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_invariant_5_established : Valid
-[wp] [Qed] Goal typed_insertion_sort_loop_assigns_part1 : Valid
-[wp] [Qed] Goal typed_insertion_sort_loop_assigns_part2 : Valid
-[wp] [Qed] Goal typed_insertion_sort_loop_assigns_part3 : Valid
-[wp] [Qed] Goal typed_insertion_sort_loop_assigns_part4 : Valid
-[wp] [Qed] Goal typed_insertion_sort_loop_assigns_2 : Valid
-[wp] [Qed] Goal typed_insertion_sort_assigns_exit_part1 : Valid
-[wp] [Qed] Goal typed_insertion_sort_assigns_exit_part2 : Valid
-[wp] [Qed] Goal typed_insertion_sort_assigns_normal : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_insertion_sort_loop_variant_positive : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_loop_variant_2_decrease : Valid
-[wp] [Qed] Goal typed_insertion_sort_loop_variant_2_positive : Valid
-[wp] [Alt-Ergo] Goal typed_insertion_sort_call_insert_requires : Valid
-[wp] [Qed] Goal typed_insertion_sort_call_insert_requires_2 : Valid
-[wp] Proved goals:  149 / 149
-  Qed:            67 
-  Alt-Ergo:       82
+[wp] 176 goals scheduled
+[wp] [Valid] typed_lemma_one_same_element_same_count (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_transitive_permutation (Alt-Ergo) (Cached)
+[wp] [Valid] typed_l_occurrences_of_explicit_split_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_l_occurrences_of_explicit_split_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_l_occurrences_of_explicit_split_loop_invariant_established (Qed)
+[wp] [Valid] typed_l_occurrences_of_explicit_split_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_l_occurrences_of_explicit_split_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_l_occurrences_of_explicit_split_assert_rte_unsigned (Qed)
+[wp] [Valid] typed_l_occurrences_of_explicit_split_loop_assigns (Qed)
+[wp] [Valid] typed_l_occurrences_of_explicit_split_assigns (Qed)
+[wp] [Valid] typed_l_occurrences_of_explicit_split_loop_variant_decrease (Qed)
+[wp] [Valid] typed_l_occurrences_of_explicit_split_loop_variant_positive (Qed)
+[wp] [Valid] typed_l_occurrences_of_split_ensures (Alt-Ergo) (Trivial)
+[wp] [Valid] typed_l_occurrences_of_split_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_l_occurrences_of_split_loop_invariant_established (Qed)
+[wp] [Valid] typed_l_occurrences_of_split_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_l_occurrences_of_split_loop_invariant_2_established (Qed)
+[wp] [Valid] typed_l_occurrences_of_split_assert_rte_unsigned_overflow (Qed)
+[wp] [Valid] typed_l_occurrences_of_split_loop_assigns (Qed)
+[wp] [Valid] typed_l_occurrences_of_split_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_l_occurrences_of_split_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_l_occurrences_of_split_assigns_normal (Qed)
+[wp] [Valid] typed_l_occurrences_of_split_loop_variant_decrease (Qed)
+[wp] [Valid] typed_l_occurrences_of_split_loop_variant_positive (Qed)
+[wp] [Valid] typed_l_occurrences_of_split_call_l_occurrences_of_explicit_split_requires (Qed)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_loop_invariant_established (Qed)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_loop_invariant_2_established (Qed)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_assert_rte_unsigned (Qed)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_assert_rte_unsigned_2 (Qed)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_assert_rte_unsigned_3 (Qed)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_loop_assigns (Qed)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_assigns_normal (Qed)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_loop_variant_decrease (Qed)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_loop_variant_positive (Qed)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_call_l_occurrences_of_explicit_split_requires (Qed)
+[wp] [Valid] typed_context_to_prove_unchanged_permutation_assert (Qed)
+[wp] [Valid] typed_context_to_prove_unchanged_permutation_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_context_to_prove_unchanged_permutation_loop_invariant_established (Qed)
+[wp] [Valid] typed_context_to_prove_unchanged_permutation_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_context_to_prove_unchanged_permutation_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_context_to_prove_unchanged_permutation_assert_rte_unsigned (Qed)
+[wp] [Valid] typed_context_to_prove_unchanged_permutation_assert_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_context_to_prove_unchanged_permutation_assert_3 (Qed)
+[wp] [Valid] typed_context_to_prove_unchanged_permutation_loop_assigns (Qed)
+[wp] [Valid] typed_context_to_prove_unchanged_permutation_loop_variant_decrease (Qed)
+[wp] [Valid] typed_context_to_prove_unchanged_permutation_loop_variant_positive (Qed)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_assert_rte (Qed)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_assert (Qed)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_assert_rte_2 (Qed)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_loop_invariant_preserved (Qed)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_loop_invariant_established (Qed)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_assert_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_assert_rte_3 (Qed)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_assert_rte_4 (Qed)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_assert_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_assert_4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_assert_5 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_assert_6 (Qed)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_loop_assigns (Qed)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_loop_variant_decrease (Qed)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_loop_variant_positive (Qed)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_call_l_occurrences_of_explicit_split_requires (Qed)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_call_l_occurrences_of_explicit_split_2_requires (Qed)
+[wp] [Valid] typed_insert_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_ensures_2 (Qed)
+[wp] [Valid] typed_insert_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_rte_unsigned_overflow (Qed)
+[wp] [Valid] typed_insert_assert_rte_unsigned_overflow_2 (Qed)
+[wp] [Valid] typed_insert_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_loop_invariant_established (Qed)
+[wp] [Valid] typed_insert_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_loop_invariant_2_established (Qed)
+[wp] [Valid] typed_insert_loop_invariant_3_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_loop_invariant_3_established (Qed)
+[wp] [Valid] typed_insert_loop_invariant_4_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_loop_invariant_4_established (Qed)
+[wp] [Valid] typed_insert_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_rte_unsigned_overflow_3 (Qed)
+[wp] [Valid] typed_insert_assert_rte_mem_access_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_rte_mem_access_4 (Qed)
+[wp] [Valid] typed_insert_assert_rte_unsigned_overflow_4 (Qed)
+[wp] [Valid] typed_insert_assert_rte_unsigned_overflow_5 (Qed)
+[wp] [Valid] typed_insert_assert_rte_mem_access_5 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_4 (Qed)
+[wp] [Valid] typed_insert_assert_rte_unsigned_overflow_6 (Qed)
+[wp] [Valid] typed_insert_loop_invariant_5_preserved (Qed)
+[wp] [Valid] typed_insert_loop_invariant_5_established (Qed)
+[wp] [Valid] typed_insert_loop_invariant_6_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_loop_invariant_6_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_rte_unsigned_overflow_7 (Qed)
+[wp] [Valid] typed_insert_assert_5 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_rte_unsigned_overflow_8 (Qed)
+[wp] [Valid] typed_insert_assert_rte_unsigned_overflow_9 (Qed)
+[wp] [Valid] typed_insert_assert_rte_unsigned_overflow_10 (Qed)
+[wp] [Valid] typed_insert_assert_6 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_7 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_8 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_9 (Qed)
+[wp] [Valid] typed_insert_assert_10 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_11 (Qed)
+[wp] [Valid] typed_insert_loop_invariant_7_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_loop_invariant_7_established (Qed)
+[wp] [Valid] typed_insert_loop_invariant_8_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_loop_invariant_8_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_rte_unsigned_overflow_11 (Qed)
+[wp] [Valid] typed_insert_assert_12 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assert_13 (Qed)
+[wp] [Valid] typed_insert_assert_rte_unsigned_overflow_12 (Qed)
+[wp] [Valid] typed_insert_loop_assigns_part1 (Qed)
+[wp] [Valid] typed_insert_loop_assigns_part2 (Qed)
+[wp] [Valid] typed_insert_loop_assigns_part3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_loop_assigns_2 (Qed)
+[wp] [Valid] typed_insert_loop_assigns_3 (Qed)
+[wp] [Valid] typed_insert_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_insert_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_insert_assigns_exit_part3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assigns_exit_part4 (Qed)
+[wp] [Valid] typed_insert_assigns_exit_part5 (Qed)
+[wp] [Valid] typed_insert_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_insert_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_insert_assigns_normal_part3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_assigns_normal_part4 (Qed)
+[wp] [Valid] typed_insert_assigns_normal_part5 (Qed)
+[wp] [Valid] typed_insert_loop_variant_decrease (Qed)
+[wp] [Valid] typed_insert_loop_variant_positive (Qed)
+[wp] [Valid] typed_insert_loop_variant_2_decrease (Qed)
+[wp] [Valid] typed_insert_loop_variant_2_positive (Qed)
+[wp] [Valid] typed_insert_loop_variant_3_decrease (Qed)
+[wp] [Valid] typed_insert_loop_variant_3_positive (Qed)
+[wp] [Valid] typed_insert_call_l_occurrences_of_split_requires (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insert_call_l_occurrences_of_from_any_split_last_requires (Qed)
+[wp] [Valid] typed_insert_call_l_occurrences_of_explicit_split_requires (Qed)
+[wp] [Valid] typed_insert_call_l_occurrences_of_explicit_split_2_requires (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_ensures_2 (Qed)
+[wp] [Valid] typed_insertion_sort_assert_rte_unsigned_overflow (Qed)
+[wp] [Valid] typed_insertion_sort_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_loop_invariant_established (Qed)
+[wp] [Valid] typed_insertion_sort_loop_invariant_2_preserved (Qed)
+[wp] [Valid] typed_insertion_sort_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_loop_invariant_3_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_loop_invariant_3_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_assert (Qed)
+[wp] [Valid] typed_insertion_sort_assert_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_assert_rte_unsigned_overflow_2 (Qed)
+[wp] [Valid] typed_insertion_sort_assert_rte_unsigned_overflow_3 (Qed)
+[wp] [Valid] typed_insertion_sort_loop_invariant_4_preserved (Qed)
+[wp] [Valid] typed_insertion_sort_loop_invariant_4_established (Qed)
+[wp] [Valid] typed_insertion_sort_loop_invariant_5_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_loop_invariant_5_established (Qed)
+[wp] [Valid] typed_insertion_sort_assert_rte_unsigned_overflow_4 (Qed)
+[wp] [Valid] typed_insertion_sort_assert_rte_unsigned_overflow_5 (Qed)
+[wp] [Valid] typed_insertion_sort_loop_assigns_part1 (Qed)
+[wp] [Valid] typed_insertion_sort_loop_assigns_part2 (Qed)
+[wp] [Valid] typed_insertion_sort_loop_assigns_part3 (Qed)
+[wp] [Valid] typed_insertion_sort_loop_assigns_part4 (Qed)
+[wp] [Valid] typed_insertion_sort_loop_assigns_2 (Qed)
+[wp] [Valid] typed_insertion_sort_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_insertion_sort_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_insertion_sort_assigns_normal (Qed)
+[wp] [Valid] typed_insertion_sort_loop_variant_decrease (Qed)
+[wp] [Valid] typed_insertion_sort_loop_variant_positive (Qed)
+[wp] [Valid] typed_insertion_sort_loop_variant_2_decrease (Qed)
+[wp] [Valid] typed_insertion_sort_loop_variant_2_positive (Qed)
+[wp] [Valid] typed_insertion_sort_call_insert_requires (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_call_insert_requires_2 (Qed)
+[wp] Proved goals:  176 / 176
+  Qed:           118
+  Alt-Ergo:       58
 [wp:pedantic-assigns] insert-sort-auto-proved.c:155: Warning: 
   No 'assigns' specification for function 'context_to_prove_unchanged_permutation'.
   Callers assumptions might be imprecise.
