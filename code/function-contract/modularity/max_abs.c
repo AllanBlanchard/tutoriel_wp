@@ -1,3 +1,8 @@
+/* run.config
+   DEPS: abs.h max.h max_abs.h
+   STDOPT:
+*/
+
 #include <limits.h>
 #include "max_abs.h"
 #include "abs.h"

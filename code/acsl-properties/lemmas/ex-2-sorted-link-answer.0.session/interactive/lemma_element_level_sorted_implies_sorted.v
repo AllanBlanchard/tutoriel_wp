@@ -576,6 +576,7 @@ Theorem wp_goal :
     (i1:Numbers.BinNums.Z),
   is_sint32_chunk t -> P_element_level_sorted t a i i1 ->
   P_sorted_1_ t a i i1.
+(* Why3 intros t a i i1 h1 h2. *)
 Proof.
   Require Import Psatz.
   intros M array fst lst tM H.
@@ -598,6 +599,6 @@ Proof.
         apply Repl with (y := M ( shift array (lst - 1))) ; try auto.
         apply IHlst ; try lia.
         intros k ; intros ; apply H ; lia.
-      * subst ; omega.
+      * subst ; lia.
 Qed.
 

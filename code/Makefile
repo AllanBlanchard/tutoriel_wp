@@ -6,15 +6,15 @@ FRAMAC_SHARE=$(shell frama-c -print-share-path)
 FRAMAC_LIB=$(shell frama-c -print-lib-path)
 FRAMAC_PLUGIN=$(shell frama-c -print-plugin-path)
 
-ifeq (, $(shell which ptests.opt))
-  $(error "No ptests.opt in PATH, it is required for tests")
+ifeq (, $(shell which frama-c-ptests))
+  $(error "No frama-c-ptests in PATH, it is required for tests")
 endif
 
 ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-TESTS_DIR:=$(ROOT_DIR)/tests
-CACHE_DIR=$(TESTS_DIR)/cache
+LINK:=$(ROOT_DIR)/tests
+CACHE_DIR=$(ROOT_DIR)/cache
 
-PTESTS_CONFIG_FILE=$(TESTS_DIR)/ptests_config
+PTESTS_CONFIG_FILE=$(LINK)/ptests_config
 
 SUITES= \
   acsl-properties/lemmas \
@@ -35,17 +35,17 @@ SUITES= \
   function-contract/modularity \
   function-contract/behaviors
 
-all: $(TESTS_DIR) $(PTESTS_CONFIG_FILE)
-	FRAMAC_WP_CACHEDIR=$(CACHE_DIR) ptests.opt $(TESTS_DIR)
+all: prepare-tests run-tests
 
-$(PTESTS_CONFIG_FILE): $(TESTS_DIR)
+prepare-tests: $(LINK) $(PTESTS_CONFIG_FILE)
+	frama-c-ptests $(LINK)
+	rm $(LINK)
+
+run-tests:
+	FRAMAC_WP_CACHEDIR=$(CACHE_DIR) dune build @ptests
+
+$(PTESTS_CONFIG_FILE): $(LINK)
 	echo "DEFAULT_SUITES=$(SUITES)" > $(PTESTS_CONFIG_FILE)
-	echo "TOPLEVEL_PATH=$(TOPLEVEL_PATH)" >> $(PTESTS_CONFIG_FILE)
-	echo "FRAMAC_SHARE=$(FRAMAC_SHARE)" >> $(PTESTS_CONFIG_FILE)
-	echo "FRAMAC_LIB=$(FRAMAC_LIB)" >> $(PTESTS_CONFIG_FILE)
-	echo "FRAMAC_PLUGIN=$(FRAMAC_PLUGIN)" >> $(PTESTS_CONFIG_FILE)
-	echo "OCAMLFIND_IGNORE_DUPS_IN=$(FRAMAC_PLUGIN)" >> $(PTESTS_CONFIG_FILE)
-	echo "OCAMLRUNPARAM=" >> $(PTESTS_CONFIG_FILE)
 
-$(TESTS_DIR):
-	ln -s $(ROOT_DIR) $(TESTS_DIR)
+$(LINK):
+	ln -s $(ROOT_DIR) $(LINK)

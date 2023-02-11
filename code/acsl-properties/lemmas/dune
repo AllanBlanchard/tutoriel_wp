@@ -1,0 +1,19 @@
+(subdir
+ result/ex-1-mult-greater-answer.0.session/interactive
+ (copy_files ../../../ex-1-mult-greater-answer.0.session/interactive/*))
+
+(subdir
+ result/ex-2-sorted-link-answer.0.session/interactive
+ (copy_files ../../../ex-2-sorted-link-answer.0.session/interactive/*))
+
+(subdir
+ result/ex-3-n-first-ints-lemma-answer.0.session/interactive
+ (copy_files ../../../ex-3-n-first-ints-lemma-answer.0.session/interactive/*))
+
+(subdir
+ result/ex-4-shift-transitivity-answer.0.session/interactive
+ (copy_files ../../../ex-4-shift-transitivity-answer.0.session/interactive/*))
+
+(subdir
+ result/ex-5-shift-sorted-answer.0.session/interactive
+ (copy_files ../../../ex-5-shift-sorted-answer.0.session/interactive/*))

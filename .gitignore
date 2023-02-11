@@ -13,8 +13,9 @@
 *.html
 *~
 \#*\#
+code/_build
 code/*/*/.frama-c
+code/**/oracle/dune
 code/**/result
-code/ptests_config
 code/tests
 code/cache

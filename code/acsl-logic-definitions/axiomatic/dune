@@ -1,0 +1,7 @@
+(subdir
+ result/ex-3-sum-N-first-ints-answer.0.session/interactive
+ (copy_files ../../../ex-3-sum-N-first-ints-answer.0.session/interactive/*))
+
+(subdir
+ result/reset-1.0.session/interactive
+ (copy_files ../../../reset-1.0.session/interactive/*))

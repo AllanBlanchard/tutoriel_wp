@@ -327,7 +327,7 @@ plage ne change pas d'un point de programme à un autre :
 
 
 
-\CodeBlockInput[41][45]{c}{insert_sort-proved.c}
+\CodeBlockInput[42][46]{c}{insert_sort-proved.c}
 
 
 
@@ -382,9 +382,9 @@ deux prédicats \CodeInline{shifted} et \CodeInline{unchanged}, le second
 tard) et exprimer qu'une plage inchangée est une permutation :
 
 
-\CodeBlockInput[52][59]{c}{insert_sort-proved.c}
+\CodeBlockInput[53][60]{c}{insert_sort-proved.c}
 
-\CodeBlockInput[71][74]{c}{insert_sort-proved.c}
+\CodeBlockInput[72][75]{c}{insert_sort-proved.c}
 
 
 Maintenant, nous pouvons vérifier que ces deux sous-tableaux sont des
@@ -393,7 +393,7 @@ plage allant de \CodeInline{i+1} à \CodeInline{end} est inchangée, afin de
 déclencher l'usage de notre lemme \CodeInline{unchanged\_is\_permutation}.
 
 
-\CodeBlockInput[133][146]{c}{insert_sort-proved.c}
+\CodeBlockInput[134][147]{c}{insert_sort-proved.c}
 
 
 Comme ces deux sous-parties du tableau sont des permutations, le tableau
@@ -402,7 +402,7 @@ l'itération. Cependant, cela n'est pas prouvé directement, nous ajoutons
 donc aussi un lemme pour cela :
 
 
-\CodeBlockInput[79][85]{c}{insert_sort-proved.c}
+\CodeBlockInput[80][86]{c}{insert_sort-proved.c}
 
 
 Maintenant, nous pouvons déduire qu'une itération de la boucle produit
@@ -430,7 +430,7 @@ qui est suffisant pour conclure \CodeInline{permutation\{Pre, Here\}(a, beg, end
 à la fin du bloc de la boucle en utilisant le lemme suivant :
 
 
-\CodeBlockInput[46][51]{c}{insert_sort-proved.c}
+\CodeBlockInput[47][52]{c}{insert_sort-proved.c}
 
 
 Maintenant, nous pouvons regarder de plus près notre fonction d'insertion en
@@ -500,8 +500,8 @@ Pour la dernière assertion, nous avons besoin d'un lemme à propos de la
 rotation des éléments :
 
 
-\CodeBlockInput[60][64]{c}{insert_sort-proved.c}
-\CodeBlockInput[75][78]{c}{insert_sort-proved.c}
+\CodeBlockInput[61][65]{c}{insert_sort-proved.c}
+\CodeBlockInput[76][79]{c}{insert_sort-proved.c}
 
 
 Nous devons également aider un peu les prouveurs automatiques pour montrer
@@ -515,7 +515,7 @@ la fonction \CodeInline{insert} complètement annotée suivante :
 
 
 
-\CodeBlockInput[87][123]{c}{insert_sort-proved.c}
+\CodeBlockInput[88][124]{c}{insert_sort-proved.c}
 
 
 

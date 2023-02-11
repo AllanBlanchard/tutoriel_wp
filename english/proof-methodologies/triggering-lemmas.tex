@@ -334,7 +334,7 @@ another:
 
 
 
-\CodeBlockInput[41][45]{c}{insert_sort-proved.c}
+\CodeBlockInput[42][46]{c}{insert_sort-proved.c}
 
 
 
@@ -389,9 +389,9 @@ define the former (we will see why later) and express that an unchanged
 range is a permutation.
 
 
-\CodeBlockInput[52][59]{c}{insert_sort-proved.c}
+\CodeBlockInput[53][60]{c}{insert_sort-proved.c}
 
-\CodeBlockInput[71][74]{c}{insert_sort-proved.c}
+\CodeBlockInput[72][75]{c}{insert_sort-proved.c}
 
 
 And now, we can verify that those two sub-arrays are permutations, this is done
@@ -400,7 +400,7 @@ by adding an assertion that shows that the range \CodeInline{i+1} to
 \CodeInline{unchanged\_is\_permutation}.
 
 
-\CodeBlockInput[133][146]{c}{insert_sort-proved.c}
+\CodeBlockInput[134][147]{c}{insert_sort-proved.c}
 
 
 Thus, since those two parts are permutations, the global array is a permutation
@@ -409,7 +409,7 @@ directly proved, so we also need a lemma for this:
 
 
 
-\CodeBlockInput[79][85]{c}{insert_sort-proved.c}
+\CodeBlockInput[80][86]{c}{insert_sort-proved.c}
 
 
 And now we can deduce that a loop iteration produces a permutation by adding
@@ -440,7 +440,7 @@ at the end of the loop block using the following lemma:
 
 
 
-\CodeBlockInput[46][51]{c}{insert_sort-proved.c}
+\CodeBlockInput[47][52]{c}{insert_sort-proved.c}
 
 
 
@@ -510,8 +510,8 @@ Then, for the last assertion, we need a lemma about the rotation of the
 elements:
 
 
-\CodeBlockInput[60][64]{c}{insert_sort-proved.c}
-\CodeBlockInput[75][78]{c}{insert_sort-proved.c}
+\CodeBlockInput[61][65]{c}{insert_sort-proved.c}
+\CodeBlockInput[76][79]{c}{insert_sort-proved.c}
 
 We also have to help a bit the provers to show that the range is
 sorted after the insertion. For this, we provide a new invariant to show
@@ -523,7 +523,7 @@ insertion. Leading us to the following annotated \CodeInline{insert}
 function:
 
 
-\CodeBlockInput[87][123]{c}{insert_sort-proved.c}
+\CodeBlockInput[88][124]{c}{insert_sort-proved.c}
 
 
 
