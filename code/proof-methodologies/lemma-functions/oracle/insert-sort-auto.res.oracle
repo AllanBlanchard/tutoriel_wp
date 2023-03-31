@@ -1,4 +1,4 @@
-# frama-c -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast [...]
+# frama-c -wp -wp-rte -wp-timeout 30 -warn-unsigned-overflow -warn-unsigned-downcast [...]
 [kernel] Parsing insert-sort-auto.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function insert

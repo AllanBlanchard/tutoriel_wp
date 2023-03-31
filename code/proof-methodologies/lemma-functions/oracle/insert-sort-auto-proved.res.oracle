@@ -1,4 +1,4 @@
-# frama-c -wp -wp-rte -wp-timeout 20 -warn-unsigned-overflow -warn-unsigned-downcast [...]
+# frama-c -wp -wp-rte -wp-timeout 30 -warn-unsigned-overflow -warn-unsigned-downcast [...]
 [kernel] Parsing insert-sort-auto-proved.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function context_to_prove_rotate_left_permutation
@@ -21,7 +21,7 @@
 [wp] [Valid] typed_l_occurrences_of_explicit_split_assigns (Qed)
 [wp] [Valid] typed_l_occurrences_of_explicit_split_loop_variant_decrease (Qed)
 [wp] [Valid] typed_l_occurrences_of_explicit_split_loop_variant_positive (Qed)
-[wp] [Valid] typed_l_occurrences_of_split_ensures (Alt-Ergo) (Trivial)
+[wp] [Valid] typed_l_occurrences_of_split_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_l_occurrences_of_split_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_l_occurrences_of_split_loop_invariant_established (Qed)
 [wp] [Valid] typed_l_occurrences_of_split_loop_invariant_2_preserved (Alt-Ergo) (Cached)
