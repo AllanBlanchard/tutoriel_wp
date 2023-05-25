@@ -98,15 +98,15 @@ Axiom addr_WhyType : WhyType addr.
 Existing Instance addr_WhyType.
 
 (* Why3 assumption *)
-Definition offset (v:addr) : Numbers.BinNums.Z :=
-  match v with
-  | addr'mk x x1 => x1
-  end.
-
-(* Why3 assumption *)
 Definition base (v:addr) : Numbers.BinNums.Z :=
   match v with
   | addr'mk x x1 => x
+  end.
+
+(* Why3 assumption *)
+Definition offset (v:addr) : Numbers.BinNums.Z :=
+  match v with
+  | addr'mk x x1 => x1
   end.
 
 Parameter addr_le: addr -> addr -> Prop.
@@ -625,3 +625,4 @@ Proof.
     + rewrite Eq.
       rewrite Q_occurrences_empty_range with (from := (to+1)%Z) ; auto ; try lia.
 Qed.
+
