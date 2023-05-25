@@ -4,7 +4,7 @@
 [wp] Warning: Missing RTE guards
 [wp] 21 goals scheduled
 [wp] [Valid] typed_lemma_power_even (Coq) (Cached)
-[wp] [Valid] typed_lemma_power_odd (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_power_odd (Coq) (Cached)
 [wp] [Valid] typed_power_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_power_loop_invariant_preserved (Qed)
 [wp] [Valid] typed_power_loop_invariant_established (Qed)
@@ -26,5 +26,5 @@
 [wp] [Valid] typed_fast_power_loop_variant_positive (Qed)
 [wp] Proved goals:   21 / 21
   Qed:            12
-  Alt-Ergo:        8
-  Coq:             1
+  Alt-Ergo:        7
+  Coq:             2

@@ -93,12 +93,12 @@
 [wp] Proved goals:   86 / 86
   Qed:            59
   Alt-Ergo:       27
-[wp] ex-4-change-answer.c:11: Warning:
+[wp] ex-4-change-answer.c:11: Warning: 
   Memory model hypotheses for function 'remove_max_notes':
   /*@ behavior wp_typed:
         requires \separated(rest, (int const *)values + (..)); */
   int remove_max_notes(enum note n, int *rest);
-[wp] ex-4-change-answer.c:53: Warning:
+[wp] ex-4-change-answer.c:53: Warning: 
   Memory model hypotheses for function 'make_change':
   /*@
      behavior wp_typed:

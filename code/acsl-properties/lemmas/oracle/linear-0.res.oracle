@@ -6,7 +6,7 @@
 [wp] 25 goals scheduled
 [wp] [Valid] typed_lemma_ax_b_monotonic_neg (Z3) (Cached)
 [wp] [Valid] typed_lemma_ax_b_monotonic_nul (Alt-Ergo) (Cached)
-[wp] [Valid] typed_lemma_ax_b_monotonic_pos (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_ax_b_monotonic_pos (Z3) (Cached)
 [wp] [Valid] typed_function_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_function_assert_rte_signed_overflow (Qed)
 [wp] [Valid] typed_function_assert_rte_signed_overflow_2 (Qed)
@@ -31,5 +31,5 @@
 [wp] [Valid] typed_foo_call_function_4_requires_2 (Qed)
 [wp] Proved goals:   25 / 25
   Qed:            19
-  Alt-Ergo:        5
-  Z3:              1
+  Alt-Ergo:        4
+  Z3:              2
