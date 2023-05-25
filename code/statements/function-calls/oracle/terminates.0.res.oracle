@@ -1,0 +1,62 @@
+# frama-c -wp [...]
+[kernel] Parsing terminates.c (with preprocessing)
+[wp] Running WP plugin...
+[kernel:annot:missing-spec] terminates.c:57: Warning: 
+  Neither code nor specification for function call, generating default assigns from the prototype
+[kernel:annot:missing-spec] terminates.c:57: Warning: 
+  Neither code nor implicit assigns clause for function callee, generating default assigns from the prototype
+[wp] Warning: Missing RTE guards
+[wp] [CFG] Goal may_not_terminate_terminates : Valid (Trivial)
+[wp] terminates.c:16: Warning: 
+  Missing terminates clause on call to call, defaults to \false
+[wp] terminates.c:23: Warning: 
+  Missing assigns clause (assigns 'everything' instead)
+[wp] terminates.c:50: Warning: 
+  Missing decreases clause on recursive function missing_decreases, call must be unreachable
+[wp] 15 goals scheduled
+[wp] [Unsuccess] typed_simple_terminates (Alt-Ergo) (Cached)
+[wp] [Valid] typed_cond_may_not_terminate_terminates (Qed)
+[wp] [Valid] typed_with_calls_terminates_part1 (Qed)
+[wp] [Unsuccess] typed_with_calls_terminates_part2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_with_loop_terminates (Qed)
+[wp] [Valid] typed_with_loop_loop_assigns (Qed)
+[wp] [Valid] typed_missing_decreases_terminates_part1 (Qed)
+[wp] [Unsuccess] typed_missing_decreases_terminates_part2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_recursive_terminates_part1 (Qed)
+[wp] [Valid] typed_recursive_terminates_part2 (Qed)
+[wp] [Valid] typed_recursive_terminates_part3 (Qed)
+[wp] [Unsuccess] typed_recursive_variant_part1 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_recursive_variant_part2 (Qed)
+[wp] [Valid] typed_recursive_call_recursive_requires (Qed)
+[wp] [Valid] typed_recursive_call_recursive_2_requires (Qed)
+[wp] Proved goals:   12 / 16
+  Terminating:     1
+  Qed:            11
+  Unsuccess:       4
+[wp:pedantic-assigns] terminates.c:7: Warning: 
+  No 'assigns' specification for function 'may_not_terminate'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] terminates.c:11: Warning: 
+  No 'assigns' specification for function 'call'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] terminates.c:14: Warning: 
+  No 'assigns' specification for function 'simple'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] terminates.c:20: Warning: 
+  No 'assigns' specification for function 'cond_may_not_terminate'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] terminates.c:28: Warning: 
+  No 'assigns' specification for function 'callee'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] terminates.c:31: Warning: 
+  No 'assigns' specification for function 'with_calls'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] terminates.c:39: Warning: 
+  No 'assigns' specification for function 'with_loop'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] terminates.c:49: Warning: 
+  No 'assigns' specification for function 'missing_decreases'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] terminates.c:57: Warning: 
+  No 'assigns' specification for function 'recursive'.
+  Callers assumptions might be imprecise.

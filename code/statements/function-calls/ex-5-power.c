@@ -3,9 +3,9 @@
 */
 
 /*@
-  requires ...
-  terminates ...
-  decreases ...
+  requires \true ; // to complete
+  terminates \true ; // to complete
+  decreases 0 ; // to complete
 */
 int rec_power(int x, int n){
   if(n == 0) return 1 ;

@@ -1,0 +1,12 @@
+# frama-c -wp [...]
+[kernel] Parsing ex-4-sum-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+[wp] 2 goals scheduled
+[wp] [Valid] typed_sum_terminates (Qed)
+[wp] [Valid] typed_sum_variant (Qed)
+[wp] Proved goals:    2 / 2
+  Qed:             2
+[wp:pedantic-assigns] ex-4-sum-answer.c:7: Warning: 
+  No 'assigns' specification for function 'sum'.
+  Callers assumptions might be imprecise.
