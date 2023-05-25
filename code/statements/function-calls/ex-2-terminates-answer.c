@@ -68,13 +68,13 @@ int prepare(struct client *c){
   return connect(c);
 }
 
-/*@ terminates x > 0 ; */ // the infinite loop in unreachable when x > 0
+/*@ terminates x > 0 ; */ // the infinite loop is unreachable when x > 0
 void terminates_f1(int x){
   if(x <= 0) for(;;);
 }
 
 /*@ requires x > 0 ;
-    terminates \true ; // the infinite loop in unreachable when x > 0
+    terminates \true ; // the infinite loop is unreachable when x > 0
 */
 void terminates_f2(int x){
   if(x <= 0) for(;;);
