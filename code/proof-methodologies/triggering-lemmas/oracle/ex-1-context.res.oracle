@@ -3,9 +3,8 @@
 [wp] Running WP plugin...
 [wp] Warning: Missing RTE guards
 [wp] 1 goal scheduled
-[wp] [Alt-Ergo] Goal typed_exercise_assert : Valid
+[wp] [Valid] typed_exercise_assert (Alt-Ergo) (Cached)
 [wp] Proved goals:    1 / 1
-  Qed:             0 
   Alt-Ergo:        1
 [wp:pedantic-assigns] ex-1-context.c:17: Warning: 
   No 'assigns' specification for function 'exercise'.

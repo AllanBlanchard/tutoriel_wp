@@ -3,9 +3,9 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function add
 [wp] 3 goals scheduled
-[wp] [Qed] Goal typed_add_ensures : Valid
-[wp] [Qed] Goal typed_add_assert_rte_signed_overflow : Valid
-[wp] [Qed] Goal typed_add_assert_rte_signed_overflow_2 : Valid
+[wp] [Valid] typed_add_ensures (Qed)
+[wp] [Valid] typed_add_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_add_assert_rte_signed_overflow_2 (Qed)
 [wp] Proved goals:    3 / 3
   Qed:             3
 [wp:pedantic-assigns] ex-1-addition-answer.c:7: Warning: 

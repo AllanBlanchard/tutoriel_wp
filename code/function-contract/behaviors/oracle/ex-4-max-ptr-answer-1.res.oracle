@@ -4,20 +4,20 @@
 [rte:annot] annotating function main
 [rte:annot] annotating function max_ptr
 [wp] 14 goals scheduled
-[wp] [Qed] Goal typed_max_ptr_complete_is_a_is_b : Valid
-[wp] [Qed] Goal typed_max_ptr_disjoint_is_a_is_b : Valid
-[wp] [Qed] Goal typed_max_ptr_ensures : Valid
-[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access : Valid
-[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_2 : Valid
-[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_3 : Valid
-[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_4 : Valid
-[wp] [Qed] Goal typed_max_ptr_assigns_part1 : Valid
-[wp] [Qed] Goal typed_max_ptr_assigns_part2 : Valid
-[wp] [Qed] Goal typed_max_ptr_is_b_ensures : Valid
-[wp] [Qed] Goal typed_max_ptr_is_a_ensures : Valid
-[wp] [Qed] Goal typed_main_assert : Valid
-[wp] [Qed] Goal typed_main_assert_2 : Valid
-[wp] [Qed] Goal typed_main_call_max_ptr_requires : Valid
+[wp] [Valid] typed_max_ptr_complete_is_a_is_b (Qed)
+[wp] [Valid] typed_max_ptr_disjoint_is_a_is_b (Qed)
+[wp] [Valid] typed_max_ptr_ensures (Qed)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access (Qed)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_2 (Qed)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_3 (Qed)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_4 (Qed)
+[wp] [Valid] typed_max_ptr_assigns_part1 (Qed)
+[wp] [Valid] typed_max_ptr_assigns_part2 (Qed)
+[wp] [Valid] typed_max_ptr_is_b_ensures (Qed)
+[wp] [Valid] typed_max_ptr_is_a_ensures (Qed)
+[wp] [Valid] typed_main_assert (Qed)
+[wp] [Valid] typed_main_assert_2 (Qed)
+[wp] [Valid] typed_main_call_max_ptr_requires (Qed)
 [wp] Proved goals:   14 / 14
   Qed:            14
 [wp:pedantic-assigns] ex-4-max-ptr-answer-1.c:25: Warning: 

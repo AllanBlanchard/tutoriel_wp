@@ -3,7 +3,7 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function foo
 [wp] 1 goal scheduled
-[wp] [Qed] Goal typed_foo_ensures : Valid
+[wp] [Valid] typed_foo_ensures (Qed)
 [wp] Proved goals:    1 / 1
   Qed:             1
 [wp:pedantic-assigns] bad-precond.c:10: Warning: 

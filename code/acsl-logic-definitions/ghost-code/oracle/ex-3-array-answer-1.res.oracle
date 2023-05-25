@@ -3,26 +3,26 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function foo
 [wp] 20 goals scheduled
-[wp] [Alt-Ergo] Goal typed_foo_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_foo_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_foo_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_foo_loop_invariant_2_preserved : Valid
-[wp] [Qed] Goal typed_foo_loop_invariant_2_established : Valid
-[wp] [Qed] Goal typed_foo_assert_rte_index_bound : Valid
-[wp] [Qed] Goal typed_foo_assert_rte_index_bound_2 : Valid
-[wp] [Alt-Ergo] Goal typed_foo_assert_rte_mem_access : Valid
-[wp] [Alt-Ergo] Goal typed_foo_assert_rte_signed_overflow : Valid
-[wp] [Alt-Ergo] Goal typed_foo_loop_invariant_3_preserved : Valid
-[wp] [Qed] Goal typed_foo_loop_invariant_3_established : Valid
-[wp] [Alt-Ergo] Goal typed_foo_loop_invariant_4_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_foo_loop_invariant_4_established : Valid
-[wp] [Alt-Ergo] Goal typed_foo_assert_rte_signed_overflow_2 : Valid
-[wp] [Qed] Goal typed_foo_loop_assigns : Valid
-[wp] [Qed] Goal typed_foo_loop_assigns_2 : Valid
-[wp] [Qed] Goal typed_foo_assigns_part1 : Valid
-[wp] [Qed] Goal typed_foo_assigns_part2 : Valid
-[wp] [Qed] Goal typed_foo_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_foo_loop_variant_positive : Valid
+[wp] [Valid] typed_foo_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_loop_invariant_preserved (Qed)
+[wp] [Valid] typed_foo_loop_invariant_established (Qed)
+[wp] [Valid] typed_foo_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_loop_invariant_2_established (Qed)
+[wp] [Valid] typed_foo_assert_rte_index_bound (Qed)
+[wp] [Valid] typed_foo_assert_rte_index_bound_2 (Qed)
+[wp] [Valid] typed_foo_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_foo_loop_invariant_3_preserved (Qed)
+[wp] [Valid] typed_foo_loop_invariant_3_established (Qed)
+[wp] [Valid] typed_foo_loop_invariant_4_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_loop_invariant_4_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_assert_rte_signed_overflow_2 (Qed)
+[wp] [Valid] typed_foo_loop_assigns (Qed)
+[wp] [Valid] typed_foo_loop_assigns_2 (Qed)
+[wp] [Valid] typed_foo_assigns_part1 (Qed)
+[wp] [Valid] typed_foo_assigns_part2 (Qed)
+[wp] [Valid] typed_foo_loop_variant_decrease (Qed)
+[wp] [Valid] typed_foo_loop_variant_positive (Qed)
 [wp] Proved goals:   20 / 20
-  Qed:            11 
-  Alt-Ergo:        9
+  Qed:            15
+  Alt-Ergo:        5

@@ -4,18 +4,18 @@
 [rte:annot] annotating function main
 [rte:annot] annotating function swap
 [wp] 10 goals scheduled
-[wp] [Alt-Ergo] Goal typed_swap_ensures : Valid
-[wp] [Qed] Goal typed_swap_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_swap_assert_rte_mem_access : Valid
-[wp] [Qed] Goal typed_swap_assert_rte_mem_access_2 : Valid
-[wp] [Alt-Ergo] Goal typed_swap_assert_rte_mem_access_3 : Valid
-[wp] [Qed] Goal typed_swap_assert_rte_mem_access_4 : Valid
-[wp] [Qed] Goal typed_swap_assigns_part1 : Valid
-[wp] [Qed] Goal typed_swap_assigns_part2 : Valid
-[wp] [Qed] Goal typed_main_assert : Valid
-[wp] [Qed] Goal typed_main_call_swap_requires : Valid
+[wp] [Valid] typed_swap_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_swap_ensures_2 (Qed)
+[wp] [Valid] typed_swap_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_swap_assert_rte_mem_access_2 (Qed)
+[wp] [Valid] typed_swap_assert_rte_mem_access_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_swap_assert_rte_mem_access_4 (Qed)
+[wp] [Valid] typed_swap_assigns_part1 (Qed)
+[wp] [Valid] typed_swap_assigns_part2 (Qed)
+[wp] [Valid] typed_main_assert (Qed)
+[wp] [Valid] typed_main_call_swap_requires (Qed)
 [wp] Proved goals:   10 / 10
-  Qed:             7 
+  Qed:             7
   Alt-Ergo:        3
 [wp:pedantic-assigns] verify.c:13: Warning: 
   No 'assigns' specification for function 'main'.

@@ -8,14 +8,14 @@
 [rte:annot] annotating function example_3
 [rte:annot] annotating function example_4
 [wp] 5 goals scheduled
-[wp] [Alt-Ergo] Goal typed_example_2_assert : Unsuccess
-[wp] [Alt-Ergo] Goal typed_example_3_assert : Unsuccess
-[wp] [Alt-Ergo] Goal typed_example_4_assert_rte_mem_access : Unsuccess
-[wp] [Alt-Ergo] Goal typed_example_4_assert : Valid
-[wp] [Alt-Ergo] Goal typed_example_4_assert_2 : Unsuccess
+[wp] [Unsuccess] typed_example_2_assert (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_example_3_assert (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_example_4_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_example_4_assert (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_example_4_assert_2 (Alt-Ergo) (Cached)
 [wp] Proved goals:    1 / 5
-  Qed:             0 
-  Alt-Ergo:        1  (unsuccess: 4)
+  Alt-Ergo:        1
+  Unsuccess:       4
 [wp:pedantic-assigns] at-2.c:5: Warning: 
   No 'assigns' specification for function 'example_1'.
   Callers assumptions might be imprecise.

@@ -4,32 +4,32 @@
 [rte:annot] annotating function foo
 [rte:annot] annotating function function
 [wp] 25 goals scheduled
-[wp] [Z3] Goal typed_lemma_ax_b_monotonic_neg : Valid
-[wp] [Alt-Ergo] Goal typed_lemma_ax_b_monotonic_nul : Valid
-[wp] [Z3] Goal typed_lemma_ax_b_monotonic_pos : Valid
-[wp] [Alt-Ergo] Goal typed_function_ensures : Valid
-[wp] [Qed] Goal typed_function_assert_rte_signed_overflow : Valid
-[wp] [Qed] Goal typed_function_assert_rte_signed_overflow_2 : Valid
-[wp] [Alt-Ergo] Goal typed_function_assert_rte_signed_overflow_3 : Valid
-[wp] [Qed] Goal typed_function_assigns : Valid
-[wp] [Alt-Ergo] Goal typed_foo_assert : Valid
-[wp] [Qed] Goal typed_foo_assigns_exit_part1 : Valid
-[wp] [Qed] Goal typed_foo_assigns_exit_part2 : Valid
-[wp] [Qed] Goal typed_foo_assigns_exit_part3 : Valid
-[wp] [Qed] Goal typed_foo_assigns_normal_part1 : Valid
-[wp] [Qed] Goal typed_foo_assigns_normal_part2 : Valid
-[wp] [Qed] Goal typed_foo_assigns_normal_part3 : Valid
-[wp] [Qed] Goal typed_foo_assigns_normal_part4 : Valid
-[wp] [Qed] Goal typed_foo_assigns_normal_part5 : Valid
-[wp] [Qed] Goal typed_foo_call_function_requires : Valid
-[wp] [Qed] Goal typed_foo_call_function_requires_2 : Valid
-[wp] [Qed] Goal typed_foo_call_function_2_requires : Valid
-[wp] [Qed] Goal typed_foo_call_function_2_requires_2 : Valid
-[wp] [Qed] Goal typed_foo_call_function_3_requires : Valid
-[wp] [Qed] Goal typed_foo_call_function_3_requires_2 : Valid
-[wp] [Qed] Goal typed_foo_call_function_4_requires : Valid
-[wp] [Qed] Goal typed_foo_call_function_4_requires_2 : Valid
+[wp] [Valid] typed_lemma_ax_b_monotonic_neg (Z3) (Cached)
+[wp] [Valid] typed_lemma_ax_b_monotonic_nul (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_ax_b_monotonic_pos (Z3) (Cached)
+[wp] [Valid] typed_function_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_function_assert_rte_signed_overflow_2 (Qed)
+[wp] [Valid] typed_function_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_assigns (Qed)
+[wp] [Valid] typed_foo_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_foo_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_foo_assigns_exit_part3 (Qed)
+[wp] [Valid] typed_foo_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_foo_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_foo_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_foo_assigns_normal_part4 (Qed)
+[wp] [Valid] typed_foo_assigns_normal_part5 (Qed)
+[wp] [Valid] typed_foo_call_function_requires (Qed)
+[wp] [Valid] typed_foo_call_function_requires_2 (Qed)
+[wp] [Valid] typed_foo_call_function_2_requires (Qed)
+[wp] [Valid] typed_foo_call_function_2_requires_2 (Qed)
+[wp] [Valid] typed_foo_call_function_3_requires (Qed)
+[wp] [Valid] typed_foo_call_function_3_requires_2 (Qed)
+[wp] [Valid] typed_foo_call_function_4_requires (Qed)
+[wp] [Valid] typed_foo_call_function_4_requires_2 (Qed)
 [wp] Proved goals:   25 / 25
-  Qed:            19 
-  Alt-Ergo:        4  (unsuccess: 2)
+  Qed:            19
+  Alt-Ergo:        4
   Z3:              2

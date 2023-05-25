@@ -3,21 +3,21 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function facto
 [wp] 14 goals scheduled
-[wp] [Alt-Ergo] Goal typed_facto_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_facto_loop_invariant_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_facto_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_facto_loop_invariant_2_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_facto_loop_invariant_2_established : Valid
-[wp] [Z3] Goal typed_facto_assert_rte_signed_overflow : Valid
-[wp] [Z3] Goal typed_facto_assert_rte_signed_overflow_2 : Valid
-[wp] [Alt-Ergo] Goal typed_facto_assert_rte_signed_overflow_3 : Valid
-[wp] [Qed] Goal typed_facto_loop_assigns : Valid
-[wp] [Qed] Goal typed_facto_assigns_part1 : Valid
-[wp] [Qed] Goal typed_facto_assigns_part2 : Valid
-[wp] [Qed] Goal typed_facto_assigns_part3 : Valid
-[wp] [Qed] Goal typed_facto_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_facto_loop_variant_positive : Valid
+[wp] [Valid] typed_facto_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_facto_loop_invariant_preserved (Qed)
+[wp] [Valid] typed_facto_loop_invariant_established (Qed)
+[wp] [Valid] typed_facto_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_facto_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_facto_assert_rte_signed_overflow (Z3) (Cached)
+[wp] [Valid] typed_facto_assert_rte_signed_overflow_2 (Z3) (Cached)
+[wp] [Valid] typed_facto_assert_rte_signed_overflow_3 (Qed)
+[wp] [Valid] typed_facto_loop_assigns (Qed)
+[wp] [Valid] typed_facto_assigns_part1 (Qed)
+[wp] [Valid] typed_facto_assigns_part2 (Qed)
+[wp] [Valid] typed_facto_assigns_part3 (Qed)
+[wp] [Valid] typed_facto_loop_variant_decrease (Qed)
+[wp] [Valid] typed_facto_loop_variant_positive (Qed)
 [wp] Proved goals:   14 / 14
-  Qed:             6 
-  Alt-Ergo:        6  (unsuccess: 2)
+  Qed:             9
+  Alt-Ergo:        3
   Z3:              2

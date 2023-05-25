@@ -3,9 +3,8 @@
 [wp] Running WP plugin...
 [wp] Warning: Missing RTE guards
 [wp] 1 goal scheduled
-[wp] [Alt-Ergo] Goal typed_swap_ensures : Valid
+[wp] [Valid] typed_swap_ensures (Alt-Ergo) (Cached)
 [wp] Proved goals:    1 / 1
-  Qed:             0 
   Alt-Ergo:        1
 [wp:pedantic-assigns] swap-0.c:8: Warning: 
   No 'assigns' specification for function 'swap'.

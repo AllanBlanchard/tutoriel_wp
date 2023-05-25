@@ -544,143 +544,59 @@ Definition is_sint32_chunk (m:addr -> Numbers.BinNums.Z) : Prop :=
   forall (a:addr), is_sint32 (m a).
 
 (* Why3 assumption *)
-Definition P_shifted (Mint:addr -> Numbers.BinNums.Z)
-    (Mint1:addr -> Numbers.BinNums.Z) (s:Numbers.BinNums.Z) (a:addr)
-    (beg:Numbers.BinNums.Z) (end1:Numbers.BinNums.Z) : Prop :=
-  forall (i:Numbers.BinNums.Z), (beg <= i)%Z -> (i < end1)%Z ->
-  ((Mint (shift a (i + s)%Z)) = (Mint1 (shift a i))).
-
-Parameter L_l_occurrences_of:
-  (addr -> Numbers.BinNums.Z) -> Numbers.BinNums.Z -> addr ->
-  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Numbers.BinNums.Z.
-
-Axiom Q_occurrences_empty_range :
-  forall (Mint:addr -> Numbers.BinNums.Z) (v:Numbers.BinNums.Z) (in1:addr)
-    (from:Numbers.BinNums.Z) (to:Numbers.BinNums.Z),
-  (to <= from)%Z -> is_sint32_chunk Mint -> is_sint32 v ->
-  ((L_l_occurrences_of Mint v in1 from to) = 0%Z).
-
-Axiom Q_occurrences_positive_range_with_element :
-  forall (Mint:addr -> Numbers.BinNums.Z) (v:Numbers.BinNums.Z) (in1:addr)
-    (from:Numbers.BinNums.Z) (to:Numbers.BinNums.Z),
-  let x := ((-1%Z)%Z + to)%Z in
-  let x1 := Mint (shift in1 x) in
-  (x1 = v) -> (from < to)%Z -> is_sint32_chunk Mint -> is_sint32 v ->
-  is_sint32 x1 ->
-  ((1%Z + (L_l_occurrences_of Mint v in1 from x))%Z =
-   (L_l_occurrences_of Mint v in1 from to)).
-
-Axiom Q_occurrences_positive_range_without_element :
-  forall (Mint:addr -> Numbers.BinNums.Z) (v:Numbers.BinNums.Z) (in1:addr)
-    (from:Numbers.BinNums.Z) (to:Numbers.BinNums.Z),
-  let x := ((-1%Z)%Z + to)%Z in
-  let x1 := Mint (shift in1 x) in
-  ~ (x1 = v) -> (from < to)%Z -> is_sint32_chunk Mint -> is_sint32 v ->
-  is_sint32 x1 ->
-  ((L_l_occurrences_of Mint v in1 from x) =
-   (L_l_occurrences_of Mint v in1 from to)).
+Definition P_element_level_sorted (Mint:addr -> Numbers.BinNums.Z)
+    (array:addr) (fst:Numbers.BinNums.Z) (end1:Numbers.BinNums.Z) : Prop :=
+  forall (i:Numbers.BinNums.Z), (fst <= i)%Z -> ((2%Z + i)%Z <= end1)%Z ->
+  ((Mint (shift array i)) <= (Mint (shift array (1%Z + i)%Z)))%Z.
 
 (* Why3 assumption *)
-Definition P_permutation (Mint:addr -> Numbers.BinNums.Z)
-    (Mint1:addr -> Numbers.BinNums.Z) (in1:addr) (from:Numbers.BinNums.Z)
-    (to:Numbers.BinNums.Z) : Prop :=
-  forall (i:Numbers.BinNums.Z), is_sint32 i ->
-  ((L_l_occurrences_of Mint1 i in1 from to) =
-   (L_l_occurrences_of Mint i in1 from to)).
+Definition P_sorted_1_ (Mint:addr -> Numbers.BinNums.Z) (arr:addr)
+    (begin:Numbers.BinNums.Z) (end1:Numbers.BinNums.Z) : Prop :=
+  forall (i:Numbers.BinNums.Z) (i1:Numbers.BinNums.Z), (begin <= i)%Z ->
+  (i1 < end1)%Z -> (i <= i1)%Z ->
+  ((Mint (shift arr i)) <= (Mint (shift arr i1)))%Z.
 
-Axiom Q_unchanged_is_permutation :
-  forall (Mint:addr -> Numbers.BinNums.Z) (Mint1:addr -> Numbers.BinNums.Z)
-    (a:addr) (beg:Numbers.BinNums.Z) (end1:Numbers.BinNums.Z),
-  is_sint32_chunk Mint -> is_sint32_chunk Mint1 ->
-  P_shifted Mint Mint1 0%Z a beg end1 -> P_permutation Mint Mint1 a beg end1.
-
-Axiom Q_shifted_maintains_occ :
-  forall (Mint:addr -> Numbers.BinNums.Z) (Mint1:addr -> Numbers.BinNums.Z)
-    (a:addr) (beg:Numbers.BinNums.Z) (end1:Numbers.BinNums.Z)
-    (s:Numbers.BinNums.Z) (v:Numbers.BinNums.Z),
-  is_sint32_chunk Mint -> is_sint32_chunk Mint1 -> is_sint32 v ->
-  P_shifted Mint Mint1 s a beg end1 ->
-  ((L_l_occurrences_of Mint v a (beg + s)%Z (end1 + s)%Z) =
-   (L_l_occurrences_of Mint1 v a beg end1)).
-
-Axiom Q_transitive_permutation :
-  forall (Mint:addr -> Numbers.BinNums.Z) (Mint1:addr -> Numbers.BinNums.Z)
-    (Mint2:addr -> Numbers.BinNums.Z) (a:addr) (beg:Numbers.BinNums.Z)
-    (end1:Numbers.BinNums.Z),
-  is_sint32_chunk Mint -> is_sint32_chunk Mint2 -> is_sint32_chunk Mint1 ->
-  P_permutation Mint Mint1 a beg end1 ->
-  P_permutation Mint1 Mint2 a beg end1 -> P_permutation Mint Mint2 a beg end1.
-
-Axiom Q_l_occurrences_of_union :
-  forall (Mint:addr -> Numbers.BinNums.Z) (v:Numbers.BinNums.Z) (in1:addr)
-    (from:Numbers.BinNums.Z) (split:Numbers.BinNums.Z) (to:Numbers.BinNums.Z),
-  (from <= split)%Z -> (split <= to)%Z -> is_sint32_chunk Mint ->
-  is_sint32 v ->
-  (((L_l_occurrences_of Mint v in1 from split) +
-    (L_l_occurrences_of Mint v in1 split to))%Z
-   = (L_l_occurrences_of Mint v in1 from to)).
-
-(* Why3 assumption *)
-Definition P_rotate_left (Mint:addr -> Numbers.BinNums.Z)
-    (Mint1:addr -> Numbers.BinNums.Z) (a:addr) (beg:Numbers.BinNums.Z)
-    (end1:Numbers.BinNums.Z) : Prop :=
-  let x := ((-1%Z)%Z + end1)%Z in
-  (((Mint1 (shift a x)) = (Mint (shift a beg))) /\ (beg < end1)%Z) /\
-  P_shifted Mint Mint1 1%Z a beg x.
+Theorem Z_induction(m : Z)(P : Z -> Prop) :
+  (forall n, (n <= m)%Z -> P n ) ->
+  (forall n, (n >= m)%Z -> P n -> P (n+1)%Z) ->
+  (forall n, P n).
+Proof.
+  intros.
+  induction (Z_le_dec n m) ; auto with zarith.
+  apply Z.le_ind with (n := m) ; auto with zarith.
+  unfold Morphisms.Proper.
+  unfold Morphisms.respectful.
+  intros. rewrite H1. intuition.
+  intros. apply H0; auto with zarith.
+Qed.
 
 (* Why3 goal *)
 Theorem wp_goal :
-  forall (t:addr -> Numbers.BinNums.Z) (t1:addr -> Numbers.BinNums.Z)
-    (a:addr) (i:Numbers.BinNums.Z) (i1:Numbers.BinNums.Z),
-  is_sint32_chunk t1 -> is_sint32_chunk t -> P_rotate_left t t1 a i i1 ->
-  P_permutation t t1 a i i1.
+  forall (t:addr -> Numbers.BinNums.Z) (a:addr) (i:Numbers.BinNums.Z)
+    (i1:Numbers.BinNums.Z),
+  is_sint32_chunk t -> P_element_level_sorted t a i i1 ->
+  P_sorted_1_ t a i i1.
 Proof.
   Require Import Psatz.
-
-  Ltac norm := repeat(match goal with
-  | [ _ : _ |- context [ (?i + 1 - 1)%Z ]] => replace (i + 1 - 1)%Z with i by lia  
-  | [ _ : _ |- context [ (- (1) + (?i + 1))%Z ]] => replace (- (1) + (i + 1))%Z with i by lia
-  | [ _ : _ |- context [ (0 + ?i)%Z ]] => replace (0 + i)%Z with i by lia
-  | [ _ : _ |- context [ (?i + 0)%Z ]] => replace (i + 0)%Z with i by lia
-  end).
-
-  intros M1 M2 a ba ea M2_int M1_int Rot.
-  unfold P_rotate_left in Rot.
-  inversion_clear Rot as [ Rot' Shift ].
-  inversion_clear Rot' as [ Same Bound ].
-
-  assert(P_shifted M1 M2 1 a ba (ea-1)). {
-    intros i ; intros.
-    apply Shift ; lia.
-  }
-  clear Shift.
-  intros i Hi.
-  apply Q_shifted_maintains_occ with (v := i) in H ; auto.
-  rewrite <- Q_l_occurrences_of_union with (Mint := M2)(split := (ea-1)%Z) ; auto ; try lia.
-  rewrite <- Q_l_occurrences_of_union with (Mint := M1)(split := (ba+1)%Z) ; auto ; try lia.
-
-  assert (L_l_occurrences_of M2 i a (ea - 1) ea = L_l_occurrences_of M1 i a ba (ba + 1)). {
-    assert(EqNeq: { M1 (shift a ba) = i } + { M1 (shift a ba) <> i }) 
-        by repeat(decide equality).
+  intros M array fst lst tM H.
+  induction lst using Z_induction with (m := fst).
+  + unfold P_sorted_1_.
+    intros ; lia.
+  + unfold P_sorted_1_.
+    intros i j Li Ui Lj.
+    assert(EqNeq: (j < lst \/ j = lst)%Z) by lia.
     inversion_clear EqNeq as [ Eq | Neq ].
-    + subst.
-      rewrite <- Same.
-      rewrite <- Q_occurrences_positive_range_with_element ;
-        norm ; try lia ; auto ; rewrite Same.
-      rewrite Q_occurrences_empty_range ; 
-        norm ; try lia ; auto.
-      replace(M1 (shift a ba)) with (M1 (shift a (ba + 1 - 1))) by (norm ; auto).
-      rewrite <- Q_occurrences_positive_range_with_element ; norm ; try lia ; auto.
-      rewrite Q_occurrences_empty_range ; norm ; try lia ; auto.
-    + rewrite <- Q_occurrences_positive_range_without_element ; 
-        auto ; try lia.
-      rewrite Q_occurrences_empty_range ; auto ; try lia.
-      rewrite <- Q_occurrences_positive_range_without_element ;
-        norm ; try lia ; auto.
-      rewrite Q_occurrences_empty_range ; auto ; lia.
-  }
-  rewrite <- H0.
-  replace (ea - 1 + 1)%Z with ea in H by lia.
-  lia.
+    - apply IHlst ; try lia.
+      intros k ; intros ; apply H ; lia.
+    - subst.
+      assert (LowEq: (i < lst \/ i = lst)%Z) by lia.
+      inversion_clear LowEq as [ Low | Eq ].
+      * assert (Repl: forall x y z : Z, (x <= y -> y <= z -> x <= z)%Z) by (intros ; lia).
+        replace lst with (1 +(lst-1))%Z by lia.
+        assert (M ( shift array (lst-1)) <= M ( shift array (1+(lst-1))))%Z
+            by (apply H ; lia).
+        apply Repl with (y := M ( shift array (lst - 1))) ; try auto.
+        apply IHlst ; try lia.
+        intros k ; intros ; apply H ; lia.
+      * subst ; lia.
 Qed.
-

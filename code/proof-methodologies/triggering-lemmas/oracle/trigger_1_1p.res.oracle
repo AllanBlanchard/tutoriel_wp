@@ -3,11 +3,11 @@
 [wp] Running WP plugin...
 [wp] Warning: Missing RTE guards
 [wp] 2 goals scheduled
-[wp] [Alt-Ergo] Goal typed_example_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_example_assert : Unsuccess
+[wp] [Valid] typed_example_ensures (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_example_assert (Alt-Ergo) (Cached)
 [wp] Proved goals:    1 / 2
-  Qed:             0 
-  Alt-Ergo:        1  (unsuccess: 1)
+  Alt-Ergo:        1
+  Unsuccess:       1
 ------------------------------------------------------------
   Function example
 ------------------------------------------------------------

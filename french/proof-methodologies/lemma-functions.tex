@@ -555,8 +555,10 @@ n'a pas été particulièrement écrit avec comme objectif de le vérifier plus 
 adapté avec une technique similaire et est beaucoup plus facile à prouver). Donc
 dans cet exemple, nous poussons les solveurs SMT vers leurs limites à cause des
 gros contextes de preuve. En fonction de la puissance de la machine sur laquelle
-la preuve est lancée, la preuve pourrait approcher les 120 secondes (ce qui est
-déjà long pour un solveur SMT). Dans cet exemple, nous illustrerons les trois
+la preuve est lancée, la preuve pourrait approcher les 60 secondes (ce qui est
+déjà long pour un solveur SMT). Nous utilisons à nouveau les options
+\CodeInline{-warn-unsigned-overflow} et \CodeInline{-warn-unsigned-downcast}.
+Dans cet exemple, nous illustrerons les trois
 cas d'usage que nous avons vu du code fantôme jusqu'ici :
 \begin{itemize}
     \item écrire directement un code pour construire une preuve,
@@ -572,21 +574,21 @@ Certaines parties des annotations que nous avons écrites précédemment seront
 but dans chaque fonction. Ensuite, nous utilisons la même définition axiomatique
 pour le comptage d'occurrences. De plus, nous conservons ces définitions de
 prédicats :
-\CodeBlockInput[25][42]{c}{insert-sort-auto.c}
+\CodeBlockInput[29][46]{c}{insert-sort-auto.c}
 puisque nous en avons besoin, ainsi que le lemme à propos de la transitivité du
 comptage d'occurrences, puisqu'il était prouvé automatiquement par les solveurs
 SMT (nous pouvons donc le garder puisqu'il ne nécessite pas de preuve interactive
 de notre part).
 
 
-\CodeBlockInput[43][48]{c}{insert-sort-auto.c}
+\CodeBlockInput[47][52]{c}{insert-sort-auto.c}
 
 
 Commençons par la fonction \CodeInline{insertion\_sort}. Dans cette fonction,
 nous avons écrit trois assertions :
 
 
-\CodeBlockInput[87][108]{c}{insert-sort-auto.c}
+\CodeBlockInput[91][112]{c}{insert-sort-auto.c}
 
 
 La première nous assure que le début du tableau où nous avons inséré une valeur
@@ -627,7 +629,7 @@ est conforme à sa spécification à condition de finir la preuve de la fonction
 complexes, nous partirons de cette version annotée :
 
 
-\CodeBlockInput[50][84]{c}{insert-sort-auto.c}
+\CodeBlockInput[54][88]{c}{insert-sort-auto.c}
 
 
 À nouveau, la preuve que cette fonction maintient la permutation du tableau est

@@ -9,14 +9,14 @@
 [wp] ghost-access-non-ghost-2.c:10: Warning: 
   Missing assigns clause (assigns 'everything' instead)
 [wp] 5 goals scheduled
-[wp] [Alt-Ergo] Goal typed_sum_assert_rte_signed_overflow : Unsuccess
-[wp] [Alt-Ergo] Goal typed_sum_assert_rte_signed_overflow_2 : Unsuccess
-[wp] [Qed] Goal typed_sum_assert_rte_signed_overflow_3 : Valid
-[wp] [Qed] Goal typed_sum_assert_rte_signed_overflow_4 : Valid
-[wp] [Alt-Ergo] Goal typed_sum_assert_rte_signed_overflow_5 : Unsuccess
+[wp] [Unsuccess] typed_sum_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_sum_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sum_assert_rte_signed_overflow_3 (Qed)
+[wp] [Valid] typed_sum_assert_rte_signed_overflow_4 (Qed)
+[wp] [Unsuccess] typed_sum_assert_rte_signed_overflow_5 (Alt-Ergo) (Cached)
 [wp] Proved goals:    2 / 5
-  Qed:             2 
-  Alt-Ergo:        0  (unsuccess: 3)
+  Qed:             2
+  Unsuccess:       3
 [wp:pedantic-assigns] ghost-access-non-ghost-2.c:8: Warning: 
   No 'assigns' specification for function 'sum'.
   Callers assumptions might be imprecise.

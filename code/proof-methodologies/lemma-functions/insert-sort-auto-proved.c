@@ -1,5 +1,5 @@
 /* run.config
-   STDOPT:+"-wp-timeout 20"
+   STDOPT:+"-warn-unsigned-overflow -warn-unsigned-downcast -wp-timeout 30"
 */
 
 #include <stddef.h>

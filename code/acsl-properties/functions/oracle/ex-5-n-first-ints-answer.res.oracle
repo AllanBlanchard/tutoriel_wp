@@ -3,20 +3,21 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function sum_n
 [wp] 14 goals scheduled
-[wp] [Alt-Ergo] Goal typed_sum_n_ensures : Valid
-[wp] [Qed] Goal typed_sum_n_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_sum_n_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_sum_n_loop_invariant_2_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_sum_n_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_sum_n_assert_rte_signed_overflow : Valid
-[wp] [Alt-Ergo] Goal typed_sum_n_assert_rte_signed_overflow_2 : Unsuccess
-[wp] [Alt-Ergo] Goal typed_sum_n_assert_rte_signed_overflow_3 : Valid
-[wp] [Qed] Goal typed_sum_n_loop_assigns : Valid
-[wp] [Qed] Goal typed_sum_n_assigns_part1 : Valid
-[wp] [Qed] Goal typed_sum_n_assigns_part2 : Valid
-[wp] [Qed] Goal typed_sum_n_assigns_part3 : Valid
-[wp] [Qed] Goal typed_sum_n_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_sum_n_loop_variant_positive : Valid
+[wp] [Valid] typed_sum_n_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sum_n_loop_invariant_preserved (Qed)
+[wp] [Valid] typed_sum_n_loop_invariant_established (Qed)
+[wp] [Valid] typed_sum_n_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sum_n_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sum_n_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_sum_n_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sum_n_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sum_n_loop_assigns (Qed)
+[wp] [Valid] typed_sum_n_assigns_part1 (Qed)
+[wp] [Valid] typed_sum_n_assigns_part2 (Qed)
+[wp] [Valid] typed_sum_n_assigns_part3 (Qed)
+[wp] [Valid] typed_sum_n_loop_variant_decrease (Qed)
+[wp] [Valid] typed_sum_n_loop_variant_positive (Qed)
 [wp] Proved goals:   13 / 14
-  Qed:             8 
-  Alt-Ergo:        5  (unsuccess: 1)
+  Qed:             8
+  Alt-Ergo:        5
+  Unsuccess:       1

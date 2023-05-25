@@ -573,9 +573,10 @@ reader can refer to the version proposed in the book ACSL by Example which can
 be adapted with a similar technique and is easier to prove). Thus, in
 this example, we push the solvers to their limit because of big proof contexts.
 With this example, depending on how powerful the machine is, we might need to
-increase the proof timeout to 120 seconds (which is already quite long for an
-SMT solver). In this example, we will illustrate three actual usage of ghost
-code that we have seen so far:
+increase the proof timeout to 60 seconds (which is already quite long for an
+SMT solver). We again use the options \CodeInline{-warn-unsigned-overflow} and
+\CodeInline{-warn-unsigned-downcast}. In this example, we will illustrate three
+actual usage of ghost code that we have seen so far:
 \begin{itemize}
 \item directly writing code to build a proof,
 \item writing (and using) lemma functions,
@@ -591,7 +592,7 @@ purpose for each function. Second, we re-use the same axiomatic definition for
 occurrences counting. Furthermore, we keep the following predicate definitions:
 
 
-\CodeBlockInput[25][42]{c}{insert-sort-auto.c}
+\CodeBlockInput[29][46]{c}{insert-sort-auto.c}
 
 
 As we will need them, as well as the lemma about the transitivity of
@@ -599,14 +600,14 @@ occurrences counting as it is automatically proved by SMT solvers (thus we can
 keep it since it does not require an interactive proof from us):
 
 
-\CodeBlockInput[43][48]{c}{insert-sort-auto.c}
+\CodeBlockInput[47][52]{c}{insert-sort-auto.c}
 
 
 Let us start with the \CodeInline{insertion\_sort} function itself. In this
 function, we made use of three assertions:
 
 
-\CodeBlockInput[87][108]{c}{insert-sort-auto.c}
+\CodeBlockInput[91][112]{c}{insert-sort-auto.c}
 
 
 The first one makes sure that the part of the array where we just inserted a
@@ -647,7 +648,7 @@ conforms to its specification as long as we finish the proof of the
 Let us depart from this annotated version:
 
 
-\CodeBlockInput[50][84]{c}{insert-sort-auto.c}
+\CodeBlockInput[54][88]{c}{insert-sort-auto.c}
 
 
 Again, the proof that this function maintains a permutation of the array is

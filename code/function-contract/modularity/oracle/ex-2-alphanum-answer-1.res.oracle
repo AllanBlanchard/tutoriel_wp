@@ -6,30 +6,30 @@
 [rte:annot] annotating function is_lower_alpha
 [rte:annot] annotating function is_upper_alpha
 [wp] 24 goals scheduled
-[wp] [Qed] Goal typed_is_lower_alpha_ensures : Valid
-[wp] [Qed] Goal typed_is_lower_alpha_assigns_part1 : Valid
-[wp] [Qed] Goal typed_is_lower_alpha_assigns_part2 : Valid
-[wp] [Qed] Goal typed_is_lower_alpha_assigns_part3 : Valid
-[wp] [Qed] Goal typed_is_upper_alpha_ensures : Valid
-[wp] [Qed] Goal typed_is_upper_alpha_assigns_part1 : Valid
-[wp] [Qed] Goal typed_is_upper_alpha_assigns_part2 : Valid
-[wp] [Qed] Goal typed_is_upper_alpha_assigns_part3 : Valid
-[wp] [Qed] Goal typed_is_digit_ensures : Valid
-[wp] [Qed] Goal typed_is_digit_assigns_part1 : Valid
-[wp] [Qed] Goal typed_is_digit_assigns_part2 : Valid
-[wp] [Qed] Goal typed_is_digit_assigns_part3 : Valid
-[wp] [Alt-Ergo] Goal typed_is_alpha_num_ensures : Valid
-[wp] [Qed] Goal typed_is_alpha_num_assigns_exit_part1 : Valid
-[wp] [Qed] Goal typed_is_alpha_num_assigns_exit_part2 : Valid
-[wp] [Qed] Goal typed_is_alpha_num_assigns_exit_part3 : Valid
-[wp] [Qed] Goal typed_is_alpha_num_assigns_normal_part1 : Valid
-[wp] [Qed] Goal typed_is_alpha_num_assigns_normal_part2 : Valid
-[wp] [Qed] Goal typed_is_alpha_num_assigns_normal_part3 : Valid
-[wp] [Qed] Goal typed_is_alpha_num_assigns_normal_part4 : Valid
-[wp] [Qed] Goal typed_is_alpha_num_assigns_normal_part5 : Valid
-[wp] [Qed] Goal typed_is_alpha_num_assigns_normal_part6 : Valid
-[wp] [Qed] Goal typed_is_alpha_num_assigns_normal_part7 : Valid
-[wp] [Qed] Goal typed_is_alpha_num_assigns_normal_part8 : Valid
+[wp] [Valid] typed_is_lower_alpha_ensures (Qed)
+[wp] [Valid] typed_is_lower_alpha_assigns_part1 (Qed)
+[wp] [Valid] typed_is_lower_alpha_assigns_part2 (Qed)
+[wp] [Valid] typed_is_lower_alpha_assigns_part3 (Qed)
+[wp] [Valid] typed_is_upper_alpha_ensures (Qed)
+[wp] [Valid] typed_is_upper_alpha_assigns_part1 (Qed)
+[wp] [Valid] typed_is_upper_alpha_assigns_part2 (Qed)
+[wp] [Valid] typed_is_upper_alpha_assigns_part3 (Qed)
+[wp] [Valid] typed_is_digit_ensures (Qed)
+[wp] [Valid] typed_is_digit_assigns_part1 (Qed)
+[wp] [Valid] typed_is_digit_assigns_part2 (Qed)
+[wp] [Valid] typed_is_digit_assigns_part3 (Qed)
+[wp] [Valid] typed_is_alpha_num_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_is_alpha_num_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_exit_part3 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_normal_part4 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_normal_part5 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_normal_part6 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_normal_part7 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_normal_part8 (Qed)
 [wp] Proved goals:   24 / 24
-  Qed:            23 
+  Qed:            23
   Alt-Ergo:        1

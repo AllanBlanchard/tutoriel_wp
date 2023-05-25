@@ -3,10 +3,10 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function foo
 [wp] 4 goals scheduled
-[wp] [Qed] Goal typed_foo_assert_rte_signed_overflow : Valid
-[wp] [Qed] Goal typed_foo_loop_assigns_part1 : Valid
-[wp] [Alt-Ergo] Goal typed_foo_loop_assigns_part2 : Unsuccess
-[wp] [Qed] Goal typed_foo_assigns : Valid
+[wp] [Valid] typed_foo_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_foo_loop_assigns_part1 (Qed)
+[wp] [Unsuccess] typed_foo_loop_assigns_part2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_assigns (Qed)
 [wp] Proved goals:    3 / 4
-  Qed:             3 
-  Alt-Ergo:        0  (unsuccess: 1)
+  Qed:             3
+  Unsuccess:       1

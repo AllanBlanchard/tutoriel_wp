@@ -3,12 +3,12 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function callee
 [wp] 6 goals scheduled
-[wp] [Alt-Ergo] Goal typed_lemma_shift_ptr : Unsuccess
-[wp] [Alt-Ergo] Goal typed_callee_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_callee_assigns_exit : Valid
-[wp] [Alt-Ergo] Goal typed_callee_assigns_normal : Valid
-[wp] [Alt-Ergo] Goal typed_callee_call_shift_array_requires : Valid
-[wp] [Alt-Ergo] Goal typed_callee_call_shift_array_requires_2 : Valid
+[wp] [Unsuccess] typed_lemma_shift_ptr (Alt-Ergo) (Cached)
+[wp] [Valid] typed_callee_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_callee_assigns_exit (Alt-Ergo) (Cached)
+[wp] [Valid] typed_callee_assigns_normal (Alt-Ergo) (Cached)
+[wp] [Valid] typed_callee_call_shift_array_requires (Alt-Ergo) (Cached)
+[wp] [Valid] typed_callee_call_shift_array_requires_2 (Alt-Ergo) (Cached)
 [wp] Proved goals:    5 / 6
-  Qed:             0 
-  Alt-Ergo:        5  (unsuccess: 1)
+  Alt-Ergo:        5
+  Unsuccess:       1

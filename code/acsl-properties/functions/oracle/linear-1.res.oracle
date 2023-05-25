@@ -6,30 +6,31 @@
 [rte:annot] annotating function mathematical_example
 [rte:annot] annotating function restricted
 [wp] 21 goals scheduled
-[wp] [Alt-Ergo] Goal typed_function_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_function_assert_rte_signed_overflow : Unsuccess
-[wp] [Alt-Ergo] Goal typed_function_assert_rte_signed_overflow_2 : Valid
-[wp] [Alt-Ergo] Goal typed_function_assert_rte_signed_overflow_3 : Unsuccess
-[wp] [Qed] Goal typed_function_assigns : Valid
-[wp] [Alt-Ergo] Goal typed_restricted_ensures : Valid
-[wp] [Qed] Goal typed_restricted_assert_rte_signed_overflow : Valid
-[wp] [Alt-Ergo] Goal typed_restricted_assert_rte_signed_overflow_2 : Valid
-[wp] [Alt-Ergo] Goal typed_restricted_assert_rte_signed_overflow_3 : Valid
-[wp] [Qed] Goal typed_restricted_assigns : Valid
-[wp] [Alt-Ergo] Goal typed_function_modified_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_function_modified_assert_rte_signed_overflow : Valid
-[wp] [Alt-Ergo] Goal typed_function_modified_assert_rte_signed_overflow_2 : Valid
-[wp] [Alt-Ergo] Goal typed_function_modified_assert_rte_signed_overflow_3 : Valid
-[wp] [Alt-Ergo] Goal typed_function_modified_assert_rte_signed_overflow_4 : Valid
-[wp] [Alt-Ergo] Goal typed_function_modified_assert_rte_signed_overflow_5 : Valid
-[wp] [Alt-Ergo] Goal typed_function_modified_assert_rte_signed_overflow_6 : Valid
-[wp] [Alt-Ergo] Goal typed_function_modified_assert_rte_signed_overflow_7 : Valid
-[wp] [Qed] Goal typed_function_modified_assigns_part1 : Valid
-[wp] [Qed] Goal typed_function_modified_assigns_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_mathematical_example_assert : Valid
-[wp] Proved goals:   19 / 21
-  Qed:             5 
-  Alt-Ergo:       14  (unsuccess: 2)
+[wp] [Valid] typed_function_ensures (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_function_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_assigns (Qed)
+[wp] [Valid] typed_restricted_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_restricted_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_restricted_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_restricted_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_restricted_assigns (Qed)
+[wp] [Valid] typed_function_modified_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_modified_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_function_modified_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_modified_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_modified_assert_rte_signed_overflow_4 (Qed)
+[wp] [Valid] typed_function_modified_assert_rte_signed_overflow_5 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_modified_assert_rte_signed_overflow_6 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_modified_assert_rte_signed_overflow_7 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_modified_assigns_part1 (Qed)
+[wp] [Valid] typed_function_modified_assigns_part2 (Qed)
+[wp] [Valid] typed_mathematical_example_assert (Alt-Ergo) (Cached)
+[wp] Proved goals:   20 / 21
+  Qed:             7
+  Alt-Ergo:       13
+  Unsuccess:       1
 [wp:pedantic-assigns] linear-1.c:39: Warning: 
   No 'assigns' specification for function 'mathematical_example'.
   Callers assumptions might be imprecise.

@@ -208,7 +208,7 @@ the first one being a point where the property "zeroed" is verified, then the
 property is still verified at the second program point.
 
 
-\CodeBlockInput[17][24]{c}{reset-1.c}
+\CodeBlockInput[18][25]{c}{reset-1.c}
 
 
 Then we can add an assertion to specify what did not change between the
@@ -216,7 +216,7 @@ beginning of the loop block (pointed by the label \CodeInline{L} in the code)
 and the end (which is \CodeInline{Here} since we state the property at the end):
 
 
-\CodeBlockInput[39][43]{c}{reset-1.c}
+\CodeBlockInput[40][44]{c}{reset-1.c}
 
 
 Note that in this new version of the code, the property stated by our lemma is

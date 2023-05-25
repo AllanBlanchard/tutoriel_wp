@@ -5,10 +5,10 @@
 [wp] ghost-array-3.c:5: Warning: 
   Missing assigns clause (assigns 'everything' instead)
 [wp] 2 goals scheduled
-[wp] [Alt-Ergo] Goal typed_function_assert_rte_mem_access : Unsuccess
-[wp] [Alt-Ergo] Goal typed_function_assert_rte_mem_access_2 : Unsuccess
+[wp] [Unsuccess] typed_function_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_function_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
 [wp] Proved goals:    0 / 2
-  Alt-Ergo:        0  (unsuccess: 2)
+  Unsuccess:       2
 [wp:pedantic-assigns] ghost-array-3.c:1: Warning: 
   No 'assigns' specification for function 'function'.
   Callers assumptions might be imprecise.

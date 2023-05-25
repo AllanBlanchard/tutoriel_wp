@@ -3,12 +3,12 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function abs
 [wp] 3 goals scheduled
-[wp] [Qed] Goal typed_abs_ensures_positive_value_function_result : Valid
-[wp] [Qed] Goal typed_abs_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_abs_assert_rte_signed_overflow : Unsuccess
+[wp] [Valid] typed_abs_ensures_positive_value_function_result (Qed)
+[wp] [Valid] typed_abs_ensures (Qed)
+[wp] [Unsuccess] typed_abs_assert_rte_signed_overflow (Alt-Ergo) (Cached)
 [wp] Proved goals:    2 / 3
-  Qed:             2 
-  Alt-Ergo:        0  (unsuccess: 1)
+  Qed:             2
+  Unsuccess:       1
 [wp:pedantic-assigns] abs-3.c:12: Warning: 
   No 'assigns' specification for function 'abs'.
   Callers assumptions might be imprecise.

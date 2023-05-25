@@ -5,69 +5,69 @@
 [rte:annot] annotating function classify
 [rte:annot] annotating function sides_kind
 [wp] 63 goals scheduled
-[wp] [Alt-Ergo] Goal typed_sides_kind_complete_equilateral_isocele_scalene : Valid
-[wp] [Alt-Ergo] Goal typed_sides_kind_disjoint_equilateral_isocele_scalene : Valid
-[wp] [Qed] Goal typed_sides_kind_assigns_part1 : Valid
-[wp] [Qed] Goal typed_sides_kind_assigns_part2 : Valid
-[wp] [Qed] Goal typed_sides_kind_assigns_part3 : Valid
-[wp] [Qed] Goal typed_sides_kind_equilateral_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_sides_kind_isocele_ensures : Valid
-[wp] [Qed] Goal typed_sides_kind_scalene_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_angles_kind_complete_acute_obtuse_right : Valid
-[wp] [Alt-Ergo] Goal typed_angles_kind_disjoint_acute_obtuse_right : Valid
-[wp] [Alt-Ergo] Goal typed_angles_kind_assert_rte_signed_overflow : Valid
-[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_2 : Valid
-[wp] [Alt-Ergo] Goal typed_angles_kind_assert_rte_signed_overflow_3 : Valid
-[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_4 : Valid
-[wp] [Alt-Ergo] Goal typed_angles_kind_assert_rte_signed_overflow_5 : Valid
-[wp] [Alt-Ergo] Goal typed_angles_kind_assert_rte_signed_overflow_6 : Valid
-[wp] [Alt-Ergo] Goal typed_angles_kind_assert_rte_signed_overflow_7 : Valid
-[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_8 : Valid
-[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_9 : Valid
-[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_10 : Valid
-[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_11 : Valid
-[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_12 : Valid
-[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_13 : Valid
-[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_14 : Valid
-[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_15 : Valid
-[wp] [Qed] Goal typed_angles_kind_assert_rte_signed_overflow_16 : Valid
-[wp] [Qed] Goal typed_angles_kind_assigns_part1 : Valid
-[wp] [Qed] Goal typed_angles_kind_assigns_part2 : Valid
-[wp] [Qed] Goal typed_angles_kind_assigns_part3 : Valid
-[wp] [Qed] Goal typed_angles_kind_obtuse_ensures : Valid
-[wp] [Qed] Goal typed_angles_kind_acute_ensures : Valid
-[wp] [Qed] Goal typed_angles_kind_right_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_classify_complete_acute_not_a_triangle_obtuse_right : Valid
-[wp] [Alt-Ergo] Goal typed_classify_complete_equilateral_isocele_not_a_triangle : Valid
-[wp] [Qed] Goal typed_classify_complete_not_a_triangle_triangle : Valid
-[wp] [Alt-Ergo] Goal typed_classify_disjoint_acute_obtuse_right : Valid
-[wp] [Alt-Ergo] Goal typed_classify_disjoint_equilateral_isocele_scalene : Valid
-[wp] [Qed] Goal typed_classify_disjoint_not_a_triangle_triangle : Valid
-[wp] [Alt-Ergo] Goal typed_classify_assert_rte_signed_overflow : Valid
-[wp] [Alt-Ergo] Goal typed_classify_assert_rte_signed_overflow_2 : Valid
-[wp] [Alt-Ergo] Goal typed_classify_assert_rte_mem_access : Valid
-[wp] [Alt-Ergo] Goal typed_classify_assert_rte_mem_access_2 : Valid
-[wp] [Qed] Goal typed_classify_assigns_exit_part1 : Valid
-[wp] [Qed] Goal typed_classify_assigns_exit_part2 : Valid
-[wp] [Qed] Goal typed_classify_assigns_normal_part1 : Valid
-[wp] [Qed] Goal typed_classify_assigns_normal_part2 : Valid
-[wp] [Qed] Goal typed_classify_assigns_normal_part3 : Valid
-[wp] [Qed] Goal typed_classify_assigns_normal_part4 : Valid
-[wp] [Qed] Goal typed_classify_assigns_normal_part5 : Valid
-[wp] [Qed] Goal typed_classify_call_sides_kind_requires : Valid
-[wp] [Qed] Goal typed_classify_call_sides_kind_requires_2 : Valid
-[wp] [Qed] Goal typed_classify_call_angles_kind_requires : Valid
-[wp] [Qed] Goal typed_classify_call_angles_kind_requires_2 : Valid
-[wp] [Qed] Goal typed_classify_call_angles_kind_requires_3 : Valid
-[wp] [Qed] Goal typed_classify_call_angles_kind_requires_4 : Valid
-[wp] [Qed] Goal typed_classify_not_a_triangle_ensures : Valid
-[wp] [Qed] Goal typed_classify_triangle_ensures : Valid
-[wp] [Qed] Goal typed_classify_equilateral_ensures : Valid
-[wp] [Qed] Goal typed_classify_isocele_ensures : Valid
-[wp] [Qed] Goal typed_classify_scalene_ensures : Valid
-[wp] [Qed] Goal typed_classify_obtuse_ensures : Valid
-[wp] [Qed] Goal typed_classify_acute_ensures : Valid
-[wp] [Qed] Goal typed_classify_right_ensures : Valid
+[wp] [Valid] typed_sides_kind_complete_equilateral_isocele_scalene (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sides_kind_disjoint_equilateral_isocele_scalene (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sides_kind_assigns_part1 (Qed)
+[wp] [Valid] typed_sides_kind_assigns_part2 (Qed)
+[wp] [Valid] typed_sides_kind_assigns_part3 (Qed)
+[wp] [Valid] typed_sides_kind_equilateral_ensures (Qed)
+[wp] [Valid] typed_sides_kind_isocele_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sides_kind_scalene_ensures (Qed)
+[wp] [Valid] typed_angles_kind_complete_acute_obtuse_right (Alt-Ergo) (Cached)
+[wp] [Valid] typed_angles_kind_disjoint_acute_obtuse_right (Alt-Ergo) (Cached)
+[wp] [Valid] typed_angles_kind_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Valid] typed_angles_kind_assert_rte_signed_overflow_2 (Qed)
+[wp] [Valid] typed_angles_kind_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_angles_kind_assert_rte_signed_overflow_4 (Qed)
+[wp] [Valid] typed_angles_kind_assert_rte_signed_overflow_5 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_angles_kind_assert_rte_signed_overflow_6 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_angles_kind_assert_rte_signed_overflow_7 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_angles_kind_assert_rte_signed_overflow_8 (Qed)
+[wp] [Valid] typed_angles_kind_assert_rte_signed_overflow_9 (Qed)
+[wp] [Valid] typed_angles_kind_assert_rte_signed_overflow_10 (Qed)
+[wp] [Valid] typed_angles_kind_assert_rte_signed_overflow_11 (Qed)
+[wp] [Valid] typed_angles_kind_assert_rte_signed_overflow_12 (Qed)
+[wp] [Valid] typed_angles_kind_assert_rte_signed_overflow_13 (Qed)
+[wp] [Valid] typed_angles_kind_assert_rte_signed_overflow_14 (Qed)
+[wp] [Valid] typed_angles_kind_assert_rte_signed_overflow_15 (Qed)
+[wp] [Valid] typed_angles_kind_assert_rte_signed_overflow_16 (Qed)
+[wp] [Valid] typed_angles_kind_assigns_part1 (Qed)
+[wp] [Valid] typed_angles_kind_assigns_part2 (Qed)
+[wp] [Valid] typed_angles_kind_assigns_part3 (Qed)
+[wp] [Valid] typed_angles_kind_obtuse_ensures (Qed)
+[wp] [Valid] typed_angles_kind_acute_ensures (Qed)
+[wp] [Valid] typed_angles_kind_right_ensures (Qed)
+[wp] [Valid] typed_classify_complete_acute_not_a_triangle_obtuse_right (Alt-Ergo) (Cached)
+[wp] [Valid] typed_classify_complete_equilateral_isocele_not_a_triangle (Alt-Ergo) (Cached)
+[wp] [Valid] typed_classify_complete_not_a_triangle_triangle (Qed)
+[wp] [Valid] typed_classify_disjoint_acute_obtuse_right (Alt-Ergo) (Cached)
+[wp] [Valid] typed_classify_disjoint_equilateral_isocele_scalene (Alt-Ergo) (Cached)
+[wp] [Valid] typed_classify_disjoint_not_a_triangle_triangle (Qed)
+[wp] [Valid] typed_classify_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_classify_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_classify_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_classify_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_classify_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_classify_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_classify_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_classify_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_classify_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_classify_assigns_normal_part4 (Qed)
+[wp] [Valid] typed_classify_assigns_normal_part5 (Qed)
+[wp] [Valid] typed_classify_call_sides_kind_requires (Qed)
+[wp] [Valid] typed_classify_call_sides_kind_requires_2 (Qed)
+[wp] [Valid] typed_classify_call_angles_kind_requires (Qed)
+[wp] [Valid] typed_classify_call_angles_kind_requires_2 (Qed)
+[wp] [Valid] typed_classify_call_angles_kind_requires_3 (Qed)
+[wp] [Valid] typed_classify_call_angles_kind_requires_4 (Qed)
+[wp] [Valid] typed_classify_not_a_triangle_ensures (Qed)
+[wp] [Valid] typed_classify_triangle_ensures (Qed)
+[wp] [Valid] typed_classify_equilateral_ensures (Qed)
+[wp] [Valid] typed_classify_isocele_ensures (Qed)
+[wp] [Valid] typed_classify_scalene_ensures (Qed)
+[wp] [Valid] typed_classify_obtuse_ensures (Qed)
+[wp] [Valid] typed_classify_acute_ensures (Qed)
+[wp] [Valid] typed_classify_right_ensures (Qed)
 [wp] Proved goals:   63 / 63
-  Qed:            45 
-  Alt-Ergo:       18
+  Qed:            46
+  Alt-Ergo:       17

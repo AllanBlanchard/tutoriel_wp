@@ -3,7 +3,7 @@
 [wp] Running WP plugin...
 [wp] Warning: Missing RTE guards
 [wp] 1 goal scheduled
-[wp] [Qed] Goal typed_abs_ensures : Valid
+[wp] [Valid] typed_abs_ensures (Qed)
 [wp] Proved goals:    1 / 1
   Qed:             1
 [wp:pedantic-assigns] abs-1.c:8: Warning: 

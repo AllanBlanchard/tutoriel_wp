@@ -8,7 +8,7 @@
 /*@
   requires INT_MIN <= ax_b(3, x, 4) <= INT_MAX;
   assigns \nothing ;
-  ensures \result == ax_b(3,x,4); 
+  ensures \result == ax_b(3, x, 4);
 */
 int function(int x){
   return 3*x + 4;
@@ -18,7 +18,7 @@ int function(int x){
   requires INT_MIN <= 3*x ;
   requires INT_MIN <= ax_b(3, x, 4) <= INT_MAX;
   assigns \nothing ;
-  ensures \result == ax_b(3,x,4); 
+  ensures \result == ax_b(3, x, 4);
 */
 int restricted(int x){
   return 3*x + 4;
@@ -27,7 +27,7 @@ int restricted(int x){
 /*@
   requires INT_MIN <= ax_b(3, x, 4) <= INT_MAX;
   assigns \nothing;
-  ensures \result == ax_b(3,x,4);
+  ensures \result == ax_b(3, x, 4);
 */
 int function_modified(int x){
   if(x > 0)

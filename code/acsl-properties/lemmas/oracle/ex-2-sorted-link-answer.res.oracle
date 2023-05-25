@@ -3,35 +3,34 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function bsearch
 [rte:annot] annotating function bsearch_callee
-[wp] 27 goals scheduled
-[wp] [Coq] Goal typed_lemma_element_level_sorted_implies_sorted : Valid
-[wp] [Qed] Goal typed_bsearch_complete_does_not_exists_exists : Valid
-[wp] [Qed] Goal typed_bsearch_disjoint_does_not_exists_exists : Valid
-[wp] [Alt-Ergo] Goal typed_bsearch_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_bsearch_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_bsearch_loop_invariant_2_preserved : Valid
-[wp] [Qed] Goal typed_bsearch_loop_invariant_2_established : Valid
-[wp] [Qed] Goal typed_bsearch_assert_rte_division_by_zero : Valid
-[wp] [Alt-Ergo] Goal typed_bsearch_assert_rte_mem_access : Valid
-[wp] [Qed] Goal typed_bsearch_assert_rte_mem_access_2 : Valid
-[wp] [Qed] Goal typed_bsearch_loop_assigns : Valid
-[wp] [Qed] Goal typed_bsearch_assigns_part1 : Valid
-[wp] [Qed] Goal typed_bsearch_assigns_part2 : Valid
-[wp] [Qed] Goal typed_bsearch_assigns_part3 : Valid
-[wp] [Qed] Goal typed_bsearch_assigns_part4 : Valid
-[wp] [Alt-Ergo] Goal typed_bsearch_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_bsearch_loop_variant_positive : Valid
-[wp] [Alt-Ergo] Goal typed_bsearch_exists_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_bsearch_exists_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_bsearch_does_not_exists_ensures : Valid
-[wp] [Qed] Goal typed_bsearch_callee_ensures : Valid
-[wp] [Qed] Goal typed_bsearch_callee_ensures_2 : Valid
-[wp] [Qed] Goal typed_bsearch_callee_assigns_exit : Valid
-[wp] [Qed] Goal typed_bsearch_callee_assigns_normal_part1 : Valid
-[wp] [Qed] Goal typed_bsearch_callee_assigns_normal_part2 : Valid
-[wp] [Qed] Goal typed_bsearch_callee_call_bsearch_requires : Valid
-[wp] [Alt-Ergo] Goal typed_bsearch_callee_call_bsearch_requires_2 : Valid
-[wp] Proved goals:   27 / 27
-  Qed:            18 
-  Alt-Ergo:        8  (unsuccess: 1)
+[wp] 26 goals scheduled
+[wp] [Valid] typed_lemma_element_level_sorted_implies_sorted (Coq) (Cached)
+[wp] [Valid] typed_bsearch_complete_does_not_exists_exists (Qed)
+[wp] [Valid] typed_bsearch_disjoint_does_not_exists_exists (Qed)
+[wp] [Valid] typed_bsearch_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_loop_invariant_established (Qed)
+[wp] [Valid] typed_bsearch_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_loop_invariant_2_established (Qed)
+[wp] [Valid] typed_bsearch_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_assert_rte_mem_access_2 (Qed)
+[wp] [Valid] typed_bsearch_loop_assigns (Qed)
+[wp] [Valid] typed_bsearch_assigns_part1 (Qed)
+[wp] [Valid] typed_bsearch_assigns_part2 (Qed)
+[wp] [Valid] typed_bsearch_assigns_part3 (Qed)
+[wp] [Valid] typed_bsearch_assigns_part4 (Qed)
+[wp] [Valid] typed_bsearch_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_loop_variant_positive (Qed)
+[wp] [Valid] typed_bsearch_exists_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_exists_ensures_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_does_not_exists_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_callee_ensures (Qed)
+[wp] [Valid] typed_bsearch_callee_ensures_2 (Qed)
+[wp] [Valid] typed_bsearch_callee_assigns_exit (Qed)
+[wp] [Valid] typed_bsearch_callee_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_bsearch_callee_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_bsearch_callee_call_bsearch_requires (Qed)
+[wp] [Valid] typed_bsearch_callee_call_bsearch_requires_2 (Alt-Ergo) (Cached)
+[wp] Proved goals:   26 / 26
+  Qed:            17
+  Alt-Ergo:        8
   Coq:             1

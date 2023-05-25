@@ -2,25 +2,25 @@
 [kernel] Parsing search_and_replace-0.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function search_and_replace
-[wp] 18 goals scheduled
-[wp] [Alt-Ergo] Goal typed_search_and_replace_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_search_and_replace_ensures_2 : Valid
-[wp] [Qed] Goal typed_search_and_replace_loop_invariant_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_search_and_replace_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_search_and_replace_loop_invariant_2_preserved : Unsuccess
-[wp] [Qed] Goal typed_search_and_replace_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_search_and_replace_loop_invariant_3_preserved : Unsuccess
-[wp] [Qed] Goal typed_search_and_replace_loop_invariant_3_established : Valid
-[wp] [Alt-Ergo] Goal typed_search_and_replace_assert_rte_mem_access : Valid
-[wp] [Alt-Ergo] Goal typed_search_and_replace_assert_rte_mem_access_2 : Valid
-[wp] [Alt-Ergo] Goal typed_search_and_replace_assert_rte_unsigned_overflow : Valid
-[wp] [Alt-Ergo] Goal typed_search_and_replace_assert_rte_unsigned_overflow_2 : Valid
-[wp] [Qed] Goal typed_search_and_replace_loop_assigns_part1 : Valid
-[wp] [Qed] Goal typed_search_and_replace_loop_assigns_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_search_and_replace_loop_assigns_part3 : Valid
-[wp] [Qed] Goal typed_search_and_replace_assigns : Valid
-[wp] [Qed] Goal typed_search_and_replace_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_search_and_replace_loop_variant_positive : Valid
-[wp] Proved goals:   16 / 18
-  Qed:             8 
-  Alt-Ergo:        8  (unsuccess: 2)
+[wp] 17 goals scheduled
+[wp] [Valid] typed_search_and_replace_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_and_replace_ensures_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_and_replace_loop_invariant_preserved (Qed)
+[wp] [Valid] typed_search_and_replace_loop_invariant_established (Qed)
+[wp] [Unsuccess] typed_search_and_replace_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_and_replace_loop_invariant_2_established (Qed)
+[wp] [Unsuccess] typed_search_and_replace_loop_invariant_3_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_and_replace_loop_invariant_3_established (Qed)
+[wp] [Valid] typed_search_and_replace_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_and_replace_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_and_replace_assert_rte_unsigned_overflow (Qed)
+[wp] [Valid] typed_search_and_replace_loop_assigns_part1 (Qed)
+[wp] [Valid] typed_search_and_replace_loop_assigns_part2 (Qed)
+[wp] [Valid] typed_search_and_replace_loop_assigns_part3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_and_replace_assigns (Qed)
+[wp] [Valid] typed_search_and_replace_loop_variant_decrease (Qed)
+[wp] [Valid] typed_search_and_replace_loop_variant_positive (Qed)
+[wp] Proved goals:   15 / 17
+  Qed:            10
+  Alt-Ergo:        5
+  Unsuccess:       2

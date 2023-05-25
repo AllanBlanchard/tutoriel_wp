@@ -3,9 +3,9 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function max
 [wp] 4 goals scheduled
-[wp] [Qed] Goal typed_max_ensures : Valid
-[wp] [Qed] Goal typed_max_ensures_2 : Valid
-[wp] [Qed] Goal typed_max_assigns_part1 : Valid
-[wp] [Qed] Goal typed_max_assigns_part2 : Valid
+[wp] [Valid] typed_max_ensures (Qed)
+[wp] [Valid] typed_max_ensures_2 (Qed)
+[wp] [Valid] typed_max_assigns_part1 (Qed)
+[wp] [Valid] typed_max_assigns_part2 (Qed)
 [wp] Proved goals:    4 / 4
   Qed:             4

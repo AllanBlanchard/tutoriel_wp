@@ -4,16 +4,16 @@
 [rte:annot] annotating function abs
 [rte:annot] annotating function foo
 [wp] 7 goals scheduled
-[wp] [Qed] Goal typed_abs_ensures : Valid
-[wp] [Qed] Goal typed_abs_ensures_2 : Valid
-[wp] [Qed] Goal typed_abs_assert_rte_signed_overflow : Valid
-[wp] [Qed] Goal typed_foo_call_abs_requires : Valid
-[wp] [Qed] Goal typed_foo_call_abs_2_requires : Valid
-[wp] [Alt-Ergo] Goal typed_foo_call_abs_3_requires : Unsuccess
-[wp] [Qed] Goal typed_foo_call_abs_4_requires : Valid
+[wp] [Valid] typed_abs_ensures (Qed)
+[wp] [Valid] typed_abs_ensures_2 (Qed)
+[wp] [Valid] typed_abs_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_foo_call_abs_requires (Qed)
+[wp] [Valid] typed_foo_call_abs_2_requires (Qed)
+[wp] [Unsuccess] typed_foo_call_abs_3_requires (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_call_abs_4_requires (Qed)
 [wp] Proved goals:    6 / 7
-  Qed:             6 
-  Alt-Ergo:        0  (unsuccess: 1)
+  Qed:             6
+  Unsuccess:       1
 [wp:pedantic-assigns] abs-6.c:15: Warning: 
   No 'assigns' specification for function 'abs'.
   Callers assumptions might be imprecise.

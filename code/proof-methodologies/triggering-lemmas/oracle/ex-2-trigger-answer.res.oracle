@@ -3,10 +3,9 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function g
 [wp] 2 goals scheduled
-[wp] [Alt-Ergo] Goal typed_g_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_g_assert : Valid
+[wp] [Valid] typed_g_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_g_assert (Alt-Ergo) (Cached)
 [wp] Proved goals:    2 / 2
-  Qed:             0 
   Alt-Ergo:        2
 [wp:pedantic-assigns] ex-2-trigger-answer.c:24: Warning: 
   No 'assigns' specification for function 'g'.

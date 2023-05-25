@@ -3,10 +3,9 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function example
 [wp] 2 goals scheduled
-[wp] [Alt-Ergo] Goal typed_example_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_example_assert : Valid
+[wp] [Valid] typed_example_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_example_assert (Alt-Ergo) (Cached)
 [wp] Proved goals:    2 / 2
-  Qed:             0 
   Alt-Ergo:        2
 [wp:pedantic-assigns] ex-3-trigger-cond-answer-3.c:38: Warning: 
   No 'assigns' specification for function 'example'.

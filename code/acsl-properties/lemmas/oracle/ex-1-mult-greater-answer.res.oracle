@@ -2,8 +2,6 @@
 [kernel] Parsing ex-1-mult-greater-answer.c (with preprocessing)
 [wp] Running WP plugin...
 [wp] 1 goal scheduled
-[wp] [Coq] Goal typed_lemma_mult_greater : Valid
+[wp] [Valid] typed_lemma_mult_greater (Coq) (Cached)
 [wp] Proved goals:    1 / 1
-  Qed:             0 
-  Alt-Ergo:        0  (unsuccess: 1)
   Coq:             1

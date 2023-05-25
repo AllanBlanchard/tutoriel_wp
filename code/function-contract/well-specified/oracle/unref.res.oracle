@@ -6,11 +6,11 @@
 [rte:annot] annotating function main
 [rte:annot] annotating function unref
 [wp] 2 goals scheduled
-[wp] [Alt-Ergo] Goal typed_unref_assert_rte_mem_access : Valid
-[wp] [Alt-Ergo] Goal typed_main_call_unref_requires : Unsuccess
+[wp] [Valid] typed_unref_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_main_call_unref_requires (Alt-Ergo) (Cached)
 [wp] Proved goals:    1 / 2
-  Qed:             0 
-  Alt-Ergo:        1  (unsuccess: 1)
+  Alt-Ergo:        1
+  Unsuccess:       1
 [wp:pedantic-assigns] unref.c:2: Warning: 
   No 'assigns' specification for function 'unref'.
   Callers assumptions might be imprecise.

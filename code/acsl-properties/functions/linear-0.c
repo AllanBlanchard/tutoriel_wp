@@ -3,9 +3,9 @@
     a * x + b;
 */
 
-/*@ 
+/*@
   assigns \nothing ;
-  ensures \result == ax_b(3,x,4); 
+  ensures \result == ax_b(3, x, 4);
 */
 int function(int x){
   return 3*x + 4;

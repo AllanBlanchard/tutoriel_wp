@@ -3,16 +3,17 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function strlen
 [wp] 10 goals scheduled
-[wp] [Alt-Ergo] Goal typed_strlen_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_strlen_loop_invariant_preserved : Unsuccess
-[wp] [Alt-Ergo] Goal typed_strlen_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_strlen_loop_invariant_2_preserved : Valid
-[wp] [Qed] Goal typed_strlen_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_strlen_assert_rte_mem_access : Valid
-[wp] [Qed] Goal typed_strlen_loop_assigns : Valid
-[wp] [Qed] Goal typed_strlen_assigns : Valid
-[wp] [Alt-Ergo] Goal typed_strlen_loop_variant_decrease : Unsuccess
-[wp] [Qed] Goal typed_strlen_loop_variant_positive : Valid
+[wp] [Valid] typed_strlen_ensures (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_strlen_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_strlen_loop_invariant_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_strlen_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_strlen_loop_invariant_2_established (Qed)
+[wp] [Valid] typed_strlen_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_strlen_loop_assigns (Qed)
+[wp] [Valid] typed_strlen_assigns (Qed)
+[wp] [Unsuccess] typed_strlen_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_strlen_loop_variant_positive (Qed)
 [wp] Proved goals:    8 / 10
-  Qed:             4 
-  Alt-Ergo:        4  (unsuccess: 2)
+  Qed:             4
+  Alt-Ergo:        4
+  Unsuccess:       2

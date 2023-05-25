@@ -8,77 +8,77 @@
 [rte:annot] annotating function order_3_inc_max
 [rte:annot] annotating function order_3_inc_min
 [wp] 71 goals scheduled
-[wp] [Qed] Goal typed_max_ptr_complete_do_not_change_reorder : Valid
-[wp] [Qed] Goal typed_max_ptr_disjoint_do_not_change_reorder : Valid
-[wp] [Alt-Ergo] Goal typed_max_ptr_assert_rte_mem_access : Valid
-[wp] [Alt-Ergo] Goal typed_max_ptr_assert_rte_mem_access_2 : Valid
-[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_3 : Valid
-[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_4 : Valid
-[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_5 : Valid
-[wp] [Qed] Goal typed_max_ptr_assert_rte_mem_access_6 : Valid
-[wp] [Qed] Goal typed_max_ptr_assigns_part1 : Valid
-[wp] [Qed] Goal typed_max_ptr_assigns_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_max_ptr_reorder_ensures : Valid
-[wp] [Qed] Goal typed_max_ptr_do_not_change_ensures : Valid
-[wp] [Qed] Goal typed_min_ptr_complete_do_not_change_reorder : Valid
-[wp] [Qed] Goal typed_min_ptr_disjoint_do_not_change_reorder : Valid
-[wp] [Qed] Goal typed_min_ptr_assigns_exit : Valid
-[wp] [Qed] Goal typed_min_ptr_assigns_normal : Valid
-[wp] [Qed] Goal typed_min_ptr_call_max_ptr_requires : Valid
-[wp] [Qed] Goal typed_min_ptr_reorder_ensures : Valid
-[wp] [Qed] Goal typed_min_ptr_do_not_change_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_inc_max_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_inc_max_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_inc_max_ensures_3 : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_inc_max_ensures_4 : Valid
-[wp] [Qed] Goal typed_order_3_inc_max_assigns_exit_part1 : Valid
-[wp] [Qed] Goal typed_order_3_inc_max_assigns_exit_part2 : Valid
-[wp] [Qed] Goal typed_order_3_inc_max_assigns_exit_part3 : Valid
-[wp] [Qed] Goal typed_order_3_inc_max_assigns_normal_part1 : Valid
-[wp] [Qed] Goal typed_order_3_inc_max_assigns_normal_part2 : Valid
-[wp] [Qed] Goal typed_order_3_inc_max_assigns_normal_part3 : Valid
-[wp] [Qed] Goal typed_order_3_inc_max_call_max_ptr_requires : Valid
-[wp] [Qed] Goal typed_order_3_inc_max_call_max_ptr_2_requires : Valid
-[wp] [Qed] Goal typed_order_3_inc_max_call_max_ptr_3_requires : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_inc_min_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_inc_min_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_inc_min_ensures_3 : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_inc_min_ensures_4 : Valid
-[wp] [Qed] Goal typed_order_3_inc_min_assigns_exit_part1 : Valid
-[wp] [Qed] Goal typed_order_3_inc_min_assigns_exit_part2 : Valid
-[wp] [Qed] Goal typed_order_3_inc_min_assigns_exit_part3 : Valid
-[wp] [Qed] Goal typed_order_3_inc_min_assigns_normal_part1 : Valid
-[wp] [Qed] Goal typed_order_3_inc_min_assigns_normal_part2 : Valid
-[wp] [Qed] Goal typed_order_3_inc_min_assigns_normal_part3 : Valid
-[wp] [Qed] Goal typed_order_3_inc_min_call_min_ptr_requires : Valid
-[wp] [Qed] Goal typed_order_3_inc_min_call_min_ptr_2_requires : Valid
-[wp] [Qed] Goal typed_order_3_inc_min_call_min_ptr_3_requires : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_dec_max_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_dec_max_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_dec_max_ensures_3 : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_dec_max_ensures_4 : Valid
-[wp] [Qed] Goal typed_order_3_dec_max_assigns_exit_part1 : Valid
-[wp] [Qed] Goal typed_order_3_dec_max_assigns_exit_part2 : Valid
-[wp] [Qed] Goal typed_order_3_dec_max_assigns_exit_part3 : Valid
-[wp] [Qed] Goal typed_order_3_dec_max_assigns_normal_part1 : Valid
-[wp] [Qed] Goal typed_order_3_dec_max_assigns_normal_part2 : Valid
-[wp] [Qed] Goal typed_order_3_dec_max_assigns_normal_part3 : Valid
-[wp] [Qed] Goal typed_order_3_dec_max_call_max_ptr_requires : Valid
-[wp] [Qed] Goal typed_order_3_dec_max_call_max_ptr_2_requires : Valid
-[wp] [Qed] Goal typed_order_3_dec_max_call_max_ptr_3_requires : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_dec_min_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_dec_min_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_dec_min_ensures_3 : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_dec_min_ensures_4 : Valid
-[wp] [Qed] Goal typed_order_3_dec_min_assigns_exit_part1 : Valid
-[wp] [Qed] Goal typed_order_3_dec_min_assigns_exit_part2 : Valid
-[wp] [Qed] Goal typed_order_3_dec_min_assigns_exit_part3 : Valid
-[wp] [Qed] Goal typed_order_3_dec_min_assigns_normal_part1 : Valid
-[wp] [Qed] Goal typed_order_3_dec_min_assigns_normal_part2 : Valid
-[wp] [Qed] Goal typed_order_3_dec_min_assigns_normal_part3 : Valid
-[wp] [Qed] Goal typed_order_3_dec_min_call_min_ptr_requires : Valid
-[wp] [Qed] Goal typed_order_3_dec_min_call_min_ptr_2_requires : Valid
-[wp] [Qed] Goal typed_order_3_dec_min_call_min_ptr_3_requires : Valid
+[wp] [Valid] typed_max_ptr_complete_do_not_change_reorder (Qed)
+[wp] [Valid] typed_max_ptr_disjoint_do_not_change_reorder (Qed)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_3 (Qed)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_4 (Qed)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_5 (Qed)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_6 (Qed)
+[wp] [Valid] typed_max_ptr_assigns_part1 (Qed)
+[wp] [Valid] typed_max_ptr_assigns_part2 (Qed)
+[wp] [Valid] typed_max_ptr_reorder_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_ptr_do_not_change_ensures (Qed)
+[wp] [Valid] typed_min_ptr_complete_do_not_change_reorder (Qed)
+[wp] [Valid] typed_min_ptr_disjoint_do_not_change_reorder (Qed)
+[wp] [Valid] typed_min_ptr_assigns_exit (Qed)
+[wp] [Valid] typed_min_ptr_assigns_normal (Qed)
+[wp] [Valid] typed_min_ptr_call_max_ptr_requires (Qed)
+[wp] [Valid] typed_min_ptr_reorder_ensures (Qed)
+[wp] [Valid] typed_min_ptr_do_not_change_ensures (Qed)
+[wp] [Valid] typed_order_3_inc_max_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_inc_max_ensures_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_inc_max_ensures_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_inc_max_ensures_4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_inc_max_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_order_3_inc_max_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_order_3_inc_max_assigns_exit_part3 (Qed)
+[wp] [Valid] typed_order_3_inc_max_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_order_3_inc_max_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_order_3_inc_max_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_order_3_inc_max_call_max_ptr_requires (Qed)
+[wp] [Valid] typed_order_3_inc_max_call_max_ptr_2_requires (Qed)
+[wp] [Valid] typed_order_3_inc_max_call_max_ptr_3_requires (Qed)
+[wp] [Valid] typed_order_3_inc_min_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_inc_min_ensures_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_inc_min_ensures_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_inc_min_ensures_4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_inc_min_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_order_3_inc_min_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_order_3_inc_min_assigns_exit_part3 (Qed)
+[wp] [Valid] typed_order_3_inc_min_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_order_3_inc_min_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_order_3_inc_min_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_order_3_inc_min_call_min_ptr_requires (Qed)
+[wp] [Valid] typed_order_3_inc_min_call_min_ptr_2_requires (Qed)
+[wp] [Valid] typed_order_3_inc_min_call_min_ptr_3_requires (Qed)
+[wp] [Valid] typed_order_3_dec_max_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_dec_max_ensures_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_dec_max_ensures_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_dec_max_ensures_4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_dec_max_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_order_3_dec_max_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_order_3_dec_max_assigns_exit_part3 (Qed)
+[wp] [Valid] typed_order_3_dec_max_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_order_3_dec_max_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_order_3_dec_max_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_order_3_dec_max_call_max_ptr_requires (Qed)
+[wp] [Valid] typed_order_3_dec_max_call_max_ptr_2_requires (Qed)
+[wp] [Valid] typed_order_3_dec_max_call_max_ptr_3_requires (Qed)
+[wp] [Valid] typed_order_3_dec_min_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_dec_min_ensures_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_dec_min_ensures_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_dec_min_ensures_4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_dec_min_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_order_3_dec_min_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_order_3_dec_min_assigns_exit_part3 (Qed)
+[wp] [Valid] typed_order_3_dec_min_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_order_3_dec_min_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_order_3_dec_min_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_order_3_dec_min_call_min_ptr_requires (Qed)
+[wp] [Valid] typed_order_3_dec_min_call_min_ptr_2_requires (Qed)
+[wp] [Valid] typed_order_3_dec_min_call_min_ptr_3_requires (Qed)
 [wp] Proved goals:   71 / 71
-  Qed:            52 
+  Qed:            52
   Alt-Ergo:       19

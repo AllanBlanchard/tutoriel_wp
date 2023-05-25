@@ -3,34 +3,34 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function order_3
 [wp] 28 goals scheduled
-[wp] [Alt-Ergo] Goal typed_order_3_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_ensures_2 : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_ensures_3 : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_ensures_4 : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_assert_rte_mem_access : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_assert_rte_mem_access_2 : Valid
-[wp] [Qed] Goal typed_order_3_assert_rte_mem_access_3 : Valid
-[wp] [Qed] Goal typed_order_3_assert_rte_mem_access_4 : Valid
-[wp] [Qed] Goal typed_order_3_assert_rte_mem_access_5 : Valid
-[wp] [Qed] Goal typed_order_3_assert_rte_mem_access_6 : Valid
-[wp] [Qed] Goal typed_order_3_assert_rte_mem_access_7 : Valid
-[wp] [Alt-Ergo] Goal typed_order_3_assert_rte_mem_access_8 : Valid
-[wp] [Qed] Goal typed_order_3_assert_rte_mem_access_9 : Valid
-[wp] [Qed] Goal typed_order_3_assert_rte_mem_access_10 : Valid
-[wp] [Qed] Goal typed_order_3_assert_rte_mem_access_11 : Valid
-[wp] [Qed] Goal typed_order_3_assert_rte_mem_access_12 : Valid
-[wp] [Qed] Goal typed_order_3_assert_rte_mem_access_13 : Valid
-[wp] [Qed] Goal typed_order_3_assert_rte_mem_access_14 : Valid
-[wp] [Qed] Goal typed_order_3_assert_rte_mem_access_15 : Valid
-[wp] [Qed] Goal typed_order_3_assert_rte_mem_access_16 : Valid
-[wp] [Qed] Goal typed_order_3_assert_rte_mem_access_17 : Valid
-[wp] [Qed] Goal typed_order_3_assert_rte_mem_access_18 : Valid
-[wp] [Qed] Goal typed_order_3_assigns_part1 : Valid
-[wp] [Qed] Goal typed_order_3_assigns_part2 : Valid
-[wp] [Qed] Goal typed_order_3_assigns_part3 : Valid
-[wp] [Qed] Goal typed_order_3_assigns_part4 : Valid
-[wp] [Qed] Goal typed_order_3_assigns_part5 : Valid
-[wp] [Qed] Goal typed_order_3_assigns_part6 : Valid
+[wp] [Valid] typed_order_3_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_ensures_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_ensures_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_ensures_4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_3 (Qed)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_4 (Qed)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_5 (Qed)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_6 (Qed)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_7 (Qed)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_8 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_9 (Qed)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_10 (Qed)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_11 (Qed)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_12 (Qed)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_13 (Qed)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_14 (Qed)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_15 (Qed)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_16 (Qed)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_17 (Qed)
+[wp] [Valid] typed_order_3_assert_rte_mem_access_18 (Qed)
+[wp] [Valid] typed_order_3_assigns_part1 (Qed)
+[wp] [Valid] typed_order_3_assigns_part2 (Qed)
+[wp] [Valid] typed_order_3_assigns_part3 (Qed)
+[wp] [Valid] typed_order_3_assigns_part4 (Qed)
+[wp] [Valid] typed_order_3_assigns_part5 (Qed)
+[wp] [Valid] typed_order_3_assigns_part6 (Qed)
 [wp] Proved goals:   28 / 28
-  Qed:            21 
+  Qed:            21
   Alt-Ergo:        7

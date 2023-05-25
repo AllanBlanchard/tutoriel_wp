@@ -2,18 +2,18 @@
 [kernel] Parsing random_loop.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function random_loop
-[kernel] random_loop.c:8: Warning: 
-  No code nor implicit assigns clause for function random_between, generating default assigns from the prototype
+[kernel:annot:missing-spec] random_loop.c:8: Warning: 
+  Neither code nor implicit assigns clause for function random_between, generating default assigns from the prototype
 [wp] 6 goals scheduled
-[wp] [Alt-Ergo] Goal typed_random_loop_loop_invariant_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_random_loop_loop_invariant_established : Valid
-[wp] [Qed] Goal typed_random_loop_loop_assigns_part1 : Valid
-[wp] [Qed] Goal typed_random_loop_loop_assigns_part2 : Valid
-[wp] [Alt-Ergo] Goal typed_random_loop_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_random_loop_loop_variant_positive : Valid
+[wp] [Valid] typed_random_loop_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_random_loop_loop_invariant_established (Qed)
+[wp] [Valid] typed_random_loop_loop_assigns_part1 (Qed)
+[wp] [Valid] typed_random_loop_loop_assigns_part2 (Qed)
+[wp] [Valid] typed_random_loop_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_random_loop_loop_variant_positive (Qed)
 [wp] Proved goals:    6 / 6
-  Qed:             3 
-  Alt-Ergo:        3
+  Qed:             4
+  Alt-Ergo:        2
 [wp:pedantic-assigns] random_loop.c:6: Warning: 
   No 'assigns' specification for function 'random_between'.
   Callers assumptions might be imprecise.

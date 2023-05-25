@@ -3,8 +3,8 @@
 [wp] Running WP plugin...
 [wp] Warning: Missing RTE guards
 [wp] 2 goals scheduled
-[wp] [Qed] Goal typed_abs_ensures_positive_value_function_result : Valid
-[wp] [Qed] Goal typed_abs_ensures : Valid
+[wp] [Valid] typed_abs_ensures_positive_value_function_result (Qed)
+[wp] [Valid] typed_abs_ensures (Qed)
 [wp] Proved goals:    2 / 2
   Qed:             2
 [wp:pedantic-assigns] abs-3.c:12: Warning: 

@@ -4,33 +4,33 @@
 [rte:annot] annotating function copy
 [rte:annot] annotating function foo
 [wp] 27 goals scheduled
-[wp] [Alt-Ergo] Goal typed_copy_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_copy_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_copy_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_copy_loop_invariant_2_preserved : Valid
-[wp] [Qed] Goal typed_copy_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_copy_assert_rte_mem_access : Valid
-[wp] [Alt-Ergo] Goal typed_copy_assert_rte_mem_access_2 : Valid
-[wp] [Alt-Ergo] Goal typed_copy_assert_rte_signed_overflow : Valid
-[wp] [Qed] Goal typed_copy_loop_assigns_part1 : Valid
-[wp] [Alt-Ergo] Goal typed_copy_loop_assigns_part2 : Valid
-[wp] [Qed] Goal typed_copy_assigns : Valid
-[wp] [Alt-Ergo] Goal typed_foo_ensures : Valid
-[wp] [Alt-Ergo] Goal typed_foo_loop_invariant_preserved : Valid
-[wp] [Qed] Goal typed_foo_loop_invariant_established : Valid
-[wp] [Alt-Ergo] Goal typed_foo_loop_invariant_2_preserved : Valid
-[wp] [Alt-Ergo] Goal typed_foo_loop_invariant_2_established : Valid
-[wp] [Alt-Ergo] Goal typed_foo_assert_rte_signed_overflow : Valid
-[wp] [Qed] Goal typed_foo_loop_assigns : Valid
-[wp] [Qed] Goal typed_foo_assigns_exit : Valid
-[wp] [Qed] Goal typed_foo_assigns_normal_part1 : Valid
-[wp] [Qed] Goal typed_foo_assigns_normal_part2 : Valid
-[wp] [Qed] Goal typed_foo_loop_variant_decrease : Valid
-[wp] [Qed] Goal typed_foo_loop_variant_positive : Valid
-[wp] [Qed] Goal typed_foo_call_copy_requires : Valid
-[wp] [Alt-Ergo] Goal typed_foo_call_copy_requires_2 : Valid
-[wp] [Qed] Goal typed_foo_call_copy_requires_3 : Valid
-[wp] [Qed] Goal typed_foo_call_copy_requires_4 : Valid
+[wp] [Valid] typed_copy_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_copy_loop_invariant_preserved (Qed)
+[wp] [Valid] typed_copy_loop_invariant_established (Qed)
+[wp] [Valid] typed_copy_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_copy_loop_invariant_2_established (Qed)
+[wp] [Valid] typed_copy_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_copy_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_copy_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_copy_loop_assigns_part1 (Qed)
+[wp] [Valid] typed_copy_loop_assigns_part2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_copy_assigns (Qed)
+[wp] [Valid] typed_foo_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_loop_invariant_preserved (Qed)
+[wp] [Valid] typed_foo_loop_invariant_established (Qed)
+[wp] [Valid] typed_foo_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_foo_loop_assigns (Qed)
+[wp] [Valid] typed_foo_assigns_exit (Qed)
+[wp] [Valid] typed_foo_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_foo_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_foo_loop_variant_decrease (Qed)
+[wp] [Valid] typed_foo_loop_variant_positive (Qed)
+[wp] [Valid] typed_foo_call_copy_requires (Qed)
+[wp] [Valid] typed_foo_call_copy_requires_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_call_copy_requires_3 (Qed)
+[wp] [Valid] typed_foo_call_copy_requires_4 (Qed)
 [wp] Proved goals:   27 / 27
-  Qed:            14 
-  Alt-Ergo:       13
+  Qed:            18
+  Alt-Ergo:        9
