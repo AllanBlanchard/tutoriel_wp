@@ -227,6 +227,37 @@ mechanism for axiomatic definitions. Basically, even with Why3 such a definition
 is translated into a list of axioms that are thus assumed.
 
 
+\levelThreeTitle{Cluster of axiomatic blocks}
+
+
+Most global annotations (logic functions, predicates, lemmas, ...) can be
+defined at two different levels: either at top-level, the level of the
+functions, global variables, etc. (except for axioms and abstract functions and
+predicates) or in axiomatic blocks. While top-level global annotations (in
+particular lemmas) are always embedded in the context of verification
+conditions, this is not the case for the annotations in axiomatic blocks.
+
+
+In the following example:
+
+
+\CodeBlockInput[5]{c}{cluster.c}
+
+
+Since the \CodeInline{ensures} clause only uses \CodeInline{P} which is defined
+in the axiomatic block \CodeInline{X}, WP only loads the axiom \CodeInline{x}.
+On the opposite, if we replace \CodeInline{P(p)} with \CodeInline{Q(p)} in the
+\CodeInline{ensures} clause, WP loads the axiomatic block \CodeInline{Y}, thus
+the axiom \CodeInline{y} that uses \CodeInline{P}. Consequently, the axiomatic
+block \CodeInline{X} is loaded too. The transitive closure of the loaded
+axiomatic blocks forms a cluster of axiomatic definitions.
+
+
+One can use this behavior to avoid providing too many lemmas and axioms to SMT
+solvers. This can improve proof performances in some situations. We will present
+more details about how to guide proof using lemmas in
+Section~\ref{l2:proof-methodologies-triggering-lemmas}.
+
 
 \levelThreeTitle{Example: counting occurrences of a value}
 
@@ -423,37 +454,6 @@ be found in the installation directory of Frama-C, under the directory
 Note that this definition include more axioms in order to be able to
 deduce more properties about \CodeInline{strlen}.
 
-
-\levelThreeTitle{Cluster of axiomatic blocks}
-
-
-Most global annotations (logic functions, predicates, lemmas, ...) can be
-defined at two different levels: either at top-level, the level of the
-functions, global variables, etc. (except for axioms and abstract functions and
-predicates) or in axiomatic blocks. While top-level global annotations (in
-particular lemmas) are always embedded in the context of verification
-conditions, this is not the case for the annotations in axiomatic blocks.
-
-
-In the following example:
-
-
-\CodeBlockInput[5]{c}{cluster.c}
-
-
-Since the \CodeInline{ensures} clause only uses \CodeInline{P} which is defined
-in the axiomatic block \CodeInline{X}, WP only loads the axiom \CodeInline{x}.
-On the opposite, if we replace \CodeInline{P(p)} with \CodeInline{Q(p)} in the
-\CodeInline{ensures} clause, WP loads the axiomatic block \CodeInline{Y}, thus
-the axiom \CodeInline{y} that uses \CodeInline{P}. Consequently, the axiomatic
-block \CodeInline{X} is loaded too. The transitive closure of the loaded
-axiomatic blocks forms a cluster of axiomatic definitions.
-
-
-One can use this behavior to avoid providing too many lemmas and axioms to SMT
-solvers. This can improve proof performances in some situations. We will present
-more details about how to guide proof using lemmas in
-Section~\ref{l2:proof-methodologies-triggering-lemmas}.
 
 
 \levelThreeTitle{Exercises}
