@@ -3,14 +3,14 @@
 */
 
 /*@ axiomatic X {
-      predicate P(int* x) reads *x;
-      axiom x: \forall int *x ; *x == 0 ==> P(x) ;
+      predicate P(int* p) reads *p;
+      axiom x: \forall int *p ; *p == 0 ==> P(p) ;
     }
 */
 
 /*@ axiomatic Y {
-      predicate Q(int *x) reads *x ;
-      axiom y: \forall int *x ; *x == 0 ==> P(x) && Q(x) ;
+      predicate Q(int *p) reads *p ;
+      axiom y: \forall int *p ; *p == 0 ==> P(p) && Q(p) ;
     }
 */
 
