@@ -573,8 +573,8 @@ program. The precondition of the \CodeInline{main} function is proved because
 after initialization \CodeInline{h} has value 42 which is obviously between
 0 and 100. Notice that the assertion in the \CodeInline{main} function is also
 proved because \CodeInline{h} is not changed before the assertion, while in the
-\CodeInline{f} function, the assertion is not proved since it could be called
-in another C file where \CodeInline{h} has been modified.
+\CodeInline{f} function, the assertion is not proved since WP does not make any
+assumption about the values of the global variables.
 
 
 \image{3-main-1}

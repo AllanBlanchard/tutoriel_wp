@@ -604,8 +604,8 @@ n'est pas appelée dans le programme. La précondition de la fonction
 valeur 42 qui est bien entendu entre 0 et 100. Remarquons que l'assertion dans
 la fonction \CodeInline{main} est, elle aussi, prouvée puisque la valeur de
 \CodeInline{h} n'est pas changée par la fonction, alors que dans la fonction
-\CodeInline{f} ce n'est pas le cas puisqu'elle pourrait être appelée dans un
-autre fichier C où \CodeInline{h} aurait été modifiée par exemple.
+\CodeInline{f} ce n'est pas le cas puisque WP ne fait aucune supposition à
+propos des valeurs des variables globales.
 
 
 \image{3-main-1}
@@ -614,11 +614,12 @@ autre fichier C où \CodeInline{h} aurait été modifiée par exemple.
 Notons que WP fait cette hypothèse à propos de la fonction \CodeInline{main}
 parce que c'est le comportement par défaut de Frama-C. Ce comportement peut être
 configuré à l'aide de l'option \CodeInline{-lib-entry} qui dit à Frama-C de
-considérer toutes les fonctions (incluant donc \CodeInline{main}) à être appelée
-dans le programme. Donc, quand nous activons cette option sur la ligne de
-commande de Frama-C, pour notre exemple, aucune condition de vérification n'est
-générée pour les clauses \CodeInline{requires} de \CodeInline{main} puisqu'elle
-n'est pas appelée et aucune des assertions n'est prouvée :
+considérer que toutes les fonctions (incluant donc \CodeInline{main}) peuvent
+être appelées dans le programme. Donc, quand nous activons cette option sur la
+ligne de commande de Frama-C, pour notre exemple, aucune condition de
+vérification n'est générée pour les clauses \CodeInline{requires} de
+\CodeInline{main} puisqu'elle n'est pas appelée et aucune des assertions n'est
+prouvée :
 
 
 \image{3-main-2}
