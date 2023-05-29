@@ -1,0 +1,18 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing main.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function f
+[rte:annot] annotating function main
+[wp] 3 goals scheduled
+[wp] [Valid] typed_main_requires (Qed)
+[wp] [Valid] typed_main_assert (Qed)
+[wp] [Unsuccess] typed_f_assert (Alt-Ergo) (Cached)
+[wp] Proved goals:    2 / 3
+  Qed:             2
+  Unsuccess:       1
+[wp:pedantic-assigns] main.c:10: Warning: 
+  No 'assigns' specification for function 'main'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] main.c:15: Warning: 
+  No 'assigns' specification for function 'f'.
+  Callers assumptions might be imprecise.

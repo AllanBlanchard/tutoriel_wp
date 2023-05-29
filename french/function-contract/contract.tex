@@ -578,6 +578,65 @@ nécessairement une preuve de « faux » avec un appel \CodeInline{abs(INT\_MIN)
 pas le cas de l'appel \CodeInline{abs(a)} qui peut aussi ne pas échouer.
 
 
+\levelThreeTitle{Le cas particulier de la fonction \CodeInline{main}}
+
+
+La fonction \CodeInline{main} n'est généralement pas appelée directement par le
+programme. Cependant, elle peut avoir des préconditions. Dans un tel cas, WP
+génère des conditions de vérification pour elles, mais avec une différence
+importante : le contexte fournit pour la preuve n'est pas le même que pour les
+autres fonctions. En effet, comme la fonction principale est appelée avant toute
+autre fonction du programme, à ce point de l'exécution, les variables globales
+ont nécessairement la valeur qui leur a été transmise à l'initialisation.
+
+
+Illustrons cela avec l'extrait de code suivant :
+
+
+\CodeBlockInput[7]{c}{main.c}
+
+
+Si nous exécutons WP sur cet exemple, la clause \CodeInline{requires} de la
+fonction \CodeInline{main} est prouvée, tandis qu'aucune tentative de preuve n'a
+été réalisée pour la précondition de la fonction \CodeInline{f} puisqu'elle
+n'est pas appelée dans le programme. La précondition de la fonction
+\CodeInline{main} est vérifiée, car après l'initialisation \CodeInline{h} a la
+valeur 42 qui est bien entendu entre 0 et 100. Remarquons que l'assertion dans
+la fonction \CodeInline{main} est, elle aussi, prouvée puisque la valeur de
+\CodeInline{h} n'est pas changée par la fonction, alors que dans la fonction
+\CodeInline{f} ce n'est pas le cas puisque WP ne fait aucune supposition à
+propos des valeurs des variables globales.
+
+
+\image{3-main-1}
+
+
+Notons que WP fait cette hypothèse à propos de la fonction \CodeInline{main}
+parce que c'est le comportement par défaut de Frama-C. Ce comportement peut être
+configuré à l'aide de l'option \CodeInline{-lib-entry} qui dit à Frama-C de
+considérer que toutes les fonctions (incluant donc \CodeInline{main}) peuvent
+être appelées dans le programme. Donc, quand nous activons cette option sur la
+ligne de commande de Frama-C, pour notre exemple, aucune condition de
+vérification n'est générée pour les clauses \CodeInline{requires} de
+\CodeInline{main} puisqu'elle n'est pas appelée et aucune des assertions n'est
+prouvée :
+
+
+\image{3-main-2}
+
+
+Finalement, Frama-C permet de configurer quelle fonction du programme doit être
+considérée comme la fonction principale. Par exemple, si nous appelons Frama-C
+avec l'option \CodeInline{-main=f} sur la ligne de commande, la clause
+\CodeInline{requires} de la fonction \CodeInline{f} est prouvée, de même que
+l'assertion qu'elle contient. À l'inverse, aucune vérification n'est tentée
+pour la clause \CodeInline{requires} de la fonction \CodeInline{main} et
+l'assertion dans la fonction \CodeInline{main} n'est pas prouvée.
+
+
+\image{3-main-3}
+
+
 \levelThreeTitle{Exercices}
 
 
