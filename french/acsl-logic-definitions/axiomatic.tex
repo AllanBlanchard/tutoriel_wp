@@ -394,6 +394,40 @@ a beaucoup plus d'axiomes pour déduire plus de propriétés à propos de
 \CodeInline{strlen}.
 
 
+\levelThreeTitle{Cluster de blocs axiomatiques}
+
+
+La plupart des annotations globales (fonctions logiques et prédicats, lemmes, ...)
+peuvent être définies à deux niveaux différents : à \emph{top-level}, le niveau
+des fonctions, des variables globales, etc. (sauf pour les axiomes et les
+fonctions et prédicats abstraits) ou dans des blocs axiomatiques. Les
+annotations à \emph{top-level} sont toujours chargées dans le contexte des
+obligations de preuve, ce n'est pas le cas des annotations des blocs
+axiomatiques.
+
+
+Dans l'exemple suivant :
+
+
+\CodeBlockInput[5]{c}{cluster.c}
+
+
+Puisque la clause \CodeInline{ensures} n'utilise que le prédicat \CodeInline{P}
+qui est défini dans le bloc axiomatique \CodeInline{X}, WP ne charge que
+l'axiome \CodeInline{x}. À l'inverse, si l'on remplace \CodeInline{P(p)} par
+\CodeInline{Q(p)} dans la clause \CodeInline{ensures}, WP charge l'axiomatique
+\CodeInline{Y} et donc l'axiome \CodeInline{y}, qui utilise également le
+prédicat \CodeInline{P}. Par conséquent, le bloc axiomatique \CodeInline{X} est
+également chargé. La clôture transitive des blocs axiomatiques ainsi chargés
+forme un \emph{cluster} de définitions axiomatiques.
+
+
+Ce comportement peut être utilisé pour éviter de fournir trop de lemmes aux
+solveurs SMT. Cela peut permettre d'améliorer les performances de la preuve
+dans certaines situations. Nous présenterons plus de détails à propos du guidage
+de la preuve avec des lemmes dans la
+section~\ref{l2:proof-methodologies-triggering-lemmas}.
+
 
 \levelThreeTitle{Exercices}
 
