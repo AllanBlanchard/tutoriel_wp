@@ -307,7 +307,7 @@ The corresponding inductive definition is the following:
 
 
 We can then specify that our sort function produces the sorted permutation of
-the original array and we can then prove it by providing the invariant of the
+the original array, and we can then prove it by providing the invariant of the
 function:
 
 
@@ -402,14 +402,10 @@ Now, let us prove a faster version of the power function:
 
 
 In this version, we exploit two properties about the power operator:
-
-
 \begin{itemize}
 \item $(x^2)^n = x^{2n}$
 \item $x \times (x^2)^n = x^{2n+1}$
 \end{itemize}
-
-
 that allows us to divide $n$ by 2 at each step of the loop instead of decreasing
 it by one (which makes the algorithm $O(\log n)$ instead of $O(n)$). Express the
 two previous properties in lemmas:

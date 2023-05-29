@@ -441,15 +441,11 @@ Maintenant tentons de prouver une version plus rapide de la fonction puissance :
 
 
 Dans cette version, nous exploitons deux propriétés de l'opérateur puissance :
-
-
 \begin{itemize}
 \item $(x^2)^n = x^{2n}$
 \item $x \times (x^2)^n = x^{2n+1}$
 \end{itemize}
-
-
-Qui permet de diviser $n$ par 2 à chaque tour de boucle au lieu de le décrémenter
+qui permet de diviser $n$ par 2 à chaque tour de boucle au lieu de le décrémenter
 de 1 (ce qui permet à l'algorithme d'être en $O(\log n)$ et pas $O(n)$). Exprimer
 les deux propriétés précédentes sous forme de lemmes :
 
