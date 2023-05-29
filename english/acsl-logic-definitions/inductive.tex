@@ -31,29 +31,48 @@ that a natural number is even using induction. We can translate the sentence:
 an even natural number'':
 
 
-
-\CodeBlockInput{c}{even-0.c}
-
+\CodeBlockInput[5][13]{c}{even-0.c}
 
 
-Which perfectly describes the two cases:
+Which describes the two cases:
 \begin{itemize}
 \item $0$ is even (base case),
 \item if a natural $n$ is even, $n+2$ is also even.
 \end{itemize}
 
-However, this definition is not completely satisfying. For example, we cannot
-deduce that an odd number is not even. If we try to prove that 1 is even, we
-will have to check if -1 is even, and then -3, -5, etc., infinitely. Moreover,
-we generally prefer to define the induction cases the opposite way: defining
-the condition under which the wanted conclusion is true. For example, here,
-how can we verify that some $n$ is natural and even? We first check whether it
-is 0, if not, we check if $n$ is greater than $0$, and then we verify that $n-2$
-is even:
+
+This can be used to prove the following assertions:
+
+
+\CodeBlockInput[15][18]{c}{even-0.c}
+
+
+But, since the solver has to recursively unfold the inductive definition, it
+might not work for any value. For example, in the previous code sample,
+Alt-Ergo 2.4.3 proves the first assertion but not the second one. This second
+assertion can be proved with Z3 4.8.6 for example. This capability depends on
+the heuristics of the solvers that decide or not to stop after N unfolds.
+
+
+While this definition works, it is not completely satisfying. For example, we
+cannot deduce that an odd number is not even. If we try to prove that 1 is even,
+we will have to check if -1 is even, and then -3, -5, etc., infinitely. Leading
+to the fact that the following assertion cannot be proved:
+
+
+\CodeBlockInput[20]{c}{even-0.c}
 
 
 
-\CodeBlockInput[5][13]{c}{even-1.c}
+Moreover, we generally prefer to define the induction cases the opposite way:
+defining the condition under which the wanted conclusion is true. For example,
+here, how can we verify that some $n$ is natural and even? We first check
+whether it is 0, if not, we check if $n$ is greater than $0$, and then we verify
+that $n-2$ is even:
+
+
+
+\CodeBlockInput[1][9]{c}{even-1.c}
 
 
 
@@ -66,20 +85,20 @@ Here, we distinguish two cases:
 
 Taking the second case, we recursively decrease the number until we reach
 0, and then the number is even, since 0 is even, or -1, and then there
-is no case in the inductive that corresponds to this value, so we could
-deduce that the property is false (however, we will see later that in the
-case of WP, we need the Coq proof assistant).
+is no case in the inductive that corresponds to this value, so we can
+deduce that the property is false.
 
 
-\CodeBlockInput[15][18]{c}{even-1.c}
-
+\CodeBlockInput[11]{c}{even-1.c}
 
 
 Of course, defining that some natural number is even inductively is not a
 good idea, since we can simply define it using modulo. We generally use them
 to define complex recursive properties.
 
+
 \levelFourTitle{Consistency}
+
 
 Inductive definitions bring the risk to introduce inconsistencies. Indeed, the
 property specified in the different cases are considered to be always true, so

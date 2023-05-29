@@ -1,4 +1,19 @@
 # frama-c -wp -wp-rte [...]
 [kernel] Parsing even-0.c (with preprocessing)
 [wp] Running WP plugin...
-[wp] Warning: No goal generated
+[rte:annot] annotating function bar
+[rte:annot] annotating function foo
+[wp] 3 goals scheduled
+[wp] [Valid] typed_foo_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_assert_2 (Z3) (Cached)
+[wp] [Unsuccess] typed_bar_assert (Z3) (Cached)
+[wp] Proved goals:    2 / 3
+  Alt-Ergo:        1
+  Z3:              1
+  Unsuccess:       1
+[wp:pedantic-assigns] even-0.c:15: Warning: 
+  No 'assigns' specification for function 'foo'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] even-0.c:20: Warning: 
+  No 'assigns' specification for function 'bar'.
+  Callers assumptions might be imprecise.
