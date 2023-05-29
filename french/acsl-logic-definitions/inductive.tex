@@ -36,7 +36,7 @@ qu'un entier naturel est pair par induction ? Nous pouvons traduire la phrase :
 naturel pair ».
 
 
-\CodeBlockInput{c}{even-0.c}
+\CodeBlockInput[5][13]{c}{even-0.c}
 
 
 Ce prédicat définit bien les deux cas :
@@ -48,15 +48,35 @@ Ce prédicat définit bien les deux cas :
 \end{itemize}
 
 
+Cette définition peut être utilisée pour prouver les assertions suivantes :
 
-Cependant, cette définition n'est pas complètement satisfaisante. Par exemple,
-nous ne pouvons pas déduire qu'un naturel impair n'est pas pair. Si nous essayons
-de prouver que $1$ est pair, nous devons vérifier que si $-1$ est pair, puis $-3$,
-$-5$, etc. De plus, nous préférons généralement indiquer la condition selon
-laquelle une conclusion donnée est vraie en utilisant les variables quantifiées
-dans la conclusion. Par exemple, ici, pour montrer qu'un entier $n$ est naturel,
+
+\CodeBlockInput[15][18]{c}{even-0.c}
+
+
+Mais, puisque le solveur doit récursivement dérouler la définition inductive,
+cela pourrait ne pas fonctionner pour n'importe quelle valeur. Par exemple,
+Alt-Ergo 2.4.3 prouve la première assertion, mais pas la seconde. Cette seconde
+assertion peut être prouvée avec Z3 4.8.6 par exemple. Cette capacité de preuve
+dépend des heuristiques des solveurs qui décident ou non de s'arrêter après N
+dépliages.
+
+Même si cette définition fonctionne, elle n'est pas complètement satisfaisante.
+Par exemple, nous ne pouvons pas déduire qu'un naturel impair n'est pas pair. Si
+nous essayons de prouver que $1$ est pair, nous devons vérifier que si $-1$ est
+pair, puis $-3$, $-5$, etc. Cela nous amène au fait que l'assertion suivante ne
+peut pas être prouvée :
+
+
+\CodeBlockInput[20]{c}{even-0.c}
+
+
+De plus, nous préférons généralement indiquer la condition selon laquelle une
+conclusion donnée est vraie en utilisant les variables quantifiées dans la
+conclusion. Par exemple, ici, pour montrer qu'un entier $n$ est naturel,
 comment faire ? D'abord vérifier s'il est égal à 0, et si ce n'est pas le cas,
-vérifier qu'il est plus grand que 0, et dans ce cas, vérifier que $n-2$ est pair :
+vérifier qu'il est plus grand que 0, et dans ce cas, vérifier que $n-2$ est
+pair :
 
 
 \CodeBlockInput[5][13]{c}{even-1.c}
@@ -74,14 +94,11 @@ Ici nous distinguons à nouveau deux cas :
 Pour un entier naturel donné, s'il est plus grand que 0, nous diminuerons
 récursivement sa valeur jusqu'à atteindre 0 ou -1. Dans le cas 0, l'entier
 naturel est pair. Dans le cas -1, nous n'aurons aucun cas du prédicat inductif
-qui corresponde
-à cette valeur et nous pourrons conclure que la propriété est fausse (même si
-nous verrons plus tard que nous avons besoin d'un assistant de preuve pour
-arriver cette conclusion dans le cas de WP).
+qui corresponde à cette valeur et nous pourrons conclure que la propriété est
+fausse.
 
 
-
-\CodeBlockInput[15][18]{c}{even-1.c}
+\CodeBlockInput[11]{c}{even-1.c}
 
 
 Bien sûr, définir la notion d'entier naturel pair par induction n'est pas une
