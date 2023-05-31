@@ -116,8 +116,8 @@ la clause \CodeInline{assigns} du contrat. Donc, pour chaque position potentiell
 modifiée $a_j$ (qui est, pour notre exemple d'appel à \CodeInline{inc},
 \CodeInline{*(\&a)}), nous générons une valeur $v_j$ qui représente sa valeur après
 l'appel. Mais si nous voulons vérifier que la postcondition nous donne le bon
-résultat, nous ne pouvons pas accepter \emph{toute valeur} pour les positions mémoire
-modifiées, nous voulons celles \emph{qui permettent de satisfaire la postcondition}.
+résultat, nous ne pouvons pas accepter \textit{toute valeur} pour les positions mémoire
+modifiées, nous voulons celles \textit{qui permettent de satisfaire la postcondition}.
 
 
 
@@ -277,7 +277,7 @@ profondeur de récursion. En ACSL, c'est le rôle de la clause
 \CodeInline{decreases} :
 
 
-\CodeBlockInput{c}{decreases.c}
+\CodeBlockInput[1][6]{c}{decreases.c}
 
 
 Tout comme la clause \CodeInline{loop variant}, la clause \CodeInline{decreases}
@@ -329,10 +329,10 @@ l'appel est \CodeInline{Here}. La valeur de l'expression lors de l'appel doit
 Bien sûr, des fonctions récursives peuvent être mutuellement récursives. Par
 conséquent, la clause \CodeInline{decreases} peut être utilisée pour borner la
 profondeur d'appels récursifs dans cette situation. Cependant, nous ne voulons
-le faire \emph{que} pour les fonctions qui sont effectivement dans l'ensemble de
+le faire \textit{que} pour les fonctions qui sont effectivement dans l'ensemble de
 fonctions mises en jeu dans la récursion. Pour cela, WP calcule les composantes
 fortement connexes depuis l'ensemble complet des fonctions, dans la terminologie
-ACSL, on appelle ces composants des \emph{clusters}.
+ACSL, on appelle ces composants des \textit{clusters}.
 
 
 Nous pouvons donc préciser un peu comment est vérifiée la correction d'une clause
@@ -340,10 +340,10 @@ Nous pouvons donc préciser un peu comment est vérifiée la correction d'une cl
 spécification doit être équipée avec une telle clause afin de prouver qu'elle
 termine. Vérifier que la clause \CodeInline{decreases} d'une fonction
 \CodeInline{f} donne une mesure de sa profondeur de récursion consiste à vérifier,
-pour chaque appel à une fonction \emph{qui appartient au même cluster que
+pour chaque appel à une fonction \textit{qui appartient au même cluster que
 \CodeInline{f}}, que l'expression fournie par la clause est effectivement positive
 et décroissante. Et par conséquent, aucune condition de vérification n'est
-générée lorsqu'une fonction récursive n'appartenant pas au même \emph{cluster}
+générée lorsqu'une fonction récursive n'appartenant pas au même \textit{cluster}
 est appelée :
 
 
@@ -351,14 +351,14 @@ est appelée :
 
 
 \begin{Information}
-  Notons que le calcul des \emph{clusters} est basé sur un critère syntaxique.
+  Notons que le calcul des \textit{clusters} est basé sur un critère syntaxique.
   Pour le moment, nous ne parlons par des pointeurs de fonctions dans ce tutoriel,
   le lecteur peut se référer à la documentation de l'option
   \CodeInline{-wp-dynamic} dans le manuel de WP.
 \end{Information}
 
 
-Finalement, si une fonction d'un \emph{cluster} ne fournit pas de clause
+Finalement, si une fonction d'un \textit{cluster} ne fournit pas de clause
 \CodeInline{decreases}, une condition de vérification
 \CodeInline{\textbackslash{}false} est générée et WP émet un avertissement ;
 
@@ -375,7 +375,7 @@ Finalement, si une fonction d'un \emph{cluster} ne fournit pas de clause
 Une propriété désirable pour une fonction est souvent qu'elle doit terminer.
 En effet, dans la plupart des programmes, toutes les fonctions doivent terminer,
 et quand ce n'est pas le cas, il est très probable qu'en réalité, une seule
-fonction puisse boucle à l'infini (donc la quasi-totalité des fonctions dans le
+fonction puisse boucler à l'infini (donc la quasi-totalité des fonctions dans le
 programme terminent).
 
 
@@ -411,10 +411,10 @@ vérifié, nous expliquerons pourquoi plus tard) :
 \CodeBlockInput[6]{c}{main_loop.c}
 
 
-Soulignons que la fonction \emph{pourrait ne pas} terminer, elle n'est pas
-\emph{forcée de boucler à l'infini}. Par exemple, dans la fonction suivante,
+Soulignons que la fonction \textit{pourrait ne pas} terminer, elle n'est pas
+\textit{forcée de boucler à l'infini}. Par exemple, dans la fonction suivante,
 la clause \CodeInline{terminates} est vérifiée, car
-\emph{lorsque la condition de terminaison est vérifiée} (jamais), la fonction
+\textit{lorsque la condition de terminaison est vérifiée} (jamais), la fonction
 termine (toujours) :
 
 
@@ -440,7 +440,7 @@ termine (toujours) :
   \begin{itemize}
   \item \CodeInline{-wp-definitions-terminate} (pour les définitions de fonction),
   \item \CodeInline{-wp-declarations-terminate} (pour les fonctions sans définition),
-  \item \CodeInline{-wp-frama-c-stdlib-terminate} (pour les fonctions de la stdlib de Frama-C),
+  \item \CodeInline{-wp-frama-c-stdlib-terminate} (pour les fonctions de la stdlib de Frama\nobreakdash-C),
   \end{itemize}
   pour dire que, à moins qu'une clause soit déjà fournie, les fonctions doivent
   terminer (et pour les fonctions qui ont une définition cela doit être vérifié).
@@ -451,7 +451,7 @@ termine (toujours) :
 
 
 Vérifier qu'une fonction termine demande de vérifier que toutes les instructions
-atteignables d'une fonction termine. Les affectations terminent trivialement,
+atteignables d'une fonction terminent. Les affectations terminent trivialement,
 donc nous n'avons rien de particulier à vérifier à leur sujet. Une instruction
 conditionnelle termine si toutes les instructions des différentes branches
 (atteignables) terminent, donc nous avons juste à vérifier que ces instructions
@@ -480,7 +480,7 @@ aucune instruction de ce type n'est présente, la fonction termine trivialement.
 
 
 S'il existe de telles instructions, leur terminaison doit être vérifiée
-\emph{lorsque} la fonction doit terminer (disons, lorsque \CodeInline{T}). Donc,
+\textit{lorsque} la fonction doit terminer (disons, lorsque \CodeInline{T}). Donc,
 les conditions de vérification sont de la forme
 \CodeInline{\textbackslash{}at(T, Pre)} $\Rightarrow$ \CodeInline{<statement termination>}.
 Notons que la prémisse de l'implication doit être évaluée dans l'état
@@ -490,7 +490,7 @@ Notons que la prémisse de l'implication doit être évaluée dans l'état
 \CodeBlockInput[11][17]{c}{terminates.c}
 
 
-Même si \CodeInline{r} a été décrémenté, la vérification de la condition de
+Même si \CodeInline{r} a été décrémentée, la vérification de la condition de
 la terminaison de \CodeInline{call(r)} est faite en prenant
 \CodeInline{\textbackslash{}at(r, Pre) > 0} comme prémisse. Nous verrons dans
 la section suivante la condition de vérification complète générée pour un appel.
@@ -508,7 +508,7 @@ vérifiée :
 
 
 Pour vérifier qu'un appel de fonction termine, nous vérifions lorsque la
-fonction est appelée, la condition de terminaison est vraie. Par exemple, à
+fonction est appelée, que la condition de terminaison est vraie. Par exemple, à
 partir du programme suivant :
 
 
@@ -537,7 +537,7 @@ la fonction pourrait ne pas terminer.
 
 Par exemple, pour notre fonction \CodeInline{simple} précédemment présentée,
 nous recevons ce message
-« \emph{Missing terminates clause on call to call, defaults to \textbackslash{}false} »
+« \textit{Missing terminates clause on call to call, defaults to \textbackslash{}false} »
 et nous échouons à prouver la terminaison :
 
 
@@ -568,7 +568,7 @@ la position de la boucle, ce qui est bon : le code est inatteignable lorsque
 
 
 Finalement, lorsqu'une boucle a une clause \CodeInline{loop variant}, elle doit
-être vérifiée \emph{seulement quand} la fonction doit terminer. Donc, si nous
+être vérifiée \textit{seulement quand} la fonction doit terminer. Donc, si nous
 reprenons l'exemple présenté au début de cette section :
 
 

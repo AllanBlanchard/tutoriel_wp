@@ -330,12 +330,12 @@ formula.
 
 
 When proving the correctness of the \CodeInline{decreases} clause of a particular
-function (and for a call to this same function), the expression is evaluated at
+function (and for a call to this same function), the expression is evaluated
 for two entities : the function under proof and the call instruction. The state
 where the expression is evaluated for the function under proof is
-\CodeInline{Pre}, the state the expression is evaluated for the call instruction
-is \CodeInline{Here}. The value of the expression at call point must be less
-than the value of the expression in \CodeInline{Pre} state.
+\CodeInline{Pre}, the state where the expression is evaluated for the call
+instruction is \CodeInline{Here}. The value of the expression at call point must
+be less than the value of the expression in \CodeInline{Pre} state.
 
 
 \CodeBlockInput[22][30]{c}{decreases.c}
@@ -384,7 +384,7 @@ and a warning is emitted by WP.
 
 
 A desirable property for a function is often that it should terminate. Indeed,
-in most programs, all functions must terminate and when it is not the case and
+in most programs, all functions must terminate, and when it is not the case and
 some functions can loop forever, it is highly common that there is a single
 function that is allowed to loop forever (so almost all functions in this
 program must terminate).
@@ -473,7 +473,7 @@ that:
 \end{itemize}
 
 
-However, we only have to do that when the termination condition of the function
+However, we only have to do so when the termination condition of the function
 is verified. So let us now explain what are the generated verification
 conditions and when does WP generate them.
 
