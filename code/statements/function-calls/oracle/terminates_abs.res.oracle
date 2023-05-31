@@ -1,0 +1,13 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing terminates_abs.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function abs
+[wp] [CFG] Goal abs_terminates : Valid (Trivial)
+[wp] 1 goal scheduled
+[wp] [Valid] typed_abs_assert_rte_signed_overflow (Qed)
+[wp] Proved goals:    2 / 2
+  Terminating:     1
+  Qed:             1
+[wp:pedantic-assigns] terminates_abs.c:6: Warning: 
+  No 'assigns' specification for function 'abs'.
+  Callers assumptions might be imprecise.

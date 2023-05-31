@@ -1,0 +1,68 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-2-terminates-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function abs
+[rte:annot] annotating function distance
+[rte:annot] annotating function distances
+[rte:annot] annotating function prepare
+[rte:annot] annotating function terminates_f1
+[rte:annot] annotating function terminates_f2
+[wp] [CFG] Goal abs_terminates : Valid (Trivial)
+[wp] ex-2-terminates-answer.c:73: Warning: 
+  Missing assigns clause (assigns 'everything' instead)
+[wp] ex-2-terminates-answer.c:80: Warning: 
+  Missing assigns clause (assigns 'everything' instead)
+[wp] 43 goals scheduled
+[wp] [Valid] typed_abs_ensures (Qed)
+[wp] [Valid] typed_abs_ensures_2 (Qed)
+[wp] [Valid] typed_abs_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_abs_assigns_part1 (Qed)
+[wp] [Valid] typed_abs_assigns_part2 (Qed)
+[wp] [Valid] typed_distance_terminates (Qed)
+[wp] [Valid] typed_distance_ensures (Qed)
+[wp] [Valid] typed_distance_ensures_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distance_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distance_assert_rte_signed_overflow_2 (Qed)
+[wp] [Valid] typed_distance_assigns_exit (Qed)
+[wp] [Valid] typed_distance_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_distance_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_distance_call_abs_requires (Qed)
+[wp] [Valid] typed_distances_terminates (Qed)
+[wp] [Valid] typed_distances_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distances_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distances_loop_invariant_established (Qed)
+[wp] [Valid] typed_distances_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distances_loop_invariant_2_established (Qed)
+[wp] [Valid] typed_distances_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distances_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distances_assert_rte_mem_access_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distances_loop_assigns_part1 (Qed)
+[wp] [Valid] typed_distances_loop_assigns_part2 (Qed)
+[wp] [Valid] typed_distances_loop_assigns_part3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distances_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_distances_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_distances_assigns_normal (Qed)
+[wp] [Valid] typed_distances_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distances_loop_variant_positive (Qed)
+[wp] [Valid] typed_distances_call_distance_requires (Alt-Ergo) (Cached)
+[wp] [Valid] typed_prepare_terminates (Qed)
+[wp] [Valid] typed_prepare_ensures (Qed)
+[wp] [Valid] typed_prepare_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_prepare_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_prepare_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_prepare_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_prepare_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_prepare_call_initialize_requires (Qed)
+[wp] [Valid] typed_prepare_call_connect_requires (Qed)
+[wp] [Valid] typed_terminates_f1_terminates (Qed)
+[wp] [Valid] typed_terminates_f2_terminates (Qed)
+[wp] Proved goals:   44 / 44
+  Terminating:     1
+  Qed:            32
+  Alt-Ergo:       11
+[wp:pedantic-assigns] ex-2-terminates-answer.c:72: Warning: 
+  No 'assigns' specification for function 'terminates_f1'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] ex-2-terminates-answer.c:79: Warning: 
+  No 'assigns' specification for function 'terminates_f2'.
+  Callers assumptions might be imprecise.

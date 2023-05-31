@@ -1,0 +1,16 @@
+# frama-c -wp [...]
+[kernel] Parsing ex-5-power-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+[wp] 5 goals scheduled
+[wp] [Valid] typed_rec_power_terminates (Qed)
+[wp] [Valid] typed_rec_power_variant_part1 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_rec_power_variant_part2 (Qed)
+[wp] [Valid] typed_rec_power_call_rec_power_requires (Qed)
+[wp] [Valid] typed_rec_power_call_rec_power_2_requires (Alt-Ergo) (Cached)
+[wp] Proved goals:    5 / 5
+  Qed:             3
+  Alt-Ergo:        2
+[wp:pedantic-assigns] ex-5-power-answer.c:10: Warning: 
+  No 'assigns' specification for function 'rec_power'.
+  Callers assumptions might be imprecise.

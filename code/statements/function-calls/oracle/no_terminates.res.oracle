@@ -1,0 +1,15 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing no_terminates.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function does_not_terminate
+[wp] [CFG] Goal does_not_terminate_exits : Valid (Unreachable)
+[wp] [CFG] Goal does_not_terminate_ensures : Valid (Unreachable)
+[wp] 2 goals scheduled
+[wp] [Valid] typed_does_not_terminate_terminates (Qed)
+[wp] [Valid] typed_does_not_terminate_loop_assigns (Qed)
+[wp] Proved goals:    4 / 4
+  Unreachable:     2
+  Qed:             2
+[wp:pedantic-assigns] no_terminates.c:7: Warning: 
+  No 'assigns' specification for function 'does_not_terminate'.
+  Callers assumptions might be imprecise.

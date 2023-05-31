@@ -1,0 +1,20 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing main_loop.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function main_loop
+[wp] [CFG] Goal main_loop_terminates : Valid (Trivial)
+[wp] 6 goals scheduled
+[wp] [Valid] typed_main_loop_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_main_loop_loop_invariant_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_main_loop_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_main_loop_loop_assigns (Qed)
+[wp] [Unsuccess] typed_main_loop_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_main_loop_loop_variant_positive (Alt-Ergo) (Cached)
+[wp] Proved goals:    5 / 7
+  Terminating:     1
+  Qed:             2
+  Alt-Ergo:        2
+  Unsuccess:       2
+[wp:pedantic-assigns] main_loop.c:11: Warning: 
+  No 'assigns' specification for function 'main_loop'.
+  Callers assumptions might be imprecise.

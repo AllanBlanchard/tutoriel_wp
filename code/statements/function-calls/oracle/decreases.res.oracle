@@ -2,12 +2,66 @@
 [kernel] Parsing decreases.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function ends
-[wp] 3 goals scheduled
+[rte:annot] annotating function ends_2
+[rte:annot] annotating function ends_ptr
+[rte:annot] annotating function fail_mutual_1
+[rte:annot] annotating function fail_mutual_2
+[rte:annot] annotating function go_negative
+[rte:annot] annotating function mutual_1
+[rte:annot] annotating function mutual_2
+[rte:annot] annotating function single
+[wp] decreases.c:54: Warning: No decreases clause for fail_mutual_1
+[wp] 22 goals scheduled
 [wp] [Valid] typed_ends_assert_rte_signed_overflow (Qed)
 [wp] [Valid] typed_ends_variant (Qed)
 [wp] [Valid] typed_ends_call_ends_requires (Qed)
-[wp] Proved goals:    3 / 3
-  Qed:             3
+[wp] [Valid] typed_go_negative_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_go_negative_variant (Qed)
+[wp] [Valid] typed_go_negative_call_go_negative_requires (Qed)
+[wp] [Valid] typed_ends_2_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_ends_2_assert_rte_signed_overflow_2 (Qed)
+[wp] [Valid] typed_ends_2_variant_part1 (Qed)
+[wp] [Valid] typed_ends_2_variant_part2 (Qed)
+[wp] [Valid] typed_ends_2_call_ends_2_requires (Qed)
+[wp] [Valid] typed_ends_2_call_ends_2_2_requires (Qed)
+[wp] [Valid] typed_ends_ptr_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_ends_ptr_assert_rte_mem_access_2 (Qed)
+[wp] [Valid] typed_ends_ptr_assert_rte_mem_access_3 (Qed)
+[wp] [Valid] typed_ends_ptr_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_ends_ptr_variant (Qed)
+[wp] [Valid] typed_ends_ptr_call_ends_ptr_requires (Qed)
+[wp] [Valid] typed_single_variant (Alt-Ergo) (Cached)
+[wp] [Valid] typed_mutual_2_variant (Alt-Ergo) (Cached)
+[wp] [Valid] typed_mutual_1_variant (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_fail_mutual_2_variant (Alt-Ergo) (Cached) (Degenerated)
+[wp] Proved goals:   21 / 22
+  Qed:            17
+  Alt-Ergo:        4
+  Unsuccess:       1
 [wp:pedantic-assigns] decreases.c:4: Warning: 
   No 'assigns' specification for function 'ends'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] decreases.c:10: Warning: 
+  No 'assigns' specification for function 'go_negative'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] decreases.c:17: Warning: 
+  No 'assigns' specification for function 'ends_2'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] decreases.c:25: Warning: 
+  No 'assigns' specification for function 'ends_ptr'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] decreases.c:33: Warning: 
+  No 'assigns' specification for function 'single'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] decreases.c:45: Warning: 
+  No 'assigns' specification for function 'mutual_2'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] decreases.c:41: Warning: 
+  No 'assigns' specification for function 'mutual_1'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] decreases.c:61: Warning: 
+  No 'assigns' specification for function 'fail_mutual_1'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] decreases.c:53: Warning: 
+  No 'assigns' specification for function 'fail_mutual_2'.
   Callers assumptions might be imprecise.
