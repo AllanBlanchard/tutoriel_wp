@@ -289,8 +289,9 @@ be true.
 
 
 Thus, the question is: what could we do in such a case? Again, we could use
-some kind of variant to bound the depth of the recursive calls. In ACSL, it is
-expressed thanks to the \CodeInline{decreases} clause:
+a measure (like in Section~\ref{l4:statements-loops-variant-measure}), to
+bound the depth of the recursive calls. In ACSL, it is expressed thanks to the
+\CodeInline{decreases} clause:
 
 
 \CodeBlockInput[1][6]{c}{decreases.c}
@@ -307,7 +308,7 @@ recursion (and not the number of function calls):
 \CodeBlockInput[14][20]{c}{decreases.c}
 
 
-Note that, like for \CodeInline{loop variant} clause where we verify the
+Note that, like for the \CodeInline{loop variant} clause where we verify the
 properties of the expression only when a new iteration might happen, the
 properties of the \CodeInline{decreases} expression are verified when the
 function is called again. It means that when we reach the maximum recursion
@@ -378,6 +379,18 @@ and a warning is emitted by WP.
 
 
 \image{fail-mutual-vc}
+
+
+\begin{Information}
+  Just like \CodeInline{loop variant} clauses, one can provide another relation
+  (see Section~\ref{l4:statements-loops-general-measure}) for a
+  \CodeInline{decreases} clause. The syntax is:
+
+
+  \begin{CodeBlock}{c}
+//@ decreases <term> for <Relation> ;
+\end{CodeBlock}
+\end{Information}
 
 
 \levelThreeTitle{Specifying and proving function termination}

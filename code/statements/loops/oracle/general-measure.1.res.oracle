@@ -1,0 +1,49 @@
+[kernel] Parsing general-measure.c (with preprocessing)
+[wp] Running WP plugin...
+[wp:hypothesis] general-measure.c:21: Warning: 
+  'lexico' relation must be well-founded
+[wp] Warning: Missing RTE guards
+[wp] 1 goal scheduled
+[wp] 1 goal generated
+------------------------------------------------------------
+  Function f
+------------------------------------------------------------
+
+Goal Follows relation Loop variant at loop (file general-measure.c, line 23):
+Let x = p_1.F1_pair_x.
+Let x_1 = p_1.F1_pair_y.
+Let x_2 = p.F1_pair_y.
+Let x_3 = p.F1_pair_x.
+Let x_4 = p_2.F1_pair_x.
+Let x_5 = p_2.F1_pair_y.
+Assume {
+  Type: IsS1_pair(p) /\ IsS1_pair(p_1) /\ is_sint32(positive_0) /\
+      is_sint32(positive_1) /\ is_sint32(x_3) /\ is_sint32(x_2) /\
+      is_sint32(x) /\ is_sint32(x_1) /\ is_sint32(x_4) /\ is_sint32(x_5).
+  (* Pre-condition *)
+  Have: (0 <= x_4) /\ (0 <= x_5).
+  (* Invariant *)
+  Have: (0 <= x_3) /\ (0 <= x_2).
+  (* Then *)
+  Have: 0 < x_3.
+  (* Then *)
+  Have: 0 < x_2.
+  (* Call 'positive' *)
+  Have: 0 <= positive_1.
+  If positive_1 != 0
+  Then {
+    (* Call 'positive' *)
+    Have: 0 <= positive_0.
+    (* Return Effects *)
+    Have: ({ F1_pair_x = x_3 - 1 ; F1_pair_y = positive_0 }) = p_1.
+  }
+  Else { Have: ({ p with F1_pair_y = x_2 - 1 }) = p_1. }
+  (* Invariant *)
+  Have: (0 <= x) /\ (0 <= x_1).
+}
+Prove: P_lexico(p, p_1).
+
+------------------------------------------------------------
+[wp:pedantic-assigns] general-measure.c:18: Warning: 
+  No 'assigns' specification for function 'f'.
+  Callers assumptions might be imprecise.
