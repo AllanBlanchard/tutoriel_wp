@@ -19,3 +19,4 @@ code/**/oracle/dune
 code/**/result
 code/tests
 code/cache
+code/ptests_config
