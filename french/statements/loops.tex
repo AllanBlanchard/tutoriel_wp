@@ -303,7 +303,7 @@ Section~\ref{l4:statements-loops-general-measure}).
 
 Pour les boucles, nous utilisons la notion de variant de boucle et notre
 « étape » est l'itération de boucle. Le variant de boucle n'est pas une
-propriété, mais une valeur. C'est une expression faisant intervenir des éléments
+propriété, mais une expression faisant intervenir des éléments
 modifiés par la boucle et donnant une borne supérieure sur le nombre
 d'itérations restant à effectuer à un tour de la boucle. C'est donc une
 expression supérieure à 0 et strictement décroissante d'un tour de boucle à
@@ -326,10 +326,10 @@ Une nouvelle fois nous pouvons regarder les buts générés :
 
 
 WP génère deux conditions de vérification pour le variant de boucle : on doit
-assurer que la valeur est positive et qu'elle décroît strictement pendant
-l'exécution de la boucle. Si nous supprimons la ligne de code qui incrémente
-\CodeInline{i}, WP ne peut plus prouver que la valeur \CodeInline{30 - i}
-décroît strictement.
+assurer que la valeur de l'expression est positive et qu'elle décroît
+strictement pendant l'exécution de la boucle. Si nous supprimons la ligne de
+code qui incrémente \CodeInline{i}, WP ne peut plus prouver que la valeur
+\CodeInline{30 - i} décroît strictement.
 
 
 Il est également bon de noter que, puisque le variant de boucle est une borne

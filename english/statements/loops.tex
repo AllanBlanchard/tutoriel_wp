@@ -316,7 +316,7 @@ relation (see Section~\ref{l4:statements-loops-general-measure}).
 
 For loops, the measure is specified through a loop variant, and the notion of
 ``step'' in the computation is the loop iteration. A loop variant is not a
-property but a value. It is an expression that involves some variables modified
+property but an expression that involves some variables modified
 by the loop and that provides an upper bound to the number of iterations that
 remains to be executed by the loop before any iteration. Thus, this expression
 is greater or equals to 0, and strictly decreases at each loop iteration. Now,
@@ -338,9 +338,9 @@ Again, we can have a look at the generated verification conditions:
 
 
 WP generates two verification conditions for the loop variant: verify that the
-value specified in the variant is positive, and prove that it strictly
-decreases during the execution of the loop. And if we delete the line of
-code that increments \CodeInline{i}, WP cannot prove anymore that
+value of the expression specified in the variant is positive, and prove that it
+strictly decreases during the execution of the loop. And if we delete the line
+of code that increments \CodeInline{i}, WP cannot prove anymore that
 \CodeInline{30\ -\ i} strictly decreases.
 
 
