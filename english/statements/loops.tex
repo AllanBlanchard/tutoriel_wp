@@ -307,7 +307,7 @@ In program proof, when we need to prove termination of an algorithm, we
 introduce a notion of \textit{measure}. A measure is an expression that must be
 strictly decreasing according to a given
 \externalLink{well-founded relation}{https://en.wikipedia.org/wiki/Well-founded_relation}
-$R$. From a "step" of the computation to another, we want the measure to
+$R$. From a ``step'' of the computation to another, we want the measure to
 decrease according to $R$. In ACSL, by default, the measure is an integer
 expression that must be decreasing and positive:
 $R(x,y) \Leftrightarrow x > y \wedge x \geq 0$, but one can specify another
@@ -315,7 +315,7 @@ relation (see Section~\ref{l4:statements-loops-general-measure}).
 
 
 For loops, the measure is specified through a loop variant, and the notion of
-"step" in the computation is the loop iteration. A loop variant is not a
+``step'' in the computation is the loop iteration. A loop variant is not a
 property but a value. It is an expression that involves some variables modified
 by the loop and that provides an upper bound to the number of iterations that
 remains to be executed by the loop before any iteration. Thus, this expression
@@ -417,7 +417,7 @@ structures in input and returns a boolean value. Here, instead of using an
 integer for our measure, we use a structure that contains two integers. The
 \CodeInline{lexico} predicate defines a lexicographical order over the
 structures of type \CodeInline{pair}. If we look at the generated verification
-condition, in the "Prove" part, we see that we must prove
+condition, in the ``Prove'' part, we see that we must prove
 \CodeInline{P\_lexico(p, p\_1)}, that uses our user-defined predicate.
 
 

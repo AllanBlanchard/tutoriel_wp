@@ -223,8 +223,8 @@ preservation of the invariant could fail. A reason for this fail is the fact tha
 the prover forgets that cells preceding the one we are currently processing
 are actually still set to 0. We can add a lemma in our knowledge base, stating
 that if a set of values of an array did not change between two program points,
-the first one being a point where the property "zeroed" is verified, then the
-property is still verified at the second program point.
+the first one being a point where the property ``zeroed'' is verified,
+then the property is still verified at the second program point.
 
 
 \CodeBlockInput[18][25]{c}{reset-1.c}
