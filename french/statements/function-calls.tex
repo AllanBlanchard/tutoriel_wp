@@ -272,9 +272,9 @@ assertion suivant cette fonction est vraie : elle est inatteignable.
 
 
 Une question que l'on peut alors se poser est : que peut-on faire dans un tel
-cas ? Nous pouvons à nouveau utiliser une notion de variant pour borner la
-profondeur de récursion. En ACSL, c'est le rôle de la clause
-\CodeInline{decreases} :
+cas ? Nous pouvons à nouveau utiliser une mesure (comme dans la
+Section~\ref{l4:statements-loops-variant-measure}) pour borner la profondeur de
+récursion. En ACSL, c'est le rôle de la clause \CodeInline{decreases} :
 
 
 \CodeBlockInput[1][6]{c}{decreases.c}
@@ -367,6 +367,18 @@ Finalement, si une fonction d'un \textit{cluster} ne fournit pas de clause
 
 
 \image{fail-mutual-vc}
+
+
+\begin{Information}
+  Comme pour les clauses \CodeInline{loop variant}, il est possible de fournir
+  une autre relation (voir Section~\ref{l4:statements-loops-general-measure})
+  pour une clause \CodeInline{decreases}. La syntaxe est :
+
+
+  \begin{CodeBlock}{c}
+//@ decreases <term> for <Relation> ;
+\end{CodeBlock}
+\end{Information}
 
 
 \levelThreeTitle{Spécifier et prouver la terminaison des fonctions}

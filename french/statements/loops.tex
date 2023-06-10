@@ -242,6 +242,7 @@ que la boucle se termine : elle est infinie.
 
 
 \levelThreeTitle{Correction partielle et correction totale - Variant de boucle}
+\label{l3:statements-loops-variant}
 
 
 En vérification déductive, il y a deux types de correction, la correction
@@ -275,55 +276,68 @@ soit prouvée.
 
 
 \begin{Information}
-À noter qu'une assertion inatteignable est toujours prouvée comme vraie de cette
-manière :
-\image{goto_end}
-
-C'est également le cas lorsque l'on sait trivialement qu'une instruction
-produit nécessairement une erreur d'exécution (par exemple en déréférençant
-la valeur \CodeInline{NULL}), comme nous avions déjà pu le constater avec l'exemple
-de l'appel à \CodeInline{abs} avec la valeur \CodeInline{INT\_MIN}.
+  À noter qu'une assertion inatteignable est toujours prouvée comme vraie de
+  cette manière :
+  \image{goto_end}
+  C'est également le cas lorsque l'on sait trivialement qu'une instruction
+  produit nécessairement une erreur d'exécution (par exemple en déréférençant
+  la valeur \CodeInline{NULL}), comme nous avions déjà pu le constater avec
+  l'exemple de l'appel à \CodeInline{abs} avec la valeur \CodeInline{INT\_MIN}.
 \end{Information}
 
 
-Pour prouver la terminaison d'une boucle, nous utilisons la notion de variant de
-boucle. Le variant de boucle n'est pas une propriété, mais une valeur. C'est une
-expression faisant intervenir des éléments modifiés par la boucle et donnant une
-borne supérieure sur le nombre d'itérations restant à effectuer à un tour de la
-boucle. C'est donc une expression supérieure à 0 et strictement décroissante d'un
-tour de boucle à l'autre (cela sera également vérifié par induction par WP).
+\levelFourTitle{Preuve de terminaison - Fournir une mesure}
+\label{l4:statements-loops-variant-measure}
 
+
+En preuve de programme, quand nous avons besoin de prouver la terminaison d'un
+algorithme, nous introduisons une notion de \textit{mesure}. Une mesure est une
+expression qui doit strictement décroître d'après une
+\externalLink{relation bien-fondée}{https://fr.wikipedia.org/wiki/Relation_bien_fond\%C3\%A9e}
+$R$. D'une « étape » du calcul à une autre, nous voulons que la mesure décroisse
+d'après $R$. En ACSL, par défaut, la mesure est une expression entière
+décroissante et positive : $R(x,y) \Leftrightarrow x > y \wedge x \geq 0$, mais
+il est également possible de fournir une autre relation (voir
+Section~\ref{l4:statements-loops-general-measure}).
+
+
+Pour les boucles, nous utilisons la notion de variant de boucle et notre
+« étape » est l'itération de boucle. Le variant de boucle n'est pas une
+propriété, mais une expression faisant intervenir des éléments
+modifiés par la boucle et donnant une borne supérieure sur le nombre
+d'itérations restant à effectuer à un tour de la boucle. C'est donc une
+expression supérieure à 0 et strictement décroissante d'un tour de boucle à
+l'autre. Or, si pour tout tour de boucle, la valeur est décroissante, mais reste
+positive, c'est que la boucle s'arrête nécessairement après un nombre fini
+d'itérations.
 
 
 Si nous reprenons notre programme précédent, nous pouvons ajouter le variant
 de cette façon :
 
 
-
 \CodeBlockInput{c}{first_loop-4.c}
-
 
 
 Une nouvelle fois nous pouvons regarder les buts générés :
 
 
-
 \image{i_30-4}
 
 
-Le variant nous génère bien deux conditions de vérification au niveau de la
-vérification :
-assurer que la valeur est positive et assurer qu'elle décroît strictement pendant
-l'exécution de la boucle. Si nous supprimons la ligne de code qui incrémente
-\CodeInline{i}, WP ne peut plus prouver que la valeur \CodeInline{30 - i} décroît strictement.
+WP génère deux conditions de vérification pour le variant de boucle : on doit
+assurer que la valeur de l'expression est positive et qu'elle décroît
+strictement pendant l'exécution de la boucle. Si nous supprimons la ligne de
+code qui incrémente \CodeInline{i}, WP ne peut plus prouver que la valeur
+\CodeInline{30 - i} décroît strictement.
 
 
-
-Il est également bon de noter qu'être capable de donner un variant de boucle
-n'induit pas nécessairement d'être capable de donner le nombre exact d'itérations
-qui doivent encore être exécutées par la boucle, car nous n'avons pas toujours une
-connaissance aussi précise du comportement de notre programme. Nous pouvons par
- exemple avoir un code comme celui-ci :
+Il est également bon de noter que, puisque le variant de boucle est une borne
+supérieure sur le nombre d'itérations restantes, être capable de donner un
+variant de boucle n'induit pas nécessairement d'être capable de donner le nombre
+exact d'itérations qui doivent encore être exécutées par la boucle, car nous
+n'avons pas toujours une connaissance aussi précise du comportement de notre
+programme. Nous pouvons par  exemple avoir un code comme celui-ci :
 
 
 
@@ -331,19 +345,15 @@ connaissance aussi précise du comportement de notre programme. Nous pouvons par
 
 
 
-Ici, à chaque tour de boucle, nous diminuons la valeur de la variable \CodeInline{i} par une
-valeur dont nous savons qu'elle se trouve entre 1 et \CodeInline{i}. Nous pouvons donc bien
-assurer que la valeur de \CodeInline{i} est positive et décroît strictement, mais nous ne
-pouvons pas dire combien de tours de boucles vont être réalisés pendant une
-exécution.
+Ici, à chaque tour de boucle, nous diminuons la valeur de la variable
+\CodeInline{i} par une valeur dont nous savons qu'elle se trouve entre 1 et
+\CodeInline{i}. Nous pouvons donc bien assurer que la valeur de \CodeInline{i}
+est positive et décroît strictement, mais nous ne pouvons pas dire combien de
+tours de boucles vont être réalisés pendant une exécution.
 
 
-Le variant n'est donc bien qu'une borne supérieure sur le nombre d'itérations
-de la boucle.
-
-
-Notons aussi que le variant de boucle n'a besoin d'être positif qu'au début de l'exécution
-du bloc de la boucle. Donc, dans le code suivant :
+Notons aussi que le variant de boucle n'a besoin d'être positif qu'au début de
+l'exécution du bloc de la boucle. Donc, dans le code suivant :
 
 
 \begin{CodeBlock}{c}
@@ -354,9 +364,64 @@ while(i >= 0){
 \end{CodeBlock}
 
 
-Même si \CodeInline{i} peut être négatif lorsque la boucle termine, cette valeur est
-bien un variant de la boucle puisque nous n'exécutons pas le corps de la boucle à
-nouveau.
+Même si \CodeInline{i} peut être négatif lorsque la boucle termine, cette valeur
+est bien un variant de la boucle puisque nous n'exécutons pas le corps de la
+boucle à nouveau.
+
+
+\levelFourTitle{Mesure généralisée}
+\label{l4:statements-loops-general-measure}
+
+
+\begin{Information}
+  Dans cette courte section, nous présentons un usage particulier des variants
+  de boucle. Il utilise une fonctionnalité d'ACSL qui ne sera présentée que dans
+  la partie suivante du tutoriel. Ceci dit, cette section devrait rester
+  compréhensible sans avoir besoin de lire la partie suivante. Notons que,
+  puisque cette manière d'utiliser les variants de boucle est rarement utile,
+  cela peut être ignoré dans une première lecture du tutoriel.
+\end{Information}
+
+
+La plupart du temps une simple mesure entière est suffisante pour exprimer des
+variants de boucle et prouver la terminaison des boucles. Cependant, dans
+certaines situations, elle peut être difficile à utiliser. Pour ces situations,
+ACSL fournit la notion de variant généralisé où l'on peut fournir une expression
+de n'importe quel type, à condition de pouvoir fournir la relation bien-fondée
+qui correspond à ce type. Cependant, WP \textbf{ne vérifie pas} que la relation
+fournie est bien fondée, et cela doit donc être vérifié par ailleurs. Une mesure
+de ce type est fournie à l'aide de cette syntaxe :
+
+
+\begin{CodeBlock}{c}
+/*@ loop variant <term> for <Relation> ;
+\end{CodeBlock}
+
+
+Où le prédicat \CodeInline{Relation} doit être un prédicat binaire défini pour
+le type de \CodeInline{term}. Illustrons cela avec l'exemple suivant :
+
+
+\CodeBlockInput[6]{c}{general-measure.c}
+
+
+Nous décrirons plus précisément la notion de prédicat utilisateur dans la
+Section~\ref{l2:acsl-properties-predicates}, pour le moment considérons que le
+code ACSL aux lignes 12--15 définit une sorte de fonction qui reçoit deux
+structures en entrée et retourne une valeur booléenne. Ici, au lieu d'utiliser
+un entier pour notre mesure, nous utilisons une structure qui contient deux
+entiers. Le prédicat \CodeInline{lexico} définit un ordre lexicographique sur
+les structures de type \CodeInline{pair}. Si nous regardons la condition de
+vérification générée, dans la partie « Prove », nous voyons que nous devons
+prouver \CodeInline{P\_lexico(p, p\_1)}, qui utilise notre prédicat utilisateur.
+
+
+Notons que, à la différence des clauses \CodeInline{loop variant} par défaut,
+cette clause génère une unique condition de vérification. En effet, dans WP,
+la relation par défaut $R(x,y) \Leftrightarrow x > y \wedge x \geq 0$ est
+séparée en deux parties $x > y$ et $x \geq 0$, mais pour les relations définies
+par l'utilisateur, ce n'est pas forcément possible, donc WP n'essaie jamais de
+telles transformations.
 
 
 \levelThreeTitle{Lier la postcondition et l'invariant}
