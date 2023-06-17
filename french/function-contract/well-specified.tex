@@ -352,7 +352,7 @@ Le résultat n'est pas vraiment celui escompté :
 \image{2-swap-1}
 
 
-En effet, nous n'avons pas spécifié les effets de bords autorisés pour notre
+En effet, nous n'avons pas spécifié les effets de bord autorisés pour notre
 fonction. Pour cela, nous utilisons la clause \CodeInline{assigns}
 qui fait partie des postconditions de la fonction. Elle nous permet de spécifier
 quels éléments \textbf{non locaux} (on vérifie bien des effets de bord), sont
@@ -378,7 +378,7 @@ assertions que nous avions demandées dans le \CodeInline{main} seront validées
 
 
 Finalement, il peut arriver que nous voulions spécifier qu'une fonction ne
-provoque pas d'effets de bords. Ce cas est précisé en donnant \CodeInline{\textbackslash{}nothing}
+provoque pas d'effets de bord. Ce cas est précisé en donnant \CodeInline{\textbackslash{}nothing}
 à \CodeInline{assigns} :
 
 
