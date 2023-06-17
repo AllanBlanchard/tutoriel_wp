@@ -626,6 +626,122 @@ modifie les variables de $P$ pour former $Q$), alors effectivement
 $P \wedge R \Rightarrow P$ et $Q \Rightarrow Q \wedge R$.
 
 
+\levelThreeTitle{Assertion}
+
+
+Les assertions ACSL doivent être prouvées (et utilisées). Nous avons donc besoin
+de règle dans le calcul de plus faible précondition. Il y a plusieurs types
+d'assertions en ACSL :
+\begin{itemize}
+  \item \CodeInline{assert}
+  \item \CodeInline{check}
+  \item \CodeInline{admit}
+\end{itemize}
+
+
+Chacune d'elles à un comportement différent.
+
+
+Commençons par celle que nous avons utilisée jusqu'à maintenant :
+\CodeInline{assert}. Une annotation \CodeInline{assert P} a la sémantique
+informelle suivante : la propriété \CodeInline{P} doit être vérifiée au point
+de programme, et ensuite le fait qu'elle soit vraie est ajouté comme hypothèse
+pour prouver les propriétés qui apparaissent plus tard dans le programme. Notons
+qu'elle pourrait ne pas être vraie, mais elle sera de toute façon ajoutée dans
+le contexte de preuve (en revanche, si elle n'est pas vraie, nous ne serons pas
+en mesure de la prouver).
+
+
+L'annotation \CodeInline{check P} signifie que la propriété \CodeInline{P} doit
+être vérifiée à ce point de programme, mais elle ne sera pas ajoutée au contexte
+de preuve pour les annotations qui la suivent.
+
+
+Finalement, l'annotation \CodeInline{admit P} signifie qu'à partir de ce point
+de programme, la propriété \CodeInline{P} est considérée comme vraie et ajoutée
+au contexte de preuve pour annotations qui la suivent, même si nous ne la
+vérifions pas à ce point de programme.
+
+
+Illustrons ces différents types d'annotations avec ce court exemple :
+
+
+\CodeBlockInput{c}{annot-kinds.c}
+
+
+\image{annot-kinds}
+
+
+Dans la fonction \CodeInline{check\_annot}, ni le \CodeInline{check} ni la
+clause \CodeInline{ensures} ne sont prouvées. Les preuves ont été essayées
+séparément (et ont échoué).
+
+
+Dans la focntion \CodeInline{admit\_annot}, l'annotation \CodeInline{admit}
+apparaît bleue et verte (exactement comme dans les contrats de fonction sans
+corps), ce qui signifie qu'à partir de ce point, elle est considérée comme
+valide même si elle n'est pas prouvée. Par conséquent, la clause
+\CodeInline{ensures} est prouvée puisque \CodeInline{\textbackslash{}false} est
+supposée vrai.
+
+
+Finalement dans la fonction \CodeInline{assert\_annot}, l'annotation
+\CodeInline{assert} n'est pas prouvée, mais à partir de ce point elle est
+supposée vraie. Par conséquent, la clause \CodeInline{ensures} est prouvée.
+En revanche, tandis que dans la fonction \CodeInline{admit\_annot} elle
+apparaît entièrement prouvée (affichage vert), ici elle apparaît comme valide
+sous hypothèse : la validité dépend d'une propriété qui n'a pas encore été
+prouvée (et ne le sera pas).
+
+
+Nous pouvons encoder ces différents comportements avec les règles de WP qui
+suivent.
+
+
+La règle pour l'annotation \CodeInline{check} est la suivante :
+$$ wp(check\ A, Post) := A \wedge Post $$
+qui signifie que nous ajoutons aux propriétés que nous devons vérifier une
+nouvelle propriété, qui est la propriété $A$.
+
+
+La règle pour l'annotation \CodeInline{admit} est la suivante :
+$$ wp(admit\ A, Post) := A \Rightarrow Post $$
+qui signifie que sous la condition $A$, nous devons vérifier la postcondition
+(de l'instruction, qui peut être une propriété calculée grâce à d'autres règles
+de WP).
+
+
+Finalement, la règle pour l'annotation \CodeInline{assert} combine les deux
+précédentes. En effet :
+\begin{CodeBlock}{c}
+  assert P;
+\end{CodeBlock}
+est équivalent à :
+\begin{CodeBlock}{c}
+  check P; // d'abord, vérifier que P est vraie
+  admit P; // puis le supposer
+\end{CodeBlock}
+Donc :
+$$ wp(assert\ A, Post) := wp(check\ A, wp(admit\ A, Post)) \equiv A \wedge (A \Rightarrow Post) $$
+
+
+Cela permet d'introduire une coupure dans la preuve. On prouve d'abord $A$ et
+une fois que c'est fait, nous prouvons que lorsque $A$ est vrai, $Post$ l'est
+aussi.
+
+
+Il serait raisonnable de penser que l'annotation \CodeInline{admit} est
+dangereuse. Elle l'est. Mais elle peut être utile pour déboguer une preuve.
+En particulier, nous verrons dans le chapitre~\ref{l1:proof-methodologies} que
+l'annotation \CodeInline{assert} peut être utilisée pour guider une preuve.
+Pendant le processus, l'annotation \CodeInline{admit} peut être utile pour
+essayer des annotations sans pour autant devoir les prouver immédiatement, ou
+pour considérer que certaines annotations sont valides pour accélérer la phase
+de design facile. Plus rarement, elle peut être utile pour expliciter des
+hypothèses à propos du matériel, ou de la plateforme logicielle, mais pour cela,
+nous utilisons plus souvent les options du noyau de Frama-C ou des axiomes
+(nous parlerons des axiomes dans la section~\ref{l2:acsl-logic-definitions-axiomatic}).
+
 
 \levelThreeTitle{Exercices}
 

@@ -26,6 +26,7 @@ SUITES= \
   statements/loops-examples \
   statements/loops \
   statements/function-calls \
+  statements/basic \
   acsl-logic-definitions/inductive \
   acsl-logic-definitions/ghost-code \
   acsl-logic-definitions/axiomatic \
