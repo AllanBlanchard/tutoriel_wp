@@ -1,0 +1,91 @@
+[kernel] Parsing two-loop-invariants.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+[wp] 5 goals scheduled
+[wp] Proved goals:    4 / 5
+  Qed:             4
+------------------------------------------------------------
+  Function main
+------------------------------------------------------------
+
+Goal Preservation of Invariant 'I1' (file two-loop-invariants.c, line 8):
+Assume {
+  Type: is_sint32(x) /\ is_sint32(x_1) /\ is_sint32(x_2).
+  (* Initializer *)
+  Init: (Init_x_0=true).
+  (* Initializer *)
+  Init: x_2 = 0.
+  (* Invariant 'I1' *)
+  Have: 0 <= x_2.
+  (* Invariant 'I2' *)
+  Have: x_2 <= 10.
+  (* Loop assigns ... *)
+  Have: ((Init_x_0=true) -> (Init_x_1=true)).
+  (* Invariant 'I1' *)
+  Have: 0 <= x_1.
+  (* Invariant 'I2' *)
+  Have: x_1 <= 10.
+  (* Then *)
+  Have: x_1 <= 9.
+  Have: (1 + x_1) = x.
+}
+Prove: 0 <= x.
+
+------------------------------------------------------------
+
+Goal Establishment of Invariant 'I1' (file two-loop-invariants.c, line 8):
+Assume { Type: is_sint32(x). (* Initializer *) Init: x = 0. }
+Prove: 0 <= x.
+Prover Qed returns Valid
+
+------------------------------------------------------------
+
+Goal Preservation of Invariant 'I2' (file two-loop-invariants.c, line 9):
+Assume {
+  Type: is_sint32(x) /\ is_sint32(x_1) /\ is_sint32(x_2).
+  (* Initializer *)
+  Init: (Init_x_0=true).
+  (* Initializer *)
+  Init: x_2 = 0.
+  (* Invariant 'I1' *)
+  Have: 0 <= x_2.
+  (* Invariant 'I2' *)
+  Have: x_2 <= 10.
+  (* Loop assigns ... *)
+  Have: ((Init_x_0=true) -> (Init_x_1=true)).
+  (* Invariant 'I1' *)
+  Have: 0 <= x_1.
+  (* Invariant 'I2' *)
+  Have: x_1 <= 10.
+  (* Then *)
+  Have: x_1 <= 9.
+  Have: (1 + x_1) = x.
+  (* Invariant 'I1' *)
+  Have: 0 <= x.
+}
+Prove: x <= 10.
+Prover Qed returns Valid
+
+------------------------------------------------------------
+
+Goal Establishment of Invariant 'I2' (file two-loop-invariants.c, line 9):
+Assume {
+  Type: is_sint32(x).
+  (* Initializer *)
+  Init: x = 0.
+  (* Invariant 'I1' *)
+  Have: 0 <= x.
+}
+Prove: x <= 10.
+Prover Qed returns Valid
+
+------------------------------------------------------------
+
+Goal Loop assigns (file two-loop-invariants.c, line 10):
+Prove: true.
+Prover Qed returns Valid
+
+------------------------------------------------------------
+[wp:pedantic-assigns] two-loop-invariants.c:5: Warning: 
+  No 'assigns' specification for function 'main'.
+  Callers assumptions might be imprecise.
