@@ -216,7 +216,7 @@ prédicats). Nous pourrions avoir écrit le contrat comme ceci :
 où nous voyons parfaitement que les variables sont toujours universellement
 quantifiées. Cependant, nous ne sommes pas obligés de les maintenir quantifiées
 universellement, et nous pourrions parfaitement les transformer en paramètres
-(en supposant que la conclusion que nous obtenir des prémisses a toujours du
+(en supposant que la conclusion que nous obtenons des prémisses a toujours du
 sens). Faisons par exemple cela pour les variables \CodeInline{i} et
 \CodeInline{j} de la conclusion :
 
@@ -273,9 +273,9 @@ une fonction lemme qui le retourne :
 Si nous regardons seulement le corps de la fonction, il a deux comportements :
 soit il existe une cellule du tableau qui contient \CodeInline{v} et la fonction
 retourne son indice, ou ce n'est pas le cas, et dans ce cas la fonction retourne
--1. Le premier comportement est facile à montrer, le retour correspondant à cette
-découverte n'est effectuée que dans une branche où l'on a trouvé une cellule qui
-correspond à la valeur recherchée.
+\CodeInline{SIZE_MAX}. Le premier comportement est facile à montrer, le retour
+correspondant à cette découverte n'est effectuée que dans une branche où l'on a
+trouvé une cellule qui correspond à la valeur recherchée.
 
 
 Nous prouvons que le second comportement satisfait la postcondition en montrant

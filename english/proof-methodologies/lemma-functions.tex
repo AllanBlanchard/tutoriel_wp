@@ -280,10 +280,10 @@ function that returns it:
 
 If we only look at the body of the function, it has two behaviors: either some
 cell of the array contains \CodeInline{v} and the function returns its index, or
-there is not, and then the function returns -1. The first behavior is easy to
-show, the return statement is performed in a branch where we know that the
-considered index corresponds to a cell that is in the range of the array and has
-a value \CodeInline{v}.
+there is not, and then the function returns \CodeInline{SIZE_MAX}. The first
+behavior is easy to show, the return statement is performed in a branch where we
+know that the considered index corresponds to a cell that is in the range of the
+array and has a value \CodeInline{v}.
 
 
 
