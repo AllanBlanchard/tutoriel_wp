@@ -41,6 +41,14 @@ prepare-tests: $(LINK) $(PTESTS_CONFIG_FILE)
 	frama-c-ptests $(LINK)
 	rm $(LINK)
 
+create-oracles: $(LINK) $(PTESTS_CONFIG_FILE)
+	frama-c-ptests -create-missing-oracles $(LINK)
+	rm $(LINK)
+
+clean-oracles: $(LINK) $(PTESTS_CONFIG_FILE)
+	frama-c-ptests -remove-empty-oracles $(LINK)
+	rm $(LINK)
+
 run-tests:
 	FRAMAC_WP_CACHEDIR=$(CACHE_DIR) dune build @ptests
 
