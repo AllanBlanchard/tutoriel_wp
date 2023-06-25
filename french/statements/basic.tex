@@ -744,6 +744,140 @@ nous utilisons plus souvent les options du noyau de Frama-C ou des axiomes
 (nous parlerons des axiomes dans la section~\ref{l2:acsl-logic-definitions-axiomatic}).
 
 
+\levelThreeTitle{WP plugin vs. WP calculus de Dijkstra}
+
+
+Depuis le début de cette section, nous avons vu que la fonction $wp$ démarre
+depuis la postcondition et, instruction après instruction, change la formule
+jusqu'à atteindre le début de la fonction, où elle génère la condition de
+vérification (comme brièvement expliqué dans la
+section~\ref{l3:statements-basic-consequence}), que nous devons vérifier.
+
+
+Ceci dit, le lecteur attentif aura peut-être également remarqué que depuis le
+début de ce livre, dans la plupart des exemples, nous n'avons pas \textit{une}
+condition de vérification à vérifier, mais \textit{plusieurs}. Sur un aspect
+théorique, cela ne fait pas grande différence, mais d'un point de vue pratique,
+cela permet de générer des conditions de vérification plus simples à vérifier
+pour les solveurs SMT.
+
+
+En fait, le greffon WP génère plusieurs conditions de vérifications en parallèle
+pendant le calcul de WP. À chaque fois qu'il rencontre une nouvelle instruction,
+la fonction $wp$ est appliqué pour cette instruction sur toutes les conditions
+de vérifications rencontrées sur le chemin de programme auquel l'instruction
+appartient (pour garantir cela, la règle de la conditionnelle est sensiblement
+différente de ce que nous avons présentés, mais nous n'entrerons pas dans ces
+détails). Cependant, quand cette étape inclut la preuve d'une propriété (par
+exemple, une assertion), au lieu d'appliquer la règle en l'ajoutant comme une
+conjonction, elle est simplement ajoutée à l'ensemble des conditions de
+vérification à prouver. Intuitivement : nous commençons un nouveau calcul de plus
+faible précondition en parallèle à partir de ce point de programme.
+
+
+Illustrons cela sur cet exemple jouet :
+
+
+\CodeBlockInput{c}{wp-plugin-calculus-toy.c}
+
+
+Nous commençons (en 1) avec deux conditions de vérification :
+\begin{itemize}
+  \item \CodeInline{VC1: P(x)},
+  \item \CodeInline{VC2: P(y)}.
+\end{itemize}
+Nous appliquons la règle que l'affectation sur chacune d'elle, et nous atteignons
+2 avec :
+\begin{itemize}
+  \item \CodeInline{VC1: P(x * y)},
+  \item \CodeInline{VC2: P(y)}.
+\end{itemize}
+En 2, nous devons traiter la conditionnelle. Au lieu de directement appliquer
+la règle standard de WP, nous séparons l'analyse en deux ensembles de conditions
+de vérification, initialement équivalents. Considérons d'abord la branche
+\CodeInline{else} puis la branche \CodeInline{then}.
+
+
+De 2 à 3, nous rencontrons une annotaiton \CodeInline{check}, donc nous ajoutons
+une nouvelle condition de vérification et nous obtenons l'ensemble :
+\begin{itemize}
+  \item \CodeInline{VC1: P(x * y)},
+  \item \CodeInline{VC2: P(y)},
+  \item \CodeInline{VC3: Q(y)}.
+\end{itemize}
+Ensuite, nous appliquons la règle de l'affectation, et nous obtenons en 4 :
+\begin{itemize}
+  \item \CodeInline{VC1: P(x * (y+1))},
+  \item \CodeInline{VC2: P(y+1)},
+  \item \CodeInline{VC3: Q(y+1)}.
+\end{itemize}
+
+
+De 2 à 5, nous rencontrons une annotation \CodeInline{assert}, nous ajoutons
+donc cette connaissance à toutes les conditions de vérification, et nous en
+créons une nouvelle :
+\begin{itemize}
+  \item \CodeInline{VC1: Q(x) ==> P(x * y)},
+  \item \CodeInline{VC2: Q(x) ==> P(y)},
+  \item \CodeInline{VC4: Q(x)}.
+\end{itemize}
+Ensuite, nous appliquons la règle de l'affectation et nous obtenons en 6 :
+\begin{itemize}
+  \item \CodeInline{VC1: Q(x+1) ==> P((x+1) * y)},
+  \item \CodeInline{VC2: Q(x+1) ==> P(y)},
+  \item \CodeInline{VC4: Q(x+1)}.
+\end{itemize}
+
+
+Maintenant, nous devons réconcilier les deux ensembles. Nous omettons certains
+détails ici (l'astuce se trouve dans les variables $v'$ qui sont introduites et
+qui permettent de séparer les valeurs en fonction de la condition), et nous
+obtenons en 7, quelque chose comme :
+\begin{CodeBlock}{text}
+  VC1:
+    ((x <= 0 ==> y' == y+1 && x' == x) &&
+     (x >  0 ==> y' == y   && x' == x+1 && Q(x+1))) ==>
+       P(x' * y')
+
+  VC2:
+    ((x <= 0 ==> y' == y+1) &&
+     (x >  0 ==> y' == y    && Q(x+1))) ==>
+       P(y')
+  VC3:
+    (x <= 0) ==> Q(x+1)
+
+  VC4:
+    (x >  0) ==> Q(x+1)
+\end{CodeBlock}
+
+
+Finalement, nous atteignons la précondition, et nous obtenons en 8 :
+\begin{CodeBlock}{text}
+  VC1:
+    P(x) ==>
+      ((x <= 0 ==> y' == y+1 && x' == x) &&
+       (x >  0 ==> y' == y   && x' == x+1 && Q(x+1))) ==>
+         P(x' * y')
+
+  VC2:
+    P(x) ==>
+      ((x <= 0 ==> y' == y+1) &&
+       (x >  0 ==> y' == y    && Q(x+1))) ==>
+         P(y')
+  VC3:
+    P(x) ==> (x <= 0) ==> Q(x+1)
+
+  VC4:
+    P(x) ==> (x >  0) ==> Q(x+1)
+\end{CodeBlock}
+
+
+Nous pouvons voir que pour chaque propriété que nous devons prouver, nous avons
+construit une condition de vérification spécifique qui rassemble la connaissance
+disponible le long du chemin de programme qui atteint le point où la vérification
+est demandée.
+
+
 \levelThreeTitle{Exercices}
 
 
