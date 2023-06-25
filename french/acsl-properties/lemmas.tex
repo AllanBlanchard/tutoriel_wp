@@ -129,6 +129,34 @@ verrons plus tard des exemples pour lesquels il n'est pas si simple d'obtenir un
 preuve.
 
 
+\levelThreeTitle{Check lemma}
+
+
+Comme pour les assertions, il est possible d'utiliser une version
+\CodeInline{check} des lemmes :
+
+
+\begin{CodeBlock}{c}
+/*@
+  check lemma name_of_the_lemma { Label0, ..., LabelN }:
+    property ;
+*/
+\end{CodeBlock}
+
+
+Une annotation \CodeInline{check lemma} demande à WP de générer une condition de
+vérification. Mais, à l'inverse des lemmes standards, la connaissance que la
+propriété correspondante est vérifiée ne sera pas ajoutée dans le contexte des
+preuves futures. Par conséquent, les solveurs SMT ne pourront pas l'utiliser
+pour d'autres preuves. Ce type d'annotations peut être utile pour gagner en
+confiance à propos des annotations globales, en testant qu'elles peuvent être
+utilisées dans certaines situations, ou à l'inverse, que certaines propriétés
+non voulues ne peuvent pas être prouvées.
+
+
+Il n'y a pas d'annotations \CodeInline{admit lemma}, l'annotation dédiée est
+l'annotation \CodeInline{axiom} qui sera décrite dans la
+section~\ref{l2:acsl-logic-definitions-axiomatic}.
 
 \levelThreeTitle{Exercices}
 
