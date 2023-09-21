@@ -3,7 +3,7 @@
 /*@
   requires \valid(array + (0 .. length-1));
   assigns  array[0 .. length-1];
-  ensures  \forall size_t i; 0 <= i < length ==> array[i] == 0;
+  ensures  \forall size_t j; 0 <= j < length ==> array[j] == 0;
 */
 void reset(int* array, size_t length){
   /*@

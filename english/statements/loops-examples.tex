@@ -8,17 +8,14 @@ examples allow to rapidly show interesting invariant and will allow us
 to introduce some important ACSL constructs.
 
 
+We can for example illustrate with the search function that allows to find a
+value in an array. For now, let us focus on the contract of the function:
 
-We can for example use the search function that allows to find a value
-in an array:
 
-
-\CodeBlockInput{c}{search.c}
-
+\CodeBlockInput[5]{c}{search-0.c}
 
 
 There are enough ideas in this example to introduce some important syntax.
-
 
 
 First, as we previously presented, the
@@ -28,17 +25,14 @@ validity of a readable address but also to state that a range of
 contiguous addresses is valid. It is expressed using this syntax:
 
 
-
 \begin{CodeBlock}{c}
 //@ requires \valid_read(a + (0 .. length-1));
 \end{CodeBlock}
 
 
-
 This precondition states that all addresses \CodeInline{a+0},
 \CodeInline{a+1}, \ldots{}, \CodeInline{a+length-1} must be valid readable
 locations.
-
 
 
 We also introduced two notations that are used almost all the time in
@@ -63,14 +57,12 @@ corresponding lines in our specification, we can read them this way:
 \end{CodeBlock}
 
 
-
 If we want to summarize the use of these keywords, we would say that on a
 range of values, a property is true, either about at least one of them
 or about all of them. A common scheme is to constrain this set using
 another property (here: \CodeInline{0 <= off < length}) and to prove the
 actual interesting property on this smaller set. \textbf{But using
 \texttt{exists} and \texttt{forall} is fundamentally different}.
-
 
 
 With \CodeInline{\textbackslash{}forall type a ; p(a) ==> q(a)},
@@ -85,7 +77,6 @@ it would then not correspond anymore to the idea of constraining a set for which
 we want to verify some other property.
 
 
-
 With \CodeInline{\textbackslash{}exists type a ; p(a) \&\& q(a)}, the
 constraint \texttt{p} is followed by a conjunction. We say there exists
 an element such that it satisfies the property \texttt{p} at the same
@@ -95,29 +86,58 @@ if \texttt{p} is not a tautology! Why? Is there an ``a'' such that p(a) implies
 q(a)? Let us take any ``a'' such that p(a) is false, then the implication is true.
 
 
-
-This part of the invariant deserves a particular attention:
-
+Notice that in this example, the \CodeInline{assumes} clause of the
+\CodeInline{in} behavior is exactly the negation of the \CodeInline{assumes}
+clause of the \CodeInline{notin} behavior, this is the reason why the
+\CodeInline{disjoint} and \CodeInline{complete} clauses are proved, in fact it
+could have been expressed with:
 
 
 \begin{CodeBlock}{c}
-//@ loop invariant \forall size_t j; 0 <= j < i ==> array[j] != element;
+  /*@ ...
+    behavior in:
+      assumes !(\forall size_t off ; 0 <= off < length ==> array[off] != element);
+    ...
+  */
 \end{CodeBlock}
 
 
+Now, let us talk about the loop annotations. The first step is to add the
+\CodeInline{loop assigns} clause. Here, it is simple: the loop only modifies the
+variable \CodeInline{i}. Thus, we need to bound \CodeInline{i}, it goes from
+\CodeInline{0} to \CodeInline{length}, this is our first loop invariant:
+\CodeInline{0 <= i <= length}. That also gives us the loop variant:
+\CodeInline{length - i}. Now, we can provide our ``main'' loop invariant. Here,
+it is related to the \CodeInline{assumes} clauses, and not to the
+\CodeInline{ensures} clauses. In particular, the interesting part of the loop is
+the fact that unless we meet the element that we search, it is not in the array,
+we exploit this starting from our \CodeInline{notin} assumes:
+\begin{CodeBlock}{c}
+  //@ \forall size_t off ; 0 <= off < length ==> array[off] != element;
+\end{CodeBlock}
+The variable that reaches \CodeInline{length} at the end of the loop is
+\CodeInline{i}, thus:
+\begin{CodeBlock}{c}
+  //@ loop invariant \forall size_t off ; 0 <= off < i ==> array[off] != element;
+\end{CodeBlock}
+is certainly a good candidate. Thus, we have the following loop annotations:
 
-Indeed, it defines the treatment performed by our loop, it indicates to
-WP what happens in the loop (or more precisely: what we learn) along
-the execution. Here, this formula indicates that at each iteration of
-the loop, we know that for each memory location between 0 and the next
+
+\CodeBlockInput[19]{c}{search-0.c}
+
+
+And indeed, our final loop invariant defines the treatment performed by our
+loop, it indicates to WP what happens in the loop (or more precisely: what we
+learn) along the execution. Here, this formula indicates that at each iteration
+of the loop, we know that for each memory location between 0 and the next
 location to visit (\CodeInline{i} excluded), the memory location contains a
 value different from the element we are looking for.
+
 
 The verification condition associated to the preservation of this invariant is
 a bit complex, and it is not interesting to precisely look at it,
 on the contrary, the proof that the invariant is established before
 executing the loop is interesting:
-
 
 
 \image{trivial}
@@ -131,17 +151,14 @@ we start the loop. And consequently, if we replace the value of
 \CodeInline{i} by 0 inside the formula of the invariant, we get:
 
 
-
 \begin{CodeBlock}{c}
 //@ loop invariant \forall size_t j; 0 <= j < 0 ==> array[j] != element;
 \end{CodeBlock}
 
 
-
 ``For all j, greater or equal to 0 and strictly lower than 0'', this
 part of the formula is necessarily false, our implication is then
 necessarily true.
-
 
 
 \levelThreeTitle{Examples with mutable arrays}
@@ -151,26 +168,24 @@ Let us present two examples with mutation of arrays. One with a mutation
 of all memory locations, the other with selective modifications.
 
 
-
 \levelFourTitle{Reset}
 
 
 Let us have a look at the function that resets an array of integers to 0.
 
 
-
 \CodeBlockInput{c}{reset.c}
 
 
-
-We can see that we use a construct for the invariant that is quite similar
-to what we have written for the previous example: we put an invariant to
-constrain the value of \CodeInline{i}, and we put another invariant that
-explains what the loop learned so far (all visited elements are now
-$0$). Let us just highlight the \CodeInline{assigns} and
-\CodeInline{loop assigns} clauses: again, we can use the notation
-\CodeInline{n .. m} to indicate which parts of the array are modified.
-
+This time, the loop does modify the content of the array, thus we have to
+provide this in the \CodeInline{loop assigns} clause. Notice that we can use
+the notation \CodeInline{n .. m} for this. Furthermore, we do not say that
+the loop assigns the content from \CodeInline{0} to \CodeInline{i-1} (since
+\CodeInline{i} is modified, and WP cannot exploit this) but from \CodeInline{0}
+to \CodeInline{length-1}, this is less precise, but it can be used by WP out the
+loop. Finally, this time we directly relate the invariant to the postcondition,
+the goal of the function is to reset the array from 0 to \CodeInline{length}, at
+a given iteration, the loop has done it from 0 to \CodeInline{i}.
 
 
 \levelFourTitle{Search and replace}
@@ -184,21 +199,20 @@ generally harder to guide the tool in such a case, because on one hand
 we must keep track of what is modified and what is not, and on the other
 hand, the induction relies on this fact.
 
-As an example, the first specification we can write for this function
-could be this one:
 
+As an example, the first specification and loop annotations we can write for
+this function could be this one (which follows basically the same process we
+had for the previous example):
 
 
 \CodeBlockInput{c}{search_and_replace-0.c}
 
 
-
-We use the logic function \CodeInline{\textbackslash{}at(v, Label)} that gives us the
-value of the variable \CodeInline{v} at the program point \CodeInline{Label}.
+We use the logic function \CodeInline{\textbackslash{}at(v, Label)} that gives
+us the value of the variable \CodeInline{v} at the program point \CodeInline{Label}.
 If we look at the usage of this function here, we see that in the
 invariant we try to establish a relation between the old values of the
 array and the potentially new values:
-
 
 
 \begin{CodeBlock}{c}
@@ -220,14 +234,11 @@ some facilities that we could use to write a very precise \CodeInline{assigns}
 clause, WP would not perfectly exploit it. Thus, we have to use an invariant and
 keep an approximation of the assigned memory location.
 
-If we try to prove this invariant with WP, it fails. In such a case, the simpler
-method is to add different assertions that expresses the different
-intermediate properties using assertions which we expect to be easily proved
-and which imply the invariant. Here, we can easily notice that WP does not
-succeed in maintaining the knowledge that we have not modified the remaining
-part of the array yet:
 
-
+If we try to prove this invariant with WP, it fails, because the
+\CodeInline{assigns} specification is not precise enough. Thus, in such a case,
+we provide an additional loop invariant to detail in the assigned range what are
+the locations that have not been modified yet by the loop at some iteration:
 
 
 \begin{CodeBlock}{c}
@@ -238,26 +249,24 @@ for(size_t i = 0; i < length; ++i){
 \end{CodeBlock}
 
 
-
 We can add this information as an invariant:
-
 
 
 \CodeBlockInput[13][26]{c}{search_and_replace-1.c}
 
 
-
 And this time the proof succeeds.
 
 
-
 \levelThreeTitle{Exercises}
+
 
 For all these exercises, use the following command line to start verification:
 
 \begin{CodeBlock}{bash}
 frama-c-gui -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast your-file.c
 \end{CodeBlock}
+
 
 \levelFourTitle{Non-mutating: For all, Exists, ...}
 
@@ -276,6 +285,7 @@ specification of the functions you have to write, thus the property that you
 have considered for this predicate should be inlined in the contract of the
 different functions.
 
+
 \begin{itemize}
 \item \CodeInline{forall\_pred} returns true if and only if \CodeInline{pred}
   is true for all elements ;
@@ -286,6 +296,7 @@ different functions.
 \item \CodeInline{some\_not\_pred} returns true if and only if \CodeInline{pred}
   is false for at least one element.
 \end{itemize}
+
 
 The two last functions should be written by just calling the two first ones.
 
@@ -304,6 +315,7 @@ your postcondition should contain an existential quantifier.
 
 \levelFourTitle{Binary Search}
 \label{l4:statements-loops-ex-bsearch}
+
 
 The following function searches for the position of a particular value in an
 array, assuming that this array is sorted. First, let us consider that the
@@ -366,9 +378,11 @@ First consider (and specify) that the two ranges are entirely separated.
 
 \textbf{Harder:} The true copy and copy backward functions
 
+
 In fact, a strong separation is not necessary. The actual precondition must
 guarantee that if the two arrays overlap, the beginning of the destination
 range must not be in the source range:
+
 
 \begin{CodeBlock}{c}
 //@ requires \separated(&src[0 .. len-1], dst) ;
