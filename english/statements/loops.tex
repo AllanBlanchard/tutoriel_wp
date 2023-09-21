@@ -487,8 +487,189 @@ invariant, we have to add this knowledge. See, for example:
 \end{Information}
 
 
-\levelThreeTitle{Early termination of loop}
+\levelThreeTitle{Multiple loop invariants}
 
+
+We can specify several \CodeInline{loop invariant} clauses on a loop. There are
+similarities in the way assertions and loop invariants are handled. Namely, just
+like when an assertion follows another, it can be proved using the previous one
+as a hypothesis, like in:
+\begin{CodeBlock}{c}
+assert A1: P(x);
+assert A2: Q(x);
+\end{CodeBlock}
+where \CodeInline{A2} can be proved with \CodeInline{A1} in hypothesis, the same
+happens with loop invariants. However, there are some subtleties. Let us
+consider the following situation:
+
+
+\CodeBlockInput[5]{c}{two-loop-invariants.c}
+
+
+Here, we have 4 verification conditions to prove:
+\begin{itemize}
+  \item \CodeInline{I1} is established,
+  \item \CodeInline{I2} is established,
+  \item \CodeInline{I1} is preserved by each loop iteration,
+  \item \CodeInline{I2} is preserved by each loop iteration.
+\end{itemize}
+For \CodeInline{I1} establishment, there is not much to say: WP generates a
+verification condition with all hypotheses that lead to the loop (so just the
+fact that \CodeInline{x} is 0) and we have to prove that \CodeInline{0 <= x}
+(we have used the option \CodeInline{-wp-no-let} to avoid immediate proof by
+Qed):
+
+
+\image{2-invs-I1-est}
+
+
+For \CodeInline{I2}, it is quite similar \emph{but} since we have proved that
+\CodeInline{I1} is established, we also add it as a hypothesis for proving that
+\CodeInline{I2} is established:
+
+
+\image{2-invs-I2-est}
+
+
+If there was a third loop invariant \CodeInline{I3}, the proof of its
+establishment would receive both the establishment of \CodeInline{I1} and
+\CodeInline{I2} as a hypothesis and so on.
+
+
+Then, we have to prove that \CodeInline{I1} and \CodeInline{I2} are preserved by
+each loop iteration. For proving that \CodeInline{I1} is preserved, we assume
+that all loop invariants are verified before the loop iteration, and we prove
+that \CodeInline{I1} is still true at the end of the iteration. However, we can
+add more assumptions. In particular, we can add that all loop invariants have
+been established before the loop starts. Thus, we get:
+\begin{itemize}
+  \item assuming that \CodeInline{I1} and \CodeInline{I2} were verified when the
+        loop started,
+  \item assuming also that all loop invariants are verified when the iteration
+        starts,
+  \item prove that \CodeInline{I1} is still true at the end of the iteration.
+\end{itemize}
+Note that we have slightly simplified the goal to focus on what is important
+here:
+
+
+\image{2-invs-I1-pres}
+
+
+Finally, when proving that \CodeInline{I2} is preserved, we can collect even
+more hypotheses since we also know that \CodeInline{I1} is preserved thus:
+\begin{itemize}
+  \item assuming that \CodeInline{I1} and \CodeInline{I2} were verified when the
+        loop started,
+  \item assuming also that all loop invariant are verified when the iteration
+        starts,
+  \item assuming that \CodeInline{I1} is preserved,
+  \item prove that \CodeInline{I2} is still true at the end of the iteration.
+\end{itemize}
+Again, and so on when there are more \CodeInline{loop invariant} clauses.
+
+
+\image{2-invs-I2-pres}
+
+
+\levelThreeTitle{Different kinds of loop invariants}
+
+
+Just like the \CodeInline{assert} clause that have the two variants
+\CodeInline{check} and \CodeInline{admit}, one can specify that some
+loop invariants must be only checked or admitted. The syntax is the following:
+
+
+\begin{CodeBlock}{c}
+/*@ check loop invariant <property> ;
+    admit loop invariant <property> ;
+\end{CodeBlock}
+
+
+Again, this has an impact on generated verification conditions and related
+hypotheses.
+
+
+The behavior associated to the \CodeInline{admit loop invariant} clause does not
+involve any particular subtlety. It is assumed exactly in the same situations as
+the standard \CodeInline{loop invariant} clause, so that the only difference
+between the two clauses is the fact that WP never generates a verification
+condition to check that the \CodeInline{admit loop invariant} clause is indeed
+true.
+
+
+The \CodeInline{check loop invariant} clause is slightly more complex to deal
+with. Since this clause must be checked to be true, WP generate verification
+conditions for it just like for standard \CodeInline{loop invariant} clause.
+Then, since it is only checked, one must not assume that it is true for proving
+other properties. However, for proving that the \CodeInline{check loop invariant}
+clause is preserved, one still has to assume that it is true at the beginning of
+the iteration but \textit{only} for this proof of preservation (not for all other
+loop invariants).
+
+
+Let us illustrate the behavior with the different verification conditions of
+\CodeInline{C3} and \CodeInline{I4} in the following code snippet (again, we
+use \CodeInline{-wp-no-let} and the verification conditions have been slightly
+cleaned):
+
+
+\CodeBlockInput[5]{c}{check-admit-invariant.c}
+
+
+The verification condition associated to the establishment of \CodeInline{C3} is
+quite simple, since it appears after the loop invariants \CodeInline{I1} and
+\CodeInline{A2} that must be both admitted (even if \CodeInline{A2} has not been
+proved by WP), we have those two properties in the hypotheses:
+
+
+\image{check-loop-est}
+
+
+The verification condition associated to the establishment of \CodeInline{I4} is
+more interesting: it still receives \CodeInline{I1} and \CodeInline{A2} in the
+hypotheses, but \CodeInline{C3} is not there because it is only checked and not
+admitted after that:
+
+
+\image{inv-loop-est}
+
+
+Then, we can have a look to the preservation of these invariants. For
+\CodeInline{C3}, in the hypotheses, we find:
+\begin{itemize}
+  \item all the established invariants, including \CodeInline{C3},
+  \item all the invariants assumed (induction hypothesis), including \CodeInline{C3},
+  \item all the invariants that precede \CodeInline{C3}, assumed to be preserved.
+\end{itemize}
+
+
+\image{check-loop-pres}
+
+
+On the opposite, if we look at the preservation of \CodeInline{I4}, in the
+hypotheses, we find:
+\begin{itemize}
+  \item all the established invariants, excluding \CodeInline{C3},
+  \item all the invariants assumed (induction hypothesis), excluding \CodeInline{C3},
+  \item all the invariants that precede \CodeInline{I4}, assumed to be preserved,
+        excluding \CodeInline{C3}.
+\end{itemize}
+
+
+\image{inv-loop-pres}
+
+
+Understanding how loop invariant are used by WP depending on the order in which
+they appear is useful to prove complex invariants. The more we provide useful
+hypotheses for a proof, the easier the proof will be. In particular, Qed can do
+a lot of simplification by rewriting hypotheses using deduction rules. Thus,
+providing first the simplest invariants and then the most complex can help the
+proof process by first proving easy properties and then using the acquired
+knowledge to prove the most complex ones.
+
+
+\levelThreeTitle{Early termination of loop}
 
 
 A loop invariant must be true each time the condition of the loop is checked. In

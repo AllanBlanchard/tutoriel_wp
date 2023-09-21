@@ -1,0 +1,126 @@
+[kernel] Parsing check-admit-invariant.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+[wp] 4 goals scheduled
+[wp] Proved goals:    4 / 4
+  Qed:             4
+------------------------------------------------------------
+  Function main
+------------------------------------------------------------
+
+Goal Preservation of Invariant 'C3' (file check-admit-invariant.c, line 10):
+Assume {
+  Type: is_sint32(x) /\ is_sint32(x_1) /\ is_sint32(x_2) /\ is_sint32(y) /\
+      is_sint32(y_1).
+  (* Initializer *)
+  Init: (Init_x_0=true).
+  (* Initializer *)
+  Init: x_2 = 0.
+  (* Initializer *)
+  Init: y_1 = 0.
+  (* Invariant 'I1' *)
+  Have: 0 <= x_2.
+  (* Invariant 'A2' *)
+  Have: x_2 <= 10.
+  (* Invariant 'C3' *)
+  Have: y_1 <= 20.
+  (* Invariant 'I4' *)
+  Have: (2 * x_2) = y_1.
+  (* Loop assigns ... *)
+  Have: ((Init_x_0=true) -> (Init_x_1=true)).
+  (* Invariant 'I1' *)
+  Have: 0 <= x_1.
+  (* Invariant 'A2' *)
+  Have: x_1 <= 10.
+  (* Invariant 'C3' *)
+  Have: y_1 <= 20.
+  (* Invariant 'I4' *)
+  Have: (2 * x_1) = y_1.
+  (* Then *)
+  Have: x_1 <= 9.
+  Have: (1 + x_1) = x.
+  Have: (2 + y_1) = y.
+  (* Invariant 'I1' *)
+  Have: 0 <= x.
+  (* Invariant 'A2' *)
+  Have: x <= 10.
+}
+Prove: y <= 20.
+Prover Qed returns Valid
+
+------------------------------------------------------------
+
+Goal Establishment of Invariant 'C3' (file check-admit-invariant.c, line 10):
+Assume {
+  Type: is_sint32(x) /\ is_sint32(y).
+  (* Initializer *)
+  Init: x = 0.
+  (* Initializer *)
+  Init: y = 0.
+  (* Invariant 'I1' *)
+  Have: 0 <= x.
+  (* Invariant 'A2' *)
+  Have: x <= 10.
+}
+Prove: y <= 20.
+Prover Qed returns Valid
+
+------------------------------------------------------------
+
+Goal Preservation of Invariant 'I4' (file check-admit-invariant.c, line 11):
+Assume {
+  Type: is_sint32(x) /\ is_sint32(x_1) /\ is_sint32(x_2) /\ is_sint32(y) /\
+      is_sint32(y_1).
+  (* Initializer *)
+  Init: (Init_x_0=true).
+  (* Initializer *)
+  Init: x_2 = 0.
+  (* Initializer *)
+  Init: y_1 = 0.
+  (* Invariant 'I1' *)
+  Have: 0 <= x_2.
+  (* Invariant 'A2' *)
+  Have: x_2 <= 10.
+  (* Invariant 'I4' *)
+  Have: (2 * x_2) = y_1.
+  (* Loop assigns ... *)
+  Have: ((Init_x_0=true) -> (Init_x_1=true)).
+  (* Invariant 'I1' *)
+  Have: 0 <= x_1.
+  (* Invariant 'A2' *)
+  Have: x_1 <= 10.
+  (* Invariant 'I4' *)
+  Have: (2 * x_1) = y_1.
+  (* Then *)
+  Have: x_1 <= 9.
+  Have: (1 + x_1) = x.
+  Have: (2 + y_1) = y.
+  (* Invariant 'I1' *)
+  Have: 0 <= x.
+  (* Invariant 'A2' *)
+  Have: x <= 10.
+}
+Prove: (2 * x) = y.
+Prover Qed returns Valid
+
+------------------------------------------------------------
+
+Goal Establishment of Invariant 'I4' (file check-admit-invariant.c, line 11):
+Assume {
+  Type: is_sint32(x) /\ is_sint32(y).
+  (* Initializer *)
+  Init: x = 0.
+  (* Initializer *)
+  Init: y = 0.
+  (* Invariant 'I1' *)
+  Have: 0 <= x.
+  (* Invariant 'A2' *)
+  Have: x <= 10.
+}
+Prove: (2 * x) = y.
+Prover Qed returns Valid
+
+------------------------------------------------------------
+[wp:pedantic-assigns] check-admit-invariant.c:5: Warning: 
+  No 'assigns' specification for function 'main'.
+  Callers assumptions might be imprecise.

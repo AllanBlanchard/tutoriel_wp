@@ -583,7 +583,7 @@ In the \CodeInline{else} block, knowing that\CodeInline{a} lies between -99 and
 0, but knowing nothing about \CodeInline{b}, we could hardly know if the
 operation \CodeInline{a += b} produces a result that is greater than 0.
 
-The WP plug-in will, of course, prove the function without problems,
+The WP plugin will, of course, prove the function without problems,
 since it produces by itself the properties that are necessary for the
 proof. In fact, the analysis which variables are necessary or not (and,
 consequently, the application of the constancy rule) is conducted
@@ -599,6 +599,118 @@ If the variables of $R$ have not been modified by the operation
 $Q$), then the properties $P \wedge R \Rightarrow P$ and
 $Q \Rightarrow Q \wedge R$ hold.
 
+
+\levelThreeTitle{Assertion}
+
+
+ACSL assertions needs to be proved (or used). Thus, they need their WP calculus
+rules. There are three different kinds of assertions in ACSL:
+\begin{itemize}
+  \item \CodeInline{assert}
+  \item \CodeInline{check}
+  \item \CodeInline{admit}
+\end{itemize}
+
+
+Each kind of assertion has a different behavior.
+
+
+Let us start with the one we have used so far: \CodeInline{assert}. An
+annotation \CodeInline{assert P} has the following informal semantics: the
+property \CodeInline{P} must be verified at this program point, and then the
+fact that it is true at this program point is added as a hypothesis when proving
+properties that come later. Note that it might not be true, but it is still
+added to the proof context anyway. However, if it is not true, first, we cannot
+to prove it, and second, the properties that we are proved admitting this
+property are marked as ``valid under hypothesis''.
+
+
+The annotation \CodeInline{check P} means that the property \CodeInline{P} must
+be verified at this program point, but then it is not added to the proof context
+for the proof of the annotations that follow it.
+
+
+Finally, the annotation \CodeInline{admit P} means that from this program point,
+the property \CodeInline{P} is considered to be true, thus added to the proof
+context of the annotations that follow it, even if we do not verify it at this
+program point.
+
+
+Let us illustrate these different kind of annotations with this short example:
+
+
+\CodeBlockInput{c}{annot-kinds.c}
+
+
+\image{annot-kinds}
+
+
+In the \CodeInline{check\_annot} function, neither the \CodeInline{check} nor
+the \CodeInline{ensures} clauses are proved. Each one have been tried separately
+(and failed).
+
+
+In the \CodeInline{admit\_annot} function, the \CodeInline{admit} annotation
+appear with a blue and green bullet (just like when we have a contract on a
+function declaration without a body), meaning that from this point, it is
+considered to be valid even it is not proved. Thus, the \CodeInline{ensures}
+clause is proved, since \CodeInline{\textbackslash{}false} is assumed to be
+true.
+
+
+Finally, in the \CodeInline{assert\_annot} function, the \CodeInline{assert}
+annotation is not proved, but from this point it is assumed to be true. Thus,
+the \CodeInline{ensures} clause is proved. However, while in the
+\CodeInline{admit\_annot} function it appears entirely valid (green bullet),
+here, it appears valid under hypothesis: the validity depends on the validity
+of a property that has not been proved yet (and will not).
+
+
+We can encode these different behaviors with the following WP rules.
+
+
+The rule for the \CodeInline{check} annotation is the following:
+$$ wp(check\ A, Post) := A \wedge Post $$
+which means that we add to the properties we must verify another property, which
+is the property $A$.
+
+
+The rule for the \CodeInline{admit} annotation is the following:
+$$ wp(admit\ A, Post) := A \Rightarrow Post $$
+which means that assuming $A$, we must verify the postcondition (of the
+statement, which can be a property that has been computing using other WP
+rules).
+
+
+Finally, the rule for the \CodeInline{assert} combines the previous ones.
+Indeed:
+\begin{CodeBlock}{c}
+  assert P;
+\end{CodeBlock}
+is equivalent to:
+\begin{CodeBlock}{c}
+  check P; // first, verify that P is true
+  admit P; // now, we can assume that it is
+\end{CodeBlock}
+Thus:
+$$ wp(assert\ A, Post) := wp(check\ A, wp(admit\ A, Post)) \equiv A \wedge (A \Rightarrow Post) $$
+
+
+This allows to introduce some sort of cut in the proof, saying "OK, let us first
+prove $A$ and once it is done, we will prove that when $A$ is true, $Post$ is
+too".
+
+
+One could think the \CodeInline{admit} annotation is dangerous. It is. But it
+can be useful when one wants to debug a proof. In particular, in
+Chapter~\ref{l1:proof-methodologies}, we will see that \CodeInline{assert}
+annotations can be used to guide program proof. During the process,
+\CodeInline{admit} can be useful to try annotations without having to
+immediately prove them or to consider some annotations as valid to make the
+design phase faster. More rarely, it can be useful to explicit some hypotheses
+about hardware, or software platform, but for this, it is more common to use
+Frama-C kernel options or axioms (we will present axioms in
+Section~\ref{l2:acsl-logic-definitions-axiomatic}).
 
 
 \levelThreeTitle{Exercises}

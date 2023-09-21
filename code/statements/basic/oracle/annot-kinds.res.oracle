@@ -1,0 +1,24 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing annot-kinds.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function admit_annot
+[rte:annot] annotating function assert_annot
+[rte:annot] annotating function check_annot
+[wp] 5 goals scheduled
+[wp] [Unsuccess] typed_check_annot_ensures (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_check_annot_check (Alt-Ergo) (Cached)
+[wp] [Valid] typed_admit_annot_ensures (Qed)
+[wp] [Valid] typed_assert_annot_ensures (Qed)
+[wp] [Unsuccess] typed_assert_annot_assert (Alt-Ergo) (Cached)
+[wp] Proved goals:    2 / 5
+  Qed:             2
+  Unsuccess:       3
+[wp:pedantic-assigns] annot-kinds.c:2: Warning: 
+  No 'assigns' specification for function 'check_annot'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] annot-kinds.c:7: Warning: 
+  No 'assigns' specification for function 'admit_annot'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] annot-kinds.c:12: Warning: 
+  No 'assigns' specification for function 'assert_annot'.
+  Callers assumptions might be imprecise.

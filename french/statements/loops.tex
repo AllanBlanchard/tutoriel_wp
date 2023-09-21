@@ -476,6 +476,194 @@ invariant ajouté.
 \end{Information}
 
 
+\levelThreeTitle{Multiples invariants de boucles}
+
+
+Nous pouvons spécifier plusieurs clauses \CodeInline{loop invariant} sur une
+boucle. Il y a des similarités dans la manière dont les assertions et les
+invariants de boucles sont traités. En particulier, quand une assertion en suit
+une autre, elle peut être prouvée en utilisant cette dernière comme hypothèse,
+comme dans :
+\begin{CodeBlock}{c}
+assert A1: P(x);
+assert A2: Q(x);
+\end{CodeBlock}
+où \CodeInline{A2} peut être prouvée avec \CodeInline{A1} en hypothèse, nous
+pouvons faire la même chose avec les invariants de boucles. Cependant, il y a
+quelques subtilités. Considérons cet exemple :
+
+
+\CodeBlockInput[5]{c}{two-loop-invariants.c}
+
+
+Ici, nous avons 4 conditions de vérification à prouver :
+\begin{itemize}
+  \item \CodeInline{I1} est établi ;
+  \item \CodeInline{I2} est établi ;
+  \item \CodeInline{I1} est préservé par chaque itération de boucle ;
+  \item \CodeInline{I2} est préservé par chaque itération de boucle.
+\end{itemize}
+Pour l'établissement de \CodeInline{I1}, il y a peu de choses à dire : WP
+génère une condition de vérification avec toutes les hypothèses qui mènent à la
+boucle (ici, uniquement le fait que \CodeInline{x} vaut 0) et nous devons
+prouver que l'invariant est vrai (ici, \CodeInline{x <= 0}). Cela nous donne
+la condition de vérification suivante (nous avons utilisé l'option
+\CodeInline{-wp-no-let} pour éviter une preuve immédiate par Qed) :
+
+
+\image{2-invs-I1-est}
+
+
+Pour \CodeInline{I2}, c'est assez similaire. \textit{Mais}, puisque nous avons
+prouvé que \CodeInline{I1} est établi, nous l'ajoutons dans les hypothèses pour
+prouver que \CodeInline{I2} est établi :
+
+
+\image{2-invs-I2-est}
+
+
+Si nous avions un troisième invariant de boucle \CodeInline{I3}, la preuve de
+son établissement recevrait la connaissance que \CodeInline{I1} et \CodeInline{I2}
+sont établis en hypothèse et ainsi de suite.
+
+
+Ensuite, nous devons prouver que \CodeInline{I1} et \CodeInline{I2} sont
+préservés par chaque itération. Pour prouver que \CodeInline{I1} est préservé,
+nous supposons que tous les invariants de boucles sont vrais avant l'itération,
+et nous prouvons que \CodeInline{I1} est toujours vrai à la fin de l'itération.
+Cependant, nous pouvons ajouter des hypothèses supplémentaires. En particulier,
+nous pouvons ajouter que tous les invariants de boucles étaient vrais avant le
+début de la boucle (établissement). Ce qui nous donne :
+\begin{itemize}
+  \item en supposant que \CodeInline{I1} et \CodeInline{I2} étaient vrai au
+        début de la boucle ;
+  \item en supposant que tous les invariants sont vérifiés quand l'itération
+        commence ;
+  \item prouvons que \CodeInline{I1} est toujours vraie à la fin de l'itération.
+\end{itemize}
+Notons que nous avons légèrement simplifié la condition de vérification pour
+nous concentrer sur les aspects les plus importants ici :
+
+
+\image{2-invs-I1-pres}
+
+
+Finalement, pour prouver que \CodeInline{Ié} est préservé, nous pouvons
+collecter encore plus d'hypothèses puisque nous savons maintenant que
+\CodeInline{I1} est préservé, donc :
+\begin{itemize}
+  \item en supposant que \CodeInline{I1} et \CodeInline{I2} étaient vrai au
+        début de la boucle ;
+  \item en supposant que tous les invariants sont vérifiés quand l'itération
+        commence ;
+  \item en supposant aussi que \CodeInline{I1} est préservé,
+  \item prouvons que \CodeInline{I2} est toujours vraie à la fin de l'itération.
+\end{itemize}
+Et à nouveau, nous ferions de même s'il y avait d'autres invariants à prouver.
+
+
+\image{2-invs-I2-pres}
+
+
+\levelThreeTitle{Différentes sortes d'invariants de boucle}
+
+
+Tout comme les clauses \CodeInline{assert} qui ont deux variantes
+\CodeInline{check} et \CodeInline{admit}, nous pouvons spécifier des invariants
+de boucle qui ne sont que vérifiés ou admis. La syntaxe est la suivante :
+
+
+\begin{CodeBlock}{c}
+/*@ check loop invariant <property> ;
+    admit loop invariant <property> ;
+\end{CodeBlock}
+
+
+À nouveau, cela change la génération des conditions de vérifications et les
+hypothèses reliées.
+
+
+Le comportement associé aux clauses \CodeInline{admit loop invariant} n'a pas
+de subtilité particulière. Une telle close est ajoutée comme hypothèse exactement
+dans les mêmes situations que pour une clause \CodeInline{loop invariant}
+classique, de telle sorte que la seule différence entre ces deux clauses est le
+fait que WP ne génère pas de condition de vérification à vérifier pour s'assurer
+que la clause \CodeInline{admit loop invariant} est vraie.
+
+
+La clause \CodeInline{check loop invariant} est un petit peu plus compliquée à
+traiter. Puisque la clause doit être vérifiée, WP génère des conditions de
+vérification comme il le fait pour la clause \CodeInline{loop invariant}
+classique. Ensuite, puisque cette clause est seulement vérifiée, nous ne devons
+pas la supposer vraie pour prouver d'autres propriétés. Cependant, pour prouver
+qu'une clause \CodeInline{check loop invariant} est préservée, nous devons
+quand même supposer qu'elle est vraie au début de la boucle, mais
+\textit{seulement} pour cette preuve de préservation (pas pour les autres)
+invariants de boucle.
+
+
+Illustrons ce comportement avec les différentes conditions de vérifications
+générées pour \CodeInline{C3} et \CodeInline{I4} de l'extrait de code suivant
+(à nouveau, nous utilisons l'option \CodeInline{-wp-no-let} et nous avons
+légèrement nettoyés les conditions de vérification) :
+
+
+\CodeBlockInput[5]{c}{check-admit-invariant.c}
+
+
+La condition de vérification associée à l'établissement de \CodeInline{C3} est
+simple, puisqu'elle apparaît après les invariants de boucle \CodeInline{I1} et
+\CodeInline{A2} qui doivent tous deux être admis (même si \CodeInline{A2} n'a
+pas été prouvée), nous avons ces deux propriétés en hypothèse :
+
+
+\image{check-loop-est}
+
+
+La condition de vérification associée à l'établissement de \CodeInline{I4} est
+plus intéressante : elle reçoit bien \CodeInline{I1} et \CodeInline{A2} dans
+ses hypothèses, mais \CodeInline{C3} n'y est pas, car elle n'est que vérifiée et
+pas admise après cela.
+
+
+\image{inv-loop-est}
+
+
+Ensuite, nous pouvons regarder la préservation de ces invariants. Pour
+\CodeInline{C3}, dans les hypothèses, nous trouvons :
+\begin{itemize}
+  \item tous les invariants établis, incluant \CodeInline{C3} ;
+  \item tous les invariants admis (hypothèse d'induction), incluant \CodeInline{C3} ;
+  \item tous les invariants qui précèdent \CodeInline{C3}, dont la préservation est admise.
+\end{itemize}
+
+
+\image{check-loop-pres}
+
+
+À l'inverse, si nous regardons la préservation de \CodeInline{I4}, dans les
+hypothèses, nous trouvons :
+\begin{itemize}
+  \item tous les invariants établis, mais pas \CodeInline{C3} ;
+  \item tous les invariants admis (hypothèse d'induction), mais pas \CodeInline{C3} ;
+  \item tous les invariants qui précèdent \CodeInline{I3}, dont la préservation
+        est admise, mais pas \CodeInline{C3}.
+\end{itemize}
+
+
+\image{inv-loop-pres}
+
+
+Comprendre comment les invariants sont utilisés par WP en fonction de l'ordre
+dans lequel ils apparaissent est utile pour prouver des invariants complexes.
+Plus nous transmettons d'hypothèses utiles pour la preuve, plus elle sera facile.
+En particulier, Qed peut faire beaucoup de simplification en faisant des
+réécritures dans les hypothèses à l'aide de règles de déduction. Par conséquent,
+fournir d'abord les invariants les plus simples puis les plus complexes peut
+aider le processus de preuve en commençant par prouver les propriétés facile,
+puis en utilisant les connaissances obtenues pour prouver les plus complexes.
+
+
 \levelThreeTitle{Terminaison prématurée de boucle}
 
 
