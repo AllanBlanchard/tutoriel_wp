@@ -619,9 +619,10 @@ Let us start with the one we have used so far: \CodeInline{assert}. An
 annotation \CodeInline{assert P} has the following informal semantics: the
 property \CodeInline{P} must be verified at this program point, and then the
 fact that it is true at this program point is added as a hypothesis when proving
-properties that come later. Note that it might not be true, but it will be added
-to the proof context anyway (however, it is not true, we will not be able to
-prove it).
+properties that come later. Note that it might not be true, but it is still
+added to the proof context anyway. However, if it is not true, first, we cannot
+to prove it, and second, the properties that we are proved admitting this
+property are marked as ``valid under hypothesis''.
 
 
 The annotation \CodeInline{check P} means that the property \CodeInline{P} must
