@@ -713,6 +713,134 @@ Frama-C kernel options or axioms (we will present axioms in
 Section~\ref{l2:acsl-logic-definitions-axiomatic}).
 
 
+\levelThreeTitle{WP plugin vs. Dijkstra's WP calculus}
+
+
+One might have notice from the beginning of this section that the $wp$ function
+starts from the postcondition and, instruction after instruction, changes the
+formula until it reaches the beginning of the function, when it generates the
+verification condition (as briefly explained in
+Section~\ref{l3:statements-basic-consequence}), that we must verify.
+
+
+However, one might have also noticed that from the very beginning of this book,
+in most examples, we do not have \emph{one} verification condition to verify,
+but \emph{several}. On a theoretical aspect, this is not a crucial difference,
+but on a practical aspect, it allows generating simpler verification conditions,
+thus easier to verify using SMT solvers.
+
+
+In fact, the WP plugin generates several verification conditions in parallel
+during the WP calculus. Each time it meets a new instruction, the $wp$ function
+is applied for this instruction on all verification conditions involved in the
+program path the instruction belongs to (to guarantee this, the conditional
+rule is also handled slightly differently, but we will not detail this aspect).
+However, when this step includes the proof of a property (for example, an
+\CodeInline{assert} annotation), instead of applying the rule by adding it as a
+conjunction, it is simply added separately to the set of verification conditions
+to prove. Intuitively: we start a new weakest precondition calculus in parallel
+from this program point.
+
+
+Let us illustrate this on a toy example:
+
+
+\CodeBlockInput{c}{wp-plugin-calculus-toy.c}
+
+
+We start (in 1) with two verification conditions:
+\begin{itemize}
+  \item \CodeInline{VC1: P(x)},
+  \item \CodeInline{VC2: P(y)}.
+\end{itemize}
+We apply the transformer of assignment on each of them, thus we reach 2 with:
+\begin{itemize}
+  \item \CodeInline{VC1: P(x * y)},
+  \item \CodeInline{VC2: P(y)}.
+\end{itemize}
+In 2, we have to deal with the conditional. Instead of directly applying the
+standard WP rule, we split the analysis in two sets of verification conditions,
+initially equivalent. Let us consider the \CodeInline{else} branch, then the
+\CodeInline{then} branch.
+
+
+From 2 to 3, we meet the \CodeInline{check} annotation, thus we add a new
+verification condition, we get the set:
+\begin{itemize}
+  \item \CodeInline{VC1: P(x * y)},
+  \item \CodeInline{VC2: P(y)},
+  \item \CodeInline{VC3: Q(y)}.
+\end{itemize}
+Then, we apply the assignment rule, and we get in 4:
+\begin{itemize}
+  \item \CodeInline{VC1: P(x * (y+1))},
+  \item \CodeInline{VC2: P(y+1)},
+  \item \CodeInline{VC3: Q(y+1)}.
+\end{itemize}
+
+
+From 2 to 5, we meet the \CodeInline{assert} annotation, thus we add this
+knowledge to all verification conditions, and we create a new one:
+\begin{itemize}
+  \item \CodeInline{VC1: Q(x) ==> P(x * y)},
+  \item \CodeInline{VC2: Q(x) ==> P(y)},
+  \item \CodeInline{VC4: Q(x)}.
+\end{itemize}
+Then we apply the assignment rule, and we get in 6:
+\begin{itemize}
+  \item \CodeInline{VC1: Q(x+1) ==> P((x+1) * y)},
+  \item \CodeInline{VC2: Q(x+1) ==> P(y)},
+  \item \CodeInline{VC4: Q(x+1)}.
+\end{itemize}
+
+
+Now we have to reconcile the two sets. Let us not enter into the details (just
+notice the introduced primed variables, the trick is here) of how it is done, we
+get, in 7, something like:
+\begin{CodeBlock}{text}
+  VC1:
+    ((x <= 0 ==> y' == y+1 && x' == x) &&
+     (x >  0 ==> y' == y   && x' == x+1 && Q(x+1))) ==>
+       P(x' * y')
+
+  VC2:
+    ((x <= 0 ==> y' == y+1) &&
+     (x >  0 ==> y' == y    && Q(x+1))) ==>
+       P(y')
+  VC3:
+    (x <= 0) ==> Q(x+1)
+
+  VC4:
+    (x >  0) ==> Q(x+1)
+\end{CodeBlock}
+
+
+Finally, we meet the precondition, and we obtain in 8:
+\begin{CodeBlock}{text}
+  VC1:
+    P(x) ==>
+      ((x <= 0 ==> y' == y+1 && x' == x) &&
+       (x >  0 ==> y' == y   && x' == x+1 && Q(x+1))) ==>
+         P(x' * y')
+
+  VC2:
+    P(x) ==>
+      ((x <= 0 ==> y' == y+1) &&
+       (x >  0 ==> y' == y    && Q(x+1))) ==>
+         P(y')
+  VC3:
+    P(x) ==> (x <= 0) ==> Q(x+1)
+
+  VC4:
+    P(x) ==> (x >  0) ==> Q(x+1)
+\end{CodeBlock}
+
+
+We can see that for each property that must be proved, we have built a separate
+verification condition that gathers the knowledge available along the path that
+leads to the program point where its verification is asked.
+
+
 \levelThreeTitle{Exercises}
 
 
