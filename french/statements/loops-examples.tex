@@ -1,3 +1,81 @@
+\levelThreeTitle{Écrire des annotations de boucle}
+
+
+L'écriture des annotations de boucles demande un effort important pendant la
+vérification. Il n'y a pas de manière parfaite de faire ce travail. En
+particulier, trouver le bon invariant et la bonne manière de l'exprimer, est
+principalement une question d'expérience. Néanmoins, quelques idées simples
+peuvent aider, afin d'éviter certaines erreurs communes qui peuvent faire perdre
+beaucoup de temps pendant le processus.
+
+
+Avant toute chose, nous devons exprimer une clause \CodeInline{loop assigns}
+correcte. Elle est généralement facile à écrire (il suffit de regarder les
+instructions d'affectation et les appels de fonctions), et si elle est
+incorrecte nous pourrions prouver des propriétés fausses, ce qui nous ferait
+perdre du temps. Il est plutôt déconseillé de chercher à fournir des clauses
+\CodeInline{loop assigns} trop précises. WP ne peut pas utiliser efficacement
+des clauses comme \CodeInline{array[x .. y]} lorsque \CodeInline{x} ou
+\CodeInline{y} sont elles-mêmes modifiées, on préférera donc des bornes qui
+les incluent tout en étant constante pendant l'exécution de la boucle. Si nous
+avons ensuite besoin d'informations plus précises pendant la preuve des
+invariants, il sera plus facile de fournir des invariants supplémentaires pour
+cela.
+
+
+Ensuite, nous bornons les différentes variables qui sont assignées, en
+particulier les indices. Ces invariants sont généralement faciles à deviner,
+exprimer et vérifier. Nous mettons ces invariants au début de la liste des
+clauses \CodeInline{loop invariant}, puisque, comme nous l'avons expliqué
+dans les sections~\ref{l3:statements-loops-multi-inv}
+et~\ref{l3:statements-loops-inv-kinds}, l'ordre des invariants est important
+et ces propriétés très simples peuvent être propagées par WP dans les autres
+invariants pour simplifier la condition de vérification à prouver.
+
+
+Pour la plupart des boucles, exceptées celles qui reposent sur une condition
+complexe, une fois que cette étape est réalisée, il est facile de fournir une
+clause \CodeInline{loop variant}. Les variables que nous venons de borner sont
+une bonne piste : nous avons juste à regarder la valeur qu'elles vont atteindre
+en fin d'exécution. Par exemple, si dans la boucle, on a une variable
+\CodeInline{i} qui va de 0 à \CodeInline{n}, \CodeInline{n - i} est un bon
+candidat. Pour des boucles plus complexes, nous pouvons utiliser du code
+fantôme (que l'on présente en section~\ref{l2:acsl-logic-definitions-ghost-code})
+pour rendre explicite une mesure utilisable pour un variant de boucle.
+
+
+Ensuite, nous ajoutons nos invariants « principaux » à la boucle, c'est-à-dire
+ceux qui sont liés à la postcondition de la boucle (qui peut être aussi la
+postcondition de la fonction). Pour cela, nous pouvons utiliser la postcondition
+elle-même comme un guide. Si nous avons quelque chose comme
+\CodeInline{ensures P(n);} et une boucle qui itère \CodeInline{i} de 0 à
+\CodeInline{n}, il y a fort à parier que \CodeInline{loop invariant P(i);} soit
+un bon invariant de boucle. Notons que dans certaines situations, c'est la
+clause \CodeInline{assumes} d'un comportement qui se révèle être intéressante,
+typiquement quand le résultat de l'exécution est une simple valeur qui dépend
+de l'état en précondition, nous verrons cela dans un exemple plus tard. Ces
+invariants doivent généralement être positionnés en fin de liste des invariants
+de boucle.
+
+
+Nous pouvons (optionnellement) avoir besoin de « glu » pour prouver les
+invariants « principaux ». Par exemple, si nous avons volontairement fourni
+une clause \CodeInline{loop assigns} imprécise, nous pourrions avoir besoin
+d'un invariant de boucle pour expliquer que certaines parties de la mémoire
+n'ont pas été modifiées, ou nous pourrions avoir besoin d'expliquer aux
+prouveurs que, parce que certaines propriétés sont vraies, nous pouvons déduire
+que l'invariant « principal » est vérifié, etc. Ces invariants doivent être
+placés avant les invariants « principaux », mais après les invariants simples
+qui bornent les variables. Ordonner ces invariants pourrait ne pas être si
+direct, généralement nous passerons par un processus d'essai et erreur.
+
+
+Dans la suite de cette section, nous illustrons cette approche avec quelques
+exemples. Même si dans ce processus, il est fortement conseillé de lancer la
+preuve entre chaque étape, nous n'irons généralement pas jusqu'à ce niveau de
+détail dans les exemples futurs.
+
+
 \levelThreeTitle{Exemple avec un tableau en lecture seule}
 \label{l3:statements-loops-examples-ro}
 

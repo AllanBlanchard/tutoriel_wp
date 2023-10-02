@@ -1,3 +1,71 @@
+\levelThreeTitle{Writing loop annotations}
+
+
+Writing loop annotations requires a lot of work during program proof. There is
+no perfect way of writing them. In particular, finding the right invariant, and
+the right way to express it, is mostly a matter of experience. Nevertheless, a
+few simple ideas can help, so that at least we do not miss common mistakes that
+can make lose a lot of time during the process.
+
+
+Before anything else, we write the \CodeInline{loop assigns} clause. It is
+generally easy to write (just look at the assignment instructions and function
+calls), and if it is incorrect we can prove wrong properties that can make us
+lose time. When writing them, we should not try to be too precise. WP cannot use
+efficiently something like \CodeInline{array[x .. y]} when \CodeInline{x} or
+\CodeInline{y} are themselves modified, so we generally prefer bounds that
+include them while being constant during the execution of the loop, if we need
+more precise information during the proof of the invariants, we will provide
+some additional invariants for this.
+
+
+Then, we bound the different variables that are assigned, in particular indexes.
+These invariants are generally easy to guess, express and verify. We put these
+invariants at the beginning of the list of \CodeInline{loop invariant} clauses,
+since, as we explained in Sections~\ref{l3:statements-loops-multi-inv}
+and~\ref{l3:statements-loops-inv-kinds}, the order of the invariants is important,
+and these simple properties can be propagated by WP in the other loop invariants
+to make verification conditions simplifications.
+
+
+For most loops, except the ones that rely on a complex condition, once this step
+is done, it is easy to provide the \CodeInline{loop variant} clause. We can just
+look at the variables that we have just bounded and what is the value that it
+will reach at the end of the loop. For example, if in the loop some \CodeInline{i}
+goes from 0 to \CodeInline{n}, \CodeInline{n - i} is a good candidate. For more
+complex loops, one can rely on ghost code (that we present in
+Section~\ref{l2:acsl-logic-definitions-ghost-code}) to make some measure
+explicit and use it to provide a suitable loop variant.
+
+
+Then, we add the ``main'' loop invariants of the loop, i.e. those that relate to
+the expected postcondition of the loop (that might be the postcondition of the
+function itself). For this, we can use the postcondition itself as a guide. If
+we have something like \CodeInline{ensures P(n);} and a loop that iterates
+\CodeInline{i} from 0 to \CodeInline{n}, \CodeInline{loop invariant P(i);} is
+probably a good candidate. Notice that in some situations, the
+\CodeInline{assumes} clause might also be interesting, typically when the result
+is a simple value that depends on the precondition state, as we will see in some
+later example. These invariants should be positioned at the end of the list of
+loop invariants.
+
+
+We may (optionally) need some ``glue'' to prove the most interesting ``main''
+loop invariant. For example, if we have voluntarily provided an imprecise
+\CodeInline{loop assigns} clause, we might need a loop invariant to explain that
+some parts are not modified, or we may need to explain to the solver that
+because some properties are true, then we can deduce that the ``main'' invariant
+is verified, etc. These loop invariants should be provided before the ``main''
+invariant, but after the simple invariants about variables bounds. Ordering them
+might not be straightforward, so generally this part is mostly a
+``trial and error'' process.
+
+
+In the remaining of this section, we will illustrate this approach on some
+examples. Although in the process, it is advised to run the proof between each
+step, we will generally not go to this level of detail in the future examples.
+
+
 \levelThreeTitle{Example with read-only arrays}
 \label{l3:statements-loops-examples-ro}
 
