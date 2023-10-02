@@ -4,7 +4,7 @@
 Writing loop annotations requires a lot of work during program proof. There is
 no perfect way of writing them. In particular, finding the right invariant, and
 the right way to express it, is mostly a matter of experience. Nevertheless, a
-few simple ideas can help, so that at least we do not miss simple mistakes that
+few simple ideas can help, so that at least we do not miss common mistakes that
 can make lose a lot of time during the process.
 
 
@@ -43,7 +43,7 @@ the expected postcondition of the loop (that might be the postcondition of the
 function itself). For this, we can use the postcondition itself as a guide. If
 we have something like \CodeInline{ensures P(n);} and a loop that iterates
 \CodeInline{i} from 0 to \CodeInline{n}, \CodeInline{loop invariant P(i);} is
-probably a good candidate. Notice that in some situations, that the
+probably a good candidate. Notice that in some situations, the
 \CodeInline{assumes} clause might also be interesting, typically when the result
 is a simple value that depends on the precondition state, as we will see in some
 later example. These invariants should be positioned at the end of the list of
@@ -61,8 +61,9 @@ might not be straightforward, so generally this part is mostly a
 ``trial and error'' process.
 
 
-Although in the process, it is advised to run the proof between each step, we
-will generally not go to this level of detail in the future examples.
+In the remaining of this section, we will illustrate this approach on some
+examples. Although in the process, it is advised to run the proof between each
+step, we will generally not go to this level of detail in the future examples.
 
 
 \levelThreeTitle{Example with read-only arrays}

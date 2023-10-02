@@ -5,7 +5,7 @@ L'écriture des annotations de boucles demande un effort important pendant la
 vérification. Il n'y a pas de manière parfaite de faire ce travail. En
 particulier, trouver le bon invariant et la bonne manière de l'exprimer, est
 principalement une question d'expérience. Néanmoins, quelques idées simples
-peuvent aider, afin d'éviter certaines erreurs simples qui peuvent faire perdre
+peuvent aider, afin d'éviter certaines erreurs communes qui peuvent faire perdre
 beaucoup de temps pendant le processus.
 
 
@@ -27,7 +27,7 @@ Ensuite, nous bornons les différentes variables qui sont assignées, en
 particulier les indices. Ces invariants sont généralement faciles à deviner,
 exprimer et vérifier. Nous mettons ces invariants au début de la liste des
 clauses \CodeInline{loop invariant}, puisque, comme nous l'avons expliqué
-Dans les sections~\ref{l3:statements-loops-multi-inv}
+dans les sections~\ref{l3:statements-loops-multi-inv}
 et~\ref{l3:statements-loops-inv-kinds}, l'ordre des invariants est important
 et ces propriétés très simples peuvent être propagées par WP dans les autres
 invariants pour simplifier la condition de vérification à prouver.
@@ -58,7 +58,7 @@ invariants doivent généralement être positionnés en fin de liste des invaria
 de boucle.
 
 
-Nous pourrions (optionnellement) avoir besoin de « glu » pour prouver les
+Nous pouvons (optionnellement) avoir besoin de « glu » pour prouver les
 invariants « principaux ». Par exemple, si nous avons volontairement fourni
 une clause \CodeInline{loop assigns} imprécise, nous pourrions avoir besoin
 d'un invariant de boucle pour expliquer que certaines parties de la mémoire
@@ -70,9 +70,10 @@ qui bornent les variables. Ordonner ces invariants pourrait ne pas être si
 direct, généralement nous passerons par un processus d'essai et erreur.
 
 
-Même si dans ce processus, il est fortement conseillé de lancer la preuve entre
-chaque étape, nous n'irons généralement pas jusqu'à ce niveau de détail dans les
-exemples futurs.
+Dans la suite de cette section, nous illustrons cette approche avec quelques
+exemples. Même si dans ce processus, il est fortement conseillé de lancer la
+preuve entre chaque étape, nous n'irons généralement pas jusqu'à ce niveau de
+détail dans les exemples futurs.
 
 
 \levelThreeTitle{Exemple avec un tableau en lecture seule}
