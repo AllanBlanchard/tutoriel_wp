@@ -9,7 +9,7 @@ not try to express \emph{how} we answer to our need but \emph{what} is
 exactly our need. To prove that our code implements what we need, we
 must be able to describe exactly what we need.
 
-From now, let us use another example, the \texttt{max} function:
+From now, let us use another example, the \CodeInline{max} function:
 
 
 
@@ -385,7 +385,7 @@ presented until now to integrate the right \CodeInline{assigns} clause.
 Pointers bring the risk of aliasing (multiple pointers can have access
 to the same memory location). For some functions, it does not cause any
 problem, for example when we give two identical pointers to the
-\texttt{swap} function, the specification is still verified. However,
+\CodeInline{swap} function, the specification is still verified. However,
 sometimes it is not that simple:
 
 
@@ -431,7 +431,7 @@ pointers are the same,
 
 In order to ensure that pointers refer to separated memory locations,
 ACSL provides the predicate
-\texttt{\textbackslash{}separated(p1,\ ...,pn)} that receives in
+\CodeInline{\textbackslash{}separated(p1,\ ..., pn)} that receives in
 parameter a set of pointers and is true if and only if these pointers are
 non-overlapping. Here, we specify:
 
@@ -673,7 +673,7 @@ other particular cases:
 That should set one more constraint on the final values.
 
 
-As an helper, one could use the following test program:
+As a helper, one could use the following test program:
 
 
 \CodeBlockInput[27][43]{c}{ex-5-order-3-answer.c}

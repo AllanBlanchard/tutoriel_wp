@@ -38,14 +38,14 @@ precondition is verified (and thus that the call is legal), and second
 to get in return the postcondition that is useful to prove the right
 properties after the function call.
 
-We can create a file using the same format for the \texttt{max}
+We can create a file using the same format for the \CodeInline{max}
 function. In both cases, we can open the source file (we do not need to
 specify header files in the command line) with Frama-C and notice that
 the specification is indeed associated to the function and that we prove
 it.
 
 
-Now, we can prepare our files for the \texttt{max\_abs} function with
+Now, we can prepare our files for the \CodeInline{max\_abs} function with
 the header:
 
 
@@ -63,7 +63,7 @@ And its source file:
 
 
 We can open the source file in Frama-C. If we look at the side panel, we
-can see that the header files we have included in \texttt{abs\_max}
+can see that the header files we have included in \CodeInline{abs\_max}
 correctly appear and if we look at the function contracts for them, we
 can see some blue and green bullets:
 

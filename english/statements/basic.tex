@@ -51,7 +51,7 @@ x = 43 * c ;
 we could submit the formula $43*6 = 258$ to our automatic prover
 in order to determine whether it is really valid. The answer would of
 course be ``yes'' because the property is easy to verify. If we had,
-however, given the value 7 to the variable \texttt{c} the prover's reply
+however, given the value 7 to the variable \CodeInline{c} the prover's reply
 would be ``no'' since the formula $43*7 = 258$ is not true.
 
 
@@ -340,14 +340,14 @@ of $S2$.
 
 Following this definition, we obtain for the case of an empty else-branch the
 following rule by simply replacing the statement $S2$ by the empty
-statement \texttt{skip}.
+statement \CodeInline{skip}.
 $$\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad skip\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad skip \quad \{Q\}}$$
 The triple for \CodeInline{else} is:
 $$\{P \wedge \neg B\}\quad skip\quad \{Q\}$$
 which means that we need to ensure:
 $$P \wedge \neg B \Rightarrow Q$$
 
-In short, if the condition $B$ of \texttt{if} is false, this means
+In short, if the condition $B$ of \CodeInline{if} is false, this means
 that the postcondition of the complete conditional statement is already
 established before entering the else-branch (since it does not do
 anything).

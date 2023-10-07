@@ -12,7 +12,7 @@ be known implicitly.
 
 
 Ghost code is added using annotations that contain C code
-introduced using the \texttt{ghost} keyword:
+introduced using the \CodeInline{ghost} keyword:
 
 
 \begin{CodeBlock}{c}
@@ -552,11 +552,11 @@ ghost label allows us to write an explicit assertion of this fact.
 Let us take a more complex example where we more clearly create explicit
 knowledge about the program. Here, we want to prove that the
 following function returns the value of the maximal sum of subarrays of
-a given array. A subarray of an array \texttt{a} is a contiguous subset
-of values of \texttt{a}. For example, for an array \CodeInline{\{ 0 , 3 , -1 , 4 \}},
+a given array. A subarray of an array \CodeInline{a} is a contiguous subset
+of values of \CodeInline{a}. For example, for an array \CodeInline{\{ 0 , 3 , -1 , 4 \}},
 some subarrays can be
-\CodeInline{\{\}}, \CodeInline{\{ 0 \}}, \CodeInline{\{ 3 , -1 \}}
-, \CodeInline{\{ 0 , 3 , -1 , 4 \}}, ... Note that as we allow
+\CodeInline{\{\}}, \CodeInline{\{ 0 \}}, \CodeInline{\{ 3 , -1 \}}, 
+\CodeInline{\{ 0 , 3 , -1 , 4 \}}, ... Note that as we allow
 empty arrays for subarrays, the sum is at least 0. In the previous
 array, the subarray with the maximal sum is \CodeInline{\{ 3 , -1 , 4 \}},
 the function would then return 6.

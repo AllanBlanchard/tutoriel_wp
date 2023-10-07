@@ -121,7 +121,7 @@ be used in our specification just as before.
 
 A small subtlety that we must take care of is the fact that if some
 axioms state properties about the content of some pointed memory cells,
-we have to specify considered memory blocks using the \texttt{reads}
+we have to specify considered memory blocks using the \CodeInline{reads}
 notation in the declaration. If we omit such a specification, the
 predicate or function will be considered to be stated about the received
 pointers and not about pointer memory blocks. So, if the code modifies
@@ -295,8 +295,8 @@ occurrences of a value in an array and prove it:
 
 
 
-An alternative way to specify, in this code, that \texttt{result} is at
-most \texttt{i}, is to express a more general lemma about the number of
+An alternative way to specify, in this code, that \CodeInline{result} is at
+most \CodeInline{i}, is to express a more general lemma about the number of
 occurrences of a value in an array, since we know that it is
 comprised between 0 and the size of maximum considered range of values:
 
@@ -321,7 +321,7 @@ Here, we still have to realize the proof of the lemma to get a complete
 proof.
 
 
-\levelThreeTitle{Example: The \texttt{strlen} function}
+\levelThreeTitle{Example: The \CodeInline{strlen} function}
 
 
 In this section, let us prove the C \CodeInline{strlen} function:

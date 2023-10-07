@@ -99,7 +99,7 @@ contiguous addresses is valid. It is expressed using this syntax:
 
 
 This precondition states that all addresses \CodeInline{a+0},
-\CodeInline{a+1}, \ldots{}, \CodeInline{a+length-1} must be valid readable
+\CodeInline{a+1}, ..., \CodeInline{a+length-1} must be valid readable
 locations.
 
 
@@ -146,11 +146,11 @@ we want to verify some other property.
 
 
 With \CodeInline{\textbackslash{}exists type a ; p(a) \&\& q(a)}, the
-constraint \texttt{p} is followed by a conjunction. We say there exists
-an element such that it satisfies the property \texttt{p} at the same
-time it also satisfies \texttt{q}. If we use an implication, as we do
+constraint \CodeInline{p} is followed by a conjunction. We say there exists
+an element such that it satisfies the property \CodeInline{p} at the same
+time it also satisfies \CodeInline{q}. If we use an implication, as we do
 for \CodeInline{\textbackslash{}forall}, such an expression will always be true
-if \texttt{p} is not a tautology! Why? Is there an ``a'' such that p(a) implies
+if \CodeInline{p} is not a tautology! Why? Is there an ``a'' such that p(a) implies
 q(a)? Let us take any ``a'' such that p(a) is false, then the implication is true.
 
 

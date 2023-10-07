@@ -41,7 +41,7 @@ in memory is changed between two particular program points:
 
 \begin{Warning}
   Keep in mind that passing a value to a predicate is done, as it is done in C,
-  by value. We cannot write this predicate by directly passing \texttt{i} in
+  by value. We cannot write this predicate by directly passing \CodeInline{i} in
   parameter:
 
 \begin{CodeBlock}{c}
@@ -51,7 +51,7 @@ in memory is changed between two particular program points:
  */
 \end{CodeBlock}
 
-  Since \texttt{i} is just a copy of the received variable.
+  Since \CodeInline{i} is just a copy of the received variable.
 \end{Warning}
 
 
@@ -89,7 +89,7 @@ expression every time we need it and to make it readable quickly:
 In this specification, we do not give an explicit label to predicates
 for their definition, nor for their use. For the definition, Frama-C
 automatically creates an implicit label. At predicate use, the given
-label is implicitly \texttt{Here}. The fact we do not explicitly define
+label is implicitly \CodeInline{Here}. The fact we do not explicitly define
 the label in the definition of a predicate does not forbid to explicitly
 give a label when we use it.
 
