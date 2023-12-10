@@ -224,6 +224,67 @@ $$\forall v_a, v_b, \quad v_a = 2 \wedge v_b = 4 \Rightarrow v_a = 2 \wedge v_b 
 This last property is trivially true, thus the program is verified.
 
 
+\levelFourTitle{Function contracts: check and admit}
+
+
+Just like assertions and loop invariants, the \CodeInline{requires} and
+\CodeInline{ensures} clauses can be only checked or admitted.
+
+
+Let us start with the \CodeInline{ensures} clause. When a function
+\CodeInline{f} has an \CodeInline{ensures} clause, it must be proved correct
+when verifying \CodeInline{f}. On the opposite, when we call \CodeInline{f}, we
+admit that it is true. Now, if \CodeInline{f} has a \CodeInline{check ensures}
+clause, we have to verify it when verifying \CodeInline{f}, but we
+\textit{ignore} it when \CodeInline{f} is called. On the opposite, if
+\CodeInline{f} has an \CodeInline{admit ensures} clause, it is not verified when
+verifying the \CodeInline{f}, still we admit it when it is called. In the
+following example:
+
+\CodeBlockInput[5]{c}{check-admit-ensures.c}
+
+\image{ensures-CA}
+
+We cannot prove the clause \CodeInline{E1} because \CodeInline{*x} is assigned
+to -1, but we can prove the check \CodeInline{A1} because when \CodeInline{f} is
+called, we admit that \CodeInline{E1} is true. We can prove the clause
+\CodeInline{E2} because \CodeInline{*y} is assigned to 10 that is indeed greater
+than or equals to 10. However, we cannot prove the check \CodeInline{A2} because
+this postcondition is ignored at call point. Finally, while \CodeInline{*z} is
+assigned to 20, we do not try to verify that \CodeInline{E3} is true (and it is
+not), yet WP does not warn about it: it is admitted, thus at call point, we can
+prove that \CodeInline{z} is greater than 30 even if it is not.
+
+Now, we can present the behavior for the \CodeInline{requires} clause. When a
+function \CodeInline{f} has a \CodeInline{requires} clause, it is assumed to be
+true when verifying \CodeInline{f} and must be verified when \CodeInline{f} is
+called. When it is a \CodeInline{check requires}, the clause is verified at
+call point, yet we do not assume it when verifying \CodeInline{f}. Finally, when
+a function \CodeInline{f} has an \CodeInline{admit requires} clause, it is
+assumed to be true when verifying \CodeInline{f} without any verification of it
+at call point. In the following example:
+
+\CodeBlockInput[5]{c}{check-admit-requires.c}
+
+\image{requires-CA}
+
+We cannot prove that \CodeInline{R1} is true at call point, yet we admit it in
+\CodeInline{callee} thus can prove \CodeInline{A1}. On the opposite, while
+\CodeInline{R2} is verified at call point, we cannot prove \CodeInline{A2} in
+\CodeInline{callee} since we ignore \CodeInline{R2} when verifying \CodeInline{f}.
+Finally, we do not try to verify \CodeInline{R3} at call point (and WP does not
+warn about it even if it is false), but we can prove that \CodeInline{A3} is
+verified because we assume \CodeInline{R3}.
+
+
+There is a second important aspect with the behavior of the \CodeInline{requires}
+clause. The careful reader might have noticed in the previous example, that the
+\CodeInline{check \textbackslash{}false} is verified. The reason is that the
+\CodeInline{requires} clauses are also assumed locally in the caller for normal
+and \CodeInline{admit} \CodeInline{requires} clauses. Thus, since in this
+example those \CodeInline{requires} clauses are false, we locally introduce
+"false" in the proof context.
+
 
 \levelFourTitle{What should we keep in mind?}
 
@@ -238,23 +299,39 @@ calls.
 So as a reminder, we should just keep in mind the following general scheme:
 
 
-
 \begin{CodeBlock}{c}
-/*@
-  requires foo_R ;
-  assigns ... ;
-  ensures foo_E ;
+/*@       requires bar_R
+    check requires bar_CR ;
+    admit requires bar_AR ;
+
+    assigns ... ;
+
+          ensures bar_E
+    check ensures bar_CE ;
+    admit ensures bar_AE ;
+*/
+void bar(...) ;
+
+/*@       requires foo_R
+    check requires foo_CR ;
+    admit requires foo_AR ;
+
+    assigns ... ;
+
+          ensures foo_E
+    check ensures foo_CE ;
+    admit ensures foo_AE ;
 */
 type foo(parameters...){
-  // Here we suppose that foo_R holds
+  // Here we suppose that foo_R and foo_AR hold
 
 
-  // Here we must prove that bar_R holds
+  // Here we must prove that bar_R and bar_CR hold
   bar(some parameters ...) ;
-  // Here we assume that bar_E holds
+  // Here we assume that bar_E and bar_AE hold
 
 
-  // Here we must prove that foo_E holds
+  // Here we must prove that foo_E and foo_CE hold
   return ... ;
 }
 \end{CodeBlock}

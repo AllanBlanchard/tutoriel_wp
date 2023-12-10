@@ -208,6 +208,76 @@ $$\forall v_a, v_b, \quad v_a = 2 \wedge v_b = 4 \Rightarrow v_a = 2 \wedge v_b 
 Cette dernière propriété est trivialement vraie, le programme est vérifié.
 
 
+\levelFourTitle{Contrats de fonction : check et admit}
+
+
+Tout comme les assertions et les invariants de boucle, les clauses
+\CodeInline{requires} et \CodeInline{ensures} ont des variantes
+\CodeInline{check} et \CodeInline{admit} permettant de seulement vérifier ou
+admettre ces propriétés.
+
+
+Commençons par la clause \CodeInline{ensures}. Quand une fonction \CodeInline{f}
+a une clause \CodeInline{ensures}, elle doit être prouvée correcte lorsque l'on
+vérifie \CodeInline{f}, en revanche lorsque l'on appelle \CodeInline{f}, cette
+propriété est admise. Maintenant, si \CodeInline{f} a une clause
+\CodeInline{check ensures}, nous devons la vérifier quand nous vérifions
+\CodeInline{f}, mais nous l'\textit{ignorons} lorsque \CodeInline{f} est appelée.
+À l'inverse, quand \CodeInline{f} a une clause \CodeInline{admit ensures}, nous
+ne la vérifions pas quand nous vérifions \CodeInline{f}, mais elle est admise
+quand \CodeInline{f} est appelée. Dans l'exemple suivant :
+
+\CodeBlockInput[5]{c}{check-admit-ensures.c}
+
+\image{ensures-CA}
+
+Nous ne nous pouvons pas prouver la clause \CodeInline{E1} parce que
+\CodeInline{*x} est affectée à 1, mais nous pouvons prouver \CodeInline{A1}, car
+quand \CodeInline{f} est appelée, nous admettons que \CodeInline{E1} est vraie.
+Nous pouvons prouver la clause \CodeInline{E2} parce que \CodeInline{*y} est
+affectée à 10 qui est effectivement supérieur ou égal à 10. En revanche, nous ne
+pouvons pas prouver \CodeInline{A2} parce que la postcondition est ignorée à
+l'appel. Finalement, tandis que \CodeInline{*z} est affectée à 20, nous ne
+vérifions pas que \CodeInline{E3} est vraie (et elle ne l'est pas), pour autant,
+WP n'émet pas de \textit{warning} à ce sujet : elle est admise, donc lors de
+l'appel à \CodeInline{f}, nous pouvons prouver que \CodeInline{z} est plus grand
+que 30, même si elle ne l'est pas.
+
+
+Maintenant, présentons le comportement pour la clause \CodeInline{requires}.
+Quand une fonction \CodeInline{f} a une clause \CodeInline{requires}, elle est
+supposée vraie lorsque l'on vérifie \CodeInline{f}, et doit être vérifiée
+lorsque \CodeInline{f} est appelée. Quand c'est une clause
+\CodeInline{check requires}, la clause est vérifiée au point d'appel, mais elle
+n'est pas supposée vraie lorsque nous vérifions \CodeInline{f}. Finalement,
+quand \CodeInline{f} a une clause \CodeInline{admit requires}, elle est supposée
+vraie lors de la vérification de \CodeInline{f} et l'on n'essaie pas de la
+vérifier au point d'appel. Dans l'exemple suivant :
+
+\CodeBlockInput[5]{c}{check-admit-requires.c}
+
+\image{requires-CA}
+
+Nous ne pouvons pas prouver que \CodeInline{R1} est vraie au point d'appel, mais
+nous admettons quand même qu'elle est vraie dans \CodeInline{callee}, donc nous
+pouvons prouver \CodeInline{A1}. Ensuite, même si \CodeInline{R2} est vérifiée
+au point d'appel, puisque nous l'ignorons pendant la vérification de
+\CodeInline{callee}, nous ne pouvons pas prouver que \CodeInline{A2} est vraie.
+Finalement, nous n'essayons pas de vérifier \CodeInline{R3} au point d'appel
+(et WP n'émet pas de \textit{warning} à ce sujet même si elle est fausse), mais
+nous pouvons prouver que \CodeInline{A3} est vérifiée, car nous supposons que
+\CodeInline{R3} est vraie.
+
+
+Il y a deuxième aspect important avec le comportement des clauses
+\CodeInline{requires}. Le lecteur attentif aura surement remarqué que dans
+l'exemple précédent, le \CodeInline{check \textbackslash{}false} est vérifié.
+La raison est que les clauses \CodeInline{requires} normales et
+\CodeInline{admit} sont aussi supposée vraie localement après leur vérification.
+Par conséquent, même si dans cet exemple ces clauses sont fausses, nous
+introduisons localement « faux » dans le contexte de preuve.
+
+
 \levelFourTitle{Que devrions-nous garder en tête ?}
 
 
@@ -221,24 +291,41 @@ Comme pense-bête, nous devrions toujours garder en tête le schéma suivant :
 
 
 \begin{CodeBlock}{c}
-/*@
-  requires foo_R ;
-  assigns ... ;
-  ensures foo_E ;
-*/
-type foo(parameters...){
-  // Ici, nous supposons que foo_R est vérifiée
+  /*@       requires bar_R
+      check requires bar_CR ;
+      admit requires bar_AR ;
+
+      assigns ... ;
+
+            ensures bar_E
+      check ensures bar_CE ;
+      admit ensures bar_AE ;
+  */
+  void bar(...) ;
+
+  /*@       requires foo_R
+      check requires foo_CR ;
+      admit requires foo_AR ;
+
+      assigns ... ;
+
+            ensures foo_E
+      check ensures foo_CE ;
+      admit ensures foo_AE ;
+  */
+  type foo(parameters...){
+    // Ici, nous supposons que foo_R et foo_AR sont vraies
 
 
-  // Ici, nous devons prouver que bar_R est vérifiée
-  bar(some parameters ...) ;
-  // Ici, nous supposons que bar_E est vérifiée
+    // Ici, nous devons prouver que bar_R et bar_CR sont vraies
+    bar(some parameters ...) ;
+    // Ici, nous supposons que bar_E et bar_AE sont vraies
 
 
-  // Ici nous devons prouver que foo_E est vérifiée
-  return ... ;
-}
-\end{CodeBlock}
+    // Ici, nous devons prouver que foo_E et foo_CE sont vraies
+    return ... ;
+  }
+  \end{CodeBlock}
 
 
 Notons qu'à propos du dernier commentaire, en calcul de plus faible précondition,
