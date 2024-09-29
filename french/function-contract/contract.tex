@@ -220,17 +220,31 @@ un clic droit sur le nom de la fonction et « \textit{Prove function annotations
 
 
 
-\image{1-abs-2.png}
+\image{1-abs-2}
 
 
 Nous pouvons voir que les cercles bleus deviennent des pastilles vertes,
 indiquant que la spécification est bien assurée par le programme. Il est
 possible de prouver les propriétés une à une en cliquant-droit sur celles-ci
-et pas sur le nom de la fonction.
+et pas sur le nom de la fonction. Nous pouvons également voir que deux
+annotations supplémentaires ont été générées par Frama-C pour notre fonction :
+\begin{itemize}
+  \item \CodeInline{exits \textbackslash{}false}
+  \item \CodeInline{terminates \textbackslash{}true}
+\end{itemize}
+Le premier dit que la fonction ne doit pas appeler la fonction C
+\CodeInline{exit} (ou une fonction qui appellerait elle-même transitivement la
+fonction \CodeInline{exit} à un certain point), et qu'elle finira normalement
+son exécution en atteignant l'instruction \CodeInline{return}. La seconde dit
+que la fonction ne doit pas s'exécuter à l'infini. Ces annotations sont générées
+par défaut, cependant il est également possible d'ajouter sa propre clause
+\CodeInline{exits} ou \CodeInline{terminates} pour changer son comportement.
+Nous expliquerons cela plus tard, pour l'instant, ignorons simplement ces
+annotations.
 
 
 
-Mais le code est-il vraiment sans erreurs pour autant ? WP nous permet de nous
+Le code est-il vraiment sans erreurs ? WP nous permet de nous
 assurer que le code répond à la spécification, mais il ne fait pas de contrôle
 d'erreur à l'exécution (\textit{runtime error}, abrégé RTE) si nous ne le demandons
 pas. Un autre \textit{plugin} de Frama-C, appelé sobrement RTE, peut être
@@ -575,7 +589,8 @@ simplement que pour \CodeInline{abs(a)} nous ajoutons dans nos suppositions la
 connaissance \CodeInline{a < INT\_MIN}, et tandis que nous n'avons pas de preuve
 que c'est vrai, nous n'en avons pas non plus que c'est faux. Donc si nous obtenons
 nécessairement une preuve de « faux » avec un appel \CodeInline{abs(INT\_MIN)}, ce n'est
-pas le cas de l'appel \CodeInline{abs(a)} qui peut aussi ne pas échouer.
+pas le cas de l'appel \CodeInline{abs(a)}, car \CodeInline{a} peut être autre
+chose que \CodeInline{INT_MIN}.
 
 
 \levelThreeTitle{Le cas particulier de la fonction \CodeInline{main}}

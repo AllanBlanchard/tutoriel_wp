@@ -1,0 +1,15 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing exit-2.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function this_function_exits
+[wp] [Valid] Goal this_function_exits_ensures (Cfg) (Unreachable)
+[wp] 2 goals scheduled
+[wp] [Unsuccess] typed_this_function_exits_terminates (Alt-Ergo) (Cached)
+[wp] [Valid] typed_this_function_exits_exits (Qed)
+[wp] Proved goals:    2 / 3
+  Unreachable:     1
+  Qed:             1
+  Unsuccess:       1
+[wp:pedantic-assigns] exit-2.c:6: Warning: 
+  No 'assigns' specification for function 'this_function_exits'.
+  Callers assumptions might be imprecise.
