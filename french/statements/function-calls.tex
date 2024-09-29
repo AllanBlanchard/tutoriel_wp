@@ -278,7 +278,7 @@ Par conséquent, même si dans cet exemple ces clauses sont fausses, nous
 introduisons localement « faux » dans le contexte de preuve.
 
 
-\levelFourTitle{Que devrions-nous garder en tête ?}
+\levelFourTitle{Que devrions-nous garder en tête à propos des contrats de fonction ?}
 
 
 Les fonctions sont absolument nécessaires pour programmer modulairement, et le calcul
@@ -336,6 +336,60 @@ quel outil réaliste pour la preuve de programme) ne suit pas strictement un cal
 de plus faible précondition, mais une manière fortement optimisée de calculer les
 conditions de vérification qui ne suit pas exactement les mêmes règles.
 
+
+\levelFourTitle{Le cas particulier de la clause \CodeInline{exits}}
+
+
+En C, il est possible d'appeler la fonction \CodeInline{exit} pour arrêter
+l'exécution du programme avec un code d'erreur particulier. Dans un tel cas, le
+code qui suit l'appel ne sera pas exécuté et l'instruction \CodeInline{return}
+ne sera jamais atteinte. Par conséquent, lorsqu'une fonction \textit{quitte},
+la postcondition est toujours vérifiée, car elle inatteignable (de la même
+manière que lorsqu'une fonction n'appelle pas \CodeInline{exit}, la clause
+\CodeInline{exits} peut être n'importe quoi) :
+
+
+\CodeBlockInput{c}{exit-1.c}
+
+
+Ici, nous avons indiqué que \CodeInline{\textbackslash{}true} doit être vrai
+quand la fonction quitte, mais en fait, nous pouvons indiquer n'importe quelle
+propriété d'intérêt. Par exemple, la valeur qui a été passée à
+\CodeInline{exit} :
+
+
+\CodeBlockInput{c}{exit-2.c}
+
+
+Bien sûr, quand on appelle une fonction qui peut quitter, ce risque est propagé :
+
+
+\CodeBlockInput{c}{exit-3.c}
+
+
+\paragraph*{[Formel] Calcul de WP}
+
+
+Lorsque nous voulons prouver la postcondition d'une fonction, nous commençons le
+calcul depuis la postcondition. Donc, nous commençons depuis l'unique instruction
+\CodeInline{return} créée par Frama-C (bien que ce soit exactement comme
+commencer le calcul par toutes les instructions \CodeInline{return} du programme
+d'origine), et nous raisonnons en arrière le long du programme. Lorsque nous
+rencontrons un appel de fonction, nous utilisons son contrat à l'aide de la
+règle précédemment expliquée et la postcondition que nous considérons à ce
+point de raisonnement est celle  que l'on trouve dans les clauses
+\CodeInline{ensures}.
+
+
+Pour prouver les clauses \CodeInline{exits}, c'est différent, mais pas tant que
+cela. Au lieu de commencer le calcul depuis les instructions \CodeInline{return},
+nous commençons un nouveau calcul à partir de chaque appel de fonction
+(puisqu'elle pourrait appeler \CodeInline{exit}) et cet appel, nous utilisons la
+clause \CodeInline{exits} comme postcondition, ensuite, lorsque nous continuons
+le raisonnement arrière, nous utilisons les clauses \CodeInline{ensures} comme
+d'habitude puisque si nous avons atteint l'appel de fonction depuis lequel nous
+avons démarré le calcul, cela veut dire que les appels qui ont précédé n'ont pas
+appelé \CodeInline{exit}.
 
 \levelThreeTitle{Fonctions récursives}
 

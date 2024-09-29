@@ -286,8 +286,7 @@ example those \CodeInline{requires} clauses are false, we locally introduce
 "false" in the proof context.
 
 
-\levelFourTitle{What should we keep in mind?}
-
+\levelFourTitle{What should we keep in mind about function contracts?}
 
 
 Functions are absolutely necessary to modular programming, and the weakest
@@ -343,6 +342,65 @@ leads to our postcondition. However, first, this vision is simpler to
 understand, and second the WP plugin does not actually perform a strict weakest
 precondition calculus but a highly optimized one that does not follow exactly
 the same rules.
+
+
+\levelFourTitle{The particular case of \CodeInline{exits}}
+
+
+In C, one can call the \CodeInline{exit} function to stop the execution with a
+particular error code. In such a case, the code that follows the call will not
+be executed, and the \CodeInline{return} statement will not be reached. Thus,
+when the function exits, the postcondition is always verified since it is
+unreachable (just like when a function never calls a function that might exit,
+the \CodeInline{exits} clause might be anything):
+
+
+\CodeBlockInput{c}{exit-1.c}
+
+
+Here, we have just indicated that \CodeInline{\textbackslash{}true} must be true
+when the function exits, but in fact one can indicate any property of interest.
+For example, one can indicate the value of the exit status:
+
+
+\CodeBlockInput{c}{exit-2.c}
+
+
+Of course when one calls a function that might exit, the risk of exit action is
+propagated:
+
+
+\CodeBlockInput{c}{exit-3.c}
+
+
+It is thus recommended indicating precisely what are the behaviors that can lead
+to a call to \CodeInline{exit} and to forbid call \CodeInline{exit} in the other
+cases:
+
+
+\CodeBlockInput{c}{exit-4.c}
+
+
+\paragraph*{[Formal] WP calculus}
+
+
+When we have to prove the postcondition of the function, we start the calculus
+from the postcondition. Thus, we start our computation from the single
+\CodeInline{return} statement created by Frama-C (although it is exactly like
+we would start from all the different \CodeInline{return} statements in the
+original program), and we reason backward along the program. When we meet a
+function call, we use the contract with the previously explained rule for
+function call, and the postcondition we consider at this point for reasoning is
+the one stated in the \CodeInline{ensures} clauses.
+
+
+For proving \CodeInline{exits} clauses, it is different, but not that much.
+Instead of starting the calculus from \CodeInline{return} instructions, we start
+a new calculus from each function call (as it might be one of the exit points)
+and at this call, we use the \CodeInline{exit} clause as a postcondition, then
+when we continue the backward reasoning, we use the \CodeInline{ensures} as
+usual since if we have reached the function call where we started from, that
+means that previous calls did not exit.
 
 
 \levelThreeTitle{Recursive functions}
