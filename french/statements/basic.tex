@@ -183,6 +183,7 @@ $$wp(*x = E, Q) = Q[M \leftarrow M[x \mapsto E]]$$
 Évaluer une valeur pointée $*x$ dans une formule consiste maintenant à utiliser
 l'opération $get$ pour demander la valeur à la mémoire. Nous pouvons donc
 appliquer notre calcul de plus faible précondition à notre programme précédent :
+
 \begin{tabular}{lll}
   $wp(*p = 1, *p + *q = 2)$
   & $= (*p + *q = 2)[M \leftarrow M[p \mapsto 1]]$ & (1)\\
