@@ -181,6 +181,7 @@ $$wp(*x = E, Q) := Q[M \leftarrow M[x \mapsto E]]$$
 And evaluating a pointed value $*x$ in a formula now requires us to use the
 get operator to ask the right value. Thus, we can for example compute the weakest
 precondition of our previous program:
+
 \begin{tabular}{lll}
   $wp(*p = 1, *p + *q = 2)$
   & $= (*p + *q = 2)[M \leftarrow M[p \mapsto 1]]$ & (1)\\

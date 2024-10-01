@@ -44,7 +44,7 @@ void mutual_1(unsigned n){
 
 void mutual_2(unsigned k){
   if(k > 1) mutual_1(k-2); // OK: 0 <= k-1 && (k-2) < k-1
-  single(k+1) ; // no verification needed, s in not in the cluster
+  single(k+1) ; // no verification needed, single is not in the cluster
 }
 
 void fail_mutual_1(unsigned k);
