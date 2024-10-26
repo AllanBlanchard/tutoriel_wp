@@ -6,12 +6,16 @@
 [rte:annot] annotating function none_pred
 [rte:annot] annotating function pred
 [rte:annot] annotating function some_not_pred
-[wp] 54 goals scheduled
+[wp] [Valid] Goal pred_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal pred_terminates (Cfg) (Trivial)
+[wp] 62 goals scheduled
 [wp] [Valid] typed_pred_ensures (Qed)
 [wp] [Valid] typed_pred_assigns_part1 (Qed)
 [wp] [Valid] typed_pred_assigns_part2 (Qed)
 [wp] [Valid] typed_pred_assigns_part3 (Qed)
+[wp] [Valid] typed_forall_pred_terminates (Qed)
 [wp] [Valid] typed_forall_pred_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_forall_pred_exits (Qed)
 [wp] [Valid] typed_forall_pred_loop_invariant_preserved (Qed)
 [wp] [Valid] typed_forall_pred_loop_invariant_established (Qed)
 [wp] [Valid] typed_forall_pred_loop_invariant_2_preserved (Alt-Ergo) (Cached)
@@ -29,7 +33,9 @@
 [wp] [Valid] typed_forall_pred_assigns_normal_part5 (Qed)
 [wp] [Valid] typed_forall_pred_loop_variant_decrease (Qed)
 [wp] [Valid] typed_forall_pred_loop_variant_positive (Qed)
+[wp] [Valid] typed_exists_pred_terminates (Qed)
 [wp] [Valid] typed_exists_pred_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_exists_pred_exits (Qed)
 [wp] [Valid] typed_exists_pred_loop_invariant_preserved (Qed)
 [wp] [Valid] typed_exists_pred_loop_invariant_established (Qed)
 [wp] [Valid] typed_exists_pred_loop_invariant_2_preserved (Alt-Ergo) (Cached)
@@ -47,20 +53,26 @@
 [wp] [Valid] typed_exists_pred_assigns_normal_part5 (Qed)
 [wp] [Valid] typed_exists_pred_loop_variant_decrease (Qed)
 [wp] [Valid] typed_exists_pred_loop_variant_positive (Qed)
+[wp] [Valid] typed_none_pred_terminates (Qed)
 [wp] [Valid] typed_none_pred_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_none_pred_exits (Qed)
 [wp] [Valid] typed_none_pred_assigns_exit (Qed)
 [wp] [Valid] typed_none_pred_assigns_normal_part1 (Qed)
 [wp] [Valid] typed_none_pred_assigns_normal_part2 (Qed)
 [wp] [Valid] typed_none_pred_assigns_normal_part3 (Qed)
 [wp] [Valid] typed_none_pred_assigns_normal_part4 (Qed)
 [wp] [Valid] typed_none_pred_call_exists_pred_requires (Qed)
+[wp] [Valid] typed_some_not_pred_terminates (Qed)
 [wp] [Valid] typed_some_not_pred_ensures (Qed)
+[wp] [Valid] typed_some_not_pred_exits (Qed)
 [wp] [Valid] typed_some_not_pred_assigns_exit (Qed)
 [wp] [Valid] typed_some_not_pred_assigns_normal_part1 (Qed)
 [wp] [Valid] typed_some_not_pred_assigns_normal_part2 (Qed)
 [wp] [Valid] typed_some_not_pred_assigns_normal_part3 (Qed)
 [wp] [Valid] typed_some_not_pred_assigns_normal_part4 (Qed)
 [wp] [Valid] typed_some_not_pred_call_forall_pred_requires (Qed)
-[wp] Proved goals:   54 / 54
-  Qed:            47
+[wp] Proved goals:   64 / 64
+  Terminating:     1
+  Unreachable:     1
+  Qed:            55
   Alt-Ergo:        7

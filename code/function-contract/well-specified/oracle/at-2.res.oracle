@@ -7,13 +7,23 @@
 [rte:annot] annotating function example_2
 [rte:annot] annotating function example_3
 [rte:annot] annotating function example_4
+[wp] [Valid] Goal example_1_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal example_1_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal example_2_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal example_2_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal example_3_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal example_3_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal example_4_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal example_4_terminates (Cfg) (Trivial)
 [wp] 5 goals scheduled
 [wp] [Unsuccess] typed_example_2_assert (Alt-Ergo) (Cached)
 [wp] [Unsuccess] typed_example_3_assert (Alt-Ergo) (Cached)
 [wp] [Unsuccess] typed_example_4_assert_rte_mem_access (Alt-Ergo) (Cached)
 [wp] [Valid] typed_example_4_assert (Alt-Ergo) (Cached)
 [wp] [Unsuccess] typed_example_4_assert_2 (Alt-Ergo) (Cached)
-[wp] Proved goals:    1 / 5
+[wp] Proved goals:    9 / 13
+  Terminating:     4
+  Unreachable:     4
   Alt-Ergo:        1
   Unsuccess:       4
 [wp:pedantic-assigns] at-2.c:5: Warning: 

@@ -1,6 +1,8 @@
 # frama-c -wp [...]
 [kernel] Parsing max_subarray-1.c (with preprocessing)
 [wp] Running WP plugin...
+[wp] [Valid] Goal max_subarray_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal max_subarray_terminates (Cfg) (Trivial)
 [wp] Warning: Missing RTE guards
 [wp] 14 goals scheduled
 [wp] [Valid] typed_max_subarray_ensures (Alt-Ergo) (Cached)
@@ -17,6 +19,8 @@
 [wp] [Valid] typed_max_subarray_assigns (Qed)
 [wp] [Valid] typed_max_subarray_loop_variant_decrease (Alt-Ergo) (Cached)
 [wp] [Valid] typed_max_subarray_loop_variant_positive (Qed)
-[wp] Proved goals:   14 / 14
+[wp] Proved goals:   16 / 16
+  Terminating:     1
+  Unreachable:     1
   Qed:             5
   Alt-Ergo:        9

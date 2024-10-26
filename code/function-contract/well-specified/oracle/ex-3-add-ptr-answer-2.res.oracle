@@ -3,7 +3,9 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function add
 [rte:annot] annotating function main
-[wp] 19 goals scheduled
+[wp] [Valid] Goal add_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal add_terminates (Cfg) (Trivial)
+[wp] 21 goals scheduled
 [wp] [Valid] typed_add_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_add_assert_rte_mem_access (Qed)
 [wp] [Valid] typed_add_assert_rte_mem_access_2 (Qed)
@@ -11,6 +13,8 @@
 [wp] [Valid] typed_add_assert_rte_signed_overflow (Qed)
 [wp] [Valid] typed_add_assert_rte_signed_overflow_2 (Qed)
 [wp] [Valid] typed_add_assigns (Qed)
+[wp] [Valid] typed_main_terminates (Qed)
+[wp] [Valid] typed_main_exits (Qed)
 [wp] [Valid] typed_main_assert (Qed)
 [wp] [Valid] typed_main_assert_2 (Qed)
 [wp] [Valid] typed_main_assert_3 (Qed)
@@ -23,8 +27,10 @@
 [wp] [Valid] typed_main_call_add_2_requires_2 (Qed)
 [wp] [Valid] typed_main_call_add_2_requires_3 (Qed)
 [wp] [Valid] typed_main_call_add_2_requires_4 (Qed)
-[wp] Proved goals:   19 / 19
-  Qed:            18
+[wp] Proved goals:   23 / 23
+  Terminating:     1
+  Unreachable:     1
+  Qed:            20
   Alt-Ergo:        1
 [wp:pedantic-assigns] ex-3-add-ptr-answer-2.c:15: Warning: 
   No 'assigns' specification for function 'main'.

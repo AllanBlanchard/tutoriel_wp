@@ -2,12 +2,18 @@
 [kernel] Parsing bad-precond.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function foo
+[wp] [Valid] Goal foo_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal foo_terminates (Cfg) (Trivial)
 [wp] 2 goals scheduled
 [wp] [Failed] (Doomed) typed_foo_wp_smoke_default_requires (Qed)
 [wp] bad-precond.c:10: Warning: Failed smoke-test
 [wp] [Valid] typed_foo_ensures (Qed)
-[wp] Proved goals:    1 / 2
-  Qed:             2
+[wp] Proved goals:    3 / 4
+  Terminating:     1
+  Unreachable:     1
+  Qed:             1
+  Failed:          1
+  Smoke Tests:     0 / 1
 [wp:pedantic-assigns] bad-precond.c:10: Warning: 
   No 'assigns' specification for function 'foo'.
   Callers assumptions might be imprecise.

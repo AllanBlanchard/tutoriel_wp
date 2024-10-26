@@ -6,13 +6,16 @@
   'x' is a non-ghost lvalue, it cannot be assigned in ghost code
 [wp] Running WP plugin...
 [rte:annot] annotating function foo
-[wp] 3 goals scheduled
+[wp] [Valid] Goal foo_exits (Cfg) (Unreachable)
+[wp] 4 goals scheduled
+[wp] [Unsuccess] typed_foo_terminates (Alt-Ergo) (Cached)
 [wp] [Valid] typed_foo_assert_rte_signed_overflow (Qed)
 [wp] [Valid] typed_foo_loop_assigns_part1 (Qed)
 [wp] [Unsuccess] typed_foo_loop_assigns_part2 (Alt-Ergo) (Cached)
-[wp] Proved goals:    2 / 3
+[wp] Proved goals:    3 / 5
+  Unreachable:     1
   Qed:             2
-  Unsuccess:       1
+  Unsuccess:       2
 [wp:pedantic-assigns] assigns-clause-1.c:13: Warning: 
   No 'assigns' specification for function 'foo'.
   Callers assumptions might be imprecise.

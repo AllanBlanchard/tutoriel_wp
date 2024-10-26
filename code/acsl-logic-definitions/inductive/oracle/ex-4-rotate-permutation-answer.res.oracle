@@ -3,7 +3,9 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function rotate
 [rte:annot] annotating function two_rotates
-[wp] 26 goals scheduled
+[wp] [Valid] Goal rotate_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal rotate_terminates (Cfg) (Trivial)
+[wp] 28 goals scheduled
 [wp] [Valid] typed_rotate_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_rotate_assert_rte_mem_access (Alt-Ergo) (Cached)
 [wp] [Valid] typed_rotate_loop_invariant_preserved (Alt-Ergo) (Cached)
@@ -22,14 +24,18 @@
 [wp] [Valid] typed_rotate_assigns_part2 (Qed)
 [wp] [Valid] typed_rotate_loop_variant_decrease (Alt-Ergo) (Cached)
 [wp] [Valid] typed_rotate_loop_variant_positive (Qed)
+[wp] [Valid] typed_two_rotates_terminates (Qed)
 [wp] [Valid] typed_two_rotates_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_two_rotates_exits (Qed)
 [wp] [Valid] typed_two_rotates_assert (Alt-Ergo) (Cached)
 [wp] [Valid] typed_two_rotates_assigns_exit_part1 (Alt-Ergo) (Cached)
-[wp] [Valid] typed_two_rotates_assigns_exit_part2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_two_rotates_assigns_exit_part2 (Qed)
 [wp] [Valid] typed_two_rotates_assigns_normal_part1 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_two_rotates_assigns_normal_part2 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_two_rotates_call_rotate_requires (Alt-Ergo) (Cached)
 [wp] [Valid] typed_two_rotates_call_rotate_2_requires (Alt-Ergo) (Cached)
-[wp] Proved goals:   26 / 26
-  Qed:             4
-  Alt-Ergo:       22
+[wp] Proved goals:   30 / 30
+  Terminating:     1
+  Unreachable:     1
+  Qed:             7
+  Alt-Ergo:       21

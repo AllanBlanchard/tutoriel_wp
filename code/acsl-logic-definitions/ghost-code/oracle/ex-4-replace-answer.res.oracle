@@ -2,8 +2,13 @@
 [kernel] Parsing ex-4-replace-answer.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function caller
+[kernel:annot:missing-spec] ex-4-replace-answer.c:40: Warning: 
+  Neither code nor explicit exits and terminates for function initialize,
+   generating default clauses. See -generated-spec-* options for more info
 [rte:annot] annotating function replace
-[wp] 38 goals scheduled
+[wp] [Valid] Goal replace_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal replace_terminates (Cfg) (Trivial)
+[wp] 40 goals scheduled
 [wp] [Valid] typed_replace_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_replace_ensures_2 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_replace_ensures_3 (Alt-Ergo) (Cached)
@@ -29,6 +34,8 @@
 [wp] [Valid] typed_replace_assigns (Qed)
 [wp] [Valid] typed_replace_loop_variant_decrease (Alt-Ergo) (Cached)
 [wp] [Valid] typed_replace_loop_variant_positive (Qed)
+[wp] [Valid] typed_caller_terminates (Qed)
+[wp] [Valid] typed_caller_exits (Qed)
 [wp] [Valid] typed_caller_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_caller_loop_invariant_established (Qed)
 [wp] [Valid] typed_caller_assert_rte_index_bound (Qed)
@@ -42,8 +49,10 @@
 [wp] [Valid] typed_caller_call_replace_requires_2 (Qed)
 [wp] [Valid] typed_caller_call_replace_requires_3 (Qed)
 [wp] [Valid] typed_caller_call_replace_requires_4 (Qed)
-[wp] Proved goals:   38 / 38
-  Qed:            18
+[wp] Proved goals:   42 / 42
+  Terminating:     1
+  Unreachable:     1
+  Qed:            20
   Alt-Ergo:       20
 [wp:pedantic-assigns] ex-4-replace-answer.c:42: Warning: 
   No 'assigns' specification for function 'caller'.

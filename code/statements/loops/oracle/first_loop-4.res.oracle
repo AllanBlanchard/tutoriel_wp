@@ -2,6 +2,8 @@
 [kernel] Parsing first_loop-4.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function main
+[wp] [Valid] Goal main_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal main_terminates (Cfg) (Trivial)
 [wp] 8 goals scheduled
 [wp] [Valid] typed_main_loop_invariant_preserved (Qed)
 [wp] [Valid] typed_main_loop_invariant_established (Qed)
@@ -11,7 +13,9 @@
 [wp] [Valid] typed_main_loop_assigns (Qed)
 [wp] [Valid] typed_main_loop_variant_decrease (Qed)
 [wp] [Valid] typed_main_loop_variant_positive (Qed)
-[wp] Proved goals:    8 / 8
+[wp] Proved goals:   10 / 10
+  Terminating:     1
+  Unreachable:     1
   Qed:             8
 [wp:pedantic-assigns] first_loop-4.c:1: Warning: 
   No 'assigns' specification for function 'main'.

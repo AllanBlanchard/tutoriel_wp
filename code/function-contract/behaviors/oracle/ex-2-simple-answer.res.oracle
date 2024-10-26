@@ -3,6 +3,10 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function kind_of_letter
 [rte:annot] annotating function quadrant
+[wp] [Valid] Goal kind_of_letter_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal kind_of_letter_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal quadrant_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal quadrant_terminates (Cfg) (Trivial)
 [wp] 22 goals scheduled
 [wp] [Valid] typed_kind_of_letter_complete_consonant_vowel (Alt-Ergo) (Cached)
 [wp] [Valid] typed_kind_of_letter_disjoint_consonant_vowel (Alt-Ergo) (Cached)
@@ -26,6 +30,8 @@
 [wp] [Valid] typed_quadrant_II_ensures (Qed)
 [wp] [Valid] typed_quadrant_III_ensures (Qed)
 [wp] [Valid] typed_quadrant_IV_ensures (Qed)
-[wp] Proved goals:   22 / 22
+[wp] Proved goals:   26 / 26
+  Terminating:     2
+  Unreachable:     2
   Qed:            18
   Alt-Ergo:        4

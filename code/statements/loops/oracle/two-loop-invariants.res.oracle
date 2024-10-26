@@ -1,11 +1,22 @@
 [kernel] Parsing two-loop-invariants.c (with preprocessing)
 [wp] Running WP plugin...
 [wp] Warning: Missing RTE guards
-[wp] 5 goals scheduled
-[wp] Proved goals:    4 / 5
+[wp] 6 goals scheduled
+[wp] [Unknown] typed_main_terminates (Qed)
+[wp] [Unknown] typed_main_loop_invariant_I1_preserved (Qed)
+[wp] Proved goals:    5 / 7
+  Unreachable:     1
   Qed:             4
+  Unknown:         2
 ------------------------------------------------------------
   Function main
+------------------------------------------------------------
+
+Goal Termination-condition (generated) in 'main':
+Loop termination at line 12
+Prove: false.
+Prover Qed returns Unknown
+
 ------------------------------------------------------------
 
 Goal Preservation of Invariant 'I1' (file two-loop-invariants.c, line 8):
@@ -30,6 +41,7 @@ Assume {
   Have: (1 + x_1) = x.
 }
 Prove: 0 <= x.
+Prover Qed returns Unknown
 
 ------------------------------------------------------------
 

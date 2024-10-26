@@ -2,6 +2,10 @@
 [kernel] Parsing non-ghost-access-ghost.c (with preprocessing)
 [kernel] non-ghost-access-ghost.c:10: User Error: 
   Variable r is a ghost symbol. It cannot be used in non-ghost context. Did you forget a /*@ ghost ... /?
-[kernel] User Error: stopping on file "non-ghost-access-ghost.c" that has errors. Add
-  '-kernel-msg-key pp' for preprocessing command.
+  8       //@ ghost int r = 42 ;
+  9       for(int i = 0; i < n; ++i){
+  10        x += r;
+                 ^
+  11      }
+  12      return x;
 [kernel] Frama-C aborted: invalid user input.

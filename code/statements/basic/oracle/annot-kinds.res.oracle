@@ -4,13 +4,21 @@
 [rte:annot] annotating function admit_annot
 [rte:annot] annotating function assert_annot
 [rte:annot] annotating function check_annot
+[wp] [Valid] Goal admit_annot_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal admit_annot_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal assert_annot_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal assert_annot_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal check_annot_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal check_annot_terminates (Cfg) (Trivial)
 [wp] 5 goals scheduled
 [wp] [Unsuccess] typed_check_annot_ensures (Alt-Ergo) (Cached)
 [wp] [Unsuccess] typed_check_annot_check (Alt-Ergo) (Cached)
 [wp] [Valid] typed_admit_annot_ensures (Qed)
 [wp] [Valid] typed_assert_annot_ensures (Qed)
 [wp] [Unsuccess] typed_assert_annot_assert (Alt-Ergo) (Cached)
-[wp] Proved goals:    2 / 5
+[wp] Proved goals:    8 / 11
+  Terminating:     3
+  Unreachable:     3
   Qed:             2
   Unsuccess:       3
 [wp:pedantic-assigns] annot-kinds.c:2: Warning: 

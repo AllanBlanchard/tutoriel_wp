@@ -2,6 +2,8 @@
 [kernel] Parsing ex-4-binary-search-answer.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function bsearch
+[wp] [Valid] Goal bsearch_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal bsearch_terminates (Cfg) (Trivial)
 [wp] 18 goals scheduled
 [wp] [Valid] typed_bsearch_complete_does_not_exists_exists (Qed)
 [wp] [Valid] typed_bsearch_disjoint_does_not_exists_exists (Qed)
@@ -21,6 +23,8 @@
 [wp] [Valid] typed_bsearch_exists_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_bsearch_exists_ensures_2 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_bsearch_does_not_exists_ensures (Alt-Ergo) (Cached)
-[wp] Proved goals:   18 / 18
+[wp] Proved goals:   20 / 20
+  Terminating:     1
+  Unreachable:     1
   Qed:            11
   Alt-Ergo:        7

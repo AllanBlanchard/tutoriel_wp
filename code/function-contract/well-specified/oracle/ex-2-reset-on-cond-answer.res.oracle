@@ -3,13 +3,17 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function main
 [rte:annot] annotating function reset_1st_if_2nd_is_true
-[wp] 14 goals scheduled
+[wp] [Valid] Goal reset_1st_if_2nd_is_true_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal reset_1st_if_2nd_is_true_terminates (Cfg) (Trivial)
+[wp] 16 goals scheduled
 [wp] [Valid] typed_reset_1st_if_2nd_is_true_ensures (Qed)
 [wp] [Valid] typed_reset_1st_if_2nd_is_true_ensures_2 (Qed)
 [wp] [Valid] typed_reset_1st_if_2nd_is_true_ensures_3 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_reset_1st_if_2nd_is_true_assert_rte_mem_access (Qed)
 [wp] [Valid] typed_reset_1st_if_2nd_is_true_assert_rte_mem_access_2 (Qed)
 [wp] [Valid] typed_reset_1st_if_2nd_is_true_assigns (Qed)
+[wp] [Valid] typed_main_terminates (Qed)
+[wp] [Valid] typed_main_exits (Qed)
 [wp] [Valid] typed_main_assert (Qed)
 [wp] [Valid] typed_main_assert_2 (Qed)
 [wp] [Valid] typed_main_assert_3 (Qed)
@@ -18,8 +22,10 @@
 [wp] [Valid] typed_main_call_reset_1st_if_2nd_is_true_requires_2 (Qed)
 [wp] [Valid] typed_main_call_reset_1st_if_2nd_is_true_2_requires (Qed)
 [wp] [Valid] typed_main_call_reset_1st_if_2nd_is_true_2_requires_2 (Qed)
-[wp] Proved goals:   14 / 14
-  Qed:            13
+[wp] Proved goals:   18 / 18
+  Terminating:     1
+  Unreachable:     1
+  Qed:            15
   Alt-Ergo:        1
 [wp:pedantic-assigns] ex-2-reset-on-cond-answer.c:15: Warning: 
   No 'assigns' specification for function 'main'.

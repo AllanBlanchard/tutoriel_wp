@@ -2,6 +2,8 @@
 [kernel] Parsing ex-3-binary-search-answer.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function bsearch
+[wp] [Valid] Goal bsearch_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal bsearch_terminates (Cfg) (Trivial)
 [wp] 16 goals scheduled
 [wp] [Valid] typed_bsearch_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_bsearch_loop_invariant_established (Qed)
@@ -19,6 +21,8 @@
 [wp] [Valid] typed_bsearch_assigns_part4 (Qed)
 [wp] [Valid] typed_bsearch_loop_variant_decrease (Alt-Ergo) (Cached)
 [wp] [Valid] typed_bsearch_loop_variant_positive (Qed)
-[wp] Proved goals:   16 / 16
+[wp] Proved goals:   18 / 18
+  Terminating:     1
+  Unreachable:     1
   Qed:             9
   Alt-Ergo:        7

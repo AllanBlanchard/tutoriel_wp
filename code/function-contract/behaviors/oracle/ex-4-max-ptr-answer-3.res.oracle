@@ -3,7 +3,9 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function main
 [rte:annot] annotating function max_ptr
-[wp] 15 goals scheduled
+[wp] [Valid] Goal max_ptr_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal max_ptr_terminates (Cfg) (Trivial)
+[wp] 17 goals scheduled
 [wp] [Valid] typed_max_ptr_complete_is_a_is_b_is_both (Alt-Ergo) (Cached)
 [wp] [Valid] typed_max_ptr_disjoint_is_a_is_b_is_both (Alt-Ergo) (Cached)
 [wp] [Valid] typed_max_ptr_ensures (Qed)
@@ -16,11 +18,15 @@
 [wp] [Valid] typed_max_ptr_is_b_ensures (Qed)
 [wp] [Valid] typed_max_ptr_is_a_ensures (Qed)
 [wp] [Valid] typed_max_ptr_is_both_ensures (Qed)
+[wp] [Valid] typed_main_terminates (Qed)
+[wp] [Valid] typed_main_exits (Qed)
 [wp] [Valid] typed_main_assert (Qed)
 [wp] [Valid] typed_main_assert_2 (Qed)
 [wp] [Valid] typed_main_call_max_ptr_requires (Qed)
-[wp] Proved goals:   15 / 15
-  Qed:            13
+[wp] Proved goals:   19 / 19
+  Terminating:     1
+  Unreachable:     1
+  Qed:            15
   Alt-Ergo:        2
 [wp:pedantic-assigns] ex-4-max-ptr-answer-3.c:32: Warning: 
   No 'assigns' specification for function 'main'.

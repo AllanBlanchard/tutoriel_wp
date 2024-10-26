@@ -1,8 +1,16 @@
 # frama-c -wp [...]
 [kernel] Parsing context.c (with preprocessing)
 [wp] Running WP plugin...
+[wp] [Valid] Goal example_1_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal example_1_terminates (Cfg) (Trivial)
 [wp] Warning: Missing RTE guards
-[wp] [CFG] Goal example_1_p_assert : Valid (Unreachable)
+[wp] [Valid] Goal example_1_p_assert (Cfg) (Unreachable)
+[wp] [Valid] Goal example_1_p_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal example_1_p_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal example_2_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal example_2_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal example_3_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal example_3_terminates (Cfg) (Trivial)
 [wp] 9 goals scheduled
 [wp] [Valid] typed_example_1_assert (Alt-Ergo) (Cached)
 [wp] [Valid] typed_example_1_assert_2 (Alt-Ergo) (Cached)
@@ -13,8 +21,9 @@
 [wp] [Valid] typed_example_3_assert_3 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_example_3_assert_4 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_example_3_assert_5 (Alt-Ergo) (Cached)
-[wp] Proved goals:   10 / 10
-  Unreachable:     1
+[wp] Proved goals:   18 / 18
+  Terminating:     4
+  Unreachable:     5
   Alt-Ergo:        9
 ------------------------------------------------------------
   Function example_1

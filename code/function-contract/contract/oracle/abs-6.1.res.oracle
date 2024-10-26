@@ -18,6 +18,16 @@ Prove: true.
   Function foo
 ------------------------------------------------------------
 
+Goal Termination-condition (generated) in 'foo':
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Exit-condition (generated) in 'foo':
+Prove: true.
+
+------------------------------------------------------------
+
 Goal Instance of 'Pre-condition (file abs-6.c, line 9) in 'abs'' in 'foo' at initialization of 'b' (file abs-6.c, line 21)
 :
 Prove: true.

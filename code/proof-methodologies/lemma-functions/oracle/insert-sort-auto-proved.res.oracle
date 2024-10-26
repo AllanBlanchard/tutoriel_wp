@@ -2,13 +2,21 @@
 [kernel] Parsing insert-sort-auto-proved.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function context_to_prove_rotate_left_permutation
+[kernel:annot:missing-spec] insert-sort-auto-proved.c:195: Warning: 
+  Neither code nor explicit exits and terminates for function rotate_left_permutation_premise,
+   generating default clauses. See -generated-spec-* options for more info
 [rte:annot] annotating function context_to_prove_unchanged_permutation
+[kernel:annot:missing-spec] insert-sort-auto-proved.c:150: Warning: 
+  Neither code nor explicit exits and terminates for function unchanged_permutation_premise,
+   generating default clauses. See -generated-spec-* options for more info
 [rte:annot] annotating function insert
 [rte:annot] annotating function insertion_sort
 [rte:annot] annotating function l_occurrences_of_explicit_split
 [rte:annot] annotating function l_occurrences_of_from_any_split_last
 [rte:annot] annotating function l_occurrences_of_split
-[wp] 176 goals scheduled
+[wp] [Valid] Goal l_occurrences_of_explicit_split_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal l_occurrences_of_explicit_split_terminates (Cfg) (Trivial)
+[wp] 188 goals scheduled
 [wp] [Valid] typed_lemma_one_same_element_same_count (Alt-Ergo) (Cached)
 [wp] [Valid] typed_lemma_transitive_permutation (Alt-Ergo) (Cached)
 [wp] [Valid] typed_l_occurrences_of_explicit_split_ensures (Alt-Ergo) (Cached)
@@ -21,7 +29,9 @@
 [wp] [Valid] typed_l_occurrences_of_explicit_split_assigns (Qed)
 [wp] [Valid] typed_l_occurrences_of_explicit_split_loop_variant_decrease (Qed)
 [wp] [Valid] typed_l_occurrences_of_explicit_split_loop_variant_positive (Qed)
+[wp] [Valid] typed_l_occurrences_of_split_terminates (Qed)
 [wp] [Valid] typed_l_occurrences_of_split_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_l_occurrences_of_split_exits (Qed)
 [wp] [Valid] typed_l_occurrences_of_split_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_l_occurrences_of_split_loop_invariant_established (Qed)
 [wp] [Valid] typed_l_occurrences_of_split_loop_invariant_2_preserved (Alt-Ergo) (Cached)
@@ -34,7 +44,9 @@
 [wp] [Valid] typed_l_occurrences_of_split_loop_variant_decrease (Qed)
 [wp] [Valid] typed_l_occurrences_of_split_loop_variant_positive (Qed)
 [wp] [Valid] typed_l_occurrences_of_split_call_l_occurrences_of_explicit_split_requires (Qed)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_terminates (Qed)
 [wp] [Valid] typed_l_occurrences_of_from_any_split_last_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_l_occurrences_of_from_any_split_last_exits (Qed)
 [wp] [Valid] typed_l_occurrences_of_from_any_split_last_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_l_occurrences_of_from_any_split_last_loop_invariant_established (Qed)
 [wp] [Valid] typed_l_occurrences_of_from_any_split_last_loop_invariant_2_preserved (Alt-Ergo) (Cached)
@@ -49,6 +61,8 @@
 [wp] [Valid] typed_l_occurrences_of_from_any_split_last_loop_variant_decrease (Qed)
 [wp] [Valid] typed_l_occurrences_of_from_any_split_last_loop_variant_positive (Qed)
 [wp] [Valid] typed_l_occurrences_of_from_any_split_last_call_l_occurrences_of_explicit_split_requires (Qed)
+[wp] [Valid] typed_context_to_prove_unchanged_permutation_terminates (Qed)
+[wp] [Valid] typed_context_to_prove_unchanged_permutation_exits (Qed)
 [wp] [Valid] typed_context_to_prove_unchanged_permutation_assert (Qed)
 [wp] [Valid] typed_context_to_prove_unchanged_permutation_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_context_to_prove_unchanged_permutation_loop_invariant_established (Qed)
@@ -60,6 +74,8 @@
 [wp] [Valid] typed_context_to_prove_unchanged_permutation_loop_assigns (Qed)
 [wp] [Valid] typed_context_to_prove_unchanged_permutation_loop_variant_decrease (Qed)
 [wp] [Valid] typed_context_to_prove_unchanged_permutation_loop_variant_positive (Qed)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_terminates (Qed)
+[wp] [Valid] typed_context_to_prove_rotate_left_permutation_exits (Qed)
 [wp] [Valid] typed_context_to_prove_rotate_left_permutation_assert_rte (Qed)
 [wp] [Valid] typed_context_to_prove_rotate_left_permutation_assert (Qed)
 [wp] [Valid] typed_context_to_prove_rotate_left_permutation_assert_rte_2 (Qed)
@@ -79,8 +95,10 @@
 [wp] [Valid] typed_context_to_prove_rotate_left_permutation_loop_variant_positive (Qed)
 [wp] [Valid] typed_context_to_prove_rotate_left_permutation_call_l_occurrences_of_explicit_split_requires (Qed)
 [wp] [Valid] typed_context_to_prove_rotate_left_permutation_call_l_occurrences_of_explicit_split_2_requires (Qed)
+[wp] [Valid] typed_insert_terminates (Qed)
 [wp] [Valid] typed_insert_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_insert_ensures_2 (Qed)
+[wp] [Valid] typed_insert_exits (Qed)
 [wp] [Valid] typed_insert_assert_rte_mem_access (Alt-Ergo) (Cached)
 [wp] [Valid] typed_insert_assert_rte_unsigned_overflow (Qed)
 [wp] [Valid] typed_insert_assert_rte_unsigned_overflow_2 (Qed)
@@ -152,8 +170,10 @@
 [wp] [Valid] typed_insert_call_l_occurrences_of_from_any_split_last_requires (Qed)
 [wp] [Valid] typed_insert_call_l_occurrences_of_explicit_split_requires (Qed)
 [wp] [Valid] typed_insert_call_l_occurrences_of_explicit_split_2_requires (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_terminates (Qed)
 [wp] [Valid] typed_insertion_sort_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_insertion_sort_ensures_2 (Qed)
+[wp] [Valid] typed_insertion_sort_exits (Qed)
 [wp] [Valid] typed_insertion_sort_assert_rte_unsigned_overflow (Qed)
 [wp] [Valid] typed_insertion_sort_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_insertion_sort_loop_invariant_established (Qed)
@@ -185,8 +205,10 @@
 [wp] [Valid] typed_insertion_sort_loop_variant_2_positive (Qed)
 [wp] [Valid] typed_insertion_sort_call_insert_requires (Alt-Ergo) (Cached)
 [wp] [Valid] typed_insertion_sort_call_insert_requires_2 (Qed)
-[wp] Proved goals:  176 / 176
-  Qed:           118
+[wp] Proved goals:  190 / 190
+  Terminating:     1
+  Unreachable:     1
+  Qed:           130
   Alt-Ergo:       58
 [wp:pedantic-assigns] insert-sort-auto-proved.c:155: Warning: 
   No 'assigns' specification for function 'context_to_prove_unchanged_permutation'.

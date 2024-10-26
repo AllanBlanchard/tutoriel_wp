@@ -3,7 +3,9 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function main
 [rte:annot] annotating function max_ptr
-[wp] 12 goals scheduled
+[wp] [Valid] Goal max_ptr_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal max_ptr_terminates (Cfg) (Trivial)
+[wp] 14 goals scheduled
 [wp] [Valid] typed_max_ptr_ensures (Qed)
 [wp] [Valid] typed_max_ptr_ensures_2 (Qed)
 [wp] [Valid] typed_max_ptr_ensures_3 (Qed)
@@ -13,11 +15,15 @@
 [wp] [Valid] typed_max_ptr_assert_rte_mem_access_4 (Qed)
 [wp] [Valid] typed_max_ptr_assigns_part1 (Qed)
 [wp] [Valid] typed_max_ptr_assigns_part2 (Qed)
+[wp] [Valid] typed_main_terminates (Qed)
+[wp] [Valid] typed_main_exits (Qed)
 [wp] [Valid] typed_main_assert (Qed)
 [wp] [Valid] typed_main_assert_2 (Qed)
 [wp] [Valid] typed_main_call_max_ptr_requires (Qed)
-[wp] Proved goals:   12 / 12
-  Qed:            12
+[wp] Proved goals:   16 / 16
+  Terminating:     1
+  Unreachable:     1
+  Qed:            14
 [wp:pedantic-assigns] ex-4-max-ptr.c:14: Warning: 
   No 'assigns' specification for function 'main'.
   Callers assumptions might be imprecise.

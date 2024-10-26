@@ -15,47 +15,51 @@ Require map.Map.
 Parameter eqb:
   forall {a:Type} {a_WT:WhyType a}, a -> a -> Init.Datatypes.bool.
 
-Axiom eqb1 :
+Axiom eqb'def :
   forall {a:Type} {a_WT:WhyType a},
-  forall (x:a) (y:a), ((eqb x y) = Init.Datatypes.true) <-> (x = y).
-
-Axiom eqb_false :
-  forall {a:Type} {a_WT:WhyType a},
-  forall (x:a) (y:a), ((eqb x y) = Init.Datatypes.false) <-> ~ (x = y).
+  forall (x:a) (y:a),
+  ((x = y) -> ((eqb x y) = Init.Datatypes.true)) /\
+  (~ (x = y) -> ((eqb x y) = Init.Datatypes.false)).
 
 Parameter neqb:
   forall {a:Type} {a_WT:WhyType a}, a -> a -> Init.Datatypes.bool.
 
-Axiom neqb1 :
+Axiom neqb'def :
   forall {a:Type} {a_WT:WhyType a},
-  forall (x:a) (y:a), ((neqb x y) = Init.Datatypes.true) <-> ~ (x = y).
+  forall (x:a) (y:a),
+  (~ (x = y) -> ((neqb x y) = Init.Datatypes.true)) /\
+  ((x = y) -> ((neqb x y) = Init.Datatypes.false)).
 
 Parameter zlt: Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
+
+Axiom zlt'def :
+  forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z),
+  ((x < y)%Z -> ((zlt x y) = Init.Datatypes.true)) /\
+  (~ (x < y)%Z -> ((zlt x y) = Init.Datatypes.false)).
 
 Parameter zleq:
   Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
 
-Axiom zlt1 :
+Axiom zleq'def :
   forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z),
-  ((zlt x y) = Init.Datatypes.true) <-> (x < y)%Z.
-
-Axiom zleq1 :
-  forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z),
-  ((zleq x y) = Init.Datatypes.true) <-> (x <= y)%Z.
+  ((x <= y)%Z -> ((zleq x y) = Init.Datatypes.true)) /\
+  (~ (x <= y)%Z -> ((zleq x y) = Init.Datatypes.false)).
 
 Parameter rlt:
   Reals.Rdefinitions.R -> Reals.Rdefinitions.R -> Init.Datatypes.bool.
 
+Axiom rlt'def :
+  forall (x:Reals.Rdefinitions.R) (y:Reals.Rdefinitions.R),
+  ((x < y)%R -> ((rlt x y) = Init.Datatypes.true)) /\
+  (~ (x < y)%R -> ((rlt x y) = Init.Datatypes.false)).
+
 Parameter rleq:
   Reals.Rdefinitions.R -> Reals.Rdefinitions.R -> Init.Datatypes.bool.
 
-Axiom rlt1 :
+Axiom rleq'def :
   forall (x:Reals.Rdefinitions.R) (y:Reals.Rdefinitions.R),
-  ((rlt x y) = Init.Datatypes.true) <-> (x < y)%R.
-
-Axiom rleq1 :
-  forall (x:Reals.Rdefinitions.R) (y:Reals.Rdefinitions.R),
-  ((rleq x y) = Init.Datatypes.true) <-> (x <= y)%R.
+  ((x <= y)%R -> ((rleq x y) = Init.Datatypes.true)) /\
+  (~ (x <= y)%R -> ((rleq x y) = Init.Datatypes.false)).
 
 (* Why3 assumption *)
 Definition real_of_int (x:Numbers.BinNums.Z) : Reals.Rdefinitions.R :=
@@ -118,11 +122,13 @@ Qed.
 (* Why3 goal *)
 Theorem wp_goal :
   forall (i:Numbers.BinNums.Z) (i1:Numbers.BinNums.Z) (i2:Numbers.BinNums.Z),
-  (0%Z <= i1)%Z -> P_is_power (i * i)%Z i1 i2 -> P_is_power i (2%Z * i1)%Z i2.
+  (0%Z <= i)%Z -> P_is_power (i2 * i2)%Z i i1 -> P_is_power i2 (2%Z * i)%Z i1.
+(* Why3 intros i i1 i2 h1 h2. *)
 Proof.
   Require Import Psatz.
 
-  intros x n.
+  intros n r x.
+  generalize dependent r.
   induction n using Z_induction with (m := 0%Z) ; intros r Hn Hxx.
   + assert (n = 0%Z) by lia ; inversion Hxx ; subst ; try lia.
     constructor.

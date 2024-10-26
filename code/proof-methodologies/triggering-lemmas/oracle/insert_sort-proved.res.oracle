@@ -3,13 +3,15 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function insert
 [rte:annot] annotating function insertion_sort
-[wp] 61 goals scheduled
+[wp] [Valid] Goal insert_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal insert_terminates (Cfg) (Trivial)
+[wp] 63 goals scheduled
 [wp] [Valid] typed_lemma_l_occurrences_of_union (Coq) (Cached)
 [wp] [Valid] typed_lemma_rotate_left_is_permutation (Coq) (Cached)
 [wp] [Valid] typed_lemma_shifted_maintains_occ (Coq) (Cached)
 [wp] [Valid] typed_lemma_transitive_permutation (Alt-Ergo) (Cached)
 [wp] [Valid] typed_lemma_unchanged_is_permutation (Alt-Ergo) (Cached)
-[wp] [Valid] typed_lemma_union_permutation (Coq) (Cached)
+[wp] [Valid] typed_lemma_union_permutation (Alt-Ergo) (Cached)
 [wp] [Valid] typed_insert_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_insert_ensures_2 (Qed)
 [wp] [Valid] typed_insert_assert_rte_mem_access (Alt-Ergo) (Cached)
@@ -42,8 +44,10 @@
 [wp] [Valid] typed_insert_assigns_part2 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_insert_loop_variant_decrease (Qed)
 [wp] [Valid] typed_insert_loop_variant_positive (Qed)
+[wp] [Valid] typed_insertion_sort_terminates (Qed)
 [wp] [Valid] typed_insertion_sort_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_insertion_sort_ensures_2 (Qed)
+[wp] [Valid] typed_insertion_sort_exits (Qed)
 [wp] [Valid] typed_insertion_sort_assert_rte_unsigned_overflow (Qed)
 [wp] [Valid] typed_insertion_sort_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_insertion_sort_loop_invariant_established (Qed)
@@ -65,7 +69,9 @@
 [wp] [Valid] typed_insertion_sort_loop_variant_positive (Qed)
 [wp] [Valid] typed_insertion_sort_call_insert_requires (Alt-Ergo) (Cached)
 [wp] [Valid] typed_insertion_sort_call_insert_requires_2 (Qed)
-[wp] Proved goals:   61 / 61
-  Qed:            29
-  Alt-Ergo:       28
-  Coq:             4
+[wp] Proved goals:   65 / 65
+  Terminating:     1
+  Unreachable:     1
+  Qed:            31
+  Alt-Ergo:       29
+  Coq:             3

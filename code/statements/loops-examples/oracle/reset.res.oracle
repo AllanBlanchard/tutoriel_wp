@@ -2,6 +2,8 @@
 [kernel] Parsing reset.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function reset
+[wp] [Valid] Goal reset_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal reset_terminates (Cfg) (Trivial)
 [wp] 13 goals scheduled
 [wp] [Valid] typed_reset_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_reset_loop_invariant_preserved (Qed)
@@ -16,6 +18,8 @@
 [wp] [Valid] typed_reset_assigns (Qed)
 [wp] [Valid] typed_reset_loop_variant_decrease (Qed)
 [wp] [Valid] typed_reset_loop_variant_positive (Qed)
-[wp] Proved goals:   13 / 13
+[wp] Proved goals:   15 / 15
+  Terminating:     1
+  Unreachable:     1
   Qed:             9
   Alt-Ergo:        4

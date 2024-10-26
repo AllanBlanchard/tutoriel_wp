@@ -3,11 +3,17 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function f
 [rte:annot] annotating function main
+[wp] [Valid] Goal f_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal f_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal main_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal main_terminates (Cfg) (Trivial)
 [wp] 3 goals scheduled
 [wp] [Valid] typed_main_requires (Qed)
 [wp] [Valid] typed_main_assert (Qed)
 [wp] [Unsuccess] typed_f_assert (Alt-Ergo) (Cached)
-[wp] Proved goals:    2 / 3
+[wp] Proved goals:    6 / 7
+  Terminating:     2
+  Unreachable:     2
   Qed:             2
   Unsuccess:       1
 [wp:pedantic-assigns] main.c:10: Warning: 

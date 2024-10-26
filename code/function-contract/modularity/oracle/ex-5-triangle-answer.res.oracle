@@ -4,7 +4,11 @@
 [rte:annot] annotating function angles_kind
 [rte:annot] annotating function classify
 [rte:annot] annotating function sides_kind
-[wp] 63 goals scheduled
+[wp] [Valid] Goal angles_kind_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal angles_kind_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal sides_kind_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal sides_kind_terminates (Cfg) (Trivial)
+[wp] 65 goals scheduled
 [wp] [Valid] typed_sides_kind_complete_equilateral_isocele_scalene (Alt-Ergo) (Cached)
 [wp] [Valid] typed_sides_kind_disjoint_equilateral_isocele_scalene (Alt-Ergo) (Cached)
 [wp] [Valid] typed_sides_kind_assigns_part1 (Qed)
@@ -43,6 +47,8 @@
 [wp] [Valid] typed_classify_disjoint_acute_obtuse_right (Alt-Ergo) (Cached)
 [wp] [Valid] typed_classify_disjoint_equilateral_isocele_scalene (Alt-Ergo) (Cached)
 [wp] [Valid] typed_classify_disjoint_not_a_triangle_triangle (Qed)
+[wp] [Valid] typed_classify_terminates (Qed)
+[wp] [Valid] typed_classify_exits (Qed)
 [wp] [Valid] typed_classify_assert_rte_signed_overflow (Qed)
 [wp] [Valid] typed_classify_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_classify_assert_rte_mem_access (Alt-Ergo) (Cached)
@@ -68,6 +74,8 @@
 [wp] [Valid] typed_classify_obtuse_ensures (Qed)
 [wp] [Valid] typed_classify_acute_ensures (Qed)
 [wp] [Valid] typed_classify_right_ensures (Qed)
-[wp] Proved goals:   63 / 63
-  Qed:            46
+[wp] Proved goals:   69 / 69
+  Terminating:     2
+  Unreachable:     2
+  Qed:            48
   Alt-Ergo:       17

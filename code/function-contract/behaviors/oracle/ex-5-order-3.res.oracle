@@ -2,6 +2,8 @@
 [kernel] Parsing ex-5-order-3.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function order_3
+[wp] [Valid] Goal order_3_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal order_3_terminates (Cfg) (Trivial)
 [wp] 28 goals scheduled
 [wp] [Valid] typed_order_3_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_order_3_ensures_2 (Alt-Ergo) (Cached)
@@ -31,6 +33,8 @@
 [wp] [Valid] typed_order_3_assigns_part4 (Qed)
 [wp] [Valid] typed_order_3_assigns_part5 (Qed)
 [wp] [Valid] typed_order_3_assigns_part6 (Qed)
-[wp] Proved goals:   28 / 28
+[wp] Proved goals:   30 / 30
+  Terminating:     1
+  Unreachable:     1
   Qed:            21
   Alt-Ergo:        7

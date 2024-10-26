@@ -6,12 +6,17 @@
   x += i;
 [wp] Running WP plugin...
 [rte:annot] annotating function sum
-[wp] [CFG] Goal sum_assert_rte_signed_overflow : Valid (Unreachable)
-[wp] [CFG] Goal sum_assert_rte_signed_overflow_2 : Valid (Unreachable)
-[wp] [CFG] Goal sum_assert_rte_signed_overflow_3 : Valid (Unreachable)
-[wp] Warning: No goal generated
-[wp] Proved goals:    3 / 3
-  Unreachable:     3
+[wp] [Valid] Goal sum_assert_rte_signed_overflow (Cfg) (Unreachable)
+[wp] [Valid] Goal sum_assert_rte_signed_overflow_2 (Cfg) (Unreachable)
+[wp] [Valid] Goal sum_assert_rte_signed_overflow_3 (Cfg) (Unreachable)
+[wp] [Valid] Goal sum_exits (Cfg) (Unreachable)
+[wp] control-flow-1.c:8: Warning: 
+  Missing assigns clause (assigns 'everything' instead)
+[wp] 1 goal scheduled
+[wp] [Unsuccess] typed_sum_terminates (Alt-Ergo) (Cached)
+[wp] Proved goals:    4 / 5
+  Unreachable:     4
+  Unsuccess:       1
 [wp:pedantic-assigns] control-flow-1.c:6: Warning: 
   No 'assigns' specification for function 'sum'.
   Callers assumptions might be imprecise.

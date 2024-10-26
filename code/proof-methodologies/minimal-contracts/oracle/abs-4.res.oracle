@@ -2,10 +2,14 @@
 [kernel] Parsing abs-4.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function abs
+[wp] [Valid] Goal abs_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal abs_terminates (Cfg) (Trivial)
 [wp] 4 goals scheduled
 [wp] [Valid] typed_abs_ensures (Qed)
 [wp] [Valid] typed_abs_assert_rte_signed_overflow (Qed)
 [wp] [Valid] typed_abs_assigns_part1 (Qed)
 [wp] [Valid] typed_abs_assigns_part2 (Qed)
-[wp] Proved goals:    4 / 4
+[wp] Proved goals:    6 / 6
+  Terminating:     1
+  Unreachable:     1
   Qed:             4

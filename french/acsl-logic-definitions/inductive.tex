@@ -54,12 +54,10 @@ Cette définition peut être utilisée pour prouver les assertions suivantes :
 \CodeBlockInput[15][18]{c}{even-0.c}
 
 
-Mais, puisque le solveur doit récursivement dérouler la définition inductive,
-cela pourrait ne pas fonctionner pour n'importe quelle valeur. Par exemple,
-Alt-Ergo 2.4.3 prouve la première assertion, mais pas la seconde. Cette seconde
-assertion peut être prouvée avec Z3 4.8.6 par exemple. Cette capacité de preuve
-dépend des heuristiques des solveurs qui décident ou non de s'arrêter après N
-dépliages.
+Notons que, puisque le solveur doit récursivement dérouler la définition
+inductive, cela pourrait ne pas fonctionner pour n'importe quelle valeur. Cette
+capacité de preuve dépend des heuristiques des solveurs qui décident ou non de
+s'arrêter après N dépliages.
 
 Même si cette définition fonctionne, elle n'est pas complètement satisfaisante.
 Par exemple, nous ne pouvons pas déduire qu'un naturel impair n'est pas pair. Si

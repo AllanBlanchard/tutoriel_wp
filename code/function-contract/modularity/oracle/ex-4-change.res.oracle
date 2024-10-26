@@ -1,3 +1,3 @@
 [kernel] Parsing ex-4-change.c (with preprocessing)
-[kernel:CERT:MSC:37] ex-4-change.c:8: Warning: 
+[kernel:CERT:MSC:37] ex-4-change.c:10: Warning: 
   Body of function remove_max_notes falls-through. Adding a return statement

@@ -3,13 +3,18 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function bar
 [rte:annot] annotating function foo
+[wp] [Valid] Goal bar_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal bar_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal foo_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal foo_terminates (Cfg) (Trivial)
 [wp] 3 goals scheduled
 [wp] [Valid] typed_foo_assert (Alt-Ergo) (Cached)
-[wp] [Valid] typed_foo_assert_2 (Z3) (Cached)
-[wp] [Unsuccess] typed_bar_assert (Z3) (Cached)
-[wp] Proved goals:    2 / 3
-  Alt-Ergo:        1
-  Z3:              1
+[wp] [Valid] typed_foo_assert_2 (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_bar_assert (Alt-Ergo) (Cached)
+[wp] Proved goals:    6 / 7
+  Terminating:     2
+  Unreachable:     2
+  Alt-Ergo:        2
   Unsuccess:       1
 [wp:pedantic-assigns] even-0.c:15: Warning: 
   No 'assigns' specification for function 'foo'.
