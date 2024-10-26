@@ -175,18 +175,15 @@ Again, we can have a look at the list of verification conditions in
 ``WP Goals'':
 
 
-
 \image{i_30-1}
 
 
-We notice that WP produces two different verification conditions: the
-establishment of the invariant and its preservation. WP produces exactly
-the reasoning we previously described to prove the assertion. In recent
-versions of Frama-C, Qed has become particularly aggressive and
-powerful, and the generated verification condition does not show those details
-(showing directly ``True''). Using the option \CodeInline{-wp-no-simpl} at
-start, we can however see these details:
-
+We see that the termination condition is not proved, but let us ignore that
+right now. We notice that WP produces two different verification conditions: the
+establishment of the invariant and its preservation. WP produces exactly the
+reasoning we previously described to prove the assertion. The Qed simplifier is
+powerful enough to directly finish the proof (showing directly ``True''). Using
+the option \CodeInline{-wp-no-simpl} at start, we can however see these details:
 
 
 \image{i_30-2}
@@ -199,9 +196,7 @@ But is our specification precise enough?
 \CodeBlockInput{c}{first_loop-2.c}
 
 
-
 And the result is:
-
 
 
 \image{i_30-3}
@@ -262,19 +257,13 @@ formulation of the correctness property is ``if the precondition is
 valid, and \textbf{if} the computation terminates, then the
 postcondition is valid''. In the second case, ``if the precondition is
 valid, \textbf{then} the computation terminates and the postcondition is
-valid''. By default, WP considers only partial correctness:
-
-
-
+valid''. By default, WP only verify partial correctness, \textit{but} asks
+the kernel to generate the \CodeInline{terminates} clause so that we are forced
+to verify the termination anyway (except if we voluntarily change the clause
+as explained in Section~\ref{l3:statements-function-calls-terminates}). Thus,
+if we try to verify the following program:
 \CodeBlockInput{c}{infinite.c}
-
-
-
-If we try to verify this code activating the verification of absence of
-RTE, we get this result:
-
-
-
+we get this result:
 \image{infinite}
 
 
@@ -285,7 +274,9 @@ allows to leave the loop, it does not terminate. As we are proving the
 code with partial correctness, and as the execution does not terminate,
 we can prove anything about the code that follows the non-terminating
 part of the code. However, if the termination is not trivially provable,
-the assertion will probably not be proved.
+the assertion will probably not be proved. However, because we have not proved
+the termination of the loop, the \CodeInline{terminates} clause is not proved,
+and we see that it might be a problem.
 
 
 
@@ -339,16 +330,22 @@ Again, we can have a look at the generated verification conditions:
 
 WP generates two verification conditions for the loop variant: verify that the
 value of the expression specified in the variant is positive, and prove that it
-strictly decreases during the execution of the loop. And if we delete the line
-of code that increments \CodeInline{i}, WP cannot prove anymore that
-\CodeInline{30\ -\ i} strictly decreases.
+strictly decreases during the execution of the loop. We also see that with the
+loop variant, WP can prove that the function terminates. And if we delete the
+line of code that increments \CodeInline{i}, WP cannot prove anymore that
+\CodeInline{30\ -\ i} strictly decreases, and the \CodeInline{terminates} clause
+is now ``proved under hypothesis''.
 
 
-We can also note that, since the loop variant is an upper bound on the number of
-remaining iterations, being able to give a loop variant does not necessarily
-induce that we can give the exact number of remaining iterations of the loop, as
-we do not always have a so precise knowledge of the behavior of the program. We
-can for example build an example like this one:
+\image{i_30-5}
+
+
+We will give more details about how the \CodeInline{terminates} clause is proved
+later. For now, note that, since the loop variant is an upper bound on the
+number of remaining iterations, being able to give a loop variant does not
+necessarily induce that we can give the exact number of remaining iterations of
+the loop, as we do not always have a so precise knowledge of the behavior of the
+program. We can for example build an example like this one:
 
 
 \CodeBlockInput{c}{random_loop.c}

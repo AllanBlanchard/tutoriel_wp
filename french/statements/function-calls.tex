@@ -355,7 +355,9 @@ produit une récursion infinie :
 Nous pouvons voir que la fonction et l'assertion sont prouvées. Et, effectivement,
 la preuve est correcte : nous considérons une correction partielle (puisque nous ne
 pouvons pas prouver la terminaison), et cette fonction ne termine pas. Toute
-assertion suivant cette fonction est vraie : elle est inatteignable.
+assertion suivant cette fonction est vraie : elle est inatteignable. Mais à
+nouveau, nous avons un chien de garde : la clause \CodeInline{terminates} n'est
+pas prouvée.
 
 
 Une question que l'on peut alors se poser est : que peut-on faire dans un tel
@@ -469,6 +471,7 @@ Finalement, si une fonction d'un \textit{cluster} ne fournit pas de clause
 
 
 \levelThreeTitle{Spécifier et prouver la terminaison des fonctions}
+\label{l3:statements-function-calls-terminates}
 
 
 Une propriété désirable pour une fonction est souvent qu'elle doit terminer.
@@ -533,16 +536,14 @@ termine (toujours) :
 \begin{Information}
   En ACSL, il est spécifié que lorsqu'une fonction n'a pas de clause
   \CodeInline{terminates}, le comportement par défaut
-  \CodeInline{terminates \textbackslash{}true}. Cependant, cela n'est pas
-  encore implémenté par le noyau de Frama-C. Ce comportement peut être activé
-  dans WP en utilisant les options :
+  \CodeInline{terminates \textbackslash{}true}. Ce comportement est
+  automatiquement activé par WP au niveau du noyau de Frama-C. Donc, quand WP
+  démarre la vérification d'une fonction, il demande au noyau de générer ces
+  annotations. Ce comportement peut être désactivé
+  \textbf{pour les fonctions définies par l'utilisateur} à l'aide de l'option :
   \begin{itemize}
-  \item \CodeInline{-wp-definitions-terminate} (pour les définitions de fonction),
-  \item \CodeInline{-wp-declarations-terminate} (pour les fonctions sans définition),
-  \item \CodeInline{-wp-frama-c-stdlib-terminate} (pour les fonctions de la stdlib de Frama\nobreakdash-C),
+  \item \CodeInline{-generated-spec-custom terminates:skip}
   \end{itemize}
-  pour dire que, à moins qu'une clause soit déjà fournie, les fonctions doivent
-  terminer (et pour les fonctions qui ont une définition cela doit être vérifié).
 \end{Information}
 
 
@@ -628,26 +629,6 @@ Où la terminaison du premier appel est en effet vérifiée, tandis que la
 terminaison du second ne l'est pas.
 
 
-Quand la fonction appelée n'a pas de clause \CodeInline{terminates}, elle est
-considérée par défaut comme ayant une clause \CodeInline{\textbackslash{}false},
-c'est-à-dire : à moins qu'une clause \CodeInline{terminates} soit spécifiée,
-la fonction pourrait ne pas terminer.
-
-
-Par exemple, pour notre fonction \CodeInline{simple} précédemment présentée,
-nous recevons ce message
-« \textit{Missing terminates clause on call to call, defaults to \textbackslash{}false} »
-et nous échouons à prouver la terminaison :
-
-
-\image{simple_terminates_fails}
-
-
-Notons que la formule $\mathtt{r} > 0 \Rightarrow false$ est traduite en
-$\mathtt{r} <= 0$.
-
-
-
 \paragraph{Variant de boucle}
 
 
@@ -716,17 +697,6 @@ comportement ACSL est activé via l'option
 
 
 \CodeBlockInput[53][60]{c}{terminates.c}
-
-
-\begin{Information}
-  Lorsqu'une fonction sous preuve n'a pas de clause \CodeInline{terminates},
-  lorsqu'une condition de vérification en a besoin, la clause est considérée
-  comme étant \CodeInline{\textbackslash{}true} puisque cela assure que nous
-  avons plus de choses à prouver. Par exemple, lorsque l'option
-  \CodeInline{-wp-variant-with-terminates} est utilisée et qu'une fonction
-  contient un variant de boucle à prouver, cela garantit que WP essaie
-  effectivement de le prouver.
-\end{Information}
 
 
 \levelThreeTitle{Exercices}
