@@ -55,7 +55,7 @@ void fail_mutual_2(unsigned k){
 }
 /* Warning:
   [wp] file.c:5: Warning:
-    No decreases clause for fail_mutual_1
+    Missing decreases clause on recursive function fail_mutual_1, call must be unreachable
 */
 
 void fail_mutual_1(unsigned k){
