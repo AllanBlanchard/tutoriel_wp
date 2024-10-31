@@ -384,12 +384,12 @@ point de raisonnement est celle  que l'on trouve dans les clauses
 Pour prouver les clauses \CodeInline{exits}, c'est différent, mais pas tant que
 cela. Au lieu de commencer le calcul depuis les instructions \CodeInline{return},
 nous commençons un nouveau calcul à partir de chaque appel de fonction
-(puisqu'elle pourrait appeler \CodeInline{exit}) et cet appel, nous utilisons la
-clause \CodeInline{exits} comme postcondition, ensuite, lorsque nous continuons
-le raisonnement arrière, nous utilisons les clauses \CodeInline{ensures} comme
-d'habitude puisque si nous avons atteint l'appel de fonction depuis lequel nous
-avons démarré le calcul, cela veut dire que les appels qui ont précédé n'ont pas
-appelé \CodeInline{exit}.
+(puisqu'elle pourrait appeler \CodeInline{exit}) et à cet appel, nous utilisons
+la clause \CodeInline{exits} comme postcondition. Ensuite, lorsque nous
+continuons le raisonnement arrière, nous utilisons les clauses
+\CodeInline{ensures} comme d'habitude puisque si nous avons atteint l'appel de
+fonction depuis lequel nous avons démarré le calcul, cela veut dire que les
+appels qui ont précédé n'ont pas appelé \CodeInline{exit}.
 
 \levelThreeTitle{Fonctions récursives}
 
