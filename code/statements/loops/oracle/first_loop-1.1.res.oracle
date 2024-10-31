@@ -1,0 +1,39 @@
+[kernel] Parsing first_loop-1.c (with preprocessing)
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+[wp] first_loop-1.c:12: Warning: 
+  Missing assigns clause (assigns 'everything' instead)
+------------------------------------------------------------
+  Function main
+------------------------------------------------------------
+
+Goal Termination-condition (generated) in 'main':
+Loop termination at line 12
+Prove: false.
+
+------------------------------------------------------------
+
+Goal Preservation of Invariant (file first_loop-1.c, line 10):
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Establishment of Invariant (file first_loop-1.c, line 10):
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Assertion (file first_loop-1.c, line 15):
+Assume {
+  Type: is_sint32(i).
+  (* Invariant *)
+  Have: (0 <= i) /\ (i <= 30).
+  (* Else *)
+  Have: 30 <= i.
+}
+Prove: i = 30.
+
+------------------------------------------------------------
+[wp:pedantic-assigns] first_loop-1.c:6: Warning: 
+  No 'assigns' specification for function 'main'.
+  Callers assumptions might be imprecise.

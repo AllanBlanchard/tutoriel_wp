@@ -1,3 +1,8 @@
+/* run.config
+   DEPS: @PTEST_DEPS@ @PTEST_DIR@/@PTEST_NAME@.@PTEST_NUMBER@.session@PTEST_CONFIG@/interactive/*.v
+   STDOPT:+"-wp-no-rte -wp-prover alt-ergo,coq -wp-session @PTEST_DIR@/@PTEST_NAME@.@PTEST_NUMBER@.session@PTEST_CONFIG@"
+*/
+
 /*@
   inductive is_power(integer x, integer n, integer r) {
   case zero: \forall integer x ; is_power(x, 0, 1) ;
@@ -12,7 +17,7 @@
 
   lemma power_odd:
     \forall integer x, n, rp ;
-    n >= 0 ==> is_power(x * x, n, rp) ==> is_power(x, 2 * n + 1, x * rp) ; 
+    n >= 0 ==> is_power(x * x, n, rp) ==> is_power(x, 2 * n + 1, x * rp) ;
 */
 
 /*@
@@ -32,7 +37,7 @@ int power(int x, int n){
   for(int i = 1 ; i <= n ; ++i){
     r *= x ;
   }
-  
+
   return r ;
 }
 
@@ -57,6 +62,6 @@ int fast_power(int x, int n){
     n /= 2 ;
   }
   //@ assert is_power(p, n, 1) ;
-  
+
   return r ;
 }

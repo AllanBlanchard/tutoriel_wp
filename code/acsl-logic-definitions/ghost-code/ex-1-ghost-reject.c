@@ -1,3 +1,7 @@
+/* run.config
+   OPT:-kernel-warn-key ghost=active
+*/
+
 #include <stddef.h>
 #include <limits.h>
 
@@ -38,7 +42,7 @@ int null_vector(int* a, size_t len){
   */
   for(size_t i = 0 ; i < len ; ++i)
     if(a[i] != 0) return 0;
-  /*@ ghost 
+  /*@ ghost
     /@ loop assigns \nothing ; @/
     while(value >= len);
   */

@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:+"-warn-unsigned-overflow -warn-unsigned-downcast -wp-timeout 30"
+*/
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -42,8 +46,8 @@
 */
 /*@ lemma transitive_permutation{L1, L2, L3}:
   \forall int* a, integer beg, integer end ;
-    permutation{L1, L2}(a, beg, end) ==> 
-    permutation{L2, L3}(a, beg, end) ==> 
+    permutation{L1, L2}(a, beg, end) ==>
+    permutation{L2, L3}(a, beg, end) ==>
       permutation{L1, L3}(a, beg, end) ;
 */
 
@@ -52,7 +56,7 @@
   requires sorted(a, beg, last) ;
 
   assigns a[ beg .. last ] ;
-  
+
   ensures permutation{Pre, Post}(a, beg, last+1);
   ensures sorted(a, beg, last+1) ;
 */

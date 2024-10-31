@@ -1,0 +1,25 @@
+# frama-c -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast [...]
+[kernel] Parsing reset.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function reset
+[wp] [Valid] Goal reset_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal reset_terminates (Cfg) (Trivial)
+[wp] 13 goals scheduled
+[wp] [Valid] typed_reset_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_loop_invariant_preserved (Qed)
+[wp] [Valid] typed_reset_loop_invariant_established (Qed)
+[wp] [Valid] typed_reset_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_loop_invariant_2_established (Qed)
+[wp] [Valid] typed_reset_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_assert_rte_unsigned_overflow (Qed)
+[wp] [Valid] typed_reset_loop_assigns_part1 (Qed)
+[wp] [Valid] typed_reset_loop_assigns_part2 (Qed)
+[wp] [Valid] typed_reset_loop_assigns_part3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_assigns (Qed)
+[wp] [Valid] typed_reset_loop_variant_decrease (Qed)
+[wp] [Valid] typed_reset_loop_variant_positive (Qed)
+[wp] Proved goals:   15 / 15
+  Terminating:     1
+  Unreachable:     1
+  Qed:             9
+  Alt-Ergo:        4

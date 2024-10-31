@@ -1,6 +1,6 @@
 Logic functions are meant to describe functions that can only be used in
 specifications. It allows us, first, to factor those specifications and,
-second, to define some operations on \texttt{integer} or \texttt{real}
+second, to define some operations on \CodeInline{integer} or \CodeInline{real}
 with the guarantee that they cannot overflow since they involve mathematical
 types.
 
@@ -52,7 +52,7 @@ stored into a C integer:
 \CodeBlockInput[8][15]{c}{linear-1.c}
 
 
-Some runtime errors are still possible. Indeed while the bound provided
+Some runtime errors are still possible. Indeed, while the bound provided
 for \CodeInline{x} by our logic function is defined for the complete
 computation, it does not say anything about the value obtained in the
 intermediate computation. For example here, the fact that
@@ -121,7 +121,7 @@ precondition:
 
 
 
-\CodeBlockInput[5][10]{c}{facto-1.c}
+\CodeBlockInput[9][14]{c}{facto-1.c}
 
 
 
@@ -151,7 +151,7 @@ Specify and prove the following program:
 
 
 
-\CodeBlockInput{c}{ex-1-distance.c}
+\CodeBlockInput[5]{c}{ex-1-distance.c}
 
 
 
@@ -167,7 +167,7 @@ Write the body of the \CodeInline{square} function. Specify and prove the
 program. Use a \CodeInline{square} logic function.
 
 
-\CodeBlockInput{c}{ex-2-square.c}
+\CodeBlockInput[5]{c}{ex-2-square.c}
 
 
 Take care of the types of the variables and do not over-constrain the input of
@@ -182,7 +182,7 @@ forget to provide the options \CodeInline{-warn-unsigned-overflow} and
 Here is a possible implementation of the iota function:
 
 
-\CodeBlockInput{c}{ex-3-iota.c}
+\CodeBlockInput[5]{c}{ex-3-iota.c}
 
 
 Write a logic function that returns the input value increased by one. Prove
@@ -205,7 +205,7 @@ the value of a memory location at a label \CodeInline{L1} and the value at a
 label \CodeInline{L2}.
 
 
-\CodeBlockInput{c}{ex-4-vec-inc.c}
+\CodeBlockInput[5]{c}{ex-4-vec-inc.c}
 
 
 
@@ -218,13 +218,13 @@ have defined.
 \label{l4:acsl-properties-functions-n-first-ints}
 
 
-The following function compute the sum of the N first integers. Write a
+The following function computes the sum of the N first integers. Write a
 recursive logic functions that returns the sum of the N first integers and
 write a specification for the C function expressing that it computes the same
 value as provided by the logic function.
 
 
-\CodeBlockInput{c}{ex-5-n-first-ints.c}
+\CodeBlockInput[5]{c}{ex-5-n-first-ints.c}
 
 
 Try to verify the absence of runtime errors. The integer overflow is not so

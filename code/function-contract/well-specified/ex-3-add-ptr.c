@@ -1,3 +1,7 @@
+/* run.config
+   OPT:
+*/
+
 int add(int *p, int *q){
   return *p + *q ;
 }

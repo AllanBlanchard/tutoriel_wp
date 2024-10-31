@@ -1,0 +1,27 @@
+# frama-c -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast [...]
+[kernel] Parsing search.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function search
+[wp] 16 goals scheduled
+[wp] [Valid] typed_search_complete_in_notin (Qed)
+[wp] [Valid] typed_search_disjoint_in_notin (Qed)
+[wp] [Valid] typed_search_loop_invariant_preserved (Qed)
+[wp] [Valid] typed_search_loop_invariant_established (Qed)
+[wp] [Valid] typed_search_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_loop_invariant_2_established (Qed)
+[wp] [Valid] typed_search_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_assert_rte_unsigned_overflow (Qed)
+[wp] [Valid] typed_search_loop_assigns (Qed)
+[wp] [Valid] typed_search_assigns_part1 (Qed)
+[wp] [Valid] typed_search_assigns_part2 (Qed)
+[wp] [Valid] typed_search_assigns_part3 (Qed)
+[wp] [Valid] typed_search_loop_variant_decrease (Qed)
+[wp] [Valid] typed_search_loop_variant_positive (Qed)
+[wp] [Valid] typed_search_in_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_notin_ensures (Alt-Ergo) (Cached)
+[wp] Proved goals:   16 / 16
+  Qed:            12
+  Alt-Ergo:        4
+[wp:pedantic-assigns] search.c:19: Warning: 
+  No 'assigns \result \from ...' specification for function 'search'returning pointer type.
+  Callers assumptions might be imprecise.

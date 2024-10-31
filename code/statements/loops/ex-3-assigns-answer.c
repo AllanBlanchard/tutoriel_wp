@@ -1,3 +1,7 @@
+/* run.config
+   OPT:-wp -wp-par 1 -wp-cache update -wp-cache-env -wp-msg-key shell
+*/
+
 void foo(){
   int h = 42 ;
   int x = 0 ;
@@ -27,6 +31,6 @@ void bar(){
 
 /*
   We can deduce that the loop assigns clause is a particular class of
-  loop invariant, exactly as assigns are a particula class of post-condition:
+  loop invariant, exactly as assigns are a particular class of post-condition:
   any variable that is not mentioned in this list keeps its old value.
 */

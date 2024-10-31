@@ -5,11 +5,11 @@
   propriétés).
 
   Si vous trouvez des erreurs, n'hésitez pas à créer une \textit{issue} ou
-  une \textit{pull request} sur:
+  une \textit{pull request} sur :
 
   \externalLink{https://github.com/AllanBlanchard/tutoriel\_wp}{https://github.com/AllanBlanchard/tutoriel_wp}
 
-  ou à poster sur le sujet de la bêta sur Zeste de Savoir:
+  ou à poster sur le sujet de la bêta sur Zeste de Savoir :
 
   \externalLink{https://zestedesavoir.com/forums/sujet/7725/introduction-a-la-preuve-de-programmes-c-avec-frama-c-et-son-greffon-wp/}{https://zestedesavoir.com/forums/sujet/7725/introduction-a-la-preuve-de-programmes-c-avec-frama-c-et-son-greffon-wp/}
 \end{Warning}
@@ -32,21 +32,19 @@ Le reste vient de mon expérience personnelle avec Frama-C et WP.
 
 Les versions des outils utilisés dans ce tutoriel sont les suivantes :
 \begin{itemize}
-\item Frama-C 21.1 Scandium
-\item Why3 1.3.1
-\item Alt-Ergo 2.3.2
-\item Coq 8.11.2 (pour les scripts proposés, Coq n'est pas utilisé dans le tutoriel)
-\item Z3 4.8.4 (utilisés dans un exemple, il n'est pas absolument nécessaire)
+\item Frama-C 30.0 Zinc
+\item Why3 1.7.2
+\item Alt-Ergo 2.6.0
+\item Coq 8.16.1 (pour les scripts proposés, Coq n'est pas utilisé dans le tutoriel)
+\item Z3 4.8.10 (utilisés dans un exemple, il n'est pas absolument nécessaire)
 \end{itemize}
 Selon les versions utilisées par le lecteur, quelques différences pourraient
 apparaître avec ce qui est prouvé et ce qui ne l'est pas. Quelques fonctionnalités
 ne sont disponibles que dans les versions récentes de Frama-C.
 
-Les scripts Coq devraient fonctionner au moins de la version 8.7.2 à 8.11.2.
-
 \horizontalLine
 
-Le seul pré-requis pour ce cours est d'avoir une connaissance basique du
+Le seul prérequis pour ce cours est d'avoir une connaissance basique du
 langage C, au moins jusqu'à la notion de pointeur.
 
 
@@ -67,13 +65,13 @@ base de connaissances) très conséquent.
 
 
 De plus, de très nombreux systèmes reposent sur des quantités phénoménales de
-code historiquement écrit en C, qu'il faut maintenir et corriger car ils
+code historiquement écrit en C, qu'il faut maintenir et corriger, car ils
 coûteraient bien trop chers à re-développer.
 
 
 
 Mais toute personne qui a déjà codé en C sait également que c'est un langage
-très difficile à maîtriser parfaitement. Les raisons sont multiples mais les
+très difficile à maîtriser parfaitement. Les raisons sont multiples, mais les
 ambiguïtés présentes dans sa norme et la permissivité extrême qu'il offre au
 développeur, notamment en ce qui concerne les accès à la mémoire, font que
 créer un programme C robuste est très difficile même pour un programmeur
@@ -99,7 +97,7 @@ qu'aucun problème ne peut apparaître à l'exécution.
 
 L'objet de ce tutoriel est d'utiliser Frama-C, un logiciel développé au
 CEA List, et WP, son greffon de preuve déductive, pour s'initier à la preuve
-de programmes C. Au delà de l'usage de l'outil en lui-même, le but de ce tutoriel
+de programmes C. Au-delà de l'usage de l'outil en lui-même, le but de ce tutoriel
 est de vous convaincre qu'il est possible d'écrire des programmes sans erreurs de
 programmation, mais également de sensibiliser à des notions simples
 permettant de mieux comprendre et de mieux écrire les programmes.
@@ -122,7 +120,26 @@ Ainsi qu'aux validateurs qui ont encore permis d'améliorer la qualité de ce tu
 \item \externalLink{Saroupille}{https://zestedesavoir.com/membres/voir/Saroupille/}
 \item \externalLink{Aabu}{https://zestedesavoir.com/membres/voir/Aabu/} (oui, encore lui aussi)
 \end{itemize}
-Finalement, un grand merci à Jens Gerlach pour son aide lors de la traduction
-anglaise du tutoriel, ainsi qu’à Rafael Bachmann et Basile Deslosges pour
-leurs relectures et corrections.
+
+Un grand merci à Jens Gerlach pour son aide lors de la traduction anglaise du tutoriel.
+
+Merci finalement aux reviewers occasionnels sur GitHub :
+\begin{itemize}
+  \item \externalLink{Alex Lyr}{https://github.com/AlexLyrr}
+  \item \externalLink{Rafael Bachmann}{https://github.com/barafael}
+  \item \externalLink{@charlesseizilles}{https://github.com/charlesseizilles}
+  \item \externalLink{Myriam Clouet}{https://github.com/clouetm}
+  \item \externalLink{@Costava}{https://github.com/costava}
+  \item \externalLink{Daniel Rocha}{https://github.com/danroc}
+  \item \externalLink{@GaoTamanrasset}{https://github.com/GaoTamanrasset}
+  \item \externalLink{André Maroneze}{https://github.com/maroneze}
+  \item \externalLink{@MSoegtropIMC}{https://github.com/MSoegtropIMC}
+  \item \externalLink{@rtharston}{https://github.com/rtharston}
+  \item \externalLink{@TrigDevelopment}{https://github.com/TrigDevelopment}
+  \item \externalLink{Quentin Santos}{https://github.com/qsantos}
+  \item \externalLink{Ricardo M. Correia}{https://github.com/wizeman}
+  \item \externalLink{Basile Desloges}{https://github.com/zilbuz}
+\end{itemize}
+pour leurs relectures et corrections.
+
 \end{Information}

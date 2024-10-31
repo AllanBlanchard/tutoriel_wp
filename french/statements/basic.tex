@@ -1,15 +1,13 @@
 \levelThreeTitle{Affectation}
 
 
-L'affectation est l'opération la plus basique que l'on puisse avoir dans un 
-langage (mise à part l'opération « ne rien faire » qui manque singulièrement 
-d'intérêt). Le calcul de plus faible précondition associé est le suivant :
+L'affectation est l'opération la plus basique que l'on puisse avoir dans un
+langage (mise à part l'opération « ne rien faire » qui manque singulièrement
+d'intérêt). Le calcul de plus faible précondition associée est le suivant :
 $$wp(x = E , Post) := Post[x \leftarrow E]$$
-
-
 où la notation $P[x \leftarrow E]$ signifie « la propriété $P$ où $x$ est remplacé
 par $E$ ». Ce qui correspond ici à « la postcondition $Post$ où $x$ a été
-remplacé par $E$ ». Dans l'idée, pour que la formule en postcondition d'une 
+remplacé par $E$ ». Dans l'idée, pour que la formule en postcondition d'une
 affectation de $x$ à $E$ soit vraie, il faut qu'en remplaçant chaque occurrence de
 $x$ dans la formule par $E$, on obtienne une propriété qui est vraie. Par exemple :
 
@@ -38,21 +36,15 @@ x = 43 * c ;
 
 
 
-Pour calculer la précondition de l'affectation, nous avons remplacé chaque 
+Pour calculer la précondition de l'affectation, nous avons remplacé chaque
 occurrence de $x$ dans la postcondition, par la valeur $E = 43*c$ affectée.
-Si notre programme était de la forme:
-
-
-
+Si notre programme était de la forme :
 \begin{CodeBlock}{c}
 int c = 6 ;
 // { 43*c = 258 }
 x = 43 * c ;
 // { x = 258 }
 \end{CodeBlock}
-
-
-
 nous pourrions alors fournir la formule « $43*6 = 258$ » à notre prouveur automatique
 afin qu'il détermine si cette formule peut effectivement être satisfaite. Ce à quoi
 il répondrait évidemment « oui », puisque cette propriété est très simple à vérifier.
@@ -61,20 +53,20 @@ que non, une telle formule n'est pas vraie.
 
 
 
-Nous pouvons donc écrire la règle d'inférence pour le triplet de Hoare de 
+Nous pouvons donc écrire la règle d'inférence pour le triplet de Hoare de
 l'affectation, où l'on prend en compte le calcul de plus faible précondition :
 $$\dfrac{}{\{Q[x \leftarrow E] \}\quad x = E \quad\{ Q \}}$$
 
 
 Nous noterons qu'il n'y a pas de prémisse à vérifier. Cela veut-il dire que le
-triplet est nécessairement vrai ? Oui. Mais cela ne dit pas si la précondition 
-est respectée par le programme où se trouve l'instruction, ni que cette 
+triplet est nécessairement vrai ? Oui. Mais cela ne dit pas si la précondition
+est satisfaite par le programme où se trouve l'instruction, ni que cette
 précondition est possible. C'est ce travail qu'effectuent ensuite les prouveurs
 automatiques.
 
 
 
-Par exemple, nous pouvons demander la vérification de la ligne suivante avec 
+Par exemple, nous pouvons demander la vérification de la ligne suivante avec
 Frama-C :
 
 
@@ -86,18 +78,18 @@ int a = 42;
 
 
 
-Ce qui est, bien entendu, prouvé directement par Qed car c'est une simple 
+Ce qui est, bien entendu, prouvé directement par Qed car c'est une simple
 application de la règle de l'affectation.
 
 
 
 \begin{Information}
 Notons que d'après la norme C, l'opération d'affectation est une expression
-et non une instruction. C'est ce qui nous permet par exemple d'écrire 
+et non une instruction. C'est ce qui nous permet par exemple d'écrire
 \CodeInline{if( (a = foo()) == 42)}. Dans Frama-C, une affectation sera toujours une
-instruction. En effet, si une affectation est présente au sein d'une 
+instruction. En effet, si une affectation est présente au sein d'une
 expression plus complexe, le module de création de l'arbre de syntaxe abstraite
-du programme analysé effectue une étape de normalisation qui crée 
+du programme analysé effectue une étape de normalisation qui crée
 systématiquement une instruction séparée.
 \end{Information}
 
@@ -107,7 +99,7 @@ systématiquement une instruction séparée.
 
 
 En C, grâce aux (à cause des ?) pointeurs, nous pouvons avoir des programmes avec
-des alias, à savoir que deux pointeurs peuvent pointer vers la même position en 
+des alias, à savoir que deux pointeurs peuvent pointer vers la même position en
 mémoire. Notre calcul de plus faible précondition doit donc considérer ce genre
 de cas. Par exemple, nous pouvons regarder ce triplet de Hoare :
 
@@ -121,9 +113,9 @@ de cas. Par exemple, nous pouvons regarder ce triplet de Hoare :
 
 Ce triplet de Hoare est correct, puisque \CodeInline{p} et \CodeInline{q} sont en
 alias, modifier la valeur \CodeInline{*p} modifie aussi la valeur \CodeInline{*q},
-par conséquent, ces deux expressions s'évaluent à $1$ et la postcondition est 
+par conséquent, ces deux expressions s'évaluent à $1$ et la postcondition est
 vraie. Cependant, regardons ce que nous obtenons en appliquant le calcul de plus
-faible précondition précédemment défini pour l'affectation sur cet exemple:
+faible précondition précédemment défini pour l'affectation sur cet exemple :
 
 
 \begin{tabular}{ll}
@@ -132,12 +124,12 @@ $wp(*p = 1, *p + *q = 2)$ & $= (*p + *q = 2)[*p \leftarrow 1]$\\
 \end{tabular}
 
 
-Nous obtenons la plus faible précondition: \CodeInline{1 + *q == 2}, et donc 
+Nous obtenons la plus faible précondition : \CodeInline{1 + *q == 2}, et donc
 nous pourrions déduire que la plus faible précondition est \CodeInline{*q == 1}
 (ce qui est vrai), mais nous ne sommes pas en mesure de conclure que le programme
-est correct, car rien dans notre formule ne nous indique quelque chose comme:
-\CodeInline{p == q ==> *q == 1}. En fait, ici, nous voudrions être capable de 
-calculer une plus faible précondition de la forme:
+est correct, car rien dans notre formule ne nous indique quelque chose comme :
+\CodeInline{p == q ==> *q == 1}. En fait, ici, nous voudrions être capable de
+calculer une plus faible précondition de la forme :
 
 
 \begin{tabular}{ll}
@@ -148,7 +140,7 @@ $wp(*p = 1, *p + *q = 2)$ & $= (1 + *q = 2 \vee q = p)$\\
 
 Pour cela, nous devons faire attention à la notion d'aliasing. Une manière
 commune de le faire est de considérer que la mémoire est une variable particulière
-du programme (nommons la $M$) sur laquelle nous pouvons effectuer deux opérations :
+du programme (nommons-la $M$) sur laquelle nous pouvons effectuer deux opérations :
 obtenir la valeur d'un emplacement particulier $m$ en mémoire (qui nous retourne une
 expression) et changer la valeur à une position mémoire $l$ pour y placer une nouvelle
 valeur $v$ (qui nous retourne la nouvelle mémoire obtenue).
@@ -180,7 +172,7 @@ parce que la spécification de la fonction nous l'indique).
 
 
 Maintenant, nous pouvons changer légèrement notre calcul de plus faible précondition
-pour le cas particulier des affectations à travers un pointeur. Pour cela, nous 
+pour le cas particulier des affectations à travers un pointeur. Pour cela, nous
 considérons que nous avons dans le programme une variable implicite $M$ qui modélise
 la mémoire, et nous définissons l'affectation d'une position en mémoire comme une mise
 à jour de cette variable, de telle manière à ce que cette position contienne maintenant
@@ -188,10 +180,9 @@ l'expression fournie lors de l'affectation :
 
 $$wp(*x = E, Q) = Q[M \leftarrow M[x \mapsto E]]$$
 
-Évaluer une valeur pointée $*x$ dans une formule consiste maintenant à utiliser 
+Évaluer une valeur pointée $*x$ dans une formule consiste maintenant à utiliser
 l'opération $get$ pour demander la valeur à la mémoire. Nous pouvons donc
 appliquer notre calcul de plus faible précondition à notre programme précédent :
-
 
 \begin{tabular}{lll}
   $wp(*p = 1, *p + *q = 2)$
@@ -203,7 +194,6 @@ appliquer notre calcul de plus faible précondition à notre programme précéde
   & $= (\texttt{if}\ q = p\ \texttt{then}\ 1+1 = 2\ \texttt{else}\ 1+M[q] = 2)$ & (6)\\
   & $= (q = p \vee M[q] = 1)$ & (7)
 \end{tabular}
-
 \begin{enumerate}
 \item nous devons appliquer la règle pour l'affectation de valeur pointée, mais
   pour cela, nous devons d'abord introduire $M$,
@@ -213,16 +203,15 @@ appliquer notre calcul de plus faible précondition à notre programme précéde
 \item nous utilisons la définition de $get$ pour $q$\\
   ($M[p \mapsto 1][q] = \texttt{if}\ q = p\ \texttt{then}\ 1\ \texttt{else}\ M[q]$)
 \item nous appliquons quelques simplifications sur la formule \dots
-\item \dots et nous pouvons finalement conclure que $M[q] = 1$ ou $p = q$.
+\item \dots et nous pouvons finalement conclure que $M[q] = 1$ ou $p = q$,
 \end{enumerate}
-
-et comme dans notre programme nous savons que $p = q$, nous pouvons conclure que
+et comme dans notre programme, nous savons que $p = q$, nous pouvons conclure que
 le programme est correct.
 
 
 Le plugin WP ne fonctionne par exactement comme cela. En particulier, cela dépend du
 modèle mémoire sélectionné pour réaliser la preuve, qui fait différentes hypothèses à
-propos de la manière dont la mémoire est organisée. Pour le modèle mémoire que nous 
+propos de la manière dont la mémoire est organisée. Pour le modèle mémoire que nous
 utilisons, le modèle mémoire typé, WP crée différentes variables pour la mémoire.
 Cela dit, regardons tout de même les conditions de vérification générées par WP pour la
 postcondition de la fonction \CodeInline{swap} :
@@ -233,38 +222,38 @@ postcondition de la fonction \CodeInline{swap} :
 Nous pouvons voir, au début de la définition de cette condition de vérification qu'une
 variable \CodeInline{Mint\_0} représentant une mémoire pour les valeurs de type entier
 a été créée, et que cette mémoire est mise à jour et accédée à l'aide des opérateurs que
-nous avons défini précédemment (voir par exemple la définition de la variable
+nous avons définis précédemment (voir par exemple la définition de la variable
 \CodeInline{x\_2}).
 
 
 \levelThreeTitle{Séquence d'instructions}
 
 
-Pour qu'une instruction soit valide, il faut que sa précondition nous 
-permette, par cette instruction, de passer à la postcondition voulue. 
-Maintenant, nous avons besoin d'enchaîner ce processus d'une 
+Pour qu'une instruction soit valide, il faut que sa précondition nous
+permette, par cette instruction, de passer à la postcondition voulue.
+Maintenant, nous avons besoin d'enchaîner ce processus d'une
 instruction à une autre. L'idée est alors que la postcondition assurée par la
-première instruction soit compatible avec la précondition demandée par la 
-deuxième et que ce processus puisse se répéter pour la troisième instruction, 
+première instruction soit compatible avec la précondition demandée par la
+deuxième et que ce processus puisse se répéter pour la troisième instruction,
 etc.
 
 
 
-La règle d'inférence correspondant à cette idée, utilisant les triplets de 
-Hoare est la suivante:
+La règle d'inférence correspondant à cette idée, utilisant les triplets de
+Hoare est la suivante :
 $$\dfrac{\{P\}\quad S1 \quad \{R\} \ \ \ \{R\}\quad S2 \quad \{Q\}}{\{P\}\quad S1 ;\ S2 \quad \{Q\}}$$
 
 
 
-Pour vérifier que la séquence d'instructions $S1;\ S2$ (NB : où $S1$ et $S2$ 
-peuvent elles-mêmes être des séquences d'instructions), nous passons par une 
-propriété intermédiaire qui est à la fois la précondition de $S2$ et la 
-postcondition de $S1$. Cependant, rien ne nous indique pour l'instant 
+Pour vérifier que la séquence d'instructions $S1;\ S2$ (NB : où $S1$ et $S2$
+peuvent elles-mêmes être des séquences d'instructions), nous passons par une
+propriété intermédiaire qui est à la fois la précondition de $S2$ et la
+postcondition de $S1$. Cependant, rien ne nous indique pour l'instant
 comment obtenir les propriétés $P$ et $R$.
 
 
 
-Le calcul de plus faible précondition $wp$ nous dit simplement que la 
+Le calcul de plus faible précondition $wp$ nous dit simplement que la
 propriété intermédiaire $R$ est trouvée par calcul de plus faible précondition
 de la deuxième instruction. Et que la propriété $P$ est trouvée en calculant la
 plus faible précondition de la première instruction. La plus faible précondition
@@ -273,7 +262,7 @@ $$wp(S1;\ S2 , Post) := wp(S1, wp(S2, Post) )$$
 
 
 
-Le plugin WP de Frama-C fait ce calcul pour nous, c'est pour cela que nous 
+Le plugin WP de Frama-C fait ce calcul pour nous, c'est pour cela que nous
 n'avons pas besoin d'écrire les assertions entre chaque ligne de code.
 
 
@@ -298,7 +287,7 @@ int main(){
 
 Notons que lorsque nous avons plus de deux instructions, nous pouvons simplement
 considérer que la dernière instruction est la seconde instruction de notre règle
-et que toutes les instructions qui la précèdent forment la première « instruction ». 
+et que toutes les instructions qui la précèdent forment la première « instruction ».
 De cette manière, nous remontons bien les instructions une à une dans notre
 raisonnement, par exemple avec le programme précédent :
 
@@ -314,12 +303,12 @@ raisonnement, par exemple avec le programme précédent :
 \end{center}
 
 Nous pouvons par calcul de plus faibles préconditions construire la propriété
-$Q_{-1}$ à partir de $Q$ et $i_3$, ce qui nous permet de déduire $Q_{-2}$, à 
+$Q_{-1}$ à partir de $Q$ et $i_3$, ce qui nous permet de déduire $Q_{-2}$, à
 partir de $Q_{-1}$ et $i_2$ et finalement $P$ avec $Q_{-2}$ et $i_1$.
 
 
 
-Nous pouvons maintenant vérifier des programmes comprenant plusieurs 
+Nous pouvons maintenant vérifier des programmes comprenant plusieurs
 instructions ; il est temps d'y ajouter un peu de structure.
 
 
@@ -328,20 +317,20 @@ instructions ; il est temps d'y ajouter un peu de structure.
 
 
 Pour qu'un branchement conditionnel soit valide, il faut que la postcondition
-soit atteignable par les deux banches, depuis la même précondition, à ceci 
-près que chacune des branches aura une information supplémentaire : le fait 
+soit atteignable par les deux banches, depuis la même précondition, à ceci
+près que chacune des branches aura une information supplémentaire : le fait
 que la condition était vraie dans un cas et fausse dans l'autre.
 
 
 
 Comme avec la séquence d'instructions, nous aurons donc deux points à vérifier
-(pour éviter de confondre les accolades, j'utilise la syntaxe 
+(pour éviter de confondre les accolades, j'utilise la syntaxe
 $if\ B\ then\ S1\ else\ S2$) :
 $$\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad S2\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad S2 \quad \{Q\}}$$
 
 
 
-Nos deux prémisses sont donc la vérification que lorsque nous avons la 
+Nos deux prémisses sont donc la vérification que lorsque nous avons la
 précondition et que nous passons dans la branche \CodeInline{if}, nous atteignons bien la
 postcondition, et que lorsque nous avons la précondition et que nous passons
 dans la branche \CodeInline{else}, nous obtenons bien également la postcondition.
@@ -352,8 +341,8 @@ Le calcul de précondition de $wp$ pour la conditionnelle est le suivant :
 $$wp(if\ B\ then\ S1\ else\ S2 , Post) := (B \Rightarrow wp(S1, Post)) \wedge (\neg B \Rightarrow wp(S2, Post))$$
 
 
-À savoir que $B$ doit impliquer la précondition la plus faible de $S1$, pour 
-pouvoir l'exécuter sans erreur vers la postcondition, et que $\neg B$ doit 
+À savoir que $B$ doit impliquer la précondition la plus faible de $S1$, pour
+pouvoir l'exécuter sans erreur vers la postcondition, et que $\neg B$ doit
 impliquer la précondition la plus faible de $S2$ (pour la même raison).
 
 
@@ -378,13 +367,13 @@ $$P \wedge \neg B \Rightarrow Q$$
 
 
 
-En résumé, si la condition du \CodeInline{if} est fausse, cela veut dire que la 
-postcondition de l'instruction conditionnelle globale est déjà vérifiée avant de 
+En résumé, si la condition du \CodeInline{if} est fausse, cela veut dire que la
+postcondition de l'instruction conditionnelle globale est déjà vérifiée avant de
 rentrer dans le \CodeInline{else} (puisqu'il ne fait rien).
 
 
 
-Par exemple, nous pourrions vouloir remettre une configuration $c$ à une valeur 
+Par exemple, nous pourrions vouloir remettre une configuration $c$ à une valeur
 par défaut si elle a mal été configurée par un utilisateur du programme :
 
 
@@ -430,9 +419,9 @@ La formule est bien vérifiable : quelle que soit l'évaluation de $\neg (c \in 
 
 
 
-Parfois, il peut être utile pour la preuve de renforcer une postcondition ou 
+Parfois, il peut être utile pour la preuve de renforcer une postcondition ou
 d'affaiblir une précondition. Si la première sera souvent établie par nos soins
-pour faciliter le travail du prouveur, la seconde est plus souvent vérifiée 
+pour faciliter le travail du prouveur, la seconde est plus souvent vérifiée
 par l'outil à l'issue du calcul de plus faible précondition.
 
 
@@ -448,16 +437,16 @@ Hoare mais également des formules à vérifier)
 
 
 Par exemple, si notre postcondition est trop complexe, elle risque de générer
-une plus faible précondition trop compliquée et de rendre le calcul des 
+une plus faible précondition trop compliquée et de rendre le calcul des
 prouveurs difficile. Nous pouvons alors créer une postcondition intermédiaire
-$SQ$, plus simple, mais plus restreinte et impliquant la vraie postcondition. 
+$SQ$, plus simple, mais plus restreinte et impliquant la vraie postcondition.
 C'est la partie $SQ \Rightarrow Q$.
 
 
 
-Inversement, le calcul de précondition générera généralement une formule 
+Inversement, le calcul de précondition générera généralement une formule
 compliquée et souvent plus faible que la précondition que nous souhaitons
-accepter en entrée. Dans ce cas, c'est notre outil qui s'occupera de vérifier 
+accepter en entrée. Dans ce cas, c'est notre outil qui s'occupera de vérifier
 l'implication entre ce que nous voulons et ce qui est nécessaire pour que notre
 code soit valide. C'est la partie $P \Rightarrow WP$.
 
@@ -465,7 +454,7 @@ code soit valide. C'est la partie $P \Rightarrow WP$.
 
 Nous pouvons par exemple illustrer cela avec le code qui suit. Notons bien qu'ici,
 le code pourrait tout à fait être prouvé par l'intermédiaire de WP sans ajouter des
-affaiblissements et renforcements de propriétés, car le code est très simple, il 
+affaiblissements et renforcements de propriétés, car le code est très simple, il
 s'agit juste d'illustrer la règle de conséquence.
 
 
@@ -496,18 +485,18 @@ int constrained_times_10(int a){
 
 
 Ici, nous voulons avoir un résultat compris entre 0 et 100. Mais nous savons que
-le code ne produira pas un résultat sortant des bornes 10 à 90. Donc nous 
+le code ne produira pas un résultat sortant des bornes 10 à 90. Donc nous
 renforçons la postcondition avec une assertion que \CodeInline{res}, le résultat, est compris
 entre 0 et 90 à la fin. Le calcul de plus faible précondition, sur cette propriété,
-et avec l'affectation \CodeInline{res = 10*a} nous produit une plus faible précondition 
+et avec l'affectation \CodeInline{res = 10*a} nous produit une plus faible précondition
 \CodeInline{1 <= a <= 9} et nous savons finalement que \CodeInline{2 <= a <= 8} nous donne cette garantie.
 
 
 
 Quand une preuve a du mal à être réalisée sur un code plus complexe, écrire des
-assertions produisant des postconditions plus fortes mais qui forment des formules
+assertions produisant des postconditions plus fortes, mais qui forment des formules
 plus simples peut souvent nous aider. Notons que dans le code précédent, les lignes
-\CodeInline{P\_imply\_WP} et \CodeInline{SQ\_imply\_Q} ne sont jamais utiles car c'est le raisonnement par
+\CodeInline{P\_imply\_WP} et \CodeInline{SQ\_imply\_Q} ne sont jamais utiles, car c'est le raisonnement par
 défaut produit par WP, elles sont juste présentes pour l'illustration.
 
 
@@ -516,24 +505,21 @@ défaut produit par WP, elles sont juste présentes pour l'illustration.
 \label{l3:statements-basic-constancy}
 
 
-Certaines séquences d'instructions peuvent concerner et faire intervenir des 
+Certaines séquences d'instructions peuvent concerner et faire intervenir des
 variables différentes. Ainsi, il peut arriver que nous initialisions et manipulions
-un certain nombre de variables, que nous commencions à utiliser certaines d'entre 
-elles, puis que nous les délaissions au profit d'autres pendant un temps. Quand un
-tel cas apparaît, nous avons envie que l'outil ne se préoccupe que des variables 
-qui sont susceptibles d'être modifiées pour avoir des propriétés les plus légères 
+un certain nombre de variables, que nous commencions à utiliser certaines d'entre
+elles, puis les délaissions au profit d'autres pendant un temps. Quand un
+tel cas apparaît, nous avons envie que l'outil ne se préoccupe que des variables
+qui sont susceptibles d'être modifiées pour avoir des propriétés les plus légères
 possibles.
 
 
 
 La règle d'inférence qui définit ce raisonnement est la suivante :
 $$\dfrac{\{P\}\quad c\quad \{Q\}}{\{P \wedge R\}\quad c\quad \{Q \wedge R\}}$$
-
-
-
-où $c$ ne modifie aucune variable entrant en jeu dans $R$. Ce qui nous dit : « pour 
+où $c$ ne modifie aucune variable entrant en jeu dans $R$. Ce qui nous dit : « pour
 vérifier le triplet, débarrassons-nous des parties de la formule qui concernent des
-variables qui ne sont pas manipulées par $c$ et prouvons le nouveau triplet ». 
+variables qui ne sont pas manipulées par $c$ et prouvons le nouveau triplet ».
 Cependant, il faut prendre garde à ne pas supprimer trop d'information, au risque
 de ne plus pouvoir prouver nos propriétés.
 
@@ -617,33 +603,284 @@ int foo(int a, int b){
 
 
 Dans le bloc \CodeInline{else}, n'ayant que connaissance du fait que \CodeInline{a} est compris
-entre -99 et 0, et ne sachant rien à propos de \CodeInline{b}, nous pourrions 
+entre -99 et 0, et ne sachant rien à propos de \CodeInline{b}, nous pourrions
 difficilement savoir si le calcul \CodeInline{a += b} produit une valeur supérieure
-strict à 0 pour \CodeInline{a}.
+stricte à 0 pour \CodeInline{a}.
 
 
 
 Naturellement ici, WP prouvera la fonction sans problème, puisqu'il transporte
 de lui-même les propriétés qui lui sont nécessaires pour la preuve. En fait,
-l'analyse des variables qui sont nécessaires ou non (et l'application, par 
+l'analyse des variables qui sont nécessaires ou non (et l'application, par
 conséquent de la règle de constance) est réalisée directement par WP.
 
 
 
-Notons finalement que la règle de constance est une instance de la règle de 
+Notons finalement que la règle de constance est une instance de la règle de
 conséquence :
 $$\dfrac{P \wedge R \Rightarrow P \quad \{P\}\quad c\quad \{Q\} \quad Q \Rightarrow Q \wedge R}{\{P \wedge R\}\quad c\quad \{Q \wedge R\}}$$
 
 
 
-Si les variables de $R$ n'ont pas été modifiées par l'opération (qui par contre, 
-modifie les variables de $P$ pour former $Q$), alors effectivement 
+Si les variables de $R$ n'ont pas été modifiées par l'opération (qui par contre,
+modifie les variables de $P$ pour former $Q$), alors effectivement
 $P \wedge R \Rightarrow P$ et $Q \Rightarrow Q \wedge R$.
 
 
+\levelThreeTitle{Assertion}
+
+
+Les assertions ACSL doivent être prouvées (et utilisées). Nous avons donc besoin
+de règle dans le calcul de plus faible précondition. Il y a plusieurs types
+d'assertions en ACSL :
+\begin{itemize}
+  \item \CodeInline{assert}
+  \item \CodeInline{check}
+  \item \CodeInline{admit}
+\end{itemize}
+
+
+Chacune d'elles à un comportement différent.
+
+
+Commençons par celle que nous avons utilisée jusqu'à maintenant :
+\CodeInline{assert}. Une annotation \CodeInline{assert P} a la sémantique
+informelle suivante : la propriété \CodeInline{P} doit être vérifiée au point
+de programme, et ensuite le fait qu'elle soit vraie est ajouté comme hypothèse
+pour prouver les propriétés qui apparaissent plus tard dans le programme. Notons
+qu'elle pourrait ne pas être vraie, mais elle sera de toute façon ajoutée dans
+le contexte de preuve. En revanche, si elle n'est pas vraie, d'abord nous ne
+serons pas en mesure de la prouver et ensuite, les propriétés prouvées en
+l'admettant vraie seront marquée comme « \textit{valid under hypothesis} ».
+
+
+L'annotation \CodeInline{check P} signifie que la propriété \CodeInline{P} doit
+être vérifiée à ce point de programme, mais elle ne sera pas ajoutée au contexte
+de preuve pour les annotations qui la suivent.
+
+
+Finalement, l'annotation \CodeInline{admit P} signifie qu'à partir de ce point
+de programme, la propriété \CodeInline{P} est considérée comme vraie et ajoutée
+au contexte de preuve pour annotations qui la suivent, même si nous ne la
+vérifions pas à ce point de programme.
+
+
+Illustrons ces différents types d'annotations avec ce court exemple :
+
+
+\CodeBlockInput{c}{annot-kinds.c}
+
+
+\image{annot-kinds}
+
+
+Dans la fonction \CodeInline{check\_annot}, ni le \CodeInline{check} ni la
+clause \CodeInline{ensures} ne sont prouvées. Les preuves ont été essayées
+séparément (et ont échoué).
+
+
+Dans la fonction \CodeInline{admit\_annot}, l'annotation \CodeInline{admit}
+apparaît bleue et verte (exactement comme dans les contrats de fonction sans
+corps), ce qui signifie qu'à partir de ce point, elle est considérée comme
+valide même si elle n'est pas prouvée. Par conséquent, la clause
+\CodeInline{ensures} est prouvée puisque \CodeInline{\textbackslash{}false} est
+supposée vrai.
+
+
+Finalement dans la fonction \CodeInline{assert\_annot}, l'annotation
+\CodeInline{assert} n'est pas prouvée, mais à partir de ce point elle est
+supposée vraie. Par conséquent, la clause \CodeInline{ensures} est prouvée.
+En revanche, tandis que dans la fonction \CodeInline{admit\_annot} elle
+apparaît entièrement prouvée (affichage vert), ici elle apparaît comme valide
+sous hypothèse : la validité dépend d'une propriété qui n'a pas encore été
+prouvée (et ne le sera pas).
+
+
+Nous pouvons encoder ces différents comportements avec les règles de WP qui
+suivent.
+
+
+La règle pour l'annotation \CodeInline{check} est la suivante :
+$$ wp(check\ A, Post) := A \wedge Post $$
+qui signifie que nous ajoutons aux propriétés que nous devons vérifier une
+nouvelle propriété, qui est la propriété $A$.
+
+
+La règle pour l'annotation \CodeInline{admit} est la suivante :
+$$ wp(admit\ A, Post) := A \Rightarrow Post $$
+qui signifie que sous la condition $A$, nous devons vérifier la postcondition
+(de l'instruction, qui peut être une propriété calculée grâce à d'autres règles
+de WP).
+
+
+Finalement, la règle pour l'annotation \CodeInline{assert} combine les deux
+précédentes. En effet :
+\begin{CodeBlock}{c}
+  assert P;
+\end{CodeBlock}
+est équivalent à :
+\begin{CodeBlock}{c}
+  check P; // d'abord, vérifier que P est vraie
+  admit P; // puis le supposer
+\end{CodeBlock}
+Donc :
+$$ wp(assert\ A, Post) := wp(check\ A, wp(admit\ A, Post)) \equiv A \wedge (A \Rightarrow Post) $$
+
+
+Cela permet d'introduire une coupure dans la preuve. On prouve d'abord $A$ et
+une fois que c'est fait, nous prouvons que lorsque $A$ est vrai, $Post$ l'est
+aussi.
+
+
+Il serait raisonnable de penser que l'annotation \CodeInline{admit} est
+dangereuse. Elle l'est. Mais elle peut être utile pour déboguer une preuve.
+En particulier, nous verrons dans le chapitre~\ref{l1:proof-methodologies} que
+l'annotation \CodeInline{assert} peut être utilisée pour guider une preuve.
+Pendant le processus, l'annotation \CodeInline{admit} peut être utile pour
+essayer des annotations sans pour autant devoir les prouver immédiatement, ou
+pour considérer que certaines annotations sont valides pour accélérer la phase
+de design facile. Plus rarement, elle peut être utile pour expliciter des
+hypothèses à propos du matériel, ou de la plateforme logicielle, mais pour cela,
+nous utilisons plus souvent les options du noyau de Frama-C ou des axiomes
+(nous parlerons des axiomes dans la section~\ref{l2:acsl-logic-definitions-axiomatic}).
+
+
+\levelThreeTitle{WP plugin vs. WP calculus de Dijkstra}
+
+
+Depuis le début de cette section, nous avons vu que la fonction $wp$ démarre
+depuis la postcondition et, instruction après instruction, change la formule
+jusqu'à atteindre le début de la fonction, où elle génère la condition de
+vérification (comme brièvement expliqué dans la
+section~\ref{l3:statements-basic-consequence}), que nous devons vérifier.
+
+
+Ceci dit, le lecteur attentif aura peut-être également remarqué que depuis le
+début de ce livre, dans la plupart des exemples, nous n'avons pas \textit{une}
+condition de vérification à vérifier, mais \textit{plusieurs}. Sur un aspect
+théorique, cela ne fait pas grande différence, mais d'un point de vue pratique,
+cela permet de générer des conditions de vérification plus simples à vérifier
+pour les solveurs SMT.
+
+
+En fait, le greffon WP génère plusieurs conditions de vérifications en parallèle
+pendant le calcul de WP. À chaque fois qu'il rencontre une nouvelle instruction,
+la fonction $wp$ est appliqué pour cette instruction sur toutes les conditions
+de vérifications rencontrées sur le chemin de programme auquel l'instruction
+appartient (pour garantir cela, la règle de la conditionnelle est sensiblement
+différente de ce que nous avons présentés, mais nous n'entrerons pas dans ces
+détails). Cependant, quand cette étape inclut la preuve d'une propriété (par
+exemple, une assertion), au lieu d'appliquer la règle en l'ajoutant comme une
+conjonction, elle est simplement ajoutée à l'ensemble des conditions de
+vérification à prouver. Intuitivement : nous commençons un nouveau calcul de plus
+faible précondition en parallèle à partir de ce point de programme.
+
+
+Illustrons cela sur cet exemple jouet :
+
+
+\CodeBlockInput{c}{wp-plugin-calculus-toy.c}
+
+
+Nous commençons (en 1) avec deux conditions de vérification :
+\begin{itemize}
+  \item \CodeInline{VC1: P(x)},
+  \item \CodeInline{VC2: P(y)}.
+\end{itemize}
+Nous appliquons la règle que l'affectation sur chacune d'elle, et nous atteignons
+2 avec :
+\begin{itemize}
+  \item \CodeInline{VC1: P(x * y)},
+  \item \CodeInline{VC2: P(y)}.
+\end{itemize}
+En 2, nous devons traiter la conditionnelle. Au lieu de directement appliquer
+la règle standard de WP, nous séparons l'analyse en deux ensembles de conditions
+de vérification, initialement équivalents. Considérons d'abord la branche
+\CodeInline{else} puis la branche \CodeInline{then}.
+
+
+De 2 à 3, nous rencontrons une annotation \CodeInline{check}, donc nous ajoutons
+une nouvelle condition de vérification et nous obtenons l'ensemble :
+\begin{itemize}
+  \item \CodeInline{VC1: P(x * y)},
+  \item \CodeInline{VC2: P(y)},
+  \item \CodeInline{VC3: Q(y)}.
+\end{itemize}
+Ensuite, nous appliquons la règle de l'affectation, et nous obtenons en 4 :
+\begin{itemize}
+  \item \CodeInline{VC1: P(x * (y+1))},
+  \item \CodeInline{VC2: P(y+1)},
+  \item \CodeInline{VC3: Q(y+1)}.
+\end{itemize}
+
+
+De 2 à 5, nous rencontrons une annotation \CodeInline{assert}, nous ajoutons
+donc cette connaissance à toutes les conditions de vérification, et nous en
+créons une nouvelle :
+\begin{itemize}
+  \item \CodeInline{VC1: Q(x) ==> P(x * y)},
+  \item \CodeInline{VC2: Q(x) ==> P(y)},
+  \item \CodeInline{VC4: Q(x)}.
+\end{itemize}
+Ensuite, nous appliquons la règle de l'affectation et nous obtenons en 6 :
+\begin{itemize}
+  \item \CodeInline{VC1: Q(x+1) ==> P((x+1) * y)},
+  \item \CodeInline{VC2: Q(x+1) ==> P(y)},
+  \item \CodeInline{VC4: Q(x+1)}.
+\end{itemize}
+
+
+Maintenant, nous devons réconcilier les deux ensembles. Nous omettons certains
+détails ici (l'astuce se trouve dans les variables $v'$ qui sont introduites et
+qui permettent de séparer les valeurs en fonction de la condition), et nous
+obtenons en 7, quelque chose comme :
+\begin{CodeBlock}{text}
+  VC1:
+    ((x <= 0 ==> y' == y+1 && x' == x) &&
+     (x >  0 ==> y' == y   && x' == x+1 && Q(x+1))) ==>
+       P(x' * y')
+
+  VC2:
+    ((x <= 0 ==> y' == y+1) &&
+     (x >  0 ==> y' == y    && Q(x+1))) ==>
+       P(y')
+  VC3:
+    (x <= 0) ==> Q(x+1)
+
+  VC4:
+    (x >  0) ==> Q(x+1)
+\end{CodeBlock}
+
+
+Finalement, nous atteignons la précondition, et nous obtenons en 8 :
+\begin{CodeBlock}{text}
+  VC1:
+    P(x) ==>
+      ((x <= 0 ==> y' == y+1 && x' == x) &&
+       (x >  0 ==> y' == y   && x' == x+1 && Q(x+1))) ==>
+         P(x' * y')
+
+  VC2:
+    P(x) ==>
+      ((x <= 0 ==> y' == y+1) &&
+       (x >  0 ==> y' == y    && Q(x+1))) ==>
+         P(y')
+  VC3:
+    P(x) ==> (x <= 0) ==> Q(x+1)
+
+  VC4:
+    P(x) ==> (x >  0) ==> Q(x+1)
+\end{CodeBlock}
+
+
+Nous pouvons voir que pour chaque propriété que nous devons prouver, nous avons
+construit une condition de vérification spécifique qui rassemble la connaissance
+disponible le long du chemin de programme qui atteint le point où la vérification
+est demandée.
+
 
 \levelThreeTitle{Exercices}
- 
+
 
 \levelFourTitle{Une série d'affectations}
 
@@ -667,8 +904,8 @@ int function(int x, int y){
 \end{CodeBlock}
 
 
-En utilisant la bonne règle d'inférence, en déduire que le programme respecte le 
-contrat fixé pour cette fonction.
+En utilisant la bonne règle d'inférence, en déduire que le programme est
+conforme au contrat fixé pour cette fonction.
 
 
 \levelFourTitle{Branche « \textit{then} » vide dans une conditionnelle}
@@ -682,14 +919,14 @@ Pour les deux questions qui suivent, nous avons uniquement besoin des règles d'
 et pas du calcul de plus faible précondition.
 
 
-Montrer que lorsqu'au lieu de la branche « \textit{else} », c'est la branche « \textit{then} » qui est
+Montrer que lorsque, au lieu de la branche « \textit{else} », c'est la branche « \textit{then} » qui est
 vide, la postcondition de structure conditionnelle est vérifiée par la conjonction de
 la précondition et de la condition de notre structure conditionnelle (puisque
 la branche « \textit{else} » est la seule à potentiellement modifier l'état de
 la mémoire).
 
 
-Montrer que si les deux branches sont vide, la structure conditionnelle est juste une
+Montrer que si les deux branches sont vides, la structure conditionnelle est juste une
 instruction \textit{skip}.
 
 
@@ -713,7 +950,7 @@ peut être réécrit comme :
 
 \begin{CodeBlock}{c}
 if(cond1){
-  if(cond2){    
+  if(cond2){
     // code
   }
 }
@@ -734,9 +971,9 @@ Calculer à la main la plus faible précondition du programme suivant :
 
 
 \begin{CodeBlock}{c}
-/*@ 
-  requires -5 <= y <= 5 ; 
-  requires -5 <= x <= 5 ; 
+/*@
+  requires -5 <= y <= 5 ;
+  requires -5 <= x <= 5 ;
   ensures  -15 <= \result <= 25 ;
 */
 int function(int x, int y){
@@ -745,13 +982,13 @@ int function(int x, int y){
   if(x < 0){
     x = 0 ;
   }
-  
+
   if(y < 0){
     x += 5 ;
   } else {
     x -= 5 ;
   }
-  
+
   res = x - y ;
 
   return res ;
@@ -760,5 +997,5 @@ int function(int x, int y){
 
 
 
-En utilisant la bonne règle d'inférence, en déduire que le programme respecte le 
-contrat fixé pour cette fonction.
+En utilisant la bonne règle d'inférence, en déduire que le programme est
+conforme au contrat fixé pour cette fonction.

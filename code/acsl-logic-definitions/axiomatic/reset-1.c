@@ -1,3 +1,8 @@
+/* run.config
+   DEPS: @PTEST_DEPS@ @PTEST_DIR@/@PTEST_NAME@.@PTEST_NUMBER@.session@PTEST_CONFIG@/interactive/*.v
+   STDOPT:+"-wp-prover alt-ergo,coq -wp-session @PTEST_DIR@/@PTEST_NAME@.@PTEST_NUMBER@.session@PTEST_CONFIG@"
+*/
+
 #include <stddef.h>
 
 /*@
@@ -6,7 +11,7 @@
 
     axiom zeroed_empty{L}:
       \forall int* a, integer b, e; b >= e ==> zeroed{L}(a,b,e);
-      
+
     axiom zeroed_range{L}:
       \forall int* a, integer b, e; b < e ==>
         zeroed{L}(a,b,e-1) && a[e-1] == 0 <==> zeroed{L}(a,b,e);

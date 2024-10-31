@@ -1,3 +1,7 @@
+/* run.config
+   OPT:
+*/
+
 #include <stddef.h>
 
 void replace(int *a, size_t length, int old, int new) {

@@ -39,7 +39,7 @@ difficulté réside donc dans le fait de choisir les bons tests.
 
 
 Le but de la preuve de programmes est de s'assurer que, quelle que soit l'entrée
-fournie au programme, si elle respecte la spécification, alors le programme
+fournie au programme, si elle est conforme à la spécification, alors le programme
 fera ce qui est attendu. Cependant, comme nous ne pouvons pas tout essayer, nous
 allons établir formellement, mathématiquement, la preuve que le logiciel ne
 peut exhiber que les comportements qui sont spécifiés et que les erreurs
@@ -59,7 +59,7 @@ their absence!
 
 
 
-Le test de programme peut être utilisé pour montrer la présence de bugs mais
+Le test de programme peut être utilisé pour montrer la présence de bugs, mais
 jamais pour montrer leur absence.
 
 
@@ -83,8 +83,6 @@ spécification. À cela s’ajoute la spécification de notre langage de
 programmation qui nous définit la manière correcte de l’utiliser. Chacun de
 ces aspects peut donner lieu à l’introduction de bugs, que nous pouvons
 séparer en trois catégories :
-
-
 \begin{itemize}
 \item le programme n’est pas conforme, ou son comportement non défini,
       d’après la spécification du langage (par exemple, le programme accède
@@ -103,7 +101,7 @@ séparer en trois catégories :
 \end{itemize}
 
 
-Chacune de ces catégories peut affecter la sûreté et/ou la sécurité de nos
+Chacune de ces catégories peut affecter la sûreté et la sécurité de nos
 programmes, qui ne sont pas des notions tout à fait équivalentes. Pour donner
 une idée de la différence qui existe entre ces deux notions, nous pouvons
 dire que dans le cas de la sécurité, on suppose qu’il existe une entité
@@ -123,8 +121,6 @@ Tout au long de ce tutoriel, nous montrerons comment prouver que les
 implémentations de nos programmes ne contiennent pas de bugs correspondant
 aux deux premières catégories définies plus haut, à savoir qu’ils sont
 conformes :
-
-
 \begin{itemize}
 \item à la spécification de notre langage ;
 \item à la spécification de ce que nous attendons d’eux.
@@ -139,7 +135,7 @@ demande de comprendre exactement le besoin auquel nous devons répondre.
 
 Nous pourrions dire avec cynisme que la preuve nous montre finalement que
 l’implémentation « ne contient aucun bug de plus que la spécification », et
-donc que nous traitons pas la troisième catégorie de bugs que nous avons
+donc que nous ne traitons pas la troisième catégorie de bugs que nous avons
 définie. Cependant, être sûr que le programme « ne contient aucun bug de
 plus que la spécification » est déjà un sacré pas en avant par rapport à
 savoir que le programme « ne contient pas beaucoup plus de bugs que la
@@ -148,7 +144,7 @@ dont nous nous débarrassons, bugs qui peuvent déjà sévèrement compromettre 
 sûreté et la sécurité de nos programmes. Ensuite, il existe également des
 techniques pour traiter la troisième catégorie de bugs, en analysant les
 spécifications en quête d’erreurs ou d’insuffisance. Par exemple, les
-techniques de model checking - vérification de modèles - permettent de
+techniques de \emph{model checking} - vérification de modèles - permettent de
 construire un modèle abstrait à partir d’une spécification et de produire
 un ensemble d’états accessibles du programme d’après le modèle. En
 caractérisant les états fautifs, nous sommes en mesure de déterminer si les
@@ -157,7 +153,7 @@ caractérisant les états fautifs, nous sommes en mesure de déterminer si les
 
 \levelThreeTitle{Un peu de contexte}
 
-En informatique, les méthodes dites *formelles* permettent
+En informatique, les méthodes dites \textit{formelles} permettent
  de raisonner de manière rigoureuse, mathématique, à propos des
 programmes. Il existe un très large panel de méthodes formelles qui peuvent
 intervenir à tous les niveaux de la conception, l'implémentation, l'analyse et
@@ -177,7 +173,7 @@ code correspond à ce que nous voulons exprimer. La technique que nous allons
 Le principe des analyses statiques est que nous n'exécuterons pas le programme
 pour nous assurer que son fonctionnement est correct, mais nous raisonnerons sur
 un modèle mathématique définissant l'ensemble des états qu'il peut atteindre.
-A l'inverse, les analyses dynamiques comme le test de programmes nécessitent
+À l'inverse, les analyses dynamiques comme le test de programmes nécessitent
 d'exécuter le code analysé. Il existe également des analyses dynamiques et
 formelles, comme de la génération automatique de tests ou encore des techniques
 de \textit{monitoring} de code qui pourront, par exemple, instrumenter un code
@@ -198,28 +194,25 @@ l'exemple d'un chronomètre simple. Une modélisation très abstraite du
 comportement de notre chronomètre est la suivante :
 
 
-\image{model-fr.png}[Modélisation très abstraite d'un chronomètre]
+\image{model-fr}[Modélisation très abstraite d'un chronomètre]
 
 
 Nous avons bien une modélisation du comportement de notre chronomètre avec
 différents états qu'il peut atteindre en fonction des actions qu'il subit.
 Cependant, nous n'avons pas modélisé comment ces états sont
-représentés dans le programme (est-ce une énumération ? une position précise
+représentés dans le programme (Est-ce une énumération ? Une position précise
 atteinte au sein du code ?), ni comment est modélisé le calcul du temps (une seule
 variable en secondes ? Plusieurs variables heures, minutes, secondes ?). Nous
 aurions donc bien du mal à spécifier des propriétés à propos de notre programme.
 Nous pouvons ajouter des informations :
-
-
-
 \begin{itemize}
-\item état arrêté à zéro : temps = 0s ;
-\item état en marche : temps > 0s ;
-\item état arrêté : temps > 0s.
+\item état arrêté à zéro : temps = 0 s ;
+\item état en marche : temps > 0 s ;
+\item état arrêté : temps > 0 s.
 \end{itemize}
 
 
-Ce qui nous donne déjà un modèle plus concret mais qui est toujours insuffisant
+Ce qui nous donne déjà un modèle plus concret, mais qui est toujours insuffisant
 pour poser des questions intéressantes à propos de notre système comme : « est-il
 possible que dans l'état arrêté, le temps continue de s'écouler ? ». Car nous
 n'avons pas modélisé l'écoulement du temps par le chronomètre.
@@ -237,10 +230,13 @@ Plus un modèle est concret, plus il décrit précisément le comportement de no
 programme. Le code source exprime le comportement plus précisément que notre
 diagramme, mais il est moins précis que le code de l'exécutable. Cependant, plus
 un modèle est précis, plus il est difficile d'avoir une vision globale du
-comportement qu'il définit. Notre diagramme est compréhensible en un coup d'oeil,
+comportement qu'il définit. Notre diagramme est compréhensible en un coup d'\oe{}il,
 le code demande un peu plus de temps, quant à l'exécutable ... Toute personne qui
 a déjà ouvert par erreur un exécutable avec un éditeur de texte sait que ce n'est
-pas très agréable à lire dans son ensemble\textsuperscript{\ref{footnote:1}}.
+pas très agréable à lire dans son ensemble\footnote{Il existe des analyses
+formelles cherchant à comprendre le fonctionnement des exécutables en code
+machine, par exemple pour comprendre ce que font des logiciels malveillants ou
+pour détecter des failles de sécurité introduites lors de la compilation.}.
 
 
 
@@ -264,14 +260,6 @@ ici, c'est la logique de Hoare adaptée pour le langage C et toutes ses
 subtilités (qui rendent donc le modèle final très concret).
 
 
-
-\footnotetext[1]{\label{footnote:1} Il existe des analyses formelles cherchant à comprendre le
-fonctionnement des exécutables en code machine, par exemple pour comprendre ce
-que font des logiciels malveillants ou pour détecter des failles de sécurité introduites lors
-de la compilation.}
-
-
-
 \levelThreeTitle{Les triplets de Hoare}
 
 
@@ -280,9 +268,6 @@ par \externalLink{Tony Hoare}{https://fr.wikipedia.org/wiki/Charles_Antony_Richa
 en 1969 dans un article intitulé \textit{An Axiomatic Basis for
 Computer Programming} (une base axiomatique pour la programmation des
 ordinateurs). Cette méthode définit :
-
-
-
 \begin{itemize}
 \item des axiomes, qui sont des propriétés que nous admettons, comme \\
 « l'action “ne rien faire” ne change pas l'état du programme »,
@@ -297,27 +282,24 @@ de Hoare :
 
 
 
+$$\{P\} \quad C \quad \{Q\}$$
 
-\begin{center}
-$\{P\}\ C\ \{Q\}$
-\end{center}
 
 
 Où $P$ et $Q$ sont des prédicats (c'est-à-dire des formules logiques) qui nous disent dans
 quel état se trouve la mémoire traitée par le programme. $C$ est un ensemble de
 commandes définissant un programme. Cette écriture nous dit « si nous sommes
 dans un état où $P$ est vrai, après exécution de $C$ et si $C$ termine,
-alors $Q$ sera vrai pour le nouvel état du programme ». Dis autrement, $P$ est
+alors $Q$ sera vrai pour le nouvel état du programme ». Dit autrement, $P$ est
 une précondition suffisante pour que $C$ nous amène à la postcondition $Q$.
-Par exemple, le triplet correspondant à l'action « ne rien faire » (\textbf{skip})
-est le suivant :
+Par exemple, le triplet correspondant à l'action « ne rien faire »
+(\CodeInline{skip}) est le suivant :
 
 
 
 
-\begin{center}
-$\{P\}$ \textbf{skip} $\{P\}$
-\end{center}
+$$\{P\} \quad \texttt{skip} \quad \{P\}$$
+
 
 
 Quand nous ne faisons rien, la postcondition est la même que la précondition.
@@ -325,10 +307,10 @@ Quand nous ne faisons rien, la postcondition est la même que la précondition.
 
 
 Tout au long de ce tutoriel, nous verrons la sémantique de diverses
-constructions (blocs conditionnels, boucles, etc ...) dans la logique de Hoare.
+constructions (blocs conditionnels, boucles, etc.) dans la logique de Hoare.
 Nous n'allons donc pas tout de suite rentrer dans ces détails puisque nous en
 aurons l'occasion plus tard. Il n'est pas nécessaire de mémoriser ces notions
-ni même de comprendre toute la théorie derrière mais il est toujours utile
+ni même de comprendre toute la théorie derrière, mais il est toujours utile
 d'avoir au moins une vague idée du fonctionnement de l'outil que nous
 utilisons.
 
@@ -350,7 +332,7 @@ commands, non-determinacy and formal derivation of programs}.
 
 
 
-Cette phrase contient pas mal de mots méchants mais le concept est en fait très
+Cette phrase contient pas mal de mots méchants, mais le concept est en fait très
 simple. Comme nous l'avons vu précédemment, la logique de Hoare donne des
 règles expliquant comment se comportent les actions d'un programme. Mais
 elle ne nous dit pas comment appliquer ces règles pour établir une preuve
@@ -359,14 +341,14 @@ complète du programme.
 
 
 Dijkstra reformule la logique de Hoare en expliquant comment, dans le triplet
-$\{P\}C\{Q\}$, l'instruction, ou le bloc d'instructions, $C$ transforme le
+$\{P\}C\{Q\}$, l'instruction ou le bloc d'instructions, $C$ transforme le
 prédicat $P$, en $Q$. Cette forme est appelée « raisonnement vers l'avant » ou
 \textit{forward-reasoning}. Nous calculons à partir d'une précondition et d'une ou
 plusieurs instructions, la plus forte postcondition que nous pouvons
 atteindre. Informellement, en considérant ce qui est reçu en entrée, nous
 calculons ce qui sera renvoyé au plus en sortie. Si la postcondition voulue
 est au plus aussi forte, alors nous avons prouvé qu'il n'y a pas de
-comportements non-voulus.
+comportements non voulus.
 
 
 
@@ -404,7 +386,7 @@ $\{P\}$ $x$ $:=$ a $\{x = 42\}$
 
 
 Quelle est la précondition minimale pour que la postcondition $\{x = 42\}$
-soit respectée ? La règle nous dira que $P$ est $\{$a$=42\}$.
+soit vérifiée ? La règle nous dira que $P$ est $\{$a$=42\}$.
 
 
 

@@ -1,0 +1,40 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing at-2.c (with preprocessing)
+[kernel:annot-error] at-2.c:8: Warning: 
+  unbound logic variable x. Ignoring code annotation
+[wp] Running WP plugin...
+[rte:annot] annotating function example_1
+[rte:annot] annotating function example_2
+[rte:annot] annotating function example_3
+[rte:annot] annotating function example_4
+[wp] [Valid] Goal example_1_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal example_1_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal example_2_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal example_2_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal example_3_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal example_3_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal example_4_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal example_4_terminates (Cfg) (Trivial)
+[wp] 5 goals scheduled
+[wp] [Unsuccess] typed_example_2_assert (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_example_3_assert (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_example_4_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_example_4_assert (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_example_4_assert_2 (Alt-Ergo) (Cached)
+[wp] Proved goals:    9 / 13
+  Terminating:     4
+  Unreachable:     4
+  Alt-Ergo:        1
+  Unsuccess:       4
+[wp:pedantic-assigns] at-2.c:5: Warning: 
+  No 'assigns' specification for function 'example_1'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] at-2.c:11: Warning: 
+  No 'assigns' specification for function 'example_2'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] at-2.c:18: Warning: 
+  No 'assigns' specification for function 'example_3'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] at-2.c:26: Warning: 
+  No 'assigns' specification for function 'example_4'.
+  Callers assumptions might be imprecise.

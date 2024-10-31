@@ -1,0 +1,47 @@
+# frama-c -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast [...]
+[kernel] Parsing ex-1-simple-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function incr_a_by_b
+[rte:annot] annotating function max_ptr
+[rte:annot] annotating function min_ptr
+[rte:annot] annotating function order_3_inc_min
+[wp] [Valid] Goal incr_a_by_b_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal incr_a_by_b_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal max_ptr_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal max_ptr_terminates (Cfg) (Trivial)
+[wp] 30 goals scheduled
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_3 (Qed)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_4 (Qed)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_5 (Qed)
+[wp] [Valid] typed_max_ptr_assert_rte_mem_access_6 (Qed)
+[wp] [Valid] typed_max_ptr_assigns_part1 (Qed)
+[wp] [Valid] typed_max_ptr_assigns_part2 (Qed)
+[wp] [Valid] typed_min_ptr_terminates (Qed)
+[wp] [Valid] typed_min_ptr_exits (Qed)
+[wp] [Valid] typed_min_ptr_assigns_exit (Qed)
+[wp] [Valid] typed_min_ptr_assigns_normal (Qed)
+[wp] [Valid] typed_min_ptr_call_max_ptr_requires (Qed)
+[wp] [Valid] typed_order_3_inc_min_terminates (Qed)
+[wp] [Valid] typed_order_3_inc_min_exits (Qed)
+[wp] [Valid] typed_order_3_inc_min_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_order_3_inc_min_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_order_3_inc_min_assigns_exit_part3 (Qed)
+[wp] [Valid] typed_order_3_inc_min_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_order_3_inc_min_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_order_3_inc_min_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_order_3_inc_min_call_min_ptr_requires (Qed)
+[wp] [Valid] typed_order_3_inc_min_call_min_ptr_2_requires (Qed)
+[wp] [Valid] typed_order_3_inc_min_call_min_ptr_3_requires (Qed)
+[wp] [Valid] typed_incr_a_by_b_assert_rte_mem_access (Qed)
+[wp] [Valid] typed_incr_a_by_b_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_incr_a_by_b_assert_rte_mem_access_3 (Qed)
+[wp] [Valid] typed_incr_a_by_b_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_incr_a_by_b_assert_rte_signed_overflow_2 (Qed)
+[wp] [Valid] typed_incr_a_by_b_assigns (Qed)
+[wp] Proved goals:   34 / 34
+  Terminating:     2
+  Unreachable:     2
+  Qed:            27
+  Alt-Ergo:        3

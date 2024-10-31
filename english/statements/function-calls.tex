@@ -20,8 +20,8 @@ the computed precondition.
 
 
 
-Second, in C, a function can have side-effects. Thus, the values of the
-variables referenced in input are not necessarily the same as they was after the
+Second, in C, a function can have side effects. Thus, the values of the
+variables referenced in input are not necessarily the same as they were after the
 call to the function, and the contract may express some property about those
 values before and after the call. So, if we have labels in the postcondition,
 we must correctly replace them.
@@ -66,7 +66,7 @@ follows the call, while we need to explicitly mention the old state to speak
 about the values before the call. For example, considering the contract of
 \CodeInline{inc} when we call it in \CodeInline{foo}, \CodeInline{*x} in the
 precondition is \CodeInline{*a} at \CodeInline{L1}, while \CodeInline{*x} in the
-postcondition is \CodeInline{*a} at \CodeInline{L2}. Consequently the pre and
+postcondition is \CodeInline{*a} at \CodeInline{L2}. Consequently, the pre and
 the postcondition must be considered slightly differently when it comes to
 mutable memory location. Note that for the value of the parameter \CodeInline{x}
 itself, there is no such consideration: this value cannot be modified by the
@@ -104,7 +104,7 @@ the postcondition:
 \end{center}
 
 
-We can detail a little bit the reasoning for each part of this formula.
+We can detail a bit the reasoning for each part of this formula.
 
 
 First, note that in both pre and postcondition, each named parameter $x_i$ is
@@ -224,9 +224,69 @@ $$\forall v_a, v_b, \quad v_a = 2 \wedge v_b = 4 \Rightarrow v_a = 2 \wedge v_b 
 This last property is trivially true, thus the program is verified.
 
 
+\levelFourTitle{Function contracts: check and admit}
 
-\levelFourTitle{What should we keep in mind?}
 
+Just like assertions and loop invariants, the \CodeInline{requires} and
+\CodeInline{ensures} clauses can be only checked or admitted.
+
+
+Let us start with the \CodeInline{ensures} clause. When a function
+\CodeInline{f} has an \CodeInline{ensures} clause, it must be proved correct
+when verifying \CodeInline{f}. On the opposite, when we call \CodeInline{f}, we
+admit that it is true. Now, if \CodeInline{f} has a \CodeInline{check ensures}
+clause, we have to verify it when verifying \CodeInline{f}, but we
+\textit{ignore} it when \CodeInline{f} is called. On the opposite, if
+\CodeInline{f} has an \CodeInline{admit ensures} clause, it is not verified when
+verifying the \CodeInline{f}, still we admit it when it is called. In the
+following example:
+
+\CodeBlockInput[5]{c}{check-admit-ensures.c}
+
+\image{ensures-CA}
+
+We cannot prove the clause \CodeInline{E1} because \CodeInline{*x} is assigned
+to -1, but we can prove the check \CodeInline{A1} because when \CodeInline{f} is
+called, we admit that \CodeInline{E1} is true. We can prove the clause
+\CodeInline{E2} because \CodeInline{*y} is assigned to 10 that is indeed greater
+than or equals to 10. However, we cannot prove the check \CodeInline{A2} because
+this postcondition is ignored at call point. Finally, while \CodeInline{*z} is
+assigned to 20, we do not try to verify that \CodeInline{E3} is true (and it is
+not), yet WP does not warn about it: it is admitted, thus at call point, we can
+prove that \CodeInline{z} is greater than 30 even if it is not.
+
+Now, we can present the behavior for the \CodeInline{requires} clause. When a
+function \CodeInline{f} has a \CodeInline{requires} clause, it is assumed to be
+true when verifying \CodeInline{f} and must be verified when \CodeInline{f} is
+called. When it is a \CodeInline{check requires}, the clause is verified at
+call point, yet we do not assume it when verifying \CodeInline{f}. Finally, when
+a function \CodeInline{f} has an \CodeInline{admit requires} clause, it is
+assumed to be true when verifying \CodeInline{f} without any verification of it
+at call point. In the following example:
+
+\CodeBlockInput[5]{c}{check-admit-requires.c}
+
+\image{requires-CA}
+
+We cannot prove that \CodeInline{R1} is true at call point, yet we admit it in
+\CodeInline{callee} thus can prove \CodeInline{A1}. On the opposite, while
+\CodeInline{R2} is verified at call point, we cannot prove \CodeInline{A2} in
+\CodeInline{callee} since we ignore \CodeInline{R2} when verifying \CodeInline{f}.
+Finally, we do not try to verify \CodeInline{R3} at call point (and WP does not
+warn about it even if it is false), but we can prove that \CodeInline{A3} is
+verified because we assume \CodeInline{R3}.
+
+
+There is a second important aspect with the behavior of the \CodeInline{requires}
+clause. The careful reader might have noticed in the previous example, that the
+\CodeInline{check \textbackslash{}false} is verified. The reason is that the
+\CodeInline{requires} clauses are also assumed locally in the caller for normal
+and \CodeInline{admit} \CodeInline{requires} clauses. Thus, since in this
+example those \CodeInline{requires} clauses are false, we locally introduce
+"false" in the proof context.
+
+
+\levelFourTitle{What should we keep in mind about function contracts?}
 
 
 Functions are absolutely necessary to modular programming, and the weakest
@@ -238,23 +298,39 @@ calls.
 So as a reminder, we should just keep in mind the following general scheme:
 
 
-
 \begin{CodeBlock}{c}
-/*@
-  requires foo_R ;
-  assigns ... ;
-  ensures foo_E ;
+/*@       requires bar_R
+    check requires bar_CR ;
+    admit requires bar_AR ;
+
+    assigns ... ;
+
+          ensures bar_E
+    check ensures bar_CE ;
+    admit ensures bar_AE ;
+*/
+void bar(...) ;
+
+/*@       requires foo_R
+    check requires foo_CR ;
+    admit requires foo_AR ;
+
+    assigns ... ;
+
+          ensures foo_E
+    check ensures foo_CE ;
+    admit ensures foo_AE ;
 */
 type foo(parameters...){
-  // Here we suppose that foo_R holds
+  // Here we suppose that foo_R and foo_AR hold
 
 
-  // Here we must prove that bar_R holds
+  // Here we must prove that bar_R and bar_CR hold
   bar(some parameters ...) ;
-  // Here we assume that bar_E holds
+  // Here we assume that bar_E and bar_AE hold
 
 
-  // Here we must prove that foo_E holds
+  // Here we must prove that foo_E and foo_CE hold
   return ... ;
 }
 \end{CodeBlock}
@@ -264,25 +340,75 @@ Note that for the last statement, with weakest precondition calculus, the idea
 is more to show that our precondition is strong enough to ensure that the code
 leads to our postcondition. However, first, this vision is simpler to
 understand, and second the WP plugin does not actually perform a strict weakest
-precondition calculus but an highly optimized one that does not follows exactly
+precondition calculus but a highly optimized one that does not follow exactly
 the same rules.
+
+
+\levelFourTitle{The particular case of \CodeInline{exits}}
+
+
+In C, one can call the \CodeInline{exit} function to stop the execution with a
+particular error code. In such a case, the code that follows the call will not
+be executed, and the \CodeInline{return} statement will not be reached. Thus,
+when the function exits, the postcondition is always verified since it is
+unreachable (just like when a function never calls a function that might exit,
+the \CodeInline{exits} clause might be anything):
+
+
+\CodeBlockInput{c}{exit-1.c}
+
+
+Here, we have just indicated that \CodeInline{\textbackslash{}true} must be true
+when the function exits, but in fact one can indicate any property of interest.
+For example, one can indicate the value of the exit status:
+
+
+\CodeBlockInput{c}{exit-2.c}
+
+
+Of course when one calls a function that might exit, the risk of exit action is
+propagated:
+
+
+\CodeBlockInput{c}{exit-3.c}
+
+
+It is thus recommended indicating precisely what are the behaviors that can lead
+to a call to \CodeInline{exit} and to forbid calls to \CodeInline{exit} in the
+other cases:
+
+
+\CodeBlockInput{c}{exit-4.c}
+
+
+\paragraph*{[Formal] WP calculus}
+
+
+When we have to prove the postcondition of the function, we start the calculus
+from the postcondition. Thus, we start our computation from the single
+\CodeInline{return} statement created by Frama-C (although it is exactly like
+we would start from all the different \CodeInline{return} statements in the
+original program), and we reason backward along the program. When we meet a
+function call, we use the contract with the previously explained rule for
+function call, and the postcondition we consider at this point for reasoning is
+the one stated in the \CodeInline{ensures} clauses.
+
+
+For proving \CodeInline{exits} clauses, it is different, but not that much.
+Instead of starting the calculus from \CodeInline{return} instructions, we start
+a new calculus from each function call (as it might be one of the exit points)
+and at this call, we use the \CodeInline{exit} clause as a postcondition, then
+when we continue the backward reasoning, we use the \CodeInline{ensures} as
+usual since if we have reached the function call where we started from, that
+means that previous calls did not exit.
 
 
 \levelThreeTitle{Recursive functions}
 
 
-
-For now, WP does not check function termination. Of course, if a function is
-only composed of loops that terminate (that have a verified variant) and
-calls to functions that terminate, it terminates. However, one particular
-case requires more reasoning: recursive and mutually recursive functions.
-Currently termination of such functions is not supported with WP.
-
-
-
-That basically means that using a function that does not terminate we can
-prove anything. For example:
-
+Just as it is easy to prove anything about the postcondition of a function if it
+contains an infinite loop, it is easy to prove anything about the postcondition
+of a function that does an infinite recursion:
 
 
 \CodeBlockInput{c}{trick.c}
@@ -292,22 +418,401 @@ prove anything. For example:
 
 
 We can see that the function and the assertion are proved. And indeed the
-proof is correct: we consider partial correctness and we face a function
+proof is correct: we consider partial correctness, and we face a function
 that does not terminate: anything that follows a call to this function would
-be true.
-
+be true. But again, we have a watchdog: the \CodeInline{terminates} clause is
+not proved.
 
 
 Thus, the question is: what could we do in such a case? Again, we could use
-some kind of variant to bound the number of recursive calls. In ACSL, this is
-the role of the \CodeInline{decreases} clause:
+a measure (like in Section~\ref{l4:statements-loops-variant-measure}), to
+bound the depth of the recursive calls. In ACSL, it is expressed thanks to the
+\CodeInline{decreases} clause:
 
 
-\CodeBlockInput{c}{decreases.c}
+\CodeBlockInput[1][6]{c}{decreases.c}
 
 
-This clause expresses exactly the same idea as a \CodeInline{loop variant}.
-The expression considered by a \CodeInline{decreases} clause is a positive
-expression that strictly decreases when the function is called again. However,
-it is still not supported by WP. Thus, for the moment, a recursive function
-cannot be totally proved with WP.
+Just like the \CodeInline{loop variant} clause, the \CodeInline{decreases}
+clause expresses a notion of measure. That is, a positive integer expression
+(or an expression equipped with a relation) that strictly decreases. While, a
+\CodeInline{loop variant} clause represents an upper bound on the number of
+iteration, \CodeInline{decreases} represents an upper bound on the depth of the
+recursion (and not the number of function calls):
+
+
+\CodeBlockInput[14][20]{c}{decreases.c}
+
+
+Note that, like for the \CodeInline{loop variant} clause where we verify the
+properties of the expression only when a new iteration might happen, the
+properties of the \CodeInline{decreases} expression are verified when the
+function is called again. It means that when we reach the maximum recursion
+depth, the expression might be negative:
+
+
+\CodeBlockInput[8][12]{c}{decreases.c}
+
+
+We can see the generated verification condition for the previous example by
+disabling goal simplifications (option \CodeInline{-wp-no-let}, we removed
+redundant information in the screenshot):
+
+\image{go_negative}
+
+
+Here, the condition \CodeInline{n - 10 < n} is formulated
+\CodeInline{n\_1 (= n) <= 9 + n} because of the normalization of the
+formula.
+
+
+When proving the correctness of the \CodeInline{decreases} clause of a particular
+function (and for a call to this same function), the expression is evaluated
+for two entities : the function under proof and the call instruction. The state
+where the expression is evaluated for the function under proof is
+\CodeInline{Pre}, the state where the expression is evaluated for the call
+instruction is \CodeInline{Here}. The value of the expression at call point must
+be less than the value of the expression in \CodeInline{Pre} state.
+
+
+\CodeBlockInput[22][30]{c}{decreases.c}
+
+
+Of course, recursive functions can be mutually recursive thus the
+\CodeInline{decreases} clause can be used to bound recursive function calls in
+this situation. But, we want to do so {\em only} for functions that are
+indeed in the set of functions that are involved in the recursion. For this, WP
+computes the strongly connected components from the set of functions, this is
+called a {\em cluster}.
+
+Thus, let us be more precise about how we proceed to verify of the
+correction of a \CodeInline{decreases} clause. When a function is (mutually)
+recursive, its specification must be equipped with such a clause to prove that
+it terminates. Verifying that the \CodeInline{decreases} clause of a function
+\CodeInline{f} gives a measure of the depth of recursion is done by checking for
+each call to a function \emph{that belongs to the same cluster as
+\CodeInline{f}}, that the expression is indeed positive and decreasing. And
+thus, no verification condition is generated when calling a recursive function
+that does not belong to the same cluster:
+
+
+\CodeBlockInput[32][48]{c}{decreases.c}
+
+
+\begin{Information}
+  Note that the computation of the cluster is done syntactically, for now we do
+  not cover function pointers in this tutorial, but one can refer to the option
+  \CodeInline{-wp-dynamic} in the WP manual.
+\end{Information}
+
+
+Finally, if a function of a cluster does not have a \CodeInline{decreases}
+clause, a \CodeInline{\textbackslash{}false} verification condition is generated
+and a warning is emitted by WP.
+
+
+\CodeBlockInput[50][63]{c}{decreases.c}
+
+
+\image{fail-mutual-vc}
+
+
+\begin{Information}
+  Just like \CodeInline{loop variant} clauses, one can provide another relation
+  (see Section~\ref{l4:statements-loops-general-measure}) for a
+  \CodeInline{decreases} clause. The syntax is:
+
+
+  \begin{CodeBlock}{c}
+//@ decreases <term> for <Relation> ;
+\end{CodeBlock}
+\end{Information}
+
+
+\levelThreeTitle{Specifying and proving function termination}
+\label{l3:statements-function-calls-terminates}
+
+
+A desirable property for a function is often that it should terminate. Indeed,
+in most programs, all functions must terminate, and when it is not the case and
+some functions can loop forever, it is highly common that there is a single
+function that is allowed to loop forever (so almost all functions in this
+program must terminate).
+
+
+\levelFourTitle{Syntax and description}
+
+
+ACSL provides the \CodeInline{terminates} clause to specify that a function must
+terminate when some property is verified in precondition. The syntax is:
+
+
+\begin{CodeBlock}{c}
+//@ terminates condition ;
+void function(void){
+  // ...
+}
+\end{CodeBlock}
+
+
+It states that when \CodeInline{condition} is verified in precondition, then
+the function must terminate. For example, function \CodeInline{abs} must always
+terminate:
+
+
+\CodeBlockInput[3][8]{c}{terminates_abs.c}
+
+
+while function \CodeInline{main\_loop} may not (note that with default options,
+the variant is not verified, we will explain why later):
+
+
+\CodeBlockInput[6]{c}{main_loop.c}
+
+
+Let us emphasize on the fact that the function {\em may not} terminate, it is
+not {\em forced to loop forever}. For example, in the following function, the
+\CodeInline{terminates} clause is verified since
+{\em whenever the termination condition is verified} (never), the function
+terminates (always):
+
+
+\CodeBlockInput[6][9]{c}{terminates.c}
+
+
+\begin{Information}
+  If one really wants to verify that some function never terminates, it can be
+  done by specifying that the function never returns and never exits. That is:
+  the post-conditions states associated to these kinds of termination are
+  unreachable:
+  \CodeBlockInput{c}{no_terminates.c}
+\end{Information}
+
+
+\begin{Information}
+  In ACSL, it is specified that when a function does not have a
+  \CodeInline{terminates} clause, the default is
+  \CodeInline{terminates \textbackslash{}true}. This behavior is automatically
+  enabled by WP at the kernel level. Thus, when WP starts the verification of
+  a function, it asks the kernel to generate these annotations. This behavior
+  can be disabled \textbf{for user defined functions} using the kernel option:
+  \begin{itemize}
+    \item \CodeInline{-generated-spec-custom terminates:skip}
+  \end{itemize}
+\end{Information}
+
+
+\levelFourTitle{Verification}
+
+
+Verifying that a function terminates asks to verify that all reachable
+statements of the function terminate. Assignments trivially terminate, thus
+we do not have something particular to do for them. A conditional statement
+terminates if all statements in the different (reachable) branches terminate,
+thus we just have to verify that these statements terminate (or are unreachable).
+The remaining statements are loops and function calls. Thus, we have to verify
+that:
+\begin{itemize}
+  \item all loops have a (verified) \CodeInline{loop variant} clause,
+  \item all called functions terminate with the given parameters,
+  \item all recursive functions have a (verified) \CodeInline{decreases} clause,
+  \item (or that there are no loops nor calls in the function).
+\end{itemize}
+
+
+However, we only have to do so when the termination condition of the function
+is verified. So let us now explain what are the generated verification
+conditions and when does WP generate them.
+
+
+When a function has a \CodeInline{terminates} clause, WP visits all statements
+and collects the loops that do not have a \CodeInline{loop variant} clause and
+the function calls. If there are none of them, the \CodeInline{terminates}
+clause is trivially verified.
+
+
+\image{trivial_terminates}
+
+
+When there are such statements, their termination must be verified {\em when}
+the function must terminate (say, when \CodeInline{T}). Thus, the verification
+conditions are of the form
+\CodeInline{\textbackslash{}at(T, Pre)} $\Rightarrow$ \CodeInline{<statement termination>}.
+One should note that the premise of the implication is evaluated at the
+\CodeInline{Pre} state. Thus, in this code:
+
+
+\CodeBlockInput[11][17]{c}{terminates.c}
+
+
+Even if \CodeInline{r} has been decremented, the verification of the
+termination of \CodeInline{call(r)} is done with
+\CodeInline{\textbackslash{}at(r, Pre) > 0} as a premise. We will see in the
+next section the verification condition generated for a call.
+
+
+Note also that it means that when we reach a program point when \CodeInline{T}
+is false, the verification condition is always verified:
+
+
+\CodeBlockInput[19][25]{c}{terminates.c}
+
+
+\paragraph{Function call}
+
+
+Verifying that a function call terminates is done by verifying that when it is
+called, its termination condition is true. For example, from the following
+program:
+
+
+\CodeBlockInput[27][36]{c}{terminates.c}
+
+
+We get the following verification conditions (by using \CodeInline{-wp-no-let}
+to disable simplifications):
+
+
+\image{call_terminates_1}
+
+
+\image{call_terminates_2}
+
+
+Where the first call termination is indeed verified while the second is not.
+
+
+\paragraph{Loop variant}
+
+
+When a function contains a loop that does not have a \CodeInline{loop variant}
+clause, its termination cannot be verified, thus WP asks us to verify that when
+the termination condition is verified, this loop is unreachable.
+
+
+\CodeBlockInput[38][46]{c}{terminates.c}
+
+
+In the previous code, the loop does not have a \CodeInline{loop variant}
+clause, thus we have to verify \CodeInline{value > 0 ==> \textbackslash{}false}
+at the loop location, which is OK: this code is unreachable when
+\CodeInline{value > 0}.
+
+
+Finally, when a loop has a \CodeInline{loop variant} clause, it must be
+verified {\em only when} the function must terminate. So in the example
+we presented at the beginning of this section:
+
+
+\CodeBlockInput[6]{c}{main_loop.c}
+
+
+We have to verify that the loop variant is a positive decreasing value only
+when \CodeInline{debug\_steps} is not $-1$. However, this is not the default
+behavior of WP (that always verify loop variants by default), this can
+be enabled using the option \CodeInline{-wp-variant-with-terminates} and
+in this case our function is entirely verified:
+
+
+\image{main_loop_variant_terminates}
+
+
+\paragraph{Recursion}
+
+
+A recursive function should have a \CodeInline{decreases} clause when its
+specification states that it terminates. If such a clause is missing, a
+verification condition \CodeInline{\textbackslash{}false} is generated.
+
+
+\CodeBlockInput[48][51]{c}{terminates.c}
+
+
+Note that this code generates two verification conditions:
+
+
+\image{missing_decreases_vcs}
+
+
+The first one corresponds to the rule associated to a function call explained
+earlier. The second corresponds to the fact that the \CodeInline{decreases}
+clause is missing and is not verified.
+
+
+Again in ACSL, the verification of the \CodeInline{decreases} clause
+verification is required only when the termination condition is verified in
+\CodeInline{Pre} state. The behavior of WP on this aspect is similar to the
+\CodeInline{loop variant}. By default, the verification is always tried, the
+ACSL specified behavior is enabled via the option
+\CodeInline{-wp-variant-with-terminates}.
+
+
+\CodeBlockInput[53][60]{c}{terminates.c}
+
+
+\levelThreeTitle{Exercises}
+
+
+\levelFourTitle{Explain proof failures}
+
+
+In the following program, some verification conditions are not verified:
+
+
+\CodeBlockInput{c}{ex-1-proof-failures.c}
+
+
+Explain why they are not verified and propose a way to fix the specification so
+that everything is verified.
+
+
+\levelFourTitle{Explain termination proof results}
+
+
+In the following program:
+
+
+\CodeBlockInput{c}{ex-2-terminates.c}
+
+
+Explain why termination clauses are verified or not. Modify the specification so
+that all of them are verified.
+
+
+\levelFourTitle{Search}
+
+
+Specify and prove the following recursive search function:
+
+
+\CodeBlockInput[5]{c}{ex-3-search.c}
+
+
+The specification should include the termination condition.
+
+
+\levelFourTitle{Sum integers}
+
+
+The following program computes the sum of the integers between \CodeInline{fst}
+and \CodeInline{lst}:
+
+
+\CodeBlockInput[5]{c}{ex-4-sum.c}
+
+
+Prove that this function terminates. Proving the correct behavior of the
+function or the absence of runtime errors is not asked.
+
+
+\levelFourTitle{Power}
+
+
+The following program computes the power of \CodeInline{x} to \CodeInline{n}:
+
+
+\CodeBlockInput[5]{c}{ex-5-power.c}
+
+
+Prove that this function terminates. Proving the correct behavior of the
+function or the absence of runtime errors is not asked.

@@ -10,6 +10,13 @@
 *.pdf
 *.thm
 *.toc
+*.html
 *~
 \#*\#
+code/_build
 code/*/*/.frama-c
+code/**/oracle/dune
+code/**/result
+code/tests
+code/cache
+code/ptests_config

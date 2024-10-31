@@ -42,22 +42,16 @@ x = 43 * c ;
 In order to compute the precondition of the assignment we have replaced
 each occurrence of $x$ in the postcondition by the assigned value
 $E = 43*c$. If our program were of the form:
-
-
-
 \begin{CodeBlock}{c}
 int c = 6 ;
 // { 43*c = 258 }
 x = 43 * c ;
 // { x = 258 }
 \end{CodeBlock}
-
-
-
-we could submit the formula " $43*6 = 258$ " to our automatic prover
+we could submit the formula $43*6 = 258$ to our automatic prover
 in order to determine whether it is really valid. The answer would of
 course be ``yes'' because the property is easy to verify. If we had,
-however, given the value 7 to the variable \texttt{c} the prover's reply
+however, given the value 7 to the variable \CodeInline{c} the prover's reply
 would be ``no'' since the formula $43*7 = 258$ is not true.
 
 
@@ -69,25 +63,19 @@ $$\dfrac{}{\{Q[x \leftarrow E] \}\quad x = E \quad\{ Q \}}$$
 
 We note that there is no premise to verify. Does this mean that the
 triple is necessarily true? Yes. However, it does not mean that the
-precondition is respected by the program to which the assignment belongs
+precondition is satisfied by the program to which the assignment belongs
 or that the precondition is at all possible. Here the automatic provers
 come into play.
 
 
 
 For example, we can ask Frama-C to verify the following line:
-
-
-
 \begin{CodeBlock}{c}
 int a = 42;
 //@ assert a == 42;
 \end{CodeBlock}
-
-
-
 which is, of course, directly proven by Qed, since it is a simple
-applications of the assignment rule.
+application of the assignment rule.
 
 
 
@@ -124,7 +112,7 @@ this simple Hoare triple:
 
 This Hoare triple is correct, since \CodeInline{p} and \CodeInline{q} are in
 alias, modifying \CodeInline{*p} also modifies \CodeInline{*q}, thus both these
-expression evaluate to $1$ and the postcondition is true. However let us apply
+expressions evaluate to $1$ and the postcondition is true. However, let us apply
 the weakest precondition calculus from the postcondition:
 
 
@@ -140,7 +128,7 @@ We get the weakest precondition: \CodeInline{1 + *q == 2}, and thus we could
 deduce that the weakest precondition is \CodeInline{*q == 1}, which is true, but
 does not allow us to conclude that the program is correct, since in our formula
 we do not have anything that models that \CodeInline{p == q ==> *q == 1}. In
-fact, here, we would like to be able to compute a weakest precondition like:
+fact, here, we would like to be able to compute the weakest precondition like:
 
 
 
@@ -182,7 +170,7 @@ a function, the memory context can be populated with the memory locations for
 which a value is known to be defined.
 
 
-Now, we can change a little bit the weakest precondition calculus for assignment
+Now, we can change a bit the weakest precondition calculus for assignment
 of pointed memory location. For this, we consider that we have an implicit
 variable $M$ that models the memory, and we define the assignment of a memory
 location as an update of the memory such that now the corresponding pointer points
@@ -191,9 +179,8 @@ $$wp(*x = E, Q) := Q[M \leftarrow M[x \mapsto E]]$$
 
 
 And evaluating a pointed value $*x$ in a formula now requires us to use the
-get operator to ask the right value. Thus we can for example compute the weakest
+get operator to ask the right value. Thus, we can for example compute the weakest
 precondition of our previous program:
-
 
 \begin{tabular}{lll}
   $wp(*p = 1, *p + *q = 2)$
@@ -205,8 +192,6 @@ precondition of our previous program:
   & $= (\texttt{if}\ q = p\ \texttt{then}\ 1+1 = 2\ \texttt{else}\ 1+M[q] = 2)$ & (6)\\
   & $= (q = p \vee M[q] = 1)$ & (7)
 \end{tabular}
-
-
 \begin{enumerate}
 \item we have to apply the rule of assignment for pointers, but for this we need
   to introduce $M$,
@@ -356,14 +341,14 @@ of $S2$.
 
 Following this definition, we obtain for the case of an empty else-branch the
 following rule by simply replacing the statement $S2$ by the empty
-statement \texttt{skip}.
+statement \CodeInline{skip}.
 $$\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad skip\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad skip \quad \{Q\}}$$
 The triple for \CodeInline{else} is:
 $$\{P \wedge \neg B\}\quad skip\quad \{Q\}$$
 which means that we need to ensure:
 $$P \wedge \neg B \Rightarrow Q$$
 
-In short, if the condition $B$ of \texttt{if} is false, this means
+In short, if the condition $B$ of \CodeInline{if} is false, this means
 that the postcondition of the complete conditional statement is already
 established before entering the else-branch (since it does not do
 anything).
@@ -481,7 +466,7 @@ strengthen the postcondition with an assertion that at the end
 \CodeInline{res}, the result, is between 0 and 90. The calculation of the
 weakest precondition of this property together with the assignment
 \CodeInline{res = 10 * a} yields a weaker precondition
-\CodeInline{1 <= a <= 9} and we know that
+\CodeInline{1 <= a <= 9}, and we know that
 \CodeInline{2 <= a <= 8} gives us the desired
 guarantee.
 
@@ -597,9 +582,9 @@ int foo(int a, int b){
 
 In the \CodeInline{else} block, knowing that\CodeInline{a} lies between -99 and
 0, but knowing nothing about \CodeInline{b}, we could hardly know if the
-operation \CodeInline{a + = b} produces a result that is greater than 0.
+operation \CodeInline{a += b} produces a result that is greater than 0.
 
-The WP plug-in will, of course, prove the function without problems,
+The WP plugin will, of course, prove the function without problems,
 since it produces by itself the properties that are necessary for the
 proof. In fact, the analysis which variables are necessary or not (and,
 consequently, the application of the constancy rule) is conducted
@@ -616,12 +601,252 @@ $Q$), then the properties $P \wedge R \Rightarrow P$ and
 $Q \Rightarrow Q \wedge R$ hold.
 
 
-
-\levelThreeTitle{Exercices}
-
+\levelThreeTitle{Assertion}
 
 
-\levelFourTitle{A serie of assignment}
+ACSL assertions needs to be proved (or used). Thus, they need their WP calculus
+rules. There are three different kinds of assertions in ACSL:
+\begin{itemize}
+  \item \CodeInline{assert}
+  \item \CodeInline{check}
+  \item \CodeInline{admit}
+\end{itemize}
+
+
+Each kind of assertion has a different behavior.
+
+
+Let us start with the one we have used so far: \CodeInline{assert}. An
+annotation \CodeInline{assert P} has the following informal semantics: the
+property \CodeInline{P} must be verified at this program point, and then the
+fact that it is true at this program point is added as a hypothesis when proving
+properties that come later. Note that it might not be true, but it is still
+added to the proof context anyway. However, if it is not true, first, we cannot
+to prove it, and second, the properties that we are proved admitting this
+property are marked as ``valid under hypothesis''.
+
+
+The annotation \CodeInline{check P} means that the property \CodeInline{P} must
+be verified at this program point, but then it is not added to the proof context
+for the proof of the annotations that follow it.
+
+
+Finally, the annotation \CodeInline{admit P} means that from this program point,
+the property \CodeInline{P} is considered to be true, thus added to the proof
+context of the annotations that follow it, even if we do not verify it at this
+program point.
+
+
+Let us illustrate these different kind of annotations with this short example:
+
+
+\CodeBlockInput{c}{annot-kinds.c}
+
+
+\image{annot-kinds}
+
+
+In the \CodeInline{check\_annot} function, neither the \CodeInline{check} nor
+the \CodeInline{ensures} clauses are proved. Each one have been tried separately
+(and failed).
+
+
+In the \CodeInline{admit\_annot} function, the \CodeInline{admit} annotation
+appear with a blue and green bullet (just like when we have a contract on a
+function declaration without a body), meaning that from this point, it is
+considered to be valid even it is not proved. Thus, the \CodeInline{ensures}
+clause is proved, since \CodeInline{\textbackslash{}false} is assumed to be
+true.
+
+
+Finally, in the \CodeInline{assert\_annot} function, the \CodeInline{assert}
+annotation is not proved, but from this point it is assumed to be true. Thus,
+the \CodeInline{ensures} clause is proved. However, while in the
+\CodeInline{admit\_annot} function it appears entirely valid (green bullet),
+here, it appears valid under hypothesis: the validity depends on the validity
+of a property that has not been proved yet (and will not).
+
+
+We can encode these different behaviors with the following WP rules.
+
+
+The rule for the \CodeInline{check} annotation is the following:
+$$ wp(check\ A, Post) := A \wedge Post $$
+which means that we add to the properties we must verify another property, which
+is the property $A$.
+
+
+The rule for the \CodeInline{admit} annotation is the following:
+$$ wp(admit\ A, Post) := A \Rightarrow Post $$
+which means that assuming $A$, we must verify the postcondition (of the
+statement, which can be a property that has been computing using other WP
+rules).
+
+
+Finally, the rule for the \CodeInline{assert} combines the previous ones.
+Indeed:
+\begin{CodeBlock}{c}
+  assert P;
+\end{CodeBlock}
+is equivalent to:
+\begin{CodeBlock}{c}
+  check P; // first, verify that P is true
+  admit P; // now, we can assume that it is
+\end{CodeBlock}
+Thus:
+$$ wp(assert\ A, Post) := wp(check\ A, wp(admit\ A, Post)) \equiv A \wedge (A \Rightarrow Post) $$
+
+
+This allows to introduce some sort of cut in the proof, saying "OK, let us first
+prove $A$ and once it is done, we will prove that when $A$ is true, $Post$ is
+too".
+
+
+One could think the \CodeInline{admit} annotation is dangerous. It is. But it
+can be useful when one wants to debug a proof. In particular, in
+Chapter~\ref{l1:proof-methodologies}, we will see that \CodeInline{assert}
+annotations can be used to guide program proof. During the process,
+\CodeInline{admit} can be useful to try annotations without having to
+immediately prove them or to consider some annotations as valid to make the
+design phase faster. More rarely, it can be useful to explicit some hypotheses
+about hardware, or software platform, but for this, it is more common to use
+Frama-C kernel options or axioms (we will present axioms in
+Section~\ref{l2:acsl-logic-definitions-axiomatic}).
+
+
+\levelThreeTitle{WP plugin vs. Dijkstra's WP calculus}
+
+
+One might have notice from the beginning of this section that the $wp$ function
+starts from the postcondition and, instruction after instruction, changes the
+formula until it reaches the beginning of the function, when it generates the
+verification condition (as briefly explained in
+Section~\ref{l3:statements-basic-consequence}), that we must verify.
+
+
+However, one might have also noticed that from the very beginning of this book,
+in most examples, we do not have \emph{one} verification condition to verify,
+but \emph{several}. On a theoretical aspect, this is not a crucial difference,
+but on a practical aspect, it allows generating simpler verification conditions,
+thus easier to verify using SMT solvers.
+
+
+In fact, the WP plugin generates several verification conditions in parallel
+during the WP calculus. Each time it meets a new instruction, the $wp$ function
+is applied for this instruction on all verification conditions involved in the
+program path the instruction belongs to (to guarantee this, the conditional
+rule is also handled slightly differently, but we will not detail this aspect).
+However, when this step includes the proof of a property (for example, an
+\CodeInline{assert} annotation), instead of applying the rule by adding it as a
+conjunction, it is simply added separately to the set of verification conditions
+to prove. Intuitively: we start a new weakest precondition calculus in parallel
+from this program point.
+
+
+Let us illustrate this on a toy example:
+
+
+\CodeBlockInput{c}{wp-plugin-calculus-toy.c}
+
+
+We start (in 1) with two verification conditions:
+\begin{itemize}
+  \item \CodeInline{VC1: P(x)},
+  \item \CodeInline{VC2: P(y)}.
+\end{itemize}
+We apply the transformer of assignment on each of them, thus we reach 2 with:
+\begin{itemize}
+  \item \CodeInline{VC1: P(x * y)},
+  \item \CodeInline{VC2: P(y)}.
+\end{itemize}
+In 2, we have to deal with the conditional. Instead of directly applying the
+standard WP rule, we split the analysis in two sets of verification conditions,
+initially equivalent. Let us consider the \CodeInline{else} branch, then the
+\CodeInline{then} branch.
+
+
+From 2 to 3, we meet the \CodeInline{check} annotation, thus we add a new
+verification condition, we get the set:
+\begin{itemize}
+  \item \CodeInline{VC1: P(x * y)},
+  \item \CodeInline{VC2: P(y)},
+  \item \CodeInline{VC3: Q(y)}.
+\end{itemize}
+Then, we apply the assignment rule, and we get in 4:
+\begin{itemize}
+  \item \CodeInline{VC1: P(x * (y+1))},
+  \item \CodeInline{VC2: P(y+1)},
+  \item \CodeInline{VC3: Q(y+1)}.
+\end{itemize}
+
+
+From 2 to 5, we meet the \CodeInline{assert} annotation, thus we add this
+knowledge to all verification conditions, and we create a new one:
+\begin{itemize}
+  \item \CodeInline{VC1: Q(x) ==> P(x * y)},
+  \item \CodeInline{VC2: Q(x) ==> P(y)},
+  \item \CodeInline{VC4: Q(x)}.
+\end{itemize}
+Then we apply the assignment rule, and we get in 6:
+\begin{itemize}
+  \item \CodeInline{VC1: Q(x+1) ==> P((x+1) * y)},
+  \item \CodeInline{VC2: Q(x+1) ==> P(y)},
+  \item \CodeInline{VC4: Q(x+1)}.
+\end{itemize}
+
+
+Now we have to reconcile the two sets. Let us not enter into the details (just
+notice the introduced primed variables, the trick is here) of how it is done, we
+get, in 7, something like:
+\begin{CodeBlock}{text}
+  VC1:
+    ((x <= 0 ==> y' == y+1 && x' == x) &&
+     (x >  0 ==> y' == y   && x' == x+1 && Q(x+1))) ==>
+       P(x' * y')
+
+  VC2:
+    ((x <= 0 ==> y' == y+1) &&
+     (x >  0 ==> y' == y    && Q(x+1))) ==>
+       P(y')
+  VC3:
+    (x <= 0) ==> Q(x+1)
+
+  VC4:
+    (x >  0) ==> Q(x+1)
+\end{CodeBlock}
+
+
+Finally, we meet the precondition, and we obtain in 8:
+\begin{CodeBlock}{text}
+  VC1:
+    P(x) ==>
+      ((x <= 0 ==> y' == y+1 && x' == x) &&
+       (x >  0 ==> y' == y   && x' == x+1 && Q(x+1))) ==>
+         P(x' * y')
+
+  VC2:
+    P(x) ==>
+      ((x <= 0 ==> y' == y+1) &&
+       (x >  0 ==> y' == y    && Q(x+1))) ==>
+         P(y')
+  VC3:
+    P(x) ==> (x <= 0) ==> Q(x+1)
+
+  VC4:
+    P(x) ==> (x >  0) ==> Q(x+1)
+\end{CodeBlock}
+
+
+We can see that for each property that must be proved, we have built a separate
+verification condition that gathers the knowledge available along the path that
+leads to the program point where its verification is asked.
+
+
+\levelThreeTitle{Exercises}
+
+
+
+\levelFourTitle{A series of assignment}
 
 
 Compute by hand the weakest precondition of the following program:
@@ -650,10 +875,10 @@ right rule.
 \levelFourTitle{Empty ``then'' branch in conditional}
 
 
-We previously shown that when a conditional structure has an empty ``else''
+We have previously shown that when a conditional structure has an empty ``else''
 branch, that means that the conjunction of the precondition and the negation
 of the condition must be enough to verify the postcondition of the complete
-condtional structure.
+conditional structure.
 For both of the following question, we only need the inference rules and
 no WP calculus.
 
@@ -697,7 +922,7 @@ if(cond1){
 Show that on those two source code, the weakest precondition calculus
 generates an equivalent weakest precondition for equivalent for any code
 in the ``then'' block. Note that we assume the conditions to be pure
-expressions (without side-effects).
+expressions (without side effects).
 
 
 

@@ -1,7 +1,7 @@
 all:
-	cd french ; make ; cd ..
-	cd english ; make ; cd ..
+	make -C french
+	make -C english
 
 clean:
-	cd french ; make clean ; cd ..
-	cd english ; make clean ; cd ..
+	make -C clean
+	make -C clean

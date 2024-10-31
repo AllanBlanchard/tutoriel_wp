@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:+"-warn-unsigned-overflow -warn-unsigned-downcast"
+*/
+
 #include <stdint.h>
 #include <stddef.h>
 
@@ -75,7 +79,7 @@
 /*@ ghost
   /@
     requires \valid_read(arr + (0.. len - 1)) ;
-    requires l_occurrences_of(v, arr, 0, len) == 0 ;  
+    requires l_occurrences_of(v, arr, 0, len) == 0 ;
     assigns \nothing ;
     ensures \forall integer i ; 0 <= i < len ==> arr[i] != v ;
   @/

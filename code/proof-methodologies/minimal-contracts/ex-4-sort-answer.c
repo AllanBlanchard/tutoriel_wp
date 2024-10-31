@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:#"-warn-unsigned-overflow -warn-unsigned-downcast"
+*/
+
 #include <stddef.h>
 
 /*@
@@ -12,6 +16,7 @@ size_t min_idx_in(int* a, size_t beg, size_t end){
     loop invariant beg+1 <= i <= end ;
     loop invariant beg <= min_i < end ;
     loop assigns i, min_i ;
+    loop variant end-i ;
   */
   for(size_t i = beg+1; i < end; ++i){
     if(a[i] < a[min_i]) min_i = i;
@@ -36,6 +41,7 @@ void sort(int* a, size_t beg, size_t end){
   /*@
     loop invariant beg <= i <= end ;
     loop assigns i, a[beg .. end-1] ;
+    loop variant end-i ;
   */
   for(size_t i = beg ; i < end ; ++i){
     size_t imin = min_idx_in(a, i, end);

@@ -5,7 +5,7 @@ C'est certainement notre tâche la plus difficile. En soi, la programmation est
 déjà un effort consistant à écrire des algorithmes qui répondent à notre
 besoin. La spécification nous demande également de faire ce travail, la
 différence est que nous ne nous occupons plus de préciser la manière de répondre
-au besoin mais le besoin lui-même. Pour prouver que la réalisation implémente
+au besoin, mais le besoin lui-même. Pour prouver que la réalisation implémente
 bien ce que nous attendons, il faut donc être capable de décrire précisément le
 besoin.
 
@@ -15,7 +15,7 @@ Changeons d'exemple et spécifions la fonction suivante :
 
 
 
-\CodeBlockInput{c}{max-0.c}
+\CodeBlockInput[4][6]{c}{max-1.c}
 
 
 
@@ -52,7 +52,7 @@ quant à la spécification :
 Même si elle est correcte, notre spécification est trop permissive. Il faut que nous
 soyons plus précis.
 Nous attendons du résultat non seulement qu'il soit supérieur ou égal à nos
-deux paramètres mais également qu'il soit exactement l'un des deux :
+deux paramètres, mais également qu'il soit exactement l'un des deux :
 
 
 
@@ -73,12 +73,12 @@ préciser une précondition fausse peut nous donner la possibilité de prouver
 FAUX :
 
 
-\CodeBlockInput{c}{bad-precond.c}
+\CodeBlockInput[6]{c}{bad-precond.c}
 
 
 Si nous demandons à WP de prouver cette fonction. Il l'acceptera sans rechigner,
 car la propriété que nous lui donnons comme précondition est nécessairement fausse.
-Par contre, nous aurons bien du mal à lui donner une valeur en entrée qui respecte
+Par contre, nous aurons bien du mal à lui donner une valeur en entrée qui satisfait
 la précondition.
 
 
@@ -103,7 +103,7 @@ et nous obtenons le résultat suivant dans l'interface graphique :
 Nous pouvons voir une pastille orange et rouge à côté de la précondition de la
 fonction, qui signifie que s'il existe un appel atteignable à la fonction dans
 le programme, la précondition sera nécessairement violée lors de cet appel ; et
-une pastille rouge dans la liste des obligations de preuve, indiquant qu'un
+une pastille rouge dans la liste des conditions de vérification, indiquant qu'un
 prouveur a réussi à montrer que la précondition est incohérente.
 
 
@@ -114,7 +114,7 @@ nous corrigeons la précondition de cette façon :
 \image{2-smoke-success}
 
 
-cela ne signifie pas que la précondition est nécessairement cohérente, juste
+Cela ne signifie pas que la précondition est nécessairement cohérente, juste
 qu'aucun prouveur n'a été capable de montrer qu'elle est incohérente.
 
 
@@ -136,11 +136,12 @@ la configuration de la mémoire que l'on considère.
 
 
 
-Prenons par exemple une fonction \CodeInline{swap} pour les entiers :
+Prenons par exemple une fonction \CodeInline{swap} pour les entiers (pour
+le moment seulement vérifiable sans la vérification des RTEs) :
 
 
 
-\CodeBlockInput{c}{swap-0.c}
+\CodeBlockInput[5]{c}{swap-0.c}
 
 
 
@@ -148,16 +149,17 @@ Prenons par exemple une fonction \CodeInline{swap} pour les entiers :
 
 
 Ici, nous introduisons une première fonction logique fournie de base par
-ACSL : \CodeInline{\textbackslash{}old}, qui permet de parler de l'ancienne valeur d'un élément.
-Ce que nous dit donc la spécification c'est « la fonction doit assurer que
-\CodeInline{*a} soit égal à l'ancienne valeur (au sens : la valeur avant l'appel) de \CodeInline{*b}
-et inversement ».
+ACSL : \CodeInline{\textbackslash{}old}, qui permet de parler de l'ancienne
+valeur d'un élément. Ce que nous dit donc la spécification est « la fonction
+doit assurer que \CodeInline{*a} soit égal à l'ancienne valeur (au sens : la
+valeur avant l'appel) de \CodeInline{*b} et inversement ».
 
 
 
-La fonction \CodeInline{\textbackslash{}old} ne peut être utilisée que dans la postcondition d'une
-fonction. Si nous avons besoin de ce type d'information ailleurs, nous
-utilisons \CodeInline{\textbackslash{}at} qui nous permet d'exprimer des propriétés à propos de la
+La fonction \CodeInline{\textbackslash{}old} ne peut être utilisée que dans la
+postcondition d'une fonction. Si nous avons besoin de ce type d'information
+ailleurs, nous utilisons \CodeInline{\textbackslash{}at} qui nous permet
+d'exprimer des propriétés à propos de la
 valeur d'une variable à un point donné. Elle reçoit deux paramètres. Le premier
 est la variable (ou position mémoire) dont nous voulons obtenir la valeur et le
 second la position (sous la forme d'un label C) à laquelle nous voulons
@@ -174,7 +176,7 @@ Par exemple, nous pourrions écrire :
 
 
 En plus des labels que nous pouvons nous-mêmes créer, il existe 6 labels
-qu'ACSL nous propose par défaut:
+qu'ACSL nous propose par défaut :
 
 
 
@@ -205,7 +207,7 @@ disponibles que dans le contexte de boucles (dont nous parlerons plus loin dans
 le tutoriel).
 
 
-Notons qu'il est important de s'assurer que l'on utilise \CodeInline{\textbackslash{}old} at
+Notons qu'il est important de s'assurer que l'on utilise \CodeInline{\textbackslash{}old} et
 \CodeInline{\textbackslash{}at} pour des valeurs qui ont du sens. C'est pourquoi par
 exemple dans un contrat, toutes les valeurs reçues en entrée sont placées dans un
 appel à \CodeInline{\textbackslash{}old} par Frama-C lorsqu'elles sont utilisées dans
@@ -219,27 +221,27 @@ la postcondition, chaque pointeur se trouve dans un appel à \CodeInline{\textba
 \image{2-old-swap}
 
 
-Pour la fonction built-in \CodeInline{\textbackslash{}at}, nous devons plus
+Pour la fonction \CodeInline{\textbackslash{}at}, nous devons plus
 explicitement faire attention à cela. En particulier, le label transmis en entrée
 doit avoir un sens par rapport à la portée de la variable que l'on lui transmet.
 Par exemple, dans le programme suivant, Frama-C détecte que nous demandons la valeur
-de la variable \CodeInline{x} à un point du programme où elle n'existe pas:
+de la variable \CodeInline{x} à un point du programme où elle n'existe pas :
 
 
-\CodeBlockInput[1][5]{c}{at-2.c}
+\CodeBlockInput[5][9]{c}{at-2.c}
 
 
-\image{2-at-1.png}
+\image{2-at-1}
 
 
 Cependant, dans certains cas, tout ce que nous pouvons obtenir est un échec de
 la preuve, parce que déterminer si la valeur existe ou non à un label particulier
 ne peut être fait par une analyse purement syntaxique. Par exemple, si la variable
-est déclarée mais pas définie, ou si nous demandons la valeur d'une zone mémoire
+est déclarée, mais pas définie, ou si nous demandons la valeur d'une zone mémoire
 pointée :
 
 
-\CodeBlockInput[7][19]{c}{at-2.c}
+\CodeBlockInput[11][23]{c}{at-2.c}
 
 
 Ici, il est facile de remarquer le problème. Cependant, le label que nous
@@ -249,7 +251,7 @@ innocents peuvent en réalité nous donner des comportements surprenant si nous
 ne gardons pas cette idée en tête. Par exemple, dans le programme suivant :
 
 
-\CodeBlockInput[21][26]{c}{at-2.c}
+\CodeBlockInput[25][30]{c}{at-2.c}
 
 
 La première assertion est prouvée, et tandis que la seconde assertion a l'air
@@ -261,8 +263,9 @@ label est propagé à la sous-expression \CodeInline{*p}, pour laquelle nous ne
 connaissons pas la valeur au label \CodeInline{Pre} (qui n'est pas spécifié).
 
 
-Pour le moment, nous n'utiliserons pas \CodeInline{\textbackslash{}at}, mais elle peut rapidement se
-montrer indispensable pour écrire des spécifications précises.
+Pour le moment, nous n'utiliserons pas \CodeInline{\textbackslash{}at}, mais
+elle peut rapidement se montrer indispensable pour écrire des spécifications
+précises.
 
 
 
@@ -270,7 +273,7 @@ montrer indispensable pour écrire des spécifications précises.
 
 
 Si nous essayons de prouver le fonctionnement de \CodeInline{swap} (en activant
-la vérification des RTE), notre postcondition est bien vérifiée mais WP nous
+la vérification des RTE), notre postcondition est bien vérifiée, mais WP nous
 indique qu'il y a un certain nombre de possibilités de \textit{runtime-error}. Ce qui
 est normal, car nous n'avons pas précisé à WP que les pointeurs que nous
 recevons en entrée de fonction sont valides.
@@ -287,7 +290,7 @@ reçoit un pointeur en entrée :
 
 
 À partir de là, les déréférencements qui sont effectués par la suite sont
-acceptés car la fonction demande à ce que les pointeurs d'entrée soient
+acceptés, car la fonction demande à ce que les pointeurs d'entrée soient
 valides.
 
 
@@ -306,7 +309,7 @@ de \CodeInline{\textbackslash{}valid} sous le nom \CodeInline{\textbackslash{}va
 celui-ci assure qu'il est uniquement nécessaire que le pointeur puisse
 être déréférencé en lecture et pas forcément en écriture, pour pouvoir
 réaliser l'opération de lecture. Cette subtilité est due au fait qu'en C, le
-\textit{downcast} de pointeur vers un élément \CodeInline{const} est très facile à faire mais
+\textit{downcast} de pointeur vers un élément \CodeInline{const} est très facile à faire, mais
 n'est pas forcément légal.
 
 
@@ -346,10 +349,10 @@ Le résultat n'est pas vraiment celui escompté :
 
 
 
-\image{2-swap-1.png}
+\image{2-swap-1}
 
 
-En effet, nous n'avons pas spécifié les effets de bords autorisés pour notre
+En effet, nous n'avons pas spécifié les effets de bord autorisés pour notre
 fonction. Pour cela, nous utilisons la clause \CodeInline{assigns}
 qui fait partie des postconditions de la fonction. Elle nous permet de spécifier
 quels éléments \textbf{non locaux} (on vérifie bien des effets de bord), sont
@@ -375,12 +378,12 @@ assertions que nous avions demandées dans le \CodeInline{main} seront validées
 
 
 Finalement, il peut arriver que nous voulions spécifier qu'une fonction ne
-provoque pas d'effets de bords. Ce cas est précisé en donnant \CodeInline{\textbackslash{}nothing}
+provoque pas d'effets de bord. Ce cas est précisé en donnant \CodeInline{\textbackslash{}nothing}
 à \CodeInline{assigns} :
 
 
 
-\CodeBlockInput{c}{assigns-nothing.c}
+\CodeBlockInput[3]{c}{assigns-nothing.c}
 
 
 
@@ -400,12 +403,12 @@ code source), dans d'autre cas, ce n'est pas si simple :
 
 
 
-\CodeBlockInput{c}{incr_a_by_b-0.c}
+\CodeBlockInput[5]{c}{incr_a_by_b-0.c}
 
 
 
-Si nous demandons à WP de prouver cette fonction, nous obtenons le
-résultat suivant :
+Si nous demandons à WP de prouver cette fonction (ignorons la vérification de
+l'absence de RTEs pour cet exemple), nous obtenons le résultat suivant :
 
 
 
@@ -421,7 +424,7 @@ différent du pointeur \CodeInline{b}. Or, si les pointeurs sont égaux,
 \item la propriété \CodeInline{*a == \textbackslash{}old(*a) + *b} signifie en fait
 \CodeInline{*a == \textbackslash{}old(*a) + *a}, ce qui ne peut être vrai que si l'ancienne valeur
 pointée par \CodeInline{a} était 0, ce qu'on ne sait pas,
-\item la propriété \CodeInline{*b == \textbackslash{}old(*b)} n'est pas validée car potentiellement,
+\item la propriété \CodeInline{*b == \textbackslash{}old(*b)} n'est pas validée, car potentiellement,
 nous la modifions.
 \end{itemize}
 
@@ -443,7 +446,7 @@ disjoints. Ici, nous spécifierions :
 
 
 
-\CodeBlockInput{c}{incr_a_by_b-1.c}
+\CodeBlockInput[5]{c}{incr_a_by_b-1.c}
 
 
 
@@ -451,7 +454,7 @@ Et cette fois, la preuve est effectuée :
 
 
 
-\image{2-incr_a_by_b-2.png}
+\image{2-incr_a_by_b-2}
 
 
 Nous pouvons noter que nous ne nous intéressons pas ici à la preuve de
@@ -461,7 +464,7 @@ il faudrait définir le contexte dans lequel on souhaite l'utiliser et définir
 les préconditions qui nous garantissent l'absence de débordement en conséquence.
 
 
-\levelFourTitle{Écrire le bon contrat}
+\levelThreeTitle{Écrire le bon contrat}
 
 
 Trouver les bonnes préconditions à une fonction est parfois difficile. Il est
@@ -491,11 +494,11 @@ préalablement s'accorder sur une spécification textuelle par exemple).
 Une fois que le contrat est posé, alors seulement, nous nous intéressons aux
 spécifications dues au fait que nous sommes soumis aux contraintes de notre langage
 et notre matériel. Cela concerne principalement nos préconditions. Par exemple,
-la fonction valeur absolue n'a, au fond, pas  vraiment de précondition à respecter,
-c'est la machine cible qui détermine qu'une condition supplémentaire doit être
-respectée en raison du complément à deux. Comme nous le verrons dans le chapitre
-\ref{l1:proof-methodologies}, vérifier l'absence de runtime errors peut aussi
-impacter nos postconditions, pour l'instant laissons cela de côté.
+la fonction valeur absolue n'a, au fond, pas  vraiment de précondition à
+satisfaire : c'est la machine cible qui détermine qu'une condition supplémentaire
+doit être vérifiée en raison du complément à deux. Comme nous le verrons dans le
+chapitre \ref{l1:proof-methodologies}, vérifier l'absence de \emph{runtime-errors}
+peut aussi impacter nos postconditions, pour l'instant laissons cela de côté.
 
 
 \levelThreeTitle{Exercices}
@@ -510,7 +513,7 @@ division et écrit ces deux valeurs à deux positions mémoire \CodeInline{p}
 et \CodeInline{q} :
 
 
-\CodeBlockInput{c}{ex-1-div-rem.c}
+\CodeBlockInput[5]{c}{ex-1-div-rem.c}
 
 
 Lancer la commande :
@@ -540,7 +543,7 @@ second est vraie. Ne pas oublier d'exprimer que la valeur pointée par le second
 paramètre doit rester la même :
 
 
-\CodeBlockInput{c}{ex-2-reset-on-cond.c}
+\CodeBlockInput[5]{c}{ex-2-reset-on-cond.c}
 
 
 Lancer la commande :
@@ -558,7 +561,7 @@ La fonction suivante reçoit deux pointeurs en entrée et retourne la
 somme des valeurs pointées. Écrire le contrat de cette fonction :
 
 
-\CodeBlockInput{c}{ex-3-add-ptr.c}
+\CodeBlockInput[5]{c}{ex-3-add-ptr.c}
 
 
 Lancer la commande :
@@ -581,7 +584,8 @@ void add(int* a, int* b, int* r);
 Le résultat doit maintenant être stocké à la position mémoire \CodeInline{r}.
 Modifier l'appel dans la fonction \CodeInline{main} et le code de la fonction de
 façon à implémenter ce comportement. Modifier le contrat de la fonction
-\CodeInline{add} et recommencer la preuve.
+\CodeInline{add} et recommencer la preuve. \CodeInline{*a} et \CodeInline{*b}
+devraient rester inchangés.
 
 
 \levelFourTitle{Maximum de valeurs pointées}
@@ -591,7 +595,7 @@ Le code suivant calcule le maximum des valeurs pointées par \CodeInline{a}
 et \CodeInline{b}. Écrire le contrat de cette fonction :
 
 
-\CodeBlockInput{c}{ex-4-max-ptr.c}
+\CodeBlockInput[5]{c}{ex-4-max-ptr.c}
 
 
 Lancer la commande :
@@ -626,7 +630,7 @@ La fonction suivante doit ordonner trois valeurs reçues en entrée dans
 l'ordre croissant. Écrire le code correspondant et la spécification de la
 fonction :
 
-\CodeBlockInput{c}{ex-5-order-3.c}
+\CodeBlockInput[5]{c}{ex-5-order-3.c}
 
 
 Et lancer la commande :
@@ -652,11 +656,9 @@ exemple :
 
 Nous pouvons l'utiliser pour exprimer que l'ensemble des valeurs d'entrée et
 de sortie est le même. Cependant, ce n'est pas la seule chose à prendre en
-compte car un ensemble ne contient qu'une occurrence de chaque valeur. Donc,
+compte, car un ensemble ne contient qu'une occurrence de chaque valeur. Donc,
 si \CodeInline{*a == *b == 1}, alors \CodeInline{\{ *a, *b \} == \{ 1 \}}.
-Par conséquent nous devons considérer trois autres cas particuliers:
-
-
+Par conséquent, nous devons considérer trois autres cas particuliers :
 \begin{itemize}
 \item toutes les valeurs d'origine sont les mêmes ;
 \item deux valeurs d'origine sont les mêmes, la dernière est plus grande ;

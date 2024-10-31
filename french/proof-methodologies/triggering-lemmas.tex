@@ -11,7 +11,7 @@ maximiser l'automatisation. Cependant, plus les propriétés que nous voulons
 prouver sont complexes, plus il sera difficile d'obtenir automatiquement toute
 la preuve. Par conséquent, nous devons souvent aider les outils pour terminer
 la vérification. Nous faisons souvent cela en fournissant plus d'annotations
-pour aider le processus de génération des obligations de preuve. Ajouter un
+pour aider le processus de génération des conditions de vérification. Ajouter un
 invariant de boucle est par exemple une manière de fournir les informations
 nécessaires pour produire le raisonnement par induction permettant son analyse,
 alors que les prouveurs automatiques sont plutôt mauvais à cet exercice.
@@ -27,7 +27,7 @@ fournissons manuellement de l'information aux outils.
 Dans cette section, nous allons voir plus en détails comment nous pouvons
 utiliser des assertions pour guider la preuve. En ajoutant des assertions, nous
 créons une certaine base de connaissances (des propriétés que nous savons vraies),
-qui sont collectées par le générateur d'obligations de preuve pendant le calcul
+qui sont collectées par le générateur de conditions de vérification pendant le calcul
 de WP et qui sont données aux prouveurs automatiques qui ont par conséquent plus
 d'information et peuvent potentiellement prouver des propriétés plus complexes.
 
@@ -37,30 +37,31 @@ d'information et peuvent potentiellement prouver des propriétés plus complexes
 
 Pour comprendre exactement le bénéfice que représente l'ajout d'assertions dans
 les annotations d'un programme, commençons par regarder de plus près les
-obligations de preuve générées par WP à partir du code source annoté et comment
+conditions de vérification générées par WP à partir du code source annoté et comment
 les assertions sont prises en compte. Pour cela, nous allons utiliser le prédicat
 suivant (qui ressemble furieusement au théorème de Pythagore) :
 
 
 
-\CodeBlockInput[1][4]{c}{context.c}
+\CodeBlockInput[5][8]{c}{context.c}
 
 
 
 Regardons d'abord cet exemple :
 
 
-\CodeBlockInput[6][16]{c}{context.c}
+\CodeBlockInput[10][20]{c}{context.c}
 
 
 
 Ici, nous avons spécifié une précondition suffisamment complexe pour que WP ne
 puisse par directement deviner les valeurs en entrée de fonction. En fait, ces
 valeurs sont exactement : \CodeInline{*x == 3}, \CodeInline{*y == 4} et
-\CodeInline{*z == 5}. Maintenant, si nous regardons l'obligation de preuve générée
-pour notre première assertion, nous pouvons voir ceci (il faut bien sélectionner
-la vue « \textit{Full Context} » ou « \textit{Raw obligation} » - elles ne sont pas exactement
-identiques mais assez similaires, la première est juste légèrement plus jolie) :
+\CodeInline{*z == 5}. Maintenant, si nous regardons la condition de vérification
+générée pour notre première assertion, nous pouvons voir ceci (il faut bien
+sélectionner la vue « \textit{Full Context} » ou « \textit{Raw obligation} » -
+elles ne sont pas exactement identiques, mais assez similaires, la première est
+juste légèrement plus jolie) :
 
 
 \image{context_e1_a1}
@@ -69,7 +70,7 @@ identiques mais assez similaires, la première est juste légèrement plus jolie
 Nous y voyons les différentes contraintes que nous avons formulées comme préconditions
 de fonction (notons que les valeurs ne sont pas exactement les mêmes, et que quelques
 propriétés supplémentaires ont été générées). Maintenant, regardons plutôt
-l'obligation de preuve générées pour la seconde assertion (notons que nous avons
+la condition de vérification générée pour la seconde assertion (notons que nous avons
 édité les captures d'écran restantes de cette section pour nous concentrer sur ce
 qui est important, les autres propriétés pouvant être ignorées dans notre cas) :
 
@@ -81,7 +82,7 @@ Ici, nous pouvons voir que dans le contexte utilisable pour la preuve de la seco
 assertion, WP a collecté et ajouté la première assertion et en a fait une supposition.
 WP considère que les solveurs SMT peuvent supposer que cette propriété est vraie.
 Cela signifie que les prouveurs peuvent l'utiliser, mais également qu'elle doit être
-prouvée pour l'obligation de preuve actuelle soit complètement vérifiée.
+prouvée pour que la condition de vérification actuelle soit complètement vérifiée.
 
 
 Notons que WP ne collecte que ce qu'il trouve sur les différents chemins d'exécution
@@ -90,7 +91,7 @@ telle manière à ce que le chemin qui mène à la seconde assertion saute le ch
 passe par la première, celle-ci n'apparaît pas dans le contexte de la seconde assertion.
 
 
-\CodeBlockInput[26][31]{c}{context.c}
+\CodeBlockInput[30][35]{c}{context.c}
 
 
 \image{context_e1p_a2}
@@ -102,7 +103,7 @@ pouvons modifier les différentes positions mémoire (en doublant chaque valeur)
 vérifier que le triangle résultant est rectangle.
 
 
-\CodeBlockInput[34][47]{c}{context.c}
+\CodeBlockInput[38][51]{c}{context.c}
 
 
 
@@ -111,14 +112,14 @@ vérifier que le triangle résultant est rectangle.
 
 
 Ici, le solveur déroulera probablement le prédicat et vérifiera directement
-que la propriété qui y est définie est vraie. En effet, depuis l'obligation de
-preuve, il n'y a pas vraiment d'autres informations qui pourrait nous
+que la propriété qui y est définie est vraie. En effet, depuis la condition de
+vérification, il n'y a pas vraiment d'autres informations qui pourrait nous
 amener à obtenir une preuve. Maintenant, ajoutons de l'information dans les
 annotations :
 
 
 
-\CodeBlockInput[49][68]{c}{context.c}
+\CodeBlockInput[53][72]{c}{context.c}
 
 
 
@@ -126,7 +127,7 @@ Nous prouvons d'abord que si nous multiplions par 2 chacune des valeurs, le
 prédicat est vrai pour les nouvelles valeurs. Le solveur prouvera d'abord
 la même propriété, bien sûr, mais ce n'est pas ce que nous voulons montrer ici.
 Nous ajoutons ensuite que chaque valeur a été multipliée par 2. Maintenant, nous
-pouvons regarder l'obligation de preuve générée pour la dernière assertion :
+pouvons regarder la condition de vérification générée pour la dernière assertion :
 
 
 \image{context_e3}
@@ -135,7 +136,7 @@ pouvons regarder l'obligation de preuve générée pour la dernière assertion :
 
 Alors que nous devons prouver exactement la même propriété qu'avant (avec un peu
 de renommage), nous pouvons voir que nous avons une autre manière de la prouver.
-En effet en combinant ces propriétés :
+En effet, en combinant ces propriétés :
 
 
 \begin{CodeBlock}{text}
@@ -195,16 +196,16 @@ est vraie pour le premier label, alors elle est vraie pour le second.
 
 
 
-\CodeBlockInput[1][15]{c}{trigger_1_1.c}
+\CodeBlockInput[5][19]{c}{trigger_1_1.c}
 
 
 Et nous voulons prouver le programme suivant :
 
 
-\CodeBlockInput[17][27]{c}{trigger_1_1.c}
+\CodeBlockInput[21][31]{c}{trigger_1_1.c}
 
 
-Cependant, nous pouvons voir que la preuve échoue sur l'obligation de preuve
+Cependant, nous pouvons voir que la preuve échoue sur la condition de vérification
 suivante (nous avons, à nouveau, retiré les éléments qui ne sont pas intéressants
 pour notre explication) :
 
@@ -212,7 +213,7 @@ pour notre explication) :
 \image{trigger_1_1}
 
 
-D'après cela, notre prouver automatique semble incapable d'utiliser l'un des
+D'après cela, notre prouveur automatique semble incapable d'utiliser l'un des
 axiomes de notre définition : soit il ne peut pas montrer qu'après l'appel
 \CodeInline{g(y)}, \CodeInline{P(x)} est toujours vraie, soit il le peut, et
 dans ce cas, cela veut dire qu'il n'arrive pas à montrer que cela implique
@@ -220,7 +221,7 @@ dans ce cas, cela veut dire qu'il n'arrive pas à montrer que cela implique
 arrive à montrer \CodeInline{P(x)} après l'appel :
 
 
-\CodeBlockInput[20][28]{c}{trigger_1_1p.c}
+\CodeBlockInput[24][32]{c}{trigger_1_1p.c}
 
 
 \image{trigger_1_1p}
@@ -229,16 +230,16 @@ arrive à montrer \CodeInline{P(x)} après l'appel :
 Il semble que malgré le fait qu'il est clair que \CodeInline{*x} n'a pas changé
 pendant l'appel \CodeInline{g(y)}, et donc que \CodeInline{eq\{Pre, Here\}(x)}
 est vraie après l'appel, puisque la propriété n'est pas directement fournie dans
-notre obligation de preuve, le prouveur automatique n'utilise pas l'axiome
+notre condition de vérification, le prouveur automatique n'utilise pas l'axiome
 \CodeInline{ax\_2} correspondant. Fournissons donc cette information au prouveur
 automatique :
 
 
-\CodeBlockInput[20][28]{c}{trigger_1_2.c}
+\CodeBlockInput[24][32]{c}{trigger_1_2.c}
 
 
 
-Maintenant, tout est prouvé. Si nous regardons l'obligation de preuve générée,
+Maintenant, tout est prouvé. Si nous regardons la condition de vérification générée,
 nous pouvons voir que l'information nécessaire est bien fournie, ce qui permet
 au prouveur automatique d'en faire usage :
 
@@ -254,14 +255,14 @@ axiomatique réelle. Cette fois, nous nous intéresserons à montrer la correcti
 d'un tri par insertion :
 
 
-\CodeBlockInput{c}{insert_sort.c}
+\CodeBlockInput[5]{c}{insert_sort.c}
 
 
 La fonction \CodeInline{insertion\_sort} visite chaque valeur, du début du tableau
 jusqu'à la fin. Pour chaque valeur $v$, elle est insérée (en utilisant la fonction
 \CodeInline{insert}) à la bonne place dans la plage des valeurs déjà triées (et qui
 se trouvent dans le début du tableau), en décalant les éléments jusqu'à
-recontrer un élément qui est plus petit que $v$, ou le début du tableau.
+rencontrer un élément qui est plus petit que $v$, ou le début du tableau.
 
 
 
@@ -275,7 +276,9 @@ regarde cette fonction de plus près, nous voyons qu'elle enregistre la
 valeur à insérer (qui se trouve à la fin de la plage de valeurs) dans une variable
 \CodeInline{value}, et en commençant à la fin de la plage, décale itérativement
 les valeurs rencontrées jusqu'à rencontrer une valeur plus petite que la valeur à
-insérer ou la première cellule du tableau, et insère ensuite la valeur.
+insérer ou la première cellule du tableau, et insère ensuite la valeur. Pour cette
+preuve, nous activons les options \CodeInline{-warn-unsigned-overflow} et
+\CodeInline{-warn-unsigned-downcast}.
 
 
 
@@ -288,18 +291,18 @@ valeurs déjà visitées : nous insérons chaque valeur à la bonne position.
 
 
 
-\CodeBlockInput[63][81]{c}{insert_sort-contract.c}
+\CodeBlockInput[67][85]{c}{insert_sort-contract.c}
 
 
 
 Maintenant, nous pouvons fournir un contrat à la fonction d'insertion. La
 fonction requière que la plage de valeurs considérée soit triée du début jusqu'à
-l'avant dernière valeur. En échange elle doit garantir que la plage finale soit
+l'avant-dernière valeur. En échange elle doit garantir que la plage finale soit
 triée et soit une permutation des valeurs originales :
 
 
 
-\CodeBlockInput[43][61]{c}{insert_sort-contract.c}
+\CodeBlockInput[47][65]{c}{insert_sort-contract.c}
 
 
 
@@ -311,7 +314,7 @@ cas : une plage de valeur est une permutation d'elle-même, ou deux (et seulemen
 deux) valeurs ont été changées, ou finalement la permutation d'une permutation est
 une permutation. Mais aucun de ces cas ne peut être appliqué à notre fonction
 d'insertion puisque la plage obtenue ne l'est pas par une succession d'échanges de
-valeurs, et les deux autres cas ne peuvent évidemment pas s'appliquer ici.
+valeurs et les deux autres cas ne peuvent évidemment pas s'appliquer ici.
 
 
 
@@ -326,7 +329,7 @@ plage ne change pas d'un point de programme à un autre :
 
 
 
-\CodeBlockInput[37][41]{c}{insert_sort-proved.c}
+\CodeBlockInput[42][46]{c}{insert_sort-proved.c}
 
 
 
@@ -340,7 +343,7 @@ entendu aussi le cas pour notre plage de valeur « décalée ».
 
 
 Déterminons quels sont les lemmes requis en considérant d'abord la fonction
-\CodeInline{insert\_sort}. La seule propriété non-prouvée est l'invariant qui
+\CodeInline{insert\_sort}. La seule propriété non prouvée est l'invariant qui
 exprime que le tableau est une permutation du tableau original. Comment
 pouvons-nous le déduire ? (Nous nous intéresserons aux preuves de ces lemmes
 plus tard).
@@ -381,9 +384,9 @@ deux prédicats \CodeInline{shifted} et \CodeInline{unchanged}, le second
 tard) et exprimer qu'une plage inchangée est une permutation :
 
 
-\CodeBlockInput[48][55]{c}{insert_sort-proved.c}
+\CodeBlockInput[53][60]{c}{insert_sort-proved.c}
 
-\CodeBlockInput[67][70]{c}{insert_sort-proved.c}
+\CodeBlockInput[72][75]{c}{insert_sort-proved.c}
 
 
 Maintenant, nous pouvons vérifier que ces deux sous-tableaux sont des
@@ -392,7 +395,7 @@ plage allant de \CodeInline{i+1} à \CodeInline{end} est inchangée, afin de
 déclencher l'usage de notre lemme \CodeInline{unchanged\_is\_permutation}.
 
 
-\CodeBlockInput[129][142]{c}{insert_sort-proved.c}
+\CodeBlockInput[134][147]{c}{insert_sort-proved.c}
 
 
 Comme ces deux sous-parties du tableau sont des permutations, le tableau
@@ -401,7 +404,7 @@ l'itération. Cependant, cela n'est pas prouvé directement, nous ajoutons
 donc aussi un lemme pour cela :
 
 
-\CodeBlockInput[75][81]{c}{insert_sort-proved.c}
+\CodeBlockInput[80][86]{c}{insert_sort-proved.c}
 
 
 Maintenant, nous pouvons déduire qu'une itération de la boucle produit
@@ -429,7 +432,7 @@ qui est suffisant pour conclure \CodeInline{permutation\{Pre, Here\}(a, beg, end
 à la fin du bloc de la boucle en utilisant le lemme suivant :
 
 
-\CodeBlockInput[42][47]{c}{insert_sort-proved.c}
+\CodeBlockInput[47][52]{c}{insert_sort-proved.c}
 
 
 Maintenant, nous pouvons regarder de plus près notre fonction d'insertion en
@@ -452,14 +455,11 @@ pour cela.
 
 
 Tout d'abord, donnons un invariant pour la permutation :
-
 \begin{itemize}
     \item nous fournissons les bornes de \CodeInline{i},
     \item nous indiquons que la première partie du tableau est inchangée,
-    \item nous indiquons que la seconde partie est décalée vers la gauche.
+    \item nous indiquons que la seconde partie est décalée vers la gauche,
 \end{itemize}
-
-
 et nous ajoutons quelques assertions pour vérifier quelques propriétés d'intérêt :
 \begin{itemize}
     \item d'abord, pour déclencher \CodeInline{unchanged\_permutation}, nous
@@ -502,8 +502,8 @@ Pour la dernière assertion, nous avons besoin d'un lemme à propos de la
 rotation des éléments :
 
 
-\CodeBlockInput[56][60]{c}{insert_sort-proved.c}
-\CodeBlockInput[71][74]{c}{insert_sort-proved.c}
+\CodeBlockInput[61][65]{c}{insert_sort-proved.c}
+\CodeBlockInput[76][79]{c}{insert_sort-proved.c}
 
 
 Nous devons également aider un peu les prouveurs automatiques pour montrer
@@ -517,7 +517,7 @@ la fonction \CodeInline{insert} complètement annotée suivante :
 
 
 
-\CodeBlockInput[83][119]{c}{insert_sort-proved.c}
+\CodeBlockInput[88][124]{c}{insert_sort-proved.c}
 
 
 
@@ -579,7 +579,7 @@ la même).
 
 Pour prouver \CodeInline{union\_permutation}, nous instancions le lemme
 \CodeInline{l\_occurrences\_union}. Finalement, le lemme
-\CodeInline{transitive\_permutation} est prouvée automatiquement par transitivité
+\CodeInline{transitive\_permutation} est prouvé automatiquement par transitivité
 de l'égalité.
 
 
@@ -589,18 +589,18 @@ de l'égalité.
 Il n'y a pas de guide précis à propos de quand utiliser des assertions ou non.
 La plupart du temps nous les utilisons d'abord pour comprendre pourquoi certaines
 preuves échouent en exprimant des propriétés dont nous pensons qu'elles sont vraies
-à un point particulier de programme. De plus, il n'est pas rare que les obligations
-de preuve soient longues ou un peu complexes à lire directement. Bien utiliser les
-assertion nécessite que l'on garde en tête les lemmes déjà exprimés pour savoir
-quelle assertion utiliser pour déclencher l'usage d'un lemme nous amenant à la
-propriété voulue. S'il n'y a pas de tel lemme, par exemple parce que la preuve
-de la propriété voulue nécessite un raisonnement par induction à propos d'une
-propriété ou d'une valeur, nous avons probablement besoin d'ajouter un nouveau
-lemme.
+à un point particulier de programme. De plus, il n'est pas rare que les conditions
+de vérification soient longues ou un peu complexes à lire directement. Bien
+utiliser les assertions nécessite que l'on garde en tête les lemmes déjà exprimés
+pour savoir quelle assertion utiliser pour déclencher l'usage d'un lemme nous
+amenant à la propriété voulue. S'il n'y a pas de tel lemme, par exemple parce
+que la preuve de la propriété voulue nécessite un raisonnement par induction à
+propos d'une propriété ou d'une valeur, nous avons probablement besoin d'ajouter
+un nouveau lemme.
 
 
 Avec un peu d'expérience, l'utilisation des assertions et des lemmes devient de
-plus en plus naturelle. Cependant il est important de garder en tête qu'il est
+plus en plus naturelle. Cependant, il est important de garder en tête qu'il est
 facile d'abuser de cela. Plus nous ajoutons de lemmes et d'assertions, plus notre
 contexte de preuve est riche et est susceptible de contenir les informations
 nécessaires à la preuve. Cependant, il y a aussi un risque d'ajouter trop
@@ -624,7 +624,7 @@ les propriétés générées qui peuvent amener à une autre preuve de l'asserti
 et expliquer comment :
 
 
-\CodeBlockInput{c}{ex-1-context.c}
+\CodeBlockInput[5]{c}{ex-1-context.c}
 
 
 \levelFourTitle{Déclencher les lemmes}
@@ -662,8 +662,8 @@ Les assertions devraient ressembler à :
 
 Une autre manière d'ajouter de l'information au contexte est d'utiliser du
 code fantôme. Par exemple, la valeur de vérité d'une conditionnelle apparaît
-dans le contexte d'une obligation de preuve. Modifier les annotations pour que
-le code ressemble à :
+dans le contexte d'une condition de vérification. Modifier les annotations pour
+que le code ressemble à :
 
 
 \begin{CodeBlock}{c}
@@ -679,7 +679,8 @@ void example(int* x){
 }
 \end{CodeBlock}
 
-Comparer l'obligation de preuve générée pour chaque assertion avec les précédentes.
+Comparer la condition de vérification générée pour chaque assertion avec les
+précédentes.
 
 
 Finalement, nous pouvons remarquer que « la valeur pointée a été augmentée ou
@@ -696,7 +697,7 @@ elle augmente aussi la valeur de la somme du contenu du tableau. Écrire un cont
 pour la fonction qui exprime ce fait :
 
 
-\CodeBlockInput{c}{ex-4-sum-content.c}
+\CodeBlockInput[5]{c}{ex-4-sum-content.c}
 
 
 Pour prouver que cette fonction remplit son contrat, nous avons besoin de fournir
@@ -707,7 +708,6 @@ cellules qui suivent la cellule modifiée.
 
 
 Nous avons donc besoin de deux lemmes :
-
 \begin{itemize}
     \item \CodeInline{sum\_separable} doit exprimer que nous pouvons séparer le
           tableau en deux sous parties, compter dans chaque partie et sommer les

@@ -1,7 +1,7 @@
-We have seen that program proof allows to verify two main aspects of program
+We have seen that program proof allows verifying two main aspects of program
 correctness: first that programs do not contain runtime errors, second that
 programs correctly implement their specification. However, it is sometimes hard
-to guarantee the later, and the former is already an interesting step for
+to guarantee the latter, and the former is already an interesting step for
 program correctness.
 
 Indeed, runtime errors often cause the presence of so-called ``undefined
@@ -18,28 +18,28 @@ The minimal contracts approach is guided by the RTE plugin. Basically, the idea
 is to generate the assertions related to absence of runtime errors for all the
 functions of a module or a project and to write the minimal set of (correct)
 contracts that are sufficient to prove that the runtime errors cannot happen.
-Most of the time, we need far less lines of specification that what is usually
+Most of the time, we need far fewer lines of specification that what is usually
 required to prove the functional correctness of the program.
 
 
 Let us take a simple example with the absolute value function.
 
 
-\CodeBlockInput{c}{abs-1.c}
+\CodeBlockInput[5]{c}{abs-1.c}
 
 
 Here, we can generate the assertions required to prove the absence of runtime
 errors, which generate this program:
 
 
-\CodeBlockInput{c}{abs-2.c}
+\CodeBlockInput[5]{c}{abs-2.c}
 
 
 Thus, we only need to specify as a requirement that the value of \CodeInline{x}
 must be greater than \CodeInline{INT\_MIN}:
 
 
-\CodeBlockInput{c}{abs-3.c}
+\CodeBlockInput[3]{c}{abs-3.c}
 
 
 This condition is enough to prove that no runtime error can happen in the
@@ -56,7 +56,7 @@ it is surely because they need a positive value. In reality, the minimal
 contract of the absolute value function is more likely the following:
 
 
-\CodeBlockInput{c}{abs-4.c}
+\CodeBlockInput[3]{c}{abs-4.c}
 
 
 But this addition should only be guided by the verification of the context(s)
@@ -72,14 +72,14 @@ Now that we have the principle in mind, let us work on more complex examples, in
 particular with an example that involves a loop.
 
 
-\CodeBlockInput{c}{search-1.c}
+\CodeBlockInput[5]{c}{search-1.c}
 
 
 Once we have generated the assertions related to runtime errors, we have the
 following program:
 
 
-\CodeBlockInput{c}{search-2.c}
+\CodeBlockInput[5]{c}{search-2.c}
 
 
 We have to prove that any cell visited by the program can be read, thus we need
@@ -93,30 +93,28 @@ prove that the loop terminates.
 Thus, we get the following minimally specified function:
 
 
-\CodeBlockInput{c}{search-3.c}
+\CodeBlockInput[1][15]{c}{search-3.c}
 
 
 This contract can be compared with the contract provided for the search
-function in section~\ref{l3:statements-loops-example}, and we can see that it is
+function in section~\ref{l3:statements-loops-examples-ro}, and we can see that it is
 much more simple.
 
 
 Now let us imagine that the function is used in the following program:
 
 
-\CodeBlockInput{c}{search-foo-1.c}
+\CodeBlockInput[17][22]{c}{search-3.c}
 
 
 We again have to provide a suitable contract for the function, again by having
 a look at the assertion that RTE asks us to verify:
 
 
-\CodeBlockInput[26][35]{c}{search-4.c}
+\CodeBlockInput[30][39]{c}{search-4.c}
 
 
-Thus we have to verify that:
-
-
+Thus, we have to verify that:
 \begin{itemize}
 \item the pointer we received from \CodeInline{search} is valid,
 \item \CodeInline{*p + 1} does not overflow,
@@ -152,7 +150,7 @@ with a relatively low-cost approach.
 
 However, as we have seen, when we use a function it can change the knowledge
 we need about its behavior, requiring to make the contract richer and richer.
-Thus we can progressively reach a state where we basically proved the functional
+Thus, we can progressively reach a state where we basically proved the functional
 correctness of the function.
 
 
@@ -184,7 +182,7 @@ Prove the absence of runtime errors in the following program using a minimal
 contracts approach:
 
 
-\CodeBlockInput{c}{ex-1-simple.c}
+\CodeBlockInput[5]{c}{ex-1-simple.c}
 
 
 \levelFourTitle{Reverse}
@@ -197,7 +195,7 @@ Do not forget to add the options \CodeInline{-warn-unsigned-overflow} and
 \CodeInline{-warn-unsigned-downcast}.
 
 
-\CodeBlockInput{c}{ex-2-reverse.c}
+\CodeBlockInput[5]{c}{ex-2-reverse.c}
 
 
 
@@ -209,7 +207,7 @@ function using a minimal contracts approach. Do not forget to add the options
 \CodeInline{-warn-unsigned-overflow} and \CodeInline{-warn-unsigned-downcast}.
 
 
-\CodeBlockInput{c}{ex-3-binary-search.c}
+\CodeBlockInput[5]{c}{ex-3-binary-search.c}
 
 
 \levelFourTitle{Sort}
@@ -222,4 +220,4 @@ Do not forget to add the options \CodeInline{-warn-unsigned-overflow} and
 \CodeInline{-warn-unsigned-downcast}.
 
 
-\CodeBlockInput{c}{ex-4-sort.c}
+\CodeBlockInput[5]{c}{ex-4-sort.c}

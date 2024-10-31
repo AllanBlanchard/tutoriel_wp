@@ -1,0 +1,34 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing lemma-function-2-2.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function foo
+[rte:annot] annotating function occ_not_zero_some_is_v
+[wp] [Valid] Goal occ_not_zero_some_is_v_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal occ_not_zero_some_is_v_terminates (Cfg) (Trivial)
+[wp] 18 goals scheduled
+[wp] [Valid] typed_occ_not_zero_some_is_v_ensures (Qed)
+[wp] [Valid] typed_occ_not_zero_some_is_v_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_occ_not_zero_some_is_v_loop_invariant_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_occ_not_zero_some_is_v_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_occ_not_zero_some_is_v_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_occ_not_zero_some_is_v_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_occ_not_zero_some_is_v_assert (Qed)
+[wp] [Valid] typed_occ_not_zero_some_is_v_loop_assigns (Qed)
+[wp] [Valid] typed_occ_not_zero_some_is_v_assigns_part1 (Qed)
+[wp] [Valid] typed_occ_not_zero_some_is_v_assigns_part2 (Qed)
+[wp] [Valid] typed_occ_not_zero_some_is_v_assigns_part3 (Qed)
+[wp] [Valid] typed_occ_not_zero_some_is_v_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_occ_not_zero_some_is_v_loop_variant_positive (Qed)
+[wp] [Valid] typed_foo_terminates (Qed)
+[wp] [Valid] typed_foo_exits (Qed)
+[wp] [Valid] typed_foo_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_call_occ_not_zero_some_is_v_requires (Qed)
+[wp] [Valid] typed_foo_call_occ_not_zero_some_is_v_requires_2 (Qed)
+[wp] Proved goals:   20 / 20
+  Terminating:     1
+  Unreachable:     1
+  Qed:            11
+  Alt-Ergo:        7
+[wp:pedantic-assigns] lemma-function-2-2.c:50: Warning: 
+  No 'assigns' specification for function 'foo'.
+  Callers assumptions might be imprecise.

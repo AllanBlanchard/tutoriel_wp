@@ -47,9 +47,9 @@ Elle peut nous servir à prouver le code de la fonction suivante :
 \image{linear-1}
 
 
-Le code est bien prouvé mais les contrôles d'\textit{overflow}, eux, ne le sont pas.
+Le code est bien prouvé, mais les contrôles d'\textit{overflow}, eux, ne le sont pas.
 Nous pouvons ajouter la contrainte en précondition que le calcul doit entrer dans
-les bornes d'un entier:
+les bornes d'un entier :
 
 
 \CodeBlockInput[8][15]{c}{linear-1.c}
@@ -64,13 +64,13 @@ exemple ici, le fait \CodeInline{3 * x + 4} ne soit pas inférieur à
 le problème, ce choix doit être guidé par les besoins du projet.
 
 
-Soit nous pouvons augmenter les restrictions sur l'entrée :
+Nous pouvons augmenter les restrictions sur l'entrée :
 
 
 \CodeBlockInput[17][25]{c}{linear-1.c}
 
 
-Soit nous pouvons modifier le code de manière à corriger le risque
+Ou nous pouvons modifier le code de manière à corriger le risque
 de débordement :
 
 
@@ -79,7 +79,7 @@ de débordement :
 
 Notons que comme dans la spécification, les calculs sont effectués à l'aide
 d'entiers mathématiques, nous n'avons pas à nous préoccuper d'un quelconque
-risque de débordement lorsque nous utilisons la fonction logique \CodeInline{ax\_b}:
+risque de débordement lorsque nous utilisons la fonction logique \CodeInline{ax\_b} :
 
 
 \CodeBlockInput[39][41]{c}{linear-1.c}
@@ -126,18 +126,18 @@ précondition :
 
 
 
-\CodeBlockInput[5][12]{c}{facto-1.c}
+\CodeBlockInput[9][14]{c}{facto-1.c}
 
 
 
-Si nous demandons la preuve avec cette entrée, Alt-ergo échouera pratiquement à
+Si nous demandons la preuve avec cette entrée, Alt-Ergo échouera pratiquement à
 coup sûr. En revanche, le prouveur Z3 produit la preuve en moins d'une seconde.
 Parce que dans ce cas précis, les heuristiques de Z3 considèrent que c'est une
 bonne idée de passer un peu plus de temps sur l'évaluation de la fonction.
 
 
 
-Les fonctions logiques peuvent donc être définies récursivement mais sans astuces
+Les fonctions logiques peuvent donc être définies récursivement, mais sans astuces
 supplémentaires, nous venons vite nous heurter au fait que les prouveurs vont au
 choix devoir faire de l'évaluation, ou encore « raisonner » par induction, deux
 tâches pour lesquelles ils ne sont pas du tout faits, ce qui limite nos
@@ -154,7 +154,7 @@ cette limitation.
 Spécifier et prouver le programme suivant :
 
 
-\CodeBlockInput{c}{ex-1-distance.c}
+\CodeBlockInput[5]{c}{ex-1-distance.c}
 
 
 Pour cela, définir deux fonctions logiques \CodeInline{abs} and \CodeInline{distance}.
@@ -168,7 +168,7 @@ Utiliser ces fonctions pour écrire la spécification de la fonction.
 programme. Utiliser une fonction logique \CodeInline{square}.
 
 
-\CodeBlockInput{c}{ex-2-square.c}
+\CodeBlockInput[5]{c}{ex-2-square.c}
 
 
 Attention aux types des différentes variables, de telle manière à ne pas
@@ -183,7 +183,7 @@ et \CodeInline{-warn-unsigned-downcast}.
 Voici une implémentation possible de la fonction \CodeInline{iota} :
 
 
-\CodeBlockInput{c}{ex-3-iota.c}
+\CodeBlockInput[5]{c}{ex-3-iota.c}
 
 
 Écrire une fonction logique qui retourne sa valeur d'entrée incrémentée de 1.
@@ -207,10 +207,10 @@ label \CodeInline{L2}.
 
 
 
-\CodeBlockInput{c}{ex-4-vec-inc.c}
+\CodeBlockInput[5]{c}{ex-4-vec-inc.c}
 
 
-Ré-exprimer la prédicat \CodeInline{unchanged} en utilisant la fonction logique.
+Ré-exprimer le prédicat \CodeInline{unchanged} en utilisant la fonction logique.
 
 
 
@@ -224,12 +224,12 @@ la spécification de la fonction C effectuant ce calcul en spécifiant qu'elle
 retourne la même valeur que celle fournie par la fonction logique.
 
 
-\CodeBlockInput{c}{ex-5-n-first-ints.c}
+\CodeBlockInput[5]{c}{ex-5-n-first-ints.c}
 
 
 Essayer de vérifier l'absence d'erreurs à l'exécution. Le débordement entier
 n'est pas si simple à régler. Cependant, écrire une précondition qui devrait
-être suffisante pour cela (rappel: la somme des N premiers entiers peut être
+être suffisante pour cela (rappel : la somme des N premiers entiers peut être
 exprimée avec une formule très simple ...). Cela ne sera sûrement pas suffisant
 pour arriver au bout de la preuve, mais nous réglerons cela dans la prochaine
 section.

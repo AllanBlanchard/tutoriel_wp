@@ -7,7 +7,7 @@ the maximum absolute value of two values:
 
 
 
-\CodeBlockInput[6][11]{c}{max_abs.c}
+\CodeBlockInput[11][16]{c}{max_abs.c}
 
 
 
@@ -26,7 +26,7 @@ File abs.h :
 
 File abs.c
 
-\CodeBlockInput{c}{abs.c}
+\CodeBlockInput[6]{c}{abs.c}
 
 
 
@@ -38,14 +38,14 @@ precondition is verified (and thus that the call is legal), and second
 to get in return the postcondition that is useful to prove the right
 properties after the function call.
 
-We can create a file using the same format for the \texttt{max}
+We can create a file using the same format for the \CodeInline{max}
 function. In both cases, we can open the source file (we do not need to
 specify header files in the command line) with Frama-C and notice that
 the specification is indeed associated to the function and that we prove
 it.
 
 
-Now, we can prepare our files for the \texttt{max\_abs} function with
+Now, we can prepare our files for the \CodeInline{max\_abs} function with
 the header:
 
 
@@ -58,12 +58,12 @@ And its source file:
 
 
 
-\CodeBlockInput{c}{max_abs.c}
+\CodeBlockInput[6]{c}{max_abs.c}
 
 
 
 We can open the source file in Frama-C. If we look at the side panel, we
-can see that the header files we have included in \texttt{abs\_max}
+can see that the header files we have included in \CodeInline{abs\_max}
 correctly appear and if we look at the function contracts for them, we
 can see some blue and green bullets:
 
@@ -113,10 +113,10 @@ is leap for February.
 
 
 
-\CodeBlockInput{c}{ex-1-days-month.c}
+\CodeBlockInput[5]{c}{ex-1-days-month.c}
 
 
-\levelFourTitle{Alpha-numeric character}
+\levelFourTitle{Alphanumeric character}
 \label{l4:contract-modularity-ex-alpha-num}
 
 
@@ -126,7 +126,7 @@ provide the contract of \CodeInline{is\_alpha\_num}.
 
 
 
-\CodeBlockInput{c}{ex-2-alphanum.c}
+\CodeBlockInput[5]{c}{ex-2-alphanum.c}
 
 
 Declare an enumeration with values \CodeInline{LOWER}, \CodeInline{UPPER},
@@ -155,7 +155,7 @@ these functions and prove them.
 
 
 
-\CodeBlockInput{c}{ex-3-order-3.c}
+\CodeBlockInput[5]{c}{ex-3-order-3.c}
 
 
 \levelFourTitle{Give the change}
@@ -176,7 +176,7 @@ If the received amount is less than the price, the function should
 return -1 (and oppositely, 0 on success).
 
 
-\CodeBlockInput{c}{ex-4-change.c}
+\CodeBlockInput[5]{c}{ex-4-change.c}
 
 
 The function \CodeInline{remove\_max\_notes} receives a note value and
@@ -205,7 +205,7 @@ properties are collected into a structure \CodeInline{info} received via
 a pointer.
 
 
-\CodeBlockInput{c}{ex-5-triangle.c}
+\CodeBlockInput[5]{c}{ex-5-triangle.c}
 
 
 Write, specify and prove all functions.

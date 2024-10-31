@@ -1,0 +1,24 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing control-flow-1.c (with preprocessing)
+[kernel:ghost:bad-use] control-flow-1.c:9: Warning: 
+  Ghost code breaks CFG starting at:
+  /*@ ghost break; */
+  x += i;
+[wp] Running WP plugin...
+[rte:annot] annotating function sum
+[wp] [Valid] Goal sum_assert_rte_signed_overflow (Cfg) (Unreachable)
+[wp] [Valid] Goal sum_assert_rte_signed_overflow_2 (Cfg) (Unreachable)
+[wp] [Valid] Goal sum_assert_rte_signed_overflow_3 (Cfg) (Unreachable)
+[wp] [Valid] Goal sum_exits (Cfg) (Unreachable)
+[wp] control-flow-1.c:8: Warning: 
+  Missing assigns clause (assigns 'everything' instead)
+[wp] 1 goal scheduled
+[wp] [Unsuccess] typed_sum_terminates (Alt-Ergo) (Cached)
+[wp] Proved goals:    4 / 5
+  Unreachable:     4
+  Unsuccess:       1
+[wp:pedantic-assigns] control-flow-1.c:6: Warning: 
+  No 'assigns' specification for function 'sum'.
+  Callers assumptions might be imprecise.
+[kernel] Warning: warning ghost:bad-use treated as deferred error. See above messages for more information.
+[kernel] Frama-C aborted: invalid user input.

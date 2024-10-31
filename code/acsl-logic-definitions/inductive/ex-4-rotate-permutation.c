@@ -1,3 +1,7 @@
+/* run.config
+   OPT:
+*/
+
 #include <stddef.h>
 
 /*@
@@ -11,7 +15,7 @@
 
 /*@
   predicate rotate{L1, L2}(int* arr, integer fst, integer last) =
-    // ...
+    \true ; // to complete
 */
 
 /*@
@@ -29,10 +33,10 @@ void rotate(int* arr, size_t beg, size_t end){
 
 /*@
   inductive permutation{L1, L2}(int* arr, integer fst, integer last){
-  case reflexive{L1}: // ...
-  case rotate_left{L1,L2}: // ...
-  case rotate_right{L1,L2}: // ...
-  case transitive{L1,L2,L3}: // ...
+  case reflexive{L1}: \true ; // to complete
+  case rotate_left{L1,L2}: \true ; // to complete
+  case rotate_right{L1,L2}: \true ; // to complete
+  case transitive{L1,L2,L3}: \true ; // to complete
   }
 */
 

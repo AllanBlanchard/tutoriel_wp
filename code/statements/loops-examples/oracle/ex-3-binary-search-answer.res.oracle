@@ -1,0 +1,37 @@
+# frama-c -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast [...]
+[kernel] Parsing ex-3-binary-search-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function bsearch
+[wp] [Valid] Goal bsearch_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal bsearch_terminates (Cfg) (Trivial)
+[wp] 25 goals scheduled
+[wp] [Valid] typed_bsearch_complete_does_not_exists_exists (Qed)
+[wp] [Valid] typed_bsearch_disjoint_does_not_exists_exists (Qed)
+[wp] [Valid] typed_bsearch_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_bsearch_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_loop_invariant_established (Qed)
+[wp] [Valid] typed_bsearch_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_loop_invariant_2_established (Qed)
+[wp] [Valid] typed_bsearch_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_assert_rte_signed_overflow_4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_assert_rte_signed_overflow_5 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_assert_rte_signed_overflow_6 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_assert_rte_mem_access_2 (Qed)
+[wp] [Valid] typed_bsearch_assert_rte_signed_overflow_7 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_loop_assigns (Qed)
+[wp] [Valid] typed_bsearch_assigns_part1 (Qed)
+[wp] [Valid] typed_bsearch_assigns_part2 (Qed)
+[wp] [Valid] typed_bsearch_assigns_part3 (Qed)
+[wp] [Valid] typed_bsearch_assigns_part4 (Qed)
+[wp] [Valid] typed_bsearch_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_loop_variant_positive (Qed)
+[wp] [Valid] typed_bsearch_exists_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_does_not_exists_ensures (Alt-Ergo) (Cached)
+[wp] Proved goals:   27 / 27
+  Terminating:     1
+  Unreachable:     1
+  Qed:            12
+  Alt-Ergo:       13

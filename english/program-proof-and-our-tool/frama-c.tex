@@ -9,7 +9,7 @@
 Frama-C (FRAmework for Modular Analysis of C code) is a platform
 dedicated to the analysis of C programs created by the CEA LIST and
 Inria. It is based on a modular architecture allowing to use different
-plugins. The default plugins comprises different static analyses (that
+plugins. The default plugins comprise different static analyses (that
 do not execute source code), dynamic analyses (that requires code
 execution), or combining both. These plugins can collaborate together
 or not, either by communicating directly or by using the specification
@@ -26,7 +26,7 @@ properties we want to verify about our programs. These properties are
 written using code annotations in comment sections. If one has
 already used Doxygen, it is quite similar, except that we write logic
 formulas and not text. During this tutorial, we will extensively write
-ASCL code, so let us just skip this for now.
+ACSL code, so let us just skip this for now.
 
 
 
@@ -41,7 +41,7 @@ automatically, here we use automatic tools.
 
 
 We will use a SMT solver
-(\externalLink{statisfiability modulo theory}{https://fr.wikipedia.org/wiki/Satisfiability\_modulo\_theories}, we do not detail how it works). This solver is
+(\externalLink{satisfiability modulo theory}{https://fr.wikipedia.org/wiki/Satisfiability\_modulo\_theories}, we do not detail how it works). This solver is
 \externalLink{Alt-Ergo}{http://alt-ergo.ocamlpro.fr/}, that was initially developed
 by the Laboratoire de Recherche en Informatique d'Orsay, and is today
 maintained by OCamlPro.
@@ -52,17 +52,14 @@ maintained by OCamlPro.
 
 
 
-Frama-C is a software developed on Linux and OSX. Its support is thus better
+Frama-C is a software developed on Linux and macOS. Its support is thus better
 on those operating system. Nevertheless, it is possible to install Frama-C
 on Windows and in theory, its use will be identical to its use on Linux.
 However:
-
-
-
 \begin{Warning}
 \begin{itemize}
-  \item the tutorial presents the use of Frama-C on Linux (or OSX) and
-    the author did not experiment the differences that could exists with Windows,
+  \item the tutorial presents the use of Frama-C on Linux (or macOS) and
+    the author did not experiment the differences that could exist with Windows,
   \item in recent versions of Windows 10, a possibility is to use Windows
     Subsystem for Linux, in combination with a Xserver installed on Windows
     to get GUI,
@@ -100,7 +97,7 @@ the installation.
 
 
 
-\levelFiveTitle{Via opam}
+\levelFiveTitle{Via Opam}
 
 
 
@@ -109,7 +106,7 @@ and applications.
 
 
 
-First of all, Opam must be installed (see its documentation). Then, some
+First, Opam must be installed (see its documentation). Then, some
 packages from the Linux distribution must be installed before
 installing Frama-C. On most systems, it is possible to ask Opam to install
 dependencies of the packages we want to install. For this, first install
@@ -168,14 +165,14 @@ the installation.
 
 The packages we have listed in the Opam section are required (of course,
 Opam itself is not). It requires a recent version of Ocaml and its
-compiler (including a compiler to native code). Is is also necessary to
+compiler (including a compiler to native code). It is also necessary to
 install Why3 (at least version 1.2.0), which is available either on Opam
 or on their website (\externalLink{Why3}{http://why3.lri.fr/}).
 
 
 
 After having extracted the folder available here :
-\externalLink{http://frama-c.com/download.html}{http://frama-c.com/download.html} (Source distribution).
+\externalLink{https://frama-c.com/html/get-frama-c.html}{https://frama-c.com/html/get-frama-c.html} (Source distribution).
 Navigate to the folder and then execute the command line:
 
 
@@ -191,17 +188,17 @@ the installation.
 
 
 
-\levelFourTitle{OSX}
+\levelFourTitle{macOS}
 
 
-On OSX, the use of Homebrew and Opam is recommended to install Frama-C.
-The author does not use OSX, so here is a shameful copy and paste of the
-installation guide of Frama-C for OSX.
+On macOS, the use of Homebrew and Opam is recommended to install Frama-C.
+The author does not use macOS, so here is a shameful copy and paste of the
+installation guide of Frama-C for macOS.
 
 
 
 
-General Mac OS tools for OCaml:
+General macOS tools for OCaml:
 
 
 
@@ -253,7 +250,7 @@ Necessary for Frama-C/WP:
 Currently, the best way to install Frama-C on Windows is to use the
 Windows Subsystem for Linux. Basically, once the Linux system is installed,
 one should install Opam and follow the instructions provided in the Linux
-section. To get a usable graphical user interface, a X server should be
+section. To get a usable graphical user interface, an X server should be
 installed on Windows.
 
 
@@ -287,7 +284,7 @@ The following window should appear:
 \image{verif_install-1}
 
 
-Clicking \CodeInline{main.c} in the left side panel to select it, we can see
+Clicking \CodeInline{main.c} in the left side-panel to select it, we can see
 its content (slightly) modified, and some green bullets on different
 lines as illustrated here:
 
@@ -325,7 +322,7 @@ useful \emph{in the tutorial}. However, when we start to be interested
 in proving more complex programs, it is often possible to reach the
 limits of Alt-Ergo, which is available by default, and we would thus need
 some other provers. For basic properties, almost all solvers have the
-same capabilities, for more complex ones, each solvers has its predilection
+same capabilities, for more complex ones, each solver has its predilection
 domains.
 
 
@@ -342,7 +339,7 @@ Why3 as a backend to talk with external provers.
 
 On their website, we can find the list of
 \externalLink{supported provers}{http://why3.lri.fr/\#provers}.
-We recommend to install
+We recommend installing
 \externalLink{Z3}{https://github.com/Z3Prover/z3/wiki} which is
 developed by Microsoft Research, and
 \externalLink{CVC4}{http://cvc4.cs.stanford.edu/web/} which is developed by many
@@ -354,17 +351,17 @@ New provers can be installed any time after the installation of Frama-C.
 However, Why3 provers list must be updated:
 
 \begin{CodeBlock}{bash}
-why3 config --full-config
+why3 config detect
 \end{CodeBlock}
 
-And then activated in Frama-C. In the left side panel, in the WP part,
-clic "Provers..." :
+And then activated in Frama-C. In the left-side panel, in the WP part,
+click ``Provers...'':
 
 
 \image{provers}
 
 
-And then "Detect" in the window that appears. Once it is done, provers
+And then ``Detect'' in the window that appears. Once it is done, provers
 can be activated thanks to the button next to their name.
 
 
@@ -382,7 +379,7 @@ verifies (using typing) that the proof is actually a valid proof.
 
 Why would we need such a tool? Sometimes, the properties we want to
 prove can be too complex to be solved automatically by SMT solvers,
-typically when they requires careful inductive reasoning with precise
+typically when they require careful inductive reasoning with precise
 choices at each step. In this situation, WP allows us to generate
 verification conditions translated in Coq language, and to write the
 proof ourselves.
@@ -403,16 +400,3 @@ To learn Coq, we would recommend
 
 If one needs more information about Coq and its installation, this page
 can help: \externalLink{The Coq Proof Assistant}{https://coq.inria.fr/}.
-
-
-
-The current support of Coq is deprecated in Frama-C but is still available.
-As we provide Coq scripts that can be used, we provide these instruction
-so that this way of proving programs can be tested by users. To run Frama-C
-with Coq support, use:
-
-
-
-\begin{CodeBlock}{bash}
-  frama-c -wp-prover=native:coq
-\end{CodeBlock}

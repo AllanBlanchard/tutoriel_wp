@@ -1,0 +1,28 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing abs-5.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function abs
+[rte:annot] annotating function foo
+[wp] [Valid] Goal abs_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal abs_terminates (Cfg) (Trivial)
+[wp] 9 goals scheduled
+[wp] [Valid] typed_abs_ensures (Qed)
+[wp] [Valid] typed_abs_ensures_2 (Qed)
+[wp] [Valid] typed_abs_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_foo_terminates (Qed)
+[wp] [Valid] typed_foo_exits (Qed)
+[wp] [Valid] typed_foo_call_abs_requires (Qed)
+[wp] [Valid] typed_foo_call_abs_2_requires (Qed)
+[wp] [Unsuccess] typed_foo_call_abs_3_requires (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_foo_call_abs_4_requires (Alt-Ergo) (Cached)
+[wp] Proved goals:    9 / 11
+  Terminating:     1
+  Unreachable:     1
+  Qed:             7
+  Unsuccess:       2
+[wp:pedantic-assigns] abs-5.c:10: Warning: 
+  No 'assigns' specification for function 'abs'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] abs-5.c:15: Warning: 
+  No 'assigns' specification for function 'foo'.
+  Callers assumptions might be imprecise.

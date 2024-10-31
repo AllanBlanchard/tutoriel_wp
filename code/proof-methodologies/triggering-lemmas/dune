@@ -1,0 +1,7 @@
+(subdir
+ result/insert_sort-proved.0.session/interactive
+ (copy_files ../../../insert_sort-proved.0.session/interactive/*))
+
+(subdir
+ result/ex-4-sum-content-answer.0.session/interactive
+ (copy_files ../../../ex-4-sum-content-answer.0.session/interactive/*))

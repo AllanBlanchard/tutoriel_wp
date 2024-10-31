@@ -1,0 +1,5 @@
+[kernel] Parsing ex-2-equal.c (with preprocessing)
+[kernel:CERT:MSC:37] ex-2-equal.c:9: Warning: 
+  Body of function equal falls-through. Adding a return statement
+[kernel:CERT:MSC:37] ex-2-equal.c:13: Warning: 
+  Body of function different falls-through. Adding a return statement

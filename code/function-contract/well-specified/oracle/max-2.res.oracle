@@ -1,0 +1,24 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing max-2.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function foo
+[rte:annot] annotating function max
+[wp] [Valid] Goal max_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal max_terminates (Cfg) (Trivial)
+[wp] 4 goals scheduled
+[wp] [Valid] typed_max_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_terminates (Qed)
+[wp] [Valid] typed_foo_exits (Qed)
+[wp] [Unsuccess] typed_foo_assert (Alt-Ergo) (Cached)
+[wp] Proved goals:    5 / 6
+  Terminating:     1
+  Unreachable:     1
+  Qed:             2
+  Alt-Ergo:        1
+  Unsuccess:       1
+[wp:pedantic-assigns] max-2.c:6: Warning: 
+  No 'assigns' specification for function 'max'.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] max-2.c:10: Warning: 
+  No 'assigns' specification for function 'foo'.
+  Callers assumptions might be imprecise.

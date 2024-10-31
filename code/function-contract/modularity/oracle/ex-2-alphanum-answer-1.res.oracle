@@ -1,0 +1,45 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-2-alphanum-answer-1.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function is_alpha_num
+[rte:annot] annotating function is_digit
+[rte:annot] annotating function is_lower_alpha
+[rte:annot] annotating function is_upper_alpha
+[wp] [Valid] Goal is_digit_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal is_digit_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal is_lower_alpha_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal is_lower_alpha_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal is_upper_alpha_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal is_upper_alpha_terminates (Cfg) (Trivial)
+[wp] 26 goals scheduled
+[wp] [Valid] typed_is_lower_alpha_ensures (Qed)
+[wp] [Valid] typed_is_lower_alpha_assigns_part1 (Qed)
+[wp] [Valid] typed_is_lower_alpha_assigns_part2 (Qed)
+[wp] [Valid] typed_is_lower_alpha_assigns_part3 (Qed)
+[wp] [Valid] typed_is_upper_alpha_ensures (Qed)
+[wp] [Valid] typed_is_upper_alpha_assigns_part1 (Qed)
+[wp] [Valid] typed_is_upper_alpha_assigns_part2 (Qed)
+[wp] [Valid] typed_is_upper_alpha_assigns_part3 (Qed)
+[wp] [Valid] typed_is_digit_ensures (Qed)
+[wp] [Valid] typed_is_digit_assigns_part1 (Qed)
+[wp] [Valid] typed_is_digit_assigns_part2 (Qed)
+[wp] [Valid] typed_is_digit_assigns_part3 (Qed)
+[wp] [Valid] typed_is_alpha_num_terminates (Qed)
+[wp] [Valid] typed_is_alpha_num_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_is_alpha_num_exits (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_exit_part3 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_normal_part4 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_normal_part5 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_normal_part6 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_normal_part7 (Qed)
+[wp] [Valid] typed_is_alpha_num_assigns_normal_part8 (Qed)
+[wp] Proved goals:   32 / 32
+  Terminating:     3
+  Unreachable:     3
+  Qed:            25
+  Alt-Ergo:        1

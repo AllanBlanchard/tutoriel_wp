@@ -1,6 +1,6 @@
 
 
-\image{frama-c.png}
+\image{frama-c}
 
 
 \levelThreeTitle{Frama-C ? WP ?}
@@ -11,7 +11,7 @@ Frama-C (pour FRAmework for Modular Analysis of C code) est une plate-forme
  basée sur une architecture modulaire permettant l'utilisation de divers
  \textit{plugins}. Les \textit{plugins} fournis par défaut comprennent diverses
  analyses statiques (sans exécution du code analysé), dynamiques (avec
- exécution du code), ou combinant les deux. Ces *plugins* peuvent collaborer
+ exécution du code), ou combinant les deux. Ces \textit{plugins} peuvent collaborer
  ou non, soit en communiquant directement entre eux, soit en utilisant le
  langage de spécification fourni par Frama-C.
 
@@ -32,9 +32,9 @@ L'analyse que nous allons utiliser ici est fournie par un plugin appelé WP pour
 \textit{Weakest Precondition}, un plugin de vérification déduction. Il implémente
 la technique dont nous avons parlé plus tôt :
 à partir des annotations ACSL et du code source, le plugin génère ce que nous
-appelons des obligations de preuves, qui sont des formules logiques dont nous
-devons vérifier si elles sont vraies ou fausses (on parle de « satisfiabilité »).
-Cette vérification peut être faite de manière
+appelons des conditions de vérification (ou obligations de preuves), qui sont
+des formules logiques dont nous devons vérifier si elles sont vraies ou fausses
+(on parle de « satisfiabilité »). Cette vérification peut être faite de manière
 manuelle ou automatique, ici nous n'utiliserons que des outils automatiques.
 
 
@@ -51,13 +51,10 @@ OCamlPro.
 \levelThreeTitle{Installation}
 
 
-Frama-C est un logiciel développé sous Linux et OSX. Son support est donc bien
+Frama-C est un logiciel développé sous Linux et macOS. Son support est donc bien
 meilleur sous ces derniers. Il existe quand même de quoi faire une installation
 sous Windows et en théorie l'utilisation sera sensiblement la même que sous
 Linux, mais :
-
-
-
 \begin{Warning}
 \begin{itemize}
 \item le tutoriel présentera le fonctionnement sous Linux et l'auteur n'a pas
@@ -89,14 +86,16 @@ apt-get/yum install frama-c
 
 
 
-Par contre, ces dépôts ne sont pas systématiquement à jour. En soi, ce n'est pas très gênant car il n'y a pas de nouvelle version de Frama-C tous les deux mois, mais il est tout de même bon de le savoir.
+Par contre, ces dépôts ne sont pas systématiquement à jour. En soi, ce n'est pas
+très gênant, car il n'y a pas de nouvelle version de Frama-C tous les deux mois,
+mais il est tout de même bon de le savoir.
 
 
 
 Les informations pour vérifier l'installation sont données dans la sous-section « Vérifier l'installation ».
 
 
-\levelFiveTitle{Via opam}
+\levelFiveTitle{Via Opam}
 
 
 La deuxième solution consiste à passer par Opam, un gestionnaire de paquets
@@ -125,7 +124,7 @@ opam depext frama-c
 
 
 Si depext ne trouve pas les dépendances pour votre distribution, les paquets
-suivant doivent être présents sur votre système :
+suivants doivent être présents sur votre système :
 
 
 \begin{itemize}
@@ -160,7 +159,7 @@ Les informations pour vérifier l'installation sont données dans la sous-sectio
 
 Pour installer Frama-C via une compilation manuelle, les paquets indiqués dans la
 section Opam sont nécessaires (mis à part Opam lui-même bien sûr). Il faut
-également une version récente d'Ocaml et de son compilateur (y compris vers
+également une version récente d'OCaml et de son compilateur (y compris vers
 code natif). Il est aussi nécessaire d'installer Why3, en version 1.2.0,
 qui est disponible sur Opam ou sur leur site web
 (\externalLink{Why3}{http://why3.lri.fr/}).
@@ -168,7 +167,7 @@ qui est disponible sur Opam ou sur leur site web
 
 
 Après décompression de l'archive disponible ici :
-\externalLink{http://frama-c.com/download.html}{http://frama-c.com/download.html} (Source distribution).
+\externalLink{https://frama-c.com/html/get-frama-c.html}{https://frama-c.com/html/get-frama-c.html} (Source distribution).
 Il faut se rendre dans le dossier et exécuter la commande :
 
 
@@ -181,12 +180,12 @@ autoconf && ./configure && make && sudo make install
 Les informations pour vérifier l'installation sont données dans la sous-section « Vérifier l'installation ».
 
 
-\levelFourTitle{OSX}
+\levelFourTitle{macOS}
 
 
-L'installation sur OSX passe par Homebrew et Opam. L'auteur n'ayant
-personnellement pas d'OSX, voici une honteuse paraphrase du guide
-d'installation de Frama-C pour OSX.
+L'installation sur macOS passe par Homebrew et Opam. L'auteur n'ayant
+personnellement pas de macOS, voici une honteuse paraphrase du guide
+d'installation de Frama-C pour macOS.
 
 
 
@@ -214,7 +213,7 @@ Pour l'interface graphique :
 
 
 
-Dépendances pour alt-ergo :
+Dépendances pour Alt-Ergo :
 
 
 
@@ -257,7 +256,7 @@ Les informations pour vérifier l'installation sont données dans la sous-sectio
 \levelThreeTitle{Vérifier l'installation}
 
 
-Pour vérifier votre installation, commençez par mettre ce code très simple dans
+Pour vérifier votre installation, commencez par mettre ce code très simple dans
 un fichier « main.c » :
 
 
@@ -321,10 +320,10 @@ frama-c-gui -gui-theme colorblind
 Cette partie est purement optionnelle, rien de ce qui est ici ne sera
 indispensable pendant le tutoriel. Cependant, lorsque l'on commence à
 s'intéresser vraiment à la preuve, il est possible de toucher assez rapidement
-aux limites du prouveur pré-intégré Alt-Ergo et d'avoir besoin d'autres
+aux limites du prouveur Alt-Ergo et d'avoir besoin d'autres
 prouveurs. Pour des propriétés simples, tous les prouveurs jouent à armes
 égales, pour des propriétés complexes, chaque prouveur à ses domaines de
-prédilecion.
+prédilection.
 
 \levelFourTitle{Why3}
 
@@ -347,16 +346,12 @@ efficaces et relativement complémentaires.
 
 
 De nouveaux prouveurs peuvent être installés n'importe quand après
-l'installation de Frama-C. Cependant la liste des prouveurs vus par Why3
+l'installation de Frama-C. Cependant, la liste des prouveurs vus par Why3
 doit être mise à jour :
-
-
 \begin{CodeBlock}{bash}
-why3 config --full-config
+why3 config detect
 \end{CodeBlock}
-
-
-puis activée dan Frama-C. Dans le panneau latéral, dans la partie WP,
+puis activée dans Frama-C. Dans le panneau latéral, dans la partie WP,
 cliquons sur « Provers... » :
 
 
@@ -375,8 +370,8 @@ de leur nom.
 
 
 Coq, développé par l'organisme de recherche Inria, est un assistant de
-preuve. C'est-à-dire que nous écrivons nous-même les preuves dans un
-langage dédié, et la plateforme se charge de vérifier (par typage) que
+preuve. C'est-à-dire que nous écrivons nous-mêmes les preuves dans un
+langage dédié et la plateforme se charge de vérifier (par typage) que
 cette preuve est valide.
 
 
@@ -385,7 +380,7 @@ Pourquoi aurait-on besoin d'un tel outil ? Il se peut parfois que les
 propriétés que nous voulons prouver soient trop complexes pour un prouveur
 automatique, typiquement lorsqu'elles nécessitent des raisonnements par
 induction avec des choix minutieux à chaque étape. Auquel cas, WP pourra
-générer des obligations de preuve traduites en Coq et nous laisser écrire
+générer des conditions de vérification traduites en Coq et nous laisser écrire
 la preuve en question.
 
 
@@ -403,15 +398,3 @@ paquets, il peut arriver que celui-ci ait directement intégré Coq.
 
 
 Pour plus d'informations à propos de Coq et de son installation, voir \externalLink{The Coq Proof Assistant}{https://coq.inria.fr/}.
-
-
-Le support actuel de Coq dans Frama-C est déprécié mais toujours
-accessible. Comme nous fournissons dans ce tutoriel quelques scripts de preuve
-Coq qui peuvent être utilisés, nous fournissons ces instructions afin que
-ces scripts puissent être visionnés et testés par les utilisateurs. Pour lancer
-Frama-C avec le support de Coq, nous utilisons la commande :
-
-
-\begin{CodeBlock}{bash}
-  frama-c -wp-provers=native:coq
-\end{CodeBlock}

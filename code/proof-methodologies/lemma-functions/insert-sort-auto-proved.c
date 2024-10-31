@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:+"-warn-unsigned-overflow -warn-unsigned-downcast -wp-timeout 30"
+*/
+
 #include <stddef.h>
 #include <stdint.h>
 

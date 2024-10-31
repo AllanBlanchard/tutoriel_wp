@@ -1,3 +1,8 @@
+/* run.config
+   DEPS: @PTEST_DEPS@ @PTEST_DIR@/@PTEST_NAME@.@PTEST_NUMBER@.session@PTEST_CONFIG@/interactive/*.v
+   STDOPT:+"-wp-prover alt-ergo,coq -wp-session @PTEST_DIR@/@PTEST_NAME@.@PTEST_NUMBER@.session@PTEST_CONFIG@"
+*/
+
 #include <limits.h>
 
 /*@
@@ -19,10 +24,10 @@
 */
 
 
-/*@ 
+/*@
   requires n*(n+1) <= 2*INT_MAX ;
   assigns \nothing ;
-  ensures is_sum_n(n, \result) ; 
+  ensures is_sum_n(n, \result) ;
 */
 int sum_n(int n){
   if(n < 1) return 0 ;
@@ -30,7 +35,7 @@ int sum_n(int n){
   int res = 0 ;
   /*@
     loop invariant 1 <= i <= n+1 ;
-    loop invariant is_sum_n(i-1, res) ; 
+    loop invariant is_sum_n(i-1, res) ;
     loop assigns i, res ;
     loop variant n - i ;
   */

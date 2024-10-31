@@ -1,0 +1,19 @@
+# frama-c -wp [...]
+[kernel] Parsing ex-3-trigger-cond-answer-2.c (with preprocessing)
+[wp] Running WP plugin...
+[kernel:annot:missing-spec] ex-3-trigger-cond-answer-2.c:36: Warning: 
+  Neither code nor explicit exits and terminates for function g,
+   generating default clauses. See -generated-spec-* options for more info
+[wp] Warning: Missing RTE guards
+[wp] 5 goals scheduled
+[wp] [Valid] typed_example_terminates (Qed)
+[wp] [Valid] typed_example_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_example_exits (Qed)
+[wp] [Valid] typed_example_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_example_assert_2 (Alt-Ergo) (Cached)
+[wp] Proved goals:    5 / 5
+  Qed:             2
+  Alt-Ergo:        3
+[wp:pedantic-assigns] ex-3-trigger-cond-answer-2.c:42: Warning: 
+  No 'assigns' specification for function 'example'.
+  Callers assumptions might be imprecise.

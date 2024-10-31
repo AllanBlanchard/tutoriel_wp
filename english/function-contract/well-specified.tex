@@ -9,11 +9,11 @@ not try to express \emph{how} we answer to our need but \emph{what} is
 exactly our need. To prove that our code implements what we need, we
 must be able to describe exactly what we need.
 
-From now, let us use an other example, the \texttt{max} function:
+From now, let us use another example, the \CodeInline{max} function:
 
 
 
-\CodeBlockInput{c}{max-0.c}
+\CodeBlockInput[4][6]{c}{max-1.c}
 
 
 
@@ -69,17 +69,17 @@ false precondition, we can have the possibility to create a proof of
 false:
 
 
-\CodeBlockInput{c}{bad-precond.c}
+\CodeBlockInput[6]{c}{bad-precond.c}
 
 
 If we ask WP to prove this function, it will accept it without any problem
 since the property we ask in precondition is necessarily false.
-However, we will not be able to give an input that respects the
+However, we will not be able to give an input that satisfies the
 precondition.
 
 
 For this particular kind of inconsistencies, a useful feature of WP is
-the "smoke tests" option of the plugin. It can be used to detect that
+the ``smoke tests'' option of the plugin. It can be used to detect that
 some preconditions are unsatisfiable. For example, here, we can run this
 command line:
 
@@ -104,11 +104,7 @@ precondition is inconsistent.
 
 Note that when the smoke tests succeed, for example if we fix the
 precondition like this:
-
-
- \image{2-smoke-success}
-
-
+\image{2-smoke-success}
 it does not necessarily mean that the precondition is consistent, just
 that the prover was unable to prove that it was inconsistent.
 
@@ -129,11 +125,12 @@ in ACSL. In order to produce a correct specification of programs using
 pointers, it is necessary to detail the configuration of the considered
 memory.
 
-We can illustrate with a swap function for C integers:
+We can illustrate with a swap function for C integers (this version can
+only be verified without RTE checking for now):
 
 
 
-\CodeBlockInput{c}{swap-0.c}
+\CodeBlockInput[5]{c}{swap-0.c}
 
 
 
@@ -211,48 +208,48 @@ by Frama-C, we can see that in the postcondition, the pointers are enclosed into
 \image{2-old-swap}
 
 
-For the built-in \CodeInline{\textbackslash{}at}, we have to take care of this
-more explicitely. In particular,
+For the built-in \CodeInline{\textbackslash{}at} function, we have to take care
+of this more explicitly. In particular,
 the specified label must make sense with respect to the scope of the
 value. For example, in the following program, Frama-C detects that we ask
 the value of the variable \CodeInline{x} at a program point where it does
 not exist:
 
 
-\CodeBlockInput[1][5]{c}{at-2.c}
+\CodeBlockInput[5][9]{c}{at-2.c}
 
 
 \image{2-at-1.png}
 
 
 However, in some other cases, we only reach a proof failure since determining
-that the value does not exists at some particular label cannot be done by
+that the value does not exist at some particular label cannot be done by
 a syntactic analysis. For example, if the variable is declared but undefined
 or if we want the value of a pointed value:
 
 
-\CodeBlockInput[7][19]{c}{at-2.c}
+\CodeBlockInput[11][23]{c}{at-2.c}
 
 
 Here, it is easy to see the problem. However, the considered label is
-propagated to subexpressions. Thus, sometimes, terms that seems to be
+propagated to sub-expressions. Thus, sometimes, terms that seem to be
 innocent can have a surprising behavior if we do not keep this fact in mind.
 For example, in the following example:
 
 
-\CodeBlockInput[21][26]{c}{at-2.c}
+\CodeBlockInput[25][30]{c}{at-2.c}
 
 
 The first assertion is proved, and while the second assertion seems to
 express the same property, it cannot be proved. Because, it in fact does not
 express the same property. The expression
 \CodeInline{\textbackslash{}at(x[*p], Pre)} must be seen as
-\CodeInline{\textbackslash{}at(x[\textbackslash{}at(*p)], Pre)} as the
-label is propagated to the subexpression \CodeInline{*p}, for which we do
+\CodeInline{\textbackslash{}at(x[\textbackslash{}at(*p)], Pre)}, since the
+label is propagated to the sub-expression \CodeInline{*p}, for which we do
 not know the value at label \CodeInline{Pre} (since it is not specified).
 
 
-For the moment, we do not need \CodeInline{\textbackslash{}at} but it can
+For the moment, we do not need \CodeInline{\textbackslash{}at}, but it can
 often be useful, if not essential, when we want to make our
 specification precise.
 
@@ -373,7 +370,7 @@ free. We specify this by giving \CodeInline{\textbackslash{}nothing} to
 
 
 
-\CodeBlockInput{c}{assigns-nothing.c}
+\CodeBlockInput[3]{c}{assigns-nothing.c}
 
 
 
@@ -388,16 +385,17 @@ presented until now to integrate the right \CodeInline{assigns} clause.
 Pointers bring the risk of aliasing (multiple pointers can have access
 to the same memory location). For some functions, it does not cause any
 problem, for example when we give two identical pointers to the
-\texttt{swap} function, the specification is still verified. However,
+\CodeInline{swap} function, the specification is still verified. However,
 sometimes it is not that simple:
 
 
 
-\CodeBlockInput{c}{incr_a_by_b-0.c}
+\CodeBlockInput[5]{c}{incr_a_by_b-0.c}
 
 
 
-If we ask WP to prove this function, we get the following result:
+If we ask WP to prove this function (let us ignore the verification of absence
+of RTEs for this example), we get the following result:
 
 
 
@@ -433,13 +431,13 @@ pointers are the same,
 
 In order to ensure that pointers refer to separated memory locations,
 ACSL provides the predicate
-\texttt{\textbackslash{}separated(p1,\ ...,pn)} that receives in
+\CodeInline{\textbackslash{}separated(p1,\ ..., pn)} that receives in
 parameter a set of pointers and is true if and only if these pointers are
 non-overlapping. Here, we specify:
 
 
 
-\CodeBlockInput{c}{incr_a_by_b-1.c}
+\CodeBlockInput[5]{c}{incr_a_by_b-1.c}
 
 
 
@@ -464,7 +462,7 @@ Writing a specification that is precise enough can sometimes be a bit tricky.
 Interestingly, a good way to check if a specification is precise enough is to
 write tests. And in fact, this is basically what we have done for our examples
 \CodeInline{max} and \CodeInline{swap}. We have written a first version of the
-specification and we have written some code with a call to the corresponding
+specification, and we have written some code with a call to the corresponding
 function to determine whether we could prove some properties that we expected to
 be easily provable from the contract of the function.
 
@@ -505,7 +503,7 @@ remaining and stores it into two memory locations \CodeInline{p} and
 \CodeInline{q}:
 
 
-\CodeBlockInput{c}{ex-1-div-rem.c}
+\CodeBlockInput[5]{c}{ex-1-div-rem.c}
 
 Run the command:
 
@@ -530,12 +528,12 @@ If it fails, complete the contract by adding the right precondition.
 
 
 
-Provide a contract for the following function that reset its first parameter
+Provide a contract for the following function that resets its first parameter
 if and only if the second is true. Be sure to express that the second parameter
 remains unmodified:
 
 
-\CodeBlockInput{c}{ex-2-reset-on-cond.c}
+\CodeBlockInput[5]{c}{ex-2-reset-on-cond.c}
 
 
 Run the command:
@@ -555,7 +553,7 @@ sum the pointed values. Write the contract of this function:
 
 
 
-\CodeBlockInput{c}{ex-3-add-ptr.c}
+\CodeBlockInput[5]{c}{ex-3-add-ptr.c}
 
 
 
@@ -575,13 +573,14 @@ signature of the function add as follows:
 
 
 \begin{CodeBlock}{c}
-void add(int* a, int* b, int* r);
+void add(int* p, int* q, int* r);
 \end{CodeBlock}
 
 
 Now the result of the sum should be stored at \CodeInline{r}. Accordingly
 modify the calls in the main function as well as the code and the contract
-of \CodeInline{add}.
+of \CodeInline{add}. \CodeInline{*p} and \CodeInline{*q} should remain
+unchanged.
 
 
 
@@ -589,12 +588,12 @@ of \CodeInline{add}.
 
 
 
-The following functions computes the maximum of the values pointed by
+The following function computes the maximum of the values pointed by
 \CodeInline{a} and \CodeInline{b}. Write the contract of the function:
 
 
 
-\CodeBlockInput{c}{ex-4-max-ptr.c}
+\CodeBlockInput[5]{c}{ex-4-max-ptr.c}
 
 
 
@@ -634,7 +633,7 @@ The following function should order the 3 input values in increasing order.
 Write the corresponding code and specification of the function:
 
 
-\CodeBlockInput{c}{ex-5-order-3.c}
+\CodeBlockInput[5]{c}{ex-5-order-3.c}
 
 
 And run the command:
@@ -646,7 +645,7 @@ frama-c-gui your-file.c -wp -wp-rte
 
 
 Remember that ordering values is not just ensuring that resulting values
-are sorted increasing order that each pointed value must be one the original
+are sorted increasing order that each pointed value must be one of the original
 ones. All original values should still be there after the sorting operation:
 new values are a permutation of the original ones. To express this idea, one
 can rely on the set datatype. For example, this property is true:
@@ -674,7 +673,7 @@ other particular cases:
 That should set one more constraint on the final values.
 
 
-As an helper, one could use the following test program:
+As a helper, one could use the following test program:
 
 
 \CodeBlockInput[27][43]{c}{ex-5-order-3-answer.c}

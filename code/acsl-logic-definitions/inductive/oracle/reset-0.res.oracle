@@ -1,0 +1,25 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing reset-0.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function reset
+[wp] [Valid] Goal reset_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal reset_terminates (Cfg) (Trivial)
+[wp] 12 goals scheduled
+[wp] [Valid] typed_reset_ensures (Qed)
+[wp] [Valid] typed_reset_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_loop_invariant_established (Qed)
+[wp] [Unsuccess] typed_reset_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_loop_assigns_part1 (Qed)
+[wp] [Valid] typed_reset_loop_assigns_part2 (Qed)
+[wp] [Valid] typed_reset_loop_assigns_part3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_assigns (Qed)
+[wp] [Valid] typed_reset_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reset_loop_variant_positive (Qed)
+[wp] Proved goals:   13 / 14
+  Terminating:     1
+  Unreachable:     1
+  Qed:             6
+  Alt-Ergo:        5
+  Unsuccess:       1

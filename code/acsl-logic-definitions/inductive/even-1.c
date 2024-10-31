@@ -8,18 +8,6 @@
   }
 */
 
-void foo(){
-  int a = 42 ;
-  //@ assert even_natural(a);
-}
-
-
-/*@
-  lemma inversion{L}:
-  \forall integer n ; even_natural(n) ==>
-    (n > 0 && even_natural(n-2) || n == 0) ;
-*/
-
 void bar(){
   int a = 1 ;
   //@ assert !even_natural(a);

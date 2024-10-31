@@ -1,3 +1,8 @@
+/* run.config
+   DEPS: @PTEST_DEPS@ @PTEST_DIR@/@PTEST_NAME@.@PTEST_NUMBER@.session@PTEST_CONFIG@/interactive/*.v
+   STDOPT:+"-wp-prover alt-ergo,coq -wp-session @PTEST_DIR@/@PTEST_NAME@.@PTEST_NUMBER@.session@PTEST_CONFIG@"
+*/
+
 #include <limits.h>
 
 /*@
@@ -14,10 +19,10 @@
       n >= 0 ==> sum_n(n) == (n*(n+1))/2 ;
 */
 
-/*@ 
+/*@
   requires n*(n+1) <= 2*INT_MAX ;
   assigns \nothing ;
-  ensures \result == sum_n(n) ; 
+  ensures \result == sum_n(n) ;
 */
 int sum_n(int n){
   if(n < 1) return 0 ;

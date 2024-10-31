@@ -1,0 +1,37 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-2-simple-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function kind_of_letter
+[rte:annot] annotating function quadrant
+[wp] [Valid] Goal kind_of_letter_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal kind_of_letter_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal quadrant_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal quadrant_terminates (Cfg) (Trivial)
+[wp] 22 goals scheduled
+[wp] [Valid] typed_kind_of_letter_complete_consonant_vowel (Alt-Ergo) (Cached)
+[wp] [Valid] typed_kind_of_letter_disjoint_consonant_vowel (Alt-Ergo) (Cached)
+[wp] [Valid] typed_kind_of_letter_assigns_part1 (Qed)
+[wp] [Valid] typed_kind_of_letter_assigns_part2 (Qed)
+[wp] [Valid] typed_kind_of_letter_assigns_part3 (Qed)
+[wp] [Valid] typed_kind_of_letter_assigns_part4 (Qed)
+[wp] [Valid] typed_kind_of_letter_assigns_part5 (Qed)
+[wp] [Valid] typed_kind_of_letter_assigns_part6 (Qed)
+[wp] [Valid] typed_kind_of_letter_assigns_part7 (Qed)
+[wp] [Valid] typed_kind_of_letter_vowel_ensures (Qed)
+[wp] [Valid] typed_kind_of_letter_consonant_ensures (Qed)
+[wp] [Valid] typed_quadrant_complete_I_II_III_IV (Alt-Ergo) (Cached)
+[wp] [Valid] typed_quadrant_disjoint_I_II_III_IV (Qed)
+[wp] [Valid] typed_quadrant_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_quadrant_assigns_part1 (Qed)
+[wp] [Valid] typed_quadrant_assigns_part2 (Qed)
+[wp] [Valid] typed_quadrant_assigns_part3 (Qed)
+[wp] [Valid] typed_quadrant_assigns_part4 (Qed)
+[wp] [Valid] typed_quadrant_I_ensures (Qed)
+[wp] [Valid] typed_quadrant_II_ensures (Qed)
+[wp] [Valid] typed_quadrant_III_ensures (Qed)
+[wp] [Valid] typed_quadrant_IV_ensures (Qed)
+[wp] Proved goals:   26 / 26
+  Terminating:     2
+  Unreachable:     2
+  Qed:            18
+  Alt-Ergo:        4

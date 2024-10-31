@@ -1,0 +1,15 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing assigns-nothing.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function plus_5
+[wp] [Valid] Goal plus_5_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal plus_5_terminates (Cfg) (Trivial)
+[wp] 4 goals scheduled
+[wp] [Valid] typed_plus_5_ensures (Qed)
+[wp] [Valid] typed_plus_5_assert_rte_mem_access (Qed)
+[wp] [Valid] typed_plus_5_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_plus_5_assigns (Qed)
+[wp] Proved goals:    6 / 6
+  Terminating:     1
+  Unreachable:     1
+  Qed:             4

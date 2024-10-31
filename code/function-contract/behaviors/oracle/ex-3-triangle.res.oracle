@@ -1,0 +1,5 @@
+[kernel] Parsing ex-3-triangle.c (with preprocessing)
+[kernel:CERT:MSC:37] ex-3-triangle.c:12: Warning: 
+  Body of function sides_kind falls-through. Adding a return statement
+[kernel:CERT:MSC:37] ex-3-triangle.c:16: Warning: 
+  Body of function angles_kind falls-through. Adding a return statement

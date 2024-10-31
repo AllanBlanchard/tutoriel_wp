@@ -8,7 +8,7 @@ verification, the expected level of confidence and the kind of formalization
 %% \begin{levelTwo}
 %%   {Data-structure API}
 %%   {data-structure-api}
-%% \end{levelTwo}  
+%% \end{levelTwo}
 
 \begin{levelTwo}
   {Absence of runtime errors: Minimal contracts}
@@ -32,14 +32,14 @@ verification, the expected level of confidence and the kind of formalization
 
 As we try to prove more complex properties, particularly when
 programs involve loops, there is a part of ``trial and error'' in
-order to understand what the provers miss to establish the proof.
+order to understand what the provers miss establishing the proof.
 
 It can miss hypotheses. In this case, we can try to add assertions to
 guide the prover, or write ghost code with the right invariant that
 allows to make a part of the reasoning by ourselves when it is too hard
 for SMT solvers.
 
-With some experience, we can read the content of the proof obligations or
+With some experience, we can read the content of the verification condition or
 try to perform the proof with the Coq interactive prover to see whether
 the proof seems to be possible. Sometimes, the prover just needs more
 time, in such a case, we can (sometimes a lot) augment the timeout value.

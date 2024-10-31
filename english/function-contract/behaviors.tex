@@ -1,33 +1,33 @@
 Sometimes, a function can have behaviors that can be quite different
 depending on the input. Typically, a function can receive a pointer to
-an optional resource: if the pointer is \texttt{NULL}, we have a
+an optional resource: if the pointer is \CodeInline{NULL}, we have a
 certain behavior, which is different of the behavior expected when
-the pointer is not \texttt{NULL}.
+the pointer is not \CodeInline{NULL}.
 
 We have already seen a function that have different behaviors: the
-\texttt{abs} function. Let us use it again to illustrate behaviors. We
-have two behaviors for the \texttt{abs} function: either the input is
+\CodeInline{abs} function. Let us use it again to illustrate behaviors. We
+have two behaviors for the \CodeInline{abs} function: either the input is
 positive or it is negative.
 
 Behaviors allow us to specify the different cases for postconditions. We
-introduce them using the \texttt{behavior} keyword. Each behavior
+introduce them using the \CodeInline{behavior} keyword. Each behavior
 is named. For a given behavior, we have different assumptions about the
 input of the function, they are introduced with the clause
-\texttt{assumes} (note that since they characterize the input, the
+\CodeInline{assumes} (note that since they characterize the input, the
 keyword \CodeInline{\textbackslash{}old} cannot be used there). However,
 the properties expressed by this clause do not have to be verified before
 the call, they can be verified and in this case, the postcondition
 specified in our behavior applies. The postconditions of a particular
-behavior are introduced using \texttt{ensures}. Finally, we can ask WP to
-verify that behaviors are disjoint (to guarantee determinism) and
+behavior are introduced using an \CodeInline{ensures} clause. Finally, we can ask WP
+to verify that behaviors are disjoint (to guarantee determinism) and
 complete (to guarantee that we cover all possible input).
 
 Behaviors are disjoint if for any (valid) input of the function, it
-corresponds to the assumption (\texttt{assumes}) of a single behavior.
+corresponds to the assumption (\CodeInline{assumes}) of a single behavior.
 Behaviors are complete if any (valid) input of the function corresponds
 to at least one behavior.
 
-For example, for \texttt{abs} we can write the specification:
+For example, for \CodeInline{abs} we can write the specification:
 
 
 
@@ -41,9 +41,8 @@ return a positive value.
 
 
 
-Let us now slighlty modify the assumptions of each behavior to illustrate
+Let us now slightly modify the assumptions of each behavior to illustrate
 the meaning of \CodeInline{complete} and \CodeInline{disjoint}:
-
 \begin{itemize}
 \item
   replace the assumption of \CodeInline{pos} with
@@ -53,7 +52,7 @@ the meaning of \CodeInline{complete} and \CodeInline{disjoint}:
   replace the assumption of \CodeInline{neg} with
   \CodeInline{val \textless{}= 0}, in this case, behaviors are
   complete but not disjoint (we have two assumptions corresponding
-  to \CodeInline{val == 0}.
+  to \CodeInline{val == 0}).
 \end{itemize}
 
 
@@ -64,7 +63,7 @@ the meaning of \CodeInline{complete} and \CodeInline{disjoint}:
   \begin{itemize}
   \item put our \CodeInline{assigns} before the behaviors (as we have done in our
     example) with all potentially modified non-local elements,
-  \item add in postcondition of each behaviors the elements that are in fact
+  \item add in postcondition of each behavior the elements that are in fact
     not modified by indicating their new value to be equal to the
     \CodeInline{\textbackslash{}old} one.
   \end{itemize}
@@ -83,12 +82,10 @@ tedious and again error-prone.
 \levelThreeTitle{Exercises}
 
 
-\levelFourTitle{Previous exercices}
+\levelFourTitle{Previous exercises}
 
 
 From previous sections, take back the examples:
-
-
 \begin{itemize}
 \item about the computation of the distance between to integers,
 \item ``reset on condition'',
@@ -106,7 +103,7 @@ Considering that the contracts were:
 Re-write them using behaviors.
 
 
-\levelFourTitle{Two other simple exercices}
+\levelFourTitle{Two other simple exercises}
 
 
 Produce the code and the specification of the two following functions
@@ -118,14 +115,14 @@ one should assume (and express) that the function receives a lowercase
 letter.
 
 
-\CodeBlockInput[1][5]{c}{ex-2-simple.c}
+\CodeBlockInput[5][9]{c}{ex-2-simple.c}
 
 
 Then, a function that returns the quadrant of a given coordinate. When
 the coordinate is on an axis, arbitrary choose one of the quadrants.
 
 
-\CodeBlockInput[7][9]{c}{ex-2-simple.c}
+\CodeBlockInput[11][13]{c}{ex-2-simple.c}
 
 
 \levelFourTitle{Triangle}
@@ -133,11 +130,13 @@ the coordinate is on an axis, arbitrary choose one of the quadrants.
 
 Complete the following functions that receive the lengths of the different
 sides of a triangle, and respectively return:
-
 \begin{itemize}
-\item if the triangle is scalene, isoscele, or equilateral,
+\item if the triangle is scalene, isosceles, or equilateral,
 \item if the triangle is right, acute or obtuse.
 \end{itemize}
+
+
+\CodeBlockInput[5]{c}{ex-3-triangle.c}
 
 
 Assuming (and it must be expressed) that:
@@ -167,13 +166,13 @@ the contract was:
 
 \begin{enumerate}
 \item Rewrite it using behaviors
-\item Modify the contract of 1. in order to make the behaviors non-disjoint,
+\item Modify the contract of 1 in order to make the behaviors non-disjoint,
   except this property, the contract should remain verified,
-\item Modify the contract of 1. in order to make the behaviors incomplete,
+\item Modify the contract of 1 in order to make the behaviors incomplete,
   add a new behavior that makes the contract complete again,
-\item Modify the function of 1. in order to accept \CodeInline{NULL} pointers
-  for both \CodeInline{a} and \CodeInline{b}. If both of them are nul pointers,
-  return \CodeInline{INT\_MIN}, if one is a nul pointer, return the value of
+\item Modify the function of 1 in order to accept \CodeInline{NULL} pointers
+  for both \CodeInline{a} and \CodeInline{b}. If both of them are null pointers,
+  return \CodeInline{INT\_MIN}, if one is a null pointer, return the value of
   the other, else, return the maximum of them. Modify the contract accordingly
   by adding new behaviors. Be sure that they are disjoint and complete.
 \end{enumerate}
@@ -190,4 +189,4 @@ that the contract was:
 
 
 Rewrite it using behaviors. Note that you should have one general behaviors
-and 3 specific behaviors. Are these behaviors complete? Are they disjoint?
+and 2 specific behaviors. Are these behaviors complete? Are they disjoint?

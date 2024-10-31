@@ -1,0 +1,28 @@
+# frama-c -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast [...]
+[kernel] Parsing ex-3-binary-search-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function bsearch
+[wp] [Valid] Goal bsearch_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal bsearch_terminates (Cfg) (Trivial)
+[wp] 16 goals scheduled
+[wp] [Valid] typed_bsearch_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_loop_invariant_established (Qed)
+[wp] [Valid] typed_bsearch_assert_rte_unsigned_overflow (Qed)
+[wp] [Valid] typed_bsearch_assert_rte_unsigned_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_assert_rte_unsigned_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_assert_rte_unsigned_overflow_4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_assert_rte_mem_access_2 (Qed)
+[wp] [Valid] typed_bsearch_assert_rte_unsigned_overflow_5 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_loop_assigns (Qed)
+[wp] [Valid] typed_bsearch_assigns_part1 (Qed)
+[wp] [Valid] typed_bsearch_assigns_part2 (Qed)
+[wp] [Valid] typed_bsearch_assigns_part3 (Qed)
+[wp] [Valid] typed_bsearch_assigns_part4 (Qed)
+[wp] [Valid] typed_bsearch_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_loop_variant_positive (Qed)
+[wp] Proved goals:   18 / 18
+  Terminating:     1
+  Unreachable:     1
+  Qed:             9
+  Alt-Ergo:        7

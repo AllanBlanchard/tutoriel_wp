@@ -1,0 +1,11 @@
+[kernel] Parsing ex-1-forall-exists.c (with preprocessing)
+[kernel:CERT:MSC:37] ex-1-forall-exists.c:13: Warning: 
+  Body of function pred falls-through. Adding a return statement
+[kernel:CERT:MSC:37] ex-1-forall-exists.c:17: Warning: 
+  Body of function forall_pred falls-through. Adding a return statement
+[kernel:CERT:MSC:37] ex-1-forall-exists.c:21: Warning: 
+  Body of function exists_pred falls-through. Adding a return statement
+[kernel:CERT:MSC:37] ex-1-forall-exists.c:25: Warning: 
+  Body of function none_pred falls-through. Adding a return statement
+[kernel:CERT:MSC:37] ex-1-forall-exists.c:29: Warning: 
+  Body of function some_not_pred falls-through. Adding a return statement

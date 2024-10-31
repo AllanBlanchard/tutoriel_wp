@@ -1,0 +1,26 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-2-times-2-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function times_2
+[wp] [Valid] Goal times_2_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal times_2_terminates (Cfg) (Trivial)
+[wp] 14 goals scheduled
+[wp] [Valid] typed_times_2_ensures (Qed)
+[wp] [Valid] typed_times_2_loop_invariant_preserved (Qed)
+[wp] [Valid] typed_times_2_loop_invariant_established (Qed)
+[wp] [Valid] typed_times_2_loop_invariant_2_preserved (Qed)
+[wp] [Valid] typed_times_2_loop_invariant_2_established (Qed)
+[wp] [Valid] typed_times_2_loop_invariant_3_preserved (Qed)
+[wp] [Valid] typed_times_2_loop_invariant_3_established (Qed)
+[wp] [Valid] typed_times_2_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Valid] typed_times_2_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_times_2_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_times_2_loop_assigns (Qed)
+[wp] [Valid] typed_times_2_assigns (Qed)
+[wp] [Valid] typed_times_2_loop_variant_decrease (Qed)
+[wp] [Valid] typed_times_2_loop_variant_positive (Qed)
+[wp] Proved goals:   16 / 16
+  Terminating:     1
+  Unreachable:     1
+  Qed:            11
+  Alt-Ergo:        3

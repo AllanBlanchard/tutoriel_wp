@@ -1,0 +1,26 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-4-sum-content-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function inc_cell
+[wp] [Valid] Goal inc_cell_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal inc_cell_terminates (Cfg) (Trivial)
+[wp] 13 goals scheduled
+[wp] [Valid] typed_lemma_sum_separable (Coq) (Cached)
+[wp] [Valid] typed_lemma_unchanged_sum (Coq) (Cached)
+[wp] [Valid] typed_inc_cell_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_inc_cell_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_inc_cell_assert_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_inc_cell_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_inc_cell_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_inc_cell_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_inc_cell_assert_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_inc_cell_assert_4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_inc_cell_assert_5 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_inc_cell_assert_6 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_inc_cell_assigns (Qed)
+[wp] Proved goals:   15 / 15
+  Terminating:     1
+  Unreachable:     1
+  Qed:             2
+  Alt-Ergo:        9
+  Coq:             2

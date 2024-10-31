@@ -13,11 +13,11 @@ amène de $P$ à $Q$.
 
 
 
-Dans la section précédent, nous avons dit que les fonctions récursives logiques
-peuvent rendre les preuves plus difficile pour les solveurs SMT. Dans un tel cas,
+Dans la section précédente, nous avons dit que les fonctions récursives logiques
+peuvent rendre les preuves plus difficiles pour les solveurs SMT. Dans un tel cas,
 les lemmes peuvent nous aider. Nous pouvons écrire nous même les preuves qui
 nécessitent de raisonner par induction pour certaines propriétés que nous
-énonçons comme des lemmes, et ces lemmes peuvent ensuite être utilisés
+énonçons comme des lemmes. Ces lemmes peuvent ensuite être utilisés
 efficacement par les prouveurs pour effectuer les autres preuves à propos du
 programme.
 
@@ -68,31 +68,31 @@ propriétés intéressantes à leur sujet :
 
 
 
-\CodeBlockInput[8][18]{c}{linear-0.c}
+\CodeBlockInput[12][22]{c}{linear-0.c}
 
 
 
-Pour ces preuves, il est fort possible qu'Alt-ergo ne parvienne pas à les
+Pour ces preuves, il est fort possible qu'Alt-Ergo ne parvienne pas à les
 décharger. Dans ce cas, le prouveur Z3 devrait, lui, y arriver. Nous pouvons
 ensuite construire cet exemple de code :
 
 
 
-\CodeBlockInput[20][48]{c}{linear-0.c}
+\CodeBlockInput[24][52]{c}{linear-0.c}
 
 
 
 Si nous ne renseignons pas les lemmes mentionnés plus tôt, il y a peu de chances
-qu'Alt-ergo réussisse à produire la preuve que \CodeInline{fmin} est inférieur à \CodeInline{fmax}.
-Avec ces lemmes présents en revanche, il y parvient sans problème car cette
+qu'Alt-Ergo réussisse à produire la preuve que \CodeInline{fmin} est inférieur à \CodeInline{fmax}.
+Avec ces lemmes présents en revanche, il y parvient sans problème, car cette
 propriété est une simple instance du lemme \CodeInline{ax\_b\_monotonic\_pos}, la preuve
-étant ainsi triviale car notre lemme nous énonce cette propriété comme étant vraie.
+étant ainsi triviale, car notre lemme nous énonce cette propriété comme étant vraie.
 Notons que sur cette version généralisée, Z3 sera probablement plus efficace pour
 prouver l'absence d'erreurs à l'exécution.
 
 
 
-\levelThreeTitle{Exemple: tableaux et labels}
+\levelThreeTitle{Exemple : tableaux et labels}
 
 
 Plus tard dans ce tutoriel, nous verrons certains types de définitions à propos
@@ -103,7 +103,7 @@ entre deux labels.
 
 
 Pour le moment, illustrons cela avec un exemple simple. Considérons les deux
-prédicats suivant :
+prédicats suivants :
 
 
 \CodeBlockInput[1][8]{c}{unchanged-sorted.c}
@@ -120,7 +120,7 @@ avec le lemme suivant :
 
 Nous énonçons ce lemme pour deux labels \CodeInline{L1} et \CodeInline{L2}, et
 exprimons que pour toute plage de valeurs dans un tableau, si elle est triée au label
-\CodeInline{L1}, et reste inchangée depuis \CodeInline{L1} vers \CodeInline{L2},
+\CodeInline{L1} et reste inchangée depuis \CodeInline{L1} vers \CodeInline{L2},
 alors elle reste triée au label \CodeInline{L2}.
 
 
@@ -129,6 +129,34 @@ verrons plus tard des exemples pour lesquels il n'est pas si simple d'obtenir un
 preuve.
 
 
+\levelThreeTitle{Check lemma}
+
+
+Comme pour les assertions, il est possible d'utiliser une version
+\CodeInline{check} des lemmes :
+
+
+\begin{CodeBlock}{c}
+/*@
+  check lemma name_of_the_lemma { Label0, ..., LabelN }:
+    property ;
+*/
+\end{CodeBlock}
+
+
+Une annotation \CodeInline{check lemma} demande à WP de générer une condition de
+vérification. Mais, à l'inverse des lemmes standards, la connaissance que la
+propriété correspondante est vérifiée ne sera pas ajoutée dans le contexte des
+preuves futures. Par conséquent, les solveurs SMT ne pourront pas l'utiliser
+pour d'autres preuves. Ce type d'annotations peut être utile pour gagner en
+confiance à propos des annotations globales, en testant qu'elles peuvent être
+utilisées dans certaines situations, ou à l'inverse, que certaines propriétés
+non voulues ne peuvent pas être prouvées.
+
+
+Il n'y a pas d'annotations \CodeInline{admit lemma}, l'annotation dédiée est
+l'annotation \CodeInline{axiom} qui sera décrite dans la
+section~\ref{l2:acsl-logic-definitions-axiomatic}.
 
 \levelThreeTitle{Exercices}
 
@@ -141,10 +169,8 @@ plus grand ou égal à $0$, si $z$ est plus grand ou égal à $y$, alors $x * z$
 est  plus grand ou égal à $x * y$.
 
 
-Ce lemme ne sera probablement pas prouvé par les solveurs SMT. En revanche, en
-demandant une preuve avec Coq, la tactique par défaut devrait la décharger
-automatiquement.
-
+Ce lemme ne sera probablement pas prouvé par les solveurs SMT. Une solution et
+la preuve Coq du lemme sont disponibles sur le GitHub de ce tutoriel.
 
 \levelFourTitle{Localement trié vers globalement trié}
 \label{l4:acsl-properties-lemmas-lsorted-gsorted}
@@ -155,16 +181,16 @@ trié au sens que chaque élément soit plus petit ou égal à l'élément qui l
 puis appelle la fonction de recherche dichotomique.
 
 
-\CodeBlockInput[59][81]{c}{ex-2-sorted-link.c}
+\CodeBlockInput[66]{c}{ex-2-sorted-link.c}
 
 
 Pour cet exercice, reprendre la solution de
 l'exercice~\ref{l4:acsl-properties-predicates-ex-bsearch} à propos de la recherche
 dichotomique. La précondition de cette recherche peut sembler plus forte que celle
-reçue par la précondition de de \CodeInline{bsearch\_callee}. La première demande
+reçue par la précondition de \CodeInline{bsearch\_callee}. La première demande
 chaque paire d'éléments d'être ordonnée, la seconde simplement que chaque élément
 soit inférieur à celui qui le suit. Cependant, la seconde implique la première.
-Écrire un un lemme qui énonce que si \CodeInline{element\_level\_sorted} est vraie
+Écrire un lemme qui énonce que si \CodeInline{element\_level\_sorted} est vraie
 pour un tableau, \CodeInline{sorted} est vraie aussi. Ce lemme ne sera probablement
 pas prouvé par un solveur SMT, toutes les autres propriétés devraient être prouvées
 automatiquement.
@@ -197,7 +223,7 @@ glissements successifs des éléments d'un même tableau.
 
 
 
-\CodeBlockInput{c}{ex-4-shift-transitivity.c}
+\CodeBlockInput[5]{c}{ex-4-shift-transitivity.c}
 
 
 Compléter les prédicats \CodeInline{shifted} et \CodeInline{unchanged}.
@@ -236,7 +262,7 @@ Le programme suivant est composé de deux fonctions. La fonction
 une recherche dichotomique.
 
 
-\CodeBlockInput{c}{ex-5-shift-sorted.c}
+\CodeBlockInput[5]{c}{ex-5-shift-sorted.c}
 
 
 Reprendre la solution de la recherche dichotomique de

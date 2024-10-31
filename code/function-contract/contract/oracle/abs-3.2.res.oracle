@@ -1,0 +1,25 @@
+[kernel] Parsing abs-3.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function abs
+------------------------------------------------------------
+  Function abs
+------------------------------------------------------------
+
+Goal Post-condition 'positive_value,function_result' in 'abs':
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Post-condition (file abs-3.c, line 9) in 'abs':
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Assertion 'rte,signed_overflow' (file abs-3.c, line 13):
+Assume { Type: is_sint32(val_0). (* Then *) Have: val_0 < 0. }
+Prove: (-2147483647) <= val_0.
+
+------------------------------------------------------------
+[wp:pedantic-assigns] abs-3.c:12: Warning: 
+  No 'assigns' specification for function 'abs'.
+  Callers assumptions might be imprecise.

@@ -4,7 +4,7 @@
 /*@ predicate sorted(int* arr, integer end) =
       \forall integer i, j ; 0 <= i <= j < end ==> arr[i] <= arr[j] ;
     predicate element_level_sorted(int* array, integer end) =
-      \forall integer i ; 0 <= i < end-1 ==> array[i] <= array[i+1] ; 
+      \forall integer i ; 0 <= i < end-1 ==> array[i] <= array[i+1] ;
 */
 
 /*@ requires \valid_read(arr + (0 .. len-1));

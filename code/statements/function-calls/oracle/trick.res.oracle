@@ -1,0 +1,23 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing trick.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function main
+[rte:annot] annotating function trick
+[wp] trick.c:6: Warning: 
+  Missing decreases clause on recursive function trick, call must be unreachable
+[wp] 9 goals scheduled
+[wp] [Valid] typed_trick_terminates_part1 (Qed)
+[wp] [Unsuccess] typed_trick_terminates_part2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_trick_ensures (Qed)
+[wp] [Valid] typed_trick_exits (Qed)
+[wp] [Valid] typed_trick_assigns_exit (Qed)
+[wp] [Valid] typed_trick_assigns_normal (Qed)
+[wp] [Valid] typed_main_terminates (Qed)
+[wp] [Valid] typed_main_exits (Qed)
+[wp] [Valid] typed_main_assert (Qed)
+[wp] Proved goals:    8 / 9
+  Qed:             8
+  Unsuccess:       1
+[wp:pedantic-assigns] trick.c:9: Warning: 
+  No 'assigns' specification for function 'main'.
+  Callers assumptions might be imprecise.

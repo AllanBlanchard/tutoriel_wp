@@ -1,0 +1,22 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing random_loop.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function random_loop
+[kernel:annot:missing-spec] random_loop.c:6: Warning: 
+  Neither code nor explicit exits, assigns and terminates for function random_between,
+   generating default clauses. See -generated-spec-* options for more info
+[wp] 8 goals scheduled
+[wp] [Valid] typed_random_loop_terminates (Qed)
+[wp] [Valid] typed_random_loop_exits (Qed)
+[wp] [Valid] typed_random_loop_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_random_loop_loop_invariant_established (Qed)
+[wp] [Valid] typed_random_loop_loop_assigns_part1 (Qed)
+[wp] [Valid] typed_random_loop_loop_assigns_part2 (Qed)
+[wp] [Valid] typed_random_loop_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_random_loop_loop_variant_positive (Qed)
+[wp] Proved goals:    8 / 8
+  Qed:             6
+  Alt-Ergo:        2
+[wp:pedantic-assigns] random_loop.c:8: Warning: 
+  No 'assigns' specification for function 'random_loop'.
+  Callers assumptions might be imprecise.

@@ -1,0 +1,114 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-4-change-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function make_change
+[rte:annot] annotating function remove_max_notes
+[wp] [Valid] Goal remove_max_notes_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal remove_max_notes_terminates (Cfg) (Trivial)
+[wp] 88 goals scheduled
+[wp] [Valid] typed_remove_max_notes_ensures (Qed)
+[wp] [Valid] typed_remove_max_notes_ensures_2 (Qed)
+[wp] [Valid] typed_remove_max_notes_assert_rte_division_by_zero (Alt-Ergo) (Cached)
+[wp] [Valid] typed_remove_max_notes_assert_rte_index_bound (Qed)
+[wp] [Valid] typed_remove_max_notes_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_remove_max_notes_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Valid] typed_remove_max_notes_assert_rte_index_bound_2 (Qed)
+[wp] [Valid] typed_remove_max_notes_assert_rte_mem_access_2 (Qed)
+[wp] [Valid] typed_remove_max_notes_assert_rte_mem_access_3 (Qed)
+[wp] [Valid] typed_remove_max_notes_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_remove_max_notes_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_remove_max_notes_assert_rte_signed_overflow_4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_remove_max_notes_assert_rte_signed_overflow_5 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_remove_max_notes_assigns (Qed)
+[wp] [Valid] typed_make_change_complete_change_not_enough (Qed)
+[wp] [Valid] typed_make_change_disjoint_change_not_enough (Qed)
+[wp] [Valid] typed_make_change_terminates (Qed)
+[wp] [Valid] typed_make_change_exits (Qed)
+[wp] [Valid] typed_make_change_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_assert_rte_mem_access_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_assert_rte_mem_access_4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_assert_rte_mem_access_5 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_assert_rte_mem_access_6 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_assert_rte_mem_access_7 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_assert_rte_mem_access_8 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_assert_rte_mem_access_9 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_assigns_exit_part01 (Qed)
+[wp] [Valid] typed_make_change_assigns_exit_part02 (Qed)
+[wp] [Valid] typed_make_change_assigns_exit_part03 (Qed)
+[wp] [Valid] typed_make_change_assigns_exit_part04 (Qed)
+[wp] [Valid] typed_make_change_assigns_exit_part05 (Qed)
+[wp] [Valid] typed_make_change_assigns_exit_part06 (Qed)
+[wp] [Valid] typed_make_change_assigns_exit_part07 (Qed)
+[wp] [Valid] typed_make_change_assigns_exit_part08 (Qed)
+[wp] [Valid] typed_make_change_assigns_exit_part09 (Qed)
+[wp] [Valid] typed_make_change_assigns_exit_part10 (Qed)
+[wp] [Valid] typed_make_change_assigns_exit_part11 (Qed)
+[wp] [Valid] typed_make_change_assigns_exit_part12 (Qed)
+[wp] [Valid] typed_make_change_assigns_exit_part13 (Qed)
+[wp] [Valid] typed_make_change_assigns_exit_part14 (Qed)
+[wp] [Valid] typed_make_change_assigns_exit_part15 (Qed)
+[wp] [Valid] typed_make_change_assigns_exit_part16 (Qed)
+[wp] [Valid] typed_make_change_assigns_exit_part17 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part01 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part02 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part03 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part04 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part05 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part06 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part07 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part08 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part09 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part10 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part11 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part12 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part13 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part14 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part15 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part16 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part17 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part18 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part19 (Qed)
+[wp] [Valid] typed_make_change_assigns_normal_part20 (Qed)
+[wp] [Valid] typed_make_change_call_remove_max_notes_requires (Qed)
+[wp] [Valid] typed_make_change_call_remove_max_notes_requires_2 (Qed)
+[wp] [Valid] typed_make_change_call_remove_max_notes_2_requires (Qed)
+[wp] [Valid] typed_make_change_call_remove_max_notes_2_requires_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_call_remove_max_notes_3_requires (Qed)
+[wp] [Valid] typed_make_change_call_remove_max_notes_3_requires_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_call_remove_max_notes_4_requires (Qed)
+[wp] [Valid] typed_make_change_call_remove_max_notes_4_requires_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_call_remove_max_notes_5_requires (Qed)
+[wp] [Valid] typed_make_change_call_remove_max_notes_5_requires_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_call_remove_max_notes_6_requires (Qed)
+[wp] [Valid] typed_make_change_call_remove_max_notes_6_requires_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_call_remove_max_notes_7_requires (Qed)
+[wp] [Valid] typed_make_change_call_remove_max_notes_7_requires_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_call_remove_max_notes_8_requires (Qed)
+[wp] [Valid] typed_make_change_call_remove_max_notes_8_requires_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_call_remove_max_notes_9_requires (Qed)
+[wp] [Valid] typed_make_change_call_remove_max_notes_9_requires_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_make_change_not_enough_ensures (Qed)
+[wp] [Valid] typed_make_change_change_ensures (Qed)
+[wp] [Valid] typed_make_change_change_ensures_2 (Qed)
+[wp] [Valid] typed_make_change_change_ensures_3 (Alt-Ergo) (Cached)
+[wp] Proved goals:   90 / 90
+  Terminating:     1
+  Unreachable:     1
+  Qed:            61
+  Alt-Ergo:       27
+[wp] ex-4-change-answer.c:11: Warning: 
+  Memory model hypotheses for function 'remove_max_notes':
+  /*@ behavior wp_typed:
+        requires \separated(rest, (int const *)values + (..)); */
+  int remove_max_notes(enum note n, int *rest);
+[wp] ex-4-change-answer.c:53: Warning: 
+  Memory model hypotheses for function 'make_change':
+  /*@
+     behavior wp_typed:
+       requires \separated(change + (..), (int const *)values + (..));
+       requires \separated(change + (0 .. 8), (int const *)values + (..));
+     */
+  int make_change(int amount, int received, int change[9]);

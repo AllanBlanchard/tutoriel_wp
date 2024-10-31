@@ -1,0 +1,2 @@
+PLUGIN: wp,rtegen
+OPT: -wp -wp-par 1 -wp-rte -wp-cache-env -wp-msg-key shell -wp-cache update

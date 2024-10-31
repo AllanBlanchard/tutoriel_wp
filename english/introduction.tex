@@ -30,17 +30,15 @@
 
   The versions of the tools considered in this tutorial are:
   \begin{itemize}
-  \item Frama-C 21.1 Scandium
-  \item Why3 1.3.1
-  \item Alt-Ergo 2.3.2
-  \item Coq 8.11.2 (for provided scripts, not used in the tutorial)
-  \item Z3 4.8.4 (in one example, it is not absolutely necessary to follow the course)
+  \item Frama-C 30.0 Zinc
+  \item Why3 1.7.2
+  \item Alt-Ergo 2.6.0
+  \item Coq 8.16.1 (for provided scripts, not used in the tutorial)
+  \item Z3 4.8.10 (in one example, it is not absolutely necessary to follow this book)
   \end{itemize}
   Depending on the versions used by the reader some differences could appear in
   what is proved and what is not. Some presented features are only available
   in recent versions of Frama-C.
-
-  Coq proof scripts should work at least from version 8.7.2 to 8.11.2.
 
   \horizontalLine
 
@@ -52,9 +50,9 @@
 
 Despite its old age, C is still a widely used programming language.
 Indeed, no other language can pretend to be available on so many
-different (hardware and software) platforms, its low-level orientation
+(hardware and software) platforms, its low-level orientation
 and the amount of time invested in the optimization of its compilers
-allows to generate very light and efficient machine code (if the code
+allows generating very light and efficient machine code (if the code
 allows it of course), and that there are a lot of experts in C language,
 which is an important knowledge base.
 
@@ -73,7 +71,7 @@ program very hard, even for an experienced programmer.
 
 
 However, the C language is often chosen for critical systems (avionics,
-railway, armament, \ldots{}) where it is appreciated for its good
+railway, armament, ...) where it is appreciated for its good
 performances, its technological maturity and the predictability of its
 compilation.
 
@@ -116,7 +114,27 @@ notions that allows to better understand and write programs.
 \item \externalLink{Saroupille}{https://zestedesavoir.com/membres/voir/Saroupille/}
 \item \externalLink{Aabu}{https://zestedesavoir.com/membres/voir/Aabu/} (again)
 \end{itemize}
-  Finally, many thanks to Jens Gerlach for his help during the translation of
-  this tutorial from French to English, and to Rafael Bachmann for their reviews
-  and remarks.
+
+Many thanks to Jens Gerlach for his help during the translation of this tutorial
+from French to English.
+
+Thanks, finally, to the occasional reviewers on GitHub:
+\begin{itemize}
+  \item \externalLink{Alex Lyr}{https://github.com/AlexLyrr}
+  \item \externalLink{Rafael Bachmann}{https://github.com/barafael}
+  \item \externalLink{@charlesseizilles}{https://github.com/charlesseizilles}
+  \item \externalLink{Myriam Clouet}{https://github.com/clouetm}
+  \item \externalLink{@Costava}{https://github.com/costava}
+  \item \externalLink{Daniel Rocha}{https://github.com/danroc}
+  \item \externalLink{@GaoTamanrasset}{https://github.com/GaoTamanrasset}
+  \item \externalLink{André Maroneze}{https://github.com/maroneze}
+  \item \externalLink{@MSoegtropIMC}{https://github.com/MSoegtropIMC}
+  \item \externalLink{@rtharston}{https://github.com/rtharston}
+  \item \externalLink{@TrigDevelopment}{https://github.com/TrigDevelopment}
+  \item \externalLink{Quentin Santos}{https://github.com/qsantos}
+  \item \externalLink{Ricardo M. Correia}{https://github.com/wizeman}
+  \item \externalLink{Basile Desloges}{https://github.com/zilbuz}
+\end{itemize}
+for their reviews and fixes.
+
 \end{Information}

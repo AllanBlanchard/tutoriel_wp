@@ -15,7 +15,6 @@ naturel supérieur à 0 est pair, on peut regarder si ce naturel moins 2 est pai
 
 
 Pour le moment, introduisons la syntaxe des prédicats inductifs :
-
 \begin{CodeBlock}{c}
 /*@
   inductive property{ Label0, ..., LabelN }(type0 a0, ..., typeN aN) {
@@ -25,21 +24,19 @@ Pour le moment, introduisons la syntaxe des prédicats inductifs :
   }
 */
 \end{CodeBlock}
-
-
 où tous les \CodeInline{c\_i} sont des noms et tous les \CodeInline{p\_i} sont
 des formules logiques où \CodeInline{property} apparaît en conclusion. Pour résumer,
 \CodeInline{property} est vraie pour certains paramètres et labels mémoire, s'ils
 valident l'un des cas du prédicat inductif.
 
 
-Jetons un oeil à la petite propriété dont nous parlions plus tôt : comment définir
+Jetons un \oe{}il à la petite propriété dont nous parlions plus tôt : comment définir
 qu'un entier naturel est pair par induction ? Nous pouvons traduire la phrase :
 « 0 est un naturel pair, et si $n$ est un naturel pair, alors $n+2$ est aussi un
 naturel pair ».
 
 
-\CodeBlockInput{c}{even-0.c}
+\CodeBlockInput[5][13]{c}{even-0.c}
 
 
 Ce prédicat définit bien les deux cas :
@@ -51,15 +48,33 @@ Ce prédicat définit bien les deux cas :
 \end{itemize}
 
 
+Cette définition peut être utilisée pour prouver les assertions suivantes :
 
-Cependant, cette définition n'est pas complètement satisfaisante. Par exemple,
-nous ne pouvons pas déduire qu'un naturel impair n'est pas pair. Si nous essayons
-de prouver que $1$ est pair, nous devons vérifier que si $-1$ est pair, puis $-3$,
-$-5$, etc. De plus, nous préférons généralement indiquer la condition selon
-laquelle une conclusion donnée est vraie en utilisant les variables quantifiées
-dans la conclusion. Par exemple, ici, pour montrer qu'un entier $n$ est naturel,
+
+\CodeBlockInput[15][18]{c}{even-0.c}
+
+
+Notons que, puisque le solveur doit récursivement dérouler la définition
+inductive, cela pourrait ne pas fonctionner pour n'importe quelle valeur. Cette
+capacité de preuve dépend des heuristiques des solveurs qui décident ou non de
+s'arrêter après N dépliages.
+
+Même si cette définition fonctionne, elle n'est pas complètement satisfaisante.
+Par exemple, nous ne pouvons pas déduire qu'un naturel impair n'est pas pair. Si
+nous essayons de prouver que $1$ est pair, nous devons vérifier que si $-1$ est
+pair, puis $-3$, $-5$, etc. Cela nous amène au fait que l'assertion suivante ne
+peut pas être prouvée :
+
+
+\CodeBlockInput[20]{c}{even-0.c}
+
+
+De plus, nous préférons généralement indiquer la condition selon laquelle une
+conclusion donnée est vraie en utilisant les variables quantifiées dans la
+conclusion. Par exemple, ici, pour montrer qu'un entier $n$ est naturel,
 comment faire ? D'abord vérifier s'il est égal à 0, et si ce n'est pas le cas,
-vérifier qu'il est plus grand que 0, et dans ce cas, vérifier que $n-2$ est pair :
+vérifier qu'il est plus grand que 0, et dans ce cas, vérifier que $n-2$ est
+pair :
 
 
 \CodeBlockInput[1][9]{c}{even-1.c}
@@ -74,17 +89,14 @@ Ici nous distinguons à nouveau deux cas :
 \end{itemize}
 
 
-Pour un entier naturel donné, s'il est plus grand que 0, nous déminuerons
+Pour un entier naturel donné, s'il est plus grand que 0, nous diminuerons
 récursivement sa valeur jusqu'à atteindre 0 ou -1. Dans le cas 0, l'entier
 naturel est pair. Dans le cas -1, nous n'aurons aucun cas du prédicat inductif
-qui corresponde
-à cette valeur et nous pourrons conclure que la propriété est fausse (même si
-nous verrons plus tard que nous avons besoin d'un assistant de preuve pour
-arriver cette conclusion dans le cas de WP).
+qui corresponde à cette valeur et nous pourrons conclure que la propriété est
+fausse.
 
 
-
-\CodeBlockInput[11][14]{c}{even-1.c}
+\CodeBlockInput[11]{c}{even-1.c}
 
 
 Bien sûr, définir la notion d'entier naturel pair par induction n'est pas une
@@ -107,14 +119,11 @@ conseils pour ne pas construire une mauvaise définition.
 D'abord, nous pouvons nous assurer que les prédicats inductifs sont bien fondés.
 Cela peut être fait en restreignant syntaxiquement ce que nous acceptons dans
 une définition inductive en nous assurant que chaque cas est de la forme :
-
 \begin{CodeBlock}{c}
 /*@
   \forall y1,...,ym ; h1 ==> ··· ==> hl ==> P(t1,...,tn) ;
 */
 \end{CodeBlock}
-
-
 où le prédicat \CodeInline{P} ne peut apparaître que positivement (donc sans la
 négation \CodeInline{!} - $\neg$) dans les différentes hypothèses \CodeInline{hx}.
 Intuitivement, cela assure que nous ne pouvons pas construire des occurrences à la
@@ -125,11 +134,7 @@ fois positives et négatives de \CodeInline{P} pour un ensemble de paramètres d
 
 Cette propriété est par exemple vérifiée pour notre définition précédente du
 prédicat \CodeInline{even\_natural}. Tandis qu'une définition comme :
-
-
-\CodeBlockInput[1][11]{c}{even-bad.c}
-
-
+\CodeBlockInput[5][15]{c}{even-bad.c}
 ne respecte pas cette contrainte, car la propriété \CodeInline{even\_natural}
 apparaît négativement à la ligne~8.
 
@@ -152,10 +157,10 @@ Ensuite, nous pouvons simplement écrire une fonction dont le contrat nécessite
 Pour notre définition de \CodeInline{even\_natural}, cela donnerait :
 
 
-\CodeBlockInput[13][18]{c}{even-bad.c}
+\CodeBlockInput[17][22]{c}{even-bad.c}
 
 
-Pendant la génération de l'obligation de preuve, WP demande à Why3 de
+Pendant la génération de la condition de vérification, WP demande à Why3 de
 créer une définition inductive pour celle que nous avons écrit en ACSL.
 Comme Why3 est plus strict que Frama-C et WP pour ce type de définition,
 si le prédicat inductif est trop étrange (s'il n'est pas bien fondé), il
@@ -176,7 +181,7 @@ frama-c-gui -wp -wp-prop=BAD file.c
 
 Cependant, cela ne signifie pas que nous ne pouvons pas écrire une définition
 inductive inconsistante. Par exemple, la définition inductive suivante est bien
-fondée mais nous permet de prouver faux :
+fondée, mais nous permet de prouver faux :
 
 
 \begin{CodeBlock}{c}
@@ -238,7 +243,7 @@ n'a pas changé, alors la propriété est toujours vérifiée :
 
 
 
-\CodeBlockInput[13][20]{c}{reset-1.c}
+\CodeBlockInput[18][25]{c}{reset-1.c}
 
 
 
@@ -249,7 +254,7 @@ assertion à la fin) :
 
 
 
-\CodeBlockInput[35][39]{c}{reset-1.c}
+\CodeBlockInput[40][44]{c}{reset-1.c}
 
 
 
@@ -279,12 +284,12 @@ Nous allons prouver un simple tri par sélection :
 
 
 
-\CodeBlockInput[3]{c}{sort-0.c}
+\CodeBlockInput[7]{c}{sort-0.c}
 
 
 Le lecteur pourra s'exercer en spécifiant et en prouvant les fonctions de
 recherche de minimum et d'échange de valeur. Nous cachons la correction
-(Réponses:~\ref{l2:acsl-logic-definitions-answers}) et nous nous concentrerons
+(Réponses :~\ref{l2:acsl-logic-definitions-answers}) et nous nous concentrerons
 plutôt sur la spécification et la preuve de la fonction de tri qui sont une
 illustration intéressante de l'usage des définitions inductives.
 
@@ -294,7 +299,7 @@ du tri est de poser cette spécification (qui est vraie !) :
 
 
 
-\CodeBlockInput[6]{c}{sort-incomplete.c}
+\CodeBlockInput[10]{c}{sort-incomplete.c}
 
 
 
@@ -323,9 +328,9 @@ extrêmement bien par l'utilisation d'une définition inductive. En effet, pour
 déterminer qu'un tableau est la permutation d'un autre, les cas sont très limités.
 Premièrement, le tableau est une permutation de lui-même, puis l'échange de
 deux valeurs sans changer les autres est également une permutation, et
-finalement si nous créons la permutation $p_2$ d'une permutation $p_1$, puis que
-nous créons la permutation $p_3$ de $p_2$, alors par transitivité $p_3$ est une
-permutation de $p_1$.
+finalement si nous créons la permutation $p_2$ d'une permutation $p_1$, puis
+la permutation $p_3$ de $p_2$, alors par transitivité $p_3$ est une permutation
+de $p_1$.
 
 
 
@@ -372,7 +377,7 @@ N premiers entiers.
 
 
 
-\CodeBlockInput{c}{ex-1-sum-N-first-ints.c}
+\CodeBlockInput[5]{c}{ex-1-sum-N-first-ints.c}
 
 
 Adapter le contrat de la fonction et le(s) lemme(s). Notons que les lemmes ne
@@ -391,7 +396,6 @@ commun de deux autres. Le but de cet exercice est de prouver que la fonction
 nous pouvons voir qu'après la première itération, \CodeInline{a} est supérieur ou
 égal à \CodeInline{b}, et que cette propriété est maintenue par la boucle. Donc,
 considérons deux cas pour le prédicat inductif :
-
 \begin{itemize}
 \item \CodeInline{b} est 0,
 \item si une valeur \CodeInline{d} est le PGCD de \CodeInline{b} et \CodeInline{a \% b},
@@ -399,7 +403,7 @@ considérons deux cas pour le prédicat inductif :
 \end{itemize}
 
 
-\CodeBlockInput{c}{ex-2-gcd.c}
+\CodeBlockInput[5]{c}{ex-2-gcd.c}
 
 
 Exprimer la postcondition de la fonction et compléter l'invariant pour prouver
@@ -415,40 +419,36 @@ Dans cet exercice, nous ne considérerons pas les RTE.
 
 
 Écrire un prédicat inductif qui exprime qu'un entier \CodeInline{r} est égal
-à $x^n$. Considérer deux cas : soit $n$ est 0, soit il est plus grand et à ce moment
-là, la valeur de \CodeInline{r} est reliée à la valeur $x^{n-1}$.
+à $x^n$. Considérer deux cas : soit $n$ est 0, soit il est plus grand et à ce
+moment-là, la valeur de \CodeInline{r} est reliée à la valeur $x^{n-1}$.
 
 
-\CodeBlockInput[1][6]{c}{ex-3-fpower.c}
+\CodeBlockInput[5][10]{c}{ex-3-fpower.c}
 
 
 Prouver d'abord la version naïve de la fonction puissance :
 
 
-\CodeBlockInput[13][28]{c}{ex-3-fpower.c}
+\CodeBlockInput[17][32]{c}{ex-3-fpower.c}
 
 
 Maintenant tentons de prouver une version plus rapide de la fonction puissance :
 
 
-\CodeBlockInput[30][49]{c}{ex-3-fpower.c}
+\CodeBlockInput[34][53]{c}{ex-3-fpower.c}
 
 
 Dans cette version, nous exploitons deux propriétés de l'opérateur puissance :
-
-
 \begin{itemize}
 \item $(x^2)^n = x^{2n}$
 \item $x \times (x^2)^n = x^{2n+1}$
 \end{itemize}
-
-
-Qui permet de diviser $n$ par 2 à chaque tour de boucle au lieu de le décrémenter
-de un (ce qui permet à l'algorithme d'être en $O(\log n)$ et pas $O(n)$). Exprimer
+qui permet de diviser $n$ par 2 à chaque tour de boucle au lieu de le décrémenter
+de 1 (ce qui permet à l'algorithme d'être en $O(\log n)$ et pas $O(n)$). Exprimer
 les deux propriétés précédentes sous forme de lemmes :
 
 
-\CodeBlockInput[8][11]{c}{ex-3-fpower.c}
+\CodeBlockInput[12][15]{c}{ex-3-fpower.c}
 
 
 Exprimer d'abord le lemme \CodeInline{power\_even}, les solveurs SMT pourraient
@@ -481,12 +481,11 @@ cellule de la plage de valeur. Utiliser ce prédicat pour prouver la fonction
 
 
 
-\CodeBlockInput[12][27]{c}{ex-4-rotate-permutation.c}
+\CodeBlockInput[16][31]{c}{ex-4-rotate-permutation.c}
 
 
 Exprimer une nouvelle version de la notion de permutation avec un prédicat inductif
 qui considère les cas suivants :
-
 \begin{itemize}
 \item la permutation est réflexive ;
 \item si la partie gauche d'une plage de valeur (jusqu'à un certain indice) est
@@ -497,7 +496,7 @@ qui considère les cas suivants :
 \end{itemize}
 
 
-\CodeBlockInput[30][37]{c}{ex-4-rotate-permutation.c}
+\CodeBlockInput[34][41]{c}{ex-4-rotate-permutation.c}
 
 
 Compléter le contrat de la fonction \CodeInline{two\_rotates} qui fait des
@@ -505,4 +504,4 @@ rotations successives, de la première et la seconde moitié de la plage
 considérée, et prouver qu'elle maintient la permutation.
 
 
-\CodeBlockInput[43][47]{c}{ex-4-rotate-permutation.c}
+\CodeBlockInput[47][51]{c}{ex-4-rotate-permutation.c}

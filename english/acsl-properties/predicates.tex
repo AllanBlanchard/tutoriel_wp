@@ -35,13 +35,13 @@ in memory is changed between two particular program points:
 
 
 
-\CodeBlockInput[1][4]{c}{unchanged-loc.c}
+\CodeBlockInput[6][9]{c}{unchanged-loc.c}
 
 
 
 \begin{Warning}
   Keep in mind that passing a value to a predicate is done, as it is done in C,
-  by value. We cannot write this predicate by directly passing \texttt{i} in
+  by value. We cannot write this predicate by directly passing \CodeInline{i} in
   parameter:
 
 \begin{CodeBlock}{c}
@@ -51,7 +51,7 @@ in memory is changed between two particular program points:
  */
 \end{CodeBlock}
 
-  Since \texttt{i} is just a copy of the received variable.
+  Since \CodeInline{i} is just a copy of the received variable.
 \end{Warning}
 
 
@@ -59,7 +59,7 @@ We can verify this code using our predicate:
 
 
 
-\CodeBlockInput[6][15]{c}{unchanged-loc.c}
+\CodeBlockInput[11][20]{c}{unchanged-loc.c}
 
 
 
@@ -82,14 +82,14 @@ expression every time we need it and to make it readable quickly:
 
 
 
-\CodeBlockInput[3]{c}{search.c}
+\CodeBlockInput[7]{c}{search.c}
 
 
 
 In this specification, we do not give an explicit label to predicates
 for their definition, nor for their use. For the definition, Frama-C
 automatically creates an implicit label. At predicate use, the given
-label is implicitly \texttt{Here}. The fact we do not explicitly define
+label is implicitly \CodeInline{Here}. The fact we do not explicitly define
 the label in the definition of a predicate does not forbid to explicitly
 give a label when we use it.
 
@@ -112,7 +112,7 @@ at 0:
 
 
 
-\CodeBlockInput[3]{c}{search-overload.c}
+\CodeBlockInput[7]{c}{search-overload.c}
 
 
 
@@ -120,7 +120,7 @@ at 0:
 \levelThreeTitle{Abstraction}
 
 
-An other important use of predicates is to define the logical state of
+Another important use of predicates is to define the logical state of
 our data structures when programs start to be more complex. Our data
 structures must usually respect an invariant (again) that each
 manipulation function must maintain in order to ensure that the data
@@ -136,7 +136,7 @@ our example, the careful reader could consider this as an exercise):
 
 
 
-\CodeBlockInput{c}{stack.c}
+\CodeBlockInput[5]{c}{stack.c}
 
 
 
@@ -159,15 +159,15 @@ can occur).
 
 Taking back the solution of the
 exercise~\ref{l4:contract-modularity-ex-days-of-month} about days of the month,
-write a predicate to express that a year is leap and adapt the contracts using
-it.
+write a predicate to express that a year is a leap year and adapt the contracts
+using it.
 
 
-\levelFourTitle{Alpha-numeric character}
+\levelFourTitle{Alphanumeric character}
 
 
 Taking back the solution of the
-exercise~\ref{l4:contract-modularity-ex-alpha-num} about alpha numeric
+exercise~\ref{l4:contract-modularity-ex-alpha-num} about alphanumeric
 characters, write predicates to express that a character is an upper letter,
 lower letter, and a digit. Adapt the contracts of the different functions using
 them.
@@ -179,7 +179,7 @@ them.
 The following function returns the max of 3 input values:
 
 
-\CodeBlockInput{c}{ex-3-max-3.c}
+\CodeBlockInput[5]{c}{ex-3-max-3.c}
 
 
 Write a predicate to express that a value is one of three pointed values at a

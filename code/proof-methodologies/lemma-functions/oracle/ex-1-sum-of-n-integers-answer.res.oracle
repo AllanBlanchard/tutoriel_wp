@@ -1,0 +1,42 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-1-sum-of-n-integers-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function lemma_value_of_sum_of_n_integers_2
+[rte:annot] annotating function lemma_value_of_sum_of_range_of_integers
+[rte:annot] annotating function sum_n
+[wp] [Valid] Goal lemma_value_of_sum_of_n_integers_2_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal lemma_value_of_sum_of_n_integers_2_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal lemma_value_of_sum_of_range_of_integers_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal lemma_value_of_sum_of_range_of_integers_terminates (Cfg) (Trivial)
+[wp] 26 goals scheduled
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_loop_invariant_established (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_loop_assigns (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_assigns (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_n_integers_2_loop_variant_positive (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_loop_invariant_established (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_assert_rte_signed (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_loop_assigns (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_assigns (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_loop_variant_decrease (Qed)
+[wp] [Valid] typed_lemma_value_of_sum_of_range_of_integers_loop_variant_positive (Qed)
+[wp] [Valid] typed_sum_n_terminates (Qed)
+[wp] [Valid] typed_sum_n_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sum_n_exits (Qed)
+[wp] [Valid] typed_sum_n_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sum_n_assigns_exit (Qed)
+[wp] [Valid] typed_sum_n_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_sum_n_assigns_normal_part2 (Qed)
+[wp] Proved goals:   30 / 30
+  Terminating:     2
+  Unreachable:     2
+  Qed:            15
+  Alt-Ergo:       11

@@ -1,4 +1,4 @@
-Inductive predicates gives a way to state properties whose verification requires
+Inductive predicates give a way to state properties whose verification requires
 to reason by induction, that is to say: for a property $p(input)$, it is true
 for some base cases (for example, $0$ is an even natural number), and knowing
 that $p(input)$ is true, it is also true for a $bigger\ input$, provided that
@@ -31,25 +31,42 @@ that a natural number is even using induction. We can translate the sentence:
 an even natural number'':
 
 
-
-\CodeBlockInput{c}{even-0.c}
-
+\CodeBlockInput[5][13]{c}{even-0.c}
 
 
-Which perfectly describes the two cases:
+Which describes the two cases:
 \begin{itemize}
 \item $0$ is even (base case),
 \item if a natural $n$ is even, $n+2$ is also even.
 \end{itemize}
 
-However, this definition is not completely satisfying. For example, we cannot
-deduce that an odd number is not even. If we try to prove that 1 is even, we
-will have to check if -1 is even, and then -3, -5, etc, infinitely. Moreover,
-we generally prefer to define the induction cases the opposite way: defining
-the condition under which the wanted conclusion is true. For example, here,
-how can we verify that some $n$ is natural and even? We first check whether it
-is 0, if not, we check if $n$ is greater than $0$ and then we verify that $n-2$
-is even:
+
+This can be used to prove the following assertions:
+
+
+\CodeBlockInput[15][18]{c}{even-0.c}
+
+
+Note that, since the solver has to recursively unfold the inductive definition,
+it might not work for any value. This capability depends on the heuristics of
+the solvers that decide or not to stop after N unfolds.
+
+
+While this definition works, it is not completely satisfying. For example, we
+cannot deduce that an odd number is not even. If we try to prove that 1 is even,
+we will have to check if -1 is even, and then -3, -5, etc., infinitely. Leading
+to the fact that the following assertion cannot be proved:
+
+
+\CodeBlockInput[20]{c}{even-0.c}
+
+
+
+Moreover, we generally prefer to define the induction cases the opposite way:
+defining the condition under which the wanted conclusion is true. For example,
+here, how can we verify that some $n$ is natural and even? We first check
+whether it is 0, if not, we check if $n$ is greater than $0$, and then we verify
+that $n-2$ is even:
 
 
 
@@ -66,20 +83,20 @@ Here, we distinguish two cases:
 
 Taking the second case, we recursively decrease the number until we reach
 0, and then the number is even, since 0 is even, or -1, and then there
-is no case in the inductive that corresponds to this value, so we could
-deduce that the property is false (however, we will see later that in the
-case of WP, we need the Coq proof assistant).
+is no case in the inductive that corresponds to this value, so we can
+deduce that the property is false.
 
 
-\CodeBlockInput[11][14]{c}{even-1.c}
-
+\CodeBlockInput[11]{c}{even-1.c}
 
 
 Of course, defining that some natural number is even inductively is not a
 good idea, since we can simply define it using modulo. We generally use them
 to define complex recursive properties.
 
+
 \levelFourTitle{Consistency}
+
 
 Inductive definitions bring the risk to introduce inconsistencies. Indeed, the
 property specified in the different cases are considered to be always true, so
@@ -91,13 +108,11 @@ avoid building such a bad definition.
 First, we can make sure that inductive predicates are well-founded. This can
 be done by syntactically restricting what we allow in an inductive definition,
 by making sure that each case has the form:
-
 \begin{CodeBlock}{c}
 /*@
   \forall y1,...,ym ; h1 ==> ··· ==> hl ==> P(t1,...,tn) ;
 */
 \end{CodeBlock}
-
 where the predicate \CodeInline{P} can only appear positively (so not negated
 with \CodeInline{!} - $\neg$) in the different hypotheses \CodeInline{hx}.
 Basically, it ensures that we cannot build both positive and negative
@@ -105,9 +120,7 @@ occurrences of \CodeInline{P} for some parameters which would be incoherent.
 
 This is for example verified by our previously defined predicate
 \CodeInline{even\_natural}. While a definition like:
-
-\CodeBlockInput[1][11]{c}{even-bad.c}
-
+\CodeBlockInput[5][15]{c}{even-bad.c}
 does not respect this constraint as the property \CodeInline{even\_natural}
 appears negatively on line~8.
 
@@ -131,19 +144,19 @@ For example for our definition of \CodeInline{even\_natural}, we would write:
 
 
 
-\CodeBlockInput[13][18]{c}{even-bad.c}
+\CodeBlockInput[17][22]{c}{even-bad.c}
 
 
 
-During the generation of the proof obligation, WP asks Why3 to create an
+During the generation of the verification conditions, WP asks Why3 to create an
 inductive definition from the one written in ACSL. As Why3 is stricter than
 Frama-C and WP on this kind of definition, if the inductive predicate is too
 strange (if it is not well-founded), it will be rejected with an error. And
 indeed, with the bad definition of \CodeInline{even\_natural} we just proposed,
 Why3 complains when we try to prove the
-\CodeInline{ensures \textbackslash{}false}, because there exists a non
-positive occurrence of \CodeInline{P\_even\_natural} that encodes the
-\CodeInline{even\_natural} we wrote in ACSL.
+\CodeInline{ensures \textbackslash{}false} clause, because there exists a
+non-positive occurrence of \CodeInline{P\_even\_natural} that encodes the
+\CodeInline{even\_natural} predicate we wrote in ACSL.
 
 \begin{CodeBlock}{bash}
 frama-c-gui -wp -wp-prop=BAD file.c
@@ -208,11 +221,11 @@ preservation of the invariant could fail. A reason for this fail is the fact tha
 the prover forgets that cells preceding the one we are currently processing
 are actually still set to 0. We can add a lemma in our knowledge base, stating
 that if a set of values of an array did not change between two program points,
-the first one being a point where the property "zeroed" is verified, then the
-property is still verified at the second program point.
+the first one being a point where the property ``zeroed'' is verified,
+then the property is still verified at the second program point.
 
 
-\CodeBlockInput[13][20]{c}{reset-1.c}
+\CodeBlockInput[18][25]{c}{reset-1.c}
 
 
 Then we can add an assertion to specify what did not change between the
@@ -220,7 +233,7 @@ beginning of the loop block (pointed by the label \CodeInline{L} in the code)
 and the end (which is \CodeInline{Here} since we state the property at the end):
 
 
-\CodeBlockInput[35][39]{c}{reset-1.c}
+\CodeBlockInput[40][44]{c}{reset-1.c}
 
 
 Note that in this new version of the code, the property stated by our lemma is
@@ -245,7 +258,7 @@ example.
 Let us prove a simple selection sort:
 
 
-\CodeBlockInput[3]{c}{sort-0.c}
+\CodeBlockInput[7]{c}{sort-0.c}
 
 
 The reader can exercise by specifying and proving the search of the minimum and
@@ -258,7 +271,7 @@ Indeed, a common error we could do, trying to prove a sort function, would
 be to write this specification (which is correct!):
 
 
-\CodeBlockInput[6]{c}{sort-incomplete.c}
+\CodeBlockInput[10]{c}{sort-incomplete.c}
 
 
 \textbf{This specification is correct}. However, if we recall correctly the part
@@ -292,7 +305,7 @@ The corresponding inductive definition is the following:
 
 
 We can then specify that our sort function produces the sorted permutation of
-the original array and we can then prove it by providing the invariant of the
+the original array, and we can then prove it by providing the invariant of the
 function:
 
 
@@ -304,8 +317,8 @@ This time, our property is precisely defined, the proof is relatively easy to
 produce, only requiring to add an assertion in the block of the loop to state
 that it only performs a swap of values in the array (and then giving
 the transition to the next permutation). To define this swap notion, we use
-a particular annotation (at line 16), introduced using the keyword
-\CodeInline{ghost}. Here, the goal is to introduce a label in the code that in
+a particular annotation (at line 16), introduced using the \CodeInline{ghost}
+keyword. Here, the goal is to introduce a label in the code that in
 fact does not exist from the program point of view, and is only visible from
 a specification point of view. We present the ``ghost'' features in the final
 section of this chapter, for now let us focus on axiomatic definitions.
@@ -324,7 +337,7 @@ first integers. Rewrite the logic function using an inductive predicate that
 states that some integer equals the sum of the N first integers.
 
 
-\CodeBlockInput{c}{ex-1-sum-N-first-ints.c}
+\CodeBlockInput[5] {c}{ex-1-sum-N-first-ints.c}
 
 
 Adapt the contract of the function and the lemma(s). Note that lemma(s) could
@@ -340,7 +353,7 @@ divisor of two others. The goal of the exercise is to prove that the function
 \CodeInline{gcd} computes the greatest common divisor. Thus, we do not have to
 specify all the cases for the predicate. Indeed, a close look at the loop shows
 us that after the first iteration \CodeInline{a} is greater or equals to
-\CodeInline{b} and it is maintained by the loop. Thus, we consider two cases for
+\CodeInline{b}, and it is maintained by the loop. Thus, we consider two cases for
 the inductive predicate:
 
 
@@ -351,7 +364,7 @@ the inductive predicate:
 \end{itemize}
 
 
-\CodeBlockInput{c}{ex-2-gcd.c}
+\CodeBlockInput[5]{c}{ex-2-gcd.c}
 
 
 Express the postcondition of the function, and complete the invariant to prove
@@ -367,40 +380,36 @@ In this exercise, we do not consider RTEs.
 
 
 Write an inductive predicate that states that some integer \CodeInline{r} equals
-to $x^n$. Consider the two cases: either $n$ is 0 or it is greater and then it
+to $x^n$. Consider the two cases: either $n$ is 0 or it is greater, and then it
 should be related to the value $x^{n-1}$.
 
 
-\CodeBlockInput[1][6]{c}{ex-3-fpower.c}
+\CodeBlockInput[5][10]{c}{ex-3-fpower.c}
 
 
 First prove the naive version of the power function:
 
 
-\CodeBlockInput[13][28]{c}{ex-3-fpower.c}
+\CodeBlockInput[17][32]{c}{ex-3-fpower.c}
 
 
 Now, let us prove a faster version of the power function:
 
 
-\CodeBlockInput[30][49]{c}{ex-3-fpower.c}
+\CodeBlockInput[34][53]{c}{ex-3-fpower.c}
 
 
 In this version, we exploit two properties about the power operator:
-
-
 \begin{itemize}
 \item $(x^2)^n = x^{2n}$
 \item $x \times (x^2)^n = x^{2n+1}$
 \end{itemize}
-
-
 that allows us to divide $n$ by 2 at each step of the loop instead of decreasing
 it by one (which makes the algorithm $O(\log n)$ instead of $O(n)$). Express the
 two previous properties in lemmas:
 
 
-\CodeBlockInput[8][11]{c}{ex-3-fpower.c}
+\CodeBlockInput[12][15]{c}{ex-3-fpower.c}
 
 
 First express the lemma \CodeInline{power\_even}, the SMT solver might be able
@@ -423,18 +432,17 @@ thus $p^n = 1$.
 Take back the definitions of the \CodeInline{shifted} and \CodeInline{unchanged}
 predicates from the exercise~\ref{l4:acsl-properties-lemmas-shift-trans}. The
 \CodeInline{shited\_cell} predicate can be inlined and removed. Use the
-shift predicate to express the rotate predicate that expresses that some elements
-of an array are rotated to the left in the sense that all elements are shifted of
-one element to the left except the last one that is put in the first cell of the
-range. Use this predicate to prove the rotate function:
+shift predicate to express the \CodeInline{rotate} predicate that expresses that
+some elements of an array are rotated to the left in the sense that all elements
+are shifted of one element to the left except the last one that is put in the
+first cell of the range. Use this predicate to prove the rotate function:
 
 
-\CodeBlockInput[12][27]{c}{ex-4-rotate-permutation.c}
+\CodeBlockInput[16][31]{c}{ex-4-rotate-permutation.c}
 
 
 Express a new version of the notion of permutation with an inductive predicate
 that considers four cases:
-
 \begin{itemize}
 \item permutation is reflexive,
 \item if the left part of the range (until an index of the range) is rotated
@@ -445,7 +453,7 @@ that considers four cases:
 \end{itemize}
 
 
-\CodeBlockInput[30][37]{c}{ex-4-rotate-permutation.c}
+\CodeBlockInput[34][41]{c}{ex-4-rotate-permutation.c}
 
 
 Complete the contract of \CodeInline{two\_rotates} that successively rotates the
@@ -453,4 +461,4 @@ first half of the array and then the second half and prove that it maintains the
 permutation.
 
 
-\CodeBlockInput[43][47]{c}{ex-4-rotate-permutation.c}
+\CodeBlockInput[47][51]{c}{ex-4-rotate-permutation.c}

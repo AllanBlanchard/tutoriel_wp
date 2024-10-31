@@ -1,7 +1,11 @@
+/* run.config
+   DEPS: @PTEST_DEPS@ @PTEST_DIR@/@PTEST_NAME@.@PTEST_NUMBER@.session@PTEST_CONFIG@/interactive/*.v
+   STDOPT:+"-wp-prover alt-ergo,coq -wp-session @PTEST_DIR@/@PTEST_NAME@.@PTEST_NUMBER@.session@PTEST_CONFIG@"
+*/
+
 #include <stddef.h>
 
-
-/*@ 
+/*@
   predicate sorted(int* arr, integer begin, integer end) =
     \forall integer i, j ; begin <= i <= j < end ==> arr[i] <= arr[j] ;
 
@@ -35,13 +39,13 @@
 */
 size_t bsearch(int* arr, size_t len, int value){
   if(len == 0) return len ;
-  
+
   size_t low = 0 ;
   size_t up = len ;
 
   /*@
     loop invariant 0 <= low && up <= len ;
-    loop invariant 
+    loop invariant
       \forall integer i ; 0 <= i < len && arr[i] == value ==> low <= i < up ;
     loop assigns low, up ;
     loop variant up - low ;

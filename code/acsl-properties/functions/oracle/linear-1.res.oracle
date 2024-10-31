@@ -1,0 +1,46 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing linear-1.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function function
+[rte:annot] annotating function function_modified
+[rte:annot] annotating function mathematical_example
+[rte:annot] annotating function restricted
+[wp] [Valid] Goal function_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal function_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal function_modified_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal function_modified_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal mathematical_example_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal mathematical_example_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal restricted_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal restricted_terminates (Cfg) (Trivial)
+[wp] 21 goals scheduled
+[wp] [Valid] typed_function_ensures (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_function_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_assigns (Qed)
+[wp] [Valid] typed_restricted_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_restricted_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_restricted_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_restricted_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_restricted_assigns (Qed)
+[wp] [Valid] typed_function_modified_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_modified_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_function_modified_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_modified_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_modified_assert_rte_signed_overflow_4 (Qed)
+[wp] [Valid] typed_function_modified_assert_rte_signed_overflow_5 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_modified_assert_rte_signed_overflow_6 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_modified_assert_rte_signed_overflow_7 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_modified_assigns_part1 (Qed)
+[wp] [Valid] typed_function_modified_assigns_part2 (Qed)
+[wp] [Valid] typed_mathematical_example_assert (Alt-Ergo) (Cached)
+[wp] Proved goals:   28 / 29
+  Terminating:     4
+  Unreachable:     4
+  Qed:             7
+  Alt-Ergo:       13
+  Unsuccess:       1
+[wp:pedantic-assigns] linear-1.c:39: Warning: 
+  No 'assigns' specification for function 'mathematical_example'.
+  Callers assumptions might be imprecise.

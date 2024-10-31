@@ -1,0 +1,54 @@
+# frama-c -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast [...]
+[kernel] Parsing ex-4-sort-answer.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function min_idx_in
+[rte:annot] annotating function sort
+[rte:annot] annotating function swap
+[wp] [Valid] Goal min_idx_in_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal min_idx_in_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal swap_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal swap_terminates (Cfg) (Trivial)
+[wp] 38 goals scheduled
+[wp] [Valid] typed_min_idx_in_ensures (Qed)
+[wp] [Valid] typed_min_idx_in_assert_rte_unsigned_overflow (Qed)
+[wp] [Valid] typed_min_idx_in_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_min_idx_in_loop_invariant_established (Qed)
+[wp] [Valid] typed_min_idx_in_loop_invariant_2_preserved (Qed)
+[wp] [Valid] typed_min_idx_in_loop_invariant_2_established (Qed)
+[wp] [Valid] typed_min_idx_in_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_min_idx_in_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_min_idx_in_assert_rte_unsigned_overflow_2 (Qed)
+[wp] [Valid] typed_min_idx_in_loop_assigns (Qed)
+[wp] [Valid] typed_min_idx_in_assigns (Qed)
+[wp] [Valid] typed_min_idx_in_loop_variant_decrease (Qed)
+[wp] [Valid] typed_min_idx_in_loop_variant_positive (Qed)
+[wp] [Valid] typed_swap_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_swap_assert_rte_mem_access_2 (Qed)
+[wp] [Valid] typed_swap_assert_rte_mem_access_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_swap_assert_rte_mem_access_4 (Qed)
+[wp] [Valid] typed_swap_assigns_part1 (Qed)
+[wp] [Valid] typed_swap_assigns_part2 (Qed)
+[wp] [Valid] typed_sort_terminates (Qed)
+[wp] [Valid] typed_sort_exits (Qed)
+[wp] [Valid] typed_sort_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sort_loop_invariant_established (Qed)
+[wp] [Valid] typed_sort_assert_rte_unsigned_overflow (Qed)
+[wp] [Valid] typed_sort_loop_assigns_part1 (Qed)
+[wp] [Valid] typed_sort_loop_assigns_part2 (Qed)
+[wp] [Valid] typed_sort_loop_assigns_part3 (Qed)
+[wp] [Valid] typed_sort_loop_assigns_part4 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sort_assigns_exit_part1 (Qed)
+[wp] [Valid] typed_sort_assigns_exit_part2 (Qed)
+[wp] [Valid] typed_sort_assigns_exit_part3 (Qed)
+[wp] [Valid] typed_sort_assigns_exit_part4 (Qed)
+[wp] [Valid] typed_sort_assigns_normal (Qed)
+[wp] [Valid] typed_sort_loop_variant_decrease (Qed)
+[wp] [Valid] typed_sort_loop_variant_positive (Qed)
+[wp] [Valid] typed_sort_call_min_idx_in_requires (Qed)
+[wp] [Valid] typed_sort_call_min_idx_in_requires_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_sort_call_swap_requires (Alt-Ergo) (Cached)
+[wp] Proved goals:   42 / 42
+  Terminating:     2
+  Unreachable:     2
+  Qed:            29
+  Alt-Ergo:        9

@@ -23,7 +23,7 @@ pas être utilisé ici). Cependant, chaque propriété exprimée par ces clauses
 n'a pas \textbf{besoin} d'être vérifiée avant à l'appel, elle \textbf{peut}
 être vérifiée et dans ce cas, les postconditions associées à ce comportement
 s'appliquent. Ces postconditions sont à nouveau introduites à l'aide du mot
-clé \texttt{ensures}. Finalement, nous pouvons également demander à WP
+clé \CodeInline{ensures}. Finalement, nous pouvons également demander à WP
 de vérifier le fait que les comportements sont disjoints (pour garantir
 le déterminisme) et complets (pour garantir que nous couvrons toutes les
 entrées possibles).
@@ -51,15 +51,12 @@ le comportement, la fonction doit retourner une valeur positive.
 
 Pour comprendre ce que font précisément \CodeInline{complete} et \CodeInline{disjoint}, il est utile
 d'expérimenter deux possibilités :
-
-
-
 \begin{itemize}
 \item remplacer l'hypothèse de « pos » par \CodeInline{val > 0} auquel cas les
-comportements seront disjoints mais incomplets (il nous manquera le cas
+comportements seront disjoints, mais incomplets (il nous manquera le cas
 \CodeInline{val == 0}) ;
 \item remplacer l'hypothèse de « neg » par \CodeInline{val <= 0} auquel cas les
-comportements seront complets mais non disjoints (le cas \CodeInline{val == 0}) sera
+comportements seront complets, mais non disjoints (le cas \CodeInline{val == 0}) sera
 présent dans les deux comportements.
 \end{itemize}
 
@@ -68,7 +65,6 @@ présent dans les deux comportements.
 Même si \CodeInline{assigns} est une postcondition, à ma connaissance, il n'est pas
 possible de mettre des \CodeInline{assigns} pour chaque \textit{behavior}. Si nous avons
 besoin d'un tel cas, nous spécifions :
-
 \begin{itemize}
 \item \CodeInline{assigns} avant les \textit{behavior} (comme dans notre exemple) avec tout
 élément non-local susceptible d'être modifié,
@@ -81,7 +77,7 @@ pas modifiés en les indiquant égaux à leur ancienne (\CodeInline{\textbacksla
 Les comportements sont très utiles pour simplifier l'écriture de spécifications
 quand les fonctions ont des effets très différents en fonction de leurs
 entrées. Sans eux, les spécifications passent systématiquement par des
-implications traduisant la même idée mais dont l'écriture et la lecture sont
+implications traduisant la même idée, mais dont l'écriture et la lecture sont
 plus difficiles (nous sommes susceptibles d'introduire des erreurs).
 D'autre part, la traduction de la complétude et de la disjonction devraient
 être écrites manuellement, ce qui serait fastidieux et une nouvelle fois source
@@ -96,8 +92,6 @@ d'erreurs.
 
 
 Dans les sections précédentes, reprendre les exemples :
-
-
 \begin{itemize}
 \item à propos du calcul de la distance entre deux entiers ;
 \item « Remettre à zéro selon une condition » ;
@@ -127,7 +121,7 @@ ou une consonne, supposer (et exprimer) que la fonction reçoit une
 lettre minuscule.
 
 
-\CodeBlockInput[1][5]{c}{ex-2-simple.c}
+\CodeBlockInput[5][9]{c}{ex-2-simple.c}
 
 
 Puis une fonction qui renvoie à quel quadrant d'un repère appartient
@@ -135,7 +129,7 @@ une coordonnée. Lorsque la coordonnée se trouve sur un axe, choisir
 arbitrairement l'un des quadrants qu'elle touche.
 
 
-\CodeBlockInput[7][9]{c}{ex-2-simple.c}
+\CodeBlockInput[11][13]{c}{ex-2-simple.c}
 
 
 \levelFourTitle{Triangle}
@@ -143,15 +137,13 @@ arbitrairement l'un des quadrants qu'elle touche.
 
 Compléter les fonctions suivantes qui reçoivent la longueur des différents
 côtés et retournent respectivement :
-
-
 \begin{itemize}
 \item si le triangle est scalène, isocèle, ou équilatéral ;
 \item si le triangle est rectangle, acutangle ou obtusangle.
 \end{itemize}
 
 
-\CodeBlockInput{c}{ex-3-triangle.c}
+\CodeBlockInput[5]{c}{ex-3-triangle.c}
 
 
 En supposant (et exprimant) que :
@@ -179,13 +171,13 @@ valeur. En considérant que le contrat était :
 
 \begin{enumerate}
 \item Le réécrire en utilisant des comportements
-\item Modifier le contrat de 1. de sorte que les comportements ne
+\item Modifier le contrat de 1 de sorte que les comportements ne
   soient pas disjoints. Excepté cette propriété, tout le reste devrait
   être correctement prouvé
-\item Modifier le contrat de 1. de sorte que les comportements ne
+\item Modifier le contrat de 1 de sorte que les comportements ne
   soient pas complets, puis ajouter un nouveau comportement pour le
   rendre de nouveau complet
-\item Modifier la fonction de 1. de façon à accepter la valeur
+\item Modifier la fonction de 1 de façon à accepter la valeur
   \CodeInline{NULL} pour les pointeurs d'entrées, si les deux pointeurs
   sont nuls, retourner  \CodeInline{INT\_MIN}, si l'un seulement est
   nul, retourner l'autre valeur, sinon retourner le maximum des deux
@@ -207,6 +199,6 @@ précédente, en considérant que le contrat était :
 
 
 Le réécrire en utilisant des comportements. Notons que le contrat
-devrait être composé d'un comportement général et de trois
+devrait être composé d'un comportement général et de deux
 comportements spécifiques. Est-ce que ces comportements sont complets ?
 Sont-ils disjoints ?

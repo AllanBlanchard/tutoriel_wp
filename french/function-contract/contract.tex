@@ -1,12 +1,10 @@
 Le principe d'un contrat de fonction est de poser les conditions selon
 lesquelles la fonction s'exécutera. On distinguera deux parties :
-
-
 \begin{itemize}
-\item \textbf{la précondition}, c'est-à-dire ce que doit respecter le code
+\item \textbf{la précondition}, c'est-à-dire ce que doit assurer le code
       appelant à propos des variables passées en paramètres et de l'état de
       la mémoire globale pour que la fonction s'exécute correctement ;
-\item \textbf{la postcondition}, c'est-à-dire ce que s'engage à respecter la
+\item \textbf{la postcondition}, c'est-à-dire ce que s'engage à fournir la
       fonction en retour à propos de l'état de la mémoire et de la valeur de
       retour.
 \end{itemize}
@@ -15,9 +13,6 @@ lesquelles la fonction s'exécutera. On distinguera deux parties :
 Ces propriétés sont exprimées en langage ACSL dont la syntaxe est relativement
 simple pour qui a déjà fait du C, puisqu'elle reprend la syntaxe des expressions
 booléennes du C. Cependant, elle ajoute également :
-
-
-
 \begin{itemize}
 \item certaines constructions et connecteurs logiques qui ne sont pas présents
 originellement en C pour faciliter l'écriture ;
@@ -73,7 +68,7 @@ mot-clé \CodeInline{\textbackslash{}result}) est supérieur ou égal à 0.
 
 
 
-\CodeBlockInput{c}{abs-1.c}
+\CodeBlockInput[5]{c}{abs-1.c}
 
 
 
@@ -94,7 +89,7 @@ comme illustré ci-dessous.
 
 
 
-\CodeBlockInput{c}{abs-2.c}
+\CodeBlockInput[5]{c}{abs-2.c}
 
 
 
@@ -160,7 +155,7 @@ catégoriser nos propriétés. Par exemple, nous pouvons écrire ceci :
 
 
 
-\CodeBlockInput{c}{abs-3.c}
+\CodeBlockInput[7]{c}{abs-3.c}
 
 
 
@@ -171,7 +166,7 @@ et peu nombreuses, les noms n'apporteraient pas beaucoup d'information.
 
 
 Nous pouvons copier/coller la fonction \CodeInline{abs} et sa spécification dans un
-fichier abs.c et regarder avec Frama-C si l'implémentation est conforme à la
+fichier \CodeInline{abs.c} et regarder avec Frama-C si l'implémentation est conforme à la
 spécification.
 
 
@@ -183,7 +178,7 @@ dans ce tutoriel) soit par cette commande :
 
 
 \begin{CodeBlock}{bash}
-$ frama-c-gui
+frama-c-gui
 \end{CodeBlock}
 
 
@@ -205,12 +200,12 @@ depuis la ligne de commande en le(s) passant en argument(s) de \CodeInline{frama
 
 
 \begin{CodeBlock}{bash}
-$ frama-c-gui abs.c
+frama-c-gui abs.c
 \end{CodeBlock}
 
 
 
-\image{1-abs-1.png}[Le volet latéral liste l’arbre des fichiers et des fonctions]
+\image{1-abs-1.png}
 
 
 La fenêtre de Frama-C s'ouvre, dans le volet correspondant aux fichiers et aux
@@ -225,19 +220,33 @@ un clic droit sur le nom de la fonction et « \textit{Prove function annotations
 
 
 
-\image{1-abs-2.png}[Lancer la vérification de abs avec WP]
+\image{1-abs-2}
 
 
 Nous pouvons voir que les cercles bleus deviennent des pastilles vertes,
 indiquant que la spécification est bien assurée par le programme. Il est
 possible de prouver les propriétés une à une en cliquant-droit sur celles-ci
-et pas sur le nom de la fonction.
+et pas sur le nom de la fonction. Nous pouvons également voir que deux
+annotations supplémentaires ont été générées par Frama-C pour notre fonction :
+\begin{itemize}
+  \item \CodeInline{exits \textbackslash{}false}
+  \item \CodeInline{terminates \textbackslash{}true}
+\end{itemize}
+Le premier dit que la fonction ne doit pas appeler la fonction C
+\CodeInline{exit} (ou une fonction qui appellerait elle-même transitivement la
+fonction \CodeInline{exit} à un certain point), et qu'elle finira normalement
+son exécution en atteignant l'instruction \CodeInline{return}. La seconde dit
+que la fonction ne doit pas s'exécuter à l'infini. Ces annotations sont générées
+par défaut, cependant il est également possible d'ajouter sa propre clause
+\CodeInline{exits} ou \CodeInline{terminates} pour changer son comportement.
+Nous expliquerons cela plus tard, pour l'instant, ignorons simplement ces
+annotations.
 
 
 
-Mais le code est-il vraiment sans erreur pour autant ? WP nous permet de nous
+Le code est-il vraiment sans erreurs ? WP nous permet de nous
 assurer que le code répond à la spécification, mais il ne fait pas de contrôle
-d'erreur à l'exécution (\textit{runtime error}, abrégé RTE) si nous le demandons
+d'erreur à l'exécution (\textit{runtime error}, abrégé RTE) si nous ne le demandons
 pas. Un autre \textit{plugin} de Frama-C, appelé sobrement RTE, peut être
 utilisé pour générer des annotations ACSL qui peuvent ensuite être vérifiées par
 d'autres \textit{plugins}.
@@ -268,7 +277,7 @@ contrôles par un clic droit sur le nom de la fonction puis
 
 
 \begin{Information}
-  A partir de ce point du tutoriel, \CodeInline{-wp-rte} devra toujours être
+  À partir de ce point du tutoriel, \CodeInline{-wp-rte} devra toujours être
   activé pour traiter les exemples, sauf indication contraire.
 \end{Information}
 
@@ -289,7 +298,7 @@ que -\CodeInline{INT\_MIN} ($-2^{31}$) > \CodeInline{INT\_MAX} ($2^{31}-1$).
 
 
 \begin{Information}
-Il est bon de noter que le risque de dépassement est pour nous réel car nos
+Il est bon de noter que le risque de dépassement est pour nous réel, car nos
 machines (dont Frama-C détecte la configuration) fonctionne en
 \externalLink{complément à deux}{https://fr.wikipedia.org/wiki/Compl\%C3\%A9ment\_\%C3\%A0\_deux}
 pour lequel le dépassement n'est pas défini par la norme C.
@@ -310,7 +319,7 @@ pour les pastilles : vert + marron et orange.
 
 
 
-La couleur vert + marron nous indique que la preuve a été effectuée mais
+La couleur verte et marron nous indique que la preuve a été effectuée, mais
 qu'elle dépend potentiellement de propriétés pour lesquelles ce n'est pas le
 cas.
 
@@ -324,8 +333,8 @@ cette propriété puisqu'elle n'existait pas.
 
 
 
-En effet, lorsque WP transmet une obligation de preuve à un prouveur automatique,
-il transmet deux types de propriétés : $G$, le but, la propriété
+En effet, lorsque WP transmet une condition de vérification à un prouveur
+automatique, il transmet deux types de propriétés : $G$, le but, la propriété
 que l'on cherche à prouver, et $S_1$ ... $S_n$ les diverses suppositions que l'on
 peut faire à propos de l'état du programme au point où l'on cherche à vérifier $G$.
 Cependant, il ne reçoit pas, en retour, quelles propriétés ont été utilisées par
@@ -338,9 +347,6 @@ en supposant que $S_3$ est vraie, pour laquelle nous n'avons actuellement pas
 
 La couleur orange nous signale qu'aucun prouveur n'a pu déterminer si la
 propriété est vérifiable. Les deux raisons peuvent être :
-
-
-
 \begin{itemize}
 \item qu'il n'a pas assez d'information pour le déterminer ;
 \item que malgré toutes ses recherches, il n'a pas pu trouver un résultat à
@@ -350,10 +356,10 @@ dans le volet de WP.
 
 
 Dans le volet inférieur, nous pouvons sélectionner l'onglet « \textit{WP Goals} »,
-celui-ci nous affiche la liste des obligations de preuve et pour chaque
+celui-ci nous affiche la liste des conditions de vérification et pour chaque
 prouveur indique un petit logo si la preuve a été tentée et si elle a été
 réussie, échouée ou a rencontré un \textit{timeout} (logo avec les ciseaux).
-Pour voir la totalité des obligations de preuves, il
+Pour voir la totalité des conditions de vérification, il
 faut s'assurer que « \textit{All Results} » est bien sélectionné dans le champ encadré
 dans la capture.
 
@@ -362,10 +368,10 @@ dans la capture.
 \image{1-abs-5.png}
 
 
-Le tableau est découpé comme suit, en première colonne nous avons le nom de la
-fonction où se trouve le but à prouver. En seconde colonne nous trouvons le nom
+Le tableau est découpé comme suit, en première colonne, nous avons le nom de la
+fonction où se trouve le but à prouver. En seconde colonne, nous trouvons le nom
 du but. Ici par exemple notre postcondition nommée est estampillée
-« postcondition 'positive\textit{value,function}result' », nous pouvons d'ailleurs noter
+\CodeInline{postcondition 'positive\_value,function\_result'}, nous pouvons d'ailleurs noter
 que lorsqu'une propriété est sélectionnée dans le tableau, elle est également
 surlignée dans le code source. Les propriétés anonymes se voient assignées
 comme nom le type de propriété voulu. En troisième colonne, nous trouvons le
@@ -395,7 +401,7 @@ nous pouvons voir ceci (si ce n'est pas le cas, il faut s'assurer que
 \image{1-abs-6.png}
 
 
-C'est l'obligation de preuve que génère WP par rapport à notre propriété et
+C'est la condition de vérification que génère WP par rapport à notre propriété et
 notre programme, il n'est pas nécessaire de comprendre tout ce qu'il s'y passe,
 juste d'avoir une idée globale. Elle contient (dans la partie « \textit{Assume} ») les
 suppositions que nous avons pu donner et celles que WP a pu déduire des
@@ -419,22 +425,22 @@ pas appel aux prouveurs.
 Lorsque les prouveurs automatiques ne parviennent pas à assurer que nos
 propriétés sont bien vérifiées, il est parfois difficile de comprendre
 pourquoi. En effet, les prouveurs sont généralement incapables de nous
-répondre autre chose que « oui », « non » ou « inconnu », ils sont pas
-incapables d'extraire le « pourquoi » d'un « non » ou d'un « inconnu ». Il
+répondre autre chose que « oui », « non » ou « inconnu », ils ne sont pas
+capables d'extraire le « pourquoi » d'un « non » ou d'un « inconnu ». Il
 existe des outils qui
 sont capables d'explorer les arbres de preuve pour en extraire ce type
 d'information, Frama-C n'en possède pas à l'heure actuelle. La lecture des
-obligations de preuve peut parfois nous aider, mais cela demande un peu
+conditions de vérification peut parfois nous aider, mais cela demande un peu
 d'habitude pour pouvoir les déchiffrer facilement. Finalement, le meilleur
 moyen de comprendre la raison d'un échec est d'effectuer la preuve de manière
 interactive avec Coq. En revanche, il faut déjà avoir une certaine habitude de
-ce langage pour ne pas être perdu devant les obligations de preuve générées par
+ce langage pour ne pas être perdu devant les conditions de vérification générées par
 WP, étant donné que celles-ci encodent les éléments de la sémantique de C, ce
 qui rend le code souvent indigeste.
 
 
 
-Si nous retournons dans notre tableau des obligations de preuve (bouton
+Si nous retournons dans notre tableau des conditions de vérification (bouton
 encadré en rouge dans la capture d'écran précédente), nous pouvons donc voir
 que les hypothèses n'ont pas suffi aux prouveurs pour déterminer que la
 propriété  « absence de débordement » est vraie (et nous l'avons dit : c'est
@@ -508,18 +514,11 @@ implémentation est prouvée :
 
 
 Nous pouvons également vérifier qu'une fonction qui appellerait \CodeInline{abs}
-respecte bien la précondition qu'elle impose :
+satisfait bien la précondition qu'elle impose :
 
 
 
-\begin{CodeBlock}{c}
-void foo(int a){
-   int b = abs(42);
-   int c = abs(-42);
-   int d = abs(a);       // Faux : "a", vaut peut-être INT_MIN
-   int e = abs(INT_MIN); // Faux : le paramètre doit être strictement supérieur à INT_MIN
-}
-\end{CodeBlock}
+\CodeBlockInput[15]{c}{abs-5.c}
 
 
 
@@ -561,8 +560,9 @@ de même que « vrai » est vrai. Donc tout est vrai.
 
 
 
-En prenant le programme modifié, nous pouvons d'ailleurs regarder les obligations
-de preuve générées par WP pour l'appel fautif et l'appel prouvé par conséquent :
+En prenant le programme modifié, nous pouvons d'ailleurs regarder les conditions
+de vérification générées par WP pour l'appel fautif et l'appel prouvé par
+conséquent :
 
 
 
@@ -589,7 +589,67 @@ simplement que pour \CodeInline{abs(a)} nous ajoutons dans nos suppositions la
 connaissance \CodeInline{a < INT\_MIN}, et tandis que nous n'avons pas de preuve
 que c'est vrai, nous n'en avons pas non plus que c'est faux. Donc si nous obtenons
 nécessairement une preuve de « faux » avec un appel \CodeInline{abs(INT\_MIN)}, ce n'est
-pas le cas de l'appel \CodeInline{abs(a)} qui peut aussi ne pas échouer.
+pas le cas de l'appel \CodeInline{abs(a)}, car \CodeInline{a} peut être autre
+chose que \CodeInline{INT_MIN}.
+
+
+\levelThreeTitle{Le cas particulier de la fonction \CodeInline{main}}
+
+
+La fonction \CodeInline{main} n'est généralement pas appelée directement par le
+programme. Cependant, elle peut avoir des préconditions. Dans un tel cas, WP
+génère des conditions de vérification pour elles, mais avec une différence
+importante : le contexte fournit pour la preuve n'est pas le même que pour les
+autres fonctions. En effet, comme la fonction principale est appelée avant toute
+autre fonction du programme, à ce point de l'exécution, les variables globales
+ont nécessairement la valeur qui leur a été transmise à l'initialisation.
+
+
+Illustrons cela avec l'extrait de code suivant :
+
+
+\CodeBlockInput[7]{c}{main.c}
+
+
+Si nous exécutons WP sur cet exemple, la clause \CodeInline{requires} de la
+fonction \CodeInline{main} est prouvée, tandis qu'aucune tentative de preuve n'a
+été réalisée pour la précondition de la fonction \CodeInline{f} puisqu'elle
+n'est pas appelée dans le programme. La précondition de la fonction
+\CodeInline{main} est vérifiée, car après l'initialisation \CodeInline{h} a la
+valeur 42 qui est bien entendu entre 0 et 100. Remarquons que l'assertion dans
+la fonction \CodeInline{main} est, elle aussi, prouvée puisque la valeur de
+\CodeInline{h} n'est pas changée par la fonction, alors que dans la fonction
+\CodeInline{f} ce n'est pas le cas puisque WP ne fait aucune supposition à
+propos des valeurs des variables globales.
+
+
+\image{3-main-1}
+
+
+Notons que WP fait cette hypothèse à propos de la fonction \CodeInline{main}
+parce que c'est le comportement par défaut de Frama-C. Ce comportement peut être
+configuré à l'aide de l'option \CodeInline{-lib-entry} qui dit à Frama-C de
+considérer que toutes les fonctions (incluant donc \CodeInline{main}) peuvent
+être appelées dans le programme. Donc, quand nous activons cette option sur la
+ligne de commande de Frama-C, pour notre exemple, aucune condition de
+vérification n'est générée pour les clauses \CodeInline{requires} de
+\CodeInline{main} puisqu'elle n'est pas appelée et aucune des assertions n'est
+prouvée :
+
+
+\image{3-main-2}
+
+
+Finalement, Frama-C permet de configurer quelle fonction du programme doit être
+considérée comme la fonction principale. Par exemple, si nous appelons Frama-C
+avec l'option \CodeInline{-main=f} sur la ligne de commande, la clause
+\CodeInline{requires} de la fonction \CodeInline{f} est prouvée, de même que
+l'assertion qu'elle contient. À l'inverse, aucune vérification n'est tentée
+pour la clause \CodeInline{requires} de la fonction \CodeInline{main} et
+l'assertion dans la fonction \CodeInline{main} n'est pas prouvée.
+
+
+\image{3-main-3}
 
 
 \levelThreeTitle{Exercices}
@@ -607,7 +667,7 @@ une notation qui peut parfois d'avérer utile.
 Écrire la postcondition de la fonction d'addition suivante :
 
 
-\CodeBlockInput{c}{ex-1-addition.c}
+\CodeBlockInput[5]{c}{ex-1-addition.c}
 
 
 Lancer la commande :
@@ -617,14 +677,11 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Lorsque la preuve que la fonction respecte son contrat est établie, lancer
+Lorsque la preuve que la fonction est conforme à son contrat est établie, lancer
 la commande :
-
 \begin{CodeBlock}{bash}
 frama-c-gui your-file.c -wp -wp-rte
 \end{CodeBlock}
-
-
 qui devrait échouer. Adapter le contrat en ajoutant la bonne précondition.
 
 
@@ -636,7 +693,7 @@ la valeur de \CodeInline{b} en fonction de \CodeInline{a} et
 \CodeInline{\textbackslash{}result} :
 
 
-\CodeBlockInput{c}{ex-2-distance.c}
+\CodeBlockInput[5]{c}{ex-2-distance.c}
 
 
 Lancer la commande :
@@ -647,14 +704,11 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Lorsque la preuve que la fonction respecte son contrat est établie, lancer
+Lorsque la preuve que la fonction est conforme à son contrat est établie, lancer
 la commande :
-
 \begin{CodeBlock}{bash}
 frama-c-gui your-file.c -wp -wp-rte
 \end{CodeBlock}
-
-
 qui devrait échouer. Adapter le contrat en ajoutant la bonne précondition.
 
 
@@ -666,7 +720,7 @@ caractère reçu en entrée est une lettre de l'alphabet. Utiliser la relation
 d'équivalence  \CodeInline{<==>}.
 
 
-\CodeBlockInput{c}{ex-3-alphabet.c}
+\CodeBlockInput[5]{c}{ex-3-alphabet.c}
 
 
 Lancer la commande :
@@ -677,7 +731,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Toutes les obligations de preuve devraient être prouvées, y compris les
+Toutes les conditions de vérification devraient être prouvées, y compris les
 assertions dans la fonction main.
 
 
@@ -685,12 +739,12 @@ assertions dans la fonction main.
 
 
 Écrire la postcondition de la fonction suivante qui retourne le nombre de
-jours en fonction du mois reçu en entrée (NB: nous considérons que le mois
+jours en fonction du mois reçu en entrée (NB : nous considérons que le mois
 reçu est entre 1 et 12), pour février, nous considérons uniquement le cas
 où il a 28 jours, nous verrons plus tard comment régler ce problème :
 
 
-\CodeBlockInput{c}{ex-4-day-month.c}
+\CodeBlockInput[5]{c}{ex-4-day-month.c}
 
 
 Lancer la commande :
@@ -701,7 +755,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Lorsque la preuve que la fonction respecte son contrat est établie, lancer
+Lorsque la preuve que la fonction est conforme à contrat est établie, lancer
 la commande :
 
 \begin{CodeBlock}{bash}
@@ -723,7 +777,7 @@ Par exemple :
 \begin{CodeBlock}{c}
 //@ assert 13 \in { 1, 2, 3, 4, 5 } ; // FAUX
 //@ assert 3  \in { 1, 2, 3, 4, 5 } ; // VRAI
-+\end{CodeBlock}
+\end{CodeBlock}
 
 
 Modifier la postcondition en utilisant cette notation.
@@ -736,10 +790,10 @@ Cette fonction reçoit deux valeurs d'angle en entrée et retourne
 la valeur du dernier angle composant le triangle correspondant en se
 reposant sur la propriété que la somme des angles d'un triangle vaut
 180 degrés. Écrire la postcondition qui exprime que la somme des trois
-angle vaut 180.
+angles vaut 180.
 
 
-\CodeBlockInput{c}{ex-5-last-angle.c}
+\CodeBlockInput[5]{c}{ex-5-last-angle.c}
 
 
 Lancer la commande :
@@ -750,7 +804,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Lorsque la preuve que la fonction respecte son contrat est établie, lancer
+Lorsque la preuve que la fonction est conforme à son contrat est établie, lancer
 la commande :
 
 \begin{CodeBlock}{bash}

@@ -1,0 +1,31 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing ex-3-add-ptr-answer-1.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function add
+[rte:annot] annotating function main
+[wp] [Valid] Goal add_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal add_terminates (Cfg) (Trivial)
+[wp] 16 goals scheduled
+[wp] [Valid] typed_add_ensures (Qed)
+[wp] [Valid] typed_add_assert_rte_mem_access (Qed)
+[wp] [Valid] typed_add_assert_rte_mem_access_2 (Qed)
+[wp] [Valid] typed_add_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_add_assert_rte_signed_overflow_2 (Qed)
+[wp] [Valid] typed_add_assigns (Qed)
+[wp] [Valid] typed_main_terminates (Qed)
+[wp] [Valid] typed_main_exits (Qed)
+[wp] [Valid] typed_main_assert (Qed)
+[wp] [Valid] typed_main_assert_2 (Qed)
+[wp] [Valid] typed_main_assert_3 (Qed)
+[wp] [Valid] typed_main_assert_4 (Qed)
+[wp] [Valid] typed_main_call_add_requires (Qed)
+[wp] [Valid] typed_main_call_add_requires_2 (Qed)
+[wp] [Valid] typed_main_call_add_2_requires (Qed)
+[wp] [Valid] typed_main_call_add_2_requires_2 (Qed)
+[wp] Proved goals:   18 / 18
+  Terminating:     1
+  Unreachable:     1
+  Qed:            16
+[wp:pedantic-assigns] ex-3-add-ptr-answer-1.c:13: Warning: 
+  No 'assigns' specification for function 'main'.
+  Callers assumptions might be imprecise.

@@ -4,7 +4,7 @@ can be proved in isolation of the rest of the proof of a program by automatic or
 it states can be safely used to simplify the reasoning in other, more complex
 proofs, without having to prove it again. For example, if we state a lemma $L$
 that says $P \Rightarrow Q$ in any case, if at some point in another proof, we
-have to prove $Q$ and we know $P$, we can directly conclude by using the lemma
+have to prove $Q$, and we know $P$, we can directly conclude by using the lemma
 $L$ without having to perform again the reasoning that brings us from $P$ to
 $Q$.
 
@@ -62,17 +62,17 @@ properties about them:
 
 
 
-\CodeBlockInput[8][18]{c}{linear-0.c}
+\CodeBlockInput[12][22]{c}{linear-0.c}
 
 
 
 For these proofs, Alt-ergo, will probably not be able to discharge all
-generated verification conditions. In this case, Z3 will certainly perform
-it. We can then write the following example code:
+generated verification conditions. In this case, Z3 will certainly succeed
+in finishing the remaining ones. We can then write the following example code:
 
 
 
-\CodeBlockInput[20][48]{c}{linear-0.c}
+\CodeBlockInput[24][52]{c}{linear-0.c}
 
 
 
@@ -121,6 +121,33 @@ Note that this lemma is easily proved by SMT solvers. We will see later some
 examples where it is not so easy to get a proof.
 
 
+\levelThreeTitle{Check lemma}
+
+
+Like assertions, it is possible to use a \CodeInline{check} version of lemmas:
+
+
+\begin{CodeBlock}{c}
+/*@
+  check lemma name_of_the_lemma { Label0, ..., LabelN }:
+    property ;
+*/
+\end{CodeBlock}
+
+
+A \CodeInline{check lemma} annotation asks WP to generate a verification
+condition. But, contrarily to standard lemmas, the knowledge that the
+corresponding property is verified will not be added to the context of the
+proofs. Thus, SMT solvers will not be able to use it for other proofs. This
+kind of annotations can be useful to gain confidence about global annotations,
+testing whether they can be used in some situations, or on the opposite, that
+some unwanted properties cannot be proved.
+
+
+There is no \CodeInline{admit lemma} annotation, these are \CodeInline{axiom}
+annotations that are described in
+Section~\ref{l2:acsl-logic-definitions-axiomatic}.
+
 
 \levelThreeTitle{Exercises}
 
@@ -130,14 +157,13 @@ examples where it is not so easy to get a proof.
 
 
 
-Write a lemma that state that for three integers $x$, $y$ and $z$, if $x$ is
-greater or equals to $0$, if $z$ is greater or equals to $y$, then $x * z$ is
-greater or equals to $x * y$.
+Write a lemma that states that for three integers $x$, $y$ and $z$, if $x$ is
+greater than or equal to $0$, if $z$ is greater than or equal to $y$, then
+$x * z$ is greater than or equal to $x * y$.
 
 
-This lemma will not be proved by SMT solvers, however if you ask a proof with
-Coq, the default tactic will probably discharge this verification condition
-automatically.
+This lemma will not be proved by SMT solvers. We provide a solution and the
+corresponding Coq proof on the GitHub repository of this book.
 
 
 \levelFourTitle{Locally sorted to globally sorted}
@@ -145,17 +171,17 @@ automatically.
 
 
 The following program contains a function that requires an array to be sorted
-in the sense that each element is lower or equals to the element that follows it
-and calls the binary search function.
+in the sense that each element is lower than or equal to the element that
+follows it and calls the binary search function.
 
 
-\CodeBlockInput[59][81]{c}{ex-2-sorted-link.c}
+\CodeBlockInput[66]{c}{ex-2-sorted-link.c}
 
 
 Take back your proved binary search function from the
 exercise~\ref{l4:acsl-properties-predicates-ex-bsearch}. You might notice that
 the precondition of the binary search function is stronger than what we know in
-precondition of the \CodeInline{bsearch\_callee}. However, our precondition
+precondition of the \CodeInline{bsearch\_callee} function. However, our precondition
 implies that the array is globally sorted. Write a lemma that states that if
 an array is \CodeInline{element\_level\_sorted} then it is \CodeInline{sorted}.
 This lemma will probably not be proved by SMT solvers, all remaining properties
@@ -188,7 +214,7 @@ given offset (named \CodeInline{shift}). The second performs two successive
 shifts on the same array.
 
 
-\CodeBlockInput{c}{ex-4-shift-transitivity.c}
+\CodeBlockInput[5]{c}{ex-4-shift-transitivity.c}
 
 
 Complete the predicates \CodeInline{shifted} and \CodeInline{unchanged}.
@@ -230,7 +256,7 @@ The following program is composed of two functions. The function
 performs a binary search.
 
 
-\CodeBlockInput{c}{ex-5-shift-sorted.c}
+\CodeBlockInput[5]{c}{ex-5-shift-sorted.c}
 
 
 Take back your proved binary search function from the

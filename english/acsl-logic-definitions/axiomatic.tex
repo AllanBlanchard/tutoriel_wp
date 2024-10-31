@@ -112,7 +112,7 @@ axiomatically as follows:
 
 
 
-In this axiomatic definition, our function has no body. Its
+In this axiomatic definition, our function does not have a body. Its
 behavior is only defined by the axioms we have stated about it.
 Except this, nothing changes, in particular the logic function can
 be used in our specification just as before.
@@ -121,7 +121,7 @@ be used in our specification just as before.
 
 A small subtlety that we must take care of is the fact that if some
 axioms state properties about the content of some pointed memory cells,
-we have to specify considered memory blocks using the \texttt{reads}
+we have to specify considered memory blocks using the \CodeInline{reads}
 notation in the declaration. If we omit such a specification, the
 predicate or function will be considered to be stated about the received
 pointers and not about pointer memory blocks. So, if the code modifies
@@ -131,13 +131,13 @@ potentially different.
 
 
 
-For example, if we take the inductive property we stated for "zeroed" in the
-previous chapter, we can write it using an axiomatic definition, and it will be
-written like this:
+For example, if we take the inductive property we stated for ``zeroed''
+in the previous chapter, we can write it using an axiomatic definition, and it
+will be written like this:
 
 
 
-\CodeBlockInput[1][12]{c}{reset-0.c}
+\CodeBlockInput[5][16]{c}{reset-0.c}
 
 
 
@@ -152,7 +152,7 @@ an information for axiomatically defined properties.
 
 By adding axioms to our knowledge base, we can produce more complex
 proofs since some part of these proofs, expressed by axioms, do not need
-to be proved anymore (they are already specified to be true) shortening
+to be proved (they are already specified to be true) shortening
 the proof process. However, using axiomatic definitions, \textbf{we must
 be extremely careful}. Indeed, even a small error could introduce false
 in the knowledge base, making our whole reasoning futile. Our reasoning
@@ -215,23 +215,48 @@ axiomatic definition, removing the specification of the values that are
 read by the predicate (\CodeInline{reads a[b .. e-1]}), the proof
 will still be performed, but will not prove anything about the content
 of the arrays. For example, the following function:
-
-
-
 \CodeBlockInput[16][25]{c}{all-zeroes-bad.c}
-
-
-
 is proved to be correct, while we obviously changed a value in the array
 and the value is not 0 anymore.
 
 
 
 Note that unlike inductive definitions, where Why3 provides us a way to control
-that what we write in ACSL is relatively well defined, we do not have such a
+that what we write in ACSL is relatively well-defined, we do not have such a
 mechanism for axiomatic definitions. Basically, even with Why3 such a definition
 is translated into a list of axioms that are thus assumed.
 
+
+\levelThreeTitle{Cluster of axiomatic blocks}
+
+
+Most global annotations (logic functions, predicates, lemmas, ...) can be
+defined at two different levels: either at top-level, the level of the
+functions, global variables, etc. (except for axioms and abstract functions and
+predicates) or in axiomatic blocks. While top-level global annotations (in
+particular lemmas) are always embedded in the context of verification
+conditions, it is not the case for the annotations in axiomatic blocks.
+
+
+In the following example:
+
+
+\CodeBlockInput[5]{c}{cluster.c}
+
+
+Since the \CodeInline{ensures} clause only uses \CodeInline{P} which is defined
+in the axiomatic block \CodeInline{X}, WP only loads the axiom \CodeInline{x}.
+On the opposite, if we replace \CodeInline{P(p)} with \CodeInline{Q(p)} in the
+\CodeInline{ensures} clause, WP loads the axiomatic block \CodeInline{Y}, thus
+the axiom \CodeInline{y} that uses \CodeInline{P}. Consequently, the axiomatic
+block \CodeInline{X} is loaded too. The transitive closure of the loaded
+axiomatic blocks forms a cluster of axiomatic definitions.
+
+
+One can use this behavior to avoid providing too many lemmas and axioms to SMT
+solvers. This can improve proof performances in some situations. We will present
+more details about how to guide proof using lemmas in
+Section~\ref{l2:proof-methodologies-triggering-lemmas}.
 
 
 \levelThreeTitle{Example: counting occurrences of a value}
@@ -248,7 +273,6 @@ what is the number of occurrences of a value in an array:
 
 
 We have three different cases:
-
 \begin{itemize}
 \item
   the considered range of values is empty: the number of occurrences is
@@ -262,7 +286,6 @@ We have three different cases:
   not the one we are searching for: the number of occurrences is the number
   of occurrences in the current range without the last element.
 \end{itemize}
-
 Then, we can write the C function that computes the number of
 occurrences of a value in an array and prove it:
 
@@ -272,8 +295,8 @@ occurrences of a value in an array and prove it:
 
 
 
-An alternative way to specify, in this code, that \texttt{result} is at
-most \texttt{i}, is to express a more general lemma about the number of
+An alternative way to specify, in this code, that \CodeInline{result} is at
+most \CodeInline{i}, is to express a more general lemma about the number of
 occurrences of a value in an array, since we know that it is
 comprised between 0 and the size of maximum considered range of values:
 
@@ -298,13 +321,13 @@ Here, we still have to realize the proof of the lemma to get a complete
 proof.
 
 
-\levelThreeTitle{Example: The strlen function}
+\levelThreeTitle{Example: The \CodeInline{strlen} function}
 
 
 In this section, let us prove the C \CodeInline{strlen} function:
 
 
-\CodeBlockInput{c}{strlen-0.c}
+\CodeBlockInput[5]{c}{strlen-0.c}
 
 
 First, we have to provide a suitable contract. Let us suppose that we
@@ -336,11 +359,11 @@ a contract for \CodeInline{strlen}:
 
 
 
-\CodeBlockInput[10][20]{c}{strlen-step.c}
+\CodeBlockInput[14][24]{c}{strlen-step.c}
 
 
 
-Defining the logic function \CodeInline{strlen} is a bit tricky. Indeed
+Defining the logic function \CodeInline{strlen} is a bit tricky. Indeed,
 we want to compute the length of a string by finding the character
 \CodeInline{'\textbackslash{}0'}, we expect to find it but in fact, we
 can easily imagine that we receive a string of infinite length. In this case,
@@ -391,7 +414,6 @@ integers do not overflow:
 
 
 
-
 \image{strlen-failed}
 
 
@@ -412,7 +434,7 @@ that the value of \CodeInline{strlen(s)} is defined to be the index of
 the first \CodeInline{'\textbackslash{}0'} in the array, the converse is
 not true: knowing that the value of \CodeInline{strlen(s)} is positive
 is not enough to deduce that the value at the corresponding index is
-\CodeInline{'\textbackslash{}0'}. Thus we extend the axiomatic definition
+\CodeInline{'\textbackslash{}0'}. Thus, we extend the axiomatic definition
 with another proposition that gives us this fact (we also add one for the
 values that precede the \CodeInline{strlen(s)} index even if here, it is
 not necessary):
@@ -444,7 +466,7 @@ The following program cannot be proved with the axiomatic definition we
 previously defined about occurrences counting:
 
 
-\CodeBlockInput[14][26]{c}{ex-1-occurrences_of.c}
+\CodeBlockInput[18][30]{c}{ex-1-occurrences_of.c}
 
 
 Re-express the axiomatic definition in a form that allows to prove the
@@ -459,7 +481,7 @@ an axiomatic definition, write the contract of the \CodeInline{gcd} function and
 prove it:
 
 
-\CodeBlockInput{c}{ex-2-gcd.c}
+\CodeBlockInput[5]{c}{ex-2-gcd.c}
 
 
 \levelFourTitle{Sum of the N first integers}
@@ -470,7 +492,7 @@ integers as an axiomatic definition. Write the contract of the following
 \CodeInline{sum\_n} function and prove it:
 
 
-\CodeBlockInput{c}{ex-3-sum-N-first-ints.c}
+\CodeBlockInput[5]{c}{ex-3-sum-N-first-ints.c}
 
 
 \levelFourTitle{Permutation}
@@ -483,4 +505,4 @@ permutation predicate using an axiomatic definition. Take care of the
 two memory labels).
 
 
-\CodeBlockInput{c}{ex-4-sort.c}
+\CodeBlockInput[5]{c}{ex-4-sort.c}

@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:+"-warn-unsigned-overflow -warn-unsigned-downcast"
+*/
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -26,7 +30,7 @@
       l_occurrences_of(v,in,from,to) == l_occurrences_of(v,in,from,to-1);
   }
 */
-/*@ 
+/*@
   lemma l_occurrences_of_union:
     \forall int v, int* in, integer from, split, to;
     from <= split <= to ==>
@@ -34,7 +38,7 @@
     l_occurrences_of(v,in,from,split) + l_occurrences_of(v,in,split,to) ;
 */
 
-/*@ 
+/*@
   predicate permutation{L1, L2}(int* in, integer from, integer to) =
     \forall int v ; l_occurrences_of{L1}(v, in, from, to) ==
                     l_occurrences_of{L2}(v, in, from, to) ;
@@ -45,7 +49,7 @@
   requires sorted(a, beg, last) ;
 
   assigns a[ beg .. last ] ;
-  
+
   ensures permutation{Pre, Post}(a, beg, last+1);
   ensures sorted(a, beg, last+1) ;
 */

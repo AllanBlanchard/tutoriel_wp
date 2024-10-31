@@ -6,8 +6,7 @@
 
   ensures *a <= *b <= *c ;
   ensures { *a, *b, *c } == \old({ *a, *b, *c }) ;
-  
-  ensures \old(*a == *b == *c) ==> *a == *b == *c ;
+
   ensures \old(*a == *b < *c || *a == *c < *b || *b == *c < *a) ==> *a == *b ;
   ensures \old(*a == *b > *c || *a == *c > *b || *b == *c > *a) ==> *b == *c ;
 */

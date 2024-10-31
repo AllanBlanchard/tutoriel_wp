@@ -6,8 +6,7 @@
 
   ensures *a <= *b <= *c ;
   ensures { *a, *b, *c } == \old({ *a, *b, *c }) ;
-  
-  ensures \old(*a == *b == *c) ==> *a == *b == *c ;
+
   ensures \old(*a == *b < *c || *a == *c < *b || *b == *c < *a) ==> *a == *b ;
   ensures \old(*a == *b > *c || *a == *c > *b || *b == *c > *a) ==> *b == *c ;
 */
@@ -41,3 +40,16 @@ void test(){
   order_3(&a4, &b4, &c4) ;
   //@ assert a4 == 4 && b4 == 4 && c4 == 5 ;
 }
+
+/*
+  Adding:
+    ensures \old(*a == *b == *c) ==> *a == *b == *c ;
+  is not needed.
+*/
+
+/*@ check lemma Prove_that_it_is_not_needed {L1, L2}:
+    \forall int *a, *b, *c ;
+      \at({ *a, *b, *c }, L2) == \at({ *a, *b, *c }, L1) ==>
+      \at(*a == *b == *c, L1) ==>
+        \at(*a == *b == *c, L2) ;
+*/

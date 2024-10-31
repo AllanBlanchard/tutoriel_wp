@@ -1,0 +1,3 @@
+[kernel] Parsing ex-1-days-month.c (with preprocessing)
+[kernel:CERT:MSC:37] ex-1-days-month.c:13: Warning: 
+  Body of function days_of falls-through. Adding a return statement

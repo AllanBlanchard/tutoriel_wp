@@ -4,13 +4,10 @@
 It is often difficult to ensure that our programs have only correct
 behaviors. Moreover, it is already complex to establish good criteria
 that make us confident enough to say that a program works correctly:
-
-
-
 \begin{itemize}
 \item
   beginners simply ``try'' to use their programs and consider that
-  these programs work if they do not crash (which is not a really good
+  these programs work if they do not crash (which is not an excellent
   indicator in C language),
 \item
   more advanced developers establish some test cases for which they know
@@ -38,7 +35,7 @@ choose good tests.
 
 
 The goal of program proof is to ensure that, for any input provided to a
-given program, if it respects the specification, then the program will
+given program, if it conforms to the specification, then the program will
 only well-behave. However, since we cannot test everything, we will
 formally, mathematically, establish a proof that our software can only
 exhibit specified behaviors, and that runtime-errors are not part of
@@ -68,13 +65,11 @@ exist''. And, if this sentence is quite true, it is a bit misunderstood.
 
 First, we do not really define what we mean by ``bug-free''. Creating
 software always relies at least on two steps: we establish a specification
-of what we expect from the program and then we produce the source code of
+of what we expect from the program, and then we produce the source code of
 the program that must respect this specification. Moreover, we can add that
 our programming language itself defines what is the correct way to use it.
 On each of these aspects, an error can lead to the introduction of bugs that
 we can classify into three categories:
-
-
 \begin{itemize}
 \item the program is not correct, or does not have a defined behavior,
       according to the language specification (for example, a program
@@ -97,7 +92,7 @@ we can classify into three categories:
 Each of these categories can affect the safety and/or the security of our
 programs, but these two notions are not equivalent. Loosely speaking,
 in security a malicious entity that can attack the system, while in safety, we
-want to verify when used in a conform way, the system well behaves. Thus, safety
+want to verify when used in a correct way, the system well behaves. Thus, safety
 is a first before we can get security\footnote{Depending on the field you are
   working in, the term ``safety'' may have a very different sense. Namely, a
   \textit{safe} system must be a system that can never cause injuries to human
@@ -107,9 +102,8 @@ is a first before we can get security\footnote{Depending on the field you are
 
 
 In this tutorial, we will show how we can prove that implementations
-of our programs do not contains bugs related to the two first categories
+of our programs do not contain bugs related to the two first categories
 defined above, meaning that they conform to:
-
 \begin{itemize}
 \item the specification of our language,
 \item the specification that we have provided for them.
@@ -193,9 +187,9 @@ a chronometer could be the one presented here:
 We have a model of the behavior of our chronometer with the different
 states it can reach according to the different actions we can perform.
 However, we have not modeled how these states are implemented in the
-program (is this a C enumeration? a particular program point in the
-source code?), nor how the computation of the elapsed time is done (a single
-variable? multiple ones?). It would then be difficult to specify
+program (Is this a C enumeration? A particular program point in the
+source code?), nor how the computation of the elapsed time is done (A single
+variable? Multiple ones?). It would then be difficult to specify
 properties about our program. We could add some information:
 
 
@@ -207,7 +201,7 @@ properties about our program. We could add some information:
 
 
 
-Which gives us a more concrete model but that is still not precise
+Which gives us a more concrete model, but that is still not precise
 enough to ask interesting questions like: ``is it possible for the program
 to continue updating the time variable while the chronometer is on the Stopped
 state?'', as we do not model how the time measurement is updated by the
@@ -239,7 +233,7 @@ pleasant to read\textsuperscript{\ref{footnote:1}}.
 When we create an abstraction of a system, we approximate it, in order
 to limit the knowledge we have about it and make our reasoning easier. A
 constraint we must respect, if we want our analysis to be correct, is to
-never under-approximate behaviors: we would risk to remove a behavior
+never under-approximate behaviors: we would risk removing a behavior
 that contains an error (and thus miss it during the analysis). However,
 when we over-approximate the behaviors of the program, we can add
 behaviors that cannot happen, and if we add too many of them, we could
@@ -257,7 +251,7 @@ complex subtleties (which makes this model concrete).
 \footnotetext[1]{\label{footnote:1}
   There also exists formal methods which are
   interested in understanding how executable machine code work, for
-  example in order to understand what malwares do or to detect security
+  example in order to understand what malware does or to detect security
   breaches introduced during compilation.}
 
 
@@ -269,9 +263,6 @@ Hoare logic is a program formalization method proposed by
 \externalLink{Tony Hoare}{https://en.wikipedia.org/wiki/Charles_Antony_Richard_Hoare}
 in 1969 in a paper entitled \emph{An Axiomatic Basis for Computer
 Programming}. This method defines:
-
-
-
 \begin{itemize}
 \item   axioms, that are properties we admit, such as ``the skip action does
   not change the program state'',
@@ -315,7 +306,7 @@ When we do nothing, the postcondition is the precondition.
 
 
 Along this tutorial, we will present the semantics of different program
-constructs (conditional blocks, loops, etc) using Hoare logic. So,
+constructs (conditional blocks, loops, etc.) using Hoare logic. So,
 let us skip these details now since we will work on it later. It is
 not necessary to memorize these notions nor to understand all the
 theoretical background, but it is still useful to have some ideas about
@@ -337,12 +328,12 @@ The weakest precondition calculus is a form of predicate transform
 semantics proposed by Dijkstra in 1975 in \emph{Guarded commands,
 non-determinacy and formal derivation of programs}.
 
-This title can appear complex but actually the content of the article is in
+This title can appear complex, but actually the content of the article is in
 fact quite simple. We have seen before that Hoare logic gives us rules that
 explain the behavior of the different actions of a program, but it does not say
 how to apply these rules to establish a complete proof of the program.
 
-Dijkstra reformulate the Hoare logic by explaining, in the triple
+Dijkstra reformulates the Hoare logic by explaining, in the triple
 $\{P\}\ C\ \{Q\}$, how the instruction, or the block of instructions,
 $C$ transforms the predicate $P$ in $Q$. This kind of reasoning is
 called \emph{forward-reasoning}. We calculate from the precondition and
@@ -366,7 +357,7 @@ a = 4;
 
 
 
-Ok, 4 is an allowed value for \texttt{a}.
+Ok, 4 is an allowed value for \CodeInline{a}.
 
 
 

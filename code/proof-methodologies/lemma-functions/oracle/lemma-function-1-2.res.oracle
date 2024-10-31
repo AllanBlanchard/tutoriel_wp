@@ -1,0 +1,34 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing lemma-function-1-2.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function bsearch_callee
+[kernel:annot:missing-spec] lemma-function-1-2.c:13: Warning: 
+  Neither code nor explicit exits, assigns and terminates for function bsearch,
+   generating default clauses. See -generated-spec-* options for more info
+[rte:annot] annotating function element_level_sorted_implies_sorted
+[wp] [Valid] Goal element_level_sorted_implies_sorted_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal element_level_sorted_implies_sorted_terminates (Cfg) (Trivial)
+[wp] 15 goals scheduled
+[wp] [Valid] typed_element_level_sorted_implies_sorted_ensures (Qed)
+[wp] [Valid] typed_element_level_sorted_implies_sorted_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_element_level_sorted_implies_sorted_loop_invariant_established (Qed)
+[wp] [Valid] typed_element_level_sorted_implies_sorted_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_element_level_sorted_implies_sorted_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_element_level_sorted_implies_sorted_assert (Alt-Ergo) (Cached)
+[wp] [Valid] typed_element_level_sorted_implies_sorted_loop_assigns (Qed)
+[wp] [Valid] typed_element_level_sorted_implies_sorted_assigns (Qed)
+[wp] [Valid] typed_element_level_sorted_implies_sorted_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_element_level_sorted_implies_sorted_loop_variant_positive (Qed)
+[wp] [Valid] typed_bsearch_callee_terminates (Qed)
+[wp] [Valid] typed_bsearch_callee_exits (Qed)
+[wp] [Valid] typed_bsearch_callee_call_element_level_sorted_implies_sorted_requires (Qed)
+[wp] [Valid] typed_bsearch_callee_call_bsearch_requires (Qed)
+[wp] [Valid] typed_bsearch_callee_call_bsearch_requires_2 (Qed)
+[wp] Proved goals:   17 / 17
+  Terminating:     1
+  Unreachable:     1
+  Qed:            10
+  Alt-Ergo:        5
+[wp:pedantic-assigns] lemma-function-1-2.c:37: Warning: 
+  No 'assigns' specification for function 'bsearch_callee'.
+  Callers assumptions might be imprecise.

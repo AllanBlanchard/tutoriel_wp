@@ -1,3 +1,7 @@
+/* run.config
+   OPT:
+*/
+
 int sum_n(int n){
   if(n < 1) return 0 ;
 

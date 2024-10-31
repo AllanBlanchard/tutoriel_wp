@@ -1,6 +1,10 @@
+/* run.config
+   OPT:
+*/
+
 #include <limits.h>
 
-/*@ 
+/*@
   axiomatic GCD {
     // ...
   }

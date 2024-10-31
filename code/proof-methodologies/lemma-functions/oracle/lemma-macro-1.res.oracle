@@ -1,0 +1,28 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing lemma-macro-1.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function bsearch_callee
+[kernel:annot:missing-spec] lemma-macro-1.c:13: Warning: 
+  Neither code nor explicit exits, assigns and terminates for function bsearch,
+   generating default clauses. See -generated-spec-* options for more info
+[wp] 14 goals scheduled
+[wp] [Valid] typed_bsearch_callee_terminates (Qed)
+[wp] [Valid] typed_bsearch_callee_exits (Qed)
+[wp] [Valid] typed_bsearch_callee_assert (Qed)
+[wp] [Valid] typed_bsearch_callee_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_callee_loop_invariant_established (Qed)
+[wp] [Valid] typed_bsearch_callee_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_callee_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_callee_assert_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_callee_assert_3 (Qed)
+[wp] [Valid] typed_bsearch_callee_loop_assigns (Qed)
+[wp] [Valid] typed_bsearch_callee_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_callee_loop_variant_positive (Qed)
+[wp] [Valid] typed_bsearch_callee_call_bsearch_requires (Qed)
+[wp] [Valid] typed_bsearch_callee_call_bsearch_requires_2 (Qed)
+[wp] Proved goals:   14 / 14
+  Qed:             9
+  Alt-Ergo:        5
+[wp:pedantic-assigns] lemma-macro-1.c:30: Warning: 
+  No 'assigns' specification for function 'bsearch_callee'.
+  Callers assumptions might be imprecise.

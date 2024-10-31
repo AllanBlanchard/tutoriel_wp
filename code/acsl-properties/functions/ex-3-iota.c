@@ -1,3 +1,7 @@
+/* run.config
+   OPT:
+*/
+
 #include <limits.h>
 #include <stddef.h>
 

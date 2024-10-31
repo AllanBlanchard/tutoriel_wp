@@ -1,0 +1,35 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing search-5.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function foo
+[rte:annot] annotating function search
+[wp] [Valid] Goal search_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal search_terminates (Cfg) (Trivial)
+[wp] 16 goals scheduled
+[wp] [Valid] typed_search_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_loop_invariant_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_loop_invariant_established (Qed)
+[wp] [Valid] typed_search_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_loop_assigns (Qed)
+[wp] [Valid] typed_search_assigns_part1 (Qed)
+[wp] [Valid] typed_search_assigns_part2 (Qed)
+[wp] [Valid] typed_search_assigns_part3 (Qed)
+[wp] [Valid] typed_search_loop_variant_decrease (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_loop_variant_positive (Qed)
+[wp] [Valid] typed_foo_terminates (Qed)
+[wp] [Valid] typed_foo_exits (Qed)
+[wp] [Valid] typed_foo_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Valid] typed_foo_call_search_requires (Alt-Ergo) (Cached)
+[wp] Proved goals:   18 / 18
+  Terminating:     1
+  Unreachable:     1
+  Qed:             8
+  Alt-Ergo:        8
+[wp:pedantic-assigns] search-5.c:10: Warning: 
+  No 'assigns \result \from ...' specification for function 'search'returning pointer type.
+  Callers assumptions might be imprecise.
+[wp:pedantic-assigns] search-5.c:25: Warning: 
+  No 'assigns' specification for function 'foo'.
+  Callers assumptions might be imprecise.

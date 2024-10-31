@@ -1,0 +1,28 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing swap-2.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function main
+[rte:annot] annotating function swap
+[wp] [Valid] Goal swap_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal swap_terminates (Cfg) (Trivial)
+[wp] 12 goals scheduled
+[wp] [Valid] typed_swap_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_swap_assert_rte_mem_access (Alt-Ergo) (Cached)
+[wp] [Valid] typed_swap_assert_rte_mem_access_2 (Qed)
+[wp] [Valid] typed_swap_assert_rte_mem_access_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_swap_assert_rte_mem_access_4 (Qed)
+[wp] [Valid] typed_swap_assigns_part1 (Qed)
+[wp] [Valid] typed_swap_assigns_part2 (Qed)
+[wp] [Valid] typed_main_terminates (Qed)
+[wp] [Valid] typed_main_exits (Qed)
+[wp] [Valid] typed_main_assert (Qed)
+[wp] [Valid] typed_main_assert_2 (Qed)
+[wp] [Valid] typed_main_call_swap_requires (Qed)
+[wp] Proved goals:   14 / 14
+  Terminating:     1
+  Unreachable:     1
+  Qed:             9
+  Alt-Ergo:        3
+[wp:pedantic-assigns] swap-2.c:16: Warning: 
+  No 'assigns' specification for function 'main'.
+  Callers assumptions might be imprecise.

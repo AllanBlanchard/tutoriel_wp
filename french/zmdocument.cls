@@ -425,6 +425,7 @@
      fontsize=\scriptsize,
      firstline=#1,
      lastline=#2,
+     firstnumber=1,
      numbersep=3mm
    }, % Removed: highlightlines={#2}
    enhanced,

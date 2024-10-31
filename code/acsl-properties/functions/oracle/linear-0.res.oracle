@@ -1,0 +1,18 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing linear-0.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function function
+[wp] [Valid] Goal function_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal function_terminates (Cfg) (Trivial)
+[wp] 5 goals scheduled
+[wp] [Valid] typed_function_ensures (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_function_assert_rte_signed_overflow (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_function_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_function_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_function_assigns (Qed)
+[wp] Proved goals:    4 / 7
+  Terminating:     1
+  Unreachable:     1
+  Qed:             1
+  Alt-Ergo:        1
+  Unsuccess:       3

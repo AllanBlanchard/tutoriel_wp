@@ -2,8 +2,8 @@ From the beginning of this tutorial, we have used different predicates
 and logic functions provided by ACSL: \CodeInline{\textbackslash{}valid},
 \CodeInline{\textbackslash{}valid\_read}, \CodeInline{\textbackslash{}separated},
 \CodeInline{\textbackslash{}old} and \CodeInline{\textbackslash{}at}. There are others
-built-in predicates but we will not present them all, the reader can refer to
-\externalLink{the documentation (ACSL implementation)}{http://frama-c.com/download.html}
+built-in predicates, but we will not present them all, the reader can refer to
+\externalLink{the documentation (ACSL implementation)}{https://frama-c.com/html/get-frama-c.html}
 (note that everything is not necessarily supported by WP).
 
 
@@ -50,7 +50,7 @@ that can be used by our solvers to make their task easier.
 
 All techniques we have talked about are safe, since they do not \emph{a
 priori} allow us to write false or contradictory specifications. At
-least if the specification only use such logic constructions and if
+least if the specification only uses such logic constructions and if
 every lemma, precondition (at call site), every postcondition,
 assertion, variant and invariant are correctly proved, the code is
 correct.
