@@ -2,11 +2,15 @@
 [kernel] Parsing ex-1-addition-answer.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function add
+[wp] [Valid] Goal add_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal add_terminates (Cfg) (Trivial)
 [wp] 3 goals scheduled
 [wp] [Valid] typed_add_ensures (Qed)
 [wp] [Valid] typed_add_assert_rte_signed_overflow (Qed)
 [wp] [Valid] typed_add_assert_rte_signed_overflow_2 (Qed)
-[wp] Proved goals:    3 / 3
+[wp] Proved goals:    5 / 5
+  Terminating:     1
+  Unreachable:     1
   Qed:             3
 [wp:pedantic-assigns] ex-1-addition-answer.c:7: Warning: 
   No 'assigns' specification for function 'add'.

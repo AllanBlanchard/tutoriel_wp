@@ -2,9 +2,15 @@
 [kernel] Parsing ex-2-trigger.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function g
-[wp] 1 goal scheduled
+[kernel:annot:missing-spec] ex-2-trigger.c:19: Warning: 
+  Neither code nor explicit exits and terminates for function f,
+   generating default clauses. See -generated-spec-* options for more info
+[wp] 3 goals scheduled
+[wp] [Valid] typed_g_terminates (Qed)
 [wp] [Unsuccess] typed_g_ensures (Alt-Ergo) (Cached)
-[wp] Proved goals:    0 / 1
+[wp] [Valid] typed_g_exits (Qed)
+[wp] Proved goals:    2 / 3
+  Qed:             2
   Unsuccess:       1
 [wp:pedantic-assigns] ex-2-trigger.c:24: Warning: 
   No 'assigns' specification for function 'g'.

@@ -4,9 +4,9 @@
 [rte:annot] annotating function element_level_sorted_implies_greater
 [rte:annot] annotating function element_level_sorted_implies_greater_2
 [rte:annot] annotating function element_level_sorted_implies_sorted
-[kernel:annot:missing-spec] lemma-function-1-3.c:52: Warning: 
-  Neither code nor implicit assigns clause for function bsearch, generating default assigns from the prototype
-[wp] 18 goals scheduled
+[wp] [Valid] Goal element_level_sorted_implies_sorted_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal element_level_sorted_implies_sorted_terminates (Cfg) (Trivial)
+[wp] 22 goals scheduled
 [wp] [Valid] typed_element_level_sorted_implies_sorted_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_element_level_sorted_implies_sorted_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_element_level_sorted_implies_sorted_loop_invariant_established (Qed)
@@ -17,14 +17,20 @@
 [wp] [Valid] typed_element_level_sorted_implies_sorted_assigns (Qed)
 [wp] [Valid] typed_element_level_sorted_implies_sorted_loop_variant_decrease (Alt-Ergo) (Cached)
 [wp] [Valid] typed_element_level_sorted_implies_sorted_loop_variant_positive (Qed)
+[wp] [Valid] typed_element_level_sorted_implies_greater_terminates (Qed)
 [wp] [Valid] typed_element_level_sorted_implies_greater_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_element_level_sorted_implies_greater_exits (Qed)
 [wp] [Valid] typed_element_level_sorted_implies_greater_assigns_exit (Qed)
 [wp] [Valid] typed_element_level_sorted_implies_greater_assigns_normal (Qed)
 [wp] [Valid] typed_element_level_sorted_implies_greater_call_element_level_sorted_implies_sorted_requires (Alt-Ergo) (Cached)
+[wp] [Valid] typed_element_level_sorted_implies_greater_2_terminates (Qed)
 [wp] [Valid] typed_element_level_sorted_implies_greater_2_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_element_level_sorted_implies_greater_2_exits (Qed)
 [wp] [Valid] typed_element_level_sorted_implies_greater_2_assigns_exit (Qed)
 [wp] [Valid] typed_element_level_sorted_implies_greater_2_assigns_normal (Qed)
 [wp] [Valid] typed_element_level_sorted_implies_greater_2_call_element_level_sorted_implies_sorted_requires (Alt-Ergo) (Cached)
-[wp] Proved goals:   18 / 18
-  Qed:             8
+[wp] Proved goals:   24 / 24
+  Terminating:     1
+  Unreachable:     1
+  Qed:            12
   Alt-Ergo:       10

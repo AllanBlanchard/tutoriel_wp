@@ -3,7 +3,9 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function show_the_difference
 [rte:annot] annotating function vec_add
-[wp] 26 goals scheduled
+[wp] [Valid] Goal vec_add_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal vec_add_terminates (Cfg) (Trivial)
+[wp] 28 goals scheduled
 [wp] [Valid] typed_vec_add_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_vec_add_ensures_2 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_vec_add_loop_invariant_preserved (Alt-Ergo) (Cached)
@@ -23,13 +25,17 @@
 [wp] [Valid] typed_vec_add_assigns (Qed)
 [wp] [Valid] typed_vec_add_loop_variant_decrease (Alt-Ergo) (Cached)
 [wp] [Valid] typed_vec_add_loop_variant_positive (Qed)
+[wp] [Valid] typed_show_the_difference_terminates (Qed)
 [wp] [Valid] typed_show_the_difference_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_show_the_difference_exits (Qed)
 [wp] [Valid] typed_show_the_difference_assigns_exit (Qed)
 [wp] [Valid] typed_show_the_difference_assigns_normal (Qed)
 [wp] [Valid] typed_show_the_difference_call_vec_add_requires (Qed)
 [wp] [Valid] typed_show_the_difference_call_vec_add_requires_2 (Qed)
 [wp] [Valid] typed_show_the_difference_call_vec_add_requires_3 (Qed)
 [wp] [Valid] typed_show_the_difference_call_vec_add_requires_4 (Alt-Ergo) (Cached)
-[wp] Proved goals:   26 / 26
-  Qed:            11
+[wp] Proved goals:   30 / 30
+  Terminating:     1
+  Unreachable:     1
+  Qed:            13
   Alt-Ergo:       15

@@ -2,6 +2,8 @@
 [kernel] Parsing sort-false.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function fail_sort
+[wp] [Valid] Goal fail_sort_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal fail_sort_terminates (Cfg) (Trivial)
 [wp] 12 goals scheduled
 [wp] [Valid] typed_fail_sort_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_fail_sort_loop_invariant_preserved (Alt-Ergo) (Cached)
@@ -15,6 +17,8 @@
 [wp] [Valid] typed_fail_sort_assigns (Qed)
 [wp] [Valid] typed_fail_sort_loop_variant_decrease (Alt-Ergo) (Cached)
 [wp] [Valid] typed_fail_sort_loop_variant_positive (Qed)
-[wp] Proved goals:   12 / 12
+[wp] Proved goals:   14 / 14
+  Terminating:     1
+  Unreachable:     1
   Qed:             6
   Alt-Ergo:        6

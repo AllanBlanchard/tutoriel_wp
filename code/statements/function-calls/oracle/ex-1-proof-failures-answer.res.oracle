@@ -5,14 +5,20 @@
 [rte:annot] annotating function distance
 [rte:annot] annotating function old_distance
 [rte:annot] annotating function test
-[wp] 25 goals scheduled
+[wp] [Valid] Goal abs_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal abs_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal old_distance_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal old_distance_terminates (Cfg) (Trivial)
+[wp] 29 goals scheduled
 [wp] [Valid] typed_abs_ensures (Qed)
 [wp] [Valid] typed_abs_ensures_2 (Qed)
 [wp] [Valid] typed_abs_assert_rte_signed_overflow (Qed)
 [wp] [Valid] typed_abs_assigns_part1 (Qed)
 [wp] [Valid] typed_abs_assigns_part2 (Qed)
+[wp] [Valid] typed_distance_terminates (Qed)
 [wp] [Valid] typed_distance_ensures (Qed)
 [wp] [Valid] typed_distance_ensures_2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_distance_exits (Qed)
 [wp] [Valid] typed_distance_assert_rte_signed_overflow (Alt-Ergo) (Cached)
 [wp] [Valid] typed_distance_assert_rte_signed_overflow_2 (Qed)
 [wp] [Valid] typed_distance_assigns_exit (Qed)
@@ -27,12 +33,16 @@
 [wp] [Valid] typed_old_distance_assert_rte_signed_overflow_4 (Qed)
 [wp] [Valid] typed_old_distance_assigns_part1 (Qed)
 [wp] [Valid] typed_old_distance_assigns_part2 (Qed)
+[wp] [Valid] typed_test_terminates (Qed)
+[wp] [Valid] typed_test_exits (Qed)
 [wp] [Valid] typed_test_assert (Alt-Ergo) (Cached)
 [wp] [Valid] typed_test_call_old_distance_requires (Qed)
 [wp] [Valid] typed_test_call_old_distance_requires_2 (Qed)
 [wp] [Valid] typed_test_call_distance_requires (Qed)
-[wp] Proved goals:   25 / 25
-  Qed:            20
+[wp] Proved goals:   33 / 33
+  Terminating:     2
+  Unreachable:     2
+  Qed:            24
   Alt-Ergo:        5
 [wp:pedantic-assigns] ex-1-proof-failures-answer.c:40: Warning: 
   No 'assigns' specification for function 'test'.

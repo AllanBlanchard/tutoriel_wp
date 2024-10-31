@@ -5,7 +5,13 @@
 [rte:annot] annotating function is_digit
 [rte:annot] annotating function is_lower_alpha
 [rte:annot] annotating function is_upper_alpha
-[wp] 29 goals scheduled
+[wp] [Valid] Goal is_digit_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal is_digit_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal is_lower_alpha_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal is_lower_alpha_terminates (Cfg) (Trivial)
+[wp] [Valid] Goal is_upper_alpha_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal is_upper_alpha_terminates (Cfg) (Trivial)
+[wp] 31 goals scheduled
 [wp] [Valid] typed_is_lower_alpha_ensures (Qed)
 [wp] [Valid] typed_is_lower_alpha_assigns_part1 (Qed)
 [wp] [Valid] typed_is_lower_alpha_assigns_part2 (Qed)
@@ -20,6 +26,8 @@
 [wp] [Valid] typed_is_digit_assigns_part3 (Qed)
 [wp] [Valid] typed_character_kind_complete_digit_lower_other_upper (Alt-Ergo) (Cached)
 [wp] [Valid] typed_character_kind_disjoint_digit_lower_other_upper (Alt-Ergo) (Cached)
+[wp] [Valid] typed_character_kind_terminates (Qed)
+[wp] [Valid] typed_character_kind_exits (Qed)
 [wp] [Valid] typed_character_kind_assigns_exit_part1 (Qed)
 [wp] [Valid] typed_character_kind_assigns_exit_part2 (Qed)
 [wp] [Valid] typed_character_kind_assigns_exit_part3 (Qed)
@@ -35,6 +43,8 @@
 [wp] [Valid] typed_character_kind_upper_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_character_kind_digit_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_character_kind_other_ensures (Qed)
-[wp] Proved goals:   29 / 29
-  Qed:            25
+[wp] Proved goals:   37 / 37
+  Terminating:     3
+  Unreachable:     3
+  Qed:            27
   Alt-Ergo:        4

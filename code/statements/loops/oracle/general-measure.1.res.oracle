@@ -1,5 +1,8 @@
 [kernel] Parsing general-measure.c (with preprocessing)
 [wp] Running WP plugin...
+[kernel:annot:missing-spec] general-measure.c:8: Warning: 
+  Neither code nor explicit exits and terminates for function positive,
+   generating default clauses. See -generated-spec-* options for more info
 [wp:hypothesis] general-measure.c:21: Warning: 
   'lexico' relation must be well-founded
 [wp] Warning: Missing RTE guards

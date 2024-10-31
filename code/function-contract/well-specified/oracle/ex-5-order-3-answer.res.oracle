@@ -3,7 +3,9 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function order_3
 [rte:annot] annotating function test
-[wp] 41 goals scheduled
+[wp] [Valid] Goal order_3_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal order_3_terminates (Cfg) (Trivial)
+[wp] 43 goals scheduled
 [wp] [Valid] typed_check_lemma_Prove_that_it_is_not_needed (Alt-Ergo) (Cached)
 [wp] [Valid] typed_order_3_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_order_3_ensures_2 (Alt-Ergo) (Cached)
@@ -33,6 +35,8 @@
 [wp] [Valid] typed_order_3_assigns_part4 (Qed)
 [wp] [Valid] typed_order_3_assigns_part5 (Qed)
 [wp] [Valid] typed_order_3_assigns_part6 (Qed)
+[wp] [Valid] typed_test_terminates (Qed)
+[wp] [Valid] typed_test_exits (Qed)
 [wp] [Valid] typed_test_assert (Alt-Ergo) (Cached)
 [wp] [Valid] typed_test_assert_2 (Qed)
 [wp] [Valid] typed_test_assert_3 (Alt-Ergo) (Cached)
@@ -45,8 +49,10 @@
 [wp] [Valid] typed_test_call_order_3_3_requires_2 (Qed)
 [wp] [Valid] typed_test_call_order_3_4_requires (Qed)
 [wp] [Valid] typed_test_call_order_3_4_requires_2 (Qed)
-[wp] Proved goals:   41 / 41
-  Qed:            30
+[wp] Proved goals:   45 / 45
+  Terminating:     1
+  Unreachable:     1
+  Qed:            32
   Alt-Ergo:       11
 [wp:pedantic-assigns] ex-5-order-3-answer.c:26: Warning: 
   No 'assigns' specification for function 'test'.

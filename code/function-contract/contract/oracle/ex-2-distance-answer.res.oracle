@@ -2,6 +2,8 @@
 [kernel] Parsing ex-2-distance-answer.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function distance
+[wp] [Valid] Goal distance_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal distance_terminates (Cfg) (Trivial)
 [wp] 6 goals scheduled
 [wp] [Valid] typed_distance_ensures (Qed)
 [wp] [Valid] typed_distance_ensures_2 (Qed)
@@ -9,7 +11,9 @@
 [wp] [Valid] typed_distance_assert_rte_signed_overflow_2 (Qed)
 [wp] [Valid] typed_distance_assert_rte_signed_overflow_3 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_distance_assert_rte_signed_overflow_4 (Qed)
-[wp] Proved goals:    6 / 6
+[wp] Proved goals:    8 / 8
+  Terminating:     1
+  Unreachable:     1
   Qed:             4
   Alt-Ergo:        2
 [wp:pedantic-assigns] ex-2-distance-answer.c:10: Warning: 

@@ -2,9 +2,12 @@
 [kernel] Parsing lemma-macro-1.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function bsearch_callee
-[kernel:annot:missing-spec] lemma-macro-1.c:30: Warning: 
-  Neither code nor implicit assigns clause for function bsearch, generating default assigns from the prototype
-[wp] 12 goals scheduled
+[kernel:annot:missing-spec] lemma-macro-1.c:13: Warning: 
+  Neither code nor explicit exits, assigns and terminates for function bsearch,
+   generating default clauses. See -generated-spec-* options for more info
+[wp] 14 goals scheduled
+[wp] [Valid] typed_bsearch_callee_terminates (Qed)
+[wp] [Valid] typed_bsearch_callee_exits (Qed)
 [wp] [Valid] typed_bsearch_callee_assert (Qed)
 [wp] [Valid] typed_bsearch_callee_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_bsearch_callee_loop_invariant_established (Qed)
@@ -17,12 +20,9 @@
 [wp] [Valid] typed_bsearch_callee_loop_variant_positive (Qed)
 [wp] [Valid] typed_bsearch_callee_call_bsearch_requires (Qed)
 [wp] [Valid] typed_bsearch_callee_call_bsearch_requires_2 (Qed)
-[wp] Proved goals:   12 / 12
-  Qed:             7
+[wp] Proved goals:   14 / 14
+  Qed:             9
   Alt-Ergo:        5
-[wp:pedantic-assigns] lemma-macro-1.c:13: Warning: 
-  No 'assigns' specification for function 'bsearch'.
-  Callers assumptions might be imprecise.
 [wp:pedantic-assigns] lemma-macro-1.c:30: Warning: 
   No 'assigns' specification for function 'bsearch_callee'.
   Callers assumptions might be imprecise.

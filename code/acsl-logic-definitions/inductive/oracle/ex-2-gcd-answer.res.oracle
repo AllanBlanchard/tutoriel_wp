@@ -2,17 +2,22 @@
 [kernel] Parsing ex-2-gcd-answer.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function gcd
-[wp] 10 goals scheduled
+[wp] [Valid] Goal gcd_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal gcd_terminates (Cfg) (Trivial)
+[wp] 11 goals scheduled
 [wp] [Valid] typed_gcd_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_gcd_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_gcd_loop_invariant_established (Qed)
 [wp] [Valid] typed_gcd_loop_invariant_2_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_gcd_loop_invariant_2_established (Qed)
 [wp] [Valid] typed_gcd_assert_rte_division_by_zero (Qed)
+[wp] [Valid] typed_gcd_assert_rte_signed_overflow (Alt-Ergo) (Cached)
 [wp] [Valid] typed_gcd_loop_assigns (Qed)
 [wp] [Valid] typed_gcd_assigns (Qed)
 [wp] [Valid] typed_gcd_loop_variant_decrease (Alt-Ergo) (Cached)
 [wp] [Valid] typed_gcd_loop_variant_positive (Qed)
-[wp] Proved goals:   10 / 10
+[wp] Proved goals:   13 / 13
+  Terminating:     1
+  Unreachable:     1
   Qed:             6
-  Alt-Ergo:        4
+  Alt-Ergo:        5

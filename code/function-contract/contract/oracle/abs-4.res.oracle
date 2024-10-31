@@ -2,11 +2,15 @@
 [kernel] Parsing abs-4.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function abs
+[wp] [Valid] Goal abs_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal abs_terminates (Cfg) (Trivial)
 [wp] 3 goals scheduled
 [wp] [Valid] typed_abs_ensures (Qed)
 [wp] [Valid] typed_abs_ensures_2 (Qed)
 [wp] [Valid] typed_abs_assert_rte_signed_overflow (Qed)
-[wp] Proved goals:    3 / 3
+[wp] Proved goals:    5 / 5
+  Terminating:     1
+  Unreachable:     1
   Qed:             3
 [wp:pedantic-assigns] abs-4.c:10: Warning: 
   No 'assigns' specification for function 'abs'.

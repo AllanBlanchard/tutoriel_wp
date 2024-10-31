@@ -1,15 +1,27 @@
 # frama-c -wp [...]
 [kernel] Parsing trigger_1_1p.c (with preprocessing)
 [wp] Running WP plugin...
+[kernel:annot:missing-spec] trigger_1_1p.c:22: Warning: 
+  Neither code nor explicit exits and terminates for function g,
+   generating default clauses. See -generated-spec-* options for more info
 [wp] Warning: Missing RTE guards
-[wp] 2 goals scheduled
+[wp] 4 goals scheduled
+[wp] [Valid] typed_example_terminates (Qed)
 [wp] [Valid] typed_example_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_example_exits (Qed)
 [wp] [Unsuccess] typed_example_assert (Alt-Ergo) (Cached)
-[wp] Proved goals:    1 / 2
+[wp] Proved goals:    3 / 4
+  Qed:             2
   Alt-Ergo:        1
   Unsuccess:       1
 ------------------------------------------------------------
   Function example
+------------------------------------------------------------
+
+Goal Termination-condition (generated) in 'example':
+Prove: true.
+Prover Qed returns Valid
+
 ------------------------------------------------------------
 
 Goal Post-condition (file trigger_1_1p.c, line 27) in 'example':
@@ -29,6 +41,12 @@ Assume {
 }
 Prove: P_Q(`m, x@L1).
 Prover Alt-Ergo returns Valid
+
+------------------------------------------------------------
+
+Goal Exit-condition (generated) in 'example':
+Prove: true.
+Prover Qed returns Valid
 
 ------------------------------------------------------------
 

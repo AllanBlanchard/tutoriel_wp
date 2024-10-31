@@ -3,10 +3,12 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function insert
 [rte:annot] annotating function insertion_sort
+[wp] [Valid] Goal insert_exits (Cfg) (Unreachable)
 [wp] insert_sort-contract.c:60: Warning: 
   Missing assigns clause (assigns 'everything' instead)
-[wp] 33 goals scheduled
+[wp] 36 goals scheduled
 [wp] [Unsuccess] typed_lemma_l_occurrences_of_union (Alt-Ergo) (Cached)
+[wp] [Unsuccess] typed_insert_terminates (Alt-Ergo) (Cached)
 [wp] [Unsuccess] typed_insert_ensures (Alt-Ergo) (Cached)
 [wp] [Unsuccess] typed_insert_ensures_2 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_insert_assert_rte_mem_access (Alt-Ergo) (Cached)
@@ -19,8 +21,10 @@
 [wp] [Unsuccess] typed_insert_assert_rte_mem_access_5 (Alt-Ergo) (Cached)
 [wp] [Unsuccess] typed_insert_assigns_part1 (Alt-Ergo) (Cached)
 [wp] [Unsuccess] typed_insert_assigns_part2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_insertion_sort_terminates (Qed)
 [wp] [Valid] typed_insertion_sort_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_insertion_sort_ensures_2 (Qed)
+[wp] [Valid] typed_insertion_sort_exits (Qed)
 [wp] [Valid] typed_insertion_sort_assert_rte_unsigned_overflow (Qed)
 [wp] [Valid] typed_insertion_sort_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_insertion_sort_loop_invariant_established (Qed)
@@ -39,7 +43,8 @@
 [wp] [Valid] typed_insertion_sort_loop_variant_positive (Qed)
 [wp] [Valid] typed_insertion_sort_call_insert_requires (Alt-Ergo) (Cached)
 [wp] [Valid] typed_insertion_sort_call_insert_requires_2 (Qed)
-[wp] Proved goals:   24 / 33
-  Qed:            18
+[wp] Proved goals:   27 / 37
+  Unreachable:     1
+  Qed:            20
   Alt-Ergo:        6
-  Unsuccess:       9
+  Unsuccess:      10

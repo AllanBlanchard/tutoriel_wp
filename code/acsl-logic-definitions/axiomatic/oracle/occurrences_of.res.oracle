@@ -2,6 +2,8 @@
 [kernel] Parsing occurrences_of.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function occurrences_of
+[wp] [Valid] Goal occurrences_of_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal occurrences_of_terminates (Cfg) (Trivial)
 [wp] 12 goals scheduled
 [wp] [Valid] typed_occurrences_of_ensures (Qed)
 [wp] [Valid] typed_occurrences_of_loop_invariant_preserved (Alt-Ergo) (Cached)
@@ -15,6 +17,8 @@
 [wp] [Valid] typed_occurrences_of_assigns (Qed)
 [wp] [Valid] typed_occurrences_of_loop_variant_decrease (Alt-Ergo) (Cached)
 [wp] [Valid] typed_occurrences_of_loop_variant_positive (Qed)
-[wp] Proved goals:   12 / 12
+[wp] Proved goals:   14 / 14
+  Terminating:     1
+  Unreachable:     1
   Qed:             7
   Alt-Ergo:        5

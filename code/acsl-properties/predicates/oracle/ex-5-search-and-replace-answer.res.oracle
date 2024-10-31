@@ -2,6 +2,8 @@
 [kernel] Parsing ex-5-search-and-replace-answer.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function search_and_replace
+[wp] [Valid] Goal search_and_replace_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal search_and_replace_terminates (Cfg) (Trivial)
 [wp] 15 goals scheduled
 [wp] [Valid] typed_search_and_replace_ensures (Qed)
 [wp] [Valid] typed_search_and_replace_loop_invariant_preserved (Alt-Ergo) (Cached)
@@ -18,6 +20,8 @@
 [wp] [Valid] typed_search_and_replace_assigns (Qed)
 [wp] [Valid] typed_search_and_replace_loop_variant_decrease (Alt-Ergo) (Cached)
 [wp] [Valid] typed_search_and_replace_loop_variant_positive (Qed)
-[wp] Proved goals:   15 / 15
+[wp] Proved goals:   17 / 17
+  Terminating:     1
+  Unreachable:     1
   Qed:             6
   Alt-Ergo:        9

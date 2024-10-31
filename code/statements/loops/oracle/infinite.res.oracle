@@ -2,10 +2,15 @@
 [kernel] Parsing infinite.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function foo
-[wp] [CFG] Goal foo_assert : Valid (Unreachable)
-[wp] Warning: No goal generated
-[wp] Proved goals:    1 / 1
-  Unreachable:     1
+[wp] [Valid] Goal foo_assert (Cfg) (Unreachable)
+[wp] [Valid] Goal foo_exits (Cfg) (Unreachable)
+[wp] infinite.c:2: Warning: 
+  Missing assigns clause (assigns 'everything' instead)
+[wp] 1 goal scheduled
+[wp] [Unsuccess] typed_foo_terminates (Alt-Ergo) (Cached)
+[wp] Proved goals:    2 / 3
+  Unreachable:     2
+  Unsuccess:       1
 [wp:pedantic-assigns] infinite.c:1: Warning: 
   No 'assigns' specification for function 'foo'.
   Callers assumptions might be imprecise.

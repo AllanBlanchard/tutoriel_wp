@@ -286,8 +286,7 @@ example those \CodeInline{requires} clauses are false, we locally introduce
 "false" in the proof context.
 
 
-\levelFourTitle{What should we keep in mind?}
-
+\levelFourTitle{What should we keep in mind about function contracts?}
 
 
 Functions are absolutely necessary to modular programming, and the weakest
@@ -345,6 +344,65 @@ precondition calculus but a highly optimized one that does not follow exactly
 the same rules.
 
 
+\levelFourTitle{The particular case of \CodeInline{exits}}
+
+
+In C, one can call the \CodeInline{exit} function to stop the execution with a
+particular error code. In such a case, the code that follows the call will not
+be executed, and the \CodeInline{return} statement will not be reached. Thus,
+when the function exits, the postcondition is always verified since it is
+unreachable (just like when a function never calls a function that might exit,
+the \CodeInline{exits} clause might be anything):
+
+
+\CodeBlockInput{c}{exit-1.c}
+
+
+Here, we have just indicated that \CodeInline{\textbackslash{}true} must be true
+when the function exits, but in fact one can indicate any property of interest.
+For example, one can indicate the value of the exit status:
+
+
+\CodeBlockInput{c}{exit-2.c}
+
+
+Of course when one calls a function that might exit, the risk of exit action is
+propagated:
+
+
+\CodeBlockInput{c}{exit-3.c}
+
+
+It is thus recommended indicating precisely what are the behaviors that can lead
+to a call to \CodeInline{exit} and to forbid calls to \CodeInline{exit} in the
+other cases:
+
+
+\CodeBlockInput{c}{exit-4.c}
+
+
+\paragraph*{[Formal] WP calculus}
+
+
+When we have to prove the postcondition of the function, we start the calculus
+from the postcondition. Thus, we start our computation from the single
+\CodeInline{return} statement created by Frama-C (although it is exactly like
+we would start from all the different \CodeInline{return} statements in the
+original program), and we reason backward along the program. When we meet a
+function call, we use the contract with the previously explained rule for
+function call, and the postcondition we consider at this point for reasoning is
+the one stated in the \CodeInline{ensures} clauses.
+
+
+For proving \CodeInline{exits} clauses, it is different, but not that much.
+Instead of starting the calculus from \CodeInline{return} instructions, we start
+a new calculus from each function call (as it might be one of the exit points)
+and at this call, we use the \CodeInline{exit} clause as a postcondition, then
+when we continue the backward reasoning, we use the \CodeInline{ensures} as
+usual since if we have reached the function call where we started from, that
+means that previous calls did not exit.
+
+
 \levelThreeTitle{Recursive functions}
 
 
@@ -362,7 +420,8 @@ of a function that does an infinite recursion:
 We can see that the function and the assertion are proved. And indeed the
 proof is correct: we consider partial correctness, and we face a function
 that does not terminate: anything that follows a call to this function would
-be true.
+be true. But again, we have a watchdog: the \CodeInline{terminates} clause is
+not proved.
 
 
 Thus, the question is: what could we do in such a case? Again, we could use
@@ -471,6 +530,7 @@ and a warning is emitted by WP.
 
 
 \levelThreeTitle{Specifying and proving function termination}
+\label{l3:statements-function-calls-terminates}
 
 
 A desirable property for a function is often that it should terminate. Indeed,
@@ -532,16 +592,13 @@ terminates (always):
 \begin{Information}
   In ACSL, it is specified that when a function does not have a
   \CodeInline{terminates} clause, the default is
-  \CodeInline{terminates \textbackslash{}true}, however it is still not
-  implemented by the Frama-C kernel. This behavior can be enabled in WP
-  by using the options:
+  \CodeInline{terminates \textbackslash{}true}. This behavior is automatically
+  enabled by WP at the kernel level. Thus, when WP starts the verification of
+  a function, it asks the kernel to generate these annotations. This behavior
+  can be disabled \textbf{for user defined functions} using the kernel option:
   \begin{itemize}
-  \item \CodeInline{-wp-definitions-terminate} (for functions with definition),
-  \item \CodeInline{-wp-declarations-terminate} (for functions without definition),
-  \item \CodeInline{-wp-frama-c-stdlib-terminate} (for functions of the Frama-C stdlib),
+    \item \CodeInline{-generated-spec-custom terminates:skip}
   \end{itemize}
-  to claim that, unless a clause is provided, they must terminate (and thus
-  for functions with a definition, the verification must be performed).
 \end{Information}
 
 
@@ -625,23 +682,6 @@ to disable simplifications):
 Where the first call termination is indeed verified while the second is not.
 
 
-When the called function does not have a \CodeInline{terminates} clause, it
-is considered to be \CodeInline{\textbackslash{}false}, that is: unless a
-\CodeInline{terminates} clause is provided, the function may not terminate.
-
-
-For example with our previous \CodeInline{simple} function, we get the message
-``Missing terminates clause on call to call, defaults to \textbackslash{}false''
-and we fail to prove termination:
-
-
-\image{simple_terminates_fails}
-
-
-Note that the formula $\mathtt{r} > 0 \Rightarrow false$ is translated into
-$\mathtt{r} <= 0$.
-
-
 \paragraph{Loop variant}
 
 
@@ -708,16 +748,6 @@ ACSL specified behavior is enabled via the option
 
 
 \CodeBlockInput[53][60]{c}{terminates.c}
-
-
-\begin{Information}
-  When a function under proof does not have \CodeInline{terminates}
-  specification, whenever a verification condition needs it, the clause is
-  considered to be \CodeInline{\textbackslash{}true} since it makes sure that
-  we have more things to prove. For example, when the option
-  \CodeInline{-wp-variant-with-terminates} is used and a function contains a
-  \CodeInline{loop variant}, it guarantees that WP tries to prove it.
-\end{Information}
 
 
 \levelThreeTitle{Exercises}

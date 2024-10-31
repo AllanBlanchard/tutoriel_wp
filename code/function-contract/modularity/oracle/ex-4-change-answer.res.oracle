@@ -3,7 +3,9 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function make_change
 [rte:annot] annotating function remove_max_notes
-[wp] 86 goals scheduled
+[wp] [Valid] Goal remove_max_notes_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal remove_max_notes_terminates (Cfg) (Trivial)
+[wp] 88 goals scheduled
 [wp] [Valid] typed_remove_max_notes_ensures (Qed)
 [wp] [Valid] typed_remove_max_notes_ensures_2 (Qed)
 [wp] [Valid] typed_remove_max_notes_assert_rte_division_by_zero (Alt-Ergo) (Cached)
@@ -20,6 +22,8 @@
 [wp] [Valid] typed_remove_max_notes_assigns (Qed)
 [wp] [Valid] typed_make_change_complete_change_not_enough (Qed)
 [wp] [Valid] typed_make_change_disjoint_change_not_enough (Qed)
+[wp] [Valid] typed_make_change_terminates (Qed)
+[wp] [Valid] typed_make_change_exits (Qed)
 [wp] [Valid] typed_make_change_assert_rte_signed_overflow (Alt-Ergo) (Cached)
 [wp] [Valid] typed_make_change_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_make_change_assert_rte_mem_access (Alt-Ergo) (Cached)
@@ -90,8 +94,10 @@
 [wp] [Valid] typed_make_change_change_ensures (Qed)
 [wp] [Valid] typed_make_change_change_ensures_2 (Qed)
 [wp] [Valid] typed_make_change_change_ensures_3 (Alt-Ergo) (Cached)
-[wp] Proved goals:   86 / 86
-  Qed:            59
+[wp] Proved goals:   90 / 90
+  Terminating:     1
+  Unreachable:     1
+  Qed:            61
   Alt-Ergo:       27
 [wp] ex-4-change-answer.c:11: Warning: 
   Memory model hypotheses for function 'remove_max_notes':

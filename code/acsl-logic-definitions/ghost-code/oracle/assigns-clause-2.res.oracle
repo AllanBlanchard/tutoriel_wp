@@ -2,11 +2,14 @@
 [kernel] Parsing assigns-clause-2.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function foo
-[wp] 4 goals scheduled
+[wp] [Valid] Goal foo_exits (Cfg) (Unreachable)
+[wp] 5 goals scheduled
+[wp] [Unsuccess] typed_foo_terminates (Alt-Ergo) (Cached)
 [wp] [Valid] typed_foo_assert_rte_signed_overflow (Qed)
 [wp] [Valid] typed_foo_loop_assigns_part1 (Qed)
 [wp] [Unsuccess] typed_foo_loop_assigns_part2 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_foo_assigns (Qed)
-[wp] Proved goals:    3 / 4
+[wp] Proved goals:    4 / 6
+  Unreachable:     1
   Qed:             3
-  Unsuccess:       1
+  Unsuccess:       2

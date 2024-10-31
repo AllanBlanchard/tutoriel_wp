@@ -2,7 +2,9 @@
 [kernel] Parsing ex-3-array-answer-1.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function foo
-[wp] 20 goals scheduled
+[wp] [Valid] Goal foo_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal foo_terminates (Cfg) (Trivial)
+[wp] 22 goals scheduled
 [wp] [Valid] typed_foo_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_foo_loop_invariant_preserved (Qed)
 [wp] [Valid] typed_foo_loop_invariant_established (Qed)
@@ -23,6 +25,10 @@
 [wp] [Valid] typed_foo_assigns_part2 (Qed)
 [wp] [Valid] typed_foo_loop_variant_decrease (Qed)
 [wp] [Valid] typed_foo_loop_variant_positive (Qed)
-[wp] Proved goals:   20 / 20
-  Qed:            15
+[wp] [Valid] typed_foo_loop_variant_2_decrease (Qed)
+[wp] [Valid] typed_foo_loop_variant_2_positive (Qed)
+[wp] Proved goals:   24 / 24
+  Terminating:     1
+  Unreachable:     1
+  Qed:            17
   Alt-Ergo:        5

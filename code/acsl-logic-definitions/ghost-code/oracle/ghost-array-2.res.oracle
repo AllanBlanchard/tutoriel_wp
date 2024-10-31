@@ -6,13 +6,16 @@
   '*pe' is a non-ghost lvalue, it cannot be assigned in ghost code
 [wp] Running WP plugin...
 [rte:annot] annotating function function
+[wp] [Valid] Goal function_exits (Cfg) (Unreachable)
 [wp] ghost-array-2.c:10: Warning: 
   Missing assigns clause (assigns 'everything' instead)
-[wp] 2 goals scheduled
+[wp] 3 goals scheduled
+[wp] [Unsuccess] typed_function_terminates (Alt-Ergo) (Cached)
 [wp] [Unsuccess] typed_function_assert_rte_mem_access (Alt-Ergo) (Cached)
 [wp] [Unsuccess] typed_function_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
-[wp] Proved goals:    0 / 2
-  Unsuccess:       2
+[wp] Proved goals:    1 / 4
+  Unreachable:     1
+  Unsuccess:       3
 [wp:pedantic-assigns] ghost-array-2.c:6: Warning: 
   No 'assigns' specification for function 'function'.
   Callers assumptions might be imprecise.

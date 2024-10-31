@@ -1,10 +1,21 @@
 [kernel] Parsing ghost-code-usage-2.c (with preprocessing)
 [wp] Running WP plugin...
-[kernel:annot:missing-spec] ghost-code-usage-2.c:23: Warning: 
-  Neither code nor implicit assigns clause for function bsearch, generating default assigns from the prototype
+[kernel:annot:missing-spec] ghost-code-usage-2.c:18: Warning: 
+  Neither code nor explicit exits, assigns and terminates for function bsearch,
+   generating default clauses. See -generated-spec-* options for more info
 [wp] Warning: Missing RTE guards
 ------------------------------------------------------------
   Function bsearch_callee
+------------------------------------------------------------
+
+Goal Termination-condition (generated) in 'bsearch_callee':
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Exit-condition (generated) in 'bsearch_callee':
+Prove: true.
+
 ------------------------------------------------------------
 
 Goal Preservation of Invariant (file ghost-code-usage-2.c, line 26):
@@ -169,9 +180,6 @@ Goal Instance of 'Pre-condition (file ghost-code-usage-2.c, line 16) in 'bsearch
 Prove: true.
 
 ------------------------------------------------------------
-[wp:pedantic-assigns] ghost-code-usage-2.c:18: Warning: 
-  No 'assigns' specification for function 'bsearch'.
-  Callers assumptions might be imprecise.
 [wp:pedantic-assigns] ghost-code-usage-2.c:23: Warning: 
   No 'assigns' specification for function 'bsearch_callee'.
   Callers assumptions might be imprecise.

@@ -2,8 +2,8 @@
 [kernel] Parsing no_terminates.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function does_not_terminate
-[wp] [CFG] Goal does_not_terminate_exits : Valid (Unreachable)
-[wp] [CFG] Goal does_not_terminate_ensures : Valid (Unreachable)
+[wp] [Valid] Goal does_not_terminate_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal does_not_terminate_ensures (Cfg) (Unreachable)
 [wp] 2 goals scheduled
 [wp] [Valid] typed_does_not_terminate_terminates (Qed)
 [wp] [Valid] typed_does_not_terminate_loop_assigns (Qed)

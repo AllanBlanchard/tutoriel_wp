@@ -286,14 +286,8 @@ Normal code is not allowed to read ghost code for a very simple reason:
 if the normal code tries to access ghost variables,
 it would simply not compile: the compiler does not see the variables
 declared in annotations. For example:
-
-
 \CodeBlockInput[6]{c}{non-ghost-access-ghost.c}
-
-
 cannot be compiled:
-
-
 \begin{CodeBlock}{text}
 # gcc -c file.c
 file.c: In function ‘sum_42’:
@@ -301,14 +295,16 @@ file.c:5:10: error: ‘r’ undeclared (first use in this function)
     5 |     x += r;
       |          ^
 \end{CodeBlock}
-
-
 and is thus also refused by Frama-C:
-
-
 \begin{CodeBlock}{text}
 [kernel] file.c:5: User Error:
-  Variable r is a ghost symbol. It cannot be used in non-ghost context. Did you forget a /*@ ghost ... /?
+Variable r is a ghost symbol. It cannot be used in non-ghost context. Did you forget a /*@ ghost ... /?
+  3       //@ ghost int r = 42 ;
+  4       for(int i = 0; i < n; ++i){
+  5         x += r;
+                 ^
+  6       }
+  7       return x;
 \end{CodeBlock}
 
 
@@ -555,7 +551,7 @@ following function returns the value of the maximal sum of subarrays of
 a given array. A subarray of an array \CodeInline{a} is a contiguous subset
 of values of \CodeInline{a}. For example, for an array \CodeInline{\{ 0 , 3 , -1 , 4 \}},
 some subarrays can be
-\CodeInline{\{\}}, \CodeInline{\{ 0 \}}, \CodeInline{\{ 3 , -1 \}}, 
+\CodeInline{\{\}}, \CodeInline{\{ 0 \}}, \CodeInline{\{ 3 , -1 \}},
 \CodeInline{\{ 0 , 3 , -1 , 4 \}}, ... Note that as we allow
 empty arrays for subarrays, the sum is at least 0. In the previous
 array, the subarray with the maximal sum is \CodeInline{\{ 3 , -1 , 4 \}},

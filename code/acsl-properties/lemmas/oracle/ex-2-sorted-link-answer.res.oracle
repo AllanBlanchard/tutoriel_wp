@@ -3,7 +3,9 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function bsearch
 [rte:annot] annotating function bsearch_callee
-[wp] 26 goals scheduled
+[wp] [Valid] Goal bsearch_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal bsearch_terminates (Cfg) (Trivial)
+[wp] 28 goals scheduled
 [wp] [Valid] typed_lemma_element_level_sorted_implies_sorted (Coq) (Cached)
 [wp] [Valid] typed_bsearch_complete_does_not_exists_exists (Qed)
 [wp] [Valid] typed_bsearch_disjoint_does_not_exists_exists (Qed)
@@ -23,14 +25,18 @@
 [wp] [Valid] typed_bsearch_exists_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_bsearch_exists_ensures_2 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_bsearch_does_not_exists_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_callee_terminates (Qed)
 [wp] [Valid] typed_bsearch_callee_ensures (Qed)
 [wp] [Valid] typed_bsearch_callee_ensures_2 (Qed)
+[wp] [Valid] typed_bsearch_callee_exits (Qed)
 [wp] [Valid] typed_bsearch_callee_assigns_exit (Qed)
 [wp] [Valid] typed_bsearch_callee_assigns_normal_part1 (Qed)
 [wp] [Valid] typed_bsearch_callee_assigns_normal_part2 (Qed)
 [wp] [Valid] typed_bsearch_callee_call_bsearch_requires (Qed)
 [wp] [Valid] typed_bsearch_callee_call_bsearch_requires_2 (Alt-Ergo) (Cached)
-[wp] Proved goals:   26 / 26
-  Qed:            17
+[wp] Proved goals:   30 / 30
+  Terminating:     1
+  Unreachable:     1
+  Qed:            19
   Alt-Ergo:        8
   Coq:             1

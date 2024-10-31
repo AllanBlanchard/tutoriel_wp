@@ -2,6 +2,8 @@
 [kernel] Parsing ex-4-day-month-answer-2.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function day_of
+[wp] [Valid] Goal day_of_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal day_of_terminates (Cfg) (Trivial)
 [wp] 6 goals scheduled
 [wp] [Valid] typed_day_of_ensures (Qed)
 [wp] [Valid] typed_day_of_ensures_2 (Alt-Ergo) (Cached)
@@ -9,7 +11,9 @@
 [wp] [Valid] typed_day_of_assert_rte_index_bound (Alt-Ergo) (Cached)
 [wp] [Valid] typed_day_of_assert_rte_index_bound_2 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_day_of_assert_rte_signed_overflow (Qed)
-[wp] Proved goals:    6 / 6
+[wp] Proved goals:    8 / 8
+  Terminating:     1
+  Unreachable:     1
   Qed:             2
   Alt-Ergo:        4
 [wp:pedantic-assigns] ex-4-day-month-answer-2.c:7: Warning: 

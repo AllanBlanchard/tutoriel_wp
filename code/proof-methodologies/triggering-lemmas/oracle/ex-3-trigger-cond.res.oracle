@@ -2,9 +2,15 @@
 [kernel] Parsing ex-3-trigger-cond.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function example
-[wp] 1 goal scheduled
+[kernel:annot:missing-spec] ex-3-trigger-cond.c:32: Warning: 
+  Neither code nor explicit exits and terminates for function g,
+   generating default clauses. See -generated-spec-* options for more info
+[wp] 3 goals scheduled
+[wp] [Valid] typed_example_terminates (Qed)
 [wp] [Unsuccess] typed_example_ensures (Alt-Ergo) (Cached)
-[wp] Proved goals:    0 / 1
+[wp] [Valid] typed_example_exits (Qed)
+[wp] Proved goals:    2 / 3
+  Qed:             2
   Unsuccess:       1
 [wp:pedantic-assigns] ex-3-trigger-cond.c:38: Warning: 
   No 'assigns' specification for function 'example'.

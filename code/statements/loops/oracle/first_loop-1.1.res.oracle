@@ -7,6 +7,12 @@
   Function main
 ------------------------------------------------------------
 
+Goal Termination-condition (generated) in 'main':
+Loop termination at line 12
+Prove: false.
+
+------------------------------------------------------------
+
 Goal Preservation of Invariant (file first_loop-1.c, line 10):
 Prove: true.
 

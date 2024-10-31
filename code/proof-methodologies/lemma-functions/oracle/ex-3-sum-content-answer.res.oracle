@@ -3,7 +3,9 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function inc_cell
 [rte:annot] annotating function sum_separable
-[wp] 41 goals scheduled
+[wp] [Valid] Goal sum_separable_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal sum_separable_terminates (Cfg) (Trivial)
+[wp] 43 goals scheduled
 [wp] [Valid] typed_sum_separable_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_sum_separable_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_sum_separable_loop_invariant_established (Qed)
@@ -13,7 +15,9 @@
 [wp] [Valid] typed_sum_separable_assigns (Qed)
 [wp] [Valid] typed_sum_separable_loop_variant_decrease (Alt-Ergo) (Cached)
 [wp] [Valid] typed_sum_separable_loop_variant_positive (Qed)
+[wp] [Valid] typed_inc_cell_terminates (Qed)
 [wp] [Valid] typed_inc_cell_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_inc_cell_exits (Qed)
 [wp] [Valid] typed_inc_cell_assert_rte_mem_access (Alt-Ergo) (Cached)
 [wp] [Valid] typed_inc_cell_assert_rte_mem_access_2 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_inc_cell_assert_rte_signed_overflow (Qed)
@@ -45,6 +49,8 @@
 [wp] [Valid] typed_inc_cell_call_sum_separable_2_requires (Alt-Ergo) (Cached)
 [wp] [Valid] typed_inc_cell_call_sum_separable_3_requires (Qed)
 [wp] [Valid] typed_inc_cell_call_sum_separable_4_requires (Qed)
-[wp] Proved goals:   41 / 41
-  Qed:            20
+[wp] Proved goals:   45 / 45
+  Terminating:     1
+  Unreachable:     1
+  Qed:            22
   Alt-Ergo:       21

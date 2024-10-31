@@ -3,16 +3,22 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function abs
 [rte:annot] annotating function foo
-[wp] 7 goals scheduled
+[wp] [Valid] Goal abs_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal abs_terminates (Cfg) (Trivial)
+[wp] 9 goals scheduled
 [wp] [Valid] typed_abs_ensures (Qed)
 [wp] [Valid] typed_abs_ensures_2 (Qed)
 [wp] [Valid] typed_abs_assert_rte_signed_overflow (Qed)
+[wp] [Valid] typed_foo_terminates (Qed)
+[wp] [Valid] typed_foo_exits (Qed)
 [wp] [Valid] typed_foo_call_abs_requires (Qed)
 [wp] [Valid] typed_foo_call_abs_2_requires (Qed)
 [wp] [Unsuccess] typed_foo_call_abs_3_requires (Alt-Ergo) (Cached)
 [wp] [Valid] typed_foo_call_abs_4_requires (Qed)
-[wp] Proved goals:    6 / 7
-  Qed:             6
+[wp] Proved goals:   10 / 11
+  Terminating:     1
+  Unreachable:     1
+  Qed:             8
   Unsuccess:       1
 [wp:pedantic-assigns] abs-6.c:15: Warning: 
   No 'assigns' specification for function 'abs'.

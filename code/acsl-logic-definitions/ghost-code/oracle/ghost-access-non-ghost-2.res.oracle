@@ -6,17 +6,20 @@
   'x' is a non-ghost lvalue, it cannot be assigned in ghost code
 [wp] Running WP plugin...
 [rte:annot] annotating function sum
+[wp] [Valid] Goal sum_exits (Cfg) (Unreachable)
 [wp] ghost-access-non-ghost-2.c:10: Warning: 
   Missing assigns clause (assigns 'everything' instead)
-[wp] 5 goals scheduled
+[wp] 6 goals scheduled
+[wp] [Unsuccess] typed_sum_terminates (Alt-Ergo) (Cached)
 [wp] [Unsuccess] typed_sum_assert_rte_signed_overflow (Alt-Ergo) (Cached)
 [wp] [Unsuccess] typed_sum_assert_rte_signed_overflow_2 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_sum_assert_rte_signed_overflow_3 (Qed)
 [wp] [Valid] typed_sum_assert_rte_signed_overflow_4 (Qed)
 [wp] [Unsuccess] typed_sum_assert_rte_signed_overflow_5 (Alt-Ergo) (Cached)
-[wp] Proved goals:    2 / 5
+[wp] Proved goals:    3 / 7
+  Unreachable:     1
   Qed:             2
-  Unsuccess:       3
+  Unsuccess:       4
 [wp:pedantic-assigns] ghost-access-non-ghost-2.c:8: Warning: 
   No 'assigns' specification for function 'sum'.
   Callers assumptions might be imprecise.

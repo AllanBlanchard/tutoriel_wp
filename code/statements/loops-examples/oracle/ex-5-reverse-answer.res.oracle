@@ -3,7 +3,9 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function reverse
 [rte:annot] annotating function swap
-[wp] 24 goals scheduled
+[wp] [Valid] Goal swap_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal swap_terminates (Cfg) (Trivial)
+[wp] 26 goals scheduled
 [wp] [Valid] typed_swap_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_swap_assert_rte_mem_access (Alt-Ergo) (Cached)
 [wp] [Valid] typed_swap_assert_rte_mem_access_2 (Qed)
@@ -11,7 +13,9 @@
 [wp] [Valid] typed_swap_assert_rte_mem_access_4 (Qed)
 [wp] [Valid] typed_swap_assigns_part1 (Qed)
 [wp] [Valid] typed_swap_assigns_part2 (Qed)
+[wp] [Valid] typed_reverse_terminates (Qed)
 [wp] [Valid] typed_reverse_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reverse_exits (Qed)
 [wp] [Valid] typed_reverse_loop_invariant_preserved (Qed)
 [wp] [Valid] typed_reverse_loop_invariant_established (Qed)
 [wp] [Valid] typed_reverse_loop_invariant_2_preserved (Alt-Ergo) (Cached)
@@ -23,11 +27,13 @@
 [wp] [Valid] typed_reverse_loop_assigns_part2 (Qed)
 [wp] [Valid] typed_reverse_loop_assigns_part3 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_reverse_assigns_exit_part1 (Qed)
-[wp] [Valid] typed_reverse_assigns_exit_part2 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_reverse_assigns_exit_part2 (Qed)
 [wp] [Valid] typed_reverse_assigns_normal (Qed)
 [wp] [Valid] typed_reverse_loop_variant_decrease (Qed)
 [wp] [Valid] typed_reverse_loop_variant_positive (Alt-Ergo) (Cached)
 [wp] [Valid] typed_reverse_call_swap_requires (Alt-Ergo) (Cached)
-[wp] Proved goals:   24 / 24
-  Qed:            13
-  Alt-Ergo:       11
+[wp] Proved goals:   28 / 28
+  Terminating:     1
+  Unreachable:     1
+  Qed:            16
+  Alt-Ergo:       10

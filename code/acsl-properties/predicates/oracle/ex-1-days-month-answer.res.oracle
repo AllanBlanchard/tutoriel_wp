@@ -3,13 +3,17 @@
 [wp] Running WP plugin...
 [rte:annot] annotating function day_of
 [rte:annot] annotating function leap
-[wp] 19 goals scheduled
+[wp] [Valid] Goal leap_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal leap_terminates (Cfg) (Trivial)
+[wp] 21 goals scheduled
 [wp] [Valid] typed_leap_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_leap_assigns_part1 (Qed)
 [wp] [Valid] typed_leap_assigns_part2 (Qed)
 [wp] [Valid] typed_leap_assigns_part3 (Qed)
 [wp] [Valid] typed_day_of_complete_february_leap_february_not_leap_thirty (Alt-Ergo) (Cached)
 [wp] [Valid] typed_day_of_disjoint_february_leap_february_not_leap_thirty (Alt-Ergo) (Cached)
+[wp] [Valid] typed_day_of_terminates (Qed)
+[wp] [Valid] typed_day_of_exits (Qed)
 [wp] [Valid] typed_day_of_assert_rte_index_bound (Alt-Ergo) (Cached)
 [wp] [Valid] typed_day_of_assert_rte_index_bound_2 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_day_of_assert_rte_signed_overflow (Qed)
@@ -23,6 +27,8 @@
 [wp] [Valid] typed_day_of_february_not_leap_ensures (Qed)
 [wp] [Valid] typed_day_of_thirty_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_day_of_thirty_one_ensures (Alt-Ergo) (Cached)
-[wp] Proved goals:   19 / 19
-  Qed:            12
+[wp] Proved goals:   23 / 23
+  Terminating:     1
+  Unreachable:     1
+  Qed:            14
   Alt-Ergo:        7

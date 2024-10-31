@@ -1,6 +1,8 @@
 # frama-c -wp [...]
 [kernel] Parsing ex-1-context-answer.c (with preprocessing)
 [wp] Running WP plugin...
+[wp] [Valid] Goal exercise_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal exercise_terminates (Cfg) (Trivial)
 [wp] Warning: Missing RTE guards
 [wp] 5 goals scheduled
 [wp] [Valid] typed_exercise_assert (Alt-Ergo) (Cached)
@@ -8,7 +10,9 @@
 [wp] [Valid] typed_exercise_assert_3 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_exercise_assert_4 (Alt-Ergo) (Cached)
 [wp] [Valid] typed_exercise_assert_5 (Alt-Ergo) (Cached)
-[wp] Proved goals:    5 / 5
+[wp] Proved goals:    7 / 7
+  Terminating:     1
+  Unreachable:     1
   Alt-Ergo:        5
 [wp:pedantic-assigns] ex-1-context-answer.c:17: Warning: 
   No 'assigns' specification for function 'exercise'.
