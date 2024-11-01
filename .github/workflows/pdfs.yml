@@ -3,20 +3,32 @@ name: PDFs
 on: [push]
 
 jobs:
-  compile:
-    name: Compile the tutorial
+  compile-en:
+    name: EN version
     runs-on: ubuntu-latest
+    container: allanblanchardgh/tutoriel_wp:latex
     steps:
-      - name: install needed packages
-        run: sudo apt update &&  DEBIAN_FRONTEND=noninteractive sudo --preserve-env=DEBIAN_FRONTEND apt install -y make texlive-latex-base  texlive-latex-recommended texlive-latex-extra texlive-plain-generic texlive-fonts-extra texlive-lang-french texlive-luatex python3-pygments librsvg2-bin
       - name: retrieve sources
         uses: actions/checkout@v4
       - name: compile
-        run: make
+        run: make -C english
       - name: archive PDFs
         uses: actions/upload-artifact@v4
         with:
-          path: |
-            english/main.pdf
-            french/main.pdf
-            
+          name: frama-c-wp-tutorial-en.pdf
+          path: english/main.pdf
+
+  compile-fr:
+    name: FR version
+    runs-on: ubuntu-latest
+    container: allanblanchardgh/tutoriel_wp:latex
+    steps:
+      - name: retrieve sources
+        uses: actions/checkout@v4
+      - name: compile
+        run: make -C french
+      - name: archive PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: frama-c-wp-tutoriel-fr.pdf
+          path: french/main.pdf
