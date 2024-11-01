@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  compile-en:
+    name: EN version
+    runs-on: ubuntu-latest
+    container: allanblanchardgh/tutoriel_wp:latex
+    steps:
+      - name: retrieve sources
+        uses: actions/checkout@v4
+      - name: compile
+        run: make -C english
+      - name: archive PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: frama-c-wp-tutorial-en.pdf
+          path: english/main.pdf
+
+  compile-fr:
+    name: FR version
+    runs-on: ubuntu-latest
+    container: allanblanchardgh/tutoriel_wp:latex
+    steps:
+      - name: retrieve sources
+        uses: actions/checkout@v4
+      - name: compile
+        run: make -C french
+      - name: archive PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: frama-c-wp-tutoriel-fr.pdf
+          path: french/main.pdf
+
+  check-code:
+    name: Check code
+    runs-on: ubuntu-latest
+    container: allanblanchardgh/tutoriel_wp:frama-c
+    steps:
+      - name: Check Why3
+        run: cat /root/.why3.conf && why3 config detect
+      - name: retrieve sources
+        uses: actions/checkout@v4
+      - name: execute
+        run: cd code ; make
