@@ -1,4 +1,4 @@
-# frama-c -wp -wp-rte [...]
+# frama-c -wp -wp-rte -wp-timeout 5 [...]
 [kernel] Parsing even-0.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function bar

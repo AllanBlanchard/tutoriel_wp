@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:+"-wp-timeout 5"
+*/
+
 enum note { N500, N200, N100, N50, N20, N10, N5, N2, N1 };
 int const values[] = { 500, 200, 100, 50, 20, 10, 5, 2, 1 };
 

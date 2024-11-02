@@ -1,3 +1,7 @@
+/* run.config
+   STDOPT:+"-wp-timeout 5"
+*/
+
 #include <limits.h>
 #include <stddef.h>
 
