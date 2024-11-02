@@ -1,14 +1,14 @@
-# frama-c -wp -wp-rte [...]
+# frama-c -wp -wp-rte -wp-timeout 5 [...]
 [kernel] Parsing ex-2-terminates.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function abs
 [rte:annot] annotating function distance
 [rte:annot] annotating function distances
 [rte:annot] annotating function prepare
-[kernel:annot:missing-spec] ex-2-terminates.c:51: Warning: 
+[kernel:annot:missing-spec] ex-2-terminates.c:55: Warning: 
   Neither code nor explicit exits for function initialize,
    generating default clauses. See -generated-spec-* options for more info
-[kernel:annot:missing-spec] ex-2-terminates.c:58: Warning: 
+[kernel:annot:missing-spec] ex-2-terminates.c:62: Warning: 
   Neither code nor explicit exits for function connect,
    generating default clauses. See -generated-spec-* options for more info
 [rte:annot] annotating function terminates_f1
@@ -17,9 +17,9 @@
 [wp] [Valid] Goal abs_terminates (Cfg) (Trivial)
 [wp] [Valid] Goal terminates_f1_exits (Cfg) (Unreachable)
 [wp] [Valid] Goal terminates_f2_exits (Cfg) (Unreachable)
-[wp] ex-2-terminates.c:72: Warning: 
+[wp] ex-2-terminates.c:76: Warning: 
   Missing assigns clause (assigns 'everything' instead)
-[wp] ex-2-terminates.c:79: Warning: 
+[wp] ex-2-terminates.c:83: Warning: 
   Missing assigns clause (assigns 'everything' instead)
 [wp] 45 goals scheduled
 [wp] [Valid] typed_abs_ensures (Qed)
@@ -73,9 +73,9 @@
   Qed:            33
   Alt-Ergo:       10
   Unsuccess:       2
-[wp:pedantic-assigns] ex-2-terminates.c:71: Warning: 
+[wp:pedantic-assigns] ex-2-terminates.c:75: Warning: 
   No 'assigns' specification for function 'terminates_f1'.
   Callers assumptions might be imprecise.
-[wp:pedantic-assigns] ex-2-terminates.c:78: Warning: 
+[wp:pedantic-assigns] ex-2-terminates.c:82: Warning: 
   No 'assigns' specification for function 'terminates_f2'.
   Callers assumptions might be imprecise.

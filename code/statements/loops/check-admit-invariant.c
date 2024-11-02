@@ -1,5 +1,5 @@
 /* run.config
-   OPT: -wp -wp-print -wp-no-let -wp-prover qed -wp-prop="C3,I4"
+   OPT: -wp -wp-print -wp-no-let -wp-prover qed -wp-prop="C3,I4" -wp-msg-key shell
 */
 
 int main(void) {

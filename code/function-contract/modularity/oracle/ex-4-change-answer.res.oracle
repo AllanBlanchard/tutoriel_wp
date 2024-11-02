@@ -1,4 +1,4 @@
-# frama-c -wp -wp-rte [...]
+# frama-c -wp -wp-rte -wp-timeout 5 [...]
 [kernel] Parsing ex-4-change-answer.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function make_change
@@ -99,12 +99,12 @@
   Unreachable:     1
   Qed:            61
   Alt-Ergo:       27
-[wp] ex-4-change-answer.c:11: Warning: 
+[wp] ex-4-change-answer.c:15: Warning: 
   Memory model hypotheses for function 'remove_max_notes':
   /*@ behavior wp_typed:
         requires \separated(rest, (int const *)values + (..)); */
   int remove_max_notes(enum note n, int *rest);
-[wp] ex-4-change-answer.c:53: Warning: 
+[wp] ex-4-change-answer.c:57: Warning: 
   Memory model hypotheses for function 'make_change':
   /*@
      behavior wp_typed:
