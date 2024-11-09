@@ -6,9 +6,9 @@
 [wp] [Valid] Goal function_exits (Cfg) (Unreachable)
 [wp] [Valid] Goal function_terminates (Cfg) (Trivial)
 [wp] 27 goals scheduled
-[wp] [Valid] typed_lemma_ax_b_monotonic_neg (Z3) (Cached)
+[wp] [Valid] typed_lemma_ax_b_monotonic_neg (CVC5) (Cached)
 [wp] [Valid] typed_lemma_ax_b_monotonic_nul (Alt-Ergo) (Cached)
-[wp] [Valid] typed_lemma_ax_b_monotonic_pos (Z3) (Cached)
+[wp] [Valid] typed_lemma_ax_b_monotonic_pos (CVC5) (Cached)
 [wp] [Valid] typed_function_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_function_assert_rte_signed_overflow (Qed)
 [wp] [Valid] typed_function_assert_rte_signed_overflow_2 (Qed)
@@ -38,4 +38,4 @@
   Unreachable:     1
   Qed:            21
   Alt-Ergo:        4
-  Z3:              2
+  CVC5:            2

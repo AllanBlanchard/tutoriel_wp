@@ -1,10 +1,11 @@
-FROM alpine:latest
+FROM debian:trixie
 
-RUN apk add \
+RUN apt-get update && apt-get install -y \
   bash \
-  build-base \
+  build-essential \
   bzip2 \
   ca-certificates \
+  cvc5 \
   curl \
   diffutils \
   gcc \
@@ -12,11 +13,11 @@ RUN apk add \
   make \
   opam \
   patch \
+  rsync \
   tar \
   unzip \
   wget \
-  which \
-  z3
+  which
 
 RUN opam init -c 4.14.2 --disable-sandboxing
 

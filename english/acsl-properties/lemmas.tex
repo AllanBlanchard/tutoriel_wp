@@ -67,7 +67,7 @@ properties about them:
 
 
 For these proofs, Alt-ergo, will probably not be able to discharge all
-generated verification conditions. In this case, Z3 will certainly succeed
+generated verification conditions. In this case, CVC5 will certainly succeed
 in finishing the remaining ones. We can then write the following example code:
 
 
@@ -82,8 +82,8 @@ to prove the proof that \CodeInline{fmin} is lower or equals to
 property is the simply an instance of the lemma
 \CodeInline{ax\_monotonic\_pos}, the proof is then trivial as our lemma is
 considered to be true when are not currently proving it. Note that on this
-generalized version of \CodeInline{function}, Z3 will be probably more efficient
-to prove the absence of runtime errors.
+generalized version of \CodeInline{function}, CVC5 will be probably more
+efficient to prove the absence of runtime errors.
 
 
 \levelThreeTitle{Example: arrays and labels}
