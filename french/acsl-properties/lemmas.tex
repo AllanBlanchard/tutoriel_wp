@@ -73,7 +73,7 @@ propriétés intéressantes à leur sujet :
 
 
 Pour ces preuves, il est fort possible qu'Alt-Ergo ne parvienne pas à les
-décharger. Dans ce cas, le prouveur Z3 devrait, lui, y arriver. Nous pouvons
+décharger. Dans ce cas, le prouveur CVC5 devrait, lui, y arriver. Nous pouvons
 ensuite construire cet exemple de code :
 
 
@@ -87,7 +87,7 @@ qu'Alt-Ergo réussisse à produire la preuve que \CodeInline{fmin} est inférieu
 Avec ces lemmes présents en revanche, il y parvient sans problème, car cette
 propriété est une simple instance du lemme \CodeInline{ax\_b\_monotonic\_pos}, la preuve
 étant ainsi triviale, car notre lemme nous énonce cette propriété comme étant vraie.
-Notons que sur cette version généralisée, Z3 sera probablement plus efficace pour
+Notons que sur cette version généralisée, CVC5 sera probablement plus efficace pour
 prouver l'absence d'erreurs à l'exécution.
 
 

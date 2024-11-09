@@ -1,5 +1,5 @@
 /* run.config
-   STDOPT:+"-wp-prover alt-ergo,z3"
+   STDOPT:+"-wp-prover alt-ergo,cvc5"
 */
 
 #include <limits.h>
