@@ -398,16 +398,19 @@ If we ask WP to prove this function (let us ignore the verification of absence
 of RTEs for this example), we get the following result:
 
 
-
 \image{2-incr_a_by_b-1}
 
 
-The reason is simply that we do not have any guarantee that the pointer
-\CodeInline{a} is different of the pointer \CodeInline{b}. Now, if these
-pointers are the same,
+Again, counter examples can help us understand the reason why the proof fails:
 
 
+\image{incr_a_by_b-counter-example}
 
+
+The SMT solver indicates that if we take the same value for the two input
+pointers, then the property is necessarily wrong, and indeed we do not have any
+guarantee that the pointer \CodeInline{a} is different from the pointer
+\CodeInline{b}. Now, if these pointers are the same,
 \begin{itemize}
 \item   the property \CodeInline{*a == \textbackslash{}old(*a) + *b} in fact
   means \CodeInline{*a == \textbackslash{}old(*a) + *a} which can only
