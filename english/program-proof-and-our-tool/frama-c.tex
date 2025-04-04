@@ -8,10 +8,10 @@
 
 Frama-C (FRAmework for Modular Analysis of C code) is a platform
 dedicated to the analysis of C programs created by the CEA LIST and
-Inria. It is based on a modular architecture allowing to use different
+Inria. It is based on a modular architecture allowing you to use different
 plugins. The default plugins comprise different static analyses (that
 do not execute source code), dynamic analyses (that requires code
-execution), or combining both. These plugins can collaborate together
+execution), or a combination of both. These plugins can collaborate together
 or not, either by communicating directly or by using the specification
 language provided by Frama-C.
 
@@ -36,12 +36,12 @@ the technique we mentioned earlier: from
 ACSL annotations and the source code, the plugin generates what we call
 verification conditions, that are logic formulas that must be verified to be
 satisfiable or not. This verification can be performed manually or
-automatically, here we use automatic tools.
+automatically; here we use automatic tools.
 
 
 
-We will use a SMT solver
-(\externalLink{satisfiability modulo theory}{https://fr.wikipedia.org/wiki/Satisfiability\_modulo\_theories}, we do not detail how it works). This solver is
+We will use an SMT solver
+(\externalLink{satisfiability modulo theory}{https://fr.wikipedia.org/wiki/Satisfiability\_modulo\_theories}, we will not detail how it works). This solver is
 \externalLink{Alt-Ergo}{http://alt-ergo.ocamlpro.fr/}, that was initially developed
 by the Laboratoire de Recherche en Informatique d'Orsay, and is today
 maintained by OCamlPro.
@@ -53,17 +53,17 @@ maintained by OCamlPro.
 
 
 Frama-C is a software developed on Linux and macOS. Its support is thus better
-on those operating system. Nevertheless, it is possible to install Frama-C
+on those operating systems. Nevertheless, it is possible to install Frama-C
 on Windows and in theory, its use will be identical to its use on Linux.
 However:
 \begin{Warning}
 \begin{itemize}
   \item the tutorial presents the use of Frama-C on Linux (or macOS) and
-    the author did not experiment the differences that could exist with Windows,
+    the author did not experiment with the differences that could exist with Windows,
   \item in recent versions of Windows 10, a possibility is to use Windows
-    Subsystem for Linux, in combination with a Xserver installed on Windows
+    Subsystem for Linux, in combination with an Xserver installed on Windows
     to get GUI,
-  \item the ``Bonus'' section of this part could not be accessible on Windows.
+  \item the ``Bonus'' section of this part may not be accessible on Windows.
   \end{itemize}
 \end{Warning}
 
@@ -74,7 +74,7 @@ However:
 \levelFiveTitle{Using package managers}
 
 
-On Debian, Ubuntu and Fedora, there exist packages for Frama-C. In
+On Debian, Ubuntu and Fedora, there are packages for Frama-C. In
 such a case, it is enough to type a command like:
 
 
@@ -92,8 +92,8 @@ specific features could be missing.
 
 
 
-Go to the section ``Verify installation'' to perform some tests about
-the installation.
+Go to the section ``Verify installation'' to perform some tests on
+your installation.
 
 
 
@@ -155,8 +155,8 @@ want to use the Why3 platform as a backend (introduced later), the version
 0.88.3 should be used for Why3.
 
 
-Go to the section ``Verify installation'' to perform some tests about
-the installation.
+Go to the section ``Verify installation'' to perform some tests on
+your installation.
 
 
 
@@ -173,7 +173,7 @@ or on their website (\externalLink{Why3}{http://why3.lri.fr/}).
 
 After having extracted the folder available here :
 \externalLink{https://frama-c.com/html/get-frama-c.html}{https://frama-c.com/html/get-frama-c.html} (Source distribution).
-Navigate to the folder and then execute the command line:
+Navigate to the folder and then execute the command:
 
 
 
@@ -183,8 +183,8 @@ autoconf && ./configure && make && sudo make install
 
 
 
-Go to the section ``Verify installation'' to perform some tests about
-the installation.
+Go to the section ``Verify installation'' to perform some tests on
+your installation.
 
 
 
@@ -265,7 +265,10 @@ we will use the following code:
 \CodeBlockInput{c}{verify.c}
 
 
-Copy and paste this code in a file named \CodeInline{main.c}.
+Place this code in a file named \CodeInline{main.c}.
+(You can find the above code at the GitHub repository under the
+\CodeInline{code/program-proof-and-our-tool/frama-c/} subdirectory
+if you would like to copy-paste it.)
 Then, from a terminal, in the folder where the file has been created, we
 start Frama-C with the following command line:
 
@@ -305,7 +308,7 @@ forums can help (for example: \externalLink{StackOverflow - Frama-C}{https://sta
 
 
 \begin{Information}
-  For color blinds, it is possible to start Frama-C with another theme where
+  For people with colorblindness, it is possible to start Frama-C with another theme where
   color bullets are replaced:
 
 \begin{CodeBlock}{bash}
@@ -322,7 +325,7 @@ useful \emph{in the tutorial}. However, when we start to be interested
 in proving more complex programs, it is often possible to reach the
 limits of Alt-Ergo, which is available by default, and we would thus need
 some other provers. For basic properties, almost all solvers have the
-same capabilities, for more complex ones, each solver has its predilection
+same capabilities, for more complex ones, each solver has its specialized
 domains.
 
 

@@ -1,11 +1,11 @@
-Loops need a particular treatment in deductive verification of
-programs. These are the only control structures that will require
+Loops require a particular treatment in deductive program verification.
+These are the only control structures that will require
 important work from us. We cannot avoid this because without loops, it
 is difficult to write and prove interesting programs.
 
 
 
-Before we look at the way we specify loop, we can answer to a rightful
+Before we look at the way we specify loops, we should address an important
 question: why are loops so complex?
 
 
@@ -22,7 +22,7 @@ cannot know how many times variables are modified.
 
 
 
-We then proceed using an inductive reasoning. We have to find a
+So we must proceed using inductive reasoning. We have to find a
 property that is true before we start to execute the loop and that, if
 it is true at the beginning of an iteration, remains true at the end
 (and that is consequently true at the beginning of the next iteration).
@@ -70,7 +70,7 @@ $$\dfrac{\{I \wedge B \}\ c\ \{I\}}{\{I\}\ while(B)\{c\}\ \{I \wedge \neg B\}}$$
 
 And the weakest precondition calculus is the following:
 $$wp(while (B) \{ c \}, Post) := I \wedge ((B \wedge I) \Rightarrow wp(c, I)) \wedge ((\neg B \wedge I) \Rightarrow Post)$$
-Let us detail this formula:
+Let us break down this formula:
 \begin{itemize}
 \item
   \begin{enumerate}
@@ -86,9 +86,9 @@ Let us detail this formula:
   \begin{itemize}
   \item
     the precondition that we know of the loop body (let us note $KWP$,
-    ``Known WP'') is ($KWP = B \wedge I$). That is the fact we have
+    ``Known WP'') is ($KWP = B \wedge I$). This is the fact that we have
     entered the loop ($B$ is true), and that the invariant is verified
-    at this moment ($I$, is true before we start the loop by (1), and
+    at this moment ($I$ is true before we start the loop by (1), and
     we want to verify that it will be true at the end of the body of the
     loop in (2)),
   \item
@@ -96,35 +96,35 @@ Let us detail this formula:
     \def\labelenumi{(\arabic{enumi})}
     \setcounter{enumi}{1}
     \item
-      it remains to verify that $KWP$ implies the actual precondition*
+      we still need to verify that $KWP$ implies the actual precondition*
       of the body of the loop ($KWP \Rightarrow wp(c, Post)$). What we
       want at the end of the loop is the preservation of the invariant
-      $I$ ($B$ is maybe not true anymore however), formally
+      $I$ ($B$ may not be true anymore, however), formally
       $KWP \Rightarrow wp(c, I)$, that is to say
       $(B \wedge I) \Rightarrow wp(c, I)$,
     \end{enumerate}
   \item
-    * it corresponds to the application of the consequence rule
+    * this corresponds to the application of the consequence rule
     previously explained.
   \end{itemize}
 \item
   Finally, the last part ($(\neg B \wedge I) \Rightarrow Post$)
   expresses the fact that when the loop ends($\neg B$), and the
-  invariant $I$ has been maintained, it must imply that the wanted
+  invariant $I$ has been maintained, it must imply that the desired
   postcondition of the loop is verified.
 \end{itemize}
 
-In this computation, we can notice that the $wp$ function does not
-indicate any way to obtain the invariant $I$. We have to specify
-ourselves this property about our loops.
+In this computation, we see that the $wp$ function does not
+indicate any way to obtain the invariant $I$. We ourselves have to specify
+this property about our loops.
 
 
 
 \levelFourTitle{Back to the WP plugin}
 
 
-There exist tools that can infer invariant properties (provided that
-these properties are simple, automatic tools remain limited). This is not
+There are tools that can infer invariant properties (provided that
+these properties are simple; automated tools remain limited). This is not
 the case for WP. We have to manually annotate our programs to
 specify the invariant of each loop. To find and write invariants for our
 loops will always be the hardest part of our work when we want to prove
@@ -134,8 +134,8 @@ programs.
 
 Indeed, when there are no loops, the weakest precondition calculus
 function can automatically provide the verifiable properties of our
-programs, this is not the case for loop invariant properties for which we
-do not have computation procedures. We have to find and express them
+programs, but this is not the case for loop invariant properties for which we
+do not have computation rules. We have to find and express these invariants
 correctly, and depending on the algorithm, they can be quite subtle and
 complex.
 
@@ -151,22 +151,22 @@ before the loop:
 
 
 \begin{Warning}
-  \textbf{REMINDER} : The invariant is: i \textbf{$\leq$} 30 !
+  \textbf{REMINDER} : The invariant is: 0 $\leq$ i \textbf{$\leq$} 30 !
 \end{Warning}
 
 
-Why? Because along the loop, \CodeInline{i} is comprised between 0 and
-\textbf{included} 30. 30 is indeed the value that allows us to leave the
+Why? Because within the loop body, \CodeInline{i} is comprised between 0 and
+30 \textbf{inclusive}. 30 is indeed the value that allows us to leave the
 loop. Moreover, one of the properties required by the weakest
 precondition calculus is that when the loop condition is invalidated, by
 knowing the invariant, we can prove the postcondition (Formally
 $(\neg B \wedge I) \Rightarrow Post$).
 
 The postcondition of our loop is $\texttt{i} = 30$ and must be implied
-by $\neg\ \texttt{i} < 30\ \wedge\ 0 \leq \texttt{i} \leq 30$. Here, it is
+by $\neg\ (\texttt{i} < 30)\ \wedge\ 0 \leq \texttt{i} \leq 30$. Here, it is
 true since:
 $$\texttt{i} \geq 30 \wedge 0 \leq \texttt{i} \leq 30 \Rightarrow \texttt{i} = 30$$
-On the opposite, if we exclude the equality to 30, the postcondition
+Whereas if we did not allow $\texttt{i}$ to include 30 in our invariant, the postcondition
 would be unreachable.
 
 
@@ -179,17 +179,20 @@ Again, we can have a look at the list of verification conditions in
 
 
 We see that the termination condition is not proved, but let us ignore that
-right now. We notice that WP produces two different verification conditions: the
-establishment of the invariant and its preservation. WP produces exactly the
-reasoning we previously described to prove the assertion. The Qed simplifier is
-powerful enough to directly finish the proof (showing directly ``True''). Using
-the option \CodeInline{-wp-no-simpl} at start, we can however see these details:
+for now. Notice that WP produces two different verification conditions: the
+establishment of the invariant and its preservation. To prove the
+assertion, WP produces the exact
+reasoning we previously described. The Qed simplifier is
+powerful enough to directly finish the proof (showing directly ``True''). 
+But if we run with the option \CodeInline{-wp-no-simpl}, we can see
+these proof details:
 
 
 \image{i_30-2}
 
 
 But is our specification precise enough?
+Let's add one more variable to our program.
 
 
 
@@ -202,18 +205,18 @@ And the result is:
 \image{i_30-3}
 
 
-It seems not.
+It looks like our loop invariant needs a bit more work.
 
 
 
 \levelThreeTitle{The \CodeInline{assigns} clause ... for loops}
 
 
-In fact, considering loops, WP \textbf{only} reasons about what is
+In fact, when considering loops, WP \textbf{only} reasons about what is
 provided by the user to perform its reasoning. And here, the invariant
 does not specify anything about the way the value of \CodeInline{h} is
-modified (or not). We could specify the invariant of all program
-variables, but it would be a lot of work. ACSL simply allows adding
+modified (or not). We could specify the invariants of all program
+variables, but that would be a lot of work. ACSL simplifies this by allowing
 \CodeInline{assigns} annotations for loops. Any other variable is considered
 to keep its old value. For example:
 
@@ -223,7 +226,7 @@ to keep its old value. For example:
 
 
 
-This time, we can establish the proof that the loop correctly behaves.
+This time, we can establish the proof that the loop behaves correctly.
 However, we cannot prove that it terminates. The loop invariant alone
 does not give enough information to perform such a proof. For example,
 in our program, we could modify the loop, removing the loop body:
@@ -251,15 +254,15 @@ it is infinite.
 \label{l3:statements-loops-variant}
 
 
-In deductive verification, we find two types of correctness, the partial
-correctness and the total correctness. In the first case, the
+In deductive verification, we find two types of correctness, partial
+correctness and total correctness. In the first case, the
 formulation of the correctness property is ``if the precondition is
 valid, and \textbf{if} the computation terminates, then the
 postcondition is valid''. In the second case, ``if the precondition is
 valid, \textbf{then} the computation terminates and the postcondition is
-valid''. By default, WP only verify partial correctness, \textit{but} asks
+valid''. By default, WP only verifies partial correctness, but \textit{also} asks
 the kernel to generate the \CodeInline{terminates} clause so that we are forced
-to verify the termination anyway (except if we voluntarily change the clause
+to verify the termination anyway (unless we voluntarily change the clause
 as explained in Section~\ref{l3:statements-function-calls-terminates}). Thus,
 if we try to verify the following program:
 \CodeBlockInput{c}{infinite.c}
@@ -269,14 +272,14 @@ we get this result:
 
 
 The assertion ``False'' is proved! For a very simple reason: since the
-condition of the loop is ``True'' and no instruction of the loop body
-allows to leave the loop, it does not terminate. As we are proving the
+condition of the loop is ``True'' and no instruction in the loop body
+allows us to exit the loop, it does not terminate. As we are proving the
 code with partial correctness, and as the execution does not terminate,
 we can prove anything about the code that follows the non-terminating
-part of the code. However, if the termination is not trivially provable,
+part of the code. If, on the other hand, the termination is not trivially provable,
 the assertion will probably not be proved. However, because we have not proved
 the termination of the loop, the \CodeInline{terminates} clause is not proved,
-and we see that it might be a problem.
+and we see that this could cause problems.
 
 
 
@@ -295,7 +298,7 @@ and we see that it might be a problem.
 
 
 In program proof, when we need to prove termination of an algorithm, we
-introduce a notion of \textit{measure}. A measure is an expression that must be
+introduce the notion of a \textit{measure}. A measure is an expression that must be
 strictly decreasing according to a given
 \externalLink{well-founded relation}{https://en.wikipedia.org/wiki/Well-founded_relation}
 $R$. From a ``step'' of the computation to another, we want the measure to
@@ -305,13 +308,14 @@ $R(x,y) \Leftrightarrow x > y \wedge x \geq 0$, but one can specify another
 relation (see Section~\ref{l4:statements-loops-general-measure}).
 
 
-For loops, the measure is specified through a loop variant, and the notion of
+For loops, the measure is specified through a loop variant
+(so called because it \textit{varies}, as opposed to an \textit{in}variant), and the notion of
 ``step'' in the computation is the loop iteration. A loop variant is not a
 property but an expression that involves some variables modified
 by the loop and that provides an upper bound to the number of iterations that
 remains to be executed by the loop before any iteration. Thus, this expression
-is greater or equals to 0, and strictly decreases at each loop iteration. Now,
-since for any loop iteration the value decreases, but it remains positive, that
+is greater than or equal to 0, and strictly decreases at each loop iteration. Now,
+since for any loop iteration the value decreases, but remains positive, that
 means that the loop necessarily stops after a finite number of iterations.
 
 
@@ -332,7 +336,7 @@ WP generates two verification conditions for the loop variant: verify that the
 value of the expression specified in the variant is positive, and prove that it
 strictly decreases during the execution of the loop. We also see that with the
 loop variant, WP can prove that the function terminates. And if we delete the
-line of code that increments \CodeInline{i}, WP cannot prove anymore that
+line of code that increments \CodeInline{i}, WP can no longer prove that
 \CodeInline{30\ -\ i} strictly decreases, and the \CodeInline{terminates} clause
 is now ``proved under hypothesis''.
 
@@ -341,11 +345,11 @@ is now ``proved under hypothesis''.
 
 
 We will give more details about how the \CodeInline{terminates} clause is proved
-later. For now, note that, since the loop variant is an upper bound on the
+later on. For now, note that, since the loop variant is an upper bound on the
 number of remaining iterations, being able to give a loop variant does not
-necessarily induce that we can give the exact number of remaining iterations of
-the loop, as we do not always have a so precise knowledge of the behavior of the
-program. We can for example build an example like this one:
+necessarily imply that we can give the exact number of remaining iterations of
+the loop, as we do not always have such precise knowledge of the behavior of the
+program. We can for instance build an example like this one:
 
 
 \CodeBlockInput{c}{random_loop.c}
@@ -354,7 +358,7 @@ program. We can for example build an example like this one:
 Here, at each iteration, we decrease the value of the variable \CodeInline{i} by
 a value comprised between 1 and \CodeInline{i}. Thus, we can ensure that the
 value of \CodeInline{i} is positive and strictly decreases during each loop
-iteration, but we cannot tell how many loop iterations remain to be executed.
+iteration, but we cannot tell how many loop iterations still need to be executed.
 
 
 Note also that a loop variant only needs to be positive at the beginning
@@ -368,7 +372,7 @@ while(i >= 0){
 }
 \end{CodeBlock}
 
-Even if \CodeInline{i} can be negative when the loop exits, it is still
+Even though \CodeInline{i} is negative when the loop exits, it is still
 a variant since we do not start the execution of the block of the loop
 again.
 
@@ -387,11 +391,12 @@ again.
 
 
 Most of the time a simple integer measure is enough to express loop variants
-and prove termination of loops. However, in some situations, it might be hard to
-use. In such a case, ACSL allows the notion of generalized variant where one can
-specify an expression of any type, as long as they can provide a well-founded
-relation that correspond to this type. However, WP \textbf{does not} verify that
-the provided relation is well-founded, it must be proved in some other way.
+and prove termination of loops. However, in some situations, an
+integer may not be the best measure to use.
+In such a case, ACSL allows the notion of a generalized variant where one can
+specify an expression of any type, as long as one can provide a well-founded
+relation that corresponds to this type. However, WP \textbf{does not} verify that
+the provided relation is well-founded, so it must be proved in some other way.
 Such a measure is provided through the following syntax:
 
 
@@ -400,7 +405,7 @@ Such a measure is provided through the following syntax:
 \end{CodeBlock}
 
 
-The \CodeInline{Relation} predicate must be a defined binary predicates of the
+The \CodeInline{Relation} predicates must be a defined binary predicates of the
 type of \CodeInline{term}. Let us illustrate this with the following example:
 
 
@@ -408,9 +413,9 @@ type of \CodeInline{term}. Let us illustrate this with the following example:
 
 
 We will describe more precisely user-defined predicates in
-Section~\ref{l2:acsl-properties-predicates}, for now let us consider that
-the ACSL code on lines 12--15 defines some kind of function that takes to
-structures in input and returns a boolean value. Here, instead of using an
+Section~\ref{l2:acsl-properties-predicates}, for now let us assume that
+the ACSL code on lines 7--10 defines some kind of function that takes two
+structures as input and returns a boolean value. Here, instead of using an
 integer for our measure, we use a structure that contains two integers. The
 \CodeInline{lexico} predicate defines a lexicographical order over the
 structures of type \CodeInline{pair}. If we look at the generated verification
@@ -438,7 +443,7 @@ that this function returns the old value of \CodeInline{a} plus 10.
 
 
 The weakest precondition calculus does not allow deducing information
-that is not part of the loop invariant. In a code like:
+that is not part of the loop invariant. In a piece of code like:
 
 
 
@@ -446,7 +451,7 @@ that is not part of the loop invariant. In a code like:
 /*@
     ensures \result == \old(a) + 10;
 */
-int add_ten(int a){
+int add_ten_no_loop(int a){
     ++a;
     ++a;
     ++a;
@@ -457,10 +462,10 @@ int add_ten(int a){
 
 
 By reading the instructions backward
-from the postcondition, we always keep all knowledge about \CodeInline{a}. On
-the opposite, as we previously mentioned, outside the loop, WP only
+from the postcondition, we always keep all knowledge about \CodeInline{a}. In
+contrast, as we previously mentioned, outside of a loop, WP only
 considers the information provided by the invariant. Consequently, our
-\CodeInline{add\_ten} function cannot be proved: the invariant does not say anything
+\CodeInline{add\_ten} function with a loop cannot be proved: the invariant does not say anything
 about \CodeInline{a}. To create a link between the postcondition and the
 invariant, we have to add this knowledge. See, for example:
 
@@ -471,15 +476,15 @@ invariant, we have to add this knowledge. See, for example:
 
 
 \begin{Information}
-  This need can appear as a very strong constraint. This is not really the
-  case. There exists strongly automated analysis that can compute loop
+  This necessity may seem like a very strong constraint. This is not really the
+  case. There are fully automated analyses that can compute loop
   invariant properties. For example, without a specification, an abstract
   interpretation would easily compute \CodeInline{0 <= i <= 10}
   and \CodeInline{old(a) <= a <= \textbackslash{}old(a)+10}.
   However, it is often more difficult to compute the relations
-  that exist between the different variables of a program, for
-  example the equality expressed by the invariant we have
-  added and that is absolutely necessary to prove the postcondition of the
+  that exist between the different variables of a program, such
+  as the equality expressed by the invariant we
+  added, which is absolutely necessary to prove the postcondition of the
   function.
 \end{Information}
 
@@ -495,7 +500,7 @@ as a hypothesis, like in:
 assert A1: P(x);
 assert A2: Q(x);
 \end{CodeBlock}
-where \CodeInline{A2} can be proved with \CodeInline{A1} in hypothesis, the same
+where \CodeInline{A2} can be proved with \CodeInline{A1} in hypothesis. The same
 happens with loop invariants. However, there are some subtleties. Let us
 consider the following situation:
 
@@ -510,7 +515,7 @@ Here, we have 4 verification conditions to prove:
   \item \CodeInline{I1} is preserved by each loop iteration,
   \item \CodeInline{I2} is preserved by each loop iteration.
 \end{itemize}
-For \CodeInline{I1} establishment, there is not much to say: WP generates a
+For \CodeInline{I1}'s establishment, there is not much to say: WP generates a
 verification condition with all hypotheses that lead to the loop (so just the
 fact that \CodeInline{x} is 0) and we have to prove that \CodeInline{0 <= x}
 (we have used the option \CodeInline{-wp-no-let} to avoid immediate proof by
@@ -530,10 +535,10 @@ For \CodeInline{I2}, it is quite similar \emph{but} since we have proved that
 
 If there was a third loop invariant \CodeInline{I3}, the proof of its
 establishment would receive both the establishment of \CodeInline{I1} and
-\CodeInline{I2} as a hypothesis and so on.
+\CodeInline{I2} as a hypothesis, and so on.
 
 
-Then, we have to prove that \CodeInline{I1} and \CodeInline{I2} are preserved by
+Next, we have to prove that \CodeInline{I1} and \CodeInline{I2} are preserved by
 each loop iteration. For proving that \CodeInline{I1} is preserved, we assume
 that all loop invariants are verified before the loop iteration, and we prove
 that \CodeInline{I1} is still true at the end of the iteration. However, we can
@@ -558,7 +563,7 @@ more hypotheses since we also know that \CodeInline{I1} is preserved thus:
 \begin{itemize}
   \item assuming that \CodeInline{I1} and \CodeInline{I2} were verified when the
         loop started,
-  \item assuming also that all loop invariant are verified when the iteration
+  \item assuming also that all loop invariants are verified when the iteration
         starts,
   \item assuming that \CodeInline{I1} is preserved,
   \item prove that \CodeInline{I2} is still true at the end of the iteration.
@@ -573,7 +578,7 @@ Again, and so on when there are more \CodeInline{loop invariant} clauses.
 \label{l3:statements-loops-inv-kinds}
 
 
-Just like the \CodeInline{assert} clause that have the two variants
+Just as the \CodeInline{assert} clause has the two variants
 \CodeInline{check} and \CodeInline{admit}, one can specify that some
 loop invariants must be only checked or admitted. The syntax is the following:
 
@@ -588,8 +593,8 @@ Again, this has an impact on generated verification conditions and related
 hypotheses.
 
 
-The behavior associated to the \CodeInline{admit loop invariant} clause does not
-involve any particular subtlety. It is assumed exactly in the same situations as
+The behavior associated with the \CodeInline{admit loop invariant} clause does not
+involve any particular subtlety. It is assumed in the exact same situations as
 the standard \CodeInline{loop invariant} clause, so that the only difference
 between the two clauses is the fact that WP never generates a verification
 condition to check that the \CodeInline{admit loop invariant} clause is indeed
@@ -597,7 +602,7 @@ true.
 
 
 The \CodeInline{check loop invariant} clause is slightly more complex to deal
-with. Since this clause must be checked to be true, WP generate verification
+with. Since this clause must be checked to be true, WP generates verification
 conditions for it just like for standard \CodeInline{loop invariant} clause.
 Then, since it is only checked, one must not assume that it is true for proving
 other properties. However, for proving that the \CodeInline{check loop invariant}
@@ -609,13 +614,13 @@ loop invariants).
 Let us illustrate the behavior with the different verification conditions of
 \CodeInline{C3} and \CodeInline{I4} in the following code snippet (again, we
 use \CodeInline{-wp-no-let}, and the verification conditions have been slightly
-cleaned):
+cleaned up):
 
 
 \CodeBlockInput[5]{c}{check-admit-invariant.c}
 
 
-The verification condition associated to the establishment of \CodeInline{C3} is
+The verification condition associated with the establishment of \CodeInline{C3} is
 quite simple, since it appears after the loop invariants \CodeInline{I1} and
 \CodeInline{A2} that must be both admitted (even if \CodeInline{A2} has not been
 proved by WP), we have those two properties in the hypotheses:
@@ -624,7 +629,7 @@ proved by WP), we have those two properties in the hypotheses:
 \image{check-loop-est}
 
 
-The verification condition associated to the establishment of \CodeInline{I4} is
+The verification condition associated with the establishment of \CodeInline{I4} is
 more interesting: it still receives \CodeInline{I1} and \CodeInline{A2} in the
 hypotheses, but \CodeInline{C3} is not there because it is only checked and not
 admitted after that:
@@ -633,7 +638,7 @@ admitted after that:
 \image{inv-loop-est}
 
 
-Then, we can have a look to the preservation of these invariants. For
+Let's have a look at the preservation of these invariants. For
 \CodeInline{C3}, in the hypotheses, we find:
 \begin{itemize}
   \item all the established invariants, including \CodeInline{C3},
@@ -645,7 +650,7 @@ Then, we can have a look to the preservation of these invariants. For
 \image{check-loop-pres}
 
 
-On the opposite, if we look at the preservation of \CodeInline{I4}, in the
+If we now look at the preservation of \CodeInline{I4}, in the
 hypotheses, we find:
 \begin{itemize}
   \item all the established invariants, excluding \CodeInline{C3},
@@ -658,22 +663,22 @@ hypotheses, we find:
 \image{inv-loop-pres}
 
 
-Understanding how loop invariant are used by WP depending on the order in which
+Understanding how loop invariants are used by WP depending on the order in which
 they appear is useful to prove complex invariants. The more we provide useful
 hypotheses for a proof, the easier the proof will be. In particular, Qed can do
 a lot of simplification by rewriting hypotheses using deduction rules. Thus,
-providing first the simplest invariants and then the most complex can help the
+first providing the simplest invariants followed by the more complex ones can help the
 proof process by first proving easy properties and then using the acquired
-knowledge to prove the most complex ones.
+knowledge to prove the more complex ones.
 
 
-\levelThreeTitle{Early termination of loop}
+\levelThreeTitle{Early loop termination}
 
 
 A loop invariant must be true each time the condition of the loop is checked. In
-fact, that also means that it must be true before an iteration, and after
-each \textbf{complete} iteration. Let us illustrate on an example this
-important idea.
+fact, this also means that the loop invariant must be true before an iteration, and after
+each \textbf{complete} iteration. Let us illustrate this important
+idea with an example.
 
 
 
@@ -682,8 +687,8 @@ important idea.
 
 
 In this function, when the loop reaches the index 30, we break the loop before
-checking the condition again. While the invariant is verified, let us show
-that we can now further constrain it.
+checking the condition again. While this invariant is verified, let us show
+how we can constrain it even further.
 
 
 
@@ -693,9 +698,9 @@ that we can now further constrain it.
 
 Here we can see that we have excluded 30 from the range of values of
 \CodeInline{i} and everything is still verified by WP. This is particularly
-interesting because it does not apply only to the invariant, none of the loop
+interesting because it applies not only to the invariant: none of the loop
 properties need to be verified in this last iteration. For example, we can
-write this code that is still verified:
+write this piece of code that is still verified:
 
 
 
@@ -703,7 +708,7 @@ write this code that is still verified:
 
 
 
-We can see that we can write the variable \CodeInline{h} even if it is not
+We see that we can write to the variable \CodeInline{h} even if it is not
 listed in the \CodeInline{loop assigns} clause, and that we can give the
 value 42 to \CodeInline{i} which does not respect the invariant, and also
 makes the expression of the variant negative. In fact, everything happens
@@ -717,15 +722,16 @@ as if we had written:
 
 This is an interesting scheme. It basically corresponds to any algorithm
 that searches, using a loop, a particular condition verified by an element
-in a given data-structure and stops when it founds it to perform some
+in a given data-structure and stops when it finds it in order to perform some
 operations that are thus not really part of the loop. From a verification
-point of view, it allows us to simplify the contract of the loop: we know
+point of view, this allows us to simplify the contract of the loop: we know
 that the (potentially complex) operations performed just before we stop do
 not need to be considered when designing the invariant.
 
 
 \levelThreeTitle{Exercises}
 
+Be sure to wrap the following fragments within some function.
 
 \levelFourTitle{Loop invariant}
 
@@ -761,7 +767,7 @@ frama-c -wp your-file.c
 
 
 If your variant does not precisely state the number of remaining
-iteration, add a variable that records exactly the number of remaining
+iterations, add a variable that records exactly the number of remaining
 iterations and use it as a variant. You might need to add an invariant.
 
 

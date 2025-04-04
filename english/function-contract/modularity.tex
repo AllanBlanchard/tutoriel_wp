@@ -1,6 +1,6 @@
 For this last part, let us talk about function call composition,
 and have a closer look at WP. We will also have a look at the way we can split
-our programs in different files when we want to prove them using WP.
+our programs into different files when we want to prove them using WP.
 
 Our goal is to prove the \CodeInline{max\_abs} function, that returns
 the maximum absolute value of two values:
@@ -30,7 +30,7 @@ File abs.c
 
 
 
-We can notice that we put our function contract in the header file.
+We see that we put our function contract in the header file.
 The goal is to be able to import the specification at the same time as
 the declaration when we need it in another file. Indeed, WP needs the
 contract of the function when it is called. First to prove that the
@@ -40,8 +40,8 @@ properties after the function call.
 
 We can create a file using the same format for the \CodeInline{max}
 function. In both cases, we can open the source file (we do not need to
-specify header files in the command line) with Frama-C and notice that
-the specification is indeed associated to the function and that we prove
+specify header files on the command line) with Frama-C and see that
+the specification is indeed associated with the function and that we can prove
 it.
 
 
@@ -74,11 +74,11 @@ can see some blue and green bullets:
 
 These bullets indicate that, since we do not have the implementation
 of the function, the postcondition of the function is assumed to be
-true. It is an important strength of the deductive proof of programs
+true. This is an important strength of deductive program proofs
 compared to some other formal methods: functions are verified in
 isolation from each other.
 
-When we are not currently performing the proof of a function, its
+When we are not actively performing the proof of a function, its
 specification is considered to be correct: we do not try to prove it
 when we are proving another function, we only verify that the
 precondition is correctly established when we call it. It provides very
@@ -90,7 +90,7 @@ external library that we do not want to prove (or for which we do not
 even have the source code).
 
 The careful reader could specify and prove the \CodeInline{max\_abs}
-function. A possible answer is provided there:
+function. A possible answer is provided below:
 
 
 
