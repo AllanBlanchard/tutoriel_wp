@@ -3,15 +3,15 @@ can be proved in isolation of the rest of the proof of a program by automatic or
 (more often) interactive provers. Once this proof is done, the information that
 it states can be safely used to simplify the reasoning in other, more complex
 proofs, without having to prove it again. For example, if we state a lemma $L$
-that says $P \Rightarrow Q$ in any case, if at some point in another proof, we
-have to prove $Q$, and we know $P$, we can directly conclude by using the lemma
-$L$ without having to perform again the reasoning that brings us from $P$ to
+that says $P \Rightarrow Q$ always holds, then if at some point in another proof, we
+have to prove $Q$, and we know $P$, we can finish the proof directly by using lemma
+$L$ without having to reperform the reasoning that brings us from $P$ to
 $Q$.
 
 
-In the previous section, we said that recursive function can make proof harder
-for SMT solvers. In such a case, lemmas can help us. We can write by ourselves
-the proofs that require inductive reasoning for some properties that we state as
+In the previous section, we said that recursive logic functions can make proofs harder
+for SMT solvers. In such a case, lemmas can help us. We can write our own
+proofs that require inductive reasoning for some properties that we state as
 lemmas, and these lemmas can be used efficiently by SMT solvers to perform the
 other proofs, related to our programs.
 
@@ -34,7 +34,7 @@ following:
 
 
 This time, the properties we want to express do not depend on received
-parameters (except for labels). So we express these properties for universally
+parameters (except for labels). This means we express these properties over universally
 quantified variables. For example, we can state this lemma, which is true, even
 if it is trivial:
 
@@ -77,25 +77,25 @@ in finishing the remaining ones. We can then write the following example code:
 
 
 If we do not give the lemmas provided earlier, Alt-ergo will not be able
-to prove the proof that \CodeInline{fmin} is lower or equals to
-\CodeInline{fmax}. With the lemmas it is however very easy for it since the
-property is the simply an instance of the lemma
-\CodeInline{ax\_monotonic\_pos}, the proof is then trivial as our lemma is
-considered to be true when are not currently proving it. Note that on this
+to prove that \CodeInline{fmin} is less than or equal to
+\CodeInline{fmax}. But {\it with} the lemmas, Alt-ergo can easily handle this, since the
+property is simply an instance of the lemma
+\CodeInline{ax\_monotonic\_pos}, making the proof trivial, as our lemma is
+considered to be true when we are not actively proving it. Note that on this
 generalized version of \CodeInline{function}, CVC5 will be probably more
-efficient to prove the absence of runtime errors.
+efficient in proving the absence of runtime errors.
 
 
 \levelThreeTitle{Example: arrays and labels}
 
 
-Later in this tutorial, we will see some kind of definitions for which it is
+Later in this tutorial, we will see some kinds of definitions for which it is
 sometimes hard to reason about for SMT solvers when some mutations happen in
 memory. Thus, we will often need lemmas to state relations about the content
 of the memory between labels.
 
 
-For now, let us illustrate with a first simple example. Consider the two following
+For now, let us illustrate this with a simple example. Consider the two following
 predicates:
 
 
@@ -117,8 +117,8 @@ unchanged from \CodeInline{L1} to \CodeInline{L2}, then it is still sorted at
 \CodeInline{L2}.
 
 
-Note that this lemma is easily proved by SMT solvers. We will see later some
-examples where it is not so easy to get a proof.
+Note that this lemma is easily proved by SMT solvers. We will see some
+examples later on where it is not so easy to get a proof.
 
 
 \levelThreeTitle{Check lemma}
@@ -136,11 +136,11 @@ Like assertions, it is possible to use a \CodeInline{check} version of lemmas:
 
 
 A \CodeInline{check lemma} annotation asks WP to generate a verification
-condition. But, contrarily to standard lemmas, the knowledge that the
+condition. But unlike standard lemmas, the knowledge that the
 corresponding property is verified will not be added to the context of the
 proofs. Thus, SMT solvers will not be able to use it for other proofs. This
-kind of annotations can be useful to gain confidence about global annotations,
-testing whether they can be used in some situations, or on the opposite, that
+kind of annotation can be useful to gain confidence about global annotations,
+testing whether they can be used in some situations, or conversely, that
 some unwanted properties cannot be proved.
 
 
@@ -171,20 +171,20 @@ corresponding Coq proof on the GitHub repository of this book.
 
 
 The following program contains a function that requires an array to be sorted
-in the sense that each element is lower than or equal to the element that
-follows it and calls the binary search function.
+(in the sense that each element is less than or equal to the element that
+follows it) before calling the binary search function.
 
 
 \CodeBlockInput[66]{c}{ex-2-sorted-link.c}
 
 
-Take back your proved binary search function from the
+Look back at the proven binary search function from
 exercise~\ref{l4:acsl-properties-predicates-ex-bsearch}. You might notice that
 the precondition of the binary search function is stronger than what we know in
 precondition of the \CodeInline{bsearch\_callee} function. However, our precondition
 implies that the array is globally sorted. Write a lemma that states that if
 an array is \CodeInline{element\_level\_sorted} then it is \CodeInline{sorted}.
-This lemma will probably not be proved by SMT solvers, all remaining properties
+This lemma will probably not be proved by SMT solvers, but all remaining properties
 should be.
 
 We provide a solution and the corresponding Coq proof on the GitHub repository
@@ -194,7 +194,7 @@ of this book.
 \levelFourTitle{Sum of the N first integers}
 \label{l4:acsl-properties-lemmas-n-first-ints}
 
-Take back your solution to the
+Look back at the solution to
 exercise~\ref{l4:acsl-properties-functions-n-first-ints} about the sum of the
 N first integers. Write a lemma that states that the result of the call to the
 logic function is $n*(n+1)/2$. This lemma will not be proved by SMT solvers.
@@ -227,18 +227,18 @@ it using WP.
 Express two lemmas about the \CodeInline{shifted} property.
 
 
-The first one \CodeInline{shift\_ptr} should state that shifting a range
-\CodeInline{fst+s1} to \CodeInline{last+s1} of an \CodeInline{array} with an
-offset \CodeInline{s2} is equivalent to shifting the range \CodeInline{fst} to
-\CodeInline{last} of the memory location \CodeInline{array+s1} with an offset
-\CodeInline{s2}.
+The first one, \CodeInline{shift\_ptr}, should state that shifting a range
+\CodeInline{fst+s1} to \CodeInline{last+s1} of an \CodeInline{array} by an
+offset of \CodeInline{s2} is equivalent to shifting the range \CodeInline{fst} to
+\CodeInline{last} of the memory location \CodeInline{array+s1} by an offset
+of \CodeInline{s2}.
 
 
 
 The second one should state that when the elements of an array are shifted a
-first time with an offset \CodeInline{s1} and then a second time with an offset
-\CodeInline{s2}, then the complete shift corresponds to a single shift with an
-offset \CodeInline{s1+s2}.
+first by with an offset of \CodeInline{s1} and then a second time by an offset
+of \CodeInline{s2}, then the complete shift corresponds to a single shift by an
+offset of \CodeInline{s1+s2}.
 
 
 
@@ -259,8 +259,8 @@ performs a binary search.
 \CodeBlockInput[5]{c}{ex-5-shift-sorted.c}
 
 
-Take back your proved binary search function from the
-exercise~\ref{l4:acsl-properties-predicates-ex-bsearch}, modify the binary
+Look back at the proven binary search function from
+exercise~\ref{l4:acsl-properties-predicates-ex-bsearch}, and modify the binary
 search function, its contract and its proof in order to be able to search in
 any range.
 
@@ -271,10 +271,10 @@ Use the \CodeInline{shift\_array} function proved in the previous exercise.
 Complete the contract of the function \CodeInline{shift\_and\_search}. You might
 notice that the precondition that requires the array to be sorted is not
 validated, nor the postcondition of the caller. First, complete the lemma
-\CodeInline{shifted\_still\_sorted} that should state that if a range is sorted
-at some label and then shifted, the resulting range is still sorted, the
-precondition should now be proved. Then, complete the lemma
-\CodeInline{in\_array\_shifted} that should state that if a value is in a range
+\CodeInline{shifted\_still\_sorted}, which should state that if a range is sorted
+at some label and then shifted, then the resulting range is still sorted. The
+precondition should now be proved. Next, complete the lemma
+\CodeInline{in\_array\_shifted}, which should state that if a value is in a range
 of values that is then shifted, it is still in the resulting new range. The
 postcondition of the caller should now be proved.
 

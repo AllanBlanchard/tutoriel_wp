@@ -4,54 +4,54 @@
 Writing loop annotations requires a lot of work during program proof. There is
 no perfect way of writing them. In particular, finding the right invariant, and
 the right way to express it, is mostly a matter of experience. Nevertheless, a
-few simple ideas can help, so that at least we do not miss common mistakes that
-can make lose a lot of time during the process.
+few simple ideas can help, so that at least we can avoid common mistakes that
+would make us lose a lot of time during the process.
 
 
-Before anything else, we write the \CodeInline{loop assigns} clause. It is
+Before anything else, we should write the \CodeInline{loop assigns} clause. It is
 generally easy to write (just look at the assignment instructions and function
-calls), and if it is incorrect we can prove wrong properties that can make us
-lose time. When writing them, we should not try to be too precise. WP cannot use
-efficiently something like \CodeInline{array[x .. y]} when \CodeInline{x} or
+calls), and if we forget this step we risk wasting time trying to prove incorrect
+properties. When writing these clauses, we should not try to be too precise. WP cannot 
+efficiently handle something like \CodeInline{array[x .. y]} when \CodeInline{x} or
 \CodeInline{y} are themselves modified, so we generally prefer bounds that
 include them while being constant during the execution of the loop, if we need
 more precise information during the proof of the invariants, we will provide
 some additional invariants for this.
 
 
-Then, we bound the different variables that are assigned, in particular indexes.
+Next, we bound the different variables that are assigned, in particular indexes.
 These invariants are generally easy to guess, express and verify. We put these
 invariants at the beginning of the list of \CodeInline{loop invariant} clauses,
 since, as we explained in Sections~\ref{l3:statements-loops-multi-inv}
 and~\ref{l3:statements-loops-inv-kinds}, the order of the invariants is important,
-and these simple properties can be propagated by WP in the other loop invariants
-to make verification conditions simplifications.
+and these simple properties can be propagated by WP to the other loop invariants
+to make verification condition simplifications.
 
 
 For most loops, except the ones that rely on a complex condition, once this step
 is done, it is easy to provide the \CodeInline{loop variant} clause. We can just
-look at the variables that we have just bounded and what is the value that it
-will reach at the end of the loop. For example, if in the loop some \CodeInline{i}
+look at the variables that we have just bounded and at the value reached
+at the end of the loop. For example, if in the loop some \CodeInline{i}
 goes from 0 to \CodeInline{n}, \CodeInline{n - i} is a good candidate. For more
 complex loops, one can rely on ghost code (that we present in
 Section~\ref{l2:acsl-logic-definitions-ghost-code}) to make some measure
 explicit and use it to provide a suitable loop variant.
 
 
-Then, we add the ``main'' loop invariants of the loop, i.e. those that relate to
-the expected postcondition of the loop (that might be the postcondition of the
+And now, we add the ``main'' loop invariants of the loop, i.e., those that relate to
+the expected postcondition of the loop (this might be the postcondition of the
 function itself). For this, we can use the postcondition itself as a guide. If
 we have something like \CodeInline{ensures P(n);} and a loop that iterates
 \CodeInline{i} from 0 to \CodeInline{n}, \CodeInline{loop invariant P(i);} is
 probably a good candidate. Notice that in some situations, the
 \CodeInline{assumes} clause might also be interesting, typically when the result
-is a simple value that depends on the precondition state, as we will see in some
+is a simple value that depends on the precondition state, as we will see in a
 later example. These invariants should be positioned at the end of the list of
 loop invariants.
 
 
 We may (optionally) need some ``glue'' to prove the most interesting ``main''
-loop invariant. For example, if we have voluntarily provided an imprecise
+loop invariant. For example, if we deliberately provided an imprecise
 \CodeInline{loop assigns} clause, we might need a loop invariant to explain that
 some parts are not modified, or we may need to explain to the solver that
 because some properties are true, then we can deduce that the ``main'' invariant
@@ -61,7 +61,7 @@ might not be straightforward, so generally this part is mostly a
 ``trial and error'' process.
 
 
-In the remaining of this section, we will illustrate this approach on some
+In the remainder of this section, we will illustrate this approach on some
 examples. Although in the process, it is advised to run the proof between each
 step, we will generally not go to this level of detail in the future examples.
 
@@ -71,13 +71,13 @@ step, we will generally not go to this level of detail in the future examples.
 
 
 The array is the most common data structure when we are working with loops.
-It is then a good example base to exercise with loops, and these
-examples allow to rapidly show interesting invariant and will allow us
+It is therefore a good example base to practice with loops, and these
+examples allow us to immediately demonstrate interesting invariants and
 to introduce some important ACSL constructs.
 
 
-We can for example illustrate with the search function that allows to find a
-value in an array. For now, let us focus on the contract of the function:
+Let's start with the search function, which allows one to find a
+value in an array if the value is there. For now, let us focus on the contract of the function:
 
 
 \CodeBlockInput[5]{c}{search-0.c}
@@ -86,7 +86,7 @@ value in an array. For now, let us focus on the contract of the function:
 There are enough ideas in this example to introduce some important syntax.
 
 
-First, as we previously presented, the
+First, as we previously mentioned, the
 \CodeInline{\textbackslash{}valid\_read} predicate (as well as
 \CodeInline{\textbackslash{}valid}) allows us to specify not only the
 validity of a readable address but also to state that a range of
@@ -106,9 +106,9 @@ locations.
 We also introduced two notations that are used almost all the time in
 ACSL, the keywords \CodeInline{\textbackslash{}forall} ($\forall$) and
 \CodeInline{\textbackslash{}exists} ($\exists$), the universal logic
-quantifiers. The first one allows to state that for any element, some
-property is true, the second one allows to say that there exists some
-element such that the property is true. If we comment a bit the
+quantifiers. The first one allows us to state that for any element, some
+property is true; the second one allows us to say that there exists some
+element such that the property is true. If we add comments to the
 corresponding lines in our specification, we can read them this way:
 
 
@@ -125,9 +125,10 @@ corresponding lines in our specification, we can read them this way:
 \end{CodeBlock}
 
 
-If we want to summarize the use of these keywords, we would say that on a
-range of values, a property is true, either about at least one of them
-or about all of them. A common scheme is to constrain this set using
+If we want to summarize the use of these two keywords, we would say that on a
+range of values, a property is true, either about about all of them
+(\CodeInline{\textbackslash{}forall}) or at least one of them
+(\CodeInline{\textbackslash{}exists}). A common scheme is to constrain this set using
 another property (here: \CodeInline{0 <= off < length}) and to prove the
 actual interesting property on this smaller set. \textbf{But using
 \CodeInline{\textbackslash{}exists} and \CodeInline{\textbackslash{}forall} is
@@ -139,17 +140,17 @@ the constraint \CodeInline{p} is followed by an implication.
 For any element where a first property \CodeInline{p} is verified, we have
 to also verify the second property \CodeInline{q}. If we use a conjunction,
 as we do for ``exists'' (which we will later explain), that would mean that
-all elements verify both \CodeInline{p} and \CodeInline{q}. In our previous
-example, it is clearly not the case as not all integers are comprised between
-0 and \CodeInline{length}. Sometimes, it could be what we want to express, but
-it would then not correspond anymore to the idea of constraining a set for which
+all elements satisfy both \CodeInline{p} and \CodeInline{q}. In our previous
+example, this is clearly not the case, as not all integers are comprised between
+0 and \CodeInline{length}. Sometimes, a construction like this may be what we want to express, but
+this construction would no longer correspond to the idea of constraining a set for which
 we want to verify some other property.
 
 
 With \CodeInline{\textbackslash{}exists type a ; p(a) \&\& q(a)}, the
 constraint \CodeInline{p} is followed by a conjunction. We say there exists
-an element such that it satisfies the property \CodeInline{p} at the same
-time it also satisfies \CodeInline{q}. If we use an implication, as we do
+an element such that it satisfies the property \CodeInline{p}, and at the same
+time it also satisfies \CodeInline{q}. If, instead of a conjunction, we use an implication, as we do
 for \CodeInline{\textbackslash{}forall}, such an expression will always be true
 if \CodeInline{p} is not a tautology! Why? Is there an ``a'' such that p(a) implies
 q(a)? Let us take any ``a'' such that p(a) is false, then the implication is true.
@@ -171,16 +172,16 @@ could have been expressed with:
 \end{CodeBlock}
 
 
-Now, let us talk about the loop annotations. The first step is to add the
+Let's turn now to adding the loop annotations. The first step is to add the
 \CodeInline{loop assigns} clause. Here, it is simple: the loop only modifies the
 variable \CodeInline{i}. Thus, we need to bound \CodeInline{i}, it goes from
 \CodeInline{0} to \CodeInline{length}, this is our first loop invariant:
 \CodeInline{0 <= i <= length}. That also gives us the loop variant:
-\CodeInline{length - i}. Now, we can provide our ``main'' loop invariant. Here,
-it is related to the \CodeInline{assumes} clauses, and not to the
+\CodeInline{length - i}. Now, we can provide our ``main'' loop invariant.
+In this example, the invariant is related to the \CodeInline{assumes} clauses, and not to the
 \CodeInline{ensures} clauses. In particular, the interesting part of the loop is
-the fact that unless we meet the element that we search, it is not in the array,
-we exploit this starting from our \CodeInline{notin} assumes:
+the fact that unless we find the element we are searching for, it is not in the array.
+Let's see if we can reuse part of the assumes clause from our \CodeInline{notin} behavior:
 \begin{CodeBlock}{c}
   //@ \forall size_t off ; 0 <= off < length ==> array[off] != element;
 \end{CodeBlock}
@@ -198,22 +199,22 @@ is certainly a good candidate. Thus, we have the following loop annotations:
 And indeed, our final loop invariant defines the treatment performed by our
 loop, it indicates to WP what happens in the loop (or more precisely: what we
 learn) along the execution. Here, this formula indicates that at each iteration
-of the loop, we know that for each memory location between 0 and the next
+of the loop, we know that for each indexed memory location between indices 0 and the next
 location to visit (\CodeInline{i} excluded), the memory location contains a
 value different from the element we are looking for.
 
 
-The verification condition associated to the preservation of this invariant is
-a bit complex, and it is not interesting to precisely look at it,
-on the contrary, the proof that the invariant is established before
-executing the loop is interesting:
+The verification condition associated with the preservation of this invariant is
+a bit complex, and it is not interesting to closely examine at it;
+however, the proof that the invariant is established before
+executing the loop {\it is} interesting:
 
 
 \image{trivial}
 
 
 We note that this property, while quite complex, is proved easily
-by Qed. If we look at the parts of the programs on which the proof
+by Qed. If we look at the parts of the program on which the proof
 relies, we can see that the instruction \CodeInline{i = 0} is highlighted
 and this is, indeed, the last instruction executed on \CodeInline{i} before
 we start the loop. And consequently, if we replace the value of
@@ -225,8 +226,8 @@ we start the loop. And consequently, if we replace the value of
 \end{CodeBlock}
 
 
-``For all j, greater or equal to 0 and strictly lower than 0'', this
-part of the formula is necessarily false, our implication is then
+``For all j, greater than or equal to 0 and strictly lower than 0''; this
+part of the formula is necessarily false, so our implication is 
 necessarily true.
 
 
@@ -246,32 +247,32 @@ Let us have a look at the function that resets an array of integers to 0.
 \CodeBlockInput{c}{reset.c}
 
 
-This time, the loop does modify the content of the array, thus we have to
-provide this in the \CodeInline{loop assigns} clause. Notice that we can use
+This time, the loop does modify the content of the array, so we need to
+state this in the \CodeInline{loop assigns} clause. Notice that we can use
 the notation \CodeInline{n .. m} for this. Furthermore, we do not say that
 the loop assigns the content from \CodeInline{0} to \CodeInline{i-1} (since
 \CodeInline{i} is modified, and WP cannot exploit this) but from \CodeInline{0}
-to \CodeInline{length-1}, this is less precise, but it can be used by WP out the
-loop. Finally, this time we directly relate the invariant to the postcondition,
-the goal of the function is to reset the array from 0 to \CodeInline{length}, at
-a given iteration, the loop has done it from 0 to \CodeInline{i}.
+to \CodeInline{length-1}, this is less precise, but it can be used by WP outside the
+loop. Finally, this time we directly relate the invariant to the postcondition.
+The goal of the function is to reset the array from indices 0 to \CodeInline{length-1}, at
+any given iteration, the loop has reset elements from indices 0 to \CodeInline{i-1}.
 
 
 \levelFourTitle{Search and replace}
 \label{l4:statements-loops-ex-search-and-replace}
 
 
-The last example we will detail to illustrate the proof of functions
-with loops is the algorithm ``search and replace''. This algorithm
+The last example illustating how to prove functions
+with loops is the ``search and replace'' algorithm. This algorithm
 selectively modifies values in a range of memory locations. It is
 generally harder to guide the tool in such a case, because on one hand
 we must keep track of what is modified and what is not, and on the other
 hand, the induction relies on this fact.
 
 
-As an example, the first specification and loop annotations we can write for
-this function could be this one (which follows basically the same process we
-had for the previous example):
+As an example, the first specification and loop annotations for
+this function could be the following (which employs the same process we
+used in the previous example):
 
 
 \CodeBlockInput{c}{search_and_replace-0.c}
@@ -297,7 +298,7 @@ array and the potentially new values:
 
 For every memory location that contained the value to be replaced, it now must
 contain the new value. All other values must remain unchanged. While we
-previously relied on the \CodeInline{assigns} clauses for this kind of properties,
+previously relied on the \CodeInline{assigns} clauses for these kinds of properties,
 here, we do not have this possibility because while the ACSL language provides
 some facilities that we could use to write a very precise \CodeInline{assigns}
 clause, WP would not perfectly exploit it. Thus, we have to use an invariant and
@@ -307,7 +308,7 @@ keep an approximation of the assigned memory location.
 If we try to prove this invariant with WP, it fails, because the
 \CodeInline{assigns} specification is not precise enough. Thus, in such a case,
 we provide an additional loop invariant to detail in the assigned range what are
-the locations that have not been modified yet by the loop at some iteration:
+the locations that have not been modified yet by the loop in some iteration:
 
 
 \begin{CodeBlock}{c}
@@ -318,7 +319,8 @@ for(size_t i = 0; i < length; ++i){
 \end{CodeBlock}
 
 
-We can add this information as an invariant:
+We can instead add this information as an invariant (the second from
+the top):
 
 
 \CodeBlockInput[13][26]{c}{search_and_replace-1.c}
