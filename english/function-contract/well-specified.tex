@@ -3,13 +3,13 @@
 
 
 This is certainly the hardest part of our work. Programming is already
-an effort that consists in writing algorithms that correctly answer to
-our need. Specifying requests the same kind of work, except that we do
-not try to express \emph{how} we answer to our need but \emph{what} is
-exactly our need. To prove that our code implements what we need, we
+an effort that consists in writing algorithms that correctly meets
+our needs. Specifying requires the same kind of work, except that we do
+not try to express \emph{how} we meet our needs but \emph{what} 
+exactly \emph{is} our need. To prove that our code implements what we need, we
 must be able to describe exactly what we need.
 
-From now, let us use another example, the \CodeInline{max} function:
+For this subsection, let us use another example, the \CodeInline{max} function:
 
 
 
@@ -46,10 +46,10 @@ correct with respect to the specification:
 
 
 
-While being a correct specification of \CodeInline{max}, our specification
-is however too permissive. We have to be more precise. We do
-not only expect the result to be greater or equal to both parameters,
-but also that the result is one of them:
+This is a correct specification of \CodeInline{max}, but our specification
+is too permissive. We have to be more precise. We do
+not only expect the result to be greater than or equal to both parameters,
+but also that the result is one of these parameters:
 
 
 
@@ -57,7 +57,7 @@ but also that the result is one of them:
 
 
 This specification can also be proved correct by WP, but now we can also prove
-the assertion in our function \CodeInline{foo}, and we cannot prove anymore an
+the assertion in our function \CodeInline{foo}, and we can no longer prove an
 implementation that would just return the value \CodeInline{INT\_MAX}.
 
 
@@ -65,7 +65,7 @@ implementation that would just return the value \CodeInline{INT\_MAX}.
 
 
 Producing a correct specification is crucial. Typically, by stating a
-false precondition, we can have the possibility to create a proof of
+false precondition, we make it possible to create a proof of
 false:
 
 
@@ -78,10 +78,10 @@ However, we will not be able to give an input that satisfies the
 precondition.
 
 
-For this particular kind of inconsistencies, a useful feature of WP is
+For this particular kind of inconsistency, a useful feature of WP is
 the ``smoke tests'' option of the plugin. It can be used to detect that
 some preconditions are unsatisfiable. For example, here, we can run this
-command line:
+command:
 
 
 \begin{CodeBlock}{bash}
@@ -96,8 +96,8 @@ and we obtain the following result in the GUI:
 
 
 We can see a red and orange bullet on the precondition of the function,
-meaning that if there exists a reachable call to this function the
-precondition will be necessarily violated, and a red bullet in the
+meaning that if there exists a reachable call to this function then the
+precondition will necessarily be violated, and a red bullet in the
 list of goals, indicating that a prover succeeded in proving that this
 precondition is inconsistent.
 
@@ -110,17 +110,17 @@ that the prover was unable to prove that it was inconsistent.
 
 
 Some notions we will see in this tutorial can expose us to the
-possibility to introduce subtle incoherence. So, we must always be
+possibility of introducing subtle incoherence. So, we must always be
 careful when specifying a program.
 
 
 \levelThreeTitle{Pointers}
 
 
-If there is one notion that we permanently have to confront with in C
-language, this is definitely the notion of pointer. Pointers are quite
+If there is one notion that we permanently have to confront in C,
+this is definitely the notion of pointers. Pointers are quite
 hard to manipulate correctly, and they still are the main source of
-critical bugs in programs, so they benefit of a preferential treatment
+critical bugs in programs, so they deserve a preferential treatment
 in ACSL. In order to produce a correct specification of programs using
 pointers, it is necessary to detail the configuration of the considered
 memory.
@@ -137,7 +137,7 @@ only be verified without RTE checking for now):
 \levelFourTitle{History of values in memory}
 
 
-Here, we introduce a first built-in logic function of ACSL:
+Here, we introduce our first built-in logic function of ACSL:
 \CodeInline{\textbackslash{}old}, that allows us to get the old (that
 is to say, before the call) value of a given element. So, our specification
 defines that the function must ensure that after the call, the value of
@@ -167,7 +167,7 @@ built-in labels defined by ACSL that can be used:
 \begin{itemize}
 \item \CodeInline{Pre}/\CodeInline{Old}: value before function call,
 \item \CodeInline{Post}: value after function call,
-\item \CodeInline{LoopEntry}: value at loop entry
+\item \CodeInline{LoopEntry}: value at loop entry,
 \item \CodeInline{LoopCurrent}: value at the beginning of the current step of
   the loop,
 \item \CodeInline{Here}: value at the current program point.
@@ -198,9 +198,9 @@ Note that one must take care to use \CodeInline{\textbackslash{}old} and
 \CodeInline{\textbackslash{}at} for values that make sense. This is why
 for example in a contract, all values received in input are put into
 \CodeInline{\textbackslash{}old} when used in postcondition, the ``new''
-value of the input variables not make any sense for the caller of the
+value of the input variables do not make any sense for the caller of the
 function as they are not accessible: they are local to the called function.
-For example, if we have look at the contract of the swap function transformed
+For example, if we have a look at the contract of the swap function transformed
 by Frama-C, we can see that in the postcondition, the pointers are enclosed into
 \CodeInline{\textbackslash{}old}:
 
@@ -224,8 +224,8 @@ not exist:
 
 However, in some other cases, we only reach a proof failure since determining
 that the value does not exist at some particular label cannot be done by
-a syntactic analysis. For example, if the variable is declared but undefined
-or if we want the value of a pointed value:
+a syntactic analysis. For example, if the variable is declared but undefined,
+or if the value of interest involves pointer dereferencing:
 
 
 \CodeBlockInput[11][23]{c}{at-2.c}
@@ -234,7 +234,7 @@ or if we want the value of a pointed value:
 Here, it is easy to see the problem. However, the considered label is
 propagated to sub-expressions. Thus, sometimes, terms that seem to be
 innocent can have a surprising behavior if we do not keep this fact in mind.
-For example, in the following example:
+For example, in the following piece of code:
 
 
 \CodeBlockInput[25][30]{c}{at-2.c}
@@ -255,7 +255,7 @@ specification precise.
 
 
 
-\levelFourTitle{Pointers validity}
+\levelFourTitle{Pointer validity}
 
 
 If we try to prove that the swap function is correct (comprising the
@@ -274,15 +274,16 @@ pointer in input:
 
 
 
-Once we have specified that the pointers we receive in input must be valid,
+Once we have specified that the pointers we receive as input must be valid,
 dereferencing is assured to not produce undefined behaviors.
 
 
 
-As we will see later in this tutorial, \CodeInline{\textbackslash{}valid}
-can take more than one pointer in parameter. For example, we can give it
+As we will see later in this tutorial, more than one pointer can be
+passed to the \CodeInline{\textbackslash{}valid} construct.
+For example, we can give it
 an expression such as: \CodeInline{\textbackslash{}valid(p + (s .. e))} which means
-``for all \CodeInline{i} between included \CodeInline{s} and \CodeInline{e},
+``for all \CodeInline{i} between \CodeInline{s} and \CodeInline{e} (inclusive),
 \CodeInline{p+i} is a valid pointer''. This kind of expression is
 extremely useful when we have to specify properties about arrays in
 specifications.
@@ -290,8 +291,8 @@ specifications.
 
 
 If we have a closer look at the assertions that RTE adds in the swap function
-when we ask the verification of absence of runtime errors, we can notice that
-there exists another version of the \CodeInline{\textbackslash{}valid}
+when we ask for the verification of absence of runtime errors, we see that
+there is another version of the \CodeInline{\textbackslash{}valid}
 predicate, denoted \CodeInline{\textbackslash{}valid\_read}. As opposed to
 \CodeInline{\textbackslash{}valid}, the predicate
 \CodeInline{\textbackslash{}valid\_read} indicates that a pointer can be
@@ -301,7 +302,7 @@ necessarily legal.
 
 
 
-Typically, in this code:
+For instance, in this code:
 
 
 
@@ -347,7 +348,7 @@ during the execution of the function.
 
 
 
-By default, WP considers that a function can modify everything in
+By default, WP assumes that a function can modify everything in
 memory. So, we have to specify what can be modified by a function. For
 example, our \CodeInline{swap} function can be specified to modify the
 values pointed by the received pointers:
@@ -365,7 +366,7 @@ code).
 
 
 Finally, we sometimes want to specify that a function is side effect
-free. We specify this by giving \CodeInline{\textbackslash{}nothing} to
+free. We specify this by passing \CodeInline{\textbackslash{}nothing} to
 \CodeInline{assigns}:
 
 
@@ -374,8 +375,8 @@ free. We specify this by giving \CodeInline{\textbackslash{}nothing} to
 
 
 
-The careful reader will now be able to take back the examples we
-presented until now to integrate the right \CodeInline{assigns} clause.
+The careful reader will now be able to look back on the examples we
+presented up to now to integrate the right \CodeInline{assigns} clause.
 
 
 
@@ -384,7 +385,7 @@ presented until now to integrate the right \CodeInline{assigns} clause.
 
 Pointers bring the risk of aliasing (multiple pointers can have access
 to the same memory location). For some functions, it does not cause any
-problem, for example when we give two identical pointers to the
+problems, for example when we give two identical pointers to the
 \CodeInline{swap} function, the specification is still verified. However,
 sometimes it is not that simple:
 
@@ -403,7 +404,7 @@ of RTEs for this example), we get the following result:
 
 
 The reason is simply that we do not have any guarantee that the pointer
-\CodeInline{a} is different of the pointer \CodeInline{b}. Now, if these
+\CodeInline{a} is different from the pointer \CodeInline{b}. Now, if these
 pointers are the same,
 
 
@@ -411,7 +412,7 @@ pointers are the same,
 \begin{itemize}
 \item   the property \CodeInline{*a == \textbackslash{}old(*a) + *b} in fact
   means \CodeInline{*a == \textbackslash{}old(*a) + *a} which can only
-  be true if the old value pointed by \CodeInline{a} was $0$, and we do
+  be true if the old value pointed to by \CodeInline{a} was $0$, and we do
   not have such a requirement,
 \item
   the property \CodeInline{*b == \textbackslash{}old(*b)} is not validated
@@ -423,7 +424,8 @@ pointers are the same,
   Why is the \CodeInline{assigns} clause validated?
 
   The reason is simply that \CodeInline{a} is indeed the only modified memory
-  location. If \CodeInline{a != b}, we only modify the location pointed by
+  location. If \CodeInline{a != b}, we only modify the location
+  pointed to by
   \CodeInline{a}, and if \CodeInline{a == b}, this is still the case:
   \CodeInline{b} is not another location.
 \end{Question}
@@ -431,8 +433,8 @@ pointers are the same,
 
 In order to ensure that pointers refer to separated memory locations,
 ACSL provides the predicate
-\CodeInline{\textbackslash{}separated(p1,\ ..., pn)} that receives in
-parameter a set of pointers and is true if and only if these pointers are
+\CodeInline{\textbackslash{}separated(p1,\ ..., pn)} whose input is
+a set of pointers and whose value is true if and only if these pointers are
 non-overlapping. Here, we specify:
 
 
@@ -448,8 +450,8 @@ And this time, the function is verified:
 \image{2-incr_a_by_b-2}
 
 
-We can notice that we do not consider the arithmetic overflow here, as
-we do not focus on this question in this section. However, if this
+Notice we do not consider the arithmetic overflow here, as
+we do not focus on that question in this section. However, if this
 function was part of a complete program, it would be necessary to define
 the context of use of this function and the precondition guaranteeing
 the absence of overflow.
@@ -469,38 +471,38 @@ be easily provable from the contract of the function.
 
 
 The most important
-idea is to determine the contract without taking in account the content of the
+idea is to determine the contract without taking into account the content of the
 function (at least, in a first step). Indeed, we are trying to prove the
-function, but maybe it contains a bug, so if we write the contract taking in
-account too directly its code, we have a risk to introduce the same bug, for
-example taking in account an erroneous conditional structure. In fact, it is
-generally a good practice to work with someone else. One specifies the function
+function, but maybe it contains a bug, so if we write the contract based
+too directly off of its code, we risk introducing the same bug, for
+example by taking into account an erroneous conditional structure. In fact, it is
+generally good practice to work with someone else. One specifies the function
 and the other implements it (even if they previously agreed on a common textual
 specification).
 
 
 
-Once the contract have been stated, we work on the specifications that are due
+Once the contracts have been stated, we work on the specifications that are due
 to the constraints of our language and our hardware. That mostly concerns the
 precondition of the function. For example, the absolute value does not really
 have a precondition, this is our hardware that adds the condition we have given
-in precondition due to the two's complement on which it relies. As we will see
+as a precondition due to the two's complement on which it relies. As we will see
 in the chapter~\ref{l1:proof-methodologies}, verifying the absence of runtime
-errors can also impact the postcondition. For now, let us leave this.
+errors can also impact the postcondition. For now, let's set this aside.
 
 
 
 \levelThreeTitle{Exercises}
 
 
-\levelFourTitle{Division and remaining}
+\levelFourTitle{Quotient and remainder}
 
 
 
-Specify the postcondition of the following function, that computes the
-results of the division of \CodeInline{a} by \CodeInline{b} and its
-remaining and stores it into two memory locations \CodeInline{p} and
-\CodeInline{q}:
+Specify the postcondition of the following function, which computes the
+result of the division of \CodeInline{x} by \CodeInline{y} and stores
+the quotient and remainder into two respective memory locations
+\CodeInline{q} and \CodeInline{r}:
 
 
 \CodeBlockInput[5]{c}{ex-1-div-rem.c}
@@ -545,11 +547,11 @@ frama-c-gui your-file.c -wp -wp-rte
 
 
 
-\levelFourTitle{Addition of pointed values}
+\levelFourTitle{Addition of pointed-to values}
 
 
-The following function receives two pointers as an input and returns the
-sum the pointed values. Write the contract of this function:
+The following function receives two pointers as input and returns the
+sum of the pointed-to values. Write the contract of this function:
 
 
 
@@ -577,18 +579,18 @@ void add(int* p, int* q, int* r);
 \end{CodeBlock}
 
 
-Now the result of the sum should be stored at \CodeInline{r}. Accordingly
-modify the calls in the main function as well as the code and the contract
+Now the result of the sum should be stored in \CodeInline{r}. 
+Modify the calls accordingly in the main function as well as in the code and the contract
 of \CodeInline{add}. \CodeInline{*p} and \CodeInline{*q} should remain
 unchanged.
 
 
 
-\levelFourTitle{Maximum of pointed values}
+\levelFourTitle{Maximum of pointed-to values}
 
 
 
-The following function computes the maximum of the values pointed by
+The following function computes the maximum of the values pointed-to by
 \CodeInline{a} and \CodeInline{b}. Write the contract of the function:
 
 
@@ -645,7 +647,7 @@ frama-c-gui your-file.c -wp -wp-rte
 
 
 Remember that ordering values is not just ensuring that resulting values
-are sorted increasing order that each pointed value must be one of the original
+are sorted in increasing order, but also that each pointed-to value must be one of the original
 ones. All original values should still be there after the sorting operation:
 new values are a permutation of the original ones. To express this idea, one
 can rely on the set datatype. For example, this property is true:
@@ -664,9 +666,9 @@ other particular cases:
 
 
 \begin{itemize}
-\item all original values equal
-\item two original values equal and the last is greater
-\item two original values equal and the last is lower
+\item all original values are equal
+\item two original values are equal and the third is greater
+\item two original values equal and the third is lesser
 \end{itemize}
 
 
@@ -681,4 +683,4 @@ As a helper, one could use the following test program:
 
 If the specification is precise enough, each assertion should be proved.
 However, that does not mean that all cases have been considered by our tests,
-so do not hesitate do add other cases.
+so do not hesitate to add other cases.

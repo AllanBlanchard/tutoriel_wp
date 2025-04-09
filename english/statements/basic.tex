@@ -27,7 +27,7 @@ x = 43 * c ;
 $$P = wp(x = 43*c , \{x = 258\}) = \{43*c = 258\}$$
 
 
-The function $wp$ allows us to compute, as weakest precondition of
+The function $wp$ allows us to compute, as the weakest precondition of
 the assignment provided our expected postcondition, the formula
 $\{43*c = 258\}$, thus obtaining the following Hoare triple:
 
@@ -64,7 +64,7 @@ $$\dfrac{}{\{Q[x \leftarrow E] \}\quad x = E \quad\{ Q \}}$$
 We note that there is no premise to verify. Does this mean that the
 triple is necessarily true? Yes. However, it does not mean that the
 precondition is satisfied by the program to which the assignment belongs
-or that the precondition is at all possible. Here the automatic provers
+or that the precondition is at all possible. This is where automatic provers
 come into play.
 
 
@@ -92,7 +92,7 @@ application of the assignment rule.
 
 
 
-\levelFourTitle{Assignment of pointed value}
+\levelFourTitle{Assignment of pointed-to value}
 
 
 
@@ -110,8 +110,8 @@ this simple Hoare triple:
 
 
 
-This Hoare triple is correct, since \CodeInline{p} and \CodeInline{q} are in
-alias, modifying \CodeInline{*p} also modifies \CodeInline{*q}, thus both these
+This Hoare triple is correct, since \CodeInline{p} and \CodeInline{q} 
+alias each other, modifying \CodeInline{*p} also modifies \CodeInline{*q}, thus both these
 expressions evaluate to $1$ and the postcondition is true. However, let us apply
 the weakest precondition calculus from the postcondition:
 
@@ -165,21 +165,21 @@ And basically, the get operation can be seen as follows:
 
 
 If there is no value associated to the location we use for a get, the value is
-undefined (thus, the memory is partial function). Of course, at the beginning of
+undefined (thus, the memory is a partial function). Of course, at the beginning of
 a function, the memory context can be populated with the memory locations for
 which a value is known to be defined.
 
 
 Now, we can change a bit the weakest precondition calculus for assignment
-of pointed memory location. For this, we consider that we have an implicit
+of pointed-to memory locations. For this, we consider that we have an implicit
 variable $M$ that models the memory, and we define the assignment of a memory
 location as an update of the memory such that now the corresponding pointer points
 to the written expression.
 $$wp(*x = E, Q) := Q[M \leftarrow M[x \mapsto E]]$$
 
 
-And evaluating a pointed value $*x$ in a formula now requires us to use the
-get operator to ask the right value. Thus, we can for example compute the weakest
+And evaluating a pointer dereference $*x$ in a formula now requires us to use the
+get operator to ask for the right value. Thus, we can for example compute the weakest
 precondition of our previous program:
 
 \begin{tabular}{lll}
@@ -195,7 +195,7 @@ precondition of our previous program:
 \begin{enumerate}
 \item we have to apply the rule of assignment for pointers, but for this we need
   to introduce $M$,
-\item we replace pointer accesses in the formula by a call to $get$ on $M$,
+\item we replace pointer dereferences in the formula by a call to $get$ on $M$,
 \item we apply the replacement asked by the assignment rule,
 \item we use the definition of the $get$ operator for the expression about $p$
   ($M[p \mapsto 1][p] = 1$)
@@ -211,9 +211,9 @@ is correct.
 
 
 The WP plugin does not exactly work like this. In particular, it depends on the
-memory model chosen for the proof that will make different assumption about the
-memory is organized. For the memory model we use, the typed memory model, in
-fact WP creates multiple variables for memory. However, let us have a look at
+memory model chosen for the proof that will make different assumptions about how the
+memory is organized. For the memory model we use, the typed memory model,
+WP actually creates multiple variables for memory. However, let us have a look at
 the verification condition generated for the postcondition of the swap function:
 
 
@@ -221,7 +221,7 @@ the verification condition generated for the postcondition of the swap function:
 
 
 We can see, in the beginning of the verification condition, that a variable
-\CodeInline{Mint\_0} representing a memory of values of integer types have been
+\CodeInline{Mint\_0} (representing memory containing values of integer types) has been
 created, and that this memory is updated and accessed using the operators we
 previously introduced (see the definition of the variable \CodeInline{x\_2}).
 
@@ -244,12 +244,12 @@ In order to verify the composed statement $S1;\ S2$ we rely on an
 intermediate property $R$ that is at the same time the postcondition
 of $S1$ and the precondition of $S2$. (Please note that $S1$ and
 $S2$ are not necessarily simple statements; they themselves can be
-composed statements.) The problem is, however, that nothing indicates us
+composed statements.) The problem is, however, that nothing indicates to us
 how to determine the properties $P$ and $R$.
 
-The weakest-precondition calculus now says us that the intermediate
+The weakest-precondition calculus now tells us that the intermediate
 property $R$ can be computed as the weakest precondition of the second
-statement. The property $P$, on the other hand, then is computed as
+statement. The property $P$, on the other hand, is then computed as
 the weakest precondition of the first statement. In other words, the
 weakest precondition of the composed statement $S1; S2$ is determined
 as follows:
@@ -281,8 +281,8 @@ int main(){
 
 
 When we have more than two statements, we can consider the last
-statement as second statement of our rule and all the preceding ones as
-first statement. This way we traverse step by step backwards the
+statement as the second statement of our rule and all the preceding ones as
+the first statement. This way we traverse step by step backwards through the
 statements in our reasoning. With the previous program this looks like:
 
 
@@ -315,7 +315,7 @@ is time to add some structure to them.
 For a conditional statement to be true, one must be able to reach the
 postcondition through both branches. Of course, for both branches, the
 same precondition (of the conditional statement) must hold. In addition,
-we have that in the if-branch the condition is true while in the
+we know that in the if-branch the condition is true while in the
 else-branch it is false.
 
 We therefore have, as in the case of composed statements, two facts to
@@ -323,8 +323,8 @@ verify (in order to avoid confusion we are using here the syntax
 $if\ B\ then\ S1\ else\ S2$):
 $$\dfrac{\{P \wedge B\}\quad S1\quad \{Q\} \quad \quad \{P \wedge \neg B\}\quad S2\quad \{Q\}}{\{P\}\quad if\quad B\quad then\quad S1\quad else\quad S2 \quad \{Q\}}$$
 
-Our two premises are therefore that we can both in the if-branch and the
-else-branch reach the postcondition from the precondition.
+Our two premises are therefore that we can, from both the if-branch and the
+else-branch, reach the postcondition from the precondition.
 
 The result of the weakest-precondition calculus for a conditional
 statement reads as follows:
@@ -622,7 +622,7 @@ property \CodeInline{P} must be verified at this program point, and then the
 fact that it is true at this program point is added as a hypothesis when proving
 properties that come later. Note that it might not be true, but it is still
 added to the proof context anyway. However, if it is not true, first, we cannot
-to prove it, and second, the properties that we are proved admitting this
+prove it, and second, the properties that we have proved admitting this
 property are marked as ``valid under hypothesis''.
 
 
@@ -717,7 +717,7 @@ Section~\ref{l2:acsl-logic-definitions-axiomatic}).
 \levelThreeTitle{WP plugin vs. Dijkstra's WP calculus}
 
 
-One might have notice from the beginning of this section that the $wp$ function
+One might have noticed from the beginning of this section that the $wp$ function
 starts from the postcondition and, instruction after instruction, changes the
 formula until it reaches the beginning of the function, when it generates the
 verification condition (as briefly explained in
@@ -727,8 +727,8 @@ Section~\ref{l3:statements-basic-consequence}), that we must verify.
 However, one might have also noticed that from the very beginning of this book,
 in most examples, we do not have \emph{one} verification condition to verify,
 but \emph{several}. On a theoretical aspect, this is not a crucial difference,
-but on a practical aspect, it allows generating simpler verification conditions,
-thus easier to verify using SMT solvers.
+but on a practical aspect, it allows for generating simpler verification conditions,
+which are easier to verify using SMT solvers.
 
 
 In fact, the WP plugin generates several verification conditions in parallel
@@ -749,7 +749,7 @@ Let us illustrate this on a toy example:
 \CodeBlockInput{c}{wp-plugin-calculus-toy.c}
 
 
-We start (in 1) with two verification conditions:
+We start (at step 1, on line 28) with two verification conditions:
 \begin{itemize}
   \item \CodeInline{VC1: P(x)},
   \item \CodeInline{VC2: P(y)}.
@@ -760,7 +760,7 @@ We apply the transformer of assignment on each of them, thus we reach 2 with:
   \item \CodeInline{VC2: P(y)}.
 \end{itemize}
 In 2, we have to deal with the conditional. Instead of directly applying the
-standard WP rule, we split the analysis in two sets of verification conditions,
+standard WP rule, we split the analysis into two sets of verification conditions,
 initially equivalent. Let us consider the \CodeInline{else} branch, then the
 \CodeInline{then} branch.
 

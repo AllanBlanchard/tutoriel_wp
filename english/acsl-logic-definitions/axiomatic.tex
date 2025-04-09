@@ -2,7 +2,7 @@ Axioms are properties we state to be true no matter the situation. It is
 a good way to state complex properties that will allow the proof process
 to be more efficient by abstracting their complexity. Of course, as any
 property expressed as an axiom is assumed to be true, we have to be very
-careful when we use them to defined properties: if we introduce a false
+careful when we use them to define properties: if we introduce a false
 property in our assumptions, ``false'' becomes ``true'' and we can then
 prove anything.
 
@@ -26,7 +26,7 @@ Axiomatic definitions are introduced using this syntax:
     axiom other_axiom_name { Label0, ..., LabelM }:
       // property ;
 
-    // ... we can put as many axioms we need
+    // ... we can put as many axioms as we need
   }
 */
 \end{CodeBlock}
@@ -63,11 +63,11 @@ present an {\em extremely} useful axiom.}:
 
 
 
-Lemmas and axioms allows to express the same kinds of properties.
-Namely, properties expressed about quantified variables (and possibly
-global variables, but it is quite rare since it is often difficult to
+Lemmas and axioms allows us to express the same kinds of properties.
+Namely, they express properties about quantified variables (and possibly
+global variables, but this is quite rare since it is often difficult to
 find a global property about such variables being both true and
-interesting). Apart this first common point, we can also notice that
+interesting). In addition to this first common point, we can also notice that
 when we are not considering the definition of the lemma itself, lemmas
 are assumed to be true by WP exactly as axioms are.
 
@@ -89,8 +89,8 @@ recursion when it is possible.
 
 
 
-The idea is then not to define directly the function or the predicate
-but to declare it and then to define axioms that specify its
+The idea is to avoid defining the function or the predicate
+directly; instead we should declare it and then define axioms that specify its
 behavior. If we come back to the factorial function, we can define it
 axiomatically as follows:
 
@@ -114,18 +114,18 @@ axiomatically as follows:
 
 In this axiomatic definition, our function does not have a body. Its
 behavior is only defined by the axioms we have stated about it.
-Except this, nothing changes, in particular the logic function can
+Apart from this, nothing changes, in particular the logic function can
 be used in our specification just as before.
 
 
 
 A small subtlety that we must take care of is the fact that if some
-axioms state properties about the content of some pointed memory cells,
-we have to specify considered memory blocks using the \CodeInline{reads}
+axioms state properties about the content of some pointed-to memory cells,
+we have to specify the memory blocks under consideration using the \CodeInline{reads}
 notation in the declaration. If we omit such a specification, the
 predicate or function will be considered to be stated about the received
 pointers and not about pointer memory blocks. So, if the code modifies
-the content of an array for which we had proven that the predicate or
+the contents of an array for which we had proven that the predicate or
 function gives some result, this result will not be considered to be
 potentially different.
 
@@ -144,18 +144,18 @@ will be written like this:
 Notice the \CodeInline{reads[b .. e-1]} that specifies the memory location
 on which the predicate depends. While it is not necessary to specify what are
 the memory locations read in an inductive definition, we have to specify such
-an information for axiomatically defined properties.
+information for axiomatically-defined properties.
 
 
 \levelThreeTitle{Consistency}
 
 
 By adding axioms to our knowledge base, we can produce more complex
-proofs since some part of these proofs, expressed by axioms, do not need
+proofs since some parts of these proofs, expressed by axioms, do not need
 to be proved (they are already specified to be true) shortening
 the proof process. However, using axiomatic definitions, \textbf{we must
 be extremely careful}. Indeed, even a small error could introduce false
-in the knowledge base, making our whole reasoning futile. Our reasoning
+into the knowledge base, making our whole reasoning futile. Our reasoning
 would still be correct, but relying on false knowledge, it would only
 learn incorrect things.
 
@@ -169,7 +169,7 @@ The simplest example is the following:
 
 
 
-And everything is proved, comprising the fact that the dereferencing of
+And everything is proved, including the fact that the dereferencing of
 0 is valid:
 
 
@@ -180,7 +180,7 @@ And everything is proved, comprising the fact that the dereferencing of
 Of course, this example is extreme, we would not write such an axiom.
 The problem is in fact that it is really easy to write an axiomatic
 definition that is subtly false when we express more complex properties,
-or adding assumptions about the global state of the system.
+or add assumptions about the global state of the system.
 
 
 
@@ -190,11 +190,11 @@ or adding assumptions about the global state of the system.
 
 When we start to create axiomatic definitions, it is worth adding
 assertions or postconditions requiring a proof of false that we expect
-to fail to ensure that the definition is not inconsistent. However, it
-is often not enough! If the subtlety that creates the inconsistency is
+to fail to ensure that the definition is not inconsistent. However,
+this is often not enough! If the subtlety that creates the inconsistency is
 hard enough to find, provers could need a lot of information other than
 the axiomatic definition itself to be able to find and use the
-inconsistency, we then need to always be careful!
+inconsistency, so we need to always be careful!
 
 
 
@@ -223,7 +223,7 @@ and the value is not 0 anymore.
 
 Note that unlike inductive definitions, where Why3 provides us a way to control
 that what we write in ACSL is relatively well-defined, we do not have such a
-mechanism for axiomatic definitions. Basically, even with Why3 such a definition
+mechanism for axiomatic definitions. Basically, even with Why3, such a definition
 is translated into a list of axioms that are thus assumed.
 
 
@@ -231,11 +231,11 @@ is translated into a list of axioms that are thus assumed.
 
 
 Most global annotations (logic functions, predicates, lemmas, ...) can be
-defined at two different levels: either at top-level, the level of the
+defined at two different levels: either at the top-level, i.e., the level of the
 functions, global variables, etc. (except for axioms and abstract functions and
-predicates) or in axiomatic blocks. While top-level global annotations (in
+predicates); or in axiomatic blocks. While top-level global annotations (in
 particular lemmas) are always embedded in the context of verification
-conditions, it is not the case for the annotations in axiomatic blocks.
+conditions, this is not the case for the annotations in axiomatic blocks.
 
 
 In the following example:
@@ -246,7 +246,7 @@ In the following example:
 
 Since the \CodeInline{ensures} clause only uses \CodeInline{P} which is defined
 in the axiomatic block \CodeInline{X}, WP only loads the axiom \CodeInline{x}.
-On the opposite, if we replace \CodeInline{P(p)} with \CodeInline{Q(p)} in the
+On the other hand, if we replace \CodeInline{P(p)} with \CodeInline{Q(p)} in the
 \CodeInline{ensures} clause, WP loads the axiomatic block \CodeInline{Y}, thus
 the axiom \CodeInline{y} that uses \CodeInline{P}. Consequently, the axiomatic
 block \CodeInline{X} is loaded too. The transitive closure of the loaded
@@ -254,8 +254,8 @@ axiomatic blocks forms a cluster of axiomatic definitions.
 
 
 One can use this behavior to avoid providing too many lemmas and axioms to SMT
-solvers. This can improve proof performances in some situations. We will present
-more details about how to guide proof using lemmas in
+solvers. This can improve proof performance in some situations. We will present
+more details about how to guide proofs using lemmas in
 Section~\ref{l2:proof-methodologies-triggering-lemmas}.
 
 
@@ -317,7 +317,7 @@ to prove it interactively using Coq, for example. By expressing generic
 manually proved lemmas, we can often add useful tools to provers to
 manipulate more efficiently our axiomatic definitions, without directly
 adding new axioms that would augment the chances to introduce errors.
-Here, we still have to realize the proof of the lemma to get a complete
+Here, we still have to carry out the proof of the lemma to get a complete
 proof.
 
 
@@ -344,13 +344,13 @@ string, that is to say, what we expect of our C function:
 
 
 Basically, we want to receive a valid string in input, and we want to
-compute a value that equals to the result of our logic function
+compute a value that is equal to the result of our logic function
 \CodeInline{strlen} applied to this string, of course this function
 does not assign anything. Defining what is a valid string is not that
 simple. Indeed, previously in this tutorial, we only worked with
-arrays, receiving in input both the array and the size of the array,
-however here, and as it is common in C, we suppose that the string ends
-with a character \CodeInline{'\textbackslash{}0'}. That means that we
+arrays, receiving as input both the array and the size of the array,
+however here, as is common in C, we suppose that the string ends
+with the character \CodeInline{'\textbackslash{}0'}. That means that we
 basically need the \CodeInline{strlen} function to define what is a
 valid string. Let us first use this definition (note that we use the
 \CodeInline{\textbackslash{}valid\_read} variant of pointer validity
@@ -375,11 +375,11 @@ be used to express this property.
 
 Thus, let us define this function axiomatically. First, let us define what
 is read by the function, which is: any memory cell from the pointer to an
-infinite range of address. Then we consider two cases: the string is
-finite, or it is not, that leads to two axioms: \CodeInline{strlen} returns
+infinite range of addresses. Then we consider two cases: the string is
+finite, or it is not, which leads to two axioms: \CodeInline{strlen} returns
 a positive value that corresponds to the index of the first
 \CodeInline{'\textbackslash{}0'} character, and returns a negative value if
-no such value exists.
+no such character exists.
 
 
 
@@ -389,8 +389,8 @@ no such value exists.
 
 And now, we can be more precise for our definition of
 \CodeInline{\textbackslash{}valid\_read\_string}, a valid string is a
-string such that it is valid from the first index to \CodeInline{strlen}
-of the string and, such that this value is greater than 0 (since an
+string that is valid from the first index to \CodeInline{strlen}
+of the string, and whose value is nonnegative (since an
 infinite string is not a valid string):
 
 
@@ -402,14 +402,14 @@ infinite string is not a valid string):
 
 
 With this definition we can now go further and provide a suitable
-invariant to the loop of the \CodeInline{strlen} function. It is quite
-simple: \CodeInline{i} ranges between 0 and \CodeInline{strlen(s)}, for
-all values met before the iteration \CodeInline{i}, they are not
+invariant for the loop of the \CodeInline{strlen} function. This loop invariant is quite
+simple: \CodeInline{i} ranges between 0 and \CodeInline{strlen(s)}, and for
+all values met before iteration \CodeInline{i}, they are not
 \CodeInline{'\textbackslash{}0'}. This loop assigns \CodeInline{i} and
 the variant corresponds to the distance between \CodeInline{i} and
 \CodeInline{strlen(s)}. However, if we try to produce the proof of
 correctness of the function, it fails. And to get more information
-we can try a verification asking RTE with the verification that unsigned
+we can try a verification asking RTE to verify that unsigned
 integers do not overflow:
 
 
@@ -429,14 +429,14 @@ to provide a limit to the value of \CodeInline{strlen(s)} in precondition:
 
 
 
-However, it is not enough, and the reason is that while we have defined
-that the value of \CodeInline{strlen(s)} is defined to be the index of
+However, this is not enough, and the reason is that while we have defined
+the value of \CodeInline{strlen(s)} to be the index of
 the first \CodeInline{'\textbackslash{}0'} in the array, the converse is
 not true: knowing that the value of \CodeInline{strlen(s)} is positive
 is not enough to deduce that the value at the corresponding index is
 \CodeInline{'\textbackslash{}0'}. Thus, we extend the axiomatic definition
 with another proposition that gives us this fact (we also add one for the
-values that precede the \CodeInline{strlen(s)} index even if here, it is
+values that precede the \CodeInline{strlen(s)} index, even if this is
 not necessary):
 
 
@@ -450,8 +450,8 @@ And this time the proof succeeds. Frama-C provides its own standard
 library headers, and they include an
 axiomatic definition for the \CodeInline{strlen} logic function. It can
 be found in the installation directory of Frama-C, under the directory
-\CodeInline{libc}, the file is named \CodeInline{\_\_fc\_string\_axiomatic.h}.
-Note that this definition include more axioms in order to be able to
+\CodeInline{share/libc}, the file is named \CodeInline{\_\_fc\_string\_axiomatic.h}.
+Note that this definition includes more axioms in order to be able to
 deduce more properties about \CodeInline{strlen}.
 
 
@@ -469,15 +469,15 @@ previously defined about occurrences counting:
 \CodeBlockInput[18][30]{c}{ex-1-occurrences_of.c}
 
 
-Re-express the axiomatic definition in a form that allows to prove the
+Re-express the axiomatic definition in a form that allows you to prove the
 program.
 
 
 \levelFourTitle{Greatest Common Divisor}
 
 
-Express the logic function that allows to compute the greatest common divisor as
-an axiomatic definition, write the contract of the \CodeInline{gcd} function and
+Express the logic function that allows you to compute the greatest common divisor as
+an axiomatic definition. Write the contract of the \CodeInline{gcd} function and
 prove it:
 
 
@@ -487,7 +487,7 @@ prove it:
 \levelFourTitle{Sum of the N first integers}
 
 
-Express the logic function that allows to compute the sum of the N first
+Express the logic function that allows you to compute the sum of the N first
 integers as an axiomatic definition. Write the contract of the following
 \CodeInline{sum\_n} function and prove it:
 
@@ -498,7 +498,7 @@ integers as an axiomatic definition. Write the contract of the following
 \levelFourTitle{Permutation}
 
 
-Take back the example about selection sort
+Let's take another look at the example about selection sort
 (section~\ref{l3:acsl-logic-definitions-inductive-sort}). Re-express the
 permutation predicate using an axiomatic definition. Take care of the
 \CodeInline{reads} clause (in particular, note that the predicate relates
