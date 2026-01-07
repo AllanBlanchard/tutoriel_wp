@@ -8,35 +8,35 @@ that make us confident enough to say that a program works correctly:
 \item
   beginners simply ``try'' to use their programs and consider that
   these programs work if they do not crash (which is not an excellent
-  indicator in C language),
+  indicator in C),
 \item
   more advanced developers establish some test cases for which they know
-  the expected result and compare the output they obtain,
+  the expected result and compare this against the output they obtain,
 \item
   most companies establish complete test bases, that cover as much
-  code as they can ; which are systematically executed on their code.
+  code as they can; which are systematically executed on their code.
   Some of them apply test driven development,
 \item
   in critical domains, such as aerospace, railway or armament, source
   code needs to be certified using standardized processes with very
-  strict criteria about coding rules and code covering by the test.
+  strict criteria about coding rules and code covered by the test.
 \end{itemize}
 
-In all these ways to ensure that a program produces only what we expect
-it to produce, a word appears to be common: \emph{test}. We \emph{try}
+In all these ways of ensuring that a program produces only what we expect
+it to produce, one word appears to be common: \emph{test}. We \emph{try}
 different inputs in order to isolate cases that are problematic. We
 provide inputs that we \emph{estimate to be representative} of the
 actual use of the program (note that unexpected use cases are often not
-considered whereas there are generally the most dangerous ones) and we
+considered whereas these are generally the most dangerous ones) and we
 verify that the results we get are correct. But we cannot test
 \emph{everything}. We cannot try \emph{every} combination of
 \emph{every} possible input of a program. It is then quite hard to
 choose good tests.
 
 
-The goal of program proof is to ensure that, for any input provided to a
+The goal of a program proof is to ensure that, for any input provided to a
 given program, if it conforms to the specification, then the program will
-only well-behave. However, since we cannot test everything, we will
+always be well-behaved. However, since we cannot test everything, we will
 formally, mathematically, establish a proof that our software can only
 exhibit specified behaviors, and that runtime-errors are not part of
 these behaviors.
@@ -54,11 +54,11 @@ their absence!
 \end{Quotation}
 
 
-\levelFourTitle{The developer's Holy Grail: the bug-free software}
+\levelFourTitle{The developer's Holy Grail: bug-free software}
 
 
 Every time we read news about attacks on computer systems, or
-viruses, or bugs leading to crashes in well known apps, there is always
+viruses, or bugs leading to crashes in well-known apps, there is always
 the one same comment ``the bug-free/perfectly secure program does not
 exist''. And, if this sentence is quite true, it is a bit misunderstood.
 
@@ -92,13 +92,13 @@ we can classify into three categories:
 Each of these categories can affect the safety and/or the security of our
 programs, but these two notions are not equivalent. Loosely speaking,
 in security a malicious entity that can attack the system, while in safety, we
-want to verify when used in a correct way, the system well behaves. Thus, safety
+want to verify when used in a correct way, the system is well behaved. Thus, safety
 is a first before we can get security\footnote{Depending on the field you are
   working in, the term ``safety'' may have a very different sense. Namely, a
   \textit{safe} system must be a system that can never cause injuries to human
   beings. And thus in this case, the opposite applies: we can never have safety
   if security is not guaranteed before. In this tutorial, we keep the definition:
-  ``safety = the program as a correct behavior when it is used in a correct way''}.
+  ``safety = the program has a correct behavior when it is used in a correct way''}.
 
 
 In this tutorial, we will show how we can prove that implementations
@@ -111,11 +111,11 @@ defined above, meaning that they conform to:
 
 
 But what are the arguments of program
-proof, compared to program testing? First, the proof is complete, it
+proof, compared to program testing? First, the proof is complete: it
 cannot forget some corner case if the behavior is specified (program
-test cannot be complete, being exhaustive would be far too costly).
+testing cannot be complete, being exhaustive would be far too costly).
 Second, the obligation to formally specify with a logic formulation
-requires to exactly understand what we have to prove about our program.
+requires one to exactly understand what we have to prove about our program.
 
 
 
@@ -125,10 +125,10 @@ specification'' as we do not treat the third category of bugs defined
 above. But, well, knowing that ``the implementation does not contain bugs
 that do not exist in the specification'' is already a big step compared to
 knowing that ``the implementation does not contain too many bugs that do
-not exist in the specification'', as it already correspond to two entire
+not exist in the specification'', as it already corresponds to two entire
 categories of bugs that we rule out, bugs that can severely compromise the
 safety and security of our programs. And moreover, there also exist approaches
-to deal with the third category of bugs, allowing to analyze specifications
+to deal with the third category of bugs, allowing one to analyze specifications
 to find errors or under-specified behaviors. For
 example, with model checking techniques, we can create an abstract model
 from the specification and produce the set of states that can be reached
@@ -140,28 +140,28 @@ can determine if reachable states are error states.
 \levelThreeTitle{A bit of context}
 
 
-Formal methods, as we name them, allow in computer science to
+Formal methods, as we name them, allow us in computer science to
 rigorously, mathematically, reason about programs. There exist a lot of
 formal methods that can take place at different levels from program
 design to implementation, analysis and validation, and for all systems
-that allow to manipulate information.
+that manipulate information.
 
 
 
-Here, we will focus on a method that allows to formally verify that our
+Here, we will focus on a method that allows us to formally verify that our
 programs have only correct behaviors. We will use tools that are able to
-analyze a source code and to determine whether a program correctly
+analyze source code and to determine whether a program correctly
 implements what we want to express. The analyzer we will use provides a
-static analysis, that we can oppose to dynamic analysis.
+static analysis, which we can contrast with dynamic analysis.
 
 
 
 In static analysis, the analyzed program is not executed. We reason on a
-mathematical model of the states it can reach during its execution. On
-the opposite, dynamic analyses such as program testing, require to
+mathematical model of the states it can reach during its execution.
+Conversely, dynamic analyses, such as program testing, require you to
 execute the analyzed source code. Note that there exist formal dynamic
 analysis methods, for example automatic test generation, or code
-monitoring techniques that allow to instrument a source code to verify
+monitoring techniques that allow you to instrument source code to verify
 some properties about it during execution (correct memory use, for
 example).
 
@@ -169,13 +169,13 @@ example).
 
 Talking about static analyses, the model we use can be more or less
 abstract depending on the techniques, this is always an approximation of
-possible states of the program. The more the approximation is precise,
-the more the model is concrete, the more the approximation is vague, the
-more it is abstract.
+possible states of the program. The more precise the approximation,
+the more concrete the model; the more vague the approximation, the
+more abstract the model.
 
 
 
-To illustrate the difference between concrete and abstract model, we can
+To illustrate the difference between concrete and abstract models, we can
 have a look at the model of a simple chronometer. A very abstract model of
 a chronometer could be the one presented here:
 
@@ -203,16 +203,16 @@ properties about our program. We could add some information:
 
 Which gives us a more concrete model, but that is still not precise
 enough to ask interesting questions like: ``is it possible for the program
-to continue updating the time variable while the chronometer is on the Stopped
+to continue updating the time variable while the chronometer is in the Stopped
 state?'', as we do not model how the time measurement is updated by the
 chronometer.
 
 
 
-On the opposite, with the source code of the program, we have a concrete
+In contrast, with the source code of the program, we have a concrete
 model of the chronometer. The source code expresses the behavior of the
 chronometer since it will allow us to produce the executable. But this
-is still not the more concrete model! For example, the executable in
+is still not the most concrete model! For example, the executable in
 machine code format, that we obtain after compilation, is far more
 concrete than our program.
 
@@ -224,14 +224,14 @@ behavior than our diagram, but it is less precise than the machine code.
 However, the more the model is precise, the more it is difficult to have
 a global view of the defined behavior. Our diagram is understandable in
 the blink of an eye, the source code requires more time, and for the
-executable \ldots{} Every single person that has already opened an
-executable with a text editor by error knows that it is not really
+executable \ldots{} Every single person that has accidentally opened an
+executable with a text editor knows that it is not very
 pleasant to read\textsuperscript{\ref{footnote:1}}.
 
 
 
 When we create an abstraction of a system, we approximate it, in order
-to limit the knowledge we have about it and make our reasoning easier. A
+to limit the knowledge we have about it and to make our reasoning easier. A
 constraint we must respect, if we want our analysis to be correct, is to
 never under-approximate behaviors: we would risk removing a behavior
 that contains an error (and thus miss it during the analysis). However,
@@ -243,13 +243,13 @@ faulty behaviors.
 
 
 In our case, the model is quite concrete. Every type of instruction, of
-control structure, is associated to a precise semantics, a model of its
+control structure, is associated with a precise semantics, a model of its
 behavior in a pure logic, mathematical, world. The logic we use here is
 a variant of the Hoare logic, adapted to the C language and all its
 complex subtleties (which makes this model concrete).
 
 \footnotetext[1]{\label{footnote:1}
-  There also exists formal methods which are
+  There also exist formal methods which are
   interested in understanding how executable machine code work, for
   example in order to understand what malware does or to detect security
   breaches introduced during compilation.}
@@ -316,7 +316,7 @@ the way our tool works.
 
 All of this gives us the basics that allow us to say ``here is what
 this action does'' but it does not give us anything to mechanize a
-proof. The tool we will use rely on a technique called weakest
+proof. The tool we will use relies on a technique called weakest
 precondition calculus.
 
 
@@ -324,7 +324,7 @@ precondition calculus.
 \levelThreeTitle{Weakest precondition calculus}
 
 
-The weakest precondition calculus is a form of predicate transform
+The weakest precondition calculus is a form of predicate transformer
 semantics proposed by Dijkstra in 1975 in \emph{Guarded commands,
 non-determinacy and formal derivation of programs}.
 
@@ -335,11 +335,11 @@ how to apply these rules to establish a complete proof of the program.
 
 Dijkstra reformulates the Hoare logic by explaining, in the triple
 $\{P\}\ C\ \{Q\}$, how the instruction, or the block of instructions,
-$C$ transforms the predicate $P$ in $Q$. This kind of reasoning is
+$C$ transforms the predicate $P$ into $Q$. This kind of reasoning is
 called \emph{forward-reasoning}. We calculate from the precondition and
 from one or multiple instructions, the strongest postcondition we can
-reach. Informally, considering what we have in input, we calculate what
-we will get in output. If the postcondition we want is as strong or
+reach. Informally, considering what we have as input, we calculate what
+we will get as output. If the postcondition we want is as strong or
 weaker, then we prove that there are no unexpected behaviors.
 
 

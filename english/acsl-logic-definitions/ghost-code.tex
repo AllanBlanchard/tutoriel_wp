@@ -1,10 +1,10 @@
 
 The previous techniques we have seen in this chapter are meant to make the
-specification more abstract. The role of ghost code is the opposite, here, we
-find in fact a way to enrich our specification with information expressed as
+specification more abstract. The role of ghost code is the opposite: here, we
+find a way to enrich our specification with information expressed as
 concrete C code. The idea is to add variables and source code that is not part
-of the actual program to verify and is thus only visible for the verification
-tool. It is used to make explicit some logic properties that, else, would only
+of the actual program we are verifying and is thus only visible to the verification
+tool. It is used to make explicit some logic properties that otherwise would only
 be known implicitly.
 
 
@@ -24,7 +24,7 @@ introduced using the \CodeInline{ghost} keyword:
 
 
 In ghost code, we write normal C code. Some subtleties will be explained
-later in this section. For now, let us have a look to the basic elements
+later in this section. For now, let us have a look at the basic elements
 we can write in ghost code.
 
 
@@ -58,8 +58,8 @@ void foo(int a){
 \end{CodeBlock}
 
 
-We can declare ghost labels that can be used into annotations (or to perform
-a \CodeInline{goto} from the ghost code itself, under some conditions that
+We can declare ghost labels that can be used in annotations (or to perform
+a \CodeInline{goto} within the ghost code itself, under some conditions that
 we will explain later):
 
 
@@ -118,7 +118,7 @@ Note that when a function takes ghost parameters, all calls to this
 function must provide the corresponding ghost arguments.
 
 
-An entire function can be ghost. For example, in the previous example, we
+An entire function can be a ghost. For instance, in the previous example, we
 could have used a ghost function to compute the length of the list:
 
 
@@ -139,12 +139,12 @@ void another_function(struct list* l){
 \end{CodeBlock}
 
 
-Here, we can see a specific syntax for the contract of the ghost function.
+Below, we see a special syntax for the contract of a ghost function.
 Indeed, it is often useful to write some contracts or assertions in ghost
 code. As it must be specified in code that is already in C comments, we
-must use a specific syntax to provide ghost contracts or assertions.
+must use a special syntax to provide ghost contracts or assertions.
 We open ghost annotations with the syntax \CodeInline{/@} and close
-them with \CodeInline{@/}. Of course, it applies to loops in ghost code
+them with \CodeInline{@/}. Of course, this applies to loops in ghost code,
 for example:
 
 
@@ -173,8 +173,8 @@ void foo(unsigned n){
 Frama-C verifies several properties about the ghost code we write:
 \begin{itemize}
 \item the ghost code cannot modify the control flow graph of the program,
-\item the normal code cannot access to the ghost memory,
-\item the ghost code can only write the ghost memory.
+\item the normal code cannot access the ghost memory,
+\item the ghost code can only write to the ghost memory.
 \end{itemize}
 
 Verifying these properties, our goal is to guarantee that for any
@@ -199,12 +199,12 @@ Let us have a closer look to each of these constraints.
 
 The control flow of a program is the order in which the instructions
 are executed by the program. If the ghost code changes this order, or
-let the program ignore some instructions of the original program, then
+lets the program ignore some instructions of the original program, then
 the behavior of the program is not the same, and thus, we are not
 verifying the same program.
 
 
-For example, this function compute the sum of the $n$ first integers :
+For example, this function computes the sum of the $n$ first integers :
 
 
 \CodeBlockInput[6]{c}{control-flow-1.c}
@@ -212,7 +212,7 @@ For example, this function compute the sum of the $n$ first integers :
 
 By introducing, in ghost code, the instruction \CodeInline{break} in
 the body of the loop, the program does not have the same behavior
-anymore: instead of visiting all $i$s between $0$ and $n+1$, we stop
+anymore: instead of visiting all $i$'s between $0$ and $n+1$, we stop
 immediately in the first iteration of the loop. Consequently, this
 program is rejected by Frama-C:
 
@@ -225,7 +225,7 @@ program is rejected by Frama-C:
 \end{CodeBlock}
 
 
-It is important to note that when a ghost code changes the control
+It is important to note that when a piece of ghost code changes the control
 flow, the instruction that is pointed by Frama-C is the starting
 point of the ghost code. For example, if we introduce a conditional
 around our \CodeInline{break} instruction:
@@ -247,7 +247,7 @@ The error message will point to the enclosing \CodeInline{if}:
 
 Note that verifying that the control flow is not changed by ghost
 code is done in a purely syntactic way. For example, if the
-\CodeInline{break} is unreachable in any execution of the program,
+\CodeInline{break} is unreachable in all executions of the program,
 an error will still be triggered:
 
 
@@ -262,12 +262,12 @@ an error will still be triggered:
 \end{CodeBlock}
 
 
-Finally, we can remark that there exists two ways to change the control
-flow. The first one is to use jumps (thus \CodeInline{break},
+Finally, we note that there are two ways to change the control
+flow. The first one is to use jumps (\CodeInline{break},
 \CodeInline{continue}, or \CodeInline{goto}), the second is to
-introduce a non-terminating code. For this last one, unless the non-termination
+introduce a non-terminating piece of code. In the latter case, unless the non-termination
 is trivial, the kernel cannot verify that the control
-flow is changed (and thus, it never does, this is delegated to plugins).
+flow is changed (and thus, it never does; this is delegated to plugins).
 We will treat this question in
 section~\ref{l3:acsl-logic-definitions-what-remains}.
 
@@ -278,7 +278,7 @@ section~\ref{l3:acsl-logic-definitions-what-remains}.
 The ghost code is an observer of the normal code. Consequently, normal
 code is not authorized to access ghost code, neither to its memory,
 nor to the functions. Ghost code can read the memory of the normal code,
-but cannot write it. Currently, ghost code cannot call normal functions,
+but cannot write to it. Currently, ghost code cannot call normal functions,
 we will give more details about this restriction later in this section.
 
 
@@ -317,7 +317,7 @@ adding ghost code. For example, in the following code:
 
 
 The result would not be the same with or without the ghost code.
-Frama-C thus forbids such a code:
+Frama-C thus forbids such code:
 
 
 \begin{CodeBlock}{text}
@@ -330,7 +330,7 @@ Note that this verification is done thanks to the types of the different
 variables. A variable declared in normal code has a normal status, while
 a variable declared in ghost code has a ghost status. Consequently, even
 if the ghost code does not really change the behavior of the program, any
-write on a normal variable in ghost code is forbidden:
+write to a normal variable in ghost code is forbidden:
 
 
 \CodeBlockInput[8]{c}{ghost-access-non-ghost-2.c}
@@ -359,7 +359,7 @@ in ghost code:
 \end{CodeBlock}
 
 
-On the other hand, normal functions and loops contracts can (and
+On the other hand, normal functions and loop contracts can (and
 must) specify assigned ghost memory locations. For example, if we
 fix the previous program by making \CodeInline{x} ghost, first, our
 previous \CodeInline{assigns} clauses are allowed, but we can also
@@ -388,7 +388,8 @@ access their content using pointers:
 \CodeBlockInput[6]{c}{ghost-array-2.c}
 
 
-However, we immediately see that Frama-C does not like our way to do it:
+However, we immediately see that Frama-C does not like this way of
+doing things:
 
 
 \begin{CodeBlock}{text}
@@ -403,8 +404,8 @@ In particular, the first message indicates that we try to cast
 a pointer to \CodeInline{int \textbackslash{}ghost} into a pointer
 to \CodeInline{int}. Indeed, when a variable is declared in ghost
 code, only the variable is considered ghost. Thus, for a pointer,
-the pointed memory is not considered ghost (and thus here, while
-\CodeInline{pe} is ghost, the memory pointed by \CodeInline{pe} is
+the pointed-to memory is not considered ghost (and thus here, while
+\CodeInline{pe} is ghost, the memory pointed to by \CodeInline{pe} is
 not). To solve this problem, Frama-C provides the
 \CodeInline{\textbackslash{}ghost} qualifier that can be used to
 add a ghost status to a type:
@@ -413,7 +414,7 @@ add a ghost status to a type:
 \CodeBlockInput{c}{ghost-array-3.c}
 
 
-On some aspects, the \CodeInline{\textbackslash{}ghost} qualifier
+In some aspects, the \CodeInline{\textbackslash{}ghost} qualifier
 looks like the \CodeInline{const} keyword. However, it does not
 behave exactly the same way for two main reasons.
 
@@ -437,7 +438,7 @@ int const * * const p ;
 
 Declaring a const pointer to a mutable location that contains pointers
 to some constant locations can make sense. On the other hand, it does
-make sense for the \CodeInline{\textbackslash{}ghost} qualifier. That
+not make sense for the \CodeInline{\textbackslash{}ghost} qualifier. That
 would mean that some normal memory contains pointers to ghost memory
 locations, and we do not want to allow this.
 
@@ -468,11 +469,11 @@ int non_ghost_int ;
 \end{CodeBlock}
 
 
-While the reason why we refuse the first initialization is quite direct:
+The reason we refuse the first initialization is straightforward:
 it would allow writing into the normal memory from ghost code through
-\CodeInline{p}, the reason why we refuse the second one is not that
-intuitive. And, indeed, we must use workarounds to create a problem with
-this conversion:
+\CodeInline{p}, but the reason why we refuse the second one is not that
+intuitive. And, indeed, we must use some intermediate code to
+demonstrate the problem with this conversion:
 
 
 \CodeBlockInput[6]{c}{why-not-const.c}
@@ -480,15 +481,15 @@ this conversion:
 
 Here, we make a conversion that seems to be reasonable. Indeed, we give
 the address of a pointer to some ghost memory location to a function
-that takes a pointer to a normal memory, thus we only restrict our ability
-to access to the pointed memory. However, by this function call, the function
+that takes a pointer to a normal memory location, thus we only restrict our ability
+to access the pointed-to memory. However, by this function call, the function
 \CodeInline{assign} assigns the current value of \CodeInline{q} (which is
 \CodeInline{\&x}) to \CodeInline{p}. Thus, via the last instruction, we
 can write \CodeInline{x} in ghost code, which should be forbidden.
 Consequently, such a conversion is never allowed.
 
 
-Finally, a ghost code cannot currently call a non ghost function for
+Finally, a piece of ghost code cannot currently call a non-ghost function for
 similar reasons. Some particular cases could be allowed, but this is
 not currently supported by Frama-C.
 
@@ -514,7 +515,7 @@ by the RTE plugin as for normal code.
 
 As we said in section~\ref{l3:statements-loops-variant}, there are two
 kinds of correctness: partial and total correctness, the second one allowing
-to prove that a program terminates. For normal code, showing that the code
+us to prove that a program terminates. For normal code, showing that the code
 terminates is not always something that we want. On the other hand, if we
 use some ghost code during the verification, it is absolutely necessary to
 prove total correctness of this ghost code. Indeed, if it is non-terminating
@@ -536,11 +537,11 @@ void foo(void){
 \levelThreeTitle{Make a logical state explicit}
 
 
-The goal of ghost code is to make explicit some information that would be else
-implicit. For example, in the verification of the sort algorithm, we used it
+The goal of ghost code is to make explicit some information that would otherwise
+be implicit. For example, in the verification of the sort algorithm, we used it
 to create a label in the program that is not visible by the compiler but that
 we can use in the verification. The fact that the values were swapped between the
-two labels was implicitly provided by the contract of the function, adding this
+two labels was implicitly provided by the contract of the function, and adding this
 ghost label allows us to write an explicit assertion of this fact.
 
 
@@ -573,7 +574,7 @@ can express the needed axioms as an exercise:
 
 
 
-Some correct axioms are available at: \ref{l2:acsl-logic-definitions-answers}
+Some correct axioms are available in Section~\ref{l2:acsl-logic-definitions-answers}
 
 
 
@@ -585,21 +586,21 @@ The specification of the function is the following:
 
 
 
-For any bounds, the value returned by the function must be greater or
+For any bounds, the value returned by the function must be greater than or
 equal to the sum of the elements between these bounds, and there must
 exist some bounds such that the returned value is exactly the sum of the
-elements between these bounds. About this specification, when we want to
-add the loop invariant, we realize that we miss some information.
+elements between these bounds. With this specification, when we want to
+add the loop invariant, we realize that we are missing some information.
 We want to express what are the values \CodeInline{max} and \CodeInline{cur},
 and what are the relations between them, but we cannot do it!
 
 
 Basically, in order to prove our postcondition, we need to know that there
-exists some bounds
+exist some bounds
 \CodeInline{low} and \CodeInline{high} such that the computed sum corresponds to
 these bounds. However, in our code, we do not have anything that expresses
-it from a logic point of view, and we cannot \emph{a priori} make the
-link between this logic formalization. We then use ghost code to
+this from a logic point of view, and we cannot \emph{a priori} make the
+link between this logic formalization. So we use ghost code to
 record these bounds and express the loop invariant.
 
 
@@ -608,7 +609,7 @@ of the maximum sum range, let us call them \CodeInline{low} and
 \CodeInline{high}. Every time we find a range where the sum is greater
 than the current one, we update our ghost variables. These bounds
 then correspond to the sum currently stored by \CodeInline{max}. That
-induces that we need other bounds: the ones that correspond to the sum
+leads us to require other bounds: the ones that correspond to the sum
 stored by the variable \CodeInline{cur} from which we build the bounds
 corresponding to \CodeInline{max}. For these bounds, we only add a
 single ghost variable: the current low bound \CodeInline{cur\_low}, the high
@@ -630,18 +631,18 @@ between the invariant and the postcondition of the function.
 
 The reader can verify that this function is indeed correctly proved
 without RTE verification. If we add RTE verification, the overflow on
-the variable \CodeInline{cur}, that is the sum, seems to be possible (and it
+the variable \CodeInline{cur}, which is the sum, seems to be possible (and it
 is indeed the case).
 
 
 
 Here, we do not try to fix this because it is not the topic of this
 example. The way we can prove the absence of RTE here strongly depends
-on the context where we use this function. A possibility is to strongly
+on the context in which we use this function. A possibility is to strongly
 restrict the contract, forcing some properties about values and the size
 of the array. For example, we could limit the maximal size of the array
 and bound each value of the different cells. Another possibility would be to
-add an error value in case of overflow
+add an error value in the case of overflow
 (\(-1\) for example), and to specify that when an overflow is produced,
 this value is returned.
 

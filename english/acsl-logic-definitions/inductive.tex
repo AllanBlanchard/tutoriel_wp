@@ -1,10 +1,10 @@
 Inductive predicates give a way to state properties whose verification requires
-to reason by induction, that is to say: for a property $p(input)$, it is true
+us to reason by induction, that is to say: for a property $p(input)$, it is true
 for some base cases (for example, $0$ is an even natural number), and knowing
 that $p(input)$ is true, it is also true for a $bigger\ input$, provided that
 some conditions relating $input$ and $bigger\ input$ are verified (for example,
 knowing that $n$ is even, we define that $n+2$ is also even). Thus, inductive
-predicates are generally useful to define properties recursively.
+predicates are generally useful when defining properties recursively.
 
 \levelThreeTitle{Syntax}
 
@@ -21,14 +21,14 @@ For now, let us introduce the syntax of inductive predicates:
 \end{CodeBlock}
 
 Where all \CodeInline{c\_i} are names and all \CodeInline{p\_i} are logic
-formulas where \CodeInline{property} appears has a conclusion. Basically,
+formulas where \CodeInline{property} appears in one of the cases as a conclusion. Basically,
 \CodeInline{property} is true for some parameters and some labels, if it
 corresponds to one of the cases of the inductive definition.
 
 We can have a look at the simple property we just talked about: how to define
 that a natural number is even using induction. We can translate the sentence:
 ``0 is an even natural number, and if $n$ is an even natural number, $n+2$ is
-an even natural number'':
+an even natural number'' as follows:
 
 
 \CodeBlockInput[5][13]{c}{even-0.c}
@@ -37,7 +37,7 @@ an even natural number'':
 Which describes the two cases:
 \begin{itemize}
 \item $0$ is even (base case),
-\item if a natural $n$ is even, $n+2$ is also even.
+\item if a natural number $n$ is even, $n+2$ is also even.
 \end{itemize}
 
 
@@ -49,13 +49,13 @@ This can be used to prove the following assertions:
 
 Note that, since the solver has to recursively unfold the inductive definition,
 it might not work for any value. This capability depends on the heuristics of
-the solvers that decide or not to stop after N unfolds.
+the solvers that decide to stop or not after N unfoldings.
 
 
 While this definition works, it is not completely satisfying. For example, we
 cannot deduce that an odd number is not even. If we try to prove that 1 is even,
-we will have to check if -1 is even, and then -3, -5, etc., infinitely. Leading
-to the fact that the following assertion cannot be proved:
+we will have to check if -1 is even, and then -3, -5, etc., infinitely. 
+This means that the following assertion cannot be proved:
 
 
 \CodeBlockInput[20]{c}{even-0.c}
@@ -63,9 +63,9 @@ to the fact that the following assertion cannot be proved:
 
 
 Moreover, we generally prefer to define the induction cases the opposite way:
-defining the condition under which the wanted conclusion is true. For example,
+defining the condition under which the desired conclusion is true. For example,
 here, how can we verify that some $n$ is natural and even? We first check
-whether it is 0, if not, we check if $n$ is greater than $0$, and then we verify
+whether it is 0, and if it is not, we check if $n$ is greater than $0$, and then we verify
 that $n-2$ is even:
 
 
@@ -77,13 +77,13 @@ that $n-2$ is even:
 Here, we distinguish two cases:
 \begin{itemize}
 \item 0 is even,
-\item a natural $n$ is even if it is greater than 0 and $n-2$ is an even
-      natural.
+\item a natural number $n$ is even if it is greater than 0 and $n-2$ is an even
+      natural number.
 \end{itemize}
 
-Taking the second case, we recursively decrease the number until we reach
+In the second case, we recursively decrease the number until we reach
 0, and then the number is even, since 0 is even, or -1, and then there
-is no case in the inductive that corresponds to this value, so we can
+is no inductive case that corresponds to this value, so we can
 deduce that the property is false.
 
 
@@ -91,19 +91,19 @@ deduce that the property is false.
 
 
 Of course, defining that some natural number is even inductively is not a
-good idea, since we can simply define it using modulo. We generally use them
-to define complex recursive properties.
+good idea, since we can simply define it using modulo. We generally use 
+inductive definitions to define complex recursive properties.
 
 
 \levelFourTitle{Consistency}
 
 
-Inductive definitions bring the risk to introduce inconsistencies. Indeed, the
-property specified in the different cases are considered to be always true, so
-if we introduce a property that allows to prove \CodeInline{false}, we will be
-able to prove everything. While we will give more details about axioms in the
+Inductive definitions bring the risk of introducing inconsistencies. Indeed, the
+property specified in the different cases is always considered to be true, so
+if we introduce a property that allows us to prove \CodeInline{false}, we will be
+able to prove everything. While we will give more details about axioms in 
 Section~\ref{l2:acsl-logic-definitions-axiomatic}, let us give two hints to
-avoid building such a bad definition.
+avoid building faulty definitions.
 
 First, we can make sure that inductive predicates are well-founded. This can
 be done by syntactically restricting what we allow in an inductive definition,
@@ -113,19 +113,20 @@ by making sure that each case has the form:
   \forall y1,...,ym ; h1 ==> ··· ==> hl ==> P(t1,...,tn) ;
 */
 \end{CodeBlock}
-where the predicate \CodeInline{P} can only appear positively (so not negated
-with \CodeInline{!} - $\neg$) in the different hypotheses \CodeInline{hx}.
-Basically, it ensures that we cannot build both positive and negative
+where the predicate \CodeInline{P} can only appear positively (that
+is, \CodeInline{P} is not negated
+with \CodeInline{!}, -, $\neg$) in the different hypotheses \CodeInline{hx}.
+Basically, this ensures that we cannot build both positive and negative
 occurrences of \CodeInline{P} for some parameters which would be incoherent.
 
-This is for example verified by our previously defined predicate
-\CodeInline{even\_natural}. While a definition like:
+This is for example verified by our previously-defined predicate
+\CodeInline{even\_natural}. However, a definition like:
 \CodeBlockInput[5][15]{c}{even-bad.c}
-does not respect this constraint as the property \CodeInline{even\_natural}
+does not respect this constraint, as the property \CodeInline{even\_natural}
 appears negatively on line~8.
 
-Second, we can simply write a function that has a contract that needs the
-predicate \CodeInline{P}. For example, we can write a function:
+Second, we can simply write a function that has a contract that requires the
+predicate \CodeInline{P}. For example, we can write a function such as:
 
 
 
@@ -140,7 +141,7 @@ predicate \CodeInline{P}. For example, we can write a function:
 
 
 
-For example for our definition of \CodeInline{even\_natural}, we would write:
+Using our definition of \CodeInline{even\_natural}, we could write:
 
 
 
@@ -169,7 +170,7 @@ frama-c-gui -wp -wp-prop=BAD file.c
 
 
 However, that does not mean that we cannot write an inconsistent inductive
-definition. For example, the following definition is well-founded, while it
+definition. For example, the following definition is well-founded, but still
 allows us to prove false:
 
 
@@ -201,8 +202,8 @@ of false.
 
 \levelThreeTitle{Recursive predicate definitions}
 
-Inductive predicates are often useful to express recursive properties since it
-prevents the provers to unroll the recursion when it is possible.
+Inductive predicates are often useful to express recursive properties since
+these predicates prevent the provers from unrolling the recursion when possible.
 
 For example, if we want to define that an array only contains 0s, we could
 write it as follows:
@@ -216,8 +217,8 @@ definition:
 
 \CodeBlockInput[14][28]{c}{reset-0.c}
 
-Depending on the Frama-C or automatic solvers versions, the proof of the
-preservation of the invariant could fail. A reason for this fail is the fact that
+Depending on the versions of Frama-C or its underlying solvers, the proof of the
+preservation of the invariant could fail. A reason for this failure is the fact that
 the prover forgets that cells preceding the one we are currently processing
 are actually still set to 0. We can add a lemma in our knowledge base, stating
 that if a set of values of an array did not change between two program points,
@@ -229,7 +230,7 @@ then the property is still verified at the second program point.
 
 
 Then we can add an assertion to specify what did not change between the
-beginning of the loop block (pointed by the label \CodeInline{L} in the code)
+beginning of the loop block (pointed-to by the label \CodeInline{L} in the code)
 and the end (which is \CodeInline{Here} since we state the property at the end):
 
 
@@ -237,17 +238,17 @@ and the end (which is \CodeInline{Here} since we state the property at the end):
 
 
 Note that in this new version of the code, the property stated by our lemma is
-not proved using automatic solver, that cannot reason by induction. If the
+not proved using an automated solver, which cannot reason by induction. If the
 reader is curious, the (quite simple) Coq proof can be found
-in~\ref{l2:acsl-logic-definitions-answers}.
+in Section~\ref{l2:acsl-logic-definitions-answers}.
 
 
-In this case study, using an inductive definition is not efficient: our
-property can be perfectly expressed using the basic constructs of the first
+In this case, using an inductive definition is not efficient: our
+property can be perfectly expressed using the basic constructs of first
 order logic as we did before. Inductive definitions are meant to be used to
 write definitions that are not easy to express using the basic formalism
-provided by ACSL. It is here used to illustrate their use with a simple
-example.
+provided by ACSL. But it's best to get familiar with inductive
+definitions starting from simple examples.
 
 
 
@@ -262,23 +263,23 @@ Let us prove a simple selection sort:
 
 
 The reader can exercise by specifying and proving the search of the minimum and
-the swap function. We hide there a correct version of these specification and
-code (Answers~\ref{l2:acsl-logic-definitions-answers}), we will focus on the
+the swap function. We hide for now a correct version of these specifications and
+code (answers in Section~\ref{l2:acsl-logic-definitions-answers}), and will focus on the
 specification and the proof of the sort function that is an interesting use case
 for inductive definitions.
 
-Indeed, a common error we could do, trying to prove a sort function, would
+Indeed, a common error we might make, trying to prove a sort function, would
 be to write this specification (which is correct!):
 
 
 \CodeBlockInput[10]{c}{sort-incomplete.c}
 
 
-\textbf{This specification is correct}. However, if we recall correctly the part
+\textbf{This specification is correct}. However, if we recall the part
 of the tutorial about specifications, we have to \emph{precisely} express what
 we expect of the program. With this specification, we do not prove all required
-properties expected for a sort function. For example, this function correctly
-answers to the specification:
+properties expected of a sort function. For example, this function correctly
+satisfies the specification:
 
 
 \CodeBlockInput[8]{c}{sort-false.c}
@@ -291,10 +292,10 @@ array.
 
 Defining the notion of permutation can be done using an inductive definition.
 While we will see later a version of this property that is more general, let us
-for now limit us to a notion of permutation that is more specific to our current
-need. We can limit us to a few cases. First, the array is a permutation of
-itself, then swapping two values of the array produces a new permutation if we
-do not change anything else. And finally, if we create the permutation $p_2$ of
+for now limit ourselves to a notion of permutation that is more specific to our current
+concerns. We can limit ourselves to a few cases. First: the array is a permutation of
+itself; second: swapping two values of the array produces a new permutation if we
+do not change anything else; and finally: if we create the permutation $p_2$ of
 $p_1$, and then the permutation $p_3$ of $p_2$, then by transitivity $p_3$ is a
 permutation of $p_1$.
 
@@ -314,14 +315,14 @@ function:
 
 
 This time, our property is precisely defined, the proof is relatively easy to
-produce, only requiring to add an assertion in the block of the loop to state
+produce, only requiring us to add an assertion in the block of the loop to state
 that it only performs a swap of values in the array (and then giving
 the transition to the next permutation). To define this swap notion, we use
 a particular annotation (at line 16), introduced using the \CodeInline{ghost}
 keyword. Here, the goal is to introduce a label in the code that in
 fact does not exist from the program point of view, and is only visible from
 a specification point of view. We present the ``ghost'' features in the final
-section of this chapter, for now let us focus on axiomatic definitions.
+section of this chapter; for now let us focus on axiomatic definitions.
 
 
 
@@ -331,7 +332,7 @@ section of this chapter, for now let us focus on axiomatic definitions.
 \levelFourTitle{Sum of the N first integers}
 
 
-Take back your solution to the
+Look back at the solution to
 exercise~\ref{l4:acsl-properties-lemmas-n-first-ints} about the sum of the N
 first integers. Rewrite the logic function using an inductive predicate that
 states that some integer equals the sum of the N first integers.
@@ -352,7 +353,7 @@ Write an inductive predicate that states that some integer is the greatest commo
 divisor of two others. The goal of the exercise is to prove that the function
 \CodeInline{gcd} computes the greatest common divisor. Thus, we do not have to
 specify all the cases for the predicate. Indeed, a close look at the loop shows
-us that after the first iteration \CodeInline{a} is greater or equals to
+us that after the first iteration \CodeInline{a} is greater than or equal to
 \CodeInline{b}, and it is maintained by the loop. Thus, we consider two cases for
 the inductive predicate:
 
@@ -379,8 +380,9 @@ case \CodeInline{gcd\_succ}.
 In this exercise, we do not consider RTEs.
 
 
-Write an inductive predicate that states that some integer \CodeInline{r} equals
-to $x^n$. Consider the two cases: either $n$ is 0 or it is greater, and then it
+Write an inductive predicate that states that some integer \CodeInline{r} is equal
+to $x^n$. Consider the two cases: either $n$ is 0; or it is greater
+than zero, in which case it
 should be related to the value $x^{n-1}$.
 
 
@@ -412,7 +414,7 @@ two previous properties in lemmas:
 \CodeBlockInput[12][15]{c}{ex-3-fpower.c}
 
 
-First express the lemma \CodeInline{power\_even}, the SMT solver might be able
+First express the lemma \CodeInline{power\_even}. The SMT solver might be able
 to combine the use of this lemma and the inductive predicate to deduce
 \CodeInline{power\_odd}. The Coq proof of the \CodeInline{power\_even} lemma is
 provided on the GitHub repository of this book, as well as the proof of the
@@ -420,21 +422,21 @@ provided on the GitHub repository of this book, as well as the proof of the
 
 
 Finally, complete the contract and loop invariant of the \CodeInline{fast\_power}
-function. For this notice that at the beginning of the loop $x^{old(n)} = p^n$,
+function. For this, notice that at the beginning of the loop $x^{old(n)} = p^n$,
 and that each iteration uses the previous properties to update $r$, in the sense
-that we have $x^{old(n)} = r \times p^n$ during all the loop, until we have $n = 0$ and
+that we have $x^{old(n)} = r \times p^n$ throughout the loop, until we have $n = 0$ and
 thus $p^n = 1$.
 
 
 \levelFourTitle{Permutation}
 
 
-Take back the definitions of the \CodeInline{shifted} and \CodeInline{unchanged}
-predicates from the exercise~\ref{l4:acsl-properties-lemmas-shift-trans}. The
+Look back at the definitions of the \CodeInline{shifted} and \CodeInline{unchanged}
+predicates from exercise~\ref{l4:acsl-properties-lemmas-shift-trans}. The
 \CodeInline{shited\_cell} predicate can be inlined and removed. Use the
 shift predicate to express the \CodeInline{rotate} predicate that expresses that
 some elements of an array are rotated to the left in the sense that all elements
-are shifted of one element to the left except the last one that is put in the
+are shifted by one element to the left except the last one, which is put in the
 first cell of the range. Use this predicate to prove the rotate function:
 
 
@@ -445,9 +447,9 @@ Express a new version of the notion of permutation with an inductive predicate
 that considers four cases:
 \begin{itemize}
 \item permutation is reflexive,
-\item if the left part of the range (until an index of the range) is rotated
+\item if the left part of the range (up to an index of the range) is rotated
   between two labels, we still have a permutation,
-\item if the right part of the range (from an index of the range) is rotated
+\item if the right part of the range (down to an index of the range) is rotated
   between two labels, we still have a permutation,
 \item permutation is transitive.
 \end{itemize}

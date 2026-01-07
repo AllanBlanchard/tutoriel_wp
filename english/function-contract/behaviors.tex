@@ -1,10 +1,10 @@
 Sometimes, a function can have behaviors that can be quite different
-depending on the input. Typically, a function can receive a pointer to
+depending on the input. For instance, a function can receive a pointer to
 an optional resource: if the pointer is \CodeInline{NULL}, we have a
-certain behavior, which is different of the behavior expected when
+certain behavior, which is different from the behavior expected when
 the pointer is not \CodeInline{NULL}.
 
-We have already seen a function that have different behaviors: the
+We have already seen a function that has different behaviors: the
 \CodeInline{abs} function. Let us use it again to illustrate behaviors. We
 have two behaviors for the \CodeInline{abs} function: either the input is
 positive or it is negative.
@@ -14,10 +14,10 @@ introduce them using the \CodeInline{behavior} keyword. Each behavior
 is named. For a given behavior, we have different assumptions about the
 input of the function, they are introduced with the clause
 \CodeInline{assumes} (note that since they characterize the input, the
-keyword \CodeInline{\textbackslash{}old} cannot be used there). However,
-the properties expressed by this clause do not have to be verified before
-the call, they can be verified and in this case, the postcondition
-specified in our behavior applies. The postconditions of a particular
+keyword \CodeInline{\textbackslash{}old} cannot be used there).
+The properties expressed by this clause do not \emph{have} to be verified before
+the call; but they \emph{can} be verified, and in this latter case, the postcondition
+associated with this behavior applies. The postconditions of a particular
 behavior are introduced using an \CodeInline{ensures} clause. Finally, we can ask WP
 to verify that behaviors are disjoint (to guarantee determinism) and
 complete (to guarantee that we cover all possible input).
@@ -35,8 +35,8 @@ For example, for \CodeInline{abs} we can write the specification:
 
 
 
-Note that declaring behaviors does not forbid to specify global postconditions.
-For example here, we have specified that for any behavior, the function must
+Note that declaring behaviors does not forbid you from specify global postconditions.
+For example, in the above code, we have specified that for any behavior, the function must
 return a positive value.
 
 
@@ -63,8 +63,8 @@ the meaning of \CodeInline{complete} and \CodeInline{disjoint}:
   \begin{itemize}
   \item put our \CodeInline{assigns} before the behaviors (as we have done in our
     example) with all potentially modified non-local elements,
-  \item add in postcondition of each behavior the elements that are in fact
-    not modified by indicating their new value to be equal to the
+  \item add as a postcondition of each behavior those elements that are in fact
+    not modified by declaring their new value to be equal to the
     \CodeInline{\textbackslash{}old} one.
   \end{itemize}
 \end{Warning}
@@ -74,8 +74,8 @@ Behaviors are useful to simplify the writing of specifications when
 functions can have very different behaviors depending on their input.
 Without them, specification would be defined using implications
 expressing the same idea but harder to write and read (which would be
-error-prone). On the other hand, the translation of completeness and
-disjointedness would be necessarily written by hand which would be
+error-prone). In addition, the translation of completeness and
+disjointedness would need to be written by hand which would be
 tedious and again error-prone.
 
 
@@ -85,12 +85,12 @@ tedious and again error-prone.
 \levelFourTitle{Previous exercises}
 
 
-From previous sections, take back the examples:
+From previous sections, we revisit the examples:
 \begin{itemize}
 \item about the computation of the distance between to integers,
 \item ``reset on condition'',
 \item ``days of the month'',
-\item ``Max of pointed values''.
+\item ``Max of pointed-to values''.
 \end{itemize}
 
 
@@ -106,7 +106,7 @@ Re-write them using behaviors.
 \levelFourTitle{Two other simple exercises}
 
 
-Produce the code and the specification of the two following functions
+Complete the code and the specification of the two following functions
 and prove them. The specification should make use of behaviors.
 
 
@@ -119,7 +119,7 @@ letter.
 
 
 Then, a function that returns the quadrant of a given coordinate. When
-the coordinate is on an axis, arbitrary choose one of the quadrants.
+the coordinate is on an axis, arbitrarily choose one of the quadrants.
 
 
 \CodeBlockInput[11][13]{c}{ex-2-simple.c}
@@ -151,10 +151,10 @@ Assuming (and it must be expressed) that:
 specify and prove that the functions do the right job.
 
 
-\levelFourTitle{Max of pointed values, returning the result}
+\levelFourTitle{Max of pointed-to values, returning the result}
 
 
-Take back the example ``Max of pointed values'' from the previous section,
+Let's look again at the example ``Max of pointed-to values'' from the previous section,
 and more precisely, the version that returns the result. Considering that
 the contract was:
 
@@ -165,15 +165,15 @@ the contract was:
 
 
 \begin{enumerate}
-\item Rewrite it using behaviors
+\item Rewrite it using behaviors,
 \item Modify the contract of 1 in order to make the behaviors non-disjoint,
-  except this property, the contract should remain verified,
+  excepting this property, the contract should remain verified,
 \item Modify the contract of 1 in order to make the behaviors incomplete,
   add a new behavior that makes the contract complete again,
 \item Modify the function of 1 in order to accept \CodeInline{NULL} pointers
   for both \CodeInline{a} and \CodeInline{b}. If both of them are null pointers,
   return \CodeInline{INT\_MIN}, if one is a null pointer, return the value of
-  the other, else, return the maximum of them. Modify the contract accordingly
+  the other, else, return the maximum of the two. Modify the contract accordingly
   by adding new behaviors. Be sure that they are disjoint and complete.
 \end{enumerate}
 
@@ -181,12 +181,12 @@ the contract was:
 \levelFourTitle{Order 3}
 
 
-Take back the example ``Order 3 values'' from the previous section. Considering
+Let's go back to the example ``Order 3 values'' from the previous section. Considering
 that the contract was:
 
 
 \CodeBlockInput{c}{ex-5-order-3.c}
 
 
-Rewrite it using behaviors. Note that you should have one general behaviors
+Rewrite it using behaviors. Note that you should have one general behavior
 and 2 specific behaviors. Are these behaviors complete? Are they disjoint?

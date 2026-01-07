@@ -10,13 +10,14 @@ In some cases, these notions are absolutely needed to ease the process of
 specification and, more importantly, proof. On one hand they force some
 properties to be more abstract when an explicit modeling would involve too much
 computation during proof. On the other hand, they force some properties to be
-explicitly modeled when they are harder to reason about when they are implicit.
+explicitly modeled when they are harder to reason about if they were
+to be left implicit.
 
-Using these notions, we expose ourselves to the possibility to make our
-proof irrelevant if we make mistakes writing specification with it. Inductive
-predicates and axiomatic definitions involve the risk to introduce ``false'' in
-our assumptions, or to write imprecise definitions. Ghost code, if it does not
-verify some properties, opens the risk to silently modify the verified program
+Using these notions, we expose ourselves to the possibility of making our
+proof irrelevant if we make mistakes writing specifications with it. Inductive
+predicates and axiomatic definitions involve the risk of introducing ``false'' in
+our assumptions, or of writing imprecise definitions. Ghost code, if it does not
+verify some properties, opens the risk of silently modifying the verified program
 \ldots{} making us prove another program, which is not the one we want to prove.
 
 
@@ -46,11 +47,11 @@ verify some properties, opens the risk to silently modify the verified program
 
 
 In this part, we have covered some advanced constructions of the ACSL
-language that allow to express and prove more complex properties about
+language that allow us to express and prove more complex properties about
 programs.
 
-Badly used, these features can make our analyses incorrect, we then need
+Badly used, these features can make our analyses incorrect, so we need
 to be careful manipulating them and not hesitate to check them again and
-again, or possibly express properties to verify about them to assure us
+again, or possibly express properties to verify about them to assure ourselves
 that we are not introducing an incoherence in our program or our
 assumptions.

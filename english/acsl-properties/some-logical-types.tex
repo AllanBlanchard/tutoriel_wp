@@ -1,19 +1,19 @@
 ACSL provides different logic types that allow us to write properties in a more
 abstract, mathematical world. Among the types that can be useful, some are
-dedicated to numbers, and allow expressing properties or functions without
+dedicated to numbers, and allow us to express properties or functions without
 having to think about constraints due to the size of
 the representation of primitive C types in memory. These types are
 \CodeInline{integer} and \CodeInline{real}, which respectively represent
-mathematical integers and reals (that are modeled to be as close to the
-reality we can, but this notion cannot be perfectly handled).
+mathematical integers and reals (that are modeled to be as close to their
+mathematical ideals as possible, but this notion cannot be perfectly handled).
 
-From now, we will often use integers instead of classical C
+From now on, we will often use integers instead of classical C
 \CodeInline{int}s. The reason is simply that a lot of properties and
 definitions are true regardless the size of the machine integer we have
 as input.
 
 On the other hand, we will not talk about the differences that exist
-between \CodeInline{real} and \CodeInline{float/double}. It would require
-speaking about precise numerical calculus, and about proofs of programs
-that rely on such calculus which could deserve an entire dedicated
+between \CodeInline{real} and \CodeInline{float/double}. This would require
+speaking about precise floating-point calculations, and proofs of programs
+that rely on such calculations would require an entire dedicated
 tutorial.

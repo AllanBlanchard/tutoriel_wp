@@ -1,11 +1,11 @@
 Logic functions are meant to describe functions that can only be used in
-specifications. It allows us, first, to factor those specifications and,
+specifications. It allows us, first, to factor out those specifications and,
 second, to define some operations on \CodeInline{integer} or \CodeInline{real}
 with the guarantee that they cannot overflow since they involve mathematical
 types.
 
-Like predicates, they can receive different labels and values in
-parameter.
+Like predicates, they can receive different labels and values as
+parameters.
 
 
 
@@ -45,7 +45,7 @@ And it can be used to prove the source code of the following function:
 
 
 This code is indeed proved but some runtime-errors seems to be possible.
-We can add some constraint in precondition so that the result can be
+We can add a constraint in the precondition so that the result can be
 stored into a C integer:
 
 
@@ -55,10 +55,10 @@ stored into a C integer:
 Some runtime errors are still possible. Indeed, while the bound provided
 for \CodeInline{x} by our logic function is defined for the complete
 computation, it does not say anything about the value obtained in the
-intermediate computation. For example here, the fact that
+intermediate computation. For example, the fact that
 \CodeInline{3 * x + 4} is not lower than \CodeInline{INT\_MIN} does not
 guarantee that this is the case for \CodeInline{3 * x}. We can imagine
-two ways to solve this problem, this choice should be guided by the
+two ways to solve this problem, and this choice should be guided by the
 project in which this function would be used.
 
 
@@ -83,7 +83,7 @@ the \CodeInline{ax\_b} function:
 \CodeBlockInput[39][41]{c}{linear-1.c}
 
 
-which is correctly discharged by WP, that does not generate any alarm
+which is correctly discharged by WP, which does not generate any alarm
 related to overflows:
 
 
@@ -94,14 +94,14 @@ related to overflows:
 
 
 Logic functions (as well as predicates) can be recursively defined.
-However, such an approach will rapidly show some limits in their use for
-program proof. Indeed, when the automatic solver reasons on such logic
+However, such an approach will soon reveal some limitations in their use for
+program proof. Indeed, when the automatic solver reasons about such logic
 properties, if such a function is met, it is necessary to evaluate it.
 SMT solvers are not meant to be efficient for this task, thus it is generally
-costly, producing too long proof resolution and eventually timeouts.
+costly, producing excessively long proof resolutions and eventually timeouts.
 
-We can have a concrete example with the factorial function, using logic
-and using C language:
+Below is a concrete example with the factorial function, using a
+recursive logic function and a non-recursive C implementation.
 
 
 
@@ -109,14 +109,14 @@ and using C language:
 
 
 
-Without checking overflows, this function is easy and fast to prove. If
+Without checking overflows, this function can be easily proved. If
 we add runtime error checking, we see that there is a possibility of
 overflow on the multiplication.
 
 
 
-On \CodeInline{int}, the maximum value for which we can compute
-factorial is 12. If we go further, it overflows. We can then add this
+With the \CodeInline{int} type, the maximum value for which we can compute
+factorial is 12. Any higher and we get an overflow. We can then add this
 precondition:
 
 
@@ -127,14 +127,14 @@ precondition:
 
 If we ask for a proof on this input, Alt-ergo will probably fail,
 whereas CVC5 can compute the proof in less than a second. The reason is
-that in this case, the heuristics that are used by CVC5 consider that it
-is a good idea to spend a bit more time on the evaluation of the
+that in this case, the heuristics used by CVC5 consider it
+a good idea to spend a bit more time evaluating the
 function.
 
 
 
-Logic functions can then be defined recursively but without some more
-help, we are rapidly limited by the fact that provers needs to
+So logic functions can be defined recursively, but without some extra
+help, we are rapidly limited by the fact that provers need to
 perform evaluation or to ``reason'' by induction, two tasks for which
 they are not efficient. This can limit our possibilities for program
 proofs, but we will see later that we can get rid of these problems.
@@ -170,7 +170,7 @@ program. Use a \CodeInline{square} logic function.
 \CodeBlockInput[5]{c}{ex-2-square.c}
 
 
-Take care of the types of the variables and do not over-constrain the input of
+Pay attention to the types of the variables and do not over-constrain the input of
 the function. Furthermore, when verifying the absence of runtime errors, do not
 forget to provide the options \CodeInline{-warn-unsigned-overflow} and
 \CodeInline{-warn-unsigned-downcast}.
@@ -188,7 +188,7 @@ Here is a possible implementation of the iota function:
 Write a logic function that returns the input value increased by one. Prove
 that after the execution of \CodeInline{iota}, the first value of the array is
 the input value and that each value of the array corresponds to the value that
-precedes it increased by one (using the previously defined logic function).
+precedes it increased by one (using the previously-defined logic function).
 
 
 
@@ -219,7 +219,7 @@ have defined.
 
 
 The following function computes the sum of the N first integers. Write a
-recursive logic functions that returns the sum of the N first integers and
+recursive logic function that returns the sum of the N first integers and
 write a specification for the C function expressing that it computes the same
 value as provided by the logic function.
 
