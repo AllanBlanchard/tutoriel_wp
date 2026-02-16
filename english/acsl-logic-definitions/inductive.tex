@@ -1,3 +1,5 @@
+%% TODO: fix inductive failures once everything is implemented
+
 Inductive predicates give a way to state properties whose verification requires
 us to reason by induction, that is to say: for a property $p(input)$, it is true
 for some base cases (for example, $0$ is an even natural number), and knowing
@@ -54,7 +56,7 @@ the solvers that decide to stop or not after N unfoldings.
 
 While this definition works, it is not completely satisfying. For example, we
 cannot deduce that an odd number is not even. If we try to prove that 1 is even,
-we will have to check if -1 is even, and then -3, -5, etc., infinitely. 
+we will have to check if -1 is even, and then -3, -5, etc., infinitely.
 This means that the following assertion cannot be proved:
 
 
@@ -91,7 +93,7 @@ deduce that the property is false.
 
 
 Of course, defining that some natural number is even inductively is not a
-good idea, since we can simply define it using modulo. We generally use 
+good idea, since we can simply define it using modulo. We generally use
 inductive definitions to define complex recursive properties.
 
 
@@ -101,7 +103,7 @@ inductive definitions to define complex recursive properties.
 Inductive definitions bring the risk of introducing inconsistencies. Indeed, the
 property specified in the different cases is always considered to be true, so
 if we introduce a property that allows us to prove \CodeInline{false}, we will be
-able to prove everything. While we will give more details about axioms in 
+able to prove everything. While we will give more details about axioms in
 Section~\ref{l2:acsl-logic-definitions-axiomatic}, let us give two hints to
 avoid building faulty definitions.
 

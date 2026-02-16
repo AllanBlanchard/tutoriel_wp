@@ -18,13 +18,13 @@ files, that are \CodeInline{abs} and \CodeInline{max}. We obtain, for
 
 
 
-File abs.h :
+File abs.h:
 
 \CodeBlockInput{c}{abs.h}
 
 
 
-File abs.c
+File abs.c:
 
 \CodeBlockInput[6]{c}{abs.c}
 
@@ -76,7 +76,12 @@ These bullets indicate that, since we do not have the implementation
 of the function, the postcondition of the function is assumed to be
 true. This is an important strength of deductive program proofs
 compared to some other formal methods: functions are verified in
-isolation from each other.
+isolation from each other. We also see yellow bullets for \CodeInline{exits}
+and \CodeInline{terminates} clauses. Since Frama-C generates these clauses
+and does not have any way to verifying them, it warns the user that they should
+check that the clauses are correct (or explicitly write them, so that the
+Frama-C just assume that they are correct, just like the \CodeInline{ensures}
+and \CodeInline{assigns} clauses).
 
 When we are not actively performing the proof of a function, its
 specification is considered to be correct: we do not try to prove it
@@ -94,7 +99,7 @@ function. A possible answer is provided below:
 
 
 
-\CodeBlockInput[4][14]{c}{max_abs.h}
+\CodeBlockInput[6][16]{c}{max_abs.h}
 
 
 
