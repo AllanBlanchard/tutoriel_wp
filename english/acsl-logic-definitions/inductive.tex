@@ -1,5 +1,3 @@
-%% TODO: fix inductive failures once everything is implemented
-
 Inductive predicates give a way to state properties whose verification requires
 us to reason by induction, that is to say: for a property $p(input)$, it is true
 for some base cases (for example, $0$ is an even natural number), and knowing
@@ -51,7 +49,8 @@ This can be used to prove the following assertions:
 
 Note that, since the solver has to recursively unfold the inductive definition,
 it might not work for any value. This capability depends on the heuristics of
-the solvers that decide to stop or not after N unfoldings.
+the solvers that decide to stop or not after N unfold operations on the
+predicates.
 
 
 While this definition works, it is not completely satisfying. For example, we
@@ -100,106 +99,77 @@ inductive definitions to define complex recursive properties.
 \levelFourTitle{Consistency}
 
 
-Inductive definitions bring the risk of introducing inconsistencies. Indeed, the
-property specified in the different cases is always considered to be true, so
-if we introduce a property that allows us to prove \CodeInline{false}, we will be
-able to prove everything. While we will give more details about axioms in
-Section~\ref{l2:acsl-logic-definitions-axiomatic}, let us give two hints to
-avoid building faulty definitions.
+The properties specified in the different cases are always considered to be true,
+so if we introduce a property that allows us to prove \CodeInline{false}, we are
+able to prove everything. We give more details on this topic in
+Section~\ref{l2:acsl-logic-definitions-axiomatic} about axiomatic definitions.
+Inductive definitions have a syntactic constraint that is meant to avoid
+consistency problems, even if we will see that it does not protect from
+everything.
 
-First, we can make sure that inductive predicates are well-founded. This can
-be done by syntactically restricting what we allow in an inductive definition,
-by making sure that each case has the form:
+
+Basically, this constraint is meant to be sure that inductive predicates are
+well-founded. This can be done by syntactically restricting what we allow in an
+inductive definition, by making sure that each case has the form:
 \begin{CodeBlock}{c}
 /*@
   \forall y1,...,ym ; h1 ==> ··· ==> hl ==> P(t1,...,tn) ;
 */
 \end{CodeBlock}
 where the predicate \CodeInline{P} can only appear positively (that
-is, \CodeInline{P} is not negated
-with \CodeInline{!}, -, $\neg$) in the different hypotheses \CodeInline{hx}.
-Basically, this ensures that we cannot build both positive and negative
-occurrences of \CodeInline{P} for some parameters which would be incoherent.
+is, \CodeInline{P} is not negated with \CodeInline{!}) in the
+different hypotheses \CodeInline{hx}. Basically, this ensures that we cannot
+build both positive and negative occurrences of \CodeInline{P} for some
+parameters which would be incoherent.
+
 
 This is for example verified by our previously-defined predicate
 \CodeInline{even\_natural}. However, a definition like:
 \CodeBlockInput[5][15]{c}{even-bad.c}
 does not respect this constraint, as the property \CodeInline{even\_natural}
-appears negatively on line~8.
-
-Second, we can simply write a function that has a contract that requires the
-predicate \CodeInline{P}. For example, we can write a function such as:
+appears negatively on line~8. Thus, Frama-C raises an error:
 
 
-
-\begin{CodeBlock}{c}
-/*@
-  requires P( params ... ) ;
-  ensures  BAD: \false ;
-*/ void function(params){
-
-}
+\begin{CodeBlock}{text}
+[kernel:annot-error] code/acsl-logic-definitions/inductive/even-bad.c:8: Failure:
+  ill-formed inductive definition: even_natural should not be used as
+  negative occurrence. Ignoring global annotation
 \end{CodeBlock}
 
 
-
-Using our definition of \CodeInline{even\_natural}, we could write:
-
-
-
-\CodeBlockInput[17][22]{c}{even-bad.c}
-
-
-
-During the generation of the verification conditions, WP asks Why3 to create an
-inductive definition from the one written in ACSL. As Why3 is stricter than
-Frama-C and WP on this kind of definition, if the inductive predicate is too
-strange (if it is not well-founded), it will be rejected with an error. And
-indeed, with the bad definition of \CodeInline{even\_natural} we just proposed,
-Why3 complains when we try to prove the
-\CodeInline{ensures \textbackslash{}false} clause, because there exists a
-non-positive occurrence of \CodeInline{P\_even\_natural} that encodes the
-\CodeInline{even\_natural} predicate we wrote in ACSL.
-
-\begin{CodeBlock}{bash}
-frama-c-gui -wp -wp-prop=BAD file.c
-\end{CodeBlock}
-
-
-\image{why3-failed}
-
+However, it does not prevent from writing a property containing terms that can
+lead to an inconsistent definition. For example, the following definition
+respects the syntactic constraint:
+\CodeBlockInput[5][10]{c}{even-bad-2.c}
+but the predicate \CodeInline{\textbackslash{}valid(p) \&\& p \textbackslash{}null}
+is always false, thus the property is equivalent to
+\CodeInline{\textbackslash{}true} that does not respect the syntactic
+constraint. Depending on how WP simplifies the inductive definition, Why3 might
+detect these problems since WP compiles ACSL inductive definitions to Why3
+inductive definitions, which have the same syntactic constraint. For example,
+our previous definition is indeed simplified by WP, leading to the following
+error:
 \image{why3-failed-error}
 
 
-However, that does not mean that we cannot write an inconsistent inductive
-definition. For example, the following definition is well-founded, but still
-allows us to prove false:
+But, it cannot capture everything, this similar definition prevent simplification,
+leading to an inconsistent definition. Thus, we are able to prove the
+\CodeInline{ensures \textbackslash{}false}:
 
 
-\begin{CodeBlock}{c}
-/*@ inductive P(int* p){
-      case c: \forall int* p ; \valid(p) && p == (void*)0 ==> P(p);
-    }
-*/
-
-/*@ requires P(p);
-    ensures \false ; */
-void foo(int *p){}
-\end{CodeBlock}
+\CodeBlockInput[5][22]{c}{even-bad-3.c}
 
 
-Here, we could detect the problem as \CodeInline{-wp-smoke-tests} can detect
+\image{even-bad-proved}
+
+
+Here, we could detect the problem, since \CodeInline{-wp-smoke-tests} can detect
 that the precondition is unsatisfiable. However, we must be careful when defining
 inductive definitions to not introduce a definition that can lead to a proof
 of false.
 
 
-\begin{Warning}
-  Before Frama-C 21 Scandium, the inductive definitions were translated, in
-  Why3, as axioms. That means that this check was not performed. Thus, to
-  get a similar behavior with older Frama-C versions, one has to use Coq
-  and not a Why3 prover.
-\end{Warning}
+\image{even-bad-smoke}
 
 
 \levelThreeTitle{Recursive predicate definitions}
