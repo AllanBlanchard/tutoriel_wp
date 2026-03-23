@@ -5,12 +5,12 @@
 [wp] [Valid] Goal main_loop_exits (Cfg) (Unreachable)
 [wp] [Valid] Goal main_loop_terminates (Cfg) (Trivial)
 [wp] 6 goals scheduled
-[wp] [Valid] typed_main_loop_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_main_loop_loop_invariant_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_main_loop_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_main_loop_assert_rte_signed_overflow (Qed)
 [wp] [Valid] typed_main_loop_loop_assigns (Qed)
-[wp] [Valid] typed_main_loop_loop_variant_decrease (Alt-Ergo) (Cached)
 [wp] [Valid] typed_main_loop_loop_variant_positive (Alt-Ergo) (Cached)
+[wp] [Valid] typed_main_loop_loop_variant_decrease (Alt-Ergo) (Cached)
 [wp] Proved goals:    8 / 8
   Terminating:     1
   Unreachable:     1

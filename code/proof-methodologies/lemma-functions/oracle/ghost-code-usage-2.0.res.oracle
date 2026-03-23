@@ -4,18 +4,18 @@
 [rte:annot] annotating function bsearch_callee
 [kernel:annot:missing-spec] ghost-code-usage-2.c:18: Warning: 
   Neither code nor explicit exits, assigns and terminates for function bsearch,
-   generating default clauses. See -generated-spec-* options for more info
+  generating default clauses. See -generated-spec-* options for more info.
 [wp] 12 goals scheduled
 [wp] [Valid] typed_bsearch_callee_terminates (Qed)
 [wp] [Valid] typed_bsearch_callee_exits (Qed)
-[wp] [Valid] typed_bsearch_callee_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_bsearch_callee_loop_invariant_established (Qed)
-[wp] [Valid] typed_bsearch_callee_loop_invariant_2_preserved (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_callee_loop_invariant_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_bsearch_callee_loop_invariant_2_established (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_callee_loop_invariant_2_preserved (Alt-Ergo) (Cached)
 [wp] [Valid] typed_bsearch_callee_assert (Alt-Ergo) (Cached)
 [wp] [Valid] typed_bsearch_callee_loop_assigns (Qed)
-[wp] [Valid] typed_bsearch_callee_loop_variant_decrease (Alt-Ergo) (Cached)
 [wp] [Valid] typed_bsearch_callee_loop_variant_positive (Qed)
+[wp] [Valid] typed_bsearch_callee_loop_variant_decrease (Alt-Ergo) (Cached)
 [wp] [Valid] typed_bsearch_callee_call_bsearch_requires (Qed)
 [wp] [Valid] typed_bsearch_callee_call_bsearch_requires_2 (Qed)
 [wp] Proved goals:   12 / 12

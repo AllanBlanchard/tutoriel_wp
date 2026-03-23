@@ -1,0 +1,5 @@
+[kernel] Parsing even-bad.c (with preprocessing)
+[kernel:annot-error] even-bad.c:13: Failure: 
+  ill-formed inductive definition: even_natural should not be used as negative occurrence. Ignoring global annotation
+[kernel] User Error: warning annot-error treated as fatal error.
+[kernel] Frama-C aborted: invalid user input.
