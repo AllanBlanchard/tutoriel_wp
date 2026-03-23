@@ -42,8 +42,6 @@ jobs:
     runs-on: ubuntu-latest
     container: allanblanchardgh/tutoriel_wp:frama-c
     steps:
-      - name: Check Why3
-        run: cat /root/.why3.conf && why3 config detect
       - name: retrieve sources
         uses: actions/checkout@v4
       - name: execute
