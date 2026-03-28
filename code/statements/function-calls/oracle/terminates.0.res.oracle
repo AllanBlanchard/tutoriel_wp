@@ -2,11 +2,11 @@
 [kernel] Parsing terminates.c (with preprocessing)
 [wp] Running WP plugin...
 [kernel:annot:missing-spec] terminates.c:11: Warning: 
-  Neither code nor specification for function call,
-   generating default exits, assigns and terminates. See -generated-spec-* options for more info
+  Neither code nor specification for function call, generating default exits,
+  assigns and terminates. See -generated-spec-* options for more info.
 [kernel:annot:missing-spec] terminates.c:28: Warning: 
-  Neither code nor explicit exits and assigns for function callee,
-   generating default clauses. See -generated-spec-* options for more info
+  Neither code nor explicit exits and assigns for function callee, generating
+  default clauses. See -generated-spec-* options for more info.
 [wp] [Valid] Goal cond_may_not_terminate_exits (Cfg) (Unreachable)
 [wp] Warning: Missing RTE guards
 [wp] [Valid] Goal may_not_terminate_exits (Cfg) (Unreachable)

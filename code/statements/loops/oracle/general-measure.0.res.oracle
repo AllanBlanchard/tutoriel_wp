@@ -4,14 +4,14 @@
 [rte:annot] annotating function f
 [kernel:annot:missing-spec] general-measure.c:8: Warning: 
   Neither code nor explicit exits and terminates for function positive,
-   generating default clauses. See -generated-spec-* options for more info
+  generating default clauses. See -generated-spec-* options for more info.
 [wp:hypothesis] general-measure.c:21: Warning: 
   'lexico' relation must be well-founded
 [wp] 9 goals scheduled
 [wp] [Valid] typed_f_terminates (Qed)
 [wp] [Valid] typed_f_exits (Qed)
-[wp] [Valid] typed_f_loop_invariant_preserved (Qed)
 [wp] [Valid] typed_f_loop_invariant_established (Qed)
+[wp] [Valid] typed_f_loop_invariant_preserved (Qed)
 [wp] [Valid] typed_f_assert_rte_signed_overflow (Qed)
 [wp] [Valid] typed_f_assert_rte_signed_overflow_2 (Qed)
 [wp] [Valid] typed_f_loop_assigns_part1 (Qed)

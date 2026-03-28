@@ -6,21 +6,21 @@
 ------------------------------------------------------------
 
 Goal Assertion (file unchanged-loc.c, line 18):
-Let a = global(L_i_26).
+Let a = global(L_i_27).
 Assume {
   (* Initializer *)
   Init: Mint_0[a] = 13.
   (* Initializer *)
-  Init: Mint_0[global(L_j_27)] = 37.
+  Init: Mint_0[global(L_j_28)] = 37.
 }
 Prove: !P_unchanged(Mint_0[a <- 23], Mint_0, a).
 
 ------------------------------------------------------------
 
 Goal Assertion (file unchanged-loc.c, line 19):
-Let a = global(L_i_26).
+Let a = global(L_i_27).
 Let m = Mint_0[a <- 23].
-Let a_1 = global(L_j_27).
+Let a_1 = global(L_j_28).
 Assume {
   (* Initializer *)
   Init: Mint_0[a] = 13.

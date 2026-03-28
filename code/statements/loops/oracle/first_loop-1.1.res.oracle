@@ -13,12 +13,12 @@ Prove: false.
 
 ------------------------------------------------------------
 
-Goal Preservation of Invariant (file first_loop-1.c, line 10):
+Goal Establishment of Invariant (file first_loop-1.c, line 10):
 Prove: true.
 
 ------------------------------------------------------------
 
-Goal Establishment of Invariant (file first_loop-1.c, line 10):
+Goal Preservation of Invariant (file first_loop-1.c, line 10):
 Prove: true.
 
 ------------------------------------------------------------

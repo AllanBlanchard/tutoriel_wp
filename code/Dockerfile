@@ -17,7 +17,8 @@ RUN apt-get update && apt-get install -y \
   tar \
   unzip \
   wget \
-  which
+  which \
+  z3
 
 RUN opam init -c 4.14.2 --disable-sandboxing
 
@@ -37,7 +38,8 @@ RUN opam install --confirm-level=unsafe-yes \
   zarith \
   ppx_deriving \
   ppx_deriving_yojson \
-  ppx_deriving_yaml
+  ppx_deriving_yaml \
+  ppx_inline_test
 
 ENV HOME="/root"
 
@@ -49,5 +51,3 @@ ENV PATH="$OPAM_SWITCH_PREFIX/bin:$PATH"
 RUN wget https://git.frama-c.com/pub/frama-c/-/archive/master/frama-c-master.tar.gz
 RUN tar xzf frama-c-master.tar.gz
 RUN make PREFIX=$OPAM_SWITCH_PREFIX RELEASE=yes -C frama-c-master install
-
-RUN why3 config detect
