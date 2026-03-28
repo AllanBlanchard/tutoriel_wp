@@ -6,8 +6,8 @@
 [wp] [Valid] Goal abs_exits (Cfg) (Unreachable)
 [wp] [Valid] Goal abs_terminates (Cfg) (Trivial)
 [wp] 9 goals scheduled
+[wp] [Valid] typed_abs_ensures_positive_value_function_result (Qed)
 [wp] [Valid] typed_abs_ensures (Qed)
-[wp] [Valid] typed_abs_ensures_2 (Qed)
 [wp] [Valid] typed_abs_assert_rte_signed_overflow (Qed)
 [wp] [Valid] typed_foo_terminates (Qed)
 [wp] [Valid] typed_foo_exits (Qed)

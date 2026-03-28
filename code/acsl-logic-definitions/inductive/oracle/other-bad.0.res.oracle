@@ -1,0 +1,17 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing other-bad.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function foo
+[wp] [Valid] Goal foo_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal foo_terminates (Cfg) (Trivial)
+[wp] 1 goal scheduled
+[wp] User Error: After simplification inductive P appear ill-formed (hint: check cases premises)
+[wp] Warning: Goal Property: running prover Alt-Ergo:2.6.2 failed ([User Error])
+[wp] [Failure] typed_foo_ensures (Alt-Ergo) (No Cache)
+[wp] Proved goals:    2 / 3
+  Terminating:     1
+  Unreachable:     1
+  Failed:          1
+[wp:pedantic-assigns] other-bad.c:8: Warning: 
+  No 'assigns' specification for function 'foo'.
+  Callers assumptions might be imprecise.
