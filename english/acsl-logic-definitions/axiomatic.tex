@@ -7,12 +7,10 @@ property in our assumptions, ``false'' becomes ``true'' and we can then
 prove anything.
 
 
-
 \levelThreeTitle{Syntax}
 
 
 Axiomatic definitions are introduced using this syntax:
-
 
 
 \begin{CodeBlock}{c}
@@ -32,9 +30,7 @@ Axiomatic definitions are introduced using this syntax:
 \end{CodeBlock}
 
 
-
 For example, we can write this axiomatic block:
-
 
 
 \begin{CodeBlock}{c}
@@ -47,20 +43,16 @@ For example, we can write this axiomatic block:
 \end{CodeBlock}
 
 
-
 And we can see that in Frama-C, this property is actually assumed to be
 true\footnote{In section \ref{l2:acsl-logic-definitions-answers}, we
 present an {\em extremely} useful axiom.}:
-
 
 
 \image{first-axiom}
 
 
 
-
 \levelFourTitle{Link with lemmas}
-
 
 
 Lemmas and axioms allows us to express the same kinds of properties.
@@ -72,12 +64,9 @@ when we are not considering the definition of the lemma itself, lemmas
 are assumed to be true by WP exactly as axioms are.
 
 
-
-
 The only difference between lemmas and axioms from a proof point of view
 is that we must provide a proof that each lemma is true, whereas an
 axiom is always assumed to be true.
-
 
 
 \levelThreeTitle{Recursive function or predicate definitions}
@@ -88,12 +77,10 @@ particularly useful since they will prevent provers from unrolling the
 recursion when it is possible.
 
 
-
 The idea is to avoid defining the function or the predicate
 directly; instead we should declare it and then define axioms that specify its
 behavior. If we come back to the factorial function, we can define it
 axiomatically as follows:
-
 
 
 \begin{CodeBlock}{c}
@@ -111,12 +98,10 @@ axiomatically as follows:
 \end{CodeBlock}
 
 
-
 In this axiomatic definition, our function does not have a body. Its
 behavior is only defined by the axioms we have stated about it.
 Apart from this, nothing changes, in particular the logic function can
 be used in our specification just as before.
-
 
 
 A small subtlety that we must take care of is the fact that if some
@@ -130,15 +115,12 @@ function gives some result, this result will not be considered to be
 potentially different.
 
 
-
 For example, if we take the inductive property we stated for ``zeroed''
 in the previous chapter, we can write it using an axiomatic definition, and it
 will be written like this:
 
 
-
 \CodeBlockInput[5][16]{c}{reset-0.c}
-
 
 
 Notice the \CodeInline{reads[b .. e-1]} that specifies the memory location
@@ -160,18 +142,14 @@ would still be correct, but relying on false knowledge, it would only
 learn incorrect things.
 
 
-
 The simplest example is the following:
-
 
 
 \CodeBlockInput{c}{false.c}
 
 
-
 And everything is proved, including the fact that the dereferencing of
 0 is valid:
-
 
 
 \image{false-axiom}
@@ -183,31 +161,30 @@ definition that is subtly false when we express more complex properties,
 or add assumptions about the global state of the system.
 
 
+When we start to create axiomatic definitions, it is worth adding assertions or
+postconditions requiring a proof of false that we expect to fail to ensure that
+the definition is not inconsistent, or to use smoke tests. However, this is
+often not enough! If the subtlety that creates the inconsistency is hard enough
+to find, provers could need a lot of information other than the axiomatic
+definition itself to be able to find and use the inconsistency, so we need to
+always be careful!
 
 
+Note that unlike inductive definitions, where syntactic constraints can help
+avoid creating only well-formed definitions, axioms do not have any constraints.
+And it is the same for the Why3 backend, where such a definition is translated
+into a list of axioms that are thus assumed.
 
 
-
-When we start to create axiomatic definitions, it is worth adding
-assertions or postconditions requiring a proof of false that we expect
-to fail to ensure that the definition is not inconsistent. However,
-this is often not enough! If the subtlety that creates the inconsistency is
-hard enough to find, provers could need a lot of information other than
-the axiomatic definition itself to be able to find and use the
-inconsistency, so we need to always be careful!
+\levelFourTitle{Effect of the \CodeInline{reads} clause}
 
 
-
-
-More specifically, specifying the values read by a function or a
-predicate is important for the consistency of an axiomatic definition.
-Indeed, as previously explained, if we do not specify what is read when
-a pointer is received, an update of a value in the array does not
-invalidate a property known about the content of the array. In such a
-case, the proof is performed but since the axiom does not talk about the
-content of the array, we do not prove anything.
-
-
+Specifying the values read by a function or a predicate is important for the
+consistency of an axiomatic definition. Indeed, as previously explained, if we
+do not specify what is read when a pointer is received, an update of a value in
+the array does not invalidate a property known about the content of the array.
+In such a case, the proof is performed but since the axiom does not talk about
+the content of the array, we do not prove anything.
 
 
 For example, in the function that resets an array to 0, if we modify the
@@ -220,11 +197,35 @@ is proved to be correct, while we obviously changed a value in the array
 and the value is not 0 anymore.
 
 
+\levelFourTitle{ACSL vs. C typing}
 
-Note that unlike inductive definitions, where Why3 provides us a way to control
-that what we write in ACSL is relatively well-defined, we do not have such a
-mechanism for axiomatic definitions. Basically, even with Why3, such a definition
-is translated into a list of axioms that are thus assumed.
+
+Another common mistake with axiomatic definition is to state that the result of
+a logic function returning a C type corresponds to some calculation that is
+performed on logic types and might be out of range. For example, if we take
+our previous example on the factorial definition, and instead of an
+\CodeInline{integer} type we use an \CodeInline{int} type, the definition
+becomes inconsistent.
+
+\CodeBlockInput[7][17]{c}{wrong-facto.c}
+
+
+Indeed, since all integer calculation use mathematical integers, when
+\CodeInline{i} is big enough, the term \CodeInline{i * factorial(i-1)} can
+exceed \CodeInline{INT\_MAX}, while \CodeInline{factorial(i)} is always less or
+equal to \CodeInline{INT\_MAX} (because of its type), which is inconsistent.
+However, it is not that easy to make sure that SMT solvers detect the problem,
+for example here, we add two additional lemmas to force solvers finding the
+inconsistency:
+
+
+\CodeBlockInput[19][24]{c}{wrong-facto.c}
+
+
+\image{wrong-facto}
+
+
+Thus, one should avoid using basic C types for axiomatically defined values.
 
 
 \levelThreeTitle{Cluster of axiomatic blocks}
@@ -267,9 +268,7 @@ occurrences of a value in an array. We start by axiomatically defining
 what is the number of occurrences of a value in an array:
 
 
-
 \CodeBlockInput[3][22]{c}{occurrences_of.c}
-
 
 
 We have three different cases:
@@ -290,16 +289,13 @@ Then, we can write the C function that computes the number of
 occurrences of a value in an array and prove it:
 
 
-
 \CodeBlockInput[24][42]{c}{occurrences_of.c}
-
 
 
 An alternative way to specify, in this code, that \CodeInline{result} is at
 most \CodeInline{i}, is to express a more general lemma about the number of
 occurrences of a value in an array, since we know that it is
 comprised between 0 and the size of maximum considered range of values:
-
 
 
 \begin{CodeBlock}{c}
@@ -309,7 +305,6 @@ lemma l_occurrences_of_range{L}:
     from <= to ==> 0 <= l_occurrences_of(v, in, from, to) <= to-from;
 */
 \end{CodeBlock}
-
 
 
 An automatic solver cannot discharge this lemma. It would be necessary
@@ -342,7 +337,6 @@ string, that is to say, what we expect of our C function:
 \end{CodeBlock}
 
 
-
 Basically, we want to receive a valid string in input, and we want to
 compute a value that is equal to the result of our logic function
 \CodeInline{strlen} applied to this string, of course this function
@@ -358,9 +352,7 @@ since we do not expect the function to modify the string) and provide
 a contract for \CodeInline{strlen}:
 
 
-
 \CodeBlockInput[14][24]{c}{strlen-step.c}
-
 
 
 Defining the logic function \CodeInline{strlen} is a bit tricky. Indeed,
@@ -372,7 +364,6 @@ guarantee that the computation terminates, thus a logic function cannot
 be used to express this property.
 
 
-
 Thus, let us define this function axiomatically. First, let us define what
 is read by the function, which is: any memory cell from the pointer to an
 infinite range of addresses. Then we consider two cases: the string is
@@ -382,9 +373,7 @@ a positive value that corresponds to the index of the first
 no such character exists.
 
 
-
 \CodeBlockInput[4][15]{c}{strlen-proved.c}
-
 
 
 And now, we can be more precise for our definition of
@@ -394,11 +383,7 @@ of the string, and whose value is nonnegative (since an
 infinite string is not a valid string):
 
 
-
-
 \CodeBlockInput[27][30]{c}{strlen-proved.c}
-
-
 
 
 With this definition we can now go further and provide a suitable
@@ -413,9 +398,7 @@ we can try a verification asking RTE to verify that unsigned
 integers do not overflow:
 
 
-
 \image{strlen-failed}
-
 
 
 We see that the prover fails to discharge the verification condition
@@ -424,9 +407,7 @@ related to the range of \CodeInline{i}, and that
 to provide a limit to the value of \CodeInline{strlen(s)} in precondition:
 
 
-
 \CodeBlockInput[33][33]{c}{strlen-proved.c}
-
 
 
 However, this is not enough, and the reason is that while we have defined
@@ -440,10 +421,7 @@ values that precede the \CodeInline{strlen(s)} index, even if this is
 not necessary):
 
 
-
 \CodeBlockInput[17][23]{c}{strlen-proved.c}
-
-
 
 
 And this time the proof succeeds. Frama-C provides its own standard
@@ -453,7 +431,6 @@ be found in the installation directory of Frama-C, under the directory
 \CodeInline{share/libc}, the file is named \CodeInline{\_\_fc\_string\_axiomatic.h}.
 Note that this definition includes more axioms in order to be able to
 deduce more properties about \CodeInline{strlen}.
-
 
 
 \levelThreeTitle{Exercises}

@@ -177,21 +177,30 @@ poser des suppositions sur l'état global d'un système.
 
 Quand nous commençons à créer de telles définitions, ajouter de temps en
 temps une preuve ponctuelle de « \textit{false} » dont nous voulons qu'elle échoue permet
-de s'assurer que notre définition n'est pas inconsistante. Mais cela ne fait pas
-tout ! Si la subtilité qui crée le comportement faux est suffisamment cachée, les
-prouveurs peuvent avoir besoin de beaucoup d'informations autre que l'axiomatique
-elle-même pour être menés jusqu'à l'inconsistance, donc il faut toujours être
-vigilant !
+de s'assurer que notre définition n'est pas inconsistante, ou d'utiliser les
+« \textit{smoke-tests} ». Mais cela ne fait pas tout ! Si la subtilité qui crée
+le comportement faux est suffisamment cachée, les prouveurs peuvent avoir besoin
+de beaucoup d'informations autre que l'axiomatique elle-même pour être menés
+jusqu'à l'inconsistance, donc il faut toujours être vigilant !
 
 
+Notons que contrairement aux définitions inductives, où l'utilisation de
+contraintes syntaxiques permet d'éviter d'assurer la création de définitions
+bien formées, les axiomes n'ont pas de telles contraintes. Ce n'est pas non plus
+le cas en Why3, où la liste des axiomes est également prise pour hypothèse sans
+contrôles supplémentaires.
 
-Notamment parce que, par exemple, la mention des valeurs lues par une fonction
-ou un prédicat défini axiomatiquement est également importante pour la
-consistance de l'axiomatique. En effet, comme mentionné précédemment, si nous
-n'exprimons pas les valeurs lues dans le cas de l'usage d'un pointeur, la
-modification d'une valeur du tableau n'invalide pas une propriété que l'on
-connaîtrait à propos du contenu du tableau par exemple. Dans un tel cas, la
-preuve passe, mais l'axiome n'exprimant pas le contenu, nous ne prouvons rien.
+
+\levelFourTitle{Effets de la clause \CodeInline{reads}}
+
+
+Par exemple, la mention des valeurs lues par une fonction ou un prédicat défini
+axiomatiquement est importante pour la consistance de l'axiomatique. En effet,
+comme mentionné précédemment, si nous n'exprimons pas les valeurs lues dans le
+cas de l'usage d'un pointeur, la modification d'une valeur du tableau n'invalide
+pas une propriété que l'on connaîtrait à propos du contenu du tableau par
+exemple. Dans un tel cas, la preuve passe, mais l'axiome n'exprimant pas le
+contenu, nous ne prouvons rien.
 
 
 
@@ -205,10 +214,38 @@ est prouvée correcte alors qu'une valeur a changé dans le tableau et donc elle
 n'est plus 0.
 
 
-Notons qu'à la différence des définitions inductives, où Why3 nous permet de contrôler
-que ce que nous écrivons est relativement bien défini, nous n'avons pas de mécanisme
-de ce genre pour les définitions axiomatiques. Ces axiomes sont simplement traduits
-comme axiomes aussi du côté de Why3 et sont donc supposés vrais.
+\levelFourTitle{Typage ACSL vs. C}
+
+
+Une autre erreur commune avec les définitions axiomatiques est de définir le
+résultat d'une fonction logique retournant un type C à partir de calculs réalisés
+sur des types logiques pouvant amener à des valeurs hors bornes. Par exemple,
+si nous reprenons notre précédent exemple sur la définition de la factorielle,
+et au lieu d'utiliser un type \CodeInline{int} au lieu du type
+\CodeInline{integer}, la définition devient inconsistante :
+
+
+\CodeBlockInput[7][17]{c}{wrong-facto.c}
+
+
+En effet, comme les calculs sur les entiers sont réalisés avec des entiers
+mathématiques, quand \CodeInline{i} devient suffisamment grand, le terme
+\CodeInline{i * factorial(i-1)} peut dépasser \CodeInline{INT\_MAX}, tandis que
+\CodeInline{factorial(i)} est toujours inférieur ou égal à \CodeInline{INT\_MAX}
+(à cause de son type), ce qui est inconsistant. Cependant, il n'est pas si
+facile de s'assurer que les prouveurs SMT détectent le problème. Par exemple
+ici, nous ajoutons deux lemmes pour forcer les prouveurs à trouver
+l'inconsistance :
+
+
+\CodeBlockInput[19][24]{c}{wrong-facto.c}
+
+
+\image{wrong-facto}
+
+
+Par conséquent, il est plutôt conseillé d'éviter d'utiliser des types C pour
+des valeurs définies axiomatiquement.
 
 
 \levelThreeTitle{Cluster de blocs axiomatiques}
