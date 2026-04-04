@@ -18,7 +18,7 @@ of the syntax of boolean expressions in C. However, it also provides:
   programs (for example: a valid pointer),
 \item
   as well as some primitive types for the logic that are more general
-  than primitive C types (for example: mathematical integers).
+  than primitive C types, typically mathematical integers and reals.
 \end{itemize}
 
 
@@ -415,7 +415,7 @@ hard to read.
 
 
 
-If we go back to our view of the verification conditions (see the 
+If we go back to our view of the verification conditions (see the
 button highlighted with a red square in the previous screenshot),
 we can see that our hypotheses are not
 sufficient to determine that the property ``absence of overflow'' is true (and
@@ -619,6 +619,92 @@ proved.
 \image{3-main-3}
 
 
+\levelThreeTitle{ACSL: a total logic}
+
+
+Let us come back on a detail about the verification of absence of runtime
+errors with another example. The following function returns the sum of
+\CodeInline{a} and \CodeInline{b}:
+
+
+\CodeBlockInput[5]{c}{addition-int.c}
+
+
+Again, if we try to verify this example with absence of runtime errors, we need
+to prove properties before the instruction. This time, the properties are:
+
+
+\begin{CodeBlock}{c}
+/*@ assert rte: signed_overflow: -2147483648 ≤ x + y; */
+/*@ assert rte: signed_overflow: x + y ≤ 2147483647; */
+\end{CodeBlock}
+
+
+And we can for example propagate this constraint to the \CodeInline{requires}:
+
+
+\CodeBlockInput{c}{addition-int-fixed.c}
+
+
+Thus, the very same expression that may produce an undefined behavior in C can
+be safely used for verification in ACSL. The reason for this is that C values
+are automatically promoted to a logic type before computation. For C integer
+types, the logic type is \CodeInline{integer}, for C floating point types, the
+logic type is \CodeInline{real} (structures are kept as are until one really
+tries to compute something with its field and this case, the value of the field
+itself is promoted). When one tries to add an \CodeInline{integer} and a
+\CodeInline{real}, the \CodeInline{integer} is promoted to a \CodeInline{real}.
+
+
+Thus, here even if \CodeInline{x+y} might overflow, we can safely compare the
+resulting value to \CodeInline{INT\_MIN} and \CodeInline{INT\_MAX}. Note that
+it also means that for C types that have defined overflow, the behavior is the
+one from ACSL. For example:
+
+
+\CodeBlockInput{c}{addition-unsigned.c}
+
+
+Here, even if the \CodeInline{unsigned} type guarantees that in case of overflow
+the computation wraps around, it is not the case in ACSL, thus the contract
+cannot be verified:
+
+
+\image{addition-unsigned-failed}
+
+
+One can force a cast to any C type, which will, for C integers, force the
+wrapping behavior:
+
+
+\image{addition-unsigned-fixed}
+
+
+However, there are still operations that may be undefined, for example, if one
+writes the following ACSL properties, there are divisions by 0:
+
+
+\begin{CodeBlock}{c}
+//@ assert 1/0 == 1/0;
+//@ assert 1/0 == 2/0;
+\end{CodeBlock}
+
+
+Nevertheless, those annotations are well-defined in ACSL. Even if we are not
+able to \textit{compute} the values of these divisions, it is correct to write
+these assertions, the first one evaluates to true, the second is unknown: in the
+first assertion, even if we cannot compute the terms, they are indeed the same,
+thus equal ; in the second, we cannot say if they equal because even if they are
+different, nothing tells us what is the value that would eventually be
+computable from them.
+
+
+This makes of ACSL a total logic: any operation is well-defined even if the
+result may not be computable. This also includes memory accesses that might
+be invalid in C, access to logic lists elements that do not exist, computations
+that do not terminate ...
+
+
 \levelThreeTitle{Exercises}
 
 
@@ -629,14 +715,13 @@ suggest to, at least, read the fourth exercise that introduces a notation
 that can be sometimes useful.
 
 
-
-\levelFourTitle{Addition}
-
-
-Write the postcondition of the following addition function:
+\levelFourTitle{Modulo}
 
 
-\CodeBlockInput[5]{c}{ex-1-addition.c}
+Write the postcondition of the following modulo function:
+
+
+\CodeBlockInput[5]{c}{ex-1-modulo.c}
 
 
 And run the command:
@@ -655,7 +740,9 @@ frama-c-gui your-file.c -wp -wp-rte
 \end{CodeBlock}
 
 
-It should fail, adapt the contract by adding the right precondition.
+It should fail, adapt the contract by adding the right preconditions. Hint:
+there is one condition about \CodeInline{b} alone for one of the alarms, and
+one about \CodeInline{a} alone is enough to avoid the second one.
 
 
 \levelFourTitle{Distance}

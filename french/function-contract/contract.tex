@@ -19,7 +19,7 @@ originellement en C pour faciliter l'écriture ;
 \item des prédicats pré-implémentés pour exprimer des propriétés souvent utiles
 en C (par exemple, la validité d'un pointeur) ;
 \item ainsi que des types plus généraux que les types primitifs du C,
-typiquement les types entiers ou réels.
+typiquement les types mathématiques entiers et réels.
 \end{itemize}
 
 
@@ -652,6 +652,96 @@ l'assertion dans la fonction \CodeInline{main} n'est pas prouvée.
 \image{3-main-3}
 
 
+\levelThreeTitle{ACSL: une logique totale}
+
+
+Revenons à un détail à propos de la vérification d'absence d'erreurs à
+l'exécution avec un autre exemple. La fonction suivante retourne la somme de
+\CodeInline{a} et \CodeInline{b} :
+
+
+\CodeBlockInput[5]{c}{addition-int.c}
+
+
+À nouveau, si nous essayons de vérifier cet exemple avec l'absence d'erreurs à
+l'exécution, nous devons prouver des propriétés avant l'instruction. Cette fois
+les propriétés sont :
+
+
+\begin{CodeBlock}{c}
+/*@ assert rte: signed_overflow: -2147483648 ≤ x + y; */
+/*@ assert rte: signed_overflow: x + y ≤ 2147483647; */
+\end{CodeBlock}
+
+
+Et nous pouvons propager ces contraintes dans la clause \CodeInline{requires} :
+
+
+\CodeBlockInput{c}{addition-int-fixed.c}
+
+
+Nous voyons que l'expression qui peut provoquer un comportement indéterminé en
+C peut être utilisée de manière sure en ACSL. La raison de cela est que les
+valeurs C sont automatiquement promue vers de types logiques avant de faire des
+calculs. Pour les entiers C, le type logique est \CodeInline{integer}, pour les
+valeurs flottantes, le type logique est \CodeInline{real} (les structures sont
+conservées telles quelles jusqu'à ce qu'un champ en particulier soit utilisé
+pour un calcul, auquel cas, c'est la valeur du champ qui se trouve promue). Si
+le calcul comprend un \CodeInline{integer} et un \CodeInline{real}, la valeur
+de type \CodeInline{integer} est promue en \CodeInline{real}.
+
+
+Par conséquent, ici, même si \CodeInline{x+y} pourrait provoquer un dépassement,
+nous pouvons comparer de manière sure la valeur obtenue à \CodeInline{INT\_MIN}
+ou \CodeInline{INT\_MAX}. Notons que cela signifie aussi que pour les types C
+dont le dépassement est défini par la norme, le comportement est celui d'ACSL.
+Par exemple :
+
+
+\CodeBlockInput{c}{addition-unsigned.c}
+
+
+Ici, même si le type \CodeInline{unsigned} garantit que le dépassement entraîne
+un « bouclage », ce n'est pas le cas en ACSL, et donc le contrat ne peut pas
+être vérifié :
+
+
+\image{addition-unsigned-failed}
+
+
+Il est possible de forcer une conversion vers tout type C, qui permet pour les
+entiers C, de forcer le bouclage :
+
+
+\image{addition-unsigned-fixed}
+
+
+Cependant, il reste d'autres opérations qui peuvent être indéfinie, par exemple,
+si nous écrivons les propriétés ACSL suivante, il y a des divisions par 0 :
+
+
+\begin{CodeBlock}{c}
+//@ assert 1/0 == 1/0;
+//@ assert 1/0 == 2/0;
+\end{CodeBlock}
+
+
+Néanmoins, ces annotations sont parfaitement définies en ACSL. Même si nous ne
+sommes pas capables de \textit{calculer} les valeurs de ces divisions, il est
+correct d'écrire ces assertions, la première s'évalue à vrai, la seconde est
+inconnue : dans la première assertion, même, si nous ne pouvons pas calculer
+les termes, ils sont effectivement les mêmes, et donc égaux ; dans la seconde,
+nous ne pouvons pas dire s'ils sont égaux parce que même s'ils sont différents,
+rien ne nous permet de connaître les valeurs qui pourraient éventuellement être
+calculées.
+
+
+Cela fait d'ACSL une logique totale : toute opération est bien définie même si
+le résultat peut ne pas être calculable. Cela inclut également les accès mémoire
+qui peuvent être invalides en C, les accès à des éléments de listes logiques qui
+n'existent pas, les calculs qui ne terminent pas ...
+
+
 \levelThreeTitle{Exercices}
 
 
@@ -661,13 +751,13 @@ suggérons aussi fortement d'au moins lire le quatrième exercice qui introduit
 une notation qui peut parfois d'avérer utile.
 
 
-\levelFourTitle{Addition}
+\levelFourTitle{Modulo}
 
 
-Écrire la postcondition de la fonction d'addition suivante :
+Écrire la postcondition de la fonction de modulo suivante :
 
 
-\CodeBlockInput[5]{c}{ex-1-addition.c}
+\CodeBlockInput[5]{c}{ex-1-modulo.c}
 
 
 Lancer la commande :
@@ -682,7 +772,10 @@ la commande :
 \begin{CodeBlock}{bash}
 frama-c-gui your-file.c -wp -wp-rte
 \end{CodeBlock}
-qui devrait échouer. Adapter le contrat en ajoutant la bonne précondition.
+qui devrait échouer. Adapter le contrat en ajoutant les bonnes préconditions.
+Indice : il y a une condition à propos de \CodeInline{b} (seule) pour l'une des
+alarmes, et pour la seconde alarme, une condition à propos de \CodeInline{a}
+(seule) est suffisante pour lever l'alarme.
 
 
 \levelFourTitle{Distance}
