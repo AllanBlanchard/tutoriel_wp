@@ -415,11 +415,17 @@ l'absence de RTEs pour cet exemple), nous obtenons le résultat suivant :
 \image{2-incr_a_by_b-1}
 
 
-La raison est simplement que rien ne garantit que le pointeur \CodeInline{a} est bien
-différent du pointeur \CodeInline{b}. Or, si les pointeurs sont égaux,
+À nouveau, les contre-exemples peuvent nous aider à comprendre la raison de
+l'échec de preuve :
 
 
+\image{incr_a_by_b-counter-example}
 
+
+Le prouveur automatique nous indique que si nous prenons la même valeur pour les
+deux pointeurs d'entrée, la propriété est nécessairement fausse, et effectivement
+rien ne garantit que le pointeur \CodeInline{a} est bien différent du pointeur
+\CodeInline{b}. Or, si les pointeurs sont égaux,
 \begin{itemize}
 \item la propriété \CodeInline{*a == \textbackslash{}old(*a) + *b} signifie en fait
 \CodeInline{*a == \textbackslash{}old(*a) + *a}, ce qui ne peut être vrai que si l'ancienne valeur
@@ -497,7 +503,7 @@ et notre matériel. Cela concerne principalement nos préconditions. Par exemple
 la fonction valeur absolue n'a, au fond, pas  vraiment de précondition à
 satisfaire : c'est la machine cible qui détermine qu'une condition supplémentaire
 doit être vérifiée en raison du complément à deux. Comme nous le verrons dans le
-chapitre \ref{l1:proof-methodologies}, vérifier l'absence de \emph{runtime-errors}
+chapitre \ref{l1:proof-methodologies}, vérifier l'absence de \textit{runtime-errors}
 peut aussi impacter nos postconditions, pour l'instant laissons cela de côté.
 
 

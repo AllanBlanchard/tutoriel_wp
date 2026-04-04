@@ -421,31 +421,61 @@ déterminer que la propriété est forcément vraie, auquel cas, nous ne faisons
 pas appel aux prouveurs.
 
 
+Souvent, les prouveurs automatiques ne donnent pas beaucoup d'information après
+avoir tenté une preuve. Quand ils arrivent à prouver la condition de vérification,
+la réponse est « oui », ce qui est suffisant puisque nous n'avons généralement
+pas besoin de plus d'information. Mais ils peuvent échouer, soit parce que la
+propriété ne peut pas être prouvée (parce qu'il manque une hypothèse ou parce
+que la propriété est simplement fausse) ou parce que la preuve est au-delà des
+capacités du prouveur. Quand ils échouent, ils retournent généralement « inconnu »
+ou atteignent un \textit{timeout}. Dans un tel cas, il peut être difficile de
+savoir pourquoi. Dans ce cas, lire la condition de vérification générée peut 
+aider, mais cela demande un peu de pratique pour devenir vraiment efficace. 
+Explorer la preuve avec l'Assistant de Preuve Coq peut aider, mais il faut être
+familier de cet outil, et l'encodage de la sémantique du C peut rendre le
+contexte de preuve difficile à lire et manipuler.
 
-Lorsque les prouveurs automatiques ne parviennent pas à assurer que nos
-propriétés sont bien vérifiées, il est parfois difficile de comprendre
-pourquoi. En effet, les prouveurs sont généralement incapables de nous
-répondre autre chose que « oui », « non » ou « inconnu », ils ne sont pas
-capables d'extraire le « pourquoi » d'un « non » ou d'un « inconnu ». Il
-existe des outils qui
-sont capables d'explorer les arbres de preuve pour en extraire ce type
-d'information, Frama-C n'en possède pas à l'heure actuelle. La lecture des
-conditions de vérification peut parfois nous aider, mais cela demande un peu
-d'habitude pour pouvoir les déchiffrer facilement. Finalement, le meilleur
-moyen de comprendre la raison d'un échec est d'effectuer la preuve de manière
-interactive avec Coq. En revanche, il faut déjà avoir une certaine habitude de
-ce langage pour ne pas être perdu devant les conditions de vérification générées par
-WP, étant donné que celles-ci encodent les éléments de la sémantique de C, ce
-qui rend le code souvent indigeste.
+Dans certaines situations, les prouveurs peuvent être une meilleure aide. Quand
+ils atteignent un \textit{timeout}, on ne peut pas vraiment avoir mieux, mais
+quand ils produisent le résultat « inconnu », certains prouveurs peuvent
+produire des contre-exemples à condition de leur demander. Par défaut, WP
+n'active pas ce comportement, car il peut réduire les performances de la preuve,
+mais cela peut être activé à l'aide de l'option 
+\CodeInline{-wp-counter-examples}. Tous les prouveurs ne peuvent pas fournir des
+contre-exemples, mais CVC5 peut par exemple produire des contre-exemples qui
+peuvent être utilisées pour comprendre des échecs de preuve. Lançons à nouveau
+Frama-C sur notre exemple avec les options suivantes :
+\begin{CodeBlock}{shell}
+frama-c abs.c -wp -wp-rte -wp-counter-examples -wp-prover alt-ergo,cvc5
+\end{CodeBlock}
 
 
+Analysons cette ligne de commande :
+\begin{itemize}
+  \item nous avons vu les options \CodeInline{-wp} et \CodeInline{-wp-rte}, qui
+        permettent respectivement d'activer le greffon WP et la vérification
+        d'absence d'erreurs à l'exécution,
+  \item \CodeInline{-wp-counter-examples} active la génération des
+        contre-exemples,
+  \item \CodeInline{-wp-prover alt-ergo,cvc5} demande à WP de lancer à la fois
+        Alt-Ergo et CVC5 sur chaque condition de vérification.
+\end{itemize}
 
-Si nous retournons dans notre tableau des conditions de vérification (bouton
-encadré en rouge dans la capture d'écran précédente), nous pouvons donc voir
-que les hypothèses n'ont pas suffi aux prouveurs pour déterminer que la
-propriété  « absence de débordement » est vraie (et nous l'avons dit : c'est
-normal), il nous faut donc ajouter une hypothèse supplémentaire pour garantir
-le bon fonctionnement de la fonction : une précondition d'appel.
+
+En utilisant cette ligne de commande, nous obtenons le résultat suivant :
+
+
+\image{1-abs-2-counter-example}
+
+
+Sur cette capture d'écran (il faut bien activer le sélecteur CE), nous voyons
+que le \textit{Prove} \CodeInline{val}, qui représente la valeur d'entrée de la
+fonction, CVC5 a déterminé que si nous plaçons cette valeur à -2147483648
+(\CodeInline{INT\_MIN}), nous avons un contre-exemple à la propriété
+« absence de débordement ». Et effectivement, nous avons dit précédemment que
+cette propriété ne peut pas être prouvée pour la valeur \CodeInline{INT\_MIN}.
+Il nous faut donc ajouter une hypothèse supplémentaire pour garantir le bon
+fonctionnement de la fonction : une précondition d'appel.
 
 
 
