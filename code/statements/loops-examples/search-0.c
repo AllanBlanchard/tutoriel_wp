@@ -10,11 +10,11 @@
   assigns  \nothing;
 
   behavior notin:
-    assumes \forall size_t off ; 0 <= off < length ==> array[off] != element;
+    assumes \forall integer off ; 0 <= off < length ==> array[off] != element;
     ensures \result == NULL;
 
   behavior in:
-    assumes \exists size_t off ; 0 <= off < length && array[off] == element;
+    assumes \exists integer off ; 0 <= off < length && array[off] == element;
     ensures array <= \result < array+length && *\result == element;
 
   disjoint behaviors;

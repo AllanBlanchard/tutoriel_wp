@@ -123,13 +123,13 @@ questions, nous pouvons les lire de cette façon :
 
 \begin{CodeBlock}{c}
 /*@
-//pour tout "off" de type "size_t", tel que SI "off" est compris entre 0 et "length"
-//                                 ALORS la case "off" de "a" est différente de "element"
-\forall size_t off ; 0 <= off < length ==> a[off] != element;
+//pour tout "off" de type "integer", tel que SI "off" est compris entre 0 et "length"
+//                                   ALORS la case "off" de "a" est différente de "element"
+\forall integer off ; 0 <= off < length ==> a[off] != element;
 
-//il existe "off" de type "size_t", tel que "off" soit compris entre 0 et "length"
-//                                 ET que la case "off" de "a" vaille "element"
-\exists size_t off ; 0 <= off < length && a[off] == element;
+//il existe "off" de type "integer", tel que "off" soit compris entre 0 et "length"
+//                                   ET que la case "off" de "a" vaille "element"
+\exists integer off ; 0 <= off < length && a[off] == element;
 */
 \end{CodeBlock}
 
@@ -174,10 +174,20 @@ aurions pu l'exprimer comme suit :
 \begin{CodeBlock}{c}
   /*@ ...
     behavior in:
-      assumes !(\forall size_t off ; 0 <= off < length ==> array[off] != element);
+      assumes !(\forall integer off ; 0 <= off < length ==> array[off] != element);
     ...
   */
 \end{CodeBlock}
+
+
+Une dernière information à propos des quantifications universelle et
+existentielle : il est généralement préférable d'utiliser des types logiques, en
+particulier pour les bornes d'entiers. Cela permet d'amener à des formules plus
+simples (parce qu'il n'y a pas besoin d'encoder une contrainte de type sur les
+variables ainsi quantifiées). La principale exception est quand la variable est
+supposée représenter le contenu d'une cellule mémoire, et donc qu'il est
+pertinent de la contraindre à ce qui peut effectivement exister dans la mémoire
+en question.
 
 
 Parlons des annotations de la boucle. La première étape est d'ajouter la clause
@@ -192,12 +202,12 @@ fonction est qu'à moins que l'on rencontre l'élément recherché, il ne se tro
 pas dans le tableau, nous exploitons cela en partant de la clause
 \CodeInline{assumes} du comportement \CodeInline{notin} :
 \begin{CodeBlock}{c}
-  //@ \forall size_t off ; 0 <= off < length ==> array[off] != element;
+  //@ \forall integer off ; 0 <= off < length ==> array[off] != element;
 \end{CodeBlock}
 La variable qui atteint \CodeInline{length} à la fin de la boucle est
 \CodeInline{i}, donc :
 \begin{CodeBlock}{c}
-  //@ loop invariant \forall size_t off ; 0 <= off < i ==> array[off] != element;
+  //@ loop invariant \forall integer off ; 0 <= off < i ==> array[off] != element;
 \end{CodeBlock}
 est certainement un bon candidat. Cela nous amène aux annotations de boucle
 suivantes :
@@ -231,7 +241,7 @@ de l'invariant :
 
 
 \begin{CodeBlock}{c}
-//@ loop invariant \forall size_t j; 0 <= j < 0 ==> array[j] != element;
+//@ loop invariant \forall integer j; 0 <= j < 0 ==> array[j] != element;
 \end{CodeBlock}
 
 
@@ -298,9 +308,9 @@ entre les anciennes valeurs du tableau et leurs potentielles nouvelles valeurs :
 
 \begin{CodeBlock}{c}
 /*@
-  loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) == old
+  loop invariant \forall integer j; 0 <= j < i && \at(array[j], Pre) == old
                    ==> array[j] == new;
-  loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) != old
+  loop invariant \forall integer j; 0 <= j < i && \at(array[j], Pre) != old
                    ==> array[j] == \at(array[j], Pre);
 */
 \end{CodeBlock}

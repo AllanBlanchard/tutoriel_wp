@@ -8,17 +8,17 @@
 
   assigns a[0 .. length-1], updated[0 .. length-1];
 
-  ensures \forall size_t i; 0 <= i < length && \old(a[i]) == old ==> a[i] == new;
-  ensures \forall size_t i; 0 <= i < length && \old(a[i]) != old ==> a[i] == \old(a[i]);
-  ensures \forall size_t i; 0 <= i < length ==> (updated[i] <==> a[i] != \old(a[i]));
+  ensures \forall integer i; 0 <= i < length && \old(a[i]) == old ==> a[i] == new;
+  ensures \forall integer i; 0 <= i < length && \old(a[i]) != old ==> a[i] == \old(a[i]);
+  ensures \forall integer i; 0 <= i < length ==> (updated[i] <==> a[i] != \old(a[i]));
 */
 void replace(int* a, size_t length, int old, int new) /*@ ghost(int \ghost * updated) */ {
   /*@
     loop invariant 0 <= i <= length;
-    loop invariant \forall size_t j; 0 <= j < i && \at(a[j], Pre) == old ==> a[j] == new;
-    loop invariant \forall size_t j; 0 <= j < i && \at(a[j], Pre) != old ==> a[j] == \at(a[j], Pre);
-    loop invariant \forall size_t j; i <= j < length ==> a[j] == \at(a[j], Pre);
-    loop invariant \forall size_t j; 0 <= j < i ==> (updated[j] <==> a[j] != \at(a[j], Pre));
+    loop invariant \forall integer j; 0 <= j < i && \at(a[j], Pre) == old ==> a[j] == new;
+    loop invariant \forall integer j; 0 <= j < i && \at(a[j], Pre) != old ==> a[j] == \at(a[j], Pre);
+    loop invariant \forall integer j; i <= j < length ==> a[j] == \at(a[j], Pre);
+    loop invariant \forall integer j; 0 <= j < i ==> (updated[j] <==> a[j] != \at(a[j], Pre));
     loop assigns i, a[0 .. length-1], updated[0 .. length-1];
     loop variant length-i;
   */
@@ -46,7 +46,7 @@ void caller(void){
   initialize(a, 40);
 
   //@ ghost L: ;
-  
+
   replace(a, 40, 0, 42) /*@ ghost(updated) */ ;
 
   /*@ ghost

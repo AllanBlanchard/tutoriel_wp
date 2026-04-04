@@ -6,11 +6,11 @@
   assigns  \nothing;
 
   behavior notin:
-    assumes \forall size_t off ; 0 <= off < length ==> array[off] != element;
+    assumes \forall integer off ; 0 <= off < length ==> array[off] != element;
     ensures \result == NULL;
 
   behavior in:
-    assumes \exists size_t off ; 0 <= off < length && array[off] == element;
+    assumes \exists integer off ; 0 <= off < length && array[off] == element;
     ensures array <= \result < array+length && *\result == element;
 
   disjoint behaviors;
@@ -18,7 +18,7 @@
 */
 int* search(int* array, size_t length, int element){
   /*@ loop invariant 0 <= i <= length;
-      loop invariant \forall size_t j; 0 <= j < i ==> array[j] != element;
+      loop invariant \forall integer j; 0 <= j < i ==> array[j] != element;
       loop assigns i;
       loop variant length - i; */
   for(size_t i = 0; i < length; i++)
