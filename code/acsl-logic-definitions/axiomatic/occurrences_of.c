@@ -28,7 +28,7 @@
 */
 size_t occurrences_of(int value, int* in, size_t length){
   size_t result = 0;
-  
+
   /*@
     loop invariant 0 <= result <= i <= length;
     loop invariant result == l_occurrences_of(value, in, 0, i);

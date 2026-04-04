@@ -1,17 +1,15 @@
 # frama-c -wp -wp-rte [...]
-[kernel] Parsing ex-1-addition-answer.c (with preprocessing)
+[kernel] Parsing addition-unsigned-fixed.c (with preprocessing)
 [wp] Running WP plugin...
 [rte:annot] annotating function add
 [wp] [Valid] Goal add_exits (Cfg) (Unreachable)
 [wp] [Valid] Goal add_terminates (Cfg) (Trivial)
-[wp] 3 goals scheduled
+[wp] 1 goal scheduled
 [wp] [Valid] typed_add_ensures (Qed)
-[wp] [Valid] typed_add_assert_rte_signed_overflow (Qed)
-[wp] [Valid] typed_add_assert_rte_signed_overflow_2 (Qed)
-[wp] Proved goals:    5 / 5
+[wp] Proved goals:    3 / 3
   Terminating:     1
   Unreachable:     1
-  Qed:             3
-[wp:pedantic-assigns] ex-1-addition-answer.c:7: Warning: 
+  Qed:             1
+[wp:pedantic-assigns] addition-unsigned-fixed.c:2: Warning: 
   No 'assigns' specification for function 'add'.
   Callers assumptions might be imprecise.

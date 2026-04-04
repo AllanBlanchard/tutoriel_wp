@@ -11,7 +11,7 @@ would make us lose a lot of time during the process.
 Before anything else, we should write the \CodeInline{loop assigns} clause. It is
 generally easy to write (just look at the assignment instructions and function
 calls), and if we forget this step we risk wasting time trying to prove incorrect
-properties. When writing these clauses, we should not try to be too precise. WP cannot 
+properties. When writing these clauses, we should not try to be too precise. WP cannot
 efficiently handle something like \CodeInline{array[x .. y]} when \CodeInline{x} or
 \CodeInline{y} are themselves modified, so we generally prefer bounds that
 include them while being constant during the execution of the loop, if we need
@@ -114,19 +114,19 @@ corresponding lines in our specification, we can read them this way:
 
 \begin{CodeBlock}{c}
 /*@
-// for all "off" of type "size_t", IF "off" is comprised between 0 and "length"
-//                                 THEN the cell "off" in "a" is different from "element"
-\forall size_t off ; 0 <= off < length ==> a[off] != element;
+// for all "off" of type "integer", IF "off" is comprised between 0 and "length"
+//                                  THEN the cell "off" in "a" is different from "element"
+\forall integer off ; 0 <= off < length ==> a[off] != element;
 
-// there exists "off" of type "size_t", such that "off" is comprised between 0 and "length"
-//                                      AND the cell "off" in "a" equals to "element"
-\exists size_t off ; 0 <= off < length && a[off] == element;
+// there exists "off" of type "integer", such that "off" is comprised between 0 and "length"
+//                                       AND the cell "off" in "a" equals to "element"
+\exists integer off ; 0 <= off < length && a[off] == element;
 */
 \end{CodeBlock}
 
 
 If we want to summarize the use of these two keywords, we would say that on a
-range of values, a property is true, either about about all of them
+range of values, a property is true, either about all of them
 (\CodeInline{\textbackslash{}forall}) or at least one of them
 (\CodeInline{\textbackslash{}exists}). A common scheme is to constrain this set using
 another property (here: \CodeInline{0 <= off < length}) and to prove the
@@ -166,10 +166,18 @@ could have been expressed with:
 \begin{CodeBlock}{c}
   /*@ ...
     behavior in:
-      assumes !(\forall size_t off ; 0 <= off < length ==> array[off] != element);
+      assumes !(\forall integer off ; 0 <= off < length ==> array[off] != element);
     ...
   */
 \end{CodeBlock}
+
+
+One final note about universal and existential quantification: prefer using logic
+types, in particular to talk about integers bounds. It generally leads to simpler
+formulas (because there is no need to encode a type constraint for the quantified
+variables). The main exception is when the variable is meant to represent the
+content of something in memory, and thus that it is meaningful to constrain it
+to what can really exist in memory.
 
 
 Let's turn now to adding the loop annotations. The first step is to add the
@@ -183,12 +191,12 @@ In this example, the invariant is related to the \CodeInline{assumes} clauses, a
 the fact that unless we find the element we are searching for, it is not in the array.
 Let's see if we can reuse part of the assumes clause from our \CodeInline{notin} behavior:
 \begin{CodeBlock}{c}
-  //@ \forall size_t off ; 0 <= off < length ==> array[off] != element;
+  //@ \forall integer off ; 0 <= off < length ==> array[off] != element;
 \end{CodeBlock}
 The variable that reaches \CodeInline{length} at the end of the loop is
 \CodeInline{i}, thus:
 \begin{CodeBlock}{c}
-  //@ loop invariant \forall size_t off ; 0 <= off < i ==> array[off] != element;
+  //@ loop invariant \forall integer off ; 0 <= off < i ==> array[off] != element;
 \end{CodeBlock}
 is certainly a good candidate. Thus, we have the following loop annotations:
 
@@ -222,12 +230,12 @@ we start the loop. And consequently, if we replace the value of
 
 
 \begin{CodeBlock}{c}
-//@ loop invariant \forall size_t j; 0 <= j < 0 ==> array[j] != element;
+//@ loop invariant \forall integer j; 0 <= j < 0 ==> array[j] != element;
 \end{CodeBlock}
 
 
 ``For all j, greater than or equal to 0 and strictly lower than 0''; this
-part of the formula is necessarily false, so our implication is 
+part of the formula is necessarily false, so our implication is
 necessarily true.
 
 
@@ -287,9 +295,9 @@ array and the potentially new values:
 
 \begin{CodeBlock}{c}
 /*@
-  loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) == old
+  loop invariant \forall integer j; 0 <= j < i && \at(array[j], Pre) == old
                    ==> array[j] == new;
-  loop invariant \forall size_t j; 0 <= j < i && \at(array[j], Pre) != old
+  loop invariant \forall integer j; 0 <= j < i && \at(array[j], Pre) != old
                    ==> array[j] == \at(array[j], Pre);
 */
 \end{CodeBlock}
