@@ -1,0 +1,20 @@
+# frama-c -wp -wp-rte [...]
+[kernel] Parsing wrong-facto.c (with preprocessing)
+[wp] Running WP plugin...
+[rte:annot] annotating function example
+[wp] [Valid] Goal example_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal example_terminates (Cfg) (Trivial)
+[wp] 3 goals scheduled
+[wp] [Valid] typed_lemma_fact_12 (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_fact_13 (Alt-Ergo) (Cached)
+[wp] [Failed] (Doomed) typed_example_wp_smoke_default_requires (Alt-Ergo) (Cached)
+[wp] wrong-facto.c:24: Warning: Failed smoke-test
+[wp] Proved goals:    4 / 5
+  Terminating:     1
+  Unreachable:     1
+  Alt-Ergo:        2
+  Failed:          1
+  Smoke Tests:     0 / 1
+[wp:pedantic-assigns] wrong-facto.c:24: Warning: 
+  No 'assigns' specification for function 'example'.
+  Callers assumptions might be imprecise.
