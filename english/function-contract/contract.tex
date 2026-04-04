@@ -652,11 +652,11 @@ are automatically promoted to a logic type before computation. For C integer
 types, the logic type is \CodeInline{integer}, for C floating point types, the
 logic type is \CodeInline{real} (structures are kept as are until one really
 tries to compute something with its field and this case, the value of the field
-itself is promoted). When one tries to add an \CodeInline{integer} and a
+itself is promoted). When one tries to sum an \CodeInline{integer} and a
 \CodeInline{real}, the \CodeInline{integer} is promoted to a \CodeInline{real}.
 
 
-Thus, here even if \CodeInline{x+y} might overflow, we can safely compare the
+Thus, here, even if \CodeInline{x+y} might overflow, we can safely compare the
 resulting value to \CodeInline{INT\_MIN} and \CodeInline{INT\_MAX}. Note that
 it also means that for C types that have defined overflow, the behavior is the
 one from ACSL. For example:
@@ -680,7 +680,7 @@ wrapping behavior:
 \image{addition-unsigned-fixed}
 
 
-However, there are still operations that may be undefined, for example, if one
+However, there are still operations that may be undefined. For example, if one
 writes the following ACSL properties, there are divisions by 0:
 
 
@@ -692,7 +692,7 @@ writes the following ACSL properties, there are divisions by 0:
 
 Nevertheless, those annotations are well-defined in ACSL. Even if we are not
 able to \textit{compute} the values of these divisions, it is correct to write
-these assertions, the first one evaluates to true, the second is unknown: in the
+these assertions. The first one evaluates to true, the second is unknown: in the
 first assertion, even if we cannot compute the terms, they are indeed the same,
 thus equal ; in the second, we cannot say if they equal because even if they are
 different, nothing tells us what is the value that would eventually be

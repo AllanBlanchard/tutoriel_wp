@@ -682,7 +682,7 @@ Et nous pouvons propager ces contraintes dans la clause \CodeInline{requires} :
 
 Nous voyons que l'expression qui peut provoquer un comportement indéterminé en
 C peut être utilisée de manière sure en ACSL. La raison de cela est que les
-valeurs C sont automatiquement promue vers de types logiques avant de faire des
+valeurs C sont automatiquement promues vers des types logiques avant de faire des
 calculs. Pour les entiers C, le type logique est \CodeInline{integer}, pour les
 valeurs flottantes, le type logique est \CodeInline{real} (les structures sont
 conservées telles quelles jusqu'à ce qu'un champ en particulier soit utilisé
@@ -716,7 +716,7 @@ entiers C, de forcer le bouclage :
 \image{addition-unsigned-fixed}
 
 
-Cependant, il reste d'autres opérations qui peuvent être indéfinie, par exemple,
+Cependant, il reste d'autres opérations qui peuvent être indéfinies, par exemple,
 si nous écrivons les propriétés ACSL suivante, il y a des divisions par 0 :
 
 
@@ -728,7 +728,7 @@ si nous écrivons les propriétés ACSL suivante, il y a des divisions par 0 :
 
 Néanmoins, ces annotations sont parfaitement définies en ACSL. Même si nous ne
 sommes pas capables de \textit{calculer} les valeurs de ces divisions, il est
-correct d'écrire ces assertions, la première s'évalue à vrai, la seconde est
+correct d'écrire ces assertions. La première s'évalue à vrai, la seconde est
 inconnue : dans la première assertion, même, si nous ne pouvons pas calculer
 les termes, ils sont effectivement les mêmes, et donc égaux ; dans la seconde,
 nous ne pouvons pas dire s'ils sont égaux parce que même s'ils sont différents,
