@@ -110,7 +110,7 @@ this simple Hoare triple:
 
 
 
-This Hoare triple is correct, since \CodeInline{p} and \CodeInline{q} 
+This Hoare triple is correct, since \CodeInline{p} and \CodeInline{q}
 alias each other, modifying \CodeInline{*p} also modifies \CodeInline{*q}, thus both these
 expressions evaluate to $1$ and the postcondition is true. However, let us apply
 the weakest precondition calculus from the postcondition:
@@ -214,7 +214,9 @@ The WP plugin does not exactly work like this. In particular, it depends on the
 memory model chosen for the proof that will make different assumptions about how the
 memory is organized. For the memory model we use, the typed memory model,
 WP actually creates multiple variables for memory. However, let us have a look at
-the verification condition generated for the postcondition of the swap function:
+the verification condition generated for the postcondition of the swap function
+(again, make sure to turn off the highlighted options if you do not see the same
+content):
 
 
 \image{memory-model}

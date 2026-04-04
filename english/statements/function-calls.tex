@@ -266,7 +266,7 @@ true when verifying \CodeInline{f} and must be verified when \CodeInline{f} is
 called. When it is a \CodeInline{check requires}, the clause is verified at
 its callsite, yet we do not assume it when verifying \CodeInline{f}. Finally, when
 a function \CodeInline{f} has an \CodeInline{admit requires} clause, it is
-assumed to be true when verifying \CodeInline{f} without any verification 
+assumed to be true when verifying \CodeInline{f} without any verification
 at its callsite. In the following example:
 
 \CodeBlockInput[5]{c}{check-admit-requires.c}
@@ -478,8 +478,8 @@ function (and for a call to this same function), the expression is evaluated
 for two entities: the function under proof and the call statement. The state
 where the expression is evaluated for the function under proof is
 \CodeInline{Pre}, the state where the expression is evaluated for the call
-statement is \CodeInline{Here}. The value of the expression at the callsite must
-be less than the value of the expression in the \CodeInline{Pre} state.
+statement is \CodeInline{Here}. The value of the expression at the call site
+must be less than the value of the expression in the \CodeInline{Pre} state.
 
 
 \CodeBlockInput[22][30]{c}{decreases.c}
@@ -637,7 +637,7 @@ and collects the loops that do not have a \CodeInline{loop variant} clause and
 the function calls. If there are none of them, the \CodeInline{terminates}
 clause is trivially verified.
 
-
+%% TODO: fix this once we have a way to display it in GUI
 \image{trivial_terminates}
 
 

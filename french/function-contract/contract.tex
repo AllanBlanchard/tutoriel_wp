@@ -205,7 +205,7 @@ frama-c-gui abs.c
 
 
 
-\image{1-abs-1.png}
+\image{1-abs-1}
 
 
 La fenêtre de Frama-C s'ouvre, dans le volet correspondant aux fichiers et aux
@@ -219,14 +219,18 @@ Nous demandons de vérifier que le code répond à la spécification en faisant
 un clic droit sur le nom de la fonction et « \textit{Prove function annotations by WP} » :
 
 
-
 \image{1-abs-2}
 
 
 Nous pouvons voir que les cercles bleus deviennent des pastilles vertes,
-indiquant que la spécification est bien assurée par le programme. Il est
-possible de prouver les propriétés une à une en cliquant-droit sur celles-ci
-et pas sur le nom de la fonction. Nous pouvons également voir que deux
+indiquant que la spécification est bien assurée par le programme.
+
+
+\image{1-abs-3}
+
+
+Il est possible de prouver les propriétés une à une en cliquant-droit sur
+celles-ci et pas sur le nom de la fonction. Nous pouvons également voir que deux
 annotations supplémentaires ont été générées par Frama-C pour notre fonction :
 \begin{itemize}
   \item \CodeInline{exits \textbackslash{}false}
@@ -255,25 +259,18 @@ d'ajouter des contrôles dans le programme pour les erreurs d'exécutions
 possibles (débordements d'entiers, déréférencements de pointeurs invalides,
 division par 0, etc).
 
+%% TODO: when implemented, talk about side menu
 
-
-Pour activer ce contrôle, nous devons activer l'option dans la configuration
-de WP. Pour cela, il faut d'abord cliquer sur le bouton de configuration des
-\textit{plugins} :
-
-
+Nous pouvons activer ce contrôle pour toute fonction que l'on vérifie via le
+menu « Edit », « Frama-C Parameters », « WP »
 \image{plugin-options}
+où nous pouvons activer l'option \CodeInline{-wp-rte}. Notons que ce paramétrage
+n'est pas sauvegardé. La manière généralement préférée est donc de fournir
+l'option \CodeInline{-wp-rte} directement sur la ligne de commande.
 
 
-Et ensuite cocher l'option \CodeInline{-wp-rte} dans les options liées à WP :
-
-
-\image{select-rte}
-
-
-Il est également possible de demander à WP d'ajouter ces
-contrôles par un clic droit sur le nom de la fonction puis
-« Insert wp-rte guards ».
+Il est également possible de demander à WP d'ajouter ces contrôles par un clic
+droit sur le nom de la fonction puis « Insert wp-rte guards ».
 
 
 \begin{Information}
@@ -294,7 +291,7 @@ que -\CodeInline{INT\_MIN} ($-2^{31}$) > \CodeInline{INT\_MAX} ($2^{31}-1$).
 
 
 
-\image{1-abs-4.png}
+\image{1-abs-4}
 
 
 \begin{Information}
@@ -315,7 +312,7 @@ un code.
 
 
 Comme le montre cette capture d'écran, nous avons deux nouveaux codes couleur
-pour les pastilles : vert + marron et orange.
+pour les pastilles : vert + jaune et jaune.
 
 
 
@@ -338,67 +335,67 @@ automatique, il transmet deux types de propriétés : $G$, le but, la propriét�
 que l'on cherche à prouver, et $S_1$ ... $S_n$ les diverses suppositions que l'on
 peut faire à propos de l'état du programme au point où l'on cherche à vérifier $G$.
 Cependant, il ne reçoit pas, en retour, quelles propriétés ont été utilisées par
-le prouveur pour valider $G$. Donc si $S_3$ fait partie des suppositions, et si
+le prouveur pour valider $G$ (et en fait, la majorité des prouveurs ne peuvent
+même pas les lister). Donc si $S_3$ fait partie des suppositions, et si
 WP n'a pas réussi à obtenir une preuve de $S_3$, il indique que $G$ est vraie, mais
 en supposant que $S_3$ est vraie, pour laquelle nous n'avons actuellement pas
 établi de preuve.
 
 
 
-La couleur orange nous signale qu'aucun prouveur n'a pu déterminer si la
+La couleur jaune nous signale qu'aucun prouveur n'a pu déterminer si la
 propriété est vérifiable. Les deux raisons peuvent être :
 \begin{itemize}
 \item qu'il n'a pas assez d'information pour le déterminer ;
 \item que malgré toutes ses recherches, il n'a pas pu trouver un résultat à
-temps. Auquel cas, il rencontre un \textit{timeout} dont la durée est configurable
-dans le volet de WP.
+temps. Auquel cas, il rencontre un \textit{timeout} dont la durée est
+configurable globalement (une nouvelle fois dans les paramètres de WP, section
+« Prover Interface »).
 \end{itemize}
 
 
-Dans le volet inférieur, nous pouvons sélectionner l'onglet « \textit{WP Goals} »,
-celui-ci nous affiche la liste des conditions de vérification et pour chaque
-prouveur indique un petit logo si la preuve a été tentée et si elle a été
-réussie, échouée ou a rencontré un \textit{timeout} (logo avec les ciseaux).
-Pour voir la totalité des conditions de vérification, il
-faut s'assurer que « \textit{All Results} » est bien sélectionné dans le champ encadré
-dans la capture.
+Dans la vue WP, le panneau « \textit{WP Goals} » nous affiche la liste des
+conditions de vérification et pour chaque prouveur indique un petit logo si la
+preuve a été tentée et si elle a été réussie, échouée ou a rencontré un
+\textit{timeout}. Notons qu'il est possible de filtrer cette liste (voir logo
+en surbrillance dans la capture d'écran).
 
 
 
-\image{1-abs-5.png}
+\image{1-abs-5}
 
 
 Le tableau est découpé comme suit, en première colonne, nous avons le nom de la
 fonction où se trouve le but à prouver. En seconde colonne, nous trouvons le nom
 du but. Ici par exemple notre postcondition nommée est estampillée
-\CodeInline{postcondition 'positive\_value,function\_result'}, nous pouvons d'ailleurs noter
-que lorsqu'une propriété est sélectionnée dans le tableau, elle est également
-surlignée dans le code source. Les propriétés anonymes se voient assignées
-comme nom le type de propriété voulu. En troisième colonne, nous trouvons le
-modèle mémoire utilisé pour la preuve, (nous n'en parlerons pas dans ce
-tutoriel). Finalement, les dernières colonnes représentent les différents
-prouveurs accessibles à WP.
+\CodeInline{postcondition 'positive\_value,function\_result'}, nous pouvons
+d'ailleurs noter que lorsqu'une propriété est sélectionnée dans le tableau, elle
+est également surlignée dans le code source. Les propriétés anonymes se voient
+assignées comme nom le type de propriété voulu. La troisième colonne indique si
+un script de preuve a été créé pour cette condition de vérification, pour
+l'instant cette fonctionnalité est exclue de ce tutoriel.
 
 
-
-Dans ces prouveurs, le premier élément de la colonne est Qed. Ce n'est pas
-à proprement parler un prouveur. C'est un outil utilisé par WP pour simplifier
-les propriétés avant de les envoyer aux prouveurs externes. Ensuite, nous
-voyons la colonne Script, les scripts fournissent une manière de terminer
-les preuves à la main lorsque les prouveurs automatiques n'y arrivent pas.
-Finalement, nous trouvons la colonne Alt-Ergo, qui est un prouveur automatique.
-Notons que sur la propriété en question des ciseaux sont indiqués, cela
-veut dire que le prouveur a été stoppé à cause d'un \textit{timeout}.
+Finalement, la dernière colonne fournit le résultat de la preuve : si la
+propriété a été prouvée et les différents prouveurs qui ont été utilisés. Le
+premier prouveur est souvent Qed. Ce n'est pas réellement un prouveur, mais un
+outil utilisé par WP pour simplifier les propriétés avant de les envoyer
+réellement aux prouveurs externes, il se peut que cet outil soit en mesure de
+résoudre le problème par lui-même, dans ce cas, aucun autre prouveur n'est
+appelé. Sinon, les prouveurs utilisés sont listés. Par exemple ici, Alt-Ergo
+qui est l'un des prouveurs que nous utilisons. Notons que pour la propriété liée
+à RTE, un « timeout » est indiqué, ce qui signifie que le prouveur s'est arrêté,
+car la preuve lui a pris trop de temps.
 
 
 En fait, si nous double-cliquons sur la
 propriété « ne pas déborder » (surlignée en bleu dans la capture précédente),
 nous pouvons voir ceci (si ce n'est pas le cas, il faut s'assurer que
-« \textit{Raw obligation} » est bien sélectionné dans le champ encadré en bleu) :
+les options surlignées en vert sont désactivées) :
 
 
 
-\image{1-abs-6.png}
+\image{1-abs-6}
 
 
 C'est la condition de vérification que génère WP par rapport à notre propriété et
@@ -441,7 +438,7 @@ qui rend le code souvent indigeste.
 
 
 Si nous retournons dans notre tableau des conditions de vérification (bouton
-encadré en rouge dans la capture d'écran précédente), nous pouvons donc voir
+surligné en bleu dans la capture d'écran précédente), nous pouvons donc voir
 que les hypothèses n'ont pas suffi aux prouveurs pour déterminer que la
 propriété  « absence de débordement » est vraie (et nous l'avons dit : c'est
 normal), il nous faut donc ajouter une hypothèse supplémentaire pour garantir
@@ -510,7 +507,7 @@ implémentation est prouvée :
 
 
 
-\image{2-abs-1.png}
+\image{2-abs-1}
 
 
 Nous pouvons également vérifier qu'une fonction qui appellerait \CodeInline{abs}
@@ -522,15 +519,13 @@ satisfait bien la précondition qu'elle impose :
 
 
 
-\image{2-foo-1.png}
-
-Notons qu'en cliquant sur la pastille à côté de l'appel de fonction, nous
-pouvons voir la liste des préconditions et voir quelles sont celles qui ne sont
-pas vérifiées. Ici, nous n'avons qu'une précondition, mais quand il y en a
-plusieurs, c'est très utile pour pouvoir voir quel est exactement le problème.
+\image{2-foo-1}
 
 
-\image{2-foo-1-bis.png}
+La clause \CodeInline{requires} au point d'appel peut être cachée
+individuellement (icône surlignée en bleu) ou globalement (icône surlignée en
+vert). Cela peut être utile quand la quantité d'annotations devient importante
+et que l'on doit se concentrer sur une partie d'entre elles.
 
 
 Pour modifier un peu l'exemple, nous pouvons essayer d'inverser les deux
@@ -566,10 +561,10 @@ conséquent :
 
 
 
-\image{2-foo-2.png}
+\image{2-foo-2}
 
 
-\image{2-foo-3.png}
+\image{2-foo-3}
 
 
 Nous pouvons remarquer que pour les appels de fonctions, l'interface graphique

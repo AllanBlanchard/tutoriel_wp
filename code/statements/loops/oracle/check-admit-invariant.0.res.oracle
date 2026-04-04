@@ -33,23 +33,27 @@ Prover Qed returns Valid
 Goal Preservation of Invariant 'C3' (file check-admit-invariant.c, line 10):
 Assume {
   Type: is_sint32(x) /\ is_sint32(x_1) /\ is_sint32(x_2) /\ is_sint32(y) /\
-      is_sint32(y_1).
+      is_sint32(y_1) /\ is_sint32(y_2).
   (* Initializer *)
   Init: (Init_x_0=true).
   (* Initializer *)
   Init: x_2 = 0.
   (* Initializer *)
-  Init: y_1 = 0.
+  Init: (Init_y_0=true).
+  (* Initializer *)
+  Init: y_2 = 0.
   (* Invariant 'I1' *)
   Have: 0 <= x_2.
   (* Invariant 'A2' *)
   Have: x_2 <= 10.
   (* Invariant 'C3' *)
-  Have: y_1 <= 20.
+  Have: y_2 <= 20.
   (* Invariant 'I4' *)
-  Have: (2 * x_2) = y_1.
+  Have: (2 * x_2) = y_2.
   (* Loop assigns ... *)
-  Have: ((Init_x_0=true) -> (Init_x_1=true)).
+  Have: ((Init_x_1=true) <-> (Init_x_0=true)) /\
+      (((Init_x_1=true) -> (Init_x_2=true))) /\
+      (((Init_y_0=true) -> (Init_y_1=true))).
   (* Invariant 'I1' *)
   Have: 0 <= x_1.
   (* Invariant 'A2' *)
@@ -92,21 +96,25 @@ Prover Qed returns Valid
 Goal Preservation of Invariant 'I4' (file check-admit-invariant.c, line 11):
 Assume {
   Type: is_sint32(x) /\ is_sint32(x_1) /\ is_sint32(x_2) /\ is_sint32(y) /\
-      is_sint32(y_1).
+      is_sint32(y_1) /\ is_sint32(y_2).
   (* Initializer *)
   Init: (Init_x_0=true).
   (* Initializer *)
   Init: x_2 = 0.
   (* Initializer *)
-  Init: y_1 = 0.
+  Init: (Init_y_0=true).
+  (* Initializer *)
+  Init: y_2 = 0.
   (* Invariant 'I1' *)
   Have: 0 <= x_2.
   (* Invariant 'A2' *)
   Have: x_2 <= 10.
   (* Invariant 'I4' *)
-  Have: (2 * x_2) = y_1.
+  Have: (2 * x_2) = y_2.
   (* Loop assigns ... *)
-  Have: ((Init_x_0=true) -> (Init_x_1=true)).
+  Have: ((Init_x_1=true) <-> (Init_x_0=true)) /\
+      (((Init_x_1=true) -> (Init_x_2=true))) /\
+      (((Init_y_0=true) -> (Init_y_1=true))).
   (* Invariant 'I1' *)
   Have: 0 <= x_1.
   (* Invariant 'A2' *)

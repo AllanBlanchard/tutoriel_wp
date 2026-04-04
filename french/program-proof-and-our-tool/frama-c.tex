@@ -256,20 +256,22 @@ Les informations pour vérifier l'installation sont données dans la sous-sectio
 \levelThreeTitle{Vérifier l'installation}
 
 
-Pour vérifier votre installation, commencez par mettre ce code très simple dans
-un fichier « main.c » :
+Pour vérifier votre installation, nous allons utiliser le code suivant :
 
 
 \CodeBlockInput{c}{verify.c}
 
 
-Ensuite, depuis un terminal, dans le dossier où ce fichier a été créé,
-nous pouvons lancer Frama-C avec la commande suivante :
+Placez ode très simple dans un fichier « main.c ». (Vous pouvez le code ci-dessus
+sur le répertoire GitHub du livre dans le dossier
+\CodeInline{code/program-proof-and-our-tool/frama-c/}, si vous voulez le
+copier-coller). Ensuite, depuis un terminal, dans le dossier où ce fichier a été
+créé, nous pouvons lancer Frama-C avec la commande suivante :
 
 
 
 \begin{CodeBlock}{bash}
-frama-c-gui -wp -rte main.c
+frama-c-gui -wp -wp-rte main.c
 \end{CodeBlock}
 
 
@@ -281,19 +283,19 @@ Cette fenêtre devrait s'ouvrir.
 \image{verif_install-1}
 
 
-En cliquant sur \CodeInline{main.c} dans le volet latéral gauche pour le sélectionner,
-nous pouvons voir le contenu du fichier \CodeInline{main.c} modifié et des pastilles
-vertes sur différentes lignes comme ceci :
+Après avoir sélectionné la vue WP (qui dédiée au plug-in WP), il est possible de
+sélectionner le panneau latéral « Files » qui liste les fichiers et les fonctions
+du programme sous analyse. Nous pouvons voir le contenu des fonctions
+(légèrement modifié) et des pastilles vertes sur différentes lignes comme ceci :
 
 
 
 \image{verif_install-2}
 
 
-Si c'est le cas, tant mieux, sinon il faudra d'abord vérifier que rien n'a été
-oublié au cours de l'installation (par exemple : l'oubli de bibliothèques graphiques
-ou encore l'oubli de l'installation d'Alt-Ergo). Si tout semble correct, divers forums
-pourront vous fournir de l'aide
+Sinon il faudra d'abord vérifier que rien n'a été oublié au cours de
+l'installation (par exemple : l'oubli de l'installation d'Alt-Ergo). Si tout
+semble correct, divers forums pourront vous fournir de l'aide
 (\externalLink{Forum de Zeste de Savoir}{https://zestedesavoir.com/forums/savoirs/programmation/}
  \externalLink{StackOverflow - Frama-C}{https://stackoverflow.com/questions/tagged/frama-c}).
 
@@ -302,16 +304,6 @@ pourront vous fournir de l'aide
 \begin{Warning}
 L'interface graphique de Frama-C ne permet pas l'édition du code source.
 \end{Warning}
-
-
-\begin{Information}
-Pour les daltoniens, il est possible de lancer Frama-C avec un mode où les
-pastilles de couleurs sont remplacées par des idéogrammes noirs et blancs :
-
-\begin{CodeBlock}{bash}
-frama-c-gui -gui-theme colorblind
-\end{CodeBlock}
-\end{Information}
 
 
 \levelThreeTitle{(Bonus) Installation de prouveurs supplémentaires}
@@ -344,6 +336,8 @@ développé par des personnes de divers organismes de recherche (New York
 University, University of Iowa, Google, CEA List). Ces deux prouveurs sont très
 efficaces et relativement complémentaires.
 
+
+%% TODO -> install prover
 
 De nouveaux prouveurs peuvent être installés n'importe quand après
 l'installation de Frama-C. Cependant, la liste des prouveurs vus par Why3
