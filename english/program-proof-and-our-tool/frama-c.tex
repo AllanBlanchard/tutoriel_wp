@@ -341,24 +341,8 @@ research teams (New York University, University of Iowa, Google, CEA
 List). Those two provers are very efficient and somewhat complementary.
 
 
-New provers can be installed any time after the installation of Frama-C.
-However, Why3 provers list must be updated:
-
-%% TODO -> install prover
-
-\begin{CodeBlock}{bash}
-why3 config detect
-\end{CodeBlock}
-
-And then activated in Frama-C. In the left-side panel, in the WP part,
-click ``Provers...'':
-
-
-\image{provers}
-
-
-And then ``Detect'' in the window that appears. Once it is done, provers
-can be activated thanks to the button next to their name.
+New provers can be installed any time after the installation of Frama-C. They
+are then available in the WP sidebar in the ``Provers Configuration'' section:
 
 
 \image{detect-and-select}
@@ -381,17 +365,8 @@ verification conditions translated in Coq language, and to write the
 proof ourselves.
 
 
-
-
 To learn Coq, we would recommend
 \externalLink{this tutorial}{http://www.cis.upenn.edu/~bcpierce/sf/current/index.html}.
-
-
-
-\begin{Information}
-  If Frama-C has been installed using the package manager of a Linux
-  distribution, Coq could be automatically installed.
-\end{Information}
 
 
 If one needs more information about Coq and its installation, this page

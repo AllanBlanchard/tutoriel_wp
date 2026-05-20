@@ -250,17 +250,35 @@ ensure that the program cannot create runtime errors (integer overflow,
 invalid pointer dereferencing, division by 0, etc.).
 
 
-%% TODO: when implemented, talk about side menu
+There are several ways to ask WP to generate these guards. First, one can
+right-click on the function name and select ``Populate WP RTE guards''. This
+will add the annotations in the function and again one can start WP on it to
+verify them.
 
-We can configure this option globally for all functions we verify in the
-``Edit'' menu, ``Frama-C Parameters'', ``WP''
+
+\image{1-abs-generate-rte}
+
+
+It is also possible to auto-generate them by setting up this parameter in the WP
+sidebar. In this component, one can also customize the alarms to generate, for
+example to remove some alarms related to undefined behaviors or to add new
+alarms for behaviors that are defined, but that may cause problems (for example
+unsigned overflows). Note that some parameters cannot be tuned since they are
+currently not supported in WP.
+
+
+\image{1-abs-rte-sidebar}
+
+
+Finally, one can also configure the automatic generation using the command line
+parameter \CodeInline{-wp-rte} that will enable it directly when starting Frama-C.
+This can also be done after starting Frama-C GUI, either by clicking on the gear
+button on top of the GUI or by selecting it in the `'`Edit'' menu:
+``Frama-C Parameters'', ``WP''
 \image{plugin-options}
 where we can enable the \CodeInline{-wp-rte} option. Note that it is not saved.
 Thus, providing the option \CodeInline{-wp-rte} on the command line is generally
 the preferred way of doing this.
-
-We can also ask WP to add the RTE controls in a function by right-clicking on
-its name and then click ``Insert wp-rte guards''.
 
 
 \begin{Information}

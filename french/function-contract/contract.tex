@@ -259,18 +259,38 @@ d'ajouter des contrôles dans le programme pour les erreurs d'exécutions
 possibles (débordements d'entiers, déréférencements de pointeurs invalides,
 division par 0, etc).
 
-%% TODO: when implemented, talk about side menu
 
-Nous pouvons activer ce contrôle pour toute fonction que l'on vérifie via le
-menu « Edit », « Frama-C Parameters », « WP »
+Il y a plusieurs manières de demander à WP la génération de ces gardes. Tout
+d'abord, il est possible de faire un clic-droit sur le nom de la fonction et
+de sélectionner « Populate WP RTE guards ». Cela ajoutera les annotations liées
+dans la fonction et l'on peut relancer WP sur celle-ci pour les vérifier.
+
+
+\image{1-abs-generate-rte}
+
+
+Il est aussi possible de les générer automatiquement en configurant ce paramètre
+dans la barre latérale dédiée à WP. Ce composant permet aussi de personnaliser
+les alarmes à générer, par exemple pour enlever certaines alarmes liées aux
+comportements indéterminés ou pour ajouter de nouvelles alarmes pour des
+comportements qui sont définis, mais qui peuvent causer des problèmes (par
+exemple les débordements d'entiers non-signés). Notons que certains paramètres
+ne peuvent pas être changés ici, car ils ne sont actuellement pas supportés par
+WP.
+
+
+\image{1-abs-rte-sidebar}
+
+
+Finalement, il est aussi possible de configurer l'auto-génération avec le
+paramètre de ligne de commande \CodeInline{-wp-rte} qui activera la génération
+dès le lancement de Frama-C. Cela peut également être fait après avoir lancé la
+GUI de Frama-C, soit en cliquant sur l'icône d'engrenage en haut de l'interface,
+soit en passant par le menu « Edit », « Frama-C Parameters », « WP »
 \image{plugin-options}
 où nous pouvons activer l'option \CodeInline{-wp-rte}. Notons que ce paramétrage
 n'est pas sauvegardé. La manière généralement préférée est donc de fournir
 l'option \CodeInline{-wp-rte} directement sur la ligne de commande.
-
-
-Il est également possible de demander à WP d'ajouter ces contrôles par un clic
-droit sur le nom de la fonction puis « Insert wp-rte guards ».
 
 
 \begin{Information}

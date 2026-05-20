@@ -337,24 +337,10 @@ University, University of Iowa, Google, CEA List). Ces deux prouveurs sont très
 efficaces et relativement complémentaires.
 
 
-%% TODO -> install prover
 
 De nouveaux prouveurs peuvent être installés n'importe quand après
-l'installation de Frama-C. Cependant, la liste des prouveurs vus par Why3
-doit être mise à jour :
-\begin{CodeBlock}{bash}
-why3 config detect
-\end{CodeBlock}
-puis activée dans Frama-C. Dans le panneau latéral, dans la partie WP,
-cliquons sur « Provers... » :
-
-
-\image{provers}
-
-
-Puis « Detect » dans la fenêtre qui apparaît. Une fois que c'est fait,
-les prouveurs peuvent être activés grâce au bouton qui se trouve à côté
-de leur nom.
+l'installation de Frama-C. Ils seront alors disponibles dans la barre latérale
+dédiée à WP dans la section « Prover Configuration » :
 
 
 \image{detect-and-select}
@@ -369,7 +355,6 @@ langage dédié et la plateforme se charge de vérifier (par typage) que
 cette preuve est valide.
 
 
-
 Pourquoi aurait-on besoin d'un tel outil ? Il se peut parfois que les
 propriétés que nous voulons prouver soient trop complexes pour un prouveur
 automatique, typiquement lorsqu'elles nécessitent des raisonnements par
@@ -378,17 +363,9 @@ générer des conditions de vérification traduites en Coq et nous laisser écri
 la preuve en question.
 
 
-
 Pour apprendre à utiliser Coq,
 \externalLink{ce tutoriel}{http://www.cis.upenn.edu/~bcpierce/sf/current/index.html}
 est très bon.
-
-
-
-\begin{Information}
-Si Frama-C est installé par l'intermédiaire du gestionnaire de
-paquets, il peut arriver que celui-ci ait directement intégré Coq.
-\end{Information}
 
 
 Pour plus d'informations à propos de Coq et de son installation, voir \externalLink{The Coq Proof Assistant}{https://coq.inria.fr/}.
