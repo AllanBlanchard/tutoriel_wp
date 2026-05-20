@@ -5,6 +5,12 @@
   Function abs
 ------------------------------------------------------------
 
+Goal Termination-condition (generated) in 'abs':
+Prove: true.
+Prover CFG returns Valid
+
+------------------------------------------------------------
+
 Goal Post-condition (file abs-6.c, line 11) in 'abs':
 Prove: true.
 
@@ -12,6 +18,12 @@ Prove: true.
 
 Goal Post-condition (file abs-6.c, line 12) in 'abs':
 Prove: true.
+
+------------------------------------------------------------
+
+Goal Exit-condition (generated) in 'abs':
+Prove: true.
+Prover CFG returns Valid
 
 ------------------------------------------------------------
 ------------------------------------------------------------

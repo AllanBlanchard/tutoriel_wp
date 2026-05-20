@@ -1,8 +1,16 @@
 [kernel] Parsing abs-3.c (with preprocessing)
 [wp] Running WP plugin...
+[wp] Warning: Skipped RTE guards: unaligned pointers (\aligned not supported)
+[wp] Warning: Skipped RTE guards: invalid function pointer calls (\valid_function not supported)
 [rte:annot] annotating function abs
 ------------------------------------------------------------
   Function abs
+------------------------------------------------------------
+
+Goal Termination-condition (generated) in 'abs':
+Prove: true.
+Prover CFG returns Valid
+
 ------------------------------------------------------------
 
 Goal Post-condition 'positive_value,function_result' in 'abs':
@@ -12,6 +20,12 @@ Prove: true.
 
 Goal Post-condition (file abs-3.c, line 9) in 'abs':
 Prove: true.
+
+------------------------------------------------------------
+
+Goal Exit-condition (generated) in 'abs':
+Prove: true.
+Prover CFG returns Valid
 
 ------------------------------------------------------------
 

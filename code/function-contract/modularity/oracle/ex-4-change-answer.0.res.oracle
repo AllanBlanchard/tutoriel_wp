@@ -1,6 +1,8 @@
 # frama-c -wp -wp-rte -wp-timeout 5 [...]
 [kernel] Parsing ex-4-change-answer.c (with preprocessing)
 [wp] Running WP plugin...
+[wp] Warning: Skipped RTE guards: unaligned pointers (\aligned not supported)
+[wp] Warning: Skipped RTE guards: invalid function pointer calls (\valid_function not supported)
 [rte:annot] annotating function make_change
 [rte:annot] annotating function remove_max_notes
 [wp] [Valid] Goal remove_max_notes_exits (Cfg) (Unreachable)
@@ -102,13 +104,13 @@
 [wp] ex-4-change-answer.c:15: Warning: 
   Memory model hypotheses for function 'remove_max_notes':
   /*@ behavior wp_typed:
-        requires \separated(rest, (int const *)values + (..)); */
+        requires \separated(rest, &(values[0]) + (..)); */
   int remove_max_notes(enum note n, int *rest);
 [wp] ex-4-change-answer.c:57: Warning: 
   Memory model hypotheses for function 'make_change':
   /*@
      behavior wp_typed:
-       requires \separated(change + (..), (int const *)values + (..));
-       requires \separated(change + (0 .. 8), (int const *)values + (..));
+       requires \separated(change + (..), &(values[0]) + (..));
+       requires \separated(change + (0 .. 8), &(values[0]) + (..));
      */
   int make_change(int amount, int received, int change[9]);

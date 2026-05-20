@@ -1,3 +1,5 @@
+[kernel] Warning: -wp-no-let is a deprecated alias for option -wp-no-qed.
+  Please use -wp-no-qed instead.
 # frama-c -wp [...]
 [kernel] Parsing two-loop-invariants.c (with preprocessing)
 [wp] Running WP plugin...
@@ -22,6 +24,12 @@ Goal Termination-condition (generated) in 'main':
 Loop termination at line 12
 Prove: false.
 Prover Qed returns Unsuccess
+
+------------------------------------------------------------
+
+Goal Exit-condition (generated) in 'main':
+Prove: true.
+Prover CFG returns Valid
 
 ------------------------------------------------------------
 

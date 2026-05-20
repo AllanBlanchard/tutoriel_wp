@@ -29,6 +29,18 @@
   Function example_1
 ------------------------------------------------------------
 
+Goal Termination-condition (generated) in 'example_1':
+Prove: true.
+Prover CFG returns Valid
+
+------------------------------------------------------------
+
+Goal Exit-condition (generated) in 'example_1':
+Prove: true.
+Prover CFG returns Valid
+
+------------------------------------------------------------
+
 Goal Assertion (file context.c, line 18):
 Let x_1 = " *y "@L1.
 Let x_2 = " *x "@L1.
@@ -86,6 +98,24 @@ Prover Alt-Ergo returns Valid
   Function example_1_p
 ------------------------------------------------------------
 
+Goal Termination-condition (generated) in 'example_1_p':
+Prove: true.
+Prover CFG returns Valid
+
+------------------------------------------------------------
+
+Goal Exit-condition (generated) in 'example_1_p':
+Prove: true.
+Prover CFG returns Valid
+
+------------------------------------------------------------
+
+Goal Assertion (file context.c, line 32):
+Prove: true.
+Prover CFG returns Valid
+
+------------------------------------------------------------
+
 Goal Assertion (file context.c, line 34):
 Let x_1 = " *y "@L1.
 Let x_2 = " *x "@L1.
@@ -113,6 +143,18 @@ Prover Alt-Ergo returns Valid
 ------------------------------------------------------------
 ------------------------------------------------------------
   Function example_2
+------------------------------------------------------------
+
+Goal Termination-condition (generated) in 'example_2':
+Prove: true.
+Prover CFG returns Valid
+
+------------------------------------------------------------
+
+Goal Exit-condition (generated) in 'example_2':
+Prove: true.
+Prover CFG returns Valid
+
 ------------------------------------------------------------
 
 Goal Assertion (file context.c, line 50):
@@ -152,6 +194,18 @@ Prover Alt-Ergo returns Valid
 ------------------------------------------------------------
 ------------------------------------------------------------
   Function example_3
+------------------------------------------------------------
+
+Goal Termination-condition (generated) in 'example_3':
+Prove: true.
+Prover CFG returns Valid
+
+------------------------------------------------------------
+
+Goal Exit-condition (generated) in 'example_3':
+Prove: true.
+Prover CFG returns Valid
+
 ------------------------------------------------------------
 
 Goal Assertion (file context.c, line 61):

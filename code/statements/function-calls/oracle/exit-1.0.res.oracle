@@ -1,6 +1,8 @@
 # frama-c -wp -wp-rte [...]
 [kernel] Parsing exit-1.c (with preprocessing)
 [wp] Running WP plugin...
+[wp] Warning: Skipped RTE guards: unaligned pointers (\aligned not supported)
+[wp] Warning: Skipped RTE guards: invalid function pointer calls (\valid_function not supported)
 [rte:annot] annotating function this_function_exits
 [wp] [Valid] Goal this_function_exits_ensures (Cfg) (Unreachable)
 [wp] 2 goals scheduled

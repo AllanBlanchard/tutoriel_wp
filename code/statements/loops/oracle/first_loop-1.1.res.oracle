@@ -1,3 +1,5 @@
+[kernel] Warning: -wp-no-simpl is a deprecated alias for option -wp-no-subst.
+  Please use -wp-no-subst instead.
 [kernel] Parsing first_loop-1.c (with preprocessing)
 [wp] Running WP plugin...
 [wp] Warning: Missing RTE guards
@@ -10,6 +12,12 @@
 Goal Termination-condition (generated) in 'main':
 Loop termination at line 12
 Prove: false.
+
+------------------------------------------------------------
+
+Goal Exit-condition (generated) in 'main':
+Prove: true.
+Prover CFG returns Valid
 
 ------------------------------------------------------------
 

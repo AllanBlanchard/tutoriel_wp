@@ -1,6 +1,8 @@
 # frama-c -wp -wp-rte -warn-unsigned-overflow -warn-unsigned-downcast [...]
 [kernel] Parsing ex-5-reverse-answer.c (with preprocessing)
 [wp] Running WP plugin...
+[wp] Warning: Skipped RTE guards: unaligned pointers (\aligned not supported)
+[wp] Warning: Skipped RTE guards: invalid function pointer calls (\valid_function not supported)
 [rte:annot] annotating function reverse
 [rte:annot] annotating function swap
 [wp] [Valid] Goal swap_exits (Cfg) (Unreachable)
