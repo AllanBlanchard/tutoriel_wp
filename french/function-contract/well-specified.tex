@@ -85,8 +85,16 @@ la précondition.
 Pour cette catégorie particulière d'incohérences, une fonctionnalité utile de WP
 est l'option « \textit{smoke tests} » du greffon. Ces tests préliminaires, effectués
 sur notre spécification, sont utilisés pour détecter que des préconditions ne peuvent
-pas être satisfaites. Par exemple, ici, nous pouvons lancer cette ligne de
-commande :
+pas être satisfaites. Ils peuvent être activés depuis la ligne de commande avec
+l'option \CodeInline{-wp-smoke-tests} ou via la barre latérale dédiée à WP (qui
+peut également être utilisée pour personnaliser ces tests, mais nous n'entrerons
+pas dans ces détails ici).
+
+
+\image{2-sidebar-smoke}
+
+
+Par exemple, ici, nous pouvons lancer cette ligne de commande :
 
 
 \begin{CodeBlock}{bash}
@@ -100,7 +108,7 @@ et nous obtenons le résultat suivant dans l'interface graphique :
 \image{2-bad-precond}
 
 
-Nous pouvons voir une pastille orange et rouge à côté de la précondition de la
+Nous pouvons voir une pastille jaune et rouge à côté de la précondition de la
 fonction, qui signifie que s'il existe un appel atteignable à la fonction dans
 le programme, la précondition sera nécessairement violée lors de cet appel ; et
 une pastille rouge dans la liste des conditions de vérification, indiquant qu'un
