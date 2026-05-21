@@ -274,7 +274,7 @@ dans la barre latérale dédiée à WP. Ce composant permet aussi de personnalis
 les alarmes à générer, par exemple pour enlever certaines alarmes liées aux
 comportements indéterminés ou pour ajouter de nouvelles alarmes pour des
 comportements qui sont définis, mais qui peuvent causer des problèmes (par
-exemple les débordements d'entiers non-signés). Notons que certains paramètres
+exemple les débordements d'entiers non signés). Notons que certains paramètres
 ne peuvent pas être changés ici, car ils ne sont actuellement pas supportés par
 WP.
 
@@ -397,15 +397,25 @@ l'instant cette fonctionnalité est exclue de ce tutoriel.
 
 
 Finalement, la dernière colonne fournit le résultat de la preuve : si la
-propriété a été prouvée et les différents prouveurs qui ont été utilisés. Le
-premier prouveur est souvent Qed. Ce n'est pas réellement un prouveur, mais un
-outil utilisé par WP pour simplifier les propriétés avant de les envoyer
-réellement aux prouveurs externes, il se peut que cet outil soit en mesure de
-résoudre le problème par lui-même, dans ce cas, aucun autre prouveur n'est
-appelé. Sinon, les prouveurs utilisés sont listés. Par exemple ici, Alt-Ergo
-qui est l'un des prouveurs que nous utilisons. Notons que pour la propriété liée
-à RTE, un « timeout » est indiqué, ce qui signifie que le prouveur s'est arrêté,
-car la preuve lui a pris trop de temps.
+propriété a été prouvée et les différents prouveurs qui ont été utilisés.
+
+Certaines propriétés peuvent être prouvées parce que certaines sections de code
+sont inatteignables. Dans ce cas, un prouveur particulier appelé CFG
+(\textit{Control Flow Graph}, Graphe de Flot de Contrôle) est indiqué, c'est par
+exemple le cas ici pour les clauses \CodeInline{exits} et
+\CodeInline{terminates} : puisqu'aucune opération atteignable ne risque
+d'appeler la fonction \CodeInline{exit} ou de créer une exécution infinie
+(pas de boucle, ni d'appel de fonction), elles sont prouvées trivialement.
+
+Pour les autres propriétés, WP doit générer des conditions de vérification. Pour
+celles-ci, le premier prouveur est souvent Qed. Ce n'est pas réellement un
+prouveur, mais un outil utilisé par WP pour simplifier les propriétés avant de
+les envoyer réellement aux prouveurs externes, il se peut que cet outil soit en
+mesure de résoudre le problème par lui-même, dans ce cas, aucun autre prouveur
+n'est appelé. Sinon, les prouveurs utilisés sont listés. Par exemple ici,
+Alt-Ergo qui est l'un des prouveurs que nous utilisons. Notons que pour la
+propriété liée à RTE, un « timeout » est indiqué, ce qui signifie que le
+prouveur s'est arrêté, car la preuve lui a pris trop de temps.
 
 
 En fait, si nous double-cliquons sur la
@@ -667,7 +677,7 @@ l'assertion dans la fonction \CodeInline{main} n'est pas prouvée.
 \image{3-main-3}
 
 
-\levelThreeTitle{ACSL: une logique totale}
+\levelThreeTitle{ACSL : une logique totale}
 
 
 Revenons à un détail à propos de la vérification d'absence d'erreurs à

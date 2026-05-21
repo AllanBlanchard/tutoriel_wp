@@ -375,13 +375,23 @@ from the tutorial.
 
 
 Finally, the last column provides the proof results: whether the property has
-been proved and the different provers that have been use. The first ``prover''
-is often Qed. This is not really a prover. It is a tool used by WP to simplify
-properties before sending them to external provers, it happens that sometimes it
-can solve goals by itself, in this case, no other prover is called. Else, used
-provers are listed. For example here, Alt-Ergo which is one of the solvers we
-use. Notice that for the RTE property, a timeout is indicated which means that
-the  solver was stopped because it took too much time.
+been proved and the different provers that have been use.
+
+Some properties might be proved because code sections are unreachable. In this
+case, a particular prover named CFG (Control Flow Graph) is indicated, this is
+for example the case here for the \CodeInline{exits} and \CodeInline{terminates}
+clauses: since no reachable operation might trigger the \CodeInline{exit}
+function nor create infinite execution (no loop, nor function call), they are
+trivially proved.
+
+For other properties, WP needs to generate an actual verification condition. For
+these, the first ``prover'' is often Qed. This is not really a prover. It is a
+tool used by WP to simplify properties before sending them to external provers,
+it happens that sometimes it can solve goals by itself, in this case, no other
+prover is called. Else, used provers are listed. For example here, Alt-Ergo
+which is one of the solvers we use. Notice that for the RTE property, a timeout
+is indicated which means that the  solver was stopped because it took too much
+time.
 
 
 If we double-click on the property ``absence of overflow''
