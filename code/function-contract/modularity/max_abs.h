@@ -1,6 +1,8 @@
 #ifndef _MAX_ABS
 #define _MAX_ABS
 
+#include <limits.h>
+
 /*@
   requires a > INT_MIN;
   requires b > INT_MIN;

@@ -177,7 +177,7 @@ l'établissement de l'invariant et sa préservation. WP produit exactement le
 raisonnement décrit plus haut pour la preuve de l'assertion. Dans les versions
 récentes de Frama-C, Qed est devenu particulièrement puissant et la condition
 de vérification générée ne le montre pas (affichant simplement « \textit{True} »).
-En utilisant l'option \CodeInline{-wp-no-simpl} au lancement, nous pouvons quand
+En utilisant l'option \CodeInline{-wp-no-subst} au lancement, nous pouvons quand
 même voir la condition de vérification correspondante :
 
 
@@ -512,7 +512,7 @@ génère une condition de vérification avec toutes les hypothèses qui mènent 
 boucle (ici, uniquement le fait que \CodeInline{x} vaut 0) et nous devons
 prouver que l'invariant est vrai (ici, \CodeInline{x <= 0}). Cela nous donne
 la condition de vérification suivante (nous avons utilisé l'option
-\CodeInline{-wp-no-let} pour éviter une preuve immédiate par Qed) :
+\CodeInline{-wp-no-qed} pour éviter une preuve immédiate par Qed) :
 
 
 \image{2-invs-I1-est}
@@ -609,7 +609,7 @@ invariants de boucle.
 
 Illustrons ce comportement avec les différentes conditions de vérifications
 générées pour \CodeInline{C3} et \CodeInline{I4} de l'extrait de code suivant
-(à nouveau, nous utilisons l'option \CodeInline{-wp-no-let} et nous avons
+(à nouveau, nous utilisons l'option \CodeInline{-wp-no-qed} et nous avons
 légèrement nettoyés les conditions de vérification) :
 
 

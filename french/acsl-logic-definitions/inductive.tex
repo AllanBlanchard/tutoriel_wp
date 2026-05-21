@@ -107,93 +107,71 @@ propriétés inductives pour définir des propriétés récursives complexes.
 \levelFourTitle{Consistance}
 
 
-Les définitions inductives apportent le risque d'introduire des inconsistances.
-En effet, les propriétés spécifiées dans les différents cas sont considérées
-comme étant toujours vraies, donc si nous introduisons des propriétés permettant
-de prouver \CodeInline{false}, nous sommes en mesure de prouver n'importe quoi.
-Même si nous parlerons plus longuement des axiomes dans la
-Section~\ref{l2:acsl-logic-definitions-axiomatic}, nous pouvons donner quelques
-conseils pour ne pas construire une mauvaise définition.
+Les propriétés spécifiées dans les différents cas sont considérées comme étant
+toujours vraies, donc si nous introduisons des propriétés permettant de prouver
+\CodeInline{false}, nous sommes en mesure de prouver n'importe quoi. Nous
+parlerons plus longuement de ce sujet dans la
+Section~\ref{l2:acsl-logic-definitions-axiomatic} sur les définitions
+axiomatiques. Les définitions inductives ont une contrainte syntaxique
+qui a pour but d'éviter les problèmes d'inconsistance, mais nous verrons que
+cela ne protège pas de tout.
 
 
-D'abord, nous pouvons nous assurer que les prédicats inductifs sont bien fondés.
-Cela peut être fait en restreignant syntaxiquement ce que nous acceptons dans
-une définition inductive en nous assurant que chaque cas est de la forme :
+La contrainte syntaxique sur les inductifs vise à assurer que les prédicats sont
+bien fondés. Cela peut être fait en restreignant syntaxiquement ce que nous
+acceptons dans une définition inductive en nous assurant que chaque cas est de
+la forme :
 \begin{CodeBlock}{c}
 /*@
   \forall y1,...,ym ; h1 ==> ··· ==> hl ==> P(t1,...,tn) ;
 */
 \end{CodeBlock}
 où le prédicat \CodeInline{P} ne peut apparaître que positivement (donc sans la
-négation \CodeInline{!} - $\neg$) dans les différentes hypothèses \CodeInline{hx}.
-Intuitivement, cela assure que nous ne pouvons pas construire des occurrences à la
-fois positives et négatives de \CodeInline{P} pour un ensemble de paramètres donnés
-(ce qui serait incohérent).
-
+négation \CodeInline{!}) dans les différentes hypothèses \CodeInline{hx}.
+Intuitivement, cela assure que nous ne pouvons pas construire des occurrences à
+la fois positives et négatives de \CodeInline{P} pour un ensemble de paramètres
+donnés (ce qui serait incohérent).
 
 
 Cette propriété est par exemple vérifiée pour notre définition précédente du
 prédicat \CodeInline{even\_natural}. Tandis qu'une définition comme :
 \CodeBlockInput[5][15]{c}{even-bad.c}
 ne respecte pas cette contrainte, car la propriété \CodeInline{even\_natural}
-apparaît négativement à la ligne~8.
+apparaît négativement à la ligne~8. Donc Frama-C lève une erreur :
 
 
-Ensuite, nous pouvons simplement écrire une fonction dont le contrat nécessite
-\CodeInline{P}. Par exemple, nous pouvons écrire la fonction suivante :
-
-
-
-\begin{CodeBlock}{c}
-/*@
-  requires P( params ... ) ;
-  ensures  BAD: \false ;
-*/ void function(params){
-
-}
+\begin{CodeBlock}{text}
+[kernel:annot-error] code/acsl-logic-definitions/inductive/even-bad.c:8: Failure:
+  ill-formed inductive definition: even_natural should not be used as
+  negative occurrence. Ignoring global annotation
 \end{CodeBlock}
 
 
-Pour notre définition de \CodeInline{even\_natural}, cela donnerait :
-
-
-\CodeBlockInput[17][22]{c}{even-bad.c}
-
-
-Pendant la génération de la condition de vérification, WP demande à Why3 de
-créer une définition inductive pour celle que nous avons écrit en ACSL.
-Comme Why3 est plus strict que Frama-C et WP pour ce type de définition,
-si le prédicat inductif est trop étrange (s'il n'est pas bien fondé), il
-sera rejeté avec une erreur. Et en effet, pour la propriété
-\CodeInline{even\_natural} que nous venons de définir, Why3 la refuse quand
-nous tentons de prouver \CodeInline{ensures \textbackslash{}false}, parce
-qu'il existe une occurrence non positive de \CodeInline{P\_even\_natural}
-qui encode le \CodeInline{even\_natural} que nous avons écrit en ACSL.
-
-\begin{CodeBlock}{bash}
-frama-c-gui -wp -wp-prop=BAD file.c
-\end{CodeBlock}
-
-\image{why3-failed}
-
+Cependant, cela n'empêche pas d'écrire une propriété qui contient des termes
+pouvant mener à une inconsistance. Par exemple, la définition suivante respecte
+la contrainte syntaxique :
+\CodeBlockInput[5][10]{c}{even-bad-2.c}
+mais le prédicat \CodeInline{\textbackslash{}valid(p) \&\& p \textbackslash{}null}
+est toujours faux, donc la propriété est équivalente à
+\CodeInline{\textbackslash{}true} qui ne respecte pas la contrainte syntaxique.
+Selon la manière dont WP simplifie la définition inductive, Why3 pourrait
+détecter ces problèmes, puisque WP compile les définitions inductives ACSL en
+définition inductives Why3, qui impose les mêmes contraintes syntaxiques. Par
+exemple, la définition précédente est en effet simplifiée par WP, amenant à
+l'erreur suivante :
 \image{why3-failed-error}
 
 
-Cependant, cela ne signifie pas que nous ne pouvons pas écrire une définition
-inductive inconsistante. Par exemple, la définition inductive suivante est bien
-fondée, mais nous permet de prouver faux :
+Mais cela ne capture pas toutes les erreurs de ce type, la définition suivante
+empêche WP ne produire la simplification, amenant donc à une définition
+inconsistante permettant de prouver la clause
+\CodeInline{ensures \textbackslash{}false} :
 
 
-\begin{CodeBlock}{c}
-/*@ inductive P(int* p){
-      case c: \forall int* p ; \valid(p) && p == (void*)0 ==> P(p);
-    }
-*/
+\CodeBlockInput[5][22]{c}{even-bad-3.c}
 
-/*@ requires P(p);
-    ensures \false ; */
-void foo(int *p){}
-\end{CodeBlock}
+
+\image{even-bad-proved}
 
 
 Ici nous pourrions détecter le problème avec \CodeInline{-wp-smoke-tests} qui
@@ -202,13 +180,8 @@ trouverait que la précondition ne peut pas être satisfaite. Mais nous devons
 introduire une définition qui nous permette de produire une preuve de faux.
 
 
-\begin{Warning}
-  Avant Frama-C 21 Scandium, les définitions inductives étaient traduites,
-  en Why3, grâce à des axiomes. Cela signifie que ces vérifications n'étaient
-  pas effectuées. En conséquence, pour avoir un comportement similaire avec
-  une version plus ancienne de Frama-C, il faut utiliser Coq et pas un prouveur
-  Why3.
-\end{Warning}
+\image{even-bad-smoke}
+
 
 \levelThreeTitle{Définitions de prédicats récursifs}
 

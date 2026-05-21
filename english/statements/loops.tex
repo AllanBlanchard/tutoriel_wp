@@ -183,8 +183,8 @@ for now. Notice that WP produces two different verification conditions: the
 establishment of the invariant and its preservation. To prove the
 assertion, WP produces the exact
 reasoning we previously described. The Qed simplifier is
-powerful enough to directly finish the proof (showing directly ``True''). 
-But if we run with the option \CodeInline{-wp-no-simpl}, we can see
+powerful enough to directly finish the proof (showing directly ``True'').
+But if we run with the option \CodeInline{-wp-no-subst}, we can see
 these proof details:
 
 
@@ -518,7 +518,7 @@ Here, we have 4 verification conditions to prove:
 For \CodeInline{I1}'s establishment, there is not much to say: WP generates a
 verification condition with all hypotheses that lead to the loop (so just the
 fact that \CodeInline{x} is 0) and we have to prove that \CodeInline{0 <= x}
-(we have used the option \CodeInline{-wp-no-let} to avoid immediate proof by
+(we have used the option \CodeInline{-wp-no-qed} to avoid immediate proof by
 Qed):
 
 
@@ -613,7 +613,7 @@ loop invariants).
 
 Let us illustrate the behavior with the different verification conditions of
 \CodeInline{C3} and \CodeInline{I4} in the following code snippet (again, we
-use \CodeInline{-wp-no-let}, and the verification conditions have been slightly
+use \CodeInline{-wp-no-qed}, and the verification conditions have been slightly
 cleaned up):
 
 

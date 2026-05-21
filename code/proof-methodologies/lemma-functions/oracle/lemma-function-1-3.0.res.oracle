@@ -1,6 +1,8 @@
 # frama-c -wp -wp-rte [...]
 [kernel] Parsing lemma-function-1-3.c (with preprocessing)
 [wp] Running WP plugin...
+[wp] Warning: Skipped RTE guards: unaligned pointers (\aligned not supported)
+[wp] Warning: Skipped RTE guards: invalid function pointer calls (\valid_function not supported)
 [rte:annot] annotating function element_level_sorted_implies_greater
 [rte:annot] annotating function element_level_sorted_implies_greater_2
 [rte:annot] annotating function element_level_sorted_implies_sorted

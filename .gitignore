@@ -1,3 +1,4 @@
+# latex
 */_minted-main*
 *.aux
 *.glg
@@ -11,10 +12,15 @@
 *.thm
 *.toc
 *.html
+*.fls
+*.fdb_latexmk
+# temps
 *~
 \#*\#
+# Frama-C tests
+**/.frama-c
+**/.frama-c-gui.local
 code/_build
-code/*/*/.frama-c
 code/**/oracle/dune
 code/**/result
 code/tests

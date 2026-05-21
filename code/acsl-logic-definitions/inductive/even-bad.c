@@ -14,10 +14,3 @@
       even_natural(n) ;
   }
 */
-
-/*@
-  requires even_natural(n) ;
-  ensures  \false ;
-*/ void function(int n){
-
-}

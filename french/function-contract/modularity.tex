@@ -80,8 +80,13 @@ pastilles particulières (vertes et bleues) :
 Ces pastilles nous disent qu'en l'absence d'implémentation, les propriétés sont
 supposées vraies. Et c'est une des forces de la preuve déductive de programmes
 par rapport à certaines autres méthodes formelles : les fonctions sont vérifiées
-en isolation les unes des autres.
-
+en isolation les unes des autres. Nous voyons aussi des pastilles jaunes pour
+les clauses \CodeInline{exits} et \CodeInline{terminates}. Comme Frama-C génère
+ces clauses et n'a aucun moyen de vérifier leur correction, il indique à
+l'utilisateur qu'il devrait vérifier leur correction (ou les écrire
+explicitement, auquel cas Frama-C pourra supposer qu'elles sont correctes,
+exactement de la même manière que pour les clauses \CodeInline{ensures} et
+\CodeInline{assigns} que nous avons écrites).
 
 
 En dehors de la fonction, sa spécification est considérée comme étant
@@ -104,7 +109,7 @@ La spécification peut ressembler à ceci :
 
 
 
-\CodeBlockInput[4][14]{c}{max_abs.h}
+\CodeBlockInput[6][16]{c}{max_abs.h}
 
 
 

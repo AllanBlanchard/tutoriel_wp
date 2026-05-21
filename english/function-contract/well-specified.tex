@@ -5,7 +5,7 @@
 This is certainly the hardest part of our work. Programming is already
 an effort that consists in writing algorithms that correctly meets
 our needs. Specifying requires the same kind of work, except that we do
-not try to express \emph{how} we meet our needs but \emph{what} 
+not try to express \emph{how} we meet our needs but \emph{what}
 exactly \emph{is} our need. To prove that our code implements what we need, we
 must be able to describe exactly what we need.
 
@@ -80,8 +80,15 @@ precondition.
 
 For this particular kind of inconsistency, a useful feature of WP is
 the ``smoke tests'' option of the plugin. It can be used to detect that
-some preconditions are unsatisfiable. For example, here, we can run this
-command:
+some preconditions are unsatisfiable. This can be enabled from the command line
+with the option \CodeInline{-wp-smoke-tests} or via the WP sidebar (that can
+also be used to customize the smoke tests but let us not detail this for now).
+
+
+\image{2-sidebar-smoke}
+
+
+For example, here, we can run this command:
 
 
 \begin{CodeBlock}{bash}
@@ -95,7 +102,7 @@ and we obtain the following result in the GUI:
 \image{2-bad-precond}
 
 
-We can see a red and orange bullet on the precondition of the function,
+We can see a red and yellow bullet on the precondition of the function,
 meaning that if there exists a reachable call to this function then the
 precondition will necessarily be violated, and a red bullet in the
 list of goals, indicating that a prover succeeded in proving that this
@@ -376,7 +383,7 @@ free. We specify this by passing \CodeInline{\textbackslash{}nothing} to
 
 
 The careful reader will now be able to look back on the examples we
-presented up to now to integrate the right \CodeInline{assigns} clause.
+presented up to now, and integrate the right \CodeInline{assigns} clause.
 
 
 
@@ -579,7 +586,7 @@ void add(int* p, int* q, int* r);
 \end{CodeBlock}
 
 
-Now the result of the sum should be stored in \CodeInline{r}. 
+Now the result of the sum should be stored in \CodeInline{r}.
 Modify the calls accordingly in the main function as well as in the code and the contract
 of \CodeInline{add}. \CodeInline{*p} and \CodeInline{*q} should remain
 unchanged.
@@ -667,8 +674,8 @@ other particular cases:
 
 \begin{itemize}
 \item all original values are equal
-\item two original values are equal and the third is greater
-\item two original values equal and the third is lesser
+\item two original values are equal, and the third is greater
+\item two original values equal, and the third is lesser
 \end{itemize}
 
 

@@ -181,14 +181,6 @@ Verifying these properties, our goal is to guarantee that for any
 program, for any input, its observable behavior is the same with or
 without the ghost code.
 
-
-\begin{Warning}
-  Before Frama-C 21 Scandium, most of these properties were not
-  verified by the Frama-C kernel. Thus, if we work with a previous
-  version, we have to ensure that they are verified ourselves.
-\end{Warning}
-
-
 If some of these properties are not verified, it would mean that
 the ghost code can change the behavior of the verified program.
 Let us have a closer look to each of these constraints.

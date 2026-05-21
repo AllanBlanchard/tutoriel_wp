@@ -25,6 +25,12 @@ Prover Qed returns Unsuccess
 
 ------------------------------------------------------------
 
+Goal Exit-condition (generated) in 'main':
+Prove: true.
+Prover CFG returns Valid
+
+------------------------------------------------------------
+
 Goal Establishment of Invariant 'I1' (file two-loop-invariants.c, line 8):
 Assume { Type: is_sint32(x). (* Initializer *) Init: x = 0. }
 Prove: 0 <= x.

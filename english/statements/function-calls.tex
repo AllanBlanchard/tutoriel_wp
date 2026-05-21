@@ -253,10 +253,10 @@ to -1, but we can prove the check \CodeInline{A1} because when \CodeInline{f} is
 called, we assume that \CodeInline{E1} is true. We can prove the clause
 \CodeInline{E2} because \CodeInline{*y} is assigned the value 10, which is indeed greater
 than or equal to 10. However, we cannot prove the check \CodeInline{A2} because
-this postcondition is ignored at its callsite. Finally, while \CodeInline{*z} is
+this postcondition is ignored at its call site. Finally, while \CodeInline{*z} is
 assigned the value 20, we do not try to verify that \CodeInline{E3} is true (and it is
 not), yet WP does not issue any warnings about it: it is assumed at
-this callsite that we can
+this call site that we can
 prove that \CodeInline{z} is greater than 30, even if this is not
 actually the case.
 
@@ -264,21 +264,21 @@ Next let's present the behavior for the \CodeInline{requires} clause. When a
 function \CodeInline{f} has a \CodeInline{requires} clause, it is assumed to be
 true when verifying \CodeInline{f} and must be verified when \CodeInline{f} is
 called. When it is a \CodeInline{check requires}, the clause is verified at
-its callsite, yet we do not assume it when verifying \CodeInline{f}. Finally, when
+its call site, yet we do not assume it when verifying \CodeInline{f}. Finally, when
 a function \CodeInline{f} has an \CodeInline{admit requires} clause, it is
-assumed to be true when verifying \CodeInline{f} without any verification 
-at its callsite. In the following example:
+assumed to be true when verifying \CodeInline{f} without any verification
+at its call site. In the following example:
 
 \CodeBlockInput[5]{c}{check-admit-requires.c}
 
 \image{requires-CA}
 
-We cannot prove that \CodeInline{R1} is true at its callsite, yet we
+We cannot prove that \CodeInline{R1} is true at its call site, yet we
 assume it is in
 \CodeInline{callee}, and can thus prove \CodeInline{A1}. And, while
-\CodeInline{R2} is verified at its callsite, we cannot prove \CodeInline{A2} in
+\CodeInline{R2} is verified at its call site, we cannot prove \CodeInline{A2} in
 \CodeInline{callee} since we ignore \CodeInline{R2} when verifying \CodeInline{f}.
-Finally, we do not try to verify \CodeInline{R3} at its callsite (and WP does not
+Finally, we do not try to verify \CodeInline{R3} at its call site (and WP does not
 issue warnings about it even if it is false), but we can prove that \CodeInline{A3} is
 verified because we assume \CodeInline{R3}.
 
@@ -301,7 +301,7 @@ about each function locally and to compose proofs just as we compose function
 calls.
 
 
-Below is a general overview of the meaning of some of the keywords used
+Below is a general overview of the meaning of the keywords used
 in function contracts.
 
 
@@ -380,7 +380,7 @@ calling exit is propagated:
 \CodeBlockInput{c}{exit-3.c}
 
 
-It is thus recommended to indicate the precise behaviors that can lead
+It is thus recommended indicating the precise behaviors that can lead
 to a call to \CodeInline{exit} and to forbid calls to \CodeInline{exit} in the
 other cases:
 
@@ -404,7 +404,7 @@ the one stated in the \CodeInline{ensures} clauses.
 For proving \CodeInline{exits} clauses, it is different, but not that much.
 Instead of starting the calculation from \CodeInline{return} instructions, we start
 a new calculation from each function call (as it might be one of the exit points)
-and at each callsite, we use the \CodeInline{exit} clause as a postcondition, then
+and at each call site, we use the \CodeInline{exit} clause as a postcondition, then
 when we continue the backward reasoning, we use the \CodeInline{ensures} as
 usual since if we have reached the function call where we started from, that
 means that previous calls did not exit.
@@ -462,7 +462,7 @@ depth, the expression might be negative:
 
 
 We can see the generated verification condition for the previous example by
-disabling goal simplifications (option \CodeInline{-wp-no-let}, we removed
+disabling goal simplifications (option \CodeInline{-wp-no-qed}, we removed
 redundant information in the screenshot):
 
 \image{go_negative}
@@ -478,8 +478,8 @@ function (and for a call to this same function), the expression is evaluated
 for two entities: the function under proof and the call statement. The state
 where the expression is evaluated for the function under proof is
 \CodeInline{Pre}, the state where the expression is evaluated for the call
-statement is \CodeInline{Here}. The value of the expression at the callsite must
-be less than the value of the expression in the \CodeInline{Pre} state.
+statement is \CodeInline{Here}. The value of the expression at the call site
+must be less than the value of the expression in the \CodeInline{Pre} state.
 
 
 \CodeBlockInput[22][30]{c}{decreases.c}
@@ -508,8 +508,8 @@ that does not belong to the same cluster:
 
 \begin{Information}
   Note that the computation of the cluster is done syntactically, for now we do
-  not cover function pointers in this tutorial, but one can refer to the option
-  \CodeInline{-wp-dynamic} in the WP manual.
+  not cover function pointers in this tutorial, but one can refer to the clause
+  \CodeInline{calls} in the Frama-C user manual.
 \end{Information}
 
 
@@ -676,7 +676,7 @@ program:
 \CodeBlockInput[27][36]{c}{terminates.c}
 
 
-We get the following verification conditions (by using \CodeInline{-wp-no-let}
+We get the following verification conditions (by using \CodeInline{-wp-no-qed}
 to disable simplifications):
 
 

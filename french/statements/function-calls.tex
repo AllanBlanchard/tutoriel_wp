@@ -446,7 +446,7 @@ négative :
 
 
 Nous pouvons voir la condition de vérification générée pour l'exemple précédent
-en désactivant la simplification du but (option \CodeInline{-wp-no-let}, ici,
+en désactivant la simplification du but (option \CodeInline{-wp-no-qed}, ici,
 nous avons supprimé les informations redondantes de la capture d'écran) :
 
 
@@ -496,8 +496,8 @@ est appelée :
 \begin{Information}
   Notons que le calcul des \textit{clusters} est basé sur un critère syntaxique.
   Pour le moment, nous ne parlons par des pointeurs de fonctions dans ce tutoriel,
-  le lecteur peut se référer à la documentation de l'option
-  \CodeInline{-wp-dynamic} dans le manuel de WP.
+  le lecteur peut se référer à la documentation de la clause \CodeInline{calls}
+  dans le manuel utilisateur de Frama-C.
 \end{Information}
 
 
@@ -670,7 +670,7 @@ partir du programme suivant :
 
 
 Nous obtenons les conditions de vérification suivante (en utilisant l'option
-\CodeInline{-wp-no-let} pour désactiver les simplifications du but) :
+\CodeInline{-wp-no-qed} pour désactiver les simplifications du but) :
 
 
 \image{call_terminates_1}

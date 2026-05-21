@@ -13,6 +13,12 @@ Prove: false.
 
 ------------------------------------------------------------
 
+Goal Exit-condition (generated) in 'main':
+Prove: true.
+Prover CFG returns Valid
+
+------------------------------------------------------------
+
 Goal Establishment of Invariant (file first_loop-1.c, line 10):
 Prove: true.
 

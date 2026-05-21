@@ -275,7 +275,7 @@ start Frama-C with the following command line:
 
 
 \begin{CodeBlock}{bash}
-frama-c-gui -wp -rte main.c
+frama-c-gui -wp -wp-rte main.c
 \end{CodeBlock}
 
 
@@ -287,34 +287,25 @@ The following window should appear:
 \image{verif_install-1}
 
 
-Clicking \CodeInline{main.c} in the left side-panel to select it, we can see
-its content (slightly) modified, and some green bullets on different
-lines as illustrated here:
+After selecting the WP view (which is dedicated to the WP plug-in), one can
+select the ``Files'' side panel that lists the files and functions of the
+program under analysis. We can see the (slightly modified) content of the
+functions, and some green bullets on different lines as illustrated here:
 
 
 
 \image{verif_install-2}
 
 
-If this does not succeed, check that graphic libraries were not forgotten
-during installation, or the Alt-Ergo solver. If everything seems to be OK,
-forums can help (for example: \externalLink{StackOverflow - Frama-C}{https://stackoverflow.com/questions/tagged/frama-c})
+If this does not succeed, check that the graphical user interface is installed,
+and the Alt-Ergo solver is available. If everything seems to be OK, forums can
+help (for example: \externalLink{StackOverflow - Frama-C}{https://stackoverflow.com/questions/tagged/frama-c})
 
 
 
 \begin{Warning}
-  The graphical user interface of Frama-C does not allow source code edition.
+  The graphical user interface of Frama-C does not allow editing source code.
 \end{Warning}
-
-
-\begin{Information}
-  For people with colorblindness, it is possible to start Frama-C with another theme where
-  color bullets are replaced:
-
-\begin{CodeBlock}{bash}
-frama-c-gui -gui-theme colorblind
-\end{CodeBlock}
-\end{Information}
 
 
 \levelThreeTitle{(Bonus) Some more provers}
@@ -350,22 +341,8 @@ research teams (New York University, University of Iowa, Google, CEA
 List). Those two provers are very efficient and somewhat complementary.
 
 
-New provers can be installed any time after the installation of Frama-C.
-However, Why3 provers list must be updated:
-
-\begin{CodeBlock}{bash}
-why3 config detect
-\end{CodeBlock}
-
-And then activated in Frama-C. In the left-side panel, in the WP part,
-click ``Provers...'':
-
-
-\image{provers}
-
-
-And then ``Detect'' in the window that appears. Once it is done, provers
-can be activated thanks to the button next to their name.
+New provers can be installed any time after the installation of Frama-C. They
+are then available in the WP sidebar in the ``Provers Configuration'' section:
 
 
 \image{detect-and-select}
@@ -388,17 +365,8 @@ verification conditions translated in Coq language, and to write the
 proof ourselves.
 
 
-
-
 To learn Coq, we would recommend
 \externalLink{this tutorial}{http://www.cis.upenn.edu/~bcpierce/sf/current/index.html}.
-
-
-
-\begin{Information}
-  If Frama-C has been installed using the package manager of a Linux
-  distribution, Coq could be automatically installed.
-\end{Information}
 
 
 If one needs more information about Coq and its installation, this page

@@ -1,6 +1,8 @@
 # frama-c -wp -wp-rte [...]
 [kernel] Parsing ex-1-days-month-answer.c (with preprocessing)
 [wp] Running WP plugin...
+[wp] Warning: Skipped RTE guards: unaligned pointers (\aligned not supported)
+[wp] Warning: Skipped RTE guards: invalid function pointer calls (\valid_function not supported)
 [rte:annot] annotating function day_of
 [rte:annot] annotating function leap
 [wp] [Valid] Goal leap_exits (Cfg) (Unreachable)
