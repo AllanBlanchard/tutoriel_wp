@@ -1,5 +1,5 @@
 /* run.config
-   OPT:-wp -wp-par 1 -wp-cache update -wp-cache-env -wp-msg-key shell
+   OPT:-wp -wp-par 1 -wp-cache update -wp-msg-key shell
 */
 
 void foo(){

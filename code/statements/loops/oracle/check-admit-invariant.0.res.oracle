@@ -1,5 +1,3 @@
-[kernel] Warning: -wp-no-let is a deprecated alias for option -wp-no-qed.
-  Please use -wp-no-qed instead.
 # frama-c -wp [...]
 [kernel] Parsing check-admit-invariant.c (with preprocessing)
 [wp] Running WP plugin...

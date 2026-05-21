@@ -1,6 +1,6 @@
 /* run.config
    STDOPT:
-   OPT: -wp -wp-par 1 -wp-prover none -wp-no-simpl -wp-print
+   OPT: -wp -wp-par 1 -wp-prover none -wp-no-subst -wp-print
 */
 
 int main(){
