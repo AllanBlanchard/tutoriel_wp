@@ -446,7 +446,7 @@ négative :
 
 
 Nous pouvons voir la condition de vérification générée pour l'exemple précédent
-en désactivant la simplification du but (option \CodeInline{-wp-no-let}, ici,
+en désactivant la simplification du but (option \CodeInline{-wp-no-qed}, ici,
 nous avons supprimé les informations redondantes de la capture d'écran) :
 
 
@@ -493,6 +493,7 @@ est appelée :
 \CodeBlockInput[32][48]{c}{decreases.c}
 
 
+% TODO fix documentation link
 \begin{Information}
   Notons que le calcul des \textit{clusters} est basé sur un critère syntaxique.
   Pour le moment, nous ne parlons par des pointeurs de fonctions dans ce tutoriel,
@@ -629,7 +630,7 @@ instructions de la fonction et collecte les boucles pour lesquelles aucune
 clause \CodeInline{loop variant} n'est spécifiée et les appels de fonctions. Si
 aucune instruction de ce type n'est présente, la fonction termine trivialement.
 
-%% TODO: fix this once we have a way to display it in GUI
+
 \image{trivial_terminates}
 
 
@@ -670,7 +671,7 @@ partir du programme suivant :
 
 
 Nous obtenons les conditions de vérification suivante (en utilisant l'option
-\CodeInline{-wp-no-let} pour désactiver les simplifications du but) :
+\CodeInline{-wp-no-qed} pour désactiver les simplifications du but) :
 
 
 \image{call_terminates_1}
