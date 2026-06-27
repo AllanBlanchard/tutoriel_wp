@@ -158,7 +158,7 @@ Along this tutorial we used WP to generate verification conditions starting
 from programs with their specification. Next we have used automatic
 solvers to assure that these properties were indeed verified.
 
-When we use other solvers than Alt-Ergo and Coq, the communication with
+When we use other solvers than Alt-Ergo and Rocq, the communication with
 this solver in provided by a translation to the Why3 language that will
 next be used to bridge the gap to automatic solvers. But this is not the
 only way to use Why3. It can also be used itself to write programs and
@@ -167,10 +167,10 @@ data structures.
 
 There are some proofs that cannot be discharged by automatic solvers. In
 such a case, we have to provide these proofs interactively. WP, like
-Why3, can extract its verification conditions to Coq, and it is very
+Why3, can extract its verification conditions to Rocq, and it is very
 interesting to study
 this language. In the context of Frama-C, we can produce reusable lemmas
-libraries proved with Coq. But Coq can also be used for many
+libraries proved with Rocq. But Rocq can also be used for many
 tasks, including programming. Note that Why3 can also extract
 its verification conditions to Isabelle or PVS that are also proof assistants.
 

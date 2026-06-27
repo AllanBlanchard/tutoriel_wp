@@ -5,13 +5,13 @@ difficile d'écrire une assertion qui créera exactement la propriété dont le
 solveur SMT a besoin pour déclencher le bon lemme (par exemple, puisque le
 générateur effectue des optimisations sur les conditions de vérification, ils peuvent
 légèrement la modifier, ainsi que le contexte de preuve). De plus, nous
-reposons sur des lemmes qui ont souvent besoin d'être prouvés en Coq, et pour
-cela nous avons besoin d'apprendre Coq.
+reposons sur des lemmes qui ont souvent besoin d'être prouvés en Rocq, et pour
+cela nous avons besoin d'apprendre Rocq.
 
 
 Dans cette section, nous verrons quelques techniques qui peuvent être
 utilisées pour rendre tout cela plus prédictible et nous éviter d'utiliser
-l'assistant de preuve Coq. Tandis que ces techniques ne peuvent pas toujours
+l'assistant de preuve Rocq. Tandis que ces techniques ne peuvent pas toujours
 être utilisées (et nous expliquerons quand cela n'est pas applicable), elles
 sont généralement efficaces pour obtenir de la preuve presque complètement
 automatique. Cela repose sur l'usage de code fantôme.
@@ -23,7 +23,7 @@ automatique. Cela repose sur l'usage de code fantôme.
 Précédemment, nous avons mentionné que les solveurs SMT sont mauvais pour
 effectuer des preuves par induction (la plupart du temps), et c'est la raison
 pour laquelle nous avons souvent besoin d'exprimer des lemmes que nous prouvons
-avec l'assistant de preuve Coq qui nous permet de faire notre preuve par
+avec l'assistant de preuve Rocq qui nous permet de faire notre preuve par
 induction. Cependant, dans la section~\ref{l2:statements-loops} à propos des
 boucles, nous trouvons une sous-section~\ref{l3:statements-loops-invariant}
 nommée « Induction et invariant », où nous expliquons que pour prouver un
@@ -61,7 +61,7 @@ dire qu'elle est « globalement triée », c'est-à-dire que pour chaque paire
 d'indices $i$ et $j$, si $i \leq j$ alors le $j^{ième}$ élément du tableau est
 supérieur ou égal au $i^{ième}$ élément. Donc, la précondition de la fonction
 pouvait être prouvée par les solveurs SMT, mais pas le lemme lui-même qui
-nécessite une preuve Coq. Est-ce que l'on ne pourrait pas faire quelque chose
+nécessite une preuve Rocq. Est-ce que l'on ne pourrait pas faire quelque chose
 de mieux à ce sujet ?
 
 
@@ -93,7 +93,7 @@ précèdent) :
 
 
 Nous pouvons voir que toutes les conditions de vérification sont facilement
-vérifiées par les solveurs SMT, sans que cela ne nécessite d'écrire une preuve Coq
+vérifiées par les solveurs SMT, sans que cela ne nécessite d'écrire une preuve Rocq
 ou un lemme. Les conditions de vérification respectivement créées pour
 l'établissement et la préservation de l'invariant correspondent aux deux cas que
 nous avions besoin dans notre preuve par induction :
@@ -535,7 +535,7 @@ donc être utilisées avec beaucoup de parcimonie.
 
 
 Finalement, selon la propriété à prouver, il peut être difficile de trouver un
-code de preuve. En effet, les assistants de preuve comme Coq sont conçus pour
+code de preuve. En effet, les assistants de preuve comme Rocq sont conçus pour
 être capables d'exprimer des preuves même pour des propriétés très complexes,
 en se reposant sur une vue très haut niveau de nos problèmes, tandis que C a été
 conçu pour écrire des programmes, et avec une vue très détaillée de la manière de

@@ -211,7 +211,7 @@ and the end (which is \CodeInline{Here} since we state the property at the end):
 
 Note that in this new version of the code, the property stated by our lemma is
 not proved using an automated solver, which cannot reason by induction. If the
-reader is curious, the (quite simple) Coq proof can be found
+reader is curious, the (quite simple) Rocq proof can be found
 in Section~\ref{l2:acsl-logic-definitions-answers}.
 
 
@@ -315,7 +315,7 @@ states that some integer equals the sum of the N first integers.
 
 Adapt the contract of the function and the lemma(s). Note that lemma(s) could
 certainly not be proved by SMT solvers. We provide a solution and corresponding
-Coq proofs on the GitHub repository of this book.
+Rocq proofs on the GitHub repository of this book.
 
 
 \levelFourTitle{Greatest Common Divisor}
@@ -388,7 +388,7 @@ two previous properties in lemmas:
 
 First express the lemma \CodeInline{power\_even}. The SMT solver might be able
 to combine the use of this lemma and the inductive predicate to deduce
-\CodeInline{power\_odd}. The Coq proof of the \CodeInline{power\_even} lemma is
+\CodeInline{power\_odd}. The Rocq proof of the \CodeInline{power\_even} lemma is
 provided on the GitHub repository of this book, as well as the proof of the
 \CodeInline{power\_odd} in case the SMT solver does not prove it.
 
