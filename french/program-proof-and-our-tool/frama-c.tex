@@ -7,13 +7,13 @@
 
 
 Frama-C (pour FRAmework for Modular Analysis of C code) est une plate-forme
- dédiée à l'analyse de programmes C créée par le CEA List et Inria. Elle est
- basée sur une architecture modulaire permettant l'utilisation de divers
- \textit{plugins}. Les \textit{plugins} fournis par défaut comprennent diverses
- analyses statiques (sans exécution du code analysé), dynamiques (avec
- exécution du code), ou combinant les deux. Ces \textit{plugins} peuvent collaborer
- ou non, soit en communiquant directement entre eux, soit en utilisant le
- langage de spécification fourni par Frama-C.
+dédiée à l'analyse de programmes C créée par le CEA List et Inria. Elle est
+basée sur une architecture modulaire permettant l'utilisation de divers
+\textit{plugins}. Les \textit{plugins} fournis par défaut comprennent diverses
+analyses statiques (sans exécution du code analysé), dynamiques (avec
+exécution du code), ou combinant les deux. Ces \textit{plugins} peuvent collaborer
+ou non, soit en communiquant directement entre eux, soit en utilisant le
+langage de spécification fourni par Frama-C.
 
 \image{gallery}
 
@@ -52,205 +52,150 @@ OCamlPro.
 
 
 Frama-C est un logiciel développé sous Linux et macOS. Son support est donc bien
-meilleur sous ces derniers. Il existe quand même de quoi faire une installation
-sous Windows et en théorie l'utilisation sera sensiblement la même que sous
-Linux, mais :
-\begin{Warning}
+meilleur sous ces derniers. Le support pour Windows se fait actuellement via
+Windows Subsystem for Linux (WSL), le comportement devrait être sensiblement le
+même que sous Linux, mais cette utilisation est tout de même bien moins testée
+à l'heure actuelle.
+
+
+Différents outils de preuves externes sont disponibles pour réaliser les
+preuves. La manière la plus courante de travailler avec Frama-C et WP est de
+n'utiliser \textit{que} des outils de preuve automatique, même s'il est possible
+d'utiliser des outils de preuves interactives comme Rocq. Pour utiliser Rocq
+avec Frama-C, la seule méthode d'installation viable est de passer par Opam
+(en raison de la manière dont Why3 et Rocq interagissent).
+
+
+Certaines preuves de ce tutoriel sont finalisées via Rocq sans que l'on ne
+rentre vraiment dans ces détails qui ne sont pas l'objet du tutoriel. Il n'est
+pas \textit{nécessaire} d'avoir Rocq pour suivre ce tutoriel, quelques rares
+preuves ne seront juste pas \textit{entièrement} jouables.
+
+
+\levelFourTitle{Paquets d'installation}
+
+
+Frama-C propose des paquets d'installation pour Linux (et WSL) et macOS. Ces
+paquets permettent l'installation de Frama-C et de son interface graphique.
+
+
+\levelFiveTitle{Linux \& WSL}
+
+
+Le paquet d'installation est disponible sur
+\externalLink{la page de téléchargement de Frama-C}{https://frama-c.com/html/get-frama-c.html}.
+Une fois téléchargé, depuis une console, il faut rendre l'installeur exécutable
+et lancer l'installation :
+\begin{CodeBlock}{shell}
+$ chmod +x frama-c-linux-x86-64-33.0-Arsenic.run
+$ sudo ./frama-c-linux-x86-64-33.0-Arsenic.run
+\end{CodeBlock}
+
+
+Sous Ubuntu, il est vraiment préférable d'exécuter l'installation en mode
+\CodeInline{sudo} pour que le script puisse ajouter les autorisations
+nécessaires dans AppArmor pour l'interface graphique, sinon lancer l'interface
+graphique nécessitera soit de construire un profil pour AppArmor, soit de
+désactiver le bac à sable de la GUI en ajoutant systématiquement l'option
+\CodeInline{--no-sandbox}.
+
+
+La même procédure peut être appliquée pour WSL. À noter que selon la distribution
+WSL, elle pourrait n'embarquer que très peu de paquets par défaut. Par exemple,
+sur un WSL Debian « frais », il sera surement nécessaire d'installer un nombre
+notable de bibliothèques supplémentaires pour lancer l'interface graphique. Le
+WSL Ubuntu par défaut est suffisamment équipé pour ne rien avoir à installer de
+plus.
+
+
+Après l'installation de Frama-C, il faut également installer un outil de preuve
+automatique, voir Section~\ref{l5:program-proof-and-our-tool-frama-c-install-packages-solver}.
+
+
+\levelFiveTitle{macOS}
+
+
+Pour macOS, le paquet d'installation de Frama-C est séparée en deux composants :
+le c\oe{}ur métier et la GUI, qui s'installent séparément.
+
+
+Depuis \externalLink{la page de téléchargement de Frama-C}{https://frama-c.com/html/get-frama-c.html},
+il faut télécharger :
 \begin{itemize}
-\item le tutoriel présentera le fonctionnement sous Linux et l'auteur n'a pas
-expérimenté les différences d'utilisation qui pourraient exister avec
-Windows ;
-\item les versions récentes de Windows 10 permettent d'utiliser Windows Subsystem
-  for Linux, en combinaison avec un Xserver installé sous Windows pour avoir la
-  GUI ;
-\item La section « Bonus » un peu plus loin dans cette partie pourrait ne pas être
-accessible.
-\end{itemize}
-\end{Warning}
-
-
-\levelFourTitle{Linux}
-
-
-\levelFiveTitle{Via les gestionnaires de paquets}
-
-
-Sous Debian, Ubuntu et Fedora, il existe des paquets pour Frama-C. Dans ce cas,
-il suffit de taper cette ligne de commande :
-
-
-
-\begin{CodeBlock}{bash}
-apt-get/yum install frama-c
-\end{CodeBlock}
-
-
-
-Par contre, ces dépôts ne sont pas systématiquement à jour. En soi, ce n'est pas
-très gênant, car il n'y a pas de nouvelle version de Frama-C tous les deux mois,
-mais il est tout de même bon de le savoir.
-
-
-
-Les informations pour vérifier l'installation sont données dans la sous-section « Vérifier l'installation ».
-
-
-\levelFiveTitle{Via Opam}
-
-
-La deuxième solution consiste à passer par Opam, un gestionnaire de paquets
-pour les bibliothèques et applications OCaml.
-
-
-D'abord, Opam doit être installé et configuré sur votre distribution (voir
-leur documentation). Ensuite, il faut également que quelques paquets de votre
-distribution soient présents préalablement à l'installation de Frama-C. Sur la
-plupart des distributions nous pouvons demander à Opam d'aller chercher les
-bonnes dépendances pour le paquet que nous voulons installer. Pour cela, nous
-utilisons l'outil depext d'Opam, qu'il faut d'abord installer :
-
-
-\begin{CodeBlock}{bash}
-opam install depext
-\end{CodeBlock}
-
-
-Puis nous lui demandons de prendre les dépendances de Frama-C :
-
-
-\begin{CodeBlock}{bash}
-opam depext frama-c
-\end{CodeBlock}
-
-
-Si depext ne trouve pas les dépendances pour votre distribution, les paquets
-suivants doivent être présents sur votre système :
-
-
-\begin{itemize}
-\item GTK2 (development library)
-\item GTKSourceview 2 (development library)
-\item GnomeCanvas 2 (development library)
-\item autoconf
+  \item le \CodeInline{.pkg} correspondant à l'architecture cible,
+  \item l'interface graphique.
 \end{itemize}
 
-Sur les versions récentes de certaines distributions, GTK2 peut ne pas
-être disponible. Dans ce cas, ou si vous voulez avoir GTK3 et pas GTK2,
-les paquets GTK2, GTKSourceview2 et GnomeCanvas2 doivent être remplacés
-par GTK3 et GTKSourceview3.
+
+Après avoir ouvert le \CodeInline{.pkg} (soit via l'interface graphique, soit
+via la ligne de commande avec \CodeInline{open}), laissez-vous guider dans le
+processus d'installation. De même, le DMG peut être installé via l'interface
+graphique, typiquement dans \CodeInline{/Applications}.
+
+Après l'installation, de Frama-C, il faut également installer un outil de preuve
+automatique, voir Section~\ref{l5:program-proof-and-our-tool-frama-c-install-packages-solver}.
+
+\levelFiveTitle{Alt-Ergo}
+\label{l5:program-proof-and-our-tool-frama-c-install-packages-solver}
 
 
-Enfin, du côté d'Opam, il reste à installer Frama-C et Alt-Ergo.
+Pour ce tutoriel, un seul outil de preuve est absolument nécessaire : Alt\nobreakdash-Ergo.
+Pour l'installer, rendez-vous sur
+\externalLink{la page de ses \textit{releases}}{https://github.com/OCamlPro/alt-ergo/releases}.
 
 
-
-\begin{CodeBlock}{bash}
-opam install frama-c
-opam install alt-ergo
+Le plus simple est de prendre le fichier pré-compilé correspondant à votre
+système cible, de le renommer \CodeInline{alt-ergo} et de l'installer à un
+chemin qui fait partie du \CodeInline{PATH} (par exemple \CodeInline{/usr/bin}) :
+\begin{CodeBlock}{shell}
+sudo mv alt-ergo-v2.6.4-x86_64-linux-musl /usr/bin/alt-ergo
 \end{CodeBlock}
-
-
-Les informations pour vérifier l'installation sont données dans la sous-section « Vérifier l'installation ».
-
-
-
-\levelFiveTitle{Via une compilation « manuelle »}
-
-
-Pour installer Frama-C via une compilation manuelle, les paquets indiqués dans la
-section Opam sont nécessaires (mis à part Opam lui-même bien sûr). Il faut
-également une version récente d'OCaml et de son compilateur (y compris vers
-code natif). Il est aussi nécessaire d'installer Why3, en version 1.2.0,
-qui est disponible sur Opam ou sur leur site web
-(\externalLink{Why3}{http://why3.lri.fr/}).
-
-
-
-Après décompression de l'archive disponible ici :
-\externalLink{https://frama-c.com/html/get-frama-c.html}{https://frama-c.com/html/get-frama-c.html} (Source distribution).
-Il faut se rendre dans le dossier et exécuter la commande :
-
-
-
-\begin{CodeBlock}{bash}
-autoconf && ./configure && make && sudo make install
-\end{CodeBlock}
-
-
-Les informations pour vérifier l'installation sont données dans la sous-section « Vérifier l'installation ».
-
-
-\levelFourTitle{macOS}
-
-
-L'installation sur macOS passe par Homebrew et Opam. L'auteur n'ayant
-personnellement pas de macOS, voici une honteuse paraphrase du guide
-d'installation de Frama-C pour macOS.
-
-
-
-Pour les utilitaires d'installation et de configuration :
-
-
-
-\begin{CodeBlock}{bash}
-> xcode-select --install
-> open http://brew.sh
-> brew install autoconf opam
-\end{CodeBlock}
-
-
-
-Pour l'interface graphique :
-
-
-
-\begin{CodeBlock}{bash}
-> brew install gtk+ --with-jasper
-> brew install gtksourceview libgnomecanvas graphviz
-> opam install lablgtk ocamlgraph
-\end{CodeBlock}
-
-
-
-Dépendances pour Alt-Ergo :
-
-
-
-\begin{CodeBlock}{bash}
-> brew install gmp
-> opam install zarith
-\end{CodeBlock}
-
-
-
-Frama-C et prouveur Alt-Ergo :
-
-
-
-\begin{CodeBlock}{bash}
-> opam install alt-ergo
-> opam install frama-c
-\end{CodeBlock}
-
-
-Les informations pour vérifier l'installation sont données dans la sous-section « Vérifier l'installation ».
-
-
-
-\levelFourTitle{Windows}
-
-
-Actuellement, la meilleure manière d'utiliser Frama-C sous Windows
-est de passer par Windows Subsystem for Linux. Une fois que le sous-système
-Linux est installé dans Windows, il suffit d'installer Opam et de suivre les
-instructions d'installation fournies dans la section Linux. Notons que pour
-profiter de l'interface graphique, il faudra installer un serveur X sous
-Windows.
 
 
 Les informations pour vérifier l'installation sont données dans la sous-section
 « Vérifier l'installation ».
+
+
+\levelFourTitle{Opam \& NPM}
+
+
+La deuxième solution consiste à passer par Opam, un gestionnaire de paquets
+pour les bibliothèques et applications OCaml, et NVM/NPM pour compiler
+l'interface graphique de Frama\nobreakdash-C.
+
+
+D'abord, Opam doit être installé et configuré sur votre distribution (pour cela,
+voir \externalLink{la documentation d'Opam}{https://opam.ocaml.org/doc/Install.html}).
+Quand Opam est disponible, il ne reste qu'à lancer :
+
+
+\begin{CodeBlock}{bash}
+opam install frama-c
+\end{CodeBlock}
+
+
+Cela installe Frama-C et un script de compilation et installation de la GUI de
+Frama-C. Pour lancer la compilation et l'installation de l'interface graphique,
+\CodeInline{nvm}, \CodeInline{npm} et \CodeInline{yarn} doivent être disponibles, voir
+\externalLink{la documentation de NVM}{https://github.com/nvm-sh/nvm\#installing-and-updating}
+pour installer NVM, ensuite nous pouvons le configurer pour la compilation de
+la GUI de Frama-C, et faire un premier lancement de cette GUI :
+
+
+\begin{CodeBlock}{shell}
+$ nvm install 24       # on a besoin de node 24
+$ nvm use 24           # qu'on utilise
+$ npm install -g yarn  # on a besoin de yarn
+$ frama-c-gui          # lance la compilation et l'installation de la GUI
+\end{CodeBlock}
+
+
+Sous Ubuntu, AppArmor a un paramétrage très strict. Pour lancer la GUI sans
+opération supplémentaire, il est nécessaire de désactiver le bac à sable lorsqu'on
+la lance en ajoutant l'option \CodeInline{--no-sandbox}.
+
+
+Les informations pour vérifier l'installation sont données dans la sous-section « Vérifier l'installation ».
 
 
 \levelThreeTitle{Vérifier l'installation}
@@ -320,15 +265,15 @@ prédilection.
 \levelFourTitle{Why3}
 
 
-Why3 est une plateforme pour la preuve déductive développée par le LRI à Orsay.
-Elle embarque en outre un langage de programmation et de spécification ainsi
-qu'un module permettant le dialogue avec une large variété de prouveurs
-automatiques et interactifs. C'est en cela qu'il est utile dans le cas de
-Frama-C et WP. WP utilise Why3 comme \textit{backend} pour dialoguer avec les
-prouveurs externes.
+\externalLink{Why3}{https://why3.org/} est une plateforme pour la preuve
+déductive développée par le Laboratoire Méthodes Formelles (LMF) à Orsay. Elle
+embarque en outre un langage de programmation et de spécification, et permet le
+dialogue avec une large variété de prouveurs automatiques et interactifs. C'est
+en cela qu'il est utile dans le cas de Frama-C et WP. WP utilise Why3 comme
+\textit{backend} pour dialoguer avec les prouveurs externes.
 
 
-Nous pouvons retrouver sur ce même site
+Nous pouvons retrouver sur le site de l'outil
 \externalLink{la liste des prouveurs}{https://www.why3.org/\#provers} qu'il supporte.
 Il est vivement conseillé d'avoir \externalLink{Z3}{https://github.com/Z3Prover/z3/wiki},
 développé par Microsoft Research, et \externalLink{CVC5}{https://cvc5.github.io/},
@@ -368,4 +313,5 @@ Pour apprendre à utiliser Rocq,
 est très bon.
 
 
-Pour plus d'informations à propos de Rocq et de son installation, voir \externalLink{The Rocq Proof Assistant}{https://rocq-prover.org/}.
+Pour plus d'informations à propos de Rocq et de son installation, voir
+\externalLink{The Rocq Proof Assistant}{https://rocq-prover.org/}.

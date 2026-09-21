@@ -52,206 +52,147 @@ maintained by OCamlPro.
 
 
 
-Frama-C is a software developed on Linux and macOS. Its support is thus better
-on those operating systems. Nevertheless, it is possible to install Frama-C
-on Windows and in theory, its use will be identical to its use on Linux.
-However:
-\begin{Warning}
-\begin{itemize}
-  \item the tutorial presents the use of Frama-C on Linux (or macOS) and
-    the author did not experiment with the differences that could exist with Windows,
-  \item in recent versions of Windows 10, a possibility is to use Windows
-    Subsystem for Linux, in combination with an Xserver installed on Windows
-    to get GUI,
-  \item the ``Bonus'' section of this part may not be accessible on Windows.
-  \end{itemize}
-\end{Warning}
+Frama-C is a software developed on Linux and macOS. It is thus better supported
+on these operating systems. Windows is currently supported through Windows
+Subsystem for Linux (WSL), Frama-C should behave the same way as on Linux, but
+this usage is less tested than pure Linux or macOS.
 
 
-\levelFourTitle{Linux}
+Different proof tools are available to realize proofs with Frama-C. Most of the
+time, Frama-C and WP are used \textit{only} with automatic solvers, even if one
+can also use interactive provers like Rocq. Using Rocq with Frama-C requires
+installing Frama-C with Opam (because of how Why3 and Rocq interact).
 
 
-\levelFiveTitle{Using package managers}
+Some proofs of this tutorial are finalized using Rocq but without detailing
+them since it is not the purpose of this tutorial. It is not \textit{necessary}
+to install Rocq to follow this tutorial, a few proofs will not be \textit{entirely}
+finished, but this is not a problem.
 
 
-On Debian, Ubuntu and Fedora, there are packages for Frama-C. In
-such a case, it is enough to type a command like:
+\levelFourTitle{Installation packages}
 
 
+Frama-C provides installation packages for Linux (and WSL) and macOS. These
+packages allow installing Frama-C and its graphical user interface.
 
-\begin{CodeBlock}{bash}
-apt-get/yum install frama-c
+
+\levelFiveTitle{Linux \& WSL}
+
+
+From \externalLink{the download page of Frama-C}{https://frama-c.com/html/get-frama-c.html},
+get the installation package. From a terminal, make it executable and run
+it :
+
+
+\begin{CodeBlock}{shell}
+$ chmod +x frama-c-linux-x86-64-33.0-Arsenic.run
+$ sudo ./frama-c-linux-x86-64-33.0-Arsenic.run
 \end{CodeBlock}
 
 
+On Ubuntu, it is highly recommenced to execute the installation with \CodeInline{sudo}
+so that the installation script can add the necessary permissions in AppArmor for
+the graphical user interface. Else, running the interface will either require to
+build an AppArmor profile, or disable the sandbox by always adding the option
+\CodeInline{--no-sandbox}.
 
-However, these repositories are not necessarily up to date with the latest
-version of Frama-C. Most of the tutorial should be usable for the version
-available on your Linux distribution if it is recent enough. However, some
-specific features could be missing.
 
+The same procedure can be applied in WSL, notice that depending on the WSL
+distribution, it can miss basic libraries for graphical usage. For example,
+a fresh WSL Debian may need different additional libraries to run the graphical
+user interface. The default WSL Ubuntu embeds all necessary packages.
+
+
+After installing Frama-C, we also need an automatic proof tool, see
+Section~\ref{l5:program-proof-and-our-tool-frama-c-install-packages-solver}.
+
+
+\levelFiveTitle{macOS}
+
+
+For macOS, the installation package is split into two components, the core
+component and the graphical user interface that must be installed separately.
+
+
+From \externalLink{the download page of Frama-C}{https://frama-c.com/html/get-frama-c.html},
+get:
+\begin{itemize}
+  \item the \CodeInline{.pkg} that corresponds to the target architecture,
+  \item the graphical user interface.
+\end{itemize}
+
+
+After opening the \CodeInline{.pkg} (either via the graphical user interface, or
+via the command line using \CodeInline{open}), just follow the installation
+procedure. Similarly, the DMG application can be installed via the graphical
+user interface, typically in \CodeInline{/Applications}.
+
+
+After installing Frama-C, we also need an automatic proof tool, see
+Section~\ref{l5:program-proof-and-our-tool-frama-c-install-packages-solver}.
+
+
+\levelFiveTitle{Alt-Ergo}
+\label{l5:program-proof-and-our-tool-frama-c-install-packages-solver}
+
+
+In this tutorial, a single tool is absolutely necessary : Alt\nobreakdash-Ergo.
+In order to install it, go on its \externalLink{release's page}{https://github.com/OCamlPro/alt-ergo/releases}.
+
+
+The simplest way to install it is to take a pre-compiled binary that corresponds
+to the target system, to rename it \CodeInline{alt-ergo} and to copy it in a
+location that is part of the \CodeInline{PATH} (for example \CodeInline{/usr/bin}) ;
+\begin{CodeBlock}{shell}
+sudo mv alt-ergo-v2.6.4-x86_64-linux-musl /usr/bin/alt-ergo
+\end{CodeBlock}
 
 
 Go to the section ``Verify installation'' to perform some tests on
 your installation.
 
 
-
-\levelFiveTitle{Via Opam}
-
+\levelFourTitle{Opam \& NPM}
 
 
 A second option is to use Opam, a package manager for Ocaml libraries
-and applications.
+and applications, and NVM/NPM to compile the graphical user interface.
 
 
-
-First, Opam must be installed (see its documentation). Then, some
-packages from the Linux distribution must be installed before
-installing Frama-C. On most systems, it is possible to ask Opam to install
-dependencies of the packages we want to install. For this, first install
-the depext tool of Opam:
-
-
-\begin{CodeBlock}{bash}
-opam install depext
-\end{CodeBlock}
-
-
-And then use the depext tool to install the dependencies of Frama-C:
-
-
-\begin{CodeBlock}{bash}
-opam depext frama-c
-\end{CodeBlock}
-
-
-If the depext tool does not support your distribution, the following
-libraries and software should be installed:
-
-\begin{itemize}
-\item GTK2 (development library)
-\item GTKSourceview 2 (development library)
-\item GnomeCanvas 2 (development library)
-\item autoconf
-\end{itemize}
-
-On recent versions of some distributions, GTK2 might not be available, in
-this case, or if you want GTK3 and not GTK2, the packages GTK2, GTKSourceview2
-and GnomeCanvas2 must be replaced with GTK3 and GTKSourceview 3.
-
-
-Once these packages are installed, we can install Frama-C and Alt-Ergo.
+First, Opam must be installed (see
+\externalLink{its documentation}{https://opam.ocaml.org/doc/Install.html}). Then,
+one can run:
 
 
 \begin{CodeBlock}{bash}
 opam install frama-c
-opam install alt-ergo
 \end{CodeBlock}
 
 
-Note that for versions older than Potassium (Argon and before), if you
-want to use the Why3 platform as a backend (introduced later), the version
-0.88.3 should be used for Why3.
+This command installs Frama-C, and a compilation and installation script for the
+Frama-C GUI. To run this compilation and installation, \CodeInline{nvm},
+\CodeInline{npm} and \CodeInline{yarn} must be available, see
+\externalLink{the documentation of NVM}{https://github.com/nvm-sh/nvm\#installing-and-updating}
+to install NVM, then we can configure it to compile and install the GUI by just
+running it a first time:
+
+
+\begin{CodeBlock}{shell}
+$ nvm install 24       # we need node 24
+$ nvm use 24           # we use it
+$ npm install -g yarn  # we need yarn
+$ frama-c-gui          # compile and install the GUI
+\end{CodeBlock}
+
+
+On Ubuntu, AppArmor has a strict configuration, to run the GUI without additional
+configuration, one has to disable the sandbox when running the interface using
+the option \CodeInline{--no-sandbox}.
 
 
 Go to the section ``Verify installation'' to perform some tests on
 your installation.
-
-
-
-\levelFiveTitle{Via ``manual'' compilation}
-
-
-The packages we have listed in the Opam section are required (of course,
-Opam itself is not). It requires a recent version of Ocaml and its
-compiler (including a compiler to native code). It is also necessary to
-install Why3 (at least version 1.2.0), which is available either on Opam
-or on their website (\externalLink{Why3}{http://why3.lri.fr/}).
-
-
-
-After having extracted the folder available here :
-\externalLink{https://frama-c.com/html/get-frama-c.html}{https://frama-c.com/html/get-frama-c.html} (Source distribution).
-Navigate to the folder and then execute the command:
-
-
-
-\begin{CodeBlock}{bash}
-autoconf && ./configure && make && sudo make install
-\end{CodeBlock}
-
-
-
-Go to the section ``Verify installation'' to perform some tests on
-your installation.
-
-
-
-\levelFourTitle{macOS}
-
-
-On macOS, the use of Homebrew and Opam is recommended to install Frama-C.
-The author does not use macOS, so here is a shameful copy and paste of the
-installation guide of Frama-C for macOS.
-
-
-
-
-General macOS tools for OCaml:
-
-
-
-\begin{CodeBlock}{bash}
-> xcode-select --install
-> open http://brew.sh
-> brew install autoconf opam
-\end{CodeBlock}
-
-
-
-Graphical User Interface:
-
-
-
-\begin{CodeBlock}{bash}
-> brew install gtk+ --with-jasper
-> brew install gtksourceview libgnomecanvas graphviz
-> opam install lablgtk ocamlgraph
-\end{CodeBlock}
-
-
-
-Recommended for Frama-C:
-
-
-
-\begin{CodeBlock}{bash}
-> brew install gmp
-> opam install zarith
-\end{CodeBlock}
-
-
-
-Necessary for Frama-C/WP:
-
-
-
-\begin{CodeBlock}{bash}
-> opam install alt-ergo
-> opam install frama-c
-\end{CodeBlock}
-
-
-
-\levelFourTitle{Windows}
-
-
-Currently, the best way to install Frama-C on Windows is to use the
-Windows Subsystem for Linux. Basically, once the Linux system is installed,
-one should install Opam and follow the instructions provided in the Linux
-section. To get a usable graphical user interface, an X server should be
-installed on Windows.
 
 
 \levelThreeTitle{Verify installation}
@@ -323,12 +264,11 @@ domains.
 \levelFourTitle{Why3}
 
 
-\externalLink{Why3}{http://why3.lri.fr/} is a deductive proof platform
-developed by the LRI in Orsay. It
-provides a programming language and a specification language, as well as
-a module that allows to interact with a wide variety of automatic and
-interactive provers. This point is the one that interests us here. WP uses
-Why3 as a backend to talk with external provers.
+\externalLink{Why3}{https://why3.org/} is a deductive proof platform developed
+by the Laboratoire Méthodes Formelles (LMF) in Orsay. It provides a programming
+language and a specification language, and allows interacting with a wide
+variety of automatic and interactive provers. This point is the one that
+interests us here. WP uses Why3 as a backend to talk with external provers.
 
 
 On their website, we can find the list of
