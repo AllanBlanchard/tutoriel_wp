@@ -251,6 +251,25 @@ L'interface graphique de Frama-C ne permet pas l'édition du code source.
 \end{Warning}
 
 
+\levelThreeTitle{Les options d'aide de Frama-C}
+
+
+Les commandes suivantes sont utiles pour obtenir la documentation des options de
+Frama-C :
+\begin{CodeBlock}{shell}
+frama-c -kernel-h # configuration générale
+frama-c -<plugin>-h # aide pour le greffoin "plugin", par exemple:
+frama-c -wp-h # aide pour le greffon WP
+
+frama-c -explain <option> # obtenir la documentation de cette option
+\end{CodeBlock}
+
+
+Par ailleurs, la GUI fournit sa propre documentation, cliquer sur un
+\CodeInline{?} dans la GUI ouvre la documentation correspondante directement
+dans la GUI.
+
+
 \levelThreeTitle{(Bonus) Installation de prouveurs supplémentaires}
 
 

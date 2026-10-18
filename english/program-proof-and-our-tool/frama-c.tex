@@ -249,6 +249,24 @@ help (for example: \externalLink{StackOverflow - Frama-C}{https://stackoverflow.
 \end{Warning}
 
 
+\levelThreeTitle{Frama-C's help options}
+
+
+The following commands are useful to get documentation for Frama-C options:
+\begin{CodeBlock}{shell}
+frama-c -kernel-h # general configuration
+frama-c -<plugin>-h # help for the plug-in "plugin", for example:
+frama-c -wp-h # help for the WP plug-in
+
+frama-c -explain <option> # get documentation for this particular option
+\end{CodeBlock}
+
+
+Furthermore, the GUI provides its own documentation, clicking on a
+\CodeInline{?} in the GUI will open the related documentation directly in the
+GUI.
+
+
 \levelThreeTitle{(Bonus) Some more provers}
 
 
