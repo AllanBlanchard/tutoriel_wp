@@ -291,10 +291,16 @@ are then available in the WP sidebar in the ``Provers Configuration'' section:
 \levelFourTitle{Rocq}
 
 
-Rocq, which is developed by Inria, is a proof assistant. Basically, we
-write the proofs ourselves in a dedicated language and the assistant
-verifies (using typing) that the proof is actually a valid proof.
+Rocq (formerly known as Coq), which is developed by Inria, is a proof assistant.
+Basically, we write the proofs ourselves in a dedicated language and the
+assistant verifies (using typing) that the proof is actually a valid proof.
 
+
+In order to have a version of Rocq/Coq usable with Frama-C, one needs to install
+Frama-C through the Opam package manager and to install the \texttt{why3-coq}
+package. Rocq/Coq will then be available like other provers. In addition, the
+interactive proof mode can be configured from the GUI or through the command line
+option \CodeInline{-wp-interactive}.
 
 
 Why would we need such a tool? Sometimes, the properties we want to
