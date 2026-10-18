@@ -1,5 +1,5 @@
 Maintenant que  nous avons présenté les fonctionnalités les plus importantes
-d'ACSL pour la preuve de programme, intéressons nous plus spécifiquement à la
+d'ACSL pour la preuve de programme, intéressons-nous plus spécifiquement à la
 manière de prouver un programme avec Frama-C et WP. Nous allons présenter
 différentes approches qui peuvent être utilisées, selon la cible de vérification,
 le type de propriétés que l'on cherche à montrer et les fonctionnalités d'ACSL
@@ -31,14 +31,14 @@ que nous utilisons.
 \newpage
 
 
-A mesure que nous essayons de prouver des propriétés plus complexes,
-particulièrement quand les programmes contiennent des boucles, et des
+À mesure que nous essayons de prouver des propriétés plus complexes,
+particulièrement quand les programmes contiennent des boucles et des
 structures de données complexes, il y a un part de « \textit{trial and error} »
 pour comprendre ce qui manque aux prouveurs pour établir la preuve.
 
 
 Il peut manquer des hypothèses. Dans ce cas, nous pouvons essayer d'ajouter
-des assertions pour guider les prouveurs, ou écrire du code ghost avec les
+des assertions pour guider les prouveurs, ou écrire du code fantôme avec les
 bons invariants, ce qui permet d'effectuer une part du raisonnement nous
 même lorsque c'est trop difficile pour les solveurs SMT.
 
@@ -48,12 +48,12 @@ conditions de vérification ou essayer de faire la preuve soi-même avec
 l'assistant de preuve Rocq pour voir si la preuve semble réalisable.
 Parfois, le prouveur a juste besoin de plus de temps, dans ce cas, nous
 pouvons augmenter (parfois beaucoup) le temps de \textit{timeout}. Bien
-sûr la propriété peut parfois être trop difficile pour le prouveur et
-le code ghost ne pas être adapté, dans ce cas, il sera nécessaire de
-terminer la preuve nous mêmes.
+sûr, la propriété peut parfois être trop difficile pour le prouveur et
+le code fantôme ne pas être adapté, dans ce cas, il sera nécessaire de
+terminer la preuve nous-mêmes.
 
 
 Finalement, l'implémentation peut être incorrecte, et dans ce cas,
-nous devons la corriger. A ce moment là, nous utiliserons du test et
+nous devons la corriger. À ce moment-là, nous utiliserons du test et
 non de la preuve, car un test nous permettra de mettre en évidence la
 présence du bug et de l'analyser.

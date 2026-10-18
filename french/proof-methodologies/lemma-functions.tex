@@ -144,7 +144,7 @@ aux prémisses ou uniquement aux conclusions, elle peut rester une variable
 quantifiée, à supposer qu'il ne soit pas nécessaire de la lier à une variable
 du code de preuve (puisque qu'une variable quantifiée n'est pas visible depuis
 le code C). Si elle est liée aux prémisses et conclusions, elle doit être un
-paramètre de la fonction (puisqu'ACSL ne nous permet pas de quantifier une
+paramètre de la fonction (puisque ACSL ne nous permet pas de quantifier une
 variable pour un contrat de fonction entier).
 
 
@@ -759,7 +759,7 @@ maintenant, la seule différence est que nous devons tenir compte du glissement
 des éléments. De plus, pour l'invariant, nous avons dû ajouter une assertion
 pour aider les prouveurs automatiques à remarquer que le dernier élément de
 chaque plage est le même (notons que selon les versions des prouveurs ou la
-puissance de la machine, cela peut parfois ne pas être nécessaire). Une différence
+puissance de la machine, cela peut ne pas être nécessaire). Une différence
 plus importante comparativement à nos exemples précédents est le fait qu'ici, nous
 devons fournir plus d'information aux SMT solveurs en ajoutant d'autres appels
 de fonction fantôme (ligne 15, pour couper le premier élément du tableau), ainsi
