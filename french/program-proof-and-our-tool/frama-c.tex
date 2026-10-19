@@ -7,24 +7,24 @@
 
 
 Frama-C (pour FRAmework for Modular Analysis of C code) est une plate-forme
-dédiée à l'analyse de programmes C créée par le CEA List et Inria. Elle est
-basée sur une architecture modulaire permettant l'utilisation de divers
+dédiée à l'analyse de programmes C créée par le CEA List et Inria. Elle
+repose sur une architecture modulaire permettant l'utilisation de divers
 \textit{plugins}. Les \textit{plugins} fournis par défaut comprennent diverses
-analyses statiques (sans exécution du code analysé), dynamiques (avec
-exécution du code), ou combinant les deux. Ces \textit{plugins} peuvent collaborer
-ou non, soit en communiquant directement entre eux, soit en utilisant le
-langage de spécification fourni par Frama-C.
+analyses statiques (sans exécution du code), dynamiques (avec exécution), ou
+hybrides, combinant les deux approches. Ces \textit{plugins} peuvent fonctionner
+indépendamment ou collaborer, soit en communiquant directement entre eux, soit
+en utilisant le langage de spécification fourni par Frama-C.
 
 \image{gallery}
 
 
-Ce langage de spécification s'appelle ACSL (« Axel »)
-pour \textit{ANSI C Specification Language} et permet d'exprimer les
-propriétés que nous souhaitons vérifier sur nos programmes. Ces propriétés seront
-écrites sous forme d'annotations dans les commentaires. Pour les personnes qui
-auraient déjà utilisé Doxygen, ça y ressemble beaucoup, sauf que tout sera
-écrit sous forme de formules logiques. Tout au long de ce tutoriel, nous parlerons
-beaucoup d'ACSL donc nous ne nous étendrons pas plus à son sujet ici.
+Ce langage de spécification s'appelle ACSL (\textit{ANSI C Specification Language},
+prononcé « Axel ») et permet d'exprimer les propriétés que nous souhaitons
+vérifier sur nos programmes. Ces propriétés sont écrites sous forme d'annotations
+dans les commentaires. Pour les personnes qui ont déjà utilisé Doxygen, la syntaxe
+peut sembler familière, à la différence près que tout est écrit sous forme de
+formules logiques. Nous reviendrons en détail sur ACSL tout au long de ce tutoriel,
+aussi ne nous y attardons pas davantage ici.
 
 
 
@@ -35,7 +35,8 @@ la technique dont nous avons parlé plus tôt :
 appelons des conditions de vérification (ou obligations de preuves), qui sont
 des formules logiques dont nous devons vérifier si elles sont vraies ou fausses
 (on parle de « satisfiabilité »). Cette vérification peut être faite de manière
-manuelle ou automatique, ici nous n'utiliserons que des outils automatiques.
+manuelle ou automatique ; dans le cadre de ce tutoriel, nous n'utiliserons que
+des outils automatiques.
 
 
 
@@ -51,25 +52,25 @@ OCamlPro.
 \levelThreeTitle{Installation}
 
 
-Frama-C est un logiciel développé sous Linux et macOS. Son support est donc bien
-meilleur sous ces derniers. Le support pour Windows se fait actuellement via
+Frama-C est un logiciel développé sous Linux et macOS, où son support est donc
+nettement meilleur. Le support pour Windows se fait actuellement via
 Windows Subsystem for Linux (WSL), le comportement devrait être sensiblement le
 même que sous Linux, mais cette utilisation est tout de même bien moins testée
 à l'heure actuelle.
 
 
-Différents outils de preuves externes sont disponibles pour réaliser les
-preuves. La manière la plus courante de travailler avec Frama-C et WP est de
+Pour réaliser les preuves, différents outils externes sont disponibles.
+La manière la plus courante de travailler avec Frama-C et WP est de
 n'utiliser \textit{que} des outils de preuve automatique, même s'il est possible
 d'utiliser des outils de preuves interactives comme Rocq. Pour utiliser Rocq
 avec Frama-C, la seule méthode d'installation viable est de passer par Opam
 (en raison de la manière dont Why3 et Rocq interagissent).
 
 
-Certaines preuves de ce tutoriel sont finalisées via Rocq sans que l'on ne
-rentre vraiment dans ces détails qui ne sont pas l'objet du tutoriel. Il n'est
-pas \textit{nécessaire} d'avoir Rocq pour suivre ce tutoriel, quelques rares
-preuves ne seront juste pas \textit{entièrement} jouables.
+Certaines preuves de ce tutoriel sont finalisées via Rocq, mais nous n’entrerons
+pas dans ces détails, qui ne constituent pas l’objet principal de ce document.
+Il n'est pas \textit{nécessaire} d'avoir Rocq pour suivre ce tutoriel, quelques
+rares preuves ne seront juste pas \textit{entièrement} jouables.
 
 
 \levelFourTitle{Paquets d'installation}
@@ -92,8 +93,8 @@ $ sudo ./frama-c-linux-x86-64-33.0-Arsenic.run
 \end{CodeBlock}
 
 
-Sous Ubuntu, il est vraiment préférable d'exécuter l'installation en mode
-\CodeInline{sudo} pour que le script puisse ajouter les autorisations
+Sous Ubuntu, il est vivement recommandé d'exécuter l'installation en mode
+\CodeInline{sudo}, afin que le script puisse ajouter les autorisations
 nécessaires dans AppArmor pour l'interface graphique, sinon lancer l'interface
 graphique nécessitera soit de construire un profil pour AppArmor, soit de
 désactiver le bac à sable de la GUI en ajoutant systématiquement l'option
@@ -102,10 +103,10 @@ désactiver le bac à sable de la GUI en ajoutant systématiquement l'option
 
 La même procédure peut être appliquée pour WSL. À noter que selon la distribution
 WSL, elle pourrait n'embarquer que très peu de paquets par défaut. Par exemple,
-sur un WSL Debian « frais », il sera surement nécessaire d'installer un nombre
-notable de bibliothèques supplémentaires pour lancer l'interface graphique. Le
-WSL Ubuntu par défaut est suffisamment équipé pour ne rien avoir à installer de
-plus.
+sur une installation WSL Debian « fraîche », il sera surement nécessaire
+d'installer un nombre notable de bibliothèques supplémentaires pour lancer
+l'interface graphique. Le WSL Ubuntu par défaut est suffisamment équipé pour ne
+nécessiter aucune installation complémentaire.
 
 
 Après l'installation de Frama-C, il faut également installer un outil de preuve
@@ -273,13 +274,15 @@ dans la GUI.
 \levelThreeTitle{(Bonus) Installation de prouveurs supplémentaires}
 
 
-Cette partie est purement optionnelle, rien de ce qui est ici ne sera
-indispensable pendant le tutoriel. Cependant, lorsque l'on commence à
-s'intéresser vraiment à la preuve, il est possible de toucher assez rapidement
-aux limites du prouveur Alt-Ergo et d'avoir besoin d'autres
-prouveurs. Pour des propriétés simples, tous les prouveurs jouent à armes
-égales, pour des propriétés complexes, chaque prouveur à ses domaines de
-prédilection.
+Cette partie est purement optionnelle : rien de ce qui y est présenté ne sera
+indispensable pour suivre le tutoriel. Cependant, dès que l’on commence à
+s’intéresser sérieusement à la preuve, on atteint rapidement certaines limites
+d’Alt-Ergo, le prouveur utilisé par défaut. Il devient alors utile, voire
+nécessaire, de recourir à d’autres prouveurs. Pour des propriétés simples, tous
+les prouveurs se valent à peu près. En revanche, pour des propriétés plus
+complexes, chacun possède ses domaines de prédilection et peut se révéler plus
+ou moins efficace selon la nature des obligations de preuve à décharger.
+
 
 \levelFourTitle{Why3}
 
