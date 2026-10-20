@@ -1,5 +1,5 @@
 Le principe d'un contrat de fonction est de poser les conditions selon
-lesquelles la fonction s'exécutera. On distinguera deux parties :
+lesquelles la fonction s'exécutera. Nous distinguerons deux parties :
 \begin{itemize}
 \item \textbf{la précondition}, c'est-à-dire ce que doit assurer le code
       appelant à propos des variables passées en paramètres et de l'état de
@@ -11,11 +11,11 @@ lesquelles la fonction s'exécutera. On distinguera deux parties :
 
 
 Ces propriétés sont exprimées en langage ACSL dont la syntaxe est relativement
-simple pour qui a déjà fait du C, puisqu'elle reprend la syntaxe des expressions
+simple pour qui a déjà pratiqué le C, puisqu'elle reprend celle des expressions
 booléennes du C. Cependant, elle ajoute également :
 \begin{itemize}
 \item certaines constructions et connecteurs logiques qui ne sont pas présents
-originellement en C pour faciliter l'écriture ;
+originellement en C, afin de faciliter l'écriture des propriétés ;
 \item des prédicats pré-implémentés pour exprimer des propriétés souvent utiles
 en C (par exemple, la validité d'un pointeur) ;
 \item ainsi que des types plus généraux que les types primitifs du C,
@@ -30,7 +30,7 @@ langage ACSL.
 
 Les spécifications ACSL sont introduites dans nos codes source par
 l'intermédiaire d'annotations placées dans des commentaires. Syntaxiquement,
-un contrat de fonction est intégré dans les sources de la manière suivante :
+un contrat de fonction est inséré dans les sources de la manière suivante :
 
 
 
@@ -61,7 +61,7 @@ programme (nous nous intéresserons ensuite aux préconditions).
 
 
 La postcondition d'une fonction est précisée avec la clause \CodeInline{ensures}.
-Nous travaillerons avec la fonction suivante qui donne la valeur absolue
+Nous travaillerons avec la fonction suivante qui renvoie la valeur absolue
 d'un entier reçu en entrée.
 Une de ses postconditions est que le résultat (que nous notons avec le
 mot-clé \CodeInline{\textbackslash{}result}) est supérieur ou égal à 0.
@@ -110,10 +110,10 @@ $V$ & $V$ & $V$ \\ \hline
 
 
 
-Ce qui veut dire qu'une implication $A \Rightarrow B$ est vraie dans deux cas :
+Ce qui veut signifie qu'une implication $A \Rightarrow B$ est vraie dans deux cas :
 soit $A$ est fausse (et dans ce cas, il ne faut pas se préoccuper de $B$), soit
-$A$ est vraie et alors $B$ doit être vraie aussi. Notons que cela signifie que
-$A \Rightarrow B$ est équivalente à $\neg A \vee B$. L'idée étant finalement
+$A$ est vraie et alors $B$ doit être vraie aussi. Notons que cela revient à dire que
+$A \Rightarrow B$ est équivalente à $\neg A \vee B$. L'idée étant finalement :
 « je veux savoir si dans le cas où $A$ est vrai, $B$ l'est aussi. Si $A$ est
 faux, je considère que l'ensemble est vrai ». Par exemple, « s'il pleut, je veux
 vérifier que j'ai un parapluie, s'il ne pleut pas, ce n'est pas un problème
@@ -121,8 +121,8 @@ de savoir si j'en ai un ou pas, tout va bien ».
 
 
 
-Sa cousine l'équivalence $A \Leftrightarrow B$ (écrite \CodeInline{A <==> B} en ACSL)
-est plus forte. C'est la conjonction de l'implication dans les deux sens :
+Sa cousine, l'équivalence $A \Leftrightarrow B$ (écrite \CodeInline{A <==> B} en ACSL)
+est plus exigeante. Elle correspond à la conjonction de l'implication dans les deux sens :
 $(A \Rightarrow B) \wedge (B \Rightarrow A)$. Cette formule n'est vraie que
 dans deux cas : $A$ et $B$ sont vraies toutes les deux, ou fausses
 toutes les deux (c'est donc la négation du ou-exclusif). Pour continuer avec
@@ -160,14 +160,14 @@ catégoriser nos propriétés. Par exemple, nous pouvons écrire ceci :
 
 
 Dans une large part du tutoriel, nous ne nommerons pas les éléments que nous
-tenterons de prouver, les propriétés seront généralement relativement simples
-et peu nombreuses, les noms n'apporteraient pas beaucoup d'information.
+chercherons à prouver, les propriétés seront généralement relativement simples
+et peu nombreuses, et les noms n'apporteraient pas beaucoup d'information.
 
 
 
 Nous pouvons copier/coller la fonction \CodeInline{abs} et sa spécification dans un
-fichier \CodeInline{abs.c} et regarder avec Frama-C si l'implémentation est conforme à la
-spécification.
+fichier \CodeInline{abs.c} puis utiliser Frama-C pour vérifier si l'implémentation
+est conforme à la spécification.
 
 
 
@@ -210,35 +210,36 @@ frama-c-gui abs.c
 
 La fenêtre de Frama-C s'ouvre, dans le volet correspondant aux fichiers et aux
 fonctions, nous pouvons sélectionner la fonction \CodeInline{abs}.
-Pour chaque ligne \CodeInline{ensures}, il y a un cercle bleu dans la marge.
-Ces cercles indiquent qu'aucune vérification n'a été tentée pour ces lignes.
+Pour chaque ligne \CodeInline{ensures}, une pastille blanche apparaît dans la marge.
+Ces pastilles indiquent qu'aucune vérification n'a été tentée pour ces lignes.
 
 
 
 Nous demandons de vérifier que le code répond à la spécification en faisant
-un clic droit sur le nom de la fonction et « \textit{Prove function annotations by WP} » :
+un clic droit sur le nom de la fonction puis en choisissant
+« \textit{Prove function annotations by WP} » :
 
 
 \image{1-abs-2}
 
 
-Nous pouvons voir que les cercles bleus deviennent des pastilles vertes,
+Nous pouvons voir que les pastilles blanches deviennent des pastilles vertes,
 indiquant que la spécification est bien assurée par le programme.
 
 
 \image{1-abs-3}
 
 
-Il est possible de prouver les propriétés une à une en cliquant-droit sur
-celles-ci et pas sur le nom de la fonction. Nous pouvons également voir que deux
+Il est possible de prouver les propriétés une à une en effectuant un clic droit sur
+celles-ci plutôt que sur le nom de la fonction. Nous pouvons également constater que deux
 annotations supplémentaires ont été générées par Frama-C pour notre fonction :
 \begin{itemize}
   \item \CodeInline{exits \textbackslash{}false}
   \item \CodeInline{terminates \textbackslash{}true}
 \end{itemize}
-Le premier dit que la fonction ne doit pas appeler la fonction C
+Le premier indique que la fonction ne doit pas appeler la fonction C
 \CodeInline{exit} (ou une fonction qui appellerait elle-même transitivement la
-fonction \CodeInline{exit} à un certain point), et qu'elle finira normalement
+fonction \CodeInline{exit} à un certain point), et qu'elle doit finir normalement
 son exécution en atteignant l'instruction \CodeInline{return}. La seconde dit
 que la fonction ne doit pas s'exécuter à l'infini. Ces annotations sont générées
 par défaut, cependant il est également possible d'ajouter sa propre clause
@@ -248,22 +249,22 @@ annotations.
 
 
 
-Le code est-il vraiment sans erreurs ? WP nous permet de nous
-assurer que le code répond à la spécification, mais il ne fait pas de contrôle
-d'erreur à l'exécution (\textit{runtime error}, abrégé RTE) si nous ne le demandons
-pas. Un autre \textit{plugin} de Frama-C, appelé sobrement RTE, peut être
+Le code est-il vraiment exempt d'erreurs ? WP nous permet de nous
+assurer que le code répond à la spécification, mais il n'effectue pas de contrôle
+d'erreur à l'exécution (\textit{runtime error}, abrégé RTE) si nous ne le lui
+demandons pas. Un autre \textit{plugin} de Frama-C, sobrement nommé RTE, peut être
 utilisé pour générer des annotations ACSL qui peuvent ensuite être vérifiées par
 d'autres \textit{plugins}.
-Son but est
-d'ajouter des contrôles dans le programme pour les erreurs d'exécutions
+Son objectif est d'ajouter des contrôles dans le programme pour les erreurs d'exécutions
 possibles (débordements d'entiers, déréférencements de pointeurs invalides,
-division par 0, etc).
+division par zéro, etc).
 
 
-Il y a plusieurs manières de demander à WP la génération de ces gardes. Tout
-d'abord, il est possible de faire un clic-droit sur le nom de la fonction et
-de sélectionner « Populate WP RTE guards ». Cela ajoutera les annotations liées
-dans la fonction et l'on peut relancer WP sur celle-ci pour les vérifier.
+Il existe plusieurs manières de demander à WP la génération de ces gardes. Tout
+d'abord, nous pouvons faire un clic-droit sur le nom de la fonction et
+de sélectionner « Populate WP RTE guards ». Cela ajoutera les annotations
+correspondantes dans la fonction puis nous pouvons relancer WP sur celle-ci pour
+les vérifier.
 
 
 \image{1-abs-generate-rte}
@@ -282,11 +283,12 @@ WP.
 \image{1-abs-rte-sidebar}
 
 
-Finalement, il est aussi possible de configurer l'auto-génération avec le
+Finalement, il est également possible de configurer l'auto-génération avec le
 paramètre de ligne de commande \CodeInline{-wp-rte} qui activera la génération
-dès le lancement de Frama-C. Cela peut également être fait après avoir lancé la
-GUI de Frama-C, soit en cliquant sur l'icône d'engrenage en haut de l'interface,
-soit en passant par le menu « Edit », « Frama-C Parameters », « WP »
+dès le lancement de Frama-C. Cette configuration peut également être effectuée
+après avoir lancé la GUI de Frama-C, soit en cliquant sur l'icône d'engrenage
+en haut de l'interface, soit en passant par le menu « Edit »,
+« Frama-C Parameters », « WP »
 \image{plugin-options}
 où nous pouvons activer l'option \CodeInline{-wp-rte}. Notons que ce paramétrage
 n'est pas sauvegardé. La manière généralement préférée est donc de fournir
@@ -300,14 +302,14 @@ l'option \CodeInline{-wp-rte} directement sur la ligne de commande.
 
 
 Enfin, nous relançons la vérification (nous pouvons également cliquer sur le
-bouton « \textit{Reparse} » de la barre d'outils, cela aura pour effet de supprimer les
-preuves déjà effectuées).
+bouton « \textit{Reparse} » de la barre d'outils, ce qui aura pour effet de
+supprimer les preuves déjà effectuées).
 
 
 
-Nous voyons alors que WP échoue à prouver  l'impossibilité de
-débordement arithmétique sur le calcul de -val. Et c'est bien normal parce
-que -\CodeInline{INT\_MIN} ($-2^{31}$) > \CodeInline{INT\_MAX} ($2^{31}-1$).
+Nous constatons alors que WP échoue à prouver  l'impossibilité de
+débordement arithmétique sur le calcul de -val. Et c'est tout à fait normal
+puisque -\CodeInline{INT\_MIN} ($-2^{31}$) > \CodeInline{INT\_MAX} ($2^{31}-1$).
 
 
 
@@ -316,7 +318,7 @@ que -\CodeInline{INT\_MIN} ($-2^{31}$) > \CodeInline{INT\_MAX} ($2^{31}-1$).
 
 \begin{Information}
 Il est bon de noter que le risque de dépassement est pour nous réel, car nos
-machines (dont Frama-C détecte la configuration) fonctionne en
+machines (dont Frama-C détecte la configuration) fonctionnent en
 \externalLink{complément à deux}{https://fr.wikipedia.org/wiki/Compl\%C3\%A9ment\_\%C3\%A0\_deux}
 pour lequel le dépassement n'est pas défini par la norme C.
 \end{Information}
@@ -336,26 +338,26 @@ pour les pastilles : vert + jaune et jaune.
 
 
 
-La couleur verte et marron nous indique que la preuve a été effectuée, mais
+La couleur verte et jaune nous indique que la preuve a été effectuée, mais
 qu'elle dépend potentiellement de propriétés pour lesquelles ce n'est pas le
 cas.
 
 
 
-Si  la preuve n'a pas été recommencée intégralement par rapport à la preuve
+Si  la preuve n'a pas été rejouée intégralement par rapport à la preuve
 précédente, ces pastilles ont dû rester vertes, car les preuves associées ont
 été réalisées avant l'introduction de la propriété nous assurant l'absence
 d'erreur d'exécution, et ne se sont donc pas reposées sur la connaissance de
-cette propriété puisqu'elle n'existait pas.
+cette propriété puisqu'elle n'existait pas encore.
 
 
 
 En effet, lorsque WP transmet une condition de vérification à un prouveur
 automatique, il transmet deux types de propriétés : $G$, le but, la propriété
-que l'on cherche à prouver, et $S_1$ ... $S_n$ les diverses suppositions que l'on
+que l'on cherche à prouver, et $S_1$, ..., $S_n$ les diverses suppositions que l'on
 peut faire à propos de l'état du programme au point où l'on cherche à vérifier $G$.
 Cependant, il ne reçoit pas, en retour, quelles propriétés ont été utilisées par
-le prouveur pour valider $G$ (et en fait, la majorité des prouveurs ne peuvent
+le prouveur pour valider $G$ (et en réalité, la plupart des prouveurs ne peuvent
 même pas les lister). Donc si $S_3$ fait partie des suppositions, et si
 WP n'a pas réussi à obtenir une preuve de $S_3$, il indique que $G$ est vraie, mais
 en supposant que $S_3$ est vraie, pour laquelle nous n'avons actuellement pas
@@ -364,20 +366,20 @@ en supposant que $S_3$ est vraie, pour laquelle nous n'avons actuellement pas
 
 
 La couleur jaune nous signale qu'aucun prouveur n'a pu déterminer si la
-propriété est vérifiable. Les deux raisons peuvent être :
+propriété est vérifiable. Deux raisons peuvent l'expliquer :
 \begin{itemize}
 \item qu'il n'a pas assez d'information pour le déterminer ;
 \item que malgré toutes ses recherches, il n'a pas pu trouver un résultat à
 temps. Auquel cas, il rencontre un \textit{timeout} dont la durée est
-configurable globalement (une nouvelle fois dans les paramètres de WP, section
+configurable globalement (toujours dans les paramètres de WP, section
 « Prover Interface »).
 \end{itemize}
 
 
-Dans la vue WP, le panneau « \textit{WP Goals} » nous affiche la liste des
-conditions de vérification et pour chaque prouveur indique un petit logo si la
-preuve a été tentée et si elle a été réussie, échouée ou a rencontré un
-\textit{timeout}. Notons qu'il est possible de filtrer cette liste (voir logo
+Dans la vue WP, le panneau « \textit{WP Goals} » affiche la liste des
+conditions de vérification et, pour chaque prouveur, indique par un petit logo si la
+preuve a été tentée et si elle a été réussie, échouée ou atteint un
+\textit{timeout}. Notons qu'il est possible de filtrer cette liste (voir le logo
 en surbrillance dans la capture d'écran).
 
 
@@ -386,12 +388,12 @@ en surbrillance dans la capture d'écran).
 
 
 Le tableau est découpé comme suit, en première colonne, nous avons le nom de la
-fonction où se trouve le but à prouver. En seconde colonne, nous trouvons le nom
-du but. Ici par exemple notre postcondition nommée est estampillée
-\CodeInline{postcondition 'positive\_value,function\_result'}, nous pouvons
-d'ailleurs noter que lorsqu'une propriété est sélectionnée dans le tableau, elle
-est également surlignée dans le code source. Les propriétés anonymes se voient
-assignées comme nom le type de propriété voulu. La troisième colonne indique si
+fonction où se trouve le but à prouver. La seconde colonne indique le nom
+du but. Ici, par exemple, notre postcondition nommée apparaît avec le nom
+\CodeInline{postcondition 'positive\_value,function\_result'}, notons
+d'ailleurs que lorsqu'une propriété est sélectionnée dans le tableau, elle
+est également surlignée dans le code source. Les propriétés anonymes reçoivent
+comme nom le type de propriété voulu. La troisième colonne indique si
 un script de preuve a été créé pour cette condition de vérification, pour
 l'instant cette fonctionnalité est exclue de ce tutoriel.
 
@@ -410,12 +412,12 @@ d'appeler la fonction \CodeInline{exit} ou de créer une exécution infinie
 Pour les autres propriétés, WP doit générer des conditions de vérification. Pour
 celles-ci, le premier prouveur est souvent Qed. Ce n'est pas réellement un
 prouveur, mais un outil utilisé par WP pour simplifier les propriétés avant de
-les envoyer réellement aux prouveurs externes, il se peut que cet outil soit en
-mesure de résoudre le problème par lui-même, dans ce cas, aucun autre prouveur
-n'est appelé. Sinon, les prouveurs utilisés sont listés. Par exemple ici,
-Alt-Ergo qui est l'un des prouveurs que nous utilisons. Notons que pour la
+les transmettre aux prouveurs externes, il arrive que cet outil résolve
+le problème par lui-même, dans ce cas, aucun autre prouveur
+n'est appelé. Sinon, les prouveurs employés sont listés, comme ici Alt-Ergo,
+l'un des prouveurs que nous utilisons. Notons que pour la
 propriété liée à RTE, un « timeout » est indiqué, ce qui signifie que le
-prouveur s'est arrêté, car la preuve lui a pris trop de temps.
+prouveur s'est arrêté, car le temps de preuve a dépassé la limite.
 
 
 En fait, si nous double-cliquons sur la
@@ -428,7 +430,7 @@ les options surlignées en vert sont désactivées) :
 \image{1-abs-6}
 
 
-C'est la condition de vérification que génère WP par rapport à notre propriété et
+Il s'agit de la condition de vérification que génère WP à partir de notre propriété et
 notre programme, il n'est pas nécessaire de comprendre tout ce qu'il s'y passe,
 juste d'avoir une idée globale. Elle contient (dans la partie « \textit{Assume} ») les
 suppositions que nous avons pu donner et celles que WP a pu déduire des
@@ -437,7 +439,7 @@ la propriété que nous souhaitons vérifier.
 
 
 
-Que fait WP avec ces éléments ? En fait, il les transforme en une formule
+Que fait WP avec ces éléments ? Il les traduit en une formule
 logique puis demande aux différents prouveurs s'il est possible de la
 satisfaire (de trouver pour chaque variable, une valeur qui rend la formule
 vraie), cela détermine si la propriété est prouvable. Mais avant d'envoyer
@@ -456,20 +458,19 @@ répondre autre chose que « oui », « non » ou « inconnu », ils ne sont pas
 capables d'extraire le « pourquoi » d'un « non » ou d'un « inconnu ». Il
 existe des outils qui
 sont capables d'explorer les arbres de preuve pour en extraire ce type
-d'information, Frama-C n'en possède pas à l'heure actuelle. La lecture des
+d'information, Frama-C n'en dispose pas actuellement. La lecture des
 conditions de vérification peut parfois nous aider, mais cela demande un peu
 d'habitude pour pouvoir les déchiffrer facilement. Finalement, le meilleur
-moyen de comprendre la raison d'un échec est d'effectuer la preuve de manière
-interactive avec Rocq. En revanche, il faut déjà avoir une certaine habitude de
-ce langage pour ne pas être perdu devant les conditions de vérification générées par
-WP, étant donné que celles-ci encodent les éléments de la sémantique de C, ce
-qui rend le code souvent indigeste.
+moyen de comprendre la raison d'un échec est de manipuler interactivement la
+formule pour décomposer les parties qui sont prouvées ou échouées. Il est
+possible pour cela d'utiliser l'outil TIP intégré à WP ou l'assistant de preuve
+Rocq. Pour l'instant, ces deux éléments de méthodes sont exclus de ce tutoriel.
 
 
 
-Si nous retournons dans notre tableau des conditions de vérification (bouton
-surligné en bleu dans la capture d'écran précédente), nous pouvons donc voir
-que les hypothèses n'ont pas suffi aux prouveurs pour déterminer que la
+Si nous revenons à notre tableau des conditions de vérification (bouton
+surligné en bleu dans la capture d'écran précédente), nous constatons
+que les hypothèses n'ont pas permis aux prouveurs pour déterminer que la
 propriété  « absence de débordement » est vraie (et nous l'avons dit : c'est
 normal), il nous faut donc ajouter une hypothèse supplémentaire pour garantir
 le bon fonctionnement de la fonction : une précondition d'appel.
@@ -498,7 +499,7 @@ void foo(int a, int b){
 
 
 Les préconditions sont des propriétés sur les entrées (et potentiellement sur
-des variables globales) qui seront supposées préalablement vraies lors de
+des variables globales) qui sont supposées vraies lors de
 l'analyse de la fonction. La preuve que celles-ci sont effectivement validées
 n'interviendra qu'aux points où la fonction est appelée.
 
@@ -552,14 +553,14 @@ satisfait bien la précondition qu'elle impose :
 \image{2-foo-1}
 
 
-La clause \CodeInline{requires} au point d'appel peut être cachée
+La clause \CodeInline{requires} au point d'appel peut être masquée
 individuellement (icône surlignée en bleu) ou globalement (icône surlignée en
 vert). Cela peut être utile quand la quantité d'annotations devient importante
 et que l'on doit se concentrer sur une partie d'entre elles.
 
 
-Pour modifier un peu l'exemple, nous pouvons essayer d'inverser les deux
-dernières lignes. Auquel cas, nous pouvons voir que l'appel \CodeInline{abs(a)}
+Pour varier un peu l'exemple, nous pouvons tenter d'inverser les deux
+dernières lignes. Auquel cas, nous observons que l'appel \CodeInline{abs(a)}
 est validé par WP s'il se trouve après l'appel \CodeInline{abs(INT\_MIN)} !
 Pourquoi ?
 
@@ -570,13 +571,13 @@ assurer que si les préconditions sont vérifiées et que le calcul termine alor
 la postcondition est vérifiée.
 
 
-Si nous donnons à notre fonction une valeur qui viole explicitement sa
-précondition, nous pouvons déduire que n'importe quoi peut arriver, incluant
-obtenir « faux » en postcondition. Plus précisément, ici, après l'appel, nous
-supposons que la précondition est vraie (puisque la fonction ne peut pas
-modifier la valeur reçue en paramètre), sinon la fonction n'aurait pas pu
-s'exécuter correctement. Par conséquent, nous supposons que
-\CodeInline{INT\_MIN < INT\_MIN} qui est trivialement faux. À partir de là,
+Si nous fournissons à notre fonction une valeur qui viole explicitement sa
+précondition, nous pouvons déduire que n'importe quel comportement est possible,
+incluant d'obtenir « faux » en postcondition. Plus précisément, ici, après
+l'appel, nous supposons que la précondition est vraie (puisque la fonction ne
+peut pas modifier la valeur reçue en paramètre), sinon la fonction n'aurait pas
+pu s'exécuter correctement. Nous supposons donc que
+\CodeInline{INT\_MIN < INT\_MIN}, ce qui est trivialement faux. Dès lors,
 nous pouvons  prouver tout ce que nous voulons, car ce « faux » devient une
 supposition pour tout appel qui viendrait ensuite. À partir de « faux », nous
 prouvons tout ce que
@@ -598,18 +599,18 @@ conséquent :
 
 
 Nous pouvons remarquer que pour les appels de fonctions, l'interface graphique
-surligne le chemin d'exécution suivi avant l'appel dont nous cherchons à
+met en évident le chemin d'exécution suivi avant l'appel dont nous cherchons à
 vérifier la précondition. Ensuite, si nous regardons l'appel \CodeInline{abs(INT\_MIN)},
-nous remarquons qu'à force de simplifications, Qed a déduit que nous
+nous remarquons qu'au terme de ses simplifications, Qed a déduit que nous
 cherchons à prouver « False ». Conséquence logique, l'appel suivant \CodeInline{abs(a)}
 reçoit dans ses suppositions « False ». C'est pourquoi Qed est capable de déduire
 immédiatement « True ».
 
 
 
-La deuxième partie de la question est alors : pourquoi lorsque nous mettons les
-appels dans l'autre sens (\CodeInline{abs(a)} puis \CodeInline{abs(INT\_MIN)}), nous obtenons
-quand même une violation de la précondition sur le deuxième ? La réponse est
+La seconde partie de la question est alors : pourquoi en inversant les
+appels (\CodeInline{abs(a)} puis \CodeInline{abs(INT\_MIN)}), nous obtenons
+malgré tout une violation de la précondition sur le deuxième ? La réponse est
 simplement que pour \CodeInline{abs(a)} nous ajoutons dans nos suppositions la
 connaissance \CodeInline{a < INT\_MIN}, et tandis que nous n'avons pas de preuve
 que c'est vrai, nous n'en avons pas non plus que c'est faux. Donc si nous obtenons
@@ -621,13 +622,13 @@ chose que \CodeInline{INT\_MIN}.
 \levelThreeTitle{Le cas particulier de la fonction \CodeInline{main}}
 
 
-La fonction \CodeInline{main} n'est généralement pas appelée directement par le
+La fonction \CodeInline{main} n'est généralement pas appelée explicitement par le
 programme. Cependant, elle peut avoir des préconditions. Dans un tel cas, WP
 génère des conditions de vérification pour elles, mais avec une différence
 importante : le contexte fournit pour la preuve n'est pas le même que pour les
 autres fonctions. En effet, comme la fonction principale est appelée avant toute
 autre fonction du programme, à ce point de l'exécution, les variables globales
-ont nécessairement la valeur qui leur a été transmise à l'initialisation.
+ont nécessairement la valeur qui leur a été attribuée à l'initialisation.
 
 
 Illustrons cela avec l'extrait de code suivant :
@@ -637,14 +638,14 @@ Illustrons cela avec l'extrait de code suivant :
 
 
 Si nous exécutons WP sur cet exemple, la clause \CodeInline{requires} de la
-fonction \CodeInline{main} est prouvée, tandis qu'aucune tentative de preuve n'a
+fonction \CodeInline{main} est prouvée, alors qu'aucune tentative de preuve n'a
 été réalisée pour la précondition de la fonction \CodeInline{f} puisqu'elle
 n'est pas appelée dans le programme. La précondition de la fonction
 \CodeInline{main} est vérifiée, car après l'initialisation \CodeInline{h} a la
-valeur 42 qui est bien entendu entre 0 et 100. Remarquons que l'assertion dans
+valeur 42 qui se situe bien entre 0 et 100. Remarquons que l'assertion dans
 la fonction \CodeInline{main} est, elle aussi, prouvée puisque la valeur de
 \CodeInline{h} n'est pas changée par la fonction, alors que dans la fonction
-\CodeInline{f} ce n'est pas le cas puisque WP ne fait aucune supposition à
+\CodeInline{f} ce n'est pas le cas puisque WP ne fait aucune hypothèse à
 propos des valeurs des variables globales.
 
 
@@ -652,10 +653,10 @@ propos des valeurs des variables globales.
 
 
 Notons que WP fait cette hypothèse à propos de la fonction \CodeInline{main}
-parce que c'est le comportement par défaut de Frama-C. Ce comportement peut être
-configuré à l'aide de l'option \CodeInline{-lib-entry} qui dit à Frama-C de
+parce que c'est le comportement par défaut de Frama-C. Ce comportement
+est configurable via l'option \CodeInline{-lib-entry} qui indique à Frama-C de
 considérer que toutes les fonctions (incluant donc \CodeInline{main}) peuvent
-être appelées dans le programme. Donc, quand nous activons cette option sur la
+être appelées dans le programme. Ainsi, lorsque nous activons cette option sur la
 ligne de commande de Frama-C, pour notre exemple, aucune condition de
 vérification n'est générée pour les clauses \CodeInline{requires} de
 \CodeInline{main} puisqu'elle n'est pas appelée et aucune des assertions n'est
@@ -705,12 +706,12 @@ Et nous pouvons propager ces contraintes dans la clause \CodeInline{requires} :
 \CodeBlockInput{c}{addition-int-fixed.c}
 
 
-Nous voyons que l'expression qui peut provoquer un comportement indéterminé en
-C peut être utilisée de manière sure en ACSL. La raison de cela est que les
+Nous constatons que l'expression qui peut provoquer un comportement indéterminé en
+C peut être utilisée de sans risque en ACSL. La raison de cela est que les
 valeurs C sont automatiquement promues vers des types logiques avant de faire des
-calculs. Pour les entiers C, le type logique est \CodeInline{integer}, pour les
-valeurs flottantes, le type logique est \CodeInline{real} (les structures sont
-conservées telles quelles jusqu'à ce qu'un champ en particulier soit utilisé
+calculs. Pour les entiers C, le type logique est \CodeInline{integer} ; pour les
+valeurs flottantes, il s'agit de \CodeInline{real} (les structures restent
+inchangées jusqu'à ce qu'un champ en particulier soit utilisé
 pour un calcul, auquel cas, c'est la valeur du champ qui se trouve promue). Si
 le calcul comprend un \CodeInline{integer} et un \CodeInline{real}, la valeur
 de type \CodeInline{integer} est promue en \CodeInline{real}.
@@ -764,7 +765,7 @@ calculées.
 Cela fait d'ACSL une logique totale : toute opération est bien définie même si
 le résultat peut ne pas être calculable. Cela inclut également les accès mémoire
 qui peuvent être invalides en C, les accès à des éléments de listes logiques qui
-n'existent pas, les calculs qui ne terminent pas ...
+n'existent pas, les calculs qui ne terminent pas, etc.
 
 
 \levelThreeTitle{Exercices}

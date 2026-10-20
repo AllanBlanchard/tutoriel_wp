@@ -1,19 +1,19 @@
 Il peut arriver qu'une fonction ait divers comportements potentiellement très
 différents en fonction de l'entrée. Un cas typique est la réception d'un
-pointeur vers une ressource optionnelle : si le pointeur est \CodeInline{NULL}, nous
-aurons un certain comportement et un comportement complètement différent s'il ne
+pointeur vers une ressource optionnelle : si le pointeur est \CodeInline{NULL},
+la fonction a un certain comportement et un autre complètement différent s'il ne
 l'est pas.
 
 
 
-Nous avons déjà vu une fonction qui avait des comportements différents, la
-fonction \CodeInline{abs}. Nous reprendrons comme exemple. Les deux
+Nous avons déjà travaillé avec une fonction qui avait des comportements différents :
+la fonction \CodeInline{abs} que nous reprenons ici comme exemple. Les deux
 comportements que nous pouvons isoler sont le cas où la valeur est positive et
 le cas où la valeur est négative.
 
 
 
-Les comportements nous servent à spécifier les différents cas pour les
+Les comportements servent à spécifier les différents cas pour les
 postconditions. Nous les introduisons avec le mot-clé \CodeInline{behavior}.
 Chaque comportement a un nom. Pour un comportement donné, nous trouvons
 différentes hypothèses à propos de l'entrée de la fonction, elles sont
@@ -24,14 +24,14 @@ n'a pas \textbf{besoin} d'être vérifiée avant à l'appel, elle \textbf{peut}
 être vérifiée et dans ce cas, les postconditions associées à ce comportement
 s'appliquent. Ces postconditions sont à nouveau introduites à l'aide du mot
 clé \CodeInline{ensures}. Finalement, nous pouvons également demander à WP
-de vérifier le fait que les comportements sont disjoints (pour garantir
-le déterminisme) et complets (pour garantir que nous couvrons toutes les
-entrées possibles).
+de spécifier et vérifier le fait que les comportements sont disjoints (pour
+garantir le déterminisme) et complets (pour garantir que la spécification couvre
+toutes les entrées possibles).
 
 
 
-Les comportements sont disjoints si pour toute entrée de la fonction, elle ne
-correspond aux hypothèses (\textit{assumes}) que d'un seul comportement. Les
+Les comportements sont disjoints si pour toute entrée de la fonction, elle
+correspond aux hypothèses (\textit{assumes}) d'un unique comportement. Les
 comportements sont complets si les hypothèses recouvrent bien tout le domaine
 des entrées.
 
@@ -44,27 +44,30 @@ Par exemple pour \CodeInline{abs} :
 \CodeBlockInput{c}{abs.c}
 
 
-Notons qu'introduire des comportements ne nous interdit pas de spécifier une
+Notons qu'introduire des comportements n'interdit pas de spécifier une
 postcondition globale. Par exemple ici, nous avons spécifié que quel que soit
 le comportement, la fonction doit retourner une valeur positive.
 
 
-Pour comprendre ce que font précisément \CodeInline{complete} et \CodeInline{disjoint}, il est utile
-d'expérimenter deux possibilités :
+Pour comprendre ce que font précisément \CodeInline{complete} et \CodeInline{disjoint},
+expérimentons deux possibilités :
 \begin{itemize}
 \item remplacer l'hypothèse de « pos » par \CodeInline{val > 0} auquel cas les
-comportements seront disjoints, mais incomplets (il nous manquera le cas
+comportements sont disjoints, mais incomplets (il manque le cas
 \CodeInline{val == 0}) ;
 \item remplacer l'hypothèse de « neg » par \CodeInline{val <= 0} auquel cas les
-comportements seront complets, mais non disjoints (le cas \CodeInline{val == 0}) sera
+comportements sont complets, mais non disjoints (le cas \CodeInline{val == 0}) est
 présent dans les deux comportements.
 \end{itemize}
 
 
 \begin{Warning}
-Même si \CodeInline{assigns} est une postcondition, à ma connaissance, il n'est pas
-possible de mettre des \CodeInline{assigns} pour chaque \textit{behavior}. Si nous avons
-besoin d'un tel cas, nous spécifions :
+Même si \CodeInline{assigns} est une postcondition, et qu'il est possible de
+spécifier et vérifier des \CodeInline{assigns} pour chaque \textit{behavior},
+cette construction est actuellement mal prise en compte par WP du côté du code
+appelant.
+
+Dans une telle situation, nous spécifions plutôt :
 \begin{itemize}
 \item \CodeInline{assigns} avant les \textit{behavior} (comme dans notre exemple) avec tout
 élément non-local susceptible d'être modifié,

@@ -1,6 +1,6 @@
-Pour terminer cette partie nous allons parler de la composition des appels de
+Pour terminer cette partie, parlons de la composition des appels de
 fonctions et commencer à entrer dans les détails de fonctionnement de WP. Nous
-en profiterons pour regarder comment se traduit le découpage de nos
+en profiterons pour examiner comment se traduit le découpage de nos
 programmes en fichiers lorsque nous voulons les spécifier et les prouver avec WP.
 
 
@@ -33,25 +33,25 @@ Fichier abs.c :
 
 
 Nous découpons en mettant le contrat de la fonction dans le \textit{header}. Le
-but est de pouvoir importer la spécification en même temps que la déclaration
-celle-ci lorsque nous aurons besoin de la fonction dans un autre fichier. En
-effet, WP en aura besoin pour montrer que les appels à cette
+but est d'importer la spécification en même temps que la déclaration
+lorsque nous en avons besoin dans un autre fichier. En effet, ces informations
+de contrats sont nécessaires à WP pour montrer que les appels à cette
 fonction sont valides. D'abord pour prouver que la précondition est satisfaite
 (et donc que l'appel est légal) et ensuite pour savoir ce qu'il peut apprendre
-en retour (à savoir la postcondition) afin de pouvoir l'utiliser pour prouver
-la fonction appelante.
+en retour (à savoir la postcondition) afin de prouver la correction de la
+fonction appelante.
 
 
 
 Nous pouvons créer un fichier sous le même formatage pour la fonction \CodeInline{max}.
 Dans les deux cas, nous pouvons rouvrir le fichier source (pas besoin de
 spécifier les fichiers \textit{headers} dans la ligne de commande) avec Frama-C et
-remarquer que la spécification est bien associée à la fonction et que nous
-pouvons la prouver.
+remarquer que la spécification est bien associée à la fonction et qu'il est
+possible de la prouver.
 
 
 
-Maintenant, nous pouvons préparer le terrain pour la fonction \CodeInline{max\_abs} dans notre \textit{header} :
+Maintenant, préparons le terrain pour la fonction \CodeInline{max\_abs}, dans notre \textit{header} :
 
 
 
@@ -67,32 +67,32 @@ et dans le fichier source :
 
 
 
-Et ouvrir ce dernier fichier dans Frama-C. Si nous regardons le panneau latéral,
-nous pouvons voir que les fichiers \textit{header} que nous avons inclus dans le fichier
+Ouvrons ce dernier fichier dans Frama-C. Si nous examinons le panneau latéral,
+nous observons que les fichiers \textit{header} que nous avons inclus dans le fichier
 \CodeInline{abs\_max.c} y apparaissent et que les contrats de fonction sont décorés avec des
-pastilles particulières (vertes et bleues) :
+pastilles vertes et bleues :
 
 
 
 \image{max_abs}
 
 
-Ces pastilles nous disent qu'en l'absence d'implémentation, les propriétés sont
+Ces pastilles indiquent qu'en l'absence d'implémentation, les propriétés sont
 supposées vraies. Et c'est une des forces de la preuve déductive de programmes
 par rapport à certaines autres méthodes formelles : les fonctions sont vérifiées
-en isolation les unes des autres. Nous voyons aussi des pastilles jaunes pour
+en isolation les unes des autres. Nous constatons aussi des pastilles jaunes pour
 les clauses \CodeInline{exits} et \CodeInline{terminates}. Comme Frama-C génère
 ces clauses et n'a aucun moyen de vérifier leur correction, il indique à
-l'utilisateur qu'il devrait vérifier leur correction (ou les écrire
-explicitement, auquel cas Frama-C pourra supposer qu'elles sont correctes,
+l'utilisateur qu'il devrait vérifier leur correction, ou les écrire
+explicitement, auquel cas Frama-C suppose qu'elles sont correctes,
 exactement de la même manière que pour les clauses \CodeInline{ensures} et
-\CodeInline{assigns} que nous avons écrites).
+\CodeInline{assigns} que nous avons écrites.
 
 
 En dehors de la fonction, sa spécification est considérée comme étant
 vérifiée : nous ne cherchons pas à reprouver que la fonction fait bien son travail
-à chaque appel, nous nous contenterons de vérifier que les préconditions sont
-réunies au moment de l'appel. Cela donne donc des preuves très modulaires et donc
+à chaque appel, nous nous contentons de vérifier que les préconditions sont
+réunies au moment de l'appel. Cela donne des preuves très modulaires et donc
 des spécifications plus facilement réutilisables. Évidemment, si notre preuve
 repose sur la spécification d'une autre fonction, cette fonction doit-elle même
 être vérifiable pour que la preuve soit formellement complète. Mais nous pouvons

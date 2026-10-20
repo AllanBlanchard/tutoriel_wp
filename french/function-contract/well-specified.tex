@@ -3,7 +3,7 @@
 
 C'est certainement notre tâche la plus difficile. En soi, la programmation est
 déjà un effort consistant à écrire des algorithmes qui répondent à notre
-besoin. La spécification nous demande également de faire ce travail, la
+besoin. La spécification nous impose un travail comparable, la
 différence est que nous ne nous occupons plus de préciser la manière de répondre
 au besoin, mais le besoin lui-même. Pour prouver que la réalisation implémente
 bien ce que nous attendons, il faut donc être capable de décrire précisément le
@@ -135,12 +135,12 @@ avoir une attention particulière pour ce que nous spécifions.
 \levelThreeTitle{Pointeurs}
 
 
-S'il y a une notion à laquelle nous sommes confrontés en permanence en
-langage C, c'est bien la notion de pointeur. C'est une notion complexe et
-l'une des principales cause de bugs critiques dans les programmes, ils ont
-donc droit à un traitement de faveur dans ACSL. Pour avoir une spécification
-correcte des programmes utilisant des pointeurs, il est impératif de détailler
-la configuration de la mémoire que l'on considère.
+S'il est une notion que nous rencontrons en permanence en
+langage C, c'est bien celle de pointeur. Il s'agit d'une notion complexe et
+l'une des principales cause de bugs critiques dans les programmes, elle
+bénéficie donc d'un traitement privilégié en ACSL. Pour spécifier correctement
+des programmes utilisant des pointeurs, il est impératif de décrire précisément
+la mémoire manipulée.
 
 
 
@@ -156,22 +156,22 @@ le moment seulement vérifiable sans la vérification des RTEs) :
 \levelFourTitle{Historique des valeurs}
 
 
-Ici, nous introduisons une première fonction logique fournie de base par
+Nous introduisons ici une première fonction logique fournie de base par
 ACSL : \CodeInline{\textbackslash{}old}, qui permet de parler de l'ancienne
-valeur d'un élément. Ce que nous dit donc la spécification est « la fonction
-doit assurer que \CodeInline{*a} soit égal à l'ancienne valeur (au sens : la
-valeur avant l'appel) de \CodeInline{*b} et inversement ».
+valeur d'un élément. La spécification signifie donc « la fonction
+doit garantir que \CodeInline{*a} soit égal à l'ancienne valeur (au sens : la
+valeur avant l'appel) de \CodeInline{*b} et réciproquement ».
 
 
 
-La fonction \CodeInline{\textbackslash{}old} ne peut être utilisée que dans la
+La fonction \CodeInline{\textbackslash{}old} ne peut s'employer que dans la
 postcondition d'une fonction. Si nous avons besoin de ce type d'information
 ailleurs, nous utilisons \CodeInline{\textbackslash{}at} qui nous permet
 d'exprimer des propriétés à propos de la
 valeur d'une variable à un point donné. Elle reçoit deux paramètres. Le premier
 est la variable (ou position mémoire) dont nous voulons obtenir la valeur et le
 second la position (sous la forme d'un label C) à laquelle nous voulons
-contrôler la valeur en question.
+examiner cette valeur.
 
 
 
@@ -205,8 +205,8 @@ de divers points de programme dans la même expression.
 \end{Information}
 
 
-À la différence de \CodeInline{\textbackslash{}old}, qui ne peut être utilisée que dans les
-postconditions de contrats de fonction, \CodeInline{\textbackslash{}at} peut être utilisée partout.
+Contrairement à \CodeInline{\textbackslash{}old}, qui ne s'emploie que dans les
+postconditions de contrats de fonction, \CodeInline{\textbackslash{}at} est utilisable partout.
 En revanche, tous les points de programme ne sont pas accessibles selon le type
 d'annotation que nous sommes en train d'écrire. \CodeInline{Old} et \CodeInline{Post} ne sont
 disponibles que dans les postconditions d'un contrat, \CodeInline{Pre} et \CodeInline{Here}
@@ -216,13 +216,13 @@ le tutoriel).
 
 
 Notons qu'il est important de s'assurer que l'on utilise \CodeInline{\textbackslash{}old} et
-\CodeInline{\textbackslash{}at} pour des valeurs qui ont du sens. C'est pourquoi par
-exemple dans un contrat, toutes les valeurs reçues en entrée sont placées dans un
+\CodeInline{\textbackslash{}at} pour des valeurs qui ont du sens. C'est pourquoi, par
+exemple, dans un contrat, toutes les valeurs reçues en entrée sont placées dans un
 appel à \CodeInline{\textbackslash{}old} par Frama-C lorsqu'elles sont utilisées dans
 les postconditions, la nouvelle valeur d'une variable fournie en entrée d'une
 fonction n'a aucun sens pour l'appelant puisque cette valeur est inaccessible par
 lui : elles sont locales à la fonction appelée. Par exemple, si nous regardons le
-contrat de la fonction \CodeInline{swap} dans Frama-C, nous pouvons voir que dans
+contrat de la fonction \CodeInline{swap} dans Frama-C, nous constatons que dans
 la postcondition, chaque pointeur se trouve dans un appel à \CodeInline{\textbackslash{}old} :
 
 
@@ -244,7 +244,7 @@ de la variable \CodeInline{x} à un point du programme où elle n'existe pas :
 
 Cependant, dans certains cas, tout ce que nous pouvons obtenir est un échec de
 la preuve, parce que déterminer si la valeur existe ou non à un label particulier
-ne peut être fait par une analyse purement syntaxique. Par exemple, si la variable
+ne relève pas d'une analyse purement syntaxique. Par exemple, si la variable
 est déclarée, mais pas définie, ou si nous demandons la valeur d'une zone mémoire
 pointée :
 
@@ -262,11 +262,11 @@ ne gardons pas cette idée en tête. Par exemple, dans le programme suivant :
 \CodeBlockInput[25][30]{c}{at-2.c}
 
 
-La première assertion est prouvée, et tandis que la seconde assertion a l'air
-d'exprimer la même propriété, elle ne peut pas être prouvée. La raison est
-simplement qu'elle n'exprime pas la même propriété. L'expression
+La première assertion est prouvée, et tandis que la seconde assertion, qui a l'air
+d'exprimer la même propriété, ne peut pas être prouvée. La raison est
+simplement qu'elle n'exprime en réalité pas la même propriété. L'expression
 \CodeInline{\textbackslash{}at(x[*p], Pre)} doit être lue comme
-\CodeInline{\textbackslash{}at(x[\textbackslash{}at(*p)], Pre)} parce que le
+\CodeInline{\textbackslash{}at(x[\textbackslash{}at(*p, Pre)], Pre)} parce que le
 label est propagé à la sous-expression \CodeInline{*p}, pour laquelle nous ne
 connaissons pas la valeur au label \CodeInline{Pre} (qui n'est pas spécifié).
 
@@ -280,11 +280,11 @@ précises.
 \levelFourTitle{Validité de pointeurs}
 
 
-Si nous essayons de prouver le fonctionnement de \CodeInline{swap} (en activant
-la vérification des RTE), notre postcondition est bien vérifiée, mais WP nous
-indique qu'il y a un certain nombre de possibilités de \textit{runtime-error}. Ce qui
+Si nous tentons de prouver le fonctionnement de \CodeInline{swap} (en activant
+la vérification des RTE), notre postcondition est bien vérifiée, mais WP
+signale qu'il y a un plusieurs possibilités de \textit{runtime-error}. Ce qui
 est normal, car nous n'avons pas précisé à WP que les pointeurs que nous
-recevons en entrée de fonction sont valides.
+recevons en entrée de la fonction sont valides.
 
 
 
@@ -297,27 +297,27 @@ reçoit un pointeur en entrée :
 
 
 
-À partir de là, les déréférencements qui sont effectués par la suite sont
-acceptés, car la fonction demande à ce que les pointeurs d'entrée soient
+Dès lors, les déréférencements qui sont effectués par la suite sont
+acceptés, car la fonction exige que les pointeurs d'entrée soient
 valides.
 
 
 
 Comme nous le verrons plus tard, \CodeInline{\textbackslash{}valid} peut recevoir plus qu'un
 pointeur en entrée. Par exemple, il est possible de lui transmettre une
-expression de cette forme : \CodeInline{\textbackslash{}valid(p + (s .. e))} qui voudra dire « pour
-tout \CodeInline{i} entre \CodeInline{s} et \CodeInline{e} (inclus), \CodeInline{p+i} est un pointeur valide », ce sera important
-notamment pour la gestion des tableaux dans les spécifications.
+expression de cette forme : \CodeInline{\textbackslash{}valid(p + (s .. e))} qui signifie « pour
+tout \CodeInline{i} entre \CodeInline{s} et \CodeInline{e} (inclus), \CodeInline{p+i} est un pointeur valide ».
+Cette notation est très utile, notamment pour la gestion des tableaux dans les spécifications.
 
 
 
-Si nous nous intéressons aux assertions ajoutées par WP dans la fonction \CodeInline{swap}
-avec la validation des RTEs, nous pouvons constater qu'il existe une variante
+En examinant les assertions ajoutées par WP dans la fonction \CodeInline{swap}
+avec la validation des RTEs, nous constatons qu'il existe une variante
 de \CodeInline{\textbackslash{}valid} sous le nom \CodeInline{\textbackslash{}valid\_read}. Contrairement au premier,
 celui-ci assure qu'il est uniquement nécessaire que le pointeur puisse
 être déréférencé en lecture et pas forcément en écriture, pour pouvoir
 réaliser l'opération de lecture. Cette subtilité est due au fait qu'en C, le
-\textit{downcast} de pointeur vers un élément \CodeInline{const} est très facile à faire, mais
+\textit{downcast} de pointeur vers un élément \CodeInline{const} est facile à réaliser, mais
 n'est pas forcément légal.
 
 
@@ -403,8 +403,8 @@ la bonne clause \CodeInline{assigns}.
 \levelFourTitle{Séparation des zones de la mémoire}
 
 
-Les pointeurs apportent le risque d'\textit{aliasing} (plusieurs pointeurs ayant accès à
-la même zone de mémoire). Si dans certaines fonctions, cela ne pose pas de
+Les pointeurs introduisent le risque d'\textit{aliasing} (plusieurs pointeurs ayant accès à
+la même zone de mémoire). Si, dans certaines fonctions, cela ne pose pas de
 problème (par exemple si nous passons deux pointeurs égaux
 à notre fonction \CodeInline{swap}, la spécification est toujours vérifiée par le
 code source), dans d'autre cas, ce n'est pas si simple :
@@ -440,17 +440,17 @@ nous la modifions.
 \begin{Question}
 Pourquoi la clause \CodeInline{assigns} est-elle validée ?
 
-C'est simplement dû au fait, qu'il n'y a bien que la zone mémoire pointée par
-\CodeInline{a} qui est modifiée étant donné que si \CodeInline{a != b} nous ne modifions bien
-que cette zone et que si \CodeInline{a == b}, il n'y a toujours que cette zone, et
-pas une autre.
+La raison tient au fait que seule la zone mémoire pointée par \CodeInline{a} est
+effectivement modifiée : si \CodeInline{a != b}, nous ne touchons qu'à cette
+zone, et si \CodeInline{a == b}, nous n'en modifions toujours qu'une seule,
+jamais une autre.
 \end{Question}
 
 
-Pour assurer que les pointeurs sont bien sur des zones séparées de mémoire,
+Pour garantir que les pointeurs désignent bien des zones séparées de mémoire,
 ACSL nous offre le prédicat \CodeInline{\textbackslash{}separated(p1, ..., pn)} qui reçoit en entrée
-un certain nombre de pointeurs et qui nous assurera qu'ils sont deux à deux
-disjoints. Ici, nous spécifierions :
+une liste de pointeurs et qui nous assure qu'ils sont deux à deux disjoints.
+Dans notre cas, nous spécifierions :
 
 
 
@@ -465,7 +465,7 @@ Et cette fois, la preuve est effectuée :
 \image{2-incr_a_by_b-2}
 
 
-Nous pouvons noter que nous ne nous intéressons pas ici à la preuve de
+Notons que nous ne nous intéressons pas ici à la preuve de
 l'absence d'erreur à l'exécution, car ce n'est pas l'objet de cette section.
 Cependant, si cette fonction faisait partie d'un programme complet à vérifier,
 il faudrait définir le contexte dans lequel on souhaite l'utiliser et définir
@@ -489,10 +489,10 @@ contrat.
 
 Le plus important est avant tout de déterminer le contrat sans prendre en compte
 le contenu de la fonction (au moins dans un premier temps). En effet, nous
-essayons de prouver une fonction, mais elle pourrait contenir un bug, donc si
-nous suivons de trop près le code de la fonction, nous risquons d'introduire
-dans la spécification le même bug présent dans le code, par exemple en prenant
-en compte une condition erronée. C'est pour cela que
+tentons de prouver la correction d'une fonction, mais elle pourrait contenir un
+bug, donc si nous suivons de trop près le code de la fonction, nous risquons
+d'introduire dans la spécification le même bug présent dans le code, par exemple
+en prenant en compte une condition erronée. C'est pour cela que
 l'on souhaitera généralement que la personne qui développe le programme et la
 personne qui le spécifie formellement soient différentes (même si elles ont pu
 préalablement s'accorder sur une spécification textuelle par exemple).
@@ -502,7 +502,7 @@ préalablement s'accorder sur une spécification textuelle par exemple).
 Une fois que le contrat est posé, alors seulement, nous nous intéressons aux
 spécifications dues au fait que nous sommes soumis aux contraintes de notre langage
 et notre matériel. Cela concerne principalement nos préconditions. Par exemple,
-la fonction valeur absolue n'a, au fond, pas  vraiment de précondition à
+la fonction valeur absolue n'a, au fond, pas vraiment de précondition à
 satisfaire : c'est la machine cible qui détermine qu'une condition supplémentaire
 doit être vérifiée en raison du complément à deux. Comme nous le verrons dans le
 chapitre \ref{l1:proof-methodologies}, vérifier l'absence de \emph{runtime-errors}
