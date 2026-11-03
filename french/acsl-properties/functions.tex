@@ -1,5 +1,5 @@
 Les fonctions logiques nous permettent de décrire des fonctions mathématiques
-qui contrairement aux prédicats nous permettent de renvoyer différents types.
+qui, contrairement aux prédicats, nous permettent de renvoyer différents types.
 Elles ne seront utilisables que dans les spécifications. Cela nous permet d'une
 part, de les factoriser, et d'autre part de définir des opérations sur les
 types \CodeInline{integer} et \CodeInline{real} qui ne peuvent pas déborder
@@ -55,16 +55,16 @@ les bornes d'un entier :
 \CodeBlockInput[8][15]{c}{linear-1.c}
 
 
-Certains contrôles de débordement ne sont pas encore prouvée. En effet, tandis que
+Certains contrôles de débordement ne sont pas encore prouvés. En effet, tandis que
 la borne fournie pour \CodeInline{x} par notre fonction logique est définie pour
-le calcul complet, elle ne nous dit rien à propos des calculs intermédiaires. Par
-exemple ici, le fait \CodeInline{3 * x + 4} ne soit pas inférieur à
-\CodeInline{INT\_MIN} ne nous garantit pas que c'est aussi le cas pour
+le calcul complet, elle n'indique rien à propos des calculs intermédiaires. Par
+exemple ici, le fait que \CodeInline{3 * x + 4} ne soit pas inférieur à
+\CodeInline{INT\_MIN} ne garantit pas que c'est aussi le cas pour
 \CodeInline{3 * x}. Nous pouvons imaginer deux manières différentes de résoudre
 le problème, ce choix doit être guidé par les besoins du projet.
 
 
-Nous pouvons augmenter les restrictions sur l'entrée :
+Nous pouvons restreindre plus fortement l'entrée :
 
 
 \CodeBlockInput[17][25]{c}{linear-1.c}
@@ -77,7 +77,7 @@ de débordement :
 \CodeBlockInput[27][37]{c}{linear-1.c}
 
 
-Notons que comme dans la spécification, les calculs sont effectués à l'aide
+Notons que, comme dans la spécification, les calculs sont effectués à l'aide
 d'entiers mathématiques, nous n'avons pas à nous préoccuper d'un quelconque
 risque de débordement lorsque nous utilisons la fonction logique \CodeInline{ax\_b} :
 
@@ -92,15 +92,15 @@ débordements :
 \image{linear-math}
 
 
-\levelThreeTitle{Récursivité et limites}
+\levelThreeTitle{Récursivité et limitations}
 
 
 Les fonctions logiques peuvent être définies récursivement. Cependant, une telle
 définition montrera très rapidement ses limites pour la preuve. En effet,
 pendant les manipulations des prouveurs automatiques sur les propriétés
 logiques, si l'usage d'une telle fonction est présente, elle devra être évaluée.
-Or, les prouveurs ne sont pas conçus pour faire ce genre d'évaluation, qui se
-révélera donc généralement très coûteuse et produisant alors des temps de preuve
+Or, les prouveurs ne sont pas conçus pour faire ce genre d'évaluation. Cela se
+révèle donc généralement coûteux en calcul et produit alors des temps de preuve
 trop longs menant à des \textit{timeouts}.
 
 
@@ -115,7 +115,7 @@ et en C :
 
 
 Sans contrôle de borne, cette fonction se prouve rapidement. Si nous ajoutons
-le contrôle des RTE, nous voyons qu'il y a un risque de débordement
+le contrôle des RTE, nous constatons qu'il y a un risque de débordement
 arithmétique sur la multiplication.
 
 
@@ -138,10 +138,10 @@ bonne idée de passer un peu plus de temps sur l'évaluation de la fonction.
 
 
 Les fonctions logiques peuvent donc être définies récursivement, mais sans astuces
-supplémentaires, nous venons vite nous heurter au fait que les prouveurs vont au
-choix devoir faire de l'évaluation, ou encore « raisonner » par induction, deux
-tâches pour lesquelles ils ne sont pas du tout faits, ce qui limite nos
-possibilités de preuve. Nous verrons plus tard dans ce tutoriel comment éviter
+supplémentaires, nous venons vite nous heurter au fait que les prouveurs vont, au
+choix, devoir faire de l'évaluation, ou encore « raisonner » par induction, deux
+tâches pour lesquelles ils ne sont pas du tout efficaces, ce qui limite nos
+possibilités de preuve. Nous verrons plus tard dans ce tutoriel comment contourner
 cette limitation.
 
 
@@ -200,7 +200,7 @@ précédente plus 1 (en utilisant la fonction logique définie).
 Dans le programme suivant, la fonction \CodeInline{vec\_add} ajoute le second
 vecteur reçu en entrée dans le premier. Écrire un contrat pour la fonction
 \CodeInline{show\_the\_difference} qui exprime pour chaque valeur du vecteur
-\CodeInline{v1} la différence entre la pré et la postcondition. Pour cela,
+\CodeInline{v1} la différence entre la précondition et la postcondition. Pour cela,
 définir une fonction logique \CodeInline{diff} qui retourne la différence de
 valeur à une position mémoire entre un label \CodeInline{L1} et la valeur au
 label \CodeInline{L2}.

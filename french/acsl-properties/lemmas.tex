@@ -1,21 +1,21 @@
 
 Les lemmes sont des propriétés générales à propos des prédicats ou encore des
-fonctions. Une fois ces propriétés exprimées, la preuve peut être réalisée en
-isolation du reste de la preuve du programme, en utilisant des prouveurs
+fonctions. Une fois ces propriétés exprimées, leur preuve peut être réalisée
+indépendamment du reste de la preuve du programme, en utilisant des prouveurs
 automatiques ou (plus souvent) des prouveurs interactifs. Une fois la preuve
 réalisée, la propriété énoncée peut être utilisée directement par les prouveurs
-automatiques sans que cela ne nécessite d'en réaliser la preuve à nouveau. Par
-exemple, si nous énonçons un lemme $L$ qui dit que $P \Rightarrow Q$, et dans
-une autre preuve nous avons besoin de prouver $Q$ alors que nous savons déjà
-que $P$ est vérifiée, nous pouvons utiliser directement le lemme $L$ pour
-conclure sans avoir besoin de faire à nouveau le raisonnement complet qui
-amène de $P$ à $Q$.
+automatiques sans qu'il soit nécessaire d'en réaliser la preuve à nouveau. Par
+exemple, si nous énonçons un lemme $L$ qui dit que $P \Rightarrow Q$, et que,
+dans une autre preuve, nous avons besoin de prouver $Q$ alors que nous savons
+déjà que $P$ est vérifiée, nous pouvons utiliser directement le lemme $L$ pour
+conclure sans avoir besoin de refaire le raisonnement complet qui amène de $P$
+à $Q$.
 
 
 
-Dans la section précédente, nous avons dit que les fonctions récursives logiques
+Dans la section précédente, nous avons vu que les fonctions récursives logiques
 peuvent rendre les preuves plus difficiles pour les solveurs SMT. Dans un tel cas,
-les lemmes peuvent nous aider. Nous pouvons écrire nous même les preuves qui
+les lemmes peuvent nous aider. Nous pouvons écrire nous-mêmes les preuves qui
 nécessitent de raisonner par induction pour certaines propriétés que nous
 énonçons comme des lemmes. Ces lemmes peuvent ensuite être utilisés
 efficacement par les prouveurs pour effectuer les autres preuves à propos du
@@ -40,7 +40,7 @@ utilisée est la suivante :
 
 
 Cette fois les propriétés que nous voulons exprimer ne dépendent pas de
-paramètres reçus (hors de nos \textit{labels} bien sûr). Ces propriétés seront donc
+paramètres reçus (hors de nos \textit{labels} bien sûr). Ces propriétés sont donc
 exprimées sur des variables quantifiées. Par exemple, nous pouvons poser ce
 lemme qui est vrai, même s'il est trivial :
 
@@ -60,7 +60,7 @@ trivialement prouvée par Qed.
 
 
 
-\levelThreeTitle{Exemple : propriété fonction affine}
+\levelThreeTitle{Exemple : propriétés de fonction affine}
 
 
 Nous pouvons par exemple reprendre nos fonctions affines et exprimer quelques
@@ -82,9 +82,9 @@ ensuite construire cet exemple de code :
 
 
 
-Si nous ne renseignons pas les lemmes mentionnés plus tôt, il y a peu de chances
+Si nous ne fournissons pas les lemmes mentionnés plus tôt, il y a peu de chances
 qu'Alt-Ergo réussisse à produire la preuve que \CodeInline{fmin} est inférieur à \CodeInline{fmax}.
-Avec ces lemmes présents en revanche, il y parvient sans problème, car cette
+Avec les lemmes, en revanche, il y parvient sans difficulté, car cette
 propriété est une simple instance du lemme \CodeInline{ax\_b\_monotonic\_pos}, la preuve
 étant ainsi triviale, car notre lemme nous énonce cette propriété comme étant vraie.
 Notons que sur cette version généralisée, CVC5 sera probablement plus efficace pour
@@ -111,7 +111,7 @@ prédicats suivants :
 
 Nous pourrions par exemple vouloir énoncer que lorsqu'un tableau est trié, et que
 la mémoire est modifiée (créant donc un nouvel état mémoire), mais que le contenu du
-tableau reste inchangé, alors le tableau est toujours trié. Cela peut être réalisé
+tableau reste inchangé, alors le tableau est toujours trié. Cela peut être énoncé
 avec le lemme suivant :
 
 
@@ -165,12 +165,12 @@ section~\ref{l2:acsl-logic-definitions-axiomatic}.
 
 
 Écrire un lemme qui énonce que pour trois entiers $x$, $y$ et $z$, si $x$ est
-plus grand ou égal à $0$, si $z$ est plus grand ou égal à $y$, alors $x * z$
-est  plus grand ou égal à $x * y$.
+supérieur ou égal à $0$, si $z$ est supérieur ou égal à $y$, alors $x * z$
+est supérieur ou égal à $x * y$.
 
 
 Ce lemme ne sera probablement pas prouvé par les solveurs SMT. Une solution et
-la preuve Rocq du lemme sont disponibles sur le GitHub de ce tutoriel.
+la preuve Rocq du lemme sont disponibles sur le répertoire GitHub de ce tutoriel.
 
 \levelFourTitle{Localement trié vers globalement trié}
 \label{l4:acsl-properties-lemmas-lsorted-gsorted}
@@ -196,7 +196,8 @@ pas prouvé par un solveur SMT, toutes les autres propriétés devraient être p
 automatiquement.
 
 
-Une solution et la preuve Rocq du lemme sont disponibles sur le GitHub de ce tutoriel.
+Une solution et la preuve Rocq du lemme sont disponibles sur le répertoire
+GitHub de ce tutoriel.
 
 
 \levelFourTitle{Somme des N premiers entiers}
@@ -209,7 +210,8 @@ calculée par la fonction logique récursive qui permet la spécification de la 
 N premiers entiers est $n*(n+1)/2$. Ce lemme ne sera pas prouvé par un solveur SMT.
 
 
-Une solution et la preuve Rocq du lemme sont disponibles sur le GitHub de ce tutoriel.
+Une solution et la preuve Rocq du lemme sont disponibles sur le répertoire
+GitHub de ce tutoriel.
 
 
 \levelFourTitle{Transitivité d'un glissement d'éléments}
@@ -250,8 +252,8 @@ déplacement \CodeInline{s1+s2}.
 
 
 Le lemme \CodeInline{shift\_ptr} ne sera probablement pas prouvé par un solveur SMT.
-Nous fournissons une solution et la preuve Rocq de ce lemme sur le GitHub de ce livre.
-Les propriétés restantes doivent être prouvées automatiquement.
+Nous fournissons une solution et la preuve Rocq de ce lemme sur le répertoire
+GitHub de ce livre. Les propriétés restantes doivent être prouvées automatiquement.
 
 
 \levelFourTitle{Déplacement d'une plage triée}
@@ -288,4 +290,4 @@ maintenant être prouvée.
 
 
 Ces lemmes ne seront probablement pas prouvés par un solveur SMT. Une solution et
-les preuves Rocq sont disponibles sur le GitHub de ce livre.
+les preuves Rocq sont disponibles sur le répertoire GitHub de ce livre.
