@@ -1,20 +1,21 @@
-Les prédicats inductifs donnent une manière d'énoncer des propriétés dont la
+Les prédicats inductifs offrent une manière d'énoncer des propriétés dont la
 vérification nécessite de raisonner par induction, c'est-à-dire que pour une propriété
 $p(input)$, on peut assurer qu'elle est vraie, soit parce qu'elle correspond à un
 certain cas de base (par exemple, $0$ est un entier naturel pair parce que l'on
-définit le cas 0 comme un cas de base), ou alors parce que sachant que $p$ est vraie
-pour un certain $smaller input$ (qui est « plus proche » du cas de base) et sachant
+définit le cas 0 comme un cas de base), ou alors parce que, sachant que $p$ est vraie
+pour un certain $smaller input$ (qui est « plus proche » du cas de base), et sachant
 que $smaller input$ et $input$ sont reliés par une propriété donnée (qui dépend
-de notre définition) nous pouvons conclure (par exemple nous pouvons définir que
+de notre définition), nous pouvons conclure (par exemple nous pouvons définir que
 si un naturel $n$ est pair, le naturel $n+2$ est pair, donc pour vérifier qu'un
-naturel supérieur à 0 est pair, on peut regarder si ce naturel moins 2 est pair).
+naturel supérieur à 0 est pair, nous pouvons vérifier si ce naturel moins 2 est
+pair).
 
 
 
 \levelThreeTitle{Syntaxe}
 
 
-Pour le moment, introduisons la syntaxe des prédicats inductifs :
+Pour commerce, introduisons la syntaxe des prédicats inductifs :
 \begin{CodeBlock}{c}
 /*@
   inductive property{ Label0, ..., LabelN }(type0 a0, ..., typeN aN) {
@@ -25,12 +26,12 @@ Pour le moment, introduisons la syntaxe des prédicats inductifs :
 */
 \end{CodeBlock}
 où tous les \CodeInline{c\_i} sont des noms et tous les \CodeInline{p\_i} sont
-des formules logiques où \CodeInline{property} apparaît en conclusion. Pour résumer,
+des formules logiques dans lesquelles \CodeInline{property} apparaît en conclusion. Pour résumer,
 \CodeInline{property} est vraie pour certains paramètres et labels mémoire, s'ils
 valident l'un des cas du prédicat inductif.
 
 
-Jetons un \oe{}il à la petite propriété dont nous parlions plus tôt : comment définir
+Jetons un \oe{}il à la petite propriété évoquée plus tôt : comment définir
 qu'un entier naturel est pair par induction ? Nous pouvons traduire la phrase :
 « 0 est un naturel pair, et si $n$ est un naturel pair, alors $n+2$ est aussi un
 naturel pair ».
@@ -54,25 +55,25 @@ Cette définition peut être utilisée pour prouver les assertions suivantes :
 \CodeBlockInput[15][18]{c}{even-0.c}
 
 
-Notons que, puisque le solveur doit récursivement dérouler la définition
-inductive, cela pourrait ne pas fonctionner pour n'importe quelle valeur. Cette
+Notons que, puisque le solveur doit dérouler récursivement la définition
+inductive, cela pourrait ne pas fonctionner pour toute valeur. Cette
 capacité de preuve dépend des heuristiques des solveurs qui décident ou non de
 s'arrêter après N dépliages.
 
 Même si cette définition fonctionne, elle n'est pas complètement satisfaisante.
 Par exemple, nous ne pouvons pas déduire qu'un naturel impair n'est pas pair. Si
-nous essayons de prouver que $1$ est pair, nous devons vérifier que si $-1$ est
-pair, puis $-3$, $-5$, etc. Cela nous amène au fait que l'assertion suivante ne
-peut pas être prouvée :
+nous essayons de prouver que $1$ est pair, nous devons vérifier que $-1$ est
+pair, puis $-3$, $-5$, etc. Cela nous conduit au fait que l'assertion suivante
+ne peut pas être prouvée :
 
 
 \CodeBlockInput[20]{c}{even-0.c}
 
 
-De plus, nous préférons généralement indiquer la condition selon laquelle une
+De plus, nous préférons généralement indiquer la condition sous laquelle une
 conclusion donnée est vraie en utilisant les variables quantifiées dans la
-conclusion. Par exemple, ici, pour montrer qu'un entier $n$ est naturel,
-comment faire ? D'abord vérifier s'il est égal à 0, et si ce n'est pas le cas,
+conclusion. Par exemple, ici, comment montrer qu'un entier $n$ est naturel ?
+D'abord, nous devons vérifier s'il est égal à 0, et si ce n'est pas le cas,
 vérifier qu'il est plus grand que 0, et dans ce cas, vérifier que $n-2$ est
 pair :
 
@@ -112,14 +113,14 @@ toujours vraies, donc si nous introduisons des propriétés permettant de prouve
 \CodeInline{false}, nous sommes en mesure de prouver n'importe quoi. Nous
 parlerons plus longuement de ce sujet dans la
 Section~\ref{l2:acsl-logic-definitions-axiomatic} sur les définitions
-axiomatiques. Les définitions inductives ont une contrainte syntaxique
-qui a pour but d'éviter les problèmes d'inconsistance, mais nous verrons que
+axiomatiques. Les définitions inductives sont soumises à une contrainte syntaxique
+qui a pour but d'éviter les problèmes d'incohérence, mais nous verrons que
 cela ne protège pas de tout.
 
 
 La contrainte syntaxique sur les inductifs vise à assurer que les prédicats sont
-bien fondés. Cela peut être fait en restreignant syntaxiquement ce que nous
-acceptons dans une définition inductive en nous assurant que chaque cas est de
+bien fondés. Cela peut être réalisé en restreignant syntaxiquement ce que nous
+acceptons dans une définition inductive, en nous assurant que chaque cas est de
 la forme :
 \begin{CodeBlock}{c}
 /*@
@@ -128,9 +129,9 @@ la forme :
 \end{CodeBlock}
 où le prédicat \CodeInline{P} ne peut apparaître que positivement (donc sans la
 négation \CodeInline{!}) dans les différentes hypothèses \CodeInline{hx}.
-Intuitivement, cela assure que nous ne pouvons pas construire des occurrences à
+Intuitivement, cela garantit que nous ne pouvons pas construire des occurrences à
 la fois positives et négatives de \CodeInline{P} pour un ensemble de paramètres
-donnés (ce qui serait incohérent).
+donné (ce qui serait incohérent).
 
 
 Cette propriété est par exemple vérifiée pour notre définition précédente du
@@ -147,8 +148,8 @@ apparaît négativement à la ligne~8. Donc Frama-C lève une erreur :
 \end{CodeBlock}
 
 
-Cependant, cela n'empêche pas d'écrire une propriété qui contient des termes
-pouvant mener à une inconsistance. Par exemple, la définition suivante respecte
+Cependant, cela n'empêche pas d'écrire une propriété contenant des termes
+susceptibles de mener à une incohérence. Par exemple, la définition suivante respecte
 la contrainte syntaxique :
 \CodeBlockInput[5][10]{c}{even-bad-2.c}
 mais le prédicat \CodeInline{\textbackslash{}valid(p) \&\& p \textbackslash{}null}
@@ -157,14 +158,14 @@ est toujours faux, donc la propriété est équivalente à
 Selon la manière dont WP simplifie la définition inductive, Why3 pourrait
 détecter ces problèmes, puisque WP compile les définitions inductives ACSL en
 définition inductives Why3, qui impose les mêmes contraintes syntaxiques. Par
-exemple, la définition précédente est en effet simplifiée par WP, amenant à
-l'erreur suivante :
+exemple, la définition précédente est en effet simplifiée par WP, ce qui
+conduit à l'erreur suivante :
 \image{why3-failed-error}
 
 
 Mais cela ne capture pas toutes les erreurs de ce type, la définition suivante
-empêche WP ne produire la simplification, amenant donc à une définition
-inconsistante permettant de prouver la clause
+empêche WP de produire la simplification, conduisant donc à une définition
+incohérente qui permet de prouver la clause
 \CodeInline{ensures \textbackslash{}false} :
 
 
@@ -174,10 +175,10 @@ inconsistante permettant de prouver la clause
 \image{even-bad-proved}
 
 
-Ici nous pourrions détecter le problème avec \CodeInline{-wp-smoke-tests} qui
-trouverait que la précondition ne peut pas être satisfaite. Mais nous devons
-être prudents pendant la conception d'une définition inductive afin de ne pas
-introduire une définition qui nous permette de produire une preuve de faux.
+Ici, nous pourrions détecter le problème grâce à l'option \CodeInline{-wp-smoke-tests}
+qui trouverait que la précondition ne peut pas être satisfaite. Mais nous devons
+être prudents lors de la conception d'une définition inductive afin de ne pas
+introduire une définition qui nous permettrait de produire une preuve de faux.
 
 
 \image{even-bad-smoke}
@@ -192,7 +193,7 @@ dérouler la récursion quand c'est possible.
 
 
 Par exemple, nous pouvons définir qu'un tableau ne contient que des zéros de
-cette façon :
+cette manière :
 
 
 \CodeBlockInput[3][11]{c}{reset-0.c}
@@ -207,7 +208,7 @@ nouvelle définition :
 
 
 
-Selon votre version de Frama-C et de vos prouveurs automatiques, la preuve de
+Selon la version de Frama-C et des prouveurs automatiques, la preuve de
 préservation de l'invariant peut échouer. Une raison à cela est que le prouveur ne
 parvient pas à garder l'information que ce qui précède la cellule en cours de
 traitement par la boucle est toujours à 0. Nous pouvons ajouter un lemme dans
@@ -220,7 +221,7 @@ n'a pas changé, alors la propriété est toujours vérifiée :
 
 
 
-et d'énoncer une assertion pour spécifier ce qui n'a pas changé entre le début
+et d'énoncer une assertion pour montrer ce qui n'a pas changé entre le début
 du bloc de la boucle (marqué par le \textit{label} \CodeInline{L} dans le code)
 et la fin (qui se trouve être \CodeInline{Here} puisque nous posons notre
 assertion à la fin) :
@@ -234,15 +235,16 @@ assertion à la fin) :
 À noter que dans cette nouvelle version du code, la propriété énoncée par notre
 lemme n'est pas prouvée par les solveurs automatiques, qui ne savent pas raisonner
 par induction. Pour les curieux, la (très simple) preuve en Rocq est disponible
-ici :~\ref{l2:acsl-logic-definitions-answers}.
+ici~:~\ref{l2:acsl-logic-definitions-answers}.
 
 
 
 Dans le cas présent, utiliser une définition inductive est contre-productif :
 notre propriété est très facilement exprimable en logique du premier ordre comme
-nous l'avons déjà fait précédemment. Les axiomatiques sont faites pour écrire
-des définitions qui ne sont pas simples à exprimer dans le formalisme de base
-d'ACSL. Mais il est mieux de commencer avec un exemple facile à lire.
+nous l'avons déjà fait précédemment. Les définitions inductives (ou axiomatiques
+comme nous le verrons plus tard) sont faites pour écrire des définitions qui ne
+sont pas simples à exprimer dans le formalisme de base d'ACSL. Mais il est plus
+simple de commencer avec un exemple facile à lire.
 
 
 
@@ -253,7 +255,7 @@ d'ACSL. Mais il est mieux de commencer avec un exemple facile à lire.
 
 
 
-Nous allons prouver un simple tri par sélection :
+Nous allons prouver un tri par sélection :
 
 
 
@@ -261,14 +263,14 @@ Nous allons prouver un simple tri par sélection :
 
 
 Le lecteur pourra s'exercer en spécifiant et en prouvant les fonctions de
-recherche de minimum et d'échange de valeur. Nous cachons la correction
+recherche de minimum et d'échange de valeurs. Nous masquons la correction
 (Réponses :~\ref{l2:acsl-logic-definitions-answers}) et nous nous concentrerons
-plutôt sur la spécification et la preuve de la fonction de tri qui sont une
-illustration intéressante de l'usage des définitions inductives.
+plutôt sur la spécification et la preuve de la fonction de tri qui constituent
+une illustration intéressante de l'usage des définitions inductives.
 
 
 En effet, une erreur commune que nous pourrions faire dans le cas de la preuve
-du tri est de poser cette spécification (qui est vraie !) :
+du tri est d'énoncer cette spécification (qui est vraie !) :
 
 
 
@@ -279,7 +281,7 @@ du tri est de poser cette spécification (qui est vraie !) :
 \textbf{Cette spécification est correcte}. Mais si nous nous rappelons la
 partie concernant les spécifications, nous nous devons d'exprimer précisément ce
 que nous attendons. Avec la spécification actuelle, nous ne prouvons pas toutes
-les propriétés nécessaires d'un tri ! Par exemple, cette fonction remplit
+les propriétés attendues d'un tri ! Par exemple, la fonction suivante satisfait
 pleinement la spécification :
 
 
@@ -288,21 +290,20 @@ pleinement la spécification :
 
 
 
-En fait, notre spécification oublie que tous les éléments qui étaient
-originellement présents dans le tableau à l'appel de la fonction doivent
-toujours être présents après l'exécution de notre fonction de tri. Dit
-autrement, notre fonction doit en fait produire la permutation triée des
-valeurs du tableau.
+En fait, notre spécification oublie que tous les éléments initialement
+présents dans le tableau à l'appel de la fonction doivent
+le rester après l'exécution de notre fonction de tri. Autrement dit, notre
+fonction doit en fait produire la permutation triée des valeurs du tableau.
 
 
 
 Une propriété comme la définition de ce qu'est une permutation s'exprime
-extrêmement bien par l'utilisation d'une définition inductive. En effet, pour
-déterminer qu'un tableau est la permutation d'un autre, les cas sont très limités.
+extrêmement bien au moyen d'une définition inductive. En effet, pour
+déterminer qu'un tableau est la permutation d'un autre, les cas possibles sont très limités.
 Premièrement, le tableau est une permutation de lui-même, puis l'échange de
 deux valeurs sans changer les autres est également une permutation, et
 finalement si nous créons la permutation $p_2$ d'une permutation $p_1$, puis
-la permutation $p_3$ de $p_2$, alors par transitivité $p_3$ est une permutation
+la permutation $p_3$ de $p_2$, alors, par transitivité, $p_3$ est une permutation
 de $p_1$.
 
 
@@ -315,7 +316,7 @@ La définition inductive correspondante est la suivante :
 
 
 
-Nous spécifions alors que notre tri nous crée la permutation triée du tableau
+Nous spécifions alors que notre tri crée la permutation triée du tableau
 d'origine et nous pouvons prouver l'ensemble en complétant l'invariant de la
 fonction :
 
@@ -325,8 +326,8 @@ fonction :
 
 
 Cette fois, notre propriété est précisément définie, la preuve reste assez
-simple à faire passer, ne nécessitant que l'ajout d'une assertion que le bloc
-de la fonction n'effectue qu'un échange des valeurs dans le tableau (et donnant
+simple à faire passer, elle ne nécessite que l'ajout d'une assertion indiquant que le bloc
+de la fonction n'effectue qu'un échange des valeurs dans le tableau (donnant
 ainsi la transition vers la permutation suivante du tableau). Pour définir cette
 notion d'échange, nous utilisons une annotation particulière (à la ligne 16),
 introduite par le mot-clé \CodeInline{ghost}. Ici, le but est d'introduire un \textit{label}
@@ -359,12 +360,12 @@ et les preuves Rocq sur le répertoire GitHub de ce livre.
 
 
 
-\levelFourTitle{Plus grand diviseur commun}
+\levelFourTitle{Plus grand dénominateur commun}
 
 
-Écrire un prédicat inductif qui exprime qu'un entier est le plus grand diviseur
+Écrire un prédicat inductif qui exprime qu'un entier est le plus grand dénominateur
 commun de deux autres. Le but de cet exercice est de prouver que la fonction
-\CodeInline{gcd} calcule le plus grand diviseur commun. Nous n'avons donc pas
+\CodeInline{gcd} calcule le plus grand dénominateur commun. Nous n'avons donc pas
 à spécifier tous les cas du prédicat. En effet, si nous regardons de près la boucle,
 nous pouvons voir qu'après la première itération, \CodeInline{a} est supérieur ou
 égal à \CodeInline{b}, et que cette propriété est maintenue par la boucle. Donc,
@@ -417,8 +418,8 @@ Dans cette version, nous exploitons deux propriétés de l'opérateur puissance 
 \item $x \times (x^2)^n = x^{2n+1}$
 \end{itemize}
 qui permet de diviser $n$ par 2 à chaque tour de boucle au lieu de le décrémenter
-de 1 (ce qui permet à l'algorithme d'être en $O(\log n)$ et pas $O(n)$). Exprimer
-les deux propriétés précédentes sous forme de lemmes :
+de 1 (ce qui permet à l'algorithme d'être en complexité $O(\log n)$ et non $O(n)$).
+Exprimer les deux propriétés précédentes sous forme de lemmes :
 
 
 \CodeBlockInput[12][15]{c}{ex-3-fpower.c}
@@ -435,7 +436,7 @@ Finalement, compléter le contrat et l'invariant de la fonction \CodeInline{fast
 Pour cela, notons qu'au début de la boucle $x^{old(n)} = p^n$, et que chaque itération
 utilise les propriétés précédentes pour mettre à jour $r$, au sens que nous avons
 $x^{old(n)} = r \times p^n$ pendant toute la boucle, jusqu'à obtenir $n = 0$ et donc
-$p ^n = 1$.
+$p^n = 1$.
 
 
 

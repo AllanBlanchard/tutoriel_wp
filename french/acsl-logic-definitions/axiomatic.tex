@@ -1,10 +1,9 @@
-
-Les axiomes sont des propriétés dont nous énonçons qu'elles sont vraies quelle
+Les axiomes sont des propriétés que nous énonçons comme vraies quelle
 que soit la situation. C'est un moyen très pratique d'énoncer des notions
-complexes qui pourront rendre le processus très efficace en abstrayant
-justement cette complexité. Évidemment, comme toute propriété exprimée comme un
-axiome est supposée vraie, il faut également faire très attention à ce que nous
-définissons, car si nous introduisons une propriété fausse dans les notions que
+complexes qui pourront rendre le processus de preuve très efficace en abstrayant
+justement cette complexité. Évidemment, comme toute propriété exprimée sous
+forme d'axiome est supposée vraie, il faut également faire très attention à ce que nous
+définissons, car si nous introduisons une propriété fausse parmi les notions que
 nous supposons vraies alors ... nous saurons tout prouver, même ce qui est faux.
 
 
@@ -49,9 +48,8 @@ Nous pouvons par exemple définir cette axiomatique :
 
 
 
-et nous pouvons voir que dans Frama-C, la propriété est bien supposée
-vraie\footnote{In section \ref{l2:acsl-logic-definitions-answers}, nous
-présentons un axiome \emph{extrêmement} utile.} :
+et nous constatons que dans Frama-C, la propriété est bien supposée
+vraie :
 
 
 \image{first-axiom}
@@ -60,11 +58,11 @@ présentons un axiome \emph{extrêmement} utile.} :
 \levelFourTitle{Lien avec la notion de lemme}
 
 
-Les lemmes et les axiomes nous permettront d'exprimer les mêmes types de
-propriétés, à savoir des propriétés exprimées sur des variables quantifiées (et
+Les lemmes et les axiomes nous permettent d'exprimer les mêmes types de
+propriétés, à savoir des propriétés portant sur des variables quantifiées (et
 éventuellement des variables globales, mais cela reste assez rare puisqu'il est
-difficile de trouver une propriété qui soit globalement vraie à leur sujet tout
-en étant intéressante). Outre ce point commun, il faut également savoir que
+difficile de trouver une propriété à leur sujet qui soit à la fois globalement
+vraie et intéressante). Outre ce point commun, il faut également savoir que
 comme les axiomes, en dehors de leur définition, les lemmes sont considérés
 vrais par WP.
 
@@ -109,7 +107,7 @@ axiomatiquement de cette manière :
 
 
 Dans cette définition axiomatique, notre fonction n'a pas de corps. Son
-comportement étant défini par les axiomes ensuite définis. Excepté ceci,
+comportement étant défini par les axiomes qui la suivent. Excepté ceci,
 rien ne change, en particulier, notre fonction peut être utilisée dans nos
 spécifications, exactement comme avant.
 
@@ -120,7 +118,7 @@ est qu'il faut prendre garde au fait que si les axiomes énoncent des propriét�
 spécifier ces zones mémoires en utilisant la notation \CodeInline{reads} au niveau de
 la déclaration. Si nous oublions une telle spécification, le prédicat, ou la
 fonction, sera considéré comme énoncé à propos du pointeur et non à propos de la
-zone mémoire pointée. Une modification de celle-ci n'entraînera donc pas
+zone mémoire pointée. Une modification de cette zone n'entraînera donc pas
 l'invalidation d'une propriété connue axiomatiquement.
 
 
@@ -134,22 +132,22 @@ d'une définition axiomatique qui prendra cette forme :
 
 
 Notons la présence de la clause \CodeInline{reads[b .. e-1]} qui spécifie la
-position mémoire dont le
-prédicat dépend. Tandis que nous n'avons pas besoin de spécifier les positions
-mémoires « lues » par une définition inductive, nous devons spécifier ces propriétés
-pour les propriétés définies axiomatiquement.
+position mémoire dont dépend le prédicat. Alors que nous n'avons pas besoin de
+spécifier les positions mémoires « lues » par une définition inductive, nous
+devons le faire pour les propriétés définies axiomatiquement.
 
 
 \levelThreeTitle{Consistance}
 
 
 En ajoutant des axiomes à notre base de connaissances, nous pouvons produire des
-preuves plus complexes, car certaines parties de cette preuve, mentionnées par
+preuves plus complexes, car certaines parties de cette preuve, couvertes par
 les axiomes, ne nécessiteront plus de preuves qui allongeraient le processus
 complet. Seulement, en faisant cela \textbf{nous devons être extrêmement prudents}.
-En effet, la moindre hypothèse fausse introduite dans la base pourraient rendre
-tous nos raisonnements futiles. Notre raisonnement serait toujours correct, mais
-basé sur des connaissances fausses, il ne nous apprendrait donc plus rien de correct.
+En effet, la moindre hypothèse fausse introduite dans la base pourrait rendre
+tous nos raisonnements futiles. Notre raisonnement resterait correct d'un point
+de vue formel, mais fondé sur des connaissances fausses, il ne nous apprendrait
+plus rien de correct.
 
 
 
@@ -161,33 +159,33 @@ L'exemple le plus simple à produire est le suivant :
 
 
 
-Tout est prouvé, y compris que le déréférencement de l'adresse 0 est OK :
+Tout est prouvé, y compris que le déréférencement de l'adresse 0 est correct :
 
 
 
-\image{false-axiom}[Preuve de tout un tas de choses fausses]
+\image{false-axiom}
 
 
 Évidemment cet exemple est extrême, nous n'écririons pas un tel axiome. Le
 problème est qu'il est très facile d'écrire une axiomatique subtilement fausse
 lorsque nous exprimons des propriétés plus complexes, ou que nous commençons à
-poser des suppositions sur l'état global d'un système.
+poser des hypothèses sur l'état global d'un système.
 
 
 
 Quand nous commençons à créer de telles définitions, ajouter de temps en
-temps une preuve ponctuelle de « \textit{false} » dont nous voulons qu'elle échoue permet
-de s'assurer que notre définition n'est pas inconsistante, ou d'utiliser les
-« \textit{smoke-tests} ». Mais cela ne fait pas tout ! Si la subtilité qui crée
-le comportement faux est suffisamment cachée, les prouveurs peuvent avoir besoin
+temps une preuve ponctuelle de « \textit{false} » dont nous attendons qu'elle échoue permet
+de s'assurer que notre définition n'est pas incohérente, tout comme le recours aux
+« \textit{smoke-tests} ». Mais cela ne suffit pas ! Si la subtilité à l'origine
+du comportement faux est suffisamment cachée, les prouveurs peuvent avoir besoin
 de beaucoup d'informations autre que l'axiomatique elle-même pour être menés
-jusqu'à l'inconsistance, donc il faut toujours être vigilant !
+jusqu'à l'incohérence, donc il faut toujours être vigilants !
 
 
 Notons que contrairement aux définitions inductives, où l'utilisation de
 contraintes syntaxiques permet d'éviter d'assurer la création de définitions
-bien formées, les axiomes n'ont pas de telles contraintes. Ce n'est pas non plus
-le cas en Why3, où la liste des axiomes est également prise pour hypothèse sans
+bien fondées, les axiomes n'ont pas de telles contraintes. Ce n'est pas non plus
+le cas en Why3, où la liste des axiomes est également prise comme hypothèse sans
 contrôles supplémentaires.
 
 
@@ -195,34 +193,34 @@ contrôles supplémentaires.
 
 
 Par exemple, la mention des valeurs lues par une fonction ou un prédicat défini
-axiomatiquement est importante pour la consistance de l'axiomatique. En effet,
+axiomatiquement est importante pour la cohérence de l'axiomatique. En effet,
 comme mentionné précédemment, si nous n'exprimons pas les valeurs lues dans le
 cas de l'usage d'un pointeur, la modification d'une valeur du tableau n'invalide
-pas une propriété que l'on connaîtrait à propos du contenu du tableau par
-exemple. Dans un tel cas, la preuve passe, mais l'axiome n'exprimant pas le
+pas une propriété que nous connaîtrions à propos du contenu du tableau par
+exemple. Dans un tel cas, la preuve passe, mais l'axiome ne portant pas sur le
 contenu, nous ne prouvons rien.
 
 
 
 Par exemple, si nous reprenons l'exemple de mise à zéro, nous pouvons modifier
 la définition de notre axiomatique en retirant la mention des valeurs dont
-dépendent le prédicat : \CodeInline{reads a[b .. e-1]}. La preuve passera toujours,
-mais n'exprimera plus rien à propos du contenu des tableaux considérés.
+dépendent le prédicat : \CodeInline{reads a[b .. e-1]}. La preuve passe toujours,
+mais n'exprime plus rien à propos du contenu des tableaux considérés.
 Par exemple, la fonction suivante :
 \CodeBlockInput[16][25]{c}{all-zeroes-bad.c}
-est prouvée correcte alors qu'une valeur a changé dans le tableau et donc elle
-n'est plus 0.
+est prouvée correcte alors qu'une valeur a changé dans le tableau et donc qu'elle
+ne vaut plus 0.
 
 
 \levelFourTitle{Typage ACSL vs. C}
 
 
-Une autre erreur commune avec les définitions axiomatiques est de définir le
+Une autre erreur fréquente avec les définitions axiomatiques est de définir le
 résultat d'une fonction logique retournant un type C à partir de calculs réalisés
-sur des types logiques pouvant amener à des valeurs hors bornes. Par exemple,
-si nous reprenons notre précédent exemple sur la définition de la factorielle,
+sur des types logiques susceptibles de produire des valeurs hors bornes. Par exemple,
+si nous reprenons notre exemple précédent sur la définition de la factorielle,
 et au lieu d'utiliser un type \CodeInline{int} au lieu du type
-\CodeInline{integer}, la définition devient inconsistante :
+\CodeInline{integer}, la définition devient incohérente :
 
 
 \CodeBlockInput[7][17]{c}{wrong-facto.c}
@@ -232,10 +230,10 @@ En effet, comme les calculs sur les entiers sont réalisés avec des entiers
 mathématiques, quand \CodeInline{i} devient suffisamment grand, le terme
 \CodeInline{i * factorial(i-1)} peut dépasser \CodeInline{INT\_MAX}, tandis que
 \CodeInline{factorial(i)} est toujours inférieur ou égal à \CodeInline{INT\_MAX}
-(à cause de son type), ce qui est inconsistant. Cependant, il n'est pas si
-facile de s'assurer que les prouveurs SMT détectent le problème. Par exemple
-ici, nous ajoutons deux lemmes pour forcer les prouveurs à trouver
-l'inconsistance :
+(à cause de son type), ce qui est incohérent. Cependant, il n'est pas si
+facile pour les prouveurs SMT de détecter le problème. Par exemple
+ici, nous devons ajouter deux lemmes pour forcer les prouveurs à trouver
+l'incohérence :
 
 
 \CodeBlockInput[19][24]{c}{wrong-facto.c}
@@ -256,7 +254,7 @@ peuvent être définies à deux niveaux différents : à \textit{top-level}, le 
 des fonctions, des variables globales, etc. (sauf pour les axiomes et les
 fonctions et prédicats abstraits) ou dans des blocs axiomatiques. Les
 annotations à \textit{top-level} sont toujours chargées dans le contexte des
-obligations de preuve, ce n'est pas le cas des annotations des blocs
+obligations de preuve, ce qui n'est pas le cas des annotations des blocs
 axiomatiques.
 
 
@@ -266,9 +264,9 @@ Dans l'exemple suivant :
 \CodeBlockInput[5]{c}{cluster.c}
 
 
-Puisque la clause \CodeInline{ensures} n'utilise que le prédicat \CodeInline{P}
-qui est défini dans le bloc axiomatique \CodeInline{X}, WP ne charge que
-l'axiome \CodeInline{x}. À l'inverse, si l'on remplace \CodeInline{P(p)} par
+Puisque la clause \CodeInline{ensures} n'utilise que le prédicat \CodeInline{P},
+défini dans le bloc axiomatique \CodeInline{X}, WP ne charge que
+l'axiome \CodeInline{x}. À l'inverse, si nous remplaçons \CodeInline{P(p)} par
 \CodeInline{Q(p)} dans la clause \CodeInline{ensures}, WP charge l'axiomatique
 \CodeInline{Y} et donc l'axiome \CodeInline{y}, qui utilise également le
 prédicat \CodeInline{P}. Par conséquent, le bloc axiomatique \CodeInline{X} est
@@ -334,11 +332,11 @@ lemma l_occurrences_of_range{L}:
 
 
 La preuve de ce lemme ne pourra pas être déchargée par un solveur automatique. Il
-faudra faire cette preuve interactivement avec Rocq par exemple. Exprimer des
-lemmes généraux prouvés manuellement est souvent une bonne manière d'ajouter des
+faudra la réaliser interactivement avec Rocq par exemple. Exprimer des
+lemmes généraux prouvés manuellement est souvent un bon moyen d'ajouter des
 outils aux prouveurs pour manipuler plus efficacement les axiomatiques, sans
-ajouter formellement d'axiomes qui augmenteraient nos chances d'introduire des
-erreurs. Ici, nous devrons quand même réaliser les preuves des propriétés
+ajouter formellement d'axiomes, ce qui augmenterait nos chances d'introduire des
+erreurs. Ici, nous devons quand même réaliser les preuves des propriétés
 mentionnées.
 
 
@@ -363,10 +361,10 @@ de caractères, à savoir ce que nous attendons de notre fonction C.
 \end{CodeBlock}
 
 
-Nous voulons recevoir une chaîne C valide en entrée et nous voulons en
+Nous voulons recevoir une chaîne C valide en entrée et en
 calculer la longueur, une valeur qui correspond à celle fournie par la
 fonction logique \CodeInline{strlen} appliquée à cette chaîne. Bien sûr,
-cette fonction n'affecte rien. Définir ce qu'est une chaîne valide n'est
+cette fonction ne modifie rien. Définir ce qu'est une chaîne valide n'est
 pas si simple. En effet, précédemment dans ce tutoriel, nous avons uniquement
 travaillé avec des tableaux, en recevant en entrée à la fois un pointeur
 vers le tableau et la taille du tableau. Cependant, tel que
@@ -387,15 +385,15 @@ Définir la fonction logique \CodeInline{strlen} n'est pas si simple. En effet,
 nous devons calculer la fonction d'une chaîne en trouvant le caractère
 \CodeInline{'\textbackslash{}0'}, et nous espérons le trouver, mais en fait,
 nous pouvons facilement imaginer une chaîne qui n'en contiendrait pas. Dans
-ce cas, nous voudrions avoir une valeur d'erreur, mais il est impossible de
+ce cas, nous voudrions disposer d'une valeur d'erreur, mais il est impossible de
 garantir que le calcul termine : une fonction logique ne peut donc pas être
 utilisée pour exprimer cette propriété.
 
 
 
-Définissons donc cette fonction axiomatiquement. D'abord définissons ce qui
-est lu par la fonction, à savoir : toute position mémoire depuis le pointeur
-jusqu'à une plage infinie d'adresses. Ensuite, considérons deux cas : la chaîne
+Définissons donc cette fonction axiomatiquement. D'abord, définissons ce qui
+est lu par la fonction, à savoir toute position mémoire depuis le pointeur
+jusqu'à une plage infinie d'adresses. Ensuite, distinguons deux cas : la chaîne
 est finie, ou elle ne l'est pas, ce qui nous amène à deux axiomes :
 \CodeInline{strlen} retourne une valeur positive qui correspond à l'indice
 du premier caractère \CodeInline{'\textbackslash{}0'} et retourne une valeur
@@ -407,18 +405,18 @@ négative s'il n'y a pas de tel caractère.
 
 
 
-Maintenant, nous pouvons être plus précis dans notre définition de
+Nous pouvons maintenant être plus précis dans notre définition de
 \CodeInline{\textbackslash{}valid\_read\_string}, une chaîne valide est une
-chaîne telle qu'est valide depuis le premier indice jusqu'à \CodeInline{strlen}
-de la chaîne et telle que cette valeur est plus grande que 0 (puisqu'une
-chaîne infinie n'est pas valide) :
+chaîne dont la plage est valide depuis le premier indice jusqu'à
+\CodeInline{strlen} de la chaîne, et pour laquelle cette valeur est strictement
+positive (puisqu'une chaîne infinie n'est pas valide) :
 
 
 \CodeBlockInput[27][30]{c}{strlen-proved.c}
 
 
-Avec cette nouvelle définition, nous pouvons avancer et fournir un invariant
-utilisable pour la boucle de la fonction \CodeInline{strlen}. Il est plutôt
+Avec cette nouvelle définition, nous pouvons progresser dans la preuve et fournir
+un invariant pour la boucle de la fonction \CodeInline{strlen}. Il est plutôt
 simple : \CodeInline{i} est compris entre 0 et \CodeInline{strlen(s)}, pour
 toute valeur entre 0 et \CodeInline{i}, elles sont différentes de
 \CodeInline{'\textbackslash{}0'}. Cette boucle n'affecte que \CodeInline{i}
@@ -433,7 +431,7 @@ non-débordement des entiers non signés :
 \image{strlen-failed}
 
 
-Nous pouvons voir que le prouveur échoue à montrer la propriété liée à la
+Nous constatons que le prouveur échoue à montrer la propriété liée à la
 plage de valeur de \CodeInline{i}, et que \CodeInline{i} peut excéder la
 valeur maximale d'un entier non signé. Nous pouvons essayer de fournir une
 limite à la valeur de \CodeInline{strlen(s)} en précondition.
@@ -442,27 +440,27 @@ limite à la valeur de \CodeInline{strlen(s)} en précondition.
 \CodeBlockInput[33][33]{c}{strlen-proved.c}
 
 
-Cependant, c'est insuffisant. La raison et que si nous avons défini la
-valeur de \CodeInline{strlen(s)} comme l'index du premier
-\CodeInline{'\textbackslash{}0'} dans le tableau, l'inverse n'est pas
-vrai : savoir que la valeur de \CodeInline{strlen(s)} est positive n'est
-pas suffisant pour déduire que la valeur à l'indice correspondant est
+Cependant, cela ne suffit pas. La raison et que si nous avons défini la
+valeur de \CodeInline{strlen(s)} comme l'indice du premier
+\CodeInline{'\textbackslash{}0'} dans le tableau, la réciproque n'est pas
+vrai : savoir que la valeur de \CodeInline{strlen(s)} est positive ne suffit
+pas à déduire que la valeur à l'indice correspondant est
 \CodeInline{'\textbackslash{}0'}. Nous étendons donc notre définition
 axiomatique avec une autre proposition indiquant cette propriété (nous
 ajoutons également une autre proposition à propos des valeurs qui
-précèdent cet indice même si ici, ce n'est pas nécessaire) :
+précèdent cet indice même si ici, elle n'est pas nécessaire) :
 
 
 
 \CodeBlockInput[17][23]{c}{strlen-proved.c}
 
 
-Cette fois la preuve réussit. Frama-C fournit ses propres headers pour
-la bibliothèque standard, et cela inclut une définition axiomatique pour
+Cette fois la preuve réussit. Frama-C fournit ses propres en-têtes pour
+la bibliothèque standard, et ceux-ci incluent une définition axiomatique pour
 la fonction logique \CodeInline{strlen}. Elle peut être trouvée dans le
 dossier de Frama-C, sous le dossier \CodeInline{libc}, le fichier est
 nommé \CodeInline{\_\_fc\_string\_axiomatic.h}. Notons que cette définition
-a beaucoup plus d'axiomes pour déduire plus de propriétés à propos de
+comporte beaucoup plus d'axiomes pour déduire plus de propriétés à propos de
 \CodeInline{strlen}.
 
 
@@ -484,10 +482,10 @@ Ré-exprimer la définition axiomatique dans une forme qui permet de prouver le
 programme.
 
 
-\levelFourTitle{Plus grand diviseur commun}
+\levelFourTitle{Plus grand dénominateur commun}
 
 
-Exprimer la fonction logique qui calcule le plus grand diviseur commun à l'aide
+Exprimer la fonction logique qui calcule le plus grand dénominateur commun à l'aide
 d'une définition axiomatique et écrire le contrat de la fonction \CodeInline{gcd}
 puis la prouver ;
 

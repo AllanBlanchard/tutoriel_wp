@@ -1,10 +1,10 @@
 Les techniques que nous avons vues précédemment dans ce chapitre ont pour but de
 rendre la spécification plus abstraite. Le rôle du code fantôme est inverse. Ici,
-nous enrichirons nos spécifications à l'aide d'information exprimées
+nous enrichirons nos spécifications à l'aide d'informations exprimées
 en langage C. L'idée est d'ajouter des variables et du code source qui
-n'intervient pas dans le programme réel, mais permettant de créer des états
-logiques qui ne seront visibles que depuis la preuve. Par cet intermédiaire,
-nous pouvons rendre explicites des propriétés logiques qui étaient auparavant
+n'interviennent pas dans le programme réel, mais qui permettent de créer des états
+logiques visibles uniquement depuis la preuve. Par cet intermédiaire,
+nous pouvons rendre explicites des propriétés logiques auparavant
 implicites.
 
 
@@ -12,7 +12,7 @@ implicites.
 
 
 Le code fantôme est ajouté par l'intermédiaire d'annotations qui contiennent
-du code C ainsi que la mention \CodeInline{ghost}.
+du code C précédé de la mention \CodeInline{ghost}.
 
 
 
@@ -25,7 +25,7 @@ du code C ainsi que la mention \CodeInline{ghost}.
 
 
 Dans un code fantôme, nous écrivons du C normal. Nous expliquerons certaines
-petites subtilités plus tard. Pour l'instant, intéressons-nous aux éléments
+subtilités plus tard. Pour l'instant, intéressons-nous aux éléments
 basiques que nous pouvons écrire avec du code fantôme.
 
 
@@ -60,7 +60,7 @@ void foo(int a){
 \end{CodeBlock}
 
 
-Nous pouvons déclarer des \textit{labels} fantômes, que l'on peut utiliser dans
+Nous pouvons déclarer des \textit{labels} fantômes, que nous pouvons utiliser dans
 nos annotations (ou même pour effectuer un \CodeInline{goto} depuis le code
 fantôme lui-même, sous certaines conditions que nous expliquerons plus tard) :
 
@@ -92,9 +92,9 @@ void foo(int a){
 
 
 Une fonction peut avoir des paramètres fantômes, cela permet de transmettre des
-informations supplémentaires pour la vérification de la fonction. Par exemple,
-si l'on imagine la vérification d'une fonction qui reçoit une liste chaînée,
-nous pourrions transmettre un paramètre fantôme qui représenterait la
+informations supplémentaires utiles pour sa vérification. Par exemple,
+si nous imaginons la vérification d'une fonction qui reçoit une liste chaînée,
+nous pourrions transmettre un paramètre fantôme représentant la
 longueur de la liste :
 
 
@@ -145,10 +145,10 @@ void another_function(struct list* l){
 Ici, nous pouvons voir une syntaxe spécifique pour le contrat de la fonction
 fantôme. En effet, il est souvent utile d'écrire des contrats ou des assertions
 dans du code fantôme. Comme nous devons écrire ces spécifications dans du code
-qui est déjà englobé dans des commentaires C, nous avons accès à une syntaxe
+déjà englobé dans des commentaires C, nous disposons d'une syntaxe
 spécifique pour fournir des contrats ou des assertions fantômes. Nous ouvrons
 une annotation fantôme avec la syntaxe \CodeInline{/@} et nous la fermons avec
-\CodeInline{@/}. Cela s'applique aussi aux boucles dans le code fantôme par
+\CodeInline{@/}. Cela s'applique aussi aux boucles dans le code fantôme. Par
 exemple :
 
 
@@ -176,28 +176,27 @@ void foo(unsigned n){
 
 Frama-C vérifie plusieurs propriétés à propos du code fantôme que nous écrivons :
 \begin{itemize}
-\item le code fantôme ne peut pas modifier le graphe de flot de contrôle
-      du programme ;
+\item le code fantôme ne peut pas modifier le flot de contrôle du programme ;
 \item le code normal ne peut pas accéder à la mémoire fantôme ;
-\item le code fantôme ne peut modifier qu'une zone de mémoire fantôme.
+\item le code fantôme ne peut modifier que la mémoire fantôme.
 \end{itemize}
 
 
-Très simplement, ces propriétés cherchent à garantir que pour n'importe
-quel programme, son comportement observable pour toute entrée est le même
+Très simplement, ces propriétés visent à garantir que pour n'importe
+quel programme, son comportement observable pour toute entrée est identique
 avec ou sans le code fantôme.
 
 
-Si certaines de ces propriétés ne sont pas vérifiées, cela voudrait dire que le
-code fantôme peut changer le comportement du programme vérifié. Analysons de plus
-prêt chacune de ces contraintes.
+Si certaines de ces propriétés ne sont pas vérifiées, cela signifie dire qu'il
+est possible que le code fantôme change le comportement du programme vérifié.
+Analysons plus en détail chacune de ces contraintes.
 
 
 \levelFourTitle{Maintien du flot de contrôle}
 
 
-Le flot de contrôle d'un programme est l'ordre dans lequel les instructions sont
-exécutées par le programme. Si le code fantôme change cet ordre, ou permet de ne
+Le flot de contrôle d'un programme désigne l'ordre dans lequel les instructions sont
+exécutées. Si le code fantôme modifie cet ordre, ou permet de ne
 plus exécuter certaines instructions du programme d'origine, alors le comportement
 du programme n'est plus le même, et nous ne vérifions donc plus le même programme.
 
@@ -211,7 +210,7 @@ Par exemple, la fonction suivante calcule la somme des $n$ premiers entiers :
 Par l'introduction, dans du code fantôme, de l'instruction \CodeInline{break} dans
 le corps de la boucle, le programme n'a plus le même comportement : au lieu de
 parcourir l'ensemble des $i$ de $0$ à $n+1$, la boucle s'arrête dès la première
-itération. En conséquence, ce programme sera rejeté par Frama-C :
+itération. Par conséquent, ce programme est rejeté par Frama-C :
 
 
 \begin{CodeBlock}{text}
@@ -223,7 +222,7 @@ itération. En conséquence, ce programme sera rejeté par Frama-C :
 
 
 Il est important de noter que lorsqu'un code fantôme altère le flot de contrôle,
-c'est le point de départ du code fantôme qui est pointé par l'erreur, par exemple
+l'erreur fait référence au point de départ du code fantôme incriminé. Par exemple
 si nous introduisons une conditionnelle autour de notre \CodeInline{break} :
 
 
@@ -243,7 +242,7 @@ Le problème est indiqué pour le \CodeInline{if} englobant :
 
 Notons que la vérification que le flot de contrôle n'est pas altéré est purement
 syntaxique. Par exemple, si le \CodeInline{break} est inatteignable parce que la
-condition est toujours fausse, une erreur sera quand même levée :
+condition est toujours fausse, Frama-C lève quand même une erreur :
 
 
 \CodeBlockInput[6]{c}{control-flow-3.c}
@@ -258,23 +257,23 @@ condition est toujours fausse, une erreur sera quand même levée :
 
 
 Finalement, remarquons qu'il existe deux manières générales d'altérer le flot de
-contrôle. La première est d'utiliser un saut (donc \CodeInline{break},
+contrôle. La première consiste à utiliser un saut (donc \CodeInline{break},
 \CodeInline{continue}, ou \CodeInline{goto}), la seconde est d'introduire un code
-non terminant. Pour ce dernier, à moins que le code soit trivialement non terminant,
+non terminant. Pour ce dernier cas, à moins que le code soit trivialement non terminant,
 le noyau ne peut pas vérifier la non-altération du flot de contrôle, et ne le fait
 donc jamais. Nous traiterons cette question dans la
-section~\ref{l3:acsl-logic-definitions-what-remains}.
+Section~\ref{l3:acsl-logic-definitions-what-remains}.
 
 
 \levelFourTitle{Accès à la mémoire}
 
 
-Le code fantôme est un observateur du code normal. En conséquence, le code normal
+Le code fantôme est un observateur du code normal. Par conséquent, le code normal
 n'est pas autorisé à accéder au code fantôme, que ce soit sa mémoire ou ses
-fonctions. Le code fantôme lui, peut lire la mémoire du code normal, mais ne peut
-pas la modifier. Actuellement, le code fantôme ne peut pas non plus appeler de
-fonctions du code normal, nous parlerons de cette restriction à la fin de cette
-section.
+fonctions. Le code fantôme, quant à lui, peut lire la mémoire du code normal,
+mais ne peut pas la modifier. Actuellement, le code fantôme ne peut pas non plus
+appeler de fonctions du code normal, nous reviendrons de cette restriction à la
+fin de cette section.
 
 
 Refuser que le code normal voie le code fantôme a une raison toute simple. Si le
@@ -321,12 +320,11 @@ Frama-C interdit donc un tel code :
 \end{CodeBlock}
 
 
-Notons que cette vérification est faite grâce au type des différentes variables.
+Notons que cette vérification est réalisée grâce aux types des différentes variables.
 Une variable déclarée dans du code normal a un statut de variable normale, tandis
 qu'une variable déclarée dans du code fantôme a un statut de variable fantôme.
-Par conséquent, une nouvelle fois, même si le code fantôme, dans les faits,
-n'altère pas le comportement du programme, toute écriture d'une variable normale
-dans le code fantôme est interdite :
+Par conséquent, même si le code fantôme n'altère pas le comportement du
+programme, toute écriture d'une variable normale dans le code fantôme est interdite :
 
 
 \CodeBlockInput[8]{c}{ghost-access-non-ghost-2.c}
@@ -358,7 +356,7 @@ du code fantôme :
 En revanche, les contrats des fonctions et boucles normales peuvent (et doivent)
 permettre de spécifier les zones de mémoire fantôme modifiées. Par exemple, si
 nous corrigeons le petit programme précédent en rendant \CodeInline{x} fantôme,
-d'une part nos clauses \CodeInline{assigns} précédentes sont bien acceptées,
+non seulement nos clauses \CodeInline{assigns} précédentes sont bien acceptées,
 mais en plus, nous pouvons spécifier que la fonction \CodeInline{foo} modifie
 la variable globale fantôme \CodeInline{x} :
 
@@ -370,7 +368,7 @@ la variable globale fantôme \CodeInline{x} :
 
 
 Il convient de donner quelques précisions au sujet des types des variables
-créées dans du code fantôme. Par exemple, parfois il est intéressant de pouvoir
+créées dans du code fantôme. Par exemple, il est parfois intéressant de
 créer un tableau fantôme pour stocker des informations :
 
 
@@ -385,7 +383,7 @@ par exemple vouloir y accéder en utilisant un pointeur :
 
 
 Mais nous voyons immédiatement que Frama-C n'est pas d'accord avec notre manière
-de faire :
+de procéder :
 
 
 \begin{CodeBlock}{text}
@@ -396,14 +394,14 @@ de faire :
 \end{CodeBlock}
 
 
-En particulier, le premier message nous indique que nous essayons de transformer
+En particulier, le premier message nous indique que nous essayons de convertir
 un pointeur sur \CodeInline{int \textbackslash{}ghost} en pointeur sur
 \CodeInline{int}. En effet, lorsqu'une variable est déclarée dans du code fantôme,
-seule la variable est considérée fantôme. Donc dans le cas d'un pointeur, la mémoire
-pointée par ce pointeur, elle, n'est pas considérée comme fantôme (et donc ici, bien
+seule la variable elle-même est considérée fantôme. Ainsi dans le cas d'un pointeur,
+la mémoire pointée par celui-ci n'est pas considérée comme fantôme (et donc ici, bien
 que \CodeInline{pe} soit fantôme, la mémoire pointée par \CodeInline{pe} ne l'est
 pas). Pour résoudre ce problème, Frama-C nous offre le qualificateur
-\CodeInline{\textbackslash{}ghost}, qui nous permet d'ajouter un caractère fantôme
+\CodeInline{\textbackslash{}ghost}, qui permet d'ajouter un caractère fantôme
 à un type :
 
 
@@ -433,7 +431,7 @@ int const * * const p ;
 
 
 
-Déclarer un pointeur constant sur une zone que l'on peut modifier et qui contient
+Déclarer un pointeur constant sur une zone modifiable et qui contient
 des pointeurs vers de la mémoire constante ne pose pas de problème. En revanche,
 il est impossible de faire de même avec le qualificateur
 \CodeInline{\textbackslash{}ghost}, cela signifierait que la mémoire normale
@@ -475,13 +473,13 @@ par des moyens détournés pour provoquer un problème avec cette conversion :
 \CodeBlockInput[6]{c}{why-not-const.c}
 
 
-Ici, nous faisons une conversion qui pourrait sembler autorisée. En effet, nous
+Ici, nous effectuons une conversion qui pourrait sembler autorisée. En effet, nous
 passons l'adresse d'un pointeur sur une zone de mémoire fantôme à une fonction qui
 attend un pointeur sur une zone de mémoire normale, cela ne fait que restreindre
 l'accès à la mémoire pointée. Cependant, par cet appel de fonction, la fonction
 \CodeInline{assign} assigne la valeur actuelle de \CodeInline{q} (qui est
 \CodeInline{\&x}) à \CodeInline{p} et nous permet donc, par la dernière opération
-de modifier \CodeInline{x} dans du code fantôme. En conséquence, une telle
+de modifier \CodeInline{x} dans du code fantôme. Par conséquent, une telle
 conversion n'est jamais autorisée.
 
 
@@ -497,9 +495,9 @@ supporté par Frama-C.
 
 
 Mis à part les restrictions que nous avons mentionnées dans la section précédente,
-le code fantôme est juste du code C normal. Cela veut dire que si nous voulons
-faire la vérification de notre programme d'origine, nous devons faire attention,
-nous-mêmes, à au moins deux aspects supplémentaires :
+le code fantôme n'est que du code C normal. Cela signifie que si nous voulons
+vérifier notre programme d'origine, nous devons nous-mêmes faire attention à au
+moins deux aspects supplémentaires :
 \begin{itemize}
 \item l'absence d'erreurs à l'exécution,
 \item la terminaison du code fantôme.
@@ -507,18 +505,18 @@ nous-mêmes, à au moins deux aspects supplémentaires :
 
 
 Le premier cas ne nécessite pas plus d'attention que le reste de notre code.
-En effet, la vérification d'absence d'erreurs à l'exécution sera traitée par
+En effet, la vérification d'absence d'erreurs à l'exécution est traitée par
 le plugin RTE comme pour le reste de notre programme.
 
 
-Comme nous l'avons dit dans la section~\ref{l3:statements-loops-variant}, il y
-a deux sortes de correction : la correction partielle et la correction totale,
+Comme nous l'avons dit dans la section~\ref{l3:statements-loops-variant}, il
+existe deux sortes de correction : la correction partielle et la correction totale,
 la seconde permettant de prouver qu'un programme termine. Dans le cas du code
 normal, montrer la terminaison n'est pas toujours souhaitable pour l'ensemble
 du programme. En revanche, si nous utilisons du code fantôme pour aider la
-vérification, montrer que la correction est totale est absolument nécessaire,
-car une boucle infinie dans le code fantôme peut nous permettre de prouver
-n'importe quoi à propos du programme.
+vérification, montrer que la correction du code fantôme est totale est
+absolument nécessaire, car une boucle infinie dans le code fantôme permet de
+prouver n'importe quoi à propos du programme.
 
 
 \begin{CodeBlock}{c}
@@ -536,19 +534,19 @@ void foo(void){
 
 Le but du code fantôme est de rendre explicite des informations généralement
 implicites. Par exemple, dans la vérification de l'algorithme de tri, nous nous en
-sommes servi pour ajouter un \textit{label} dans le programme qui n'est pas
-visible par le compilateur, mais que nous avons pu utiliser pour la vérification.
-Le fait que les valeurs ont été échangées entre les deux points de programme était
+sommes servi pour ajouter un \textit{label} dans le programme
+invisible par le compilateur, mais que nous avons pu exploiter pour la vérification.
+Le fait que les valeurs aient été échangées entre les deux points de programme était
 implicitement garanti par le contrat de la fonction d'échange, ajouter ce
 \textit{label} fantôme nous a donné la possibilité de rendre cette propriété
-explicite par une assertion.
+explicite au moyen d'une assertion.
 
 
 
-Prenons maintenant un exemple plus poussé. Nous voulons par exemple prouver que
+Prenons maintenant un exemple plus élaboré. Nous voulons par exemple prouver que
 la fonction suivante nous retourne la valeur maximale des sommes de sous-tableaux
 possibles d'un tableau donné. Un sous-tableau d'un tableau \CodeInline{a} est un
-sous-ensemble contigu de valeur de \CodeInline{a}. Par exemple, pour un tableau
+sous-ensemble contigu de valeurs de \CodeInline{a}. Par exemple, pour un tableau
 \CodeInline{\{ 0 , 3 , -1 , 4 \}}, des exemples de sous tableaux peuvent être
 \CodeInline{\{\}}, \CodeInline{\{ 0 \}}, \CodeInline{\{ 3 , -1 \}},
 \CodeInline{\{ 0 , 3 , -1 , 4 \}}, ... Notons que comme nous autorisons le
@@ -562,13 +560,13 @@ renverra donc 6.
 
 
 
-Pour spécifier la fonction précédente, nous aurons besoin d'exprimer
+Pour spécifier la fonction précédente, nous avons besoin d'exprimer
 axiomatiquement la somme. Ce n'est pas très complexe et le lecteur pourra
 s'exercer en exprimant les axiomes nécessaires au bon fonctionnement de cette
 axiomatique :
 
 
-
+% TODO: on pourrait ne plus utiliser une axiomatique ici
 \CodeBlockInput[7][9]{c}{max_subarray-1.c}
 
 
@@ -589,7 +587,7 @@ supérieure ou égale à la somme des éléments entre les bornes, et il doit ex
 une paire de bornes telle que la somme des éléments entre ces bornes est
 exactement la valeur retournée par la fonction. Par rapport à cette spécification,
 si nous devons ajouter les invariants de boucles, nous nous apercevons rapidement
-qu'il nous manquera des informations. Nous avons besoin d'exprimer ce que sont
+qu'il nous manque des informations. Nous avons besoin d'exprimer ce que sont
 les valeurs \CodeInline{max} et \CodeInline{cur}, et quelles relations existent
 entre elles, mais rien ne nous le permet !
 
@@ -604,14 +602,14 @@ l'invariant de notre boucle.
 
 
 
-Nous aurons d'abord besoin de deux variables qui nous permettront de stocker
-les valeurs des bornes de la plage maximum, nous les appellerons \CodeInline{low}
-et \CodeInline{high}. Chaque fois que nous trouverons une plage où la somme est plus
-élevée nous les mettrons à jour. Ces bornes correspondront donc à la somme indiquée
+Nous aurons d'abord besoin de deux variables pour stocker
+les bornes de la plage maximum, nommons-les \CodeInline{low}
+et \CodeInline{high}. Chaque fois que nous trouvons une plage où la somme est plus
+élevée, nous les mettons à jour. Ces bornes correspondent donc à la somme indiquée
 par \CodeInline{max}. Cela induit que nous avons encore besoin d'une autre paire de
-bornes : celle correspondant à la variable de somme \CodeInline{cur} à partir de laquelle
-nous pourrons construire les bornes de \CodeInline{max}. Pour celle-ci, nous n'avons
-besoin que d'ajouter une variable \textit{ghost} : le minimum actuel \CodeInline{cur\_low}, la
+bornes : celle correspondant à la variable de somme \CodeInline{cur}, à partir de laquelle
+nous pouvons construire les bornes de \CodeInline{max}. Pour celle-ci, il nous
+suffit d'ajouter une variable \textit{ghost} : le minimum actuel \CodeInline{cur\_low}, la
 borne supérieure de la somme actuelle étant indiquée par la variable \CodeInline{i} de la
 boucle.
 
@@ -621,7 +619,7 @@ boucle.
 
 
 
-L'invariant \CodeInline{BOUNDS} exprime comment sont ordonnées les différentes bornes
+L'invariant \CodeInline{BOUNDS} exprime l'ordre des différentes bornes
 pendant le calcul. L'invariant \CodeInline{REL} exprime ce que signifient les
 valeurs \CodeInline{cur} et \CodeInline{max} par rapport à ces bornes. Finalement,
 l'invariant \CodeInline{POST} permet de faire le lien entre les invariants précédents
@@ -695,7 +693,7 @@ Lorsque c'est fait, créer une fonction fantôme qui effectue cette même copie,
 l'utiliser dans la fonction \CodeInline{foo} pour effectuer la même preuve.
 
 
-\levelFourTitle{Chercher et remplacer}
+\levelFourTitle{Rechercher et remplacer}
 
 
 Le programme suivant effectue une opération de recherche et remplacement :
