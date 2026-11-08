@@ -12,27 +12,26 @@ Tout au long de ce tutoriel, nous avons vu comment utiliser ces outils
 pour spécifier ce que nous attendons de nos programmes et vérifier que le code
 produit correspond effectivement à la spécification que nous en
 avons faite. Cette spécification passe par l'annotation de nos fonctions avec
-le contrat auquel elle doit se conformer, c'est-à-dire les propriétés que
-doivent vérifier les entrées de la fonction pour garantir son bon fonctionnement
-et les propriétés que celle-ci s'engage à assurer sur les sorties en retour,
-associées aux contrôles que nous impose l'outil à propos des problèmes
-spécifiques au langage C (plus particulièrement, montrer l'absence de
-\textit{runtime errors}).
-
+le contrat auquel elles doivent se conformer, c'est-à-dire les propriétés que
+doivent vérifier leurs entrées pour garantir leur bon fonctionnement et celles
+qu'elles s'engagent à assurer sur les sorties, le tout associé aux contrôles
+que l'outil nous impose concernant les problèmes propres au langage C (en
+particulier, montrer l'absence d'\textit{erreurs à l'exécution}).
 
 
 À partir de nos programmes spécifiés, WP est capable de produire un
-raisonnement nous disant si, oui ou non, notre programme répond au besoin
+raisonnement indiquant note programme répond, ou non, au besoin
 exprimé. La forme de raisonnement utilisée étant complètement modulaire, elle
 nous permet de prouver les fonctions une à une et de les composer.
 
-WP ne  comprend pas, à l'heure actuelle, l'allocation dynamique. Une fonction
+
+WP ne traite pas, à l'heure actuelle, l'allocation dynamique. Une fonction
 qui en  utiliserait ne pourrait donc pas être prouvée. Mais même sans cela,
 une large variété de fonctions n'ont pas besoin
 d'effectuer d'allocation dynamique, travaillant donc sur des données déjà
-allouées. Et ces fonctions peuvent ensuite être appelées avec l'assurance
-qu'elles font correctement leur travail. Si nous ne voulons pas prouver le
-code appelant, nous pouvons toujours écrire quelque chose comme cela :
+allouées. Ces fonctions peuvent ensuite être appelées avec l'assurance
+qu'elles accomplissent correctement leur travail. Si nous ne voulons pas prouver le
+code appelant, nous pouvons toujours écrire quelque chose comme ceci :
 
 
 
@@ -45,7 +44,7 @@ code appelant, nous pouvons toujours écrire quelque chose comme cela :
   ensures ...
 */
 void ma_fonction(int* a, int b){
-  //je parle bien du "assert" de "assert.h"
+  // nous parlons bien du "assert" de "assert.h"
   assert(/*properties on a*/ && "must respect properties on a");
   assert(/*properties on b*/ && "must respect properties on b");
 }
@@ -59,7 +58,7 @@ voulons ou pouvons pas prouver.
 
 
 
-Écrire les spécifications est parfois long, voire fastidieux. Les constructions
+Écrire des spécifications est parfois long, voire fastidieux. Les constructions
 de plus haut niveau d'ACSL (prédicats, fonctions logiques, axiomatisations)
 permettent d'alléger un peu ce travail, de la même manière que nos langages de
 programmation nous permettent de définir des types englobant d'autres types et
@@ -69,15 +68,14 @@ représente une tâche ardue.
 
 
 
-Cependant, cette étape de \textbf{formalisation} du besoin est \textbf{très importante}.
+Cependant, cette étape de \textbf{formalisation} du besoin est \textbf{cruciale}.
 Concrètement, une telle formalisation est, à bien y réfléchir, un travail que
 tout développeur devrait s'efforcer de faire. Et pas seulement quand il cherche
 à prouver son programme. Même la production de tests pour une fonction
 nécessite de bien comprendre son but si nous voulons tester ce qui est nécessaire
-et uniquement ce qui est nécessaire. Et écrire les spécifications dans un
-langage formel est une aide formidable (même si elle peut être frustrante,
-reconnaissons-le) pour avoir des spécifications claires.
-
+et uniquement ce qui l'est. Écrire les spécifications dans un langage formel est
+une aide formidable (même si elle peut être frustrante, reconnaissons-le) pour
+avoir des spécifications claires.
 
 
 Les langages formels, proches des mathématiques, sont précis. Les mathématiques
@@ -92,14 +90,14 @@ elle doit faire quoi ? Et que faut-il valider à son sujet ? ».
 
 Les méthodes formelles ne sont, à l'heure actuelle, probablement pas assez
 utilisées, parfois par méfiance, parfois par ignorance, parfois à cause de
-préjugés datant des balbutiements des outils, il y a 20 ans. Nos outils
+préjugés datant des balbutiements des outils, il y a 30 ans. Nos outils
 évoluent, nos pratiques dans le développement changent, probablement plus
-vite que dans de nombreux autres domaines techniques. Ce serait probablement
-faire un raccourci bien trop rapide que dire que ces outils ne pourront
-jamais être mis en œuvre quotidiennement. Après tout, nous voyons chaque jour
-à quel point le développement est différent aujourd'hui par rapport à il y a
-10 ans, 20 ans, 40 ans. Et nous pouvons à peine imaginer à quel point il sera
-différent dans 10 ans, 20 ans, 40 ans.
+vite que dans de nombreux autres domaines techniques. Dire que ces outils
+ne pourront jamais être mis en œuvre quotidiennement serait probablement un
+raccourci bien trop rapide. Après tout, nous voyons chaque jour à quel point le
+développement est différent aujourd'hui par rapport à il y a 10 ans, 20 ans,
+40 ans. Et nous pouvons à peine imaginer à quel point il sera différent dans
+10 ans, 20 ans, 40 ans.
 
 
 
@@ -153,16 +151,16 @@ statique et dynamique pour l'évaluation du bon fonctionnement d'un programme,
 on peut citer :
 \begin{itemize}
 \item l'analyse par interprétation abstraite avec
-\externalLink{EVA}{http://frama-c.com/value.html},
+\externalLink{EVA}{https://www.frama-c.com/fc-plugins/eva.html},
 \item la transformation d'annotation en vérification à l'exécution avec
-\externalLink{E-ACSL}{http://frama-c.com/eacsl.html}.
+\externalLink{E-ACSL}{https://www.frama-c.com/fc-plugins/e-acsl.html}.
 \end{itemize}
 
 
 Le but de la première est de calculer les domaines des différentes variables à
 tous les points de programme. Quand nous connaissons précisément ces domaines,
 nous sommes capables de déterminer si ces variables peuvent provoquer des erreurs.
-Par contre, cette analyse est effectuée sur la totalité du programme et pas
+Par contre, cette analyse est effectuée sur la totalité du programme et non
 modulairement, elle est par ailleurs fortement dépendante du type de domaine
 utilisé (nous n'entrerons pas plus dans les détails ici) et elle conserve moins
 bien les relations entre les variables. En compensation, elle est vraiment
@@ -187,7 +185,7 @@ Il existe divers autres greffons pour des tâches très différentes dans Frama-
 
 
 Et finalement, la dernière possibilité qui motivera l'utilisation de Frama-C,
-c'est la possibilité de développer ses propres greffons d'analyse, à partir de
+est la possibilité de développer ses propres greffons d'analyse, à partir de
 l'API fournie au niveau du noyau. Beaucoup de tâches peuvent être réalisées par
 l'analyse du code source et Frama-C permet de forger différentes analyses.
 
@@ -203,12 +201,11 @@ question sont bien vérifiées.
 
 
 
-Lorsque nous passons par d'autres solveurs qu'Alt-Ergo, le dialogue avec ceux-ci
-est assuré par une traduction vers le langage de Why3 qui fait ensuite le pont
-avec les prouveurs automatiques. Mais ce n'est pas la seule manière d'utiliser
-Why3. Celui-ci peut tout à fait être utilisé seul pour écrire et prouver des
-algorithmes. Il embarque notamment un ensemble de théories déjà présentes pour un
-certain nombre de structures de données.
+Le dialogue avec les solveurs automatiques est assuré par l'utilisation de
+l'outil Why3 qui fait le pont avec les prouveurs automatiques. Mais ce n'est pas
+la seule manière d'utiliser Why3. Celui-ci peut tout à fait être utilisé seul
+pour écrire et prouver des algorithmes. Il embarque notamment un ensemble de
+théories déjà présentes pour un certain nombre de structures de données.
 
 
 
