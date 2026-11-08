@@ -1,8 +1,8 @@
 Maintenant que  nous avons présenté les fonctionnalités les plus importantes
 d'ACSL pour la preuve de programme, intéressons-nous plus spécifiquement à la
 manière de prouver un programme avec Frama-C et WP. Nous allons présenter
-différentes approches qui peuvent être utilisées, selon la cible de vérification,
-le type de propriétés que l'on cherche à montrer et les fonctionnalités d'ACSL
+différentes approches envisageables, selon la cible de vérification,
+le type de propriétés que nous cherchons à montrer et les fonctionnalités d'ACSL
 que nous utilisons.
 
 %% \begin{levelTwo}
@@ -31,29 +31,28 @@ que nous utilisons.
 \newpage
 
 
-À mesure que nous essayons de prouver des propriétés plus complexes,
-particulièrement quand les programmes contiennent des boucles et des
-structures de données complexes, il y a un part de « \textit{trial and error} »
-pour comprendre ce qui manque aux prouveurs pour établir la preuve.
+À mesure que nous cherchons à prouver des propriétés plus complexes,
+en particulier quand les programmes contiennent des
+structures de données complexes, il y a une part « d'essai et erreur »
+afin de comprendre ce qui manque aux prouveurs pour établir la preuve.
 
 
-Il peut manquer des hypothèses. Dans ce cas, nous pouvons essayer d'ajouter
+Il peut manquer des hypothèses. Dans ce cas, nous pouvons ajouter
 des assertions pour guider les prouveurs, ou écrire du code fantôme avec les
-bons invariants, ce qui permet d'effectuer une part du raisonnement nous
-même lorsque c'est trop difficile pour les solveurs SMT.
+bons invariants, ce qui nous permet d'effectuer une partie du raisonnement
+nous-mêmes lorsque celui-ci est trop difficile pour les solveurs SMT.
 
 
 Avec un peu d'expérience, il est possible de lire le contenu des
 conditions de vérification ou essayer de faire la preuve soi-même avec
 l'assistant de preuve Rocq pour voir si la preuve semble réalisable.
-Parfois, le prouveur a juste besoin de plus de temps, dans ce cas, nous
-pouvons augmenter (parfois beaucoup) le temps de \textit{timeout}. Bien
-sûr, la propriété peut parfois être trop difficile pour le prouveur et
-le code fantôme ne pas être adapté, dans ce cas, il sera nécessaire de
-terminer la preuve nous-mêmes.
+Parfois, le prouveur a simplement besoin de plus de temps ; dans ce cas, nous
+pouvons augmenter le temps de \textit{timeout}. Bien sûr, la propriété peut
+parfois s'avérer trop difficile pour le prouveur et le code fantôme ne pas
+être adapté ; dans ce cas, il sera nécessaire de terminer la preuve nous-mêmes.
 
 
 Finalement, l'implémentation peut être incorrecte, et dans ce cas,
-nous devons la corriger. À ce moment-là, nous utiliserons du test et
-non de la preuve, car un test nous permettra de mettre en évidence la
+nous devons la corriger. Nous aurons alors plutôt recours au test plutôt
+qu'à la preuve, car un test nous permettra de mettre en évidence la
 présence du bug et de l'analyser.
