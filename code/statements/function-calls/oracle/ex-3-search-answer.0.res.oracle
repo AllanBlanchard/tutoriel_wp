@@ -4,7 +4,7 @@
 [wp] Warning: Skipped RTE guards: unaligned pointers (\aligned not supported)
 [wp] Warning: Skipped RTE guards: invalid function pointer calls (\valid_function not supported)
 [rte:annot] annotating function search
-[wp] 15 goals scheduled
+[wp] 27 goals scheduled
 [wp] [Valid] typed_search_complete_in_notin (Qed)
 [wp] [Valid] typed_search_disjoint_in_notin (Qed)
 [wp] [Valid] typed_search_terminates (Qed)
@@ -19,7 +19,19 @@
 [wp] [Valid] typed_search_variant (Alt-Ergo) (Cached)
 [wp] [Valid] typed_search_call_search_requires (Alt-Ergo) (Cached)
 [wp] [Valid] typed_search_in_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_in_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_search_in_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_search_in_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_search_in_assigns_normal_part4 (Qed)
+[wp] [Valid] typed_search_in_assigns_normal_part5 (Qed)
+[wp] [Valid] typed_search_in_assigns_exit (Qed)
 [wp] [Valid] typed_search_notin_ensures (Alt-Ergo) (Cached)
-[wp] Proved goals:   15 / 15
-  Qed:            10
+[wp] [Valid] typed_search_notin_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_search_notin_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_search_notin_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_search_notin_assigns_normal_part4 (Qed)
+[wp] [Valid] typed_search_notin_assigns_normal_part5 (Qed)
+[wp] [Valid] typed_search_notin_assigns_exit (Qed)
+[wp] Proved goals:   27 / 27
+  Qed:            22
   Alt-Ergo:        5

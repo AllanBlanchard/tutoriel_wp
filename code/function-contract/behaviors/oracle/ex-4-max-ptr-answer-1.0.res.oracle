@@ -7,7 +7,7 @@
 [rte:annot] annotating function max_ptr
 [wp] [Valid] Goal max_ptr_exits (Cfg) (Unreachable)
 [wp] [Valid] Goal max_ptr_terminates (Cfg) (Trivial)
-[wp] 16 goals scheduled
+[wp] 20 goals scheduled
 [wp] [Valid] typed_max_ptr_complete_is_a_is_b (Qed)
 [wp] [Valid] typed_max_ptr_disjoint_is_a_is_b (Qed)
 [wp] [Valid] typed_max_ptr_ensures (Qed)
@@ -18,16 +18,20 @@
 [wp] [Valid] typed_max_ptr_assigns_part1 (Qed)
 [wp] [Valid] typed_max_ptr_assigns_part2 (Qed)
 [wp] [Valid] typed_max_ptr_is_b_ensures (Qed)
+[wp] [Valid] typed_max_ptr_is_b_assigns_part1 (Qed)
+[wp] [Valid] typed_max_ptr_is_b_assigns_part2 (Qed)
 [wp] [Valid] typed_max_ptr_is_a_ensures (Qed)
+[wp] [Valid] typed_max_ptr_is_a_assigns_part1 (Qed)
+[wp] [Valid] typed_max_ptr_is_a_assigns_part2 (Qed)
 [wp] [Valid] typed_main_terminates (Qed)
 [wp] [Valid] typed_main_exits (Qed)
 [wp] [Valid] typed_main_assert (Qed)
 [wp] [Valid] typed_main_assert_2 (Qed)
 [wp] [Valid] typed_main_call_max_ptr_requires (Qed)
-[wp] Proved goals:   18 / 18
+[wp] Proved goals:   22 / 22
   Terminating:     1
   Unreachable:     1
-  Qed:            16
+  Qed:            20
 [wp:pedantic-assigns] ex-4-max-ptr-answer-1.c:25: Warning: 
   No 'assigns' specification for function 'main'.
   Callers assumptions might be imprecise.

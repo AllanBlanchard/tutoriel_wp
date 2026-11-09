@@ -7,7 +7,7 @@
 [rte:annot] annotating function leap
 [wp] [Valid] Goal leap_exits (Cfg) (Unreachable)
 [wp] [Valid] Goal leap_terminates (Cfg) (Trivial)
-[wp] 21 goals scheduled
+[wp] 45 goals scheduled
 [wp] [Valid] typed_leap_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_leap_assigns_part1 (Qed)
 [wp] [Valid] typed_leap_assigns_part2 (Qed)
@@ -26,11 +26,35 @@
 [wp] [Valid] typed_day_of_assigns_normal_part5 (Qed)
 [wp] [Valid] typed_day_of_assigns_exit (Qed)
 [wp] [Valid] typed_day_of_february_leap_ensures (Qed)
+[wp] [Valid] typed_day_of_february_leap_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_day_of_february_leap_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_day_of_february_leap_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_day_of_february_leap_assigns_normal_part4 (Qed)
+[wp] [Valid] typed_day_of_february_leap_assigns_normal_part5 (Qed)
+[wp] [Valid] typed_day_of_february_leap_assigns_exit (Qed)
 [wp] [Valid] typed_day_of_february_not_leap_ensures (Qed)
+[wp] [Valid] typed_day_of_february_not_leap_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_day_of_february_not_leap_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_day_of_february_not_leap_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_day_of_february_not_leap_assigns_normal_part4 (Qed)
+[wp] [Valid] typed_day_of_february_not_leap_assigns_normal_part5 (Qed)
+[wp] [Valid] typed_day_of_february_not_leap_assigns_exit (Qed)
 [wp] [Valid] typed_day_of_thirty_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_day_of_thirty_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_day_of_thirty_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_day_of_thirty_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_day_of_thirty_assigns_normal_part4 (Qed)
+[wp] [Valid] typed_day_of_thirty_assigns_normal_part5 (Qed)
+[wp] [Valid] typed_day_of_thirty_assigns_exit (Qed)
 [wp] [Valid] typed_day_of_thirty_one_ensures (Alt-Ergo) (Cached)
-[wp] Proved goals:   23 / 23
+[wp] [Valid] typed_day_of_thirty_one_assigns_normal_part1 (Qed)
+[wp] [Valid] typed_day_of_thirty_one_assigns_normal_part2 (Qed)
+[wp] [Valid] typed_day_of_thirty_one_assigns_normal_part3 (Qed)
+[wp] [Valid] typed_day_of_thirty_one_assigns_normal_part4 (Qed)
+[wp] [Valid] typed_day_of_thirty_one_assigns_normal_part5 (Qed)
+[wp] [Valid] typed_day_of_thirty_one_assigns_exit (Qed)
+[wp] Proved goals:   47 / 47
   Terminating:     1
   Unreachable:     1
-  Qed:            14
+  Qed:            38
   Alt-Ergo:        7

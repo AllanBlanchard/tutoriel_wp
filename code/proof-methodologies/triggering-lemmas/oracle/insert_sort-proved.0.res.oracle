@@ -13,7 +13,7 @@
 [wp] [Valid] typed_lemma_shifted_maintains_occ (Coq) (Cached)
 [wp] [Valid] typed_lemma_transitive_permutation (Alt-Ergo) (Cached)
 [wp] [Valid] typed_lemma_unchanged_is_permutation (Alt-Ergo) (Cached)
-[wp] [Valid] typed_lemma_union_permutation (Alt-Ergo) (Cached)
+[wp] [Valid] typed_lemma_union_permutation (Coq) (Cached)
 [wp] [Valid] typed_insert_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_insert_ensures_2 (Qed)
 [wp] [Valid] typed_insert_assert_rte_mem_access (Alt-Ergo) (Cached)
@@ -75,5 +75,5 @@
   Terminating:     1
   Unreachable:     1
   Qed:            31
-  Alt-Ergo:       29
-  Coq:             3
+  Alt-Ergo:       28
+  Coq:             4

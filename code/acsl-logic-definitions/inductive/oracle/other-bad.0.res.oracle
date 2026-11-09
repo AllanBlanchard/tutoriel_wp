@@ -7,7 +7,7 @@
 [wp] [Valid] Goal foo_exits (Cfg) (Unreachable)
 [wp] [Valid] Goal foo_terminates (Cfg) (Trivial)
 [wp] 1 goal scheduled
-[wp] User Error: After simplification inductive P appear ill-formed (hint: check cases premises)
+[wp] User Error: Ill-formed inductive declaration (non-positive premises)
 [wp] Warning: Goal Property: running prover Alt-Ergo:2.6.2 failed ([User Error])
 [wp] [Failure] typed_foo_ensures (Alt-Ergo) (No Cache)
 [wp] Proved goals:    2 / 3

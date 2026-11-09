@@ -6,7 +6,7 @@
 [rte:annot] annotating function search
 [wp] [Valid] Goal search_exits (Cfg) (Unreachable)
 [wp] [Valid] Goal search_terminates (Cfg) (Trivial)
-[wp] 16 goals scheduled
+[wp] 22 goals scheduled
 [wp] [Valid] typed_search_complete_in_notin (Qed)
 [wp] [Valid] typed_search_disjoint_in_notin (Qed)
 [wp] [Valid] typed_search_loop_invariant_established (Qed)
@@ -22,11 +22,17 @@
 [wp] [Valid] typed_search_loop_variant_positive (Qed)
 [wp] [Valid] typed_search_loop_variant_decrease (Qed)
 [wp] [Valid] typed_search_notin_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_search_notin_assigns_part1 (Qed)
+[wp] [Valid] typed_search_notin_assigns_part2 (Qed)
+[wp] [Valid] typed_search_notin_assigns_part3 (Qed)
 [wp] [Valid] typed_search_in_ensures (Alt-Ergo) (Cached)
-[wp] Proved goals:   18 / 18
+[wp] [Valid] typed_search_in_assigns_part1 (Qed)
+[wp] [Valid] typed_search_in_assigns_part2 (Qed)
+[wp] [Valid] typed_search_in_assigns_part3 (Qed)
+[wp] Proved goals:   24 / 24
   Terminating:     1
   Unreachable:     1
-  Qed:            12
+  Qed:            18
   Alt-Ergo:        4
 [wp:pedantic-assigns] search-1.c:19: Warning: 
   No 'assigns \result \from ...' specification for function 'search'returning pointer type.

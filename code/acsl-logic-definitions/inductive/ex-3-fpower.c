@@ -1,5 +1,5 @@
 /* run.config
-   OPT:
+   OPT: -kernel-warn-key annot-error=inactive
 */
 
 /*@

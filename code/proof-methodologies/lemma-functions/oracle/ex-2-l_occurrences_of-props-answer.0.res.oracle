@@ -9,13 +9,16 @@
 [rte:annot] annotating function occ_monotonic
 [rte:annot] annotating function occ_pos_exists
 [rte:annot] annotating function occ_pos_find
+[rte:annot] annotating function occ_split_last
 [wp] [Valid] Goal not_in_occ_0_exits (Cfg) (Unreachable)
 [wp] [Valid] Goal not_in_occ_0_terminates (Cfg) (Trivial)
 [wp] [Valid] Goal occ_bounds_exits (Cfg) (Unreachable)
 [wp] [Valid] Goal occ_bounds_terminates (Cfg) (Trivial)
 [wp] [Valid] Goal occ_monotonic_exits (Cfg) (Unreachable)
 [wp] [Valid] Goal occ_monotonic_terminates (Cfg) (Trivial)
-[wp] 80 goals scheduled
+[wp] [Valid] Goal occ_split_last_exits (Cfg) (Unreachable)
+[wp] [Valid] Goal occ_split_last_terminates (Cfg) (Trivial)
+[wp] 85 goals scheduled
 [wp] [Valid] typed_occ_bounds_ensures (Qed)
 [wp] [Valid] typed_occ_bounds_loop_invariant_established (Qed)
 [wp] [Valid] typed_occ_bounds_loop_invariant_preserved (Qed)
@@ -46,6 +49,8 @@
 [wp] [Valid] typed_occ_monotonic_assigns (Qed)
 [wp] [Valid] typed_occ_monotonic_loop_variant_positive (Qed)
 [wp] [Valid] typed_occ_monotonic_loop_variant_decrease (Qed)
+[wp] [Valid] typed_occ_split_last_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_occ_split_last_assigns (Qed)
 [wp] [Valid] typed_occ_0_not_in_terminates (Qed)
 [wp] [Valid] typed_occ_0_not_in_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_occ_0_not_in_exits (Qed)
@@ -58,6 +63,7 @@
 [wp] [Valid] typed_occ_0_not_in_assert_rte_mem_access (Alt-Ergo) (Cached)
 [wp] [Valid] typed_occ_0_not_in_assert_rte_unsigned_overflow (Qed)
 [wp] [Valid] typed_occ_0_not_in_assert_rte_unsigned_overflow_2 (Qed)
+[wp] [Valid] typed_occ_0_not_in_assert_rte_unsigned_overflow_3 (Qed)
 [wp] [Valid] typed_occ_0_not_in_loop_assigns (Qed)
 [wp] [Valid] typed_occ_0_not_in_assigns_normal_part1 (Qed)
 [wp] [Valid] typed_occ_0_not_in_assigns_normal_part2 (Qed)
@@ -65,6 +71,8 @@
 [wp] [Valid] typed_occ_0_not_in_assigns_exit_part2 (Qed)
 [wp] [Valid] typed_occ_0_not_in_loop_variant_positive (Qed)
 [wp] [Valid] typed_occ_0_not_in_loop_variant_decrease (Qed)
+[wp] [Valid] typed_occ_0_not_in_call_occ_split_last_requires (Alt-Ergo) (Cached)
+[wp] [Valid] typed_occ_0_not_in_call_occ_split_last_requires_2 (Qed)
 [wp] [Valid] typed_occ_0_not_in_call_occ_monotonic_requires (Qed)
 [wp] [Valid] typed_occ_pos_find_terminates (Qed)
 [wp] [Valid] typed_occ_pos_find_ensures (Alt-Ergo) (Cached)
@@ -96,8 +104,8 @@
 [wp] [Valid] typed_occ_pos_exists_assigns_exit (Qed)
 [wp] [Valid] typed_occ_pos_exists_call_occ_pos_find_requires (Qed)
 [wp] [Valid] typed_occ_pos_exists_call_occ_pos_find_requires_2 (Qed)
-[wp] Proved goals:   86 / 86
-  Terminating:     3
-  Unreachable:     3
-  Qed:            62
-  Alt-Ergo:       18
+[wp] Proved goals:   93 / 93
+  Terminating:     4
+  Unreachable:     4
+  Qed:            65
+  Alt-Ergo:       20

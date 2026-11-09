@@ -12,13 +12,13 @@
   Function f
 ------------------------------------------------------------
 
-Goal Follows relation Loop variant at loop (file general-measure.c, line 23):
-Let x = p_1.F1_pair_x.
-Let x_1 = p_1.F1_pair_y.
-Let x_2 = p.F1_pair_y.
-Let x_3 = p.F1_pair_x.
-Let x_4 = p_2.F1_pair_x.
-Let x_5 = p_2.F1_pair_y.
+Goal Follows relation Loop variant at loop ("general-measure.c", lines 23-29):
+Let x = p_1.x.
+Let x_1 = p_1.y.
+Let x_2 = p.y.
+Let x_3 = p.x.
+Let x_4 = p_2.x.
+Let x_5 = p_2.y.
 Assume {
   Type: IsS1_pair(p) /\ IsS1_pair(p_1) /\ is_sint32(positive_0) /\
       is_sint32(positive_1) /\ is_sint32(x_3) /\ is_sint32(x_2) /\
@@ -38,9 +38,9 @@ Assume {
     (* Call 'positive' *)
     Have: 0 <= positive_0.
     (* Return Effects *)
-    Have: ({ F1_pair_x = x_3 - 1 ; F1_pair_y = positive_0 }) = p_1.
+    Have: { x = x_3 - 1 ; y = positive_0 } = p_1.
   }
-  Else { Have: ({ p with F1_pair_y = x_2 - 1 }) = p_1. }
+  Else { Have: { p with y = x_2 - 1 } = p_1. }
   (* Invariant *)
   Have: (0 <= x) /\ (0 <= x_1).
 }

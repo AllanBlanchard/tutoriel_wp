@@ -6,15 +6,19 @@
 [rte:annot] annotating function abs
 [wp] [Valid] Goal abs_exits (Cfg) (Unreachable)
 [wp] [Valid] Goal abs_terminates (Cfg) (Trivial)
-[wp] 7 goals scheduled
+[wp] 11 goals scheduled
 [wp] [Valid] typed_abs_complete_neg_pos (Qed)
 [wp] [Valid] typed_abs_disjoint_neg_pos (Qed)
 [wp] [Valid] typed_abs_assert_rte_signed_overflow (Qed)
 [wp] [Valid] typed_abs_assigns_part1 (Qed)
 [wp] [Valid] typed_abs_assigns_part2 (Qed)
 [wp] [Valid] typed_abs_pos_ensures (Qed)
+[wp] [Valid] typed_abs_pos_assigns_part1 (Qed)
+[wp] [Valid] typed_abs_pos_assigns_part2 (Qed)
 [wp] [Valid] typed_abs_neg_ensures (Qed)
-[wp] Proved goals:    9 / 9
+[wp] [Valid] typed_abs_neg_assigns_part1 (Qed)
+[wp] [Valid] typed_abs_neg_assigns_part2 (Qed)
+[wp] Proved goals:   13 / 13
   Terminating:     1
   Unreachable:     1
-  Qed:             7
+  Qed:            11

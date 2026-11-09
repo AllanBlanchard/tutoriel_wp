@@ -5,95 +5,7 @@ Require BuiltIn.
 Require HighOrd.
 Require bool.Bool.
 Require int.Int.
-Require int.Abs.
-Require int.ComputerDivision.
-Require real.Real.
-Require real.RealInfix.
-Require real.FromInt.
 Require map.Map.
-
-Parameter eqb:
-  forall {a:Type} {a_WT:WhyType a}, a -> a -> Init.Datatypes.bool.
-
-Axiom eqb'def :
-  forall {a:Type} {a_WT:WhyType a},
-  forall (x:a) (y:a),
-  ((x = y) -> ((eqb x y) = Init.Datatypes.true)) /\
-  (~ (x = y) -> ((eqb x y) = Init.Datatypes.false)).
-
-Parameter neqb:
-  forall {a:Type} {a_WT:WhyType a}, a -> a -> Init.Datatypes.bool.
-
-Axiom neqb'def :
-  forall {a:Type} {a_WT:WhyType a},
-  forall (x:a) (y:a),
-  (~ (x = y) -> ((neqb x y) = Init.Datatypes.true)) /\
-  ((x = y) -> ((neqb x y) = Init.Datatypes.false)).
-
-Parameter zlt: Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
-
-Axiom zlt'def :
-  forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z),
-  ((x < y)%Z -> ((zlt x y) = Init.Datatypes.true)) /\
-  (~ (x < y)%Z -> ((zlt x y) = Init.Datatypes.false)).
-
-Parameter zleq:
-  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
-
-Axiom zleq'def :
-  forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z),
-  ((x <= y)%Z -> ((zleq x y) = Init.Datatypes.true)) /\
-  (~ (x <= y)%Z -> ((zleq x y) = Init.Datatypes.false)).
-
-Parameter rlt:
-  Reals.Rdefinitions.R -> Reals.Rdefinitions.R -> Init.Datatypes.bool.
-
-Axiom rlt'def :
-  forall (x:Reals.Rdefinitions.R) (y:Reals.Rdefinitions.R),
-  ((x < y)%R -> ((rlt x y) = Init.Datatypes.true)) /\
-  (~ (x < y)%R -> ((rlt x y) = Init.Datatypes.false)).
-
-Parameter rleq:
-  Reals.Rdefinitions.R -> Reals.Rdefinitions.R -> Init.Datatypes.bool.
-
-Axiom rleq'def :
-  forall (x:Reals.Rdefinitions.R) (y:Reals.Rdefinitions.R),
-  ((x <= y)%R -> ((rleq x y) = Init.Datatypes.true)) /\
-  (~ (x <= y)%R -> ((rleq x y) = Init.Datatypes.false)).
-
-(* Why3 assumption *)
-Definition real_of_int (x:Numbers.BinNums.Z) : Reals.Rdefinitions.R :=
-  BuiltIn.IZR x.
-
-Axiom c_euclidian :
-  forall (n:Numbers.BinNums.Z) (d:Numbers.BinNums.Z), ~ (d = 0%Z) ->
-  (n = (((ZArith.BinInt.Z.quot n d) * d)%Z + (ZArith.BinInt.Z.rem n d))%Z).
-
-Axiom cmod_remainder :
-  forall (n:Numbers.BinNums.Z) (d:Numbers.BinNums.Z),
-  ((0%Z <= n)%Z -> (0%Z < d)%Z ->
-   (0%Z <= (ZArith.BinInt.Z.rem n d))%Z /\ ((ZArith.BinInt.Z.rem n d) < d)%Z) /\
-  ((n <= 0%Z)%Z -> (0%Z < d)%Z ->
-   ((-d)%Z < (ZArith.BinInt.Z.rem n d))%Z /\
-   ((ZArith.BinInt.Z.rem n d) <= 0%Z)%Z) /\
-  ((0%Z <= n)%Z -> (d < 0%Z)%Z ->
-   (0%Z <= (ZArith.BinInt.Z.rem n d))%Z /\
-   ((ZArith.BinInt.Z.rem n d) < (-d)%Z)%Z) /\
-  ((n <= 0%Z)%Z -> (d < 0%Z)%Z ->
-   (d < (ZArith.BinInt.Z.rem n d))%Z /\ ((ZArith.BinInt.Z.rem n d) <= 0%Z)%Z).
-
-Axiom cdiv_neutral :
-  forall (a:Numbers.BinNums.Z), ((ZArith.BinInt.Z.quot a 1%Z) = a).
-
-Axiom cdiv_inv :
-  forall (a:Numbers.BinNums.Z), ~ (a = 0%Z) ->
-  ((ZArith.BinInt.Z.quot a a) = 1%Z).
-
-Axiom cdiv_closed_remainder :
-  forall (a:Numbers.BinNums.Z) (b:Numbers.BinNums.Z) (n:Numbers.BinNums.Z),
-  (0%Z <= a)%Z -> (0%Z <= b)%Z ->
-  (0%Z <= (b - a)%Z)%Z /\ ((b - a)%Z < n)%Z ->
-  ((ZArith.BinInt.Z.rem a n) = (ZArith.BinInt.Z.rem b n)) -> (a = b).
 
 (* Why3 assumption *)
 Inductive addr :=
@@ -167,7 +79,6 @@ Definition valid_rd (m:Numbers.BinNums.Z -> Numbers.BinNums.Z) (p:addr)
 (* Why3 assumption *)
 Definition valid_obj (m:Numbers.BinNums.Z -> Numbers.BinNums.Z) (p:addr) :
     Prop :=
-  (p = null) \/
   ~ (0%Z = (base p)) /\
   (0%Z <= (offset p))%Z /\
   ((offset p) <= (m (base p)))%Z /\ (0%Z < (m (base p)))%Z.
@@ -235,6 +146,8 @@ Axiom separated_sym :
   forall (p:addr) (q:addr),
   forall (lp:Numbers.BinNums.Z) (lq:Numbers.BinNums.Z),
   separated p lp q lq <-> separated q lq p lp.
+
+Parameter binit: Numbers.BinNums.Z -> Prop.
 
 Parameter region: Numbers.BinNums.Z -> Numbers.BinNums.Z.
 
@@ -310,6 +223,15 @@ Definition is_uint64 (x:Numbers.BinNums.Z) : Prop :=
 (* Why3 assumption *)
 Definition is_sint64 (x:Numbers.BinNums.Z) : Prop :=
   ((-9223372036854775808%Z)%Z <= x)%Z /\ (x < 9223372036854775808%Z)%Z.
+
+(* Why3 assumption *)
+Definition is_uint128 (x:Numbers.BinNums.Z) : Prop :=
+  (0%Z <= x)%Z /\ (x < 340282366920938463463374607431768211456%Z)%Z.
+
+(* Why3 assumption *)
+Definition is_sint128 (x:Numbers.BinNums.Z) : Prop :=
+  ((-170141183460469231731687303715884105728%Z)%Z <= x)%Z /\
+  (x < 170141183460469231731687303715884105728%Z)%Z.
 
 Axiom is_bool0 : is_bool 0%Z.
 
@@ -400,6 +322,34 @@ Axiom to_sint64'def :
     ((to_sint64 x) = (to_sint64 (x - 18446744073709551616%Z)%Z))) /\
    (~ (9223372036854775808%Z <= x)%Z -> ((to_sint64 x) = x))).
 
+Parameter to_uint128: Numbers.BinNums.Z -> Numbers.BinNums.Z.
+
+Axiom to_uint128'def :
+  forall (x:Numbers.BinNums.Z),
+  ((x < 0%Z)%Z ->
+   ((to_uint128 x) =
+    (to_uint128 (x + 340282366920938463463374607431768211456%Z)%Z))) /\
+  (~ (x < 0%Z)%Z ->
+   ((340282366920938463463374607431768211456%Z <= x)%Z ->
+    ((to_uint128 x) =
+     (to_uint128 (x - 340282366920938463463374607431768211456%Z)%Z))) /\
+   (~ (340282366920938463463374607431768211456%Z <= x)%Z ->
+    ((to_uint128 x) = x))).
+
+Parameter to_sint128: Numbers.BinNums.Z -> Numbers.BinNums.Z.
+
+Axiom to_sint128'def :
+  forall (x:Numbers.BinNums.Z),
+  ((x < (-170141183460469231731687303715884105728%Z)%Z)%Z ->
+   ((to_sint128 x) =
+    (to_sint128 (x + 340282366920938463463374607431768211456%Z)%Z))) /\
+  (~ (x < (-170141183460469231731687303715884105728%Z)%Z)%Z ->
+   ((170141183460469231731687303715884105728%Z <= x)%Z ->
+    ((to_sint128 x) =
+     (to_sint128 (x - 340282366920938463463374607431768211456%Z)%Z))) /\
+   (~ (170141183460469231731687303715884105728%Z <= x)%Z ->
+    ((to_sint128 x) = x))).
+
 Parameter two_power_abs: Numbers.BinNums.Z -> Numbers.BinNums.Z.
 
 (* Why3 assumption *)
@@ -432,6 +382,12 @@ Axiom is_to_uint64 : forall (x:Numbers.BinNums.Z), is_uint64 (to_uint64 x).
 
 Axiom is_to_sint64 : forall (x:Numbers.BinNums.Z), is_sint64 (to_sint64 x).
 
+Axiom is_to_uint128 :
+  forall (x:Numbers.BinNums.Z), is_uint128 (to_uint128 x).
+
+Axiom is_to_sint128 :
+  forall (x:Numbers.BinNums.Z), is_sint128 (to_sint128 x).
+
 Axiom id_uint8 :
   forall (x:Numbers.BinNums.Z), is_uint8 x -> ((to_uint8 x) = x).
 
@@ -455,6 +411,12 @@ Axiom id_uint64 :
 
 Axiom id_sint64 :
   forall (x:Numbers.BinNums.Z), is_sint64 x -> ((to_sint64 x) = x).
+
+Axiom id_uint128 :
+  forall (x:Numbers.BinNums.Z), is_uint128 x -> ((to_uint128 x) = x).
+
+Axiom id_sint128 :
+  forall (x:Numbers.BinNums.Z), is_sint128 x -> ((to_sint128 x) = x).
 
 Axiom id_uint8_inl :
   forall (x:Numbers.BinNums.Z), (0%Z <= x)%Z /\ (x < 256%Z)%Z ->
@@ -489,6 +451,16 @@ Axiom id_sint64_inl :
   ((-9223372036854775808%Z)%Z <= x)%Z /\ (x < 9223372036854775808%Z)%Z ->
   ((to_sint64 x) = x).
 
+Axiom id_uint128_inl :
+  forall (x:Numbers.BinNums.Z),
+  (0%Z <= x)%Z /\ (x < 340282366920938463463374607431768211456%Z)%Z ->
+  ((to_uint128 x) = x).
+
+Axiom id_sint128_inl :
+  forall (x:Numbers.BinNums.Z),
+  ((-170141183460469231731687303715884105728%Z)%Z <= x)%Z /\
+  (x < 170141183460469231731687303715884105728%Z)%Z -> ((to_sint128 x) = x).
+
 Axiom proj_int8 :
   forall (x:Numbers.BinNums.Z), ((to_sint8 (to_uint8 x)) = (to_sint8 x)).
 
@@ -500,6 +472,10 @@ Axiom proj_int32 :
 
 Axiom proj_int64 :
   forall (x:Numbers.BinNums.Z), ((to_sint64 (to_uint64 x)) = (to_sint64 x)).
+
+Axiom proj_int128 :
+  forall (x:Numbers.BinNums.Z),
+  ((to_sint128 (to_uint128 x)) = (to_sint128 x)).
 
 (* Why3 assumption *)
 Definition is_sint32_chunk (m:addr -> Numbers.BinNums.Z) : Prop :=
@@ -518,21 +494,19 @@ Axiom Q_occurrences_empty_range :
 Axiom Q_occurrences_positive_range_with_element :
   forall (Mint:addr -> Numbers.BinNums.Z) (v:Numbers.BinNums.Z) (in1:addr)
     (from:Numbers.BinNums.Z) (to:Numbers.BinNums.Z),
-  let x := ((-1%Z)%Z + to)%Z in
-  let x1 := Mint (shift in1 x) in
-  (x1 = v) -> (from < to)%Z -> is_sint32_chunk Mint -> is_sint32 v ->
-  is_sint32 x1 ->
-  ((1%Z + (L_l_occurrences_of Mint v in1 from x))%Z =
+  ((Mint (shift in1 ((-1%Z)%Z + to)%Z)) = v) -> (from < to)%Z ->
+  is_sint32_chunk Mint -> is_sint32 v ->
+  is_sint32 (Mint (shift in1 ((-1%Z)%Z + to)%Z)) ->
+  ((1%Z + (L_l_occurrences_of Mint v in1 from ((-1%Z)%Z + to)%Z))%Z =
    (L_l_occurrences_of Mint v in1 from to)).
 
 Axiom Q_occurrences_positive_range_without_element :
   forall (Mint:addr -> Numbers.BinNums.Z) (v:Numbers.BinNums.Z) (in1:addr)
     (from:Numbers.BinNums.Z) (to:Numbers.BinNums.Z),
-  let x := ((-1%Z)%Z + to)%Z in
-  let x1 := Mint (shift in1 x) in
-  ~ (x1 = v) -> (from < to)%Z -> is_sint32_chunk Mint -> is_sint32 v ->
-  is_sint32 x1 ->
-  ((L_l_occurrences_of Mint v in1 from x) =
+  ~ ((Mint (shift in1 ((-1%Z)%Z + to)%Z)) = v) -> (from < to)%Z ->
+  is_sint32_chunk Mint -> is_sint32 v ->
+  is_sint32 (Mint (shift in1 ((-1%Z)%Z + to)%Z)) ->
+  ((L_l_occurrences_of Mint v in1 from ((-1%Z)%Z + to)%Z) =
    (L_l_occurrences_of Mint v in1 from to)).
 
 Theorem Z_induction(m : Z)(P : Z -> Prop) :
@@ -550,13 +524,12 @@ Proof.
 Qed.
 
 (* Why3 goal *)
-Theorem wp_goal :
+Theorem wp :
   forall (t:addr -> Numbers.BinNums.Z) (i:Numbers.BinNums.Z) (a:addr)
     (i1:Numbers.BinNums.Z) (i2:Numbers.BinNums.Z) (i3:Numbers.BinNums.Z),
-  (i1 <= i2)%Z -> (i <= i1)%Z -> is_sint32_chunk t -> is_sint32 i3 ->
+  (i <= i1)%Z -> (i1 <= i2)%Z -> is_sint32_chunk t -> is_sint32 i3 ->
   (((L_l_occurrences_of t i3 a i i1) + (L_l_occurrences_of t i3 a i1 i2))%Z =
    (L_l_occurrences_of t i3 a i i2)).
-(* Why3 intros t i a i1 i2 i3 h1 h2 h3 h4. *)
 Proof.
   Require Import Psatz.
 

@@ -11,7 +11,7 @@
 [rte:annot] annotating function order_3_inc_min
 [wp] [Valid] Goal max_ptr_exits (Cfg) (Unreachable)
 [wp] [Valid] Goal max_ptr_terminates (Cfg) (Trivial)
-[wp] 81 goals scheduled
+[wp] 89 goals scheduled
 [wp] [Valid] typed_max_ptr_complete_do_not_change_reorder (Qed)
 [wp] [Valid] typed_max_ptr_disjoint_do_not_change_reorder (Qed)
 [wp] [Valid] typed_max_ptr_assert_rte_mem_access (Alt-Ergo) (Cached)
@@ -23,7 +23,11 @@
 [wp] [Valid] typed_max_ptr_assigns_part1 (Qed)
 [wp] [Valid] typed_max_ptr_assigns_part2 (Qed)
 [wp] [Valid] typed_max_ptr_reorder_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_max_ptr_reorder_assigns_part1 (Qed)
+[wp] [Valid] typed_max_ptr_reorder_assigns_part2 (Qed)
 [wp] [Valid] typed_max_ptr_do_not_change_ensures (Qed)
+[wp] [Valid] typed_max_ptr_do_not_change_assigns_part1 (Qed)
+[wp] [Valid] typed_max_ptr_do_not_change_assigns_part2 (Qed)
 [wp] [Valid] typed_min_ptr_complete_do_not_change_reorder (Qed)
 [wp] [Valid] typed_min_ptr_disjoint_do_not_change_reorder (Qed)
 [wp] [Valid] typed_min_ptr_terminates (Qed)
@@ -32,7 +36,11 @@
 [wp] [Valid] typed_min_ptr_assigns_exit (Qed)
 [wp] [Valid] typed_min_ptr_call_max_ptr_requires (Qed)
 [wp] [Valid] typed_min_ptr_reorder_ensures (Qed)
+[wp] [Valid] typed_min_ptr_reorder_assigns_normal (Qed)
+[wp] [Valid] typed_min_ptr_reorder_assigns_exit (Qed)
 [wp] [Valid] typed_min_ptr_do_not_change_ensures (Qed)
+[wp] [Valid] typed_min_ptr_do_not_change_assigns_normal (Qed)
+[wp] [Valid] typed_min_ptr_do_not_change_assigns_exit (Qed)
 [wp] [Valid] typed_order_3_inc_max_terminates (Qed)
 [wp] [Valid] typed_order_3_inc_max_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_order_3_inc_max_ensures_2 (Alt-Ergo) (Cached)
@@ -93,8 +101,8 @@
 [wp] [Valid] typed_order_3_dec_min_call_min_ptr_requires (Qed)
 [wp] [Valid] typed_order_3_dec_min_call_min_ptr_2_requires (Qed)
 [wp] [Valid] typed_order_3_dec_min_call_min_ptr_3_requires (Qed)
-[wp] Proved goals:   83 / 83
+[wp] Proved goals:   91 / 91
   Terminating:     1
   Unreachable:     1
-  Qed:            62
+  Qed:            70
   Alt-Ergo:       19

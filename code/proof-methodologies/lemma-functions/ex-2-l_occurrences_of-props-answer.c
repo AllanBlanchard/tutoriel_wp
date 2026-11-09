@@ -79,6 +79,19 @@
 /*@ ghost
   /@
     requires \valid_read(arr + (0.. len - 1)) ;
+    requires 0 < len ;
+    assigns \nothing ;
+    ensures
+      l_occurrences_of(v,arr,0,len) ==
+        (arr[len - 1] == v ? 1 : 0) +
+        l_occurrences_of(v,arr,0,len-1);
+  @/
+  void occ_split_last(int v, int* arr, size_t len){}
+*/
+
+/*@ ghost
+  /@
+    requires \valid_read(arr + (0.. len - 1)) ;
     requires l_occurrences_of(v, arr, 0, len) == 0 ;
     assigns \nothing ;
     ensures \forall integer i ; 0 <= i < len ==> arr[i] != v ;
@@ -93,6 +106,7 @@
     @/
     for(size_t i = 0 ; i < len ; ++i){
       if(arr[i] == v){
+        occ_split_last(v, arr, i+1) ;
         occ_monotonic(v, arr, i+1, len) ;
         break ;
       }

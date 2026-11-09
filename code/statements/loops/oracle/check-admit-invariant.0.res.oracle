@@ -13,7 +13,7 @@
   Function main
 ------------------------------------------------------------
 
-Goal Establishment of Invariant 'C3' (file check-admit-invariant.c, line 10):
+Goal Establishment of Invariant 'C3' ("check-admit-invariant.c", line 10):
 Assume {
   Type: is_sint32(x) /\ is_sint32(y).
   (* Initializer *)
@@ -30,7 +30,7 @@ Prover Qed returns Valid
 
 ------------------------------------------------------------
 
-Goal Preservation of Invariant 'C3' (file check-admit-invariant.c, line 10):
+Goal Preservation of Invariant 'C3' ("check-admit-invariant.c", line 10):
 Assume {
   Type: is_sint32(x) /\ is_sint32(x_1) /\ is_sint32(x_2) /\ is_sint32(y) /\
       is_sint32(y_1) /\ is_sint32(y_2).
@@ -76,7 +76,7 @@ Prover Qed returns Valid
 
 ------------------------------------------------------------
 
-Goal Establishment of Invariant 'I4' (file check-admit-invariant.c, line 11):
+Goal Establishment of Invariant 'I4' ("check-admit-invariant.c", line 11):
 Assume {
   Type: is_sint32(x) /\ is_sint32(y).
   (* Initializer *)
@@ -93,7 +93,7 @@ Prover Qed returns Valid
 
 ------------------------------------------------------------
 
-Goal Preservation of Invariant 'I4' (file check-admit-invariant.c, line 11):
+Goal Preservation of Invariant 'I4' ("check-admit-invariant.c", line 11):
 Assume {
   Type: is_sint32(x) /\ is_sint32(x_1) /\ is_sint32(x_2) /\ is_sint32(y) /\
       is_sint32(y_1) /\ is_sint32(y_2).

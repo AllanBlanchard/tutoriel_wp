@@ -6,7 +6,7 @@
 [rte:annot] annotating function bsearch
 [wp] [Valid] Goal bsearch_exits (Cfg) (Unreachable)
 [wp] [Valid] Goal bsearch_terminates (Cfg) (Trivial)
-[wp] 25 goals scheduled
+[wp] 33 goals scheduled
 [wp] [Valid] typed_bsearch_complete_does_not_exists_exists (Qed)
 [wp] [Valid] typed_bsearch_disjoint_does_not_exists_exists (Qed)
 [wp] [Valid] typed_bsearch_ensures (Alt-Ergo) (Cached)
@@ -31,9 +31,17 @@
 [wp] [Valid] typed_bsearch_loop_variant_positive (Qed)
 [wp] [Valid] typed_bsearch_loop_variant_decrease (Alt-Ergo) (Cached)
 [wp] [Valid] typed_bsearch_exists_ensures (Alt-Ergo) (Cached)
+[wp] [Valid] typed_bsearch_exists_assigns_part1 (Qed)
+[wp] [Valid] typed_bsearch_exists_assigns_part2 (Qed)
+[wp] [Valid] typed_bsearch_exists_assigns_part3 (Qed)
+[wp] [Valid] typed_bsearch_exists_assigns_part4 (Qed)
 [wp] [Valid] typed_bsearch_does_not_exists_ensures (Alt-Ergo) (Cached)
-[wp] Proved goals:   27 / 27
+[wp] [Valid] typed_bsearch_does_not_exists_assigns_part1 (Qed)
+[wp] [Valid] typed_bsearch_does_not_exists_assigns_part2 (Qed)
+[wp] [Valid] typed_bsearch_does_not_exists_assigns_part3 (Qed)
+[wp] [Valid] typed_bsearch_does_not_exists_assigns_part4 (Qed)
+[wp] Proved goals:   35 / 35
   Terminating:     1
   Unreachable:     1
-  Qed:            12
+  Qed:            20
   Alt-Ergo:       13
