@@ -1,0 +1,265 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Indexed Keywords
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Frama-C plug-in names (e.g., \plugin{Eva})
+\newcommand{\plugin}[1]{\textsf{#1}\xspace}
+
+% Tools (e.g., \tool{Why3})
+\newcommand{\tool}[1]{\textsf{#1}\xspace}
+
+\definecolor{textblack}{HTML}{1C1C1C}
+\definecolor{textwhite}{HTML}{FAFAFA}
+\definecolor{support}{HTML}{D64343}
+\definecolor{verification}{HTML}{94C841}
+\definecolor{expressiveness}{HTML}{A68EC7}
+\definecolor{development}{HTML}{F8B954}
+\definecolor{understanding}{HTML}{3964DB}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Frama-C Related Names
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\framac}{\tool{Frama-C}}
+
+% plug-ins
+\newcommand{\alias}{\plugin{Alias}}
+\newcommand{\aorai}{\plugin{Aora\"i}}
+\newcommand{\atlas}{\plugin{ATLAS}}
+\newcommand{\cafe}{\plugin{CaFE}}
+\newcommand{\callgraph}{\plugin{Callgraph}}
+\newcommand{\constfold}{\plugin{Consfold}}
+\newcommand{\dive}{\plugin{Dive}}
+\newcommand{\dominators}{\plugin{Dominators}}
+\newcommand{\eacsl}{\plugin{E-ACSL}}
+\newcommand{\Eva}{\plugin{Eva}}
+\newcommand{\framaclang}{\plugin{Frama-Clang}}
+\newcommand{\from}{\plugin{From}}
+\newcommand{\impact}{\plugin{Impact}}
+\newcommand{\inout}{\plugin{InOut}}
+\newcommand{\instantiate}{\plugin{Instantiate}}
+\newcommand{\ltest}{\plugin{LTest}}
+\newcommand{\mdr}{\plugin{MdR}}
+\newcommand{\metacsl}{\plugin{MetAcsl}}
+\newcommand{\metrics}{\plugin{Metrics}}
+\newcommand{\nonterm}{\plugin{NonTerm}}
+\newcommand{\obfuscator}{\plugin{Obfuscator}}
+\newcommand{\occurrence}{\plugin{Occurrence}}
+\newcommand{\pathcrawler}{\plugin{PathCrawler}}
+\newcommand{\pdg}{\plugin{Pdg}}
+\newcommand{\pilat}{\plugin{Pilat}}
+\newcommand{\postdominators}{\plugin{Postdominators}}
+\newcommand{\printinterface}{\plugin{PrintInterface}}
+\newcommand{\reduction}{\plugin{Reduction}}
+\newcommand{\report}{\plugin{Report}}
+\newcommand{\rpp}{\plugin{RPP}}
+\newcommand{\rte}{\plugin{Rte}}
+\newcommand{\scope}{\plugin{Scope}}
+\newcommand{\secureflow}{\plugin{SecureFlow}}
+\newcommand{\securityslicing}{\plugin{SecuritySlicing}}
+\newcommand{\server}{\plugin{Server}}
+\newcommand{\slicing}{\plugin{Slicing}}
+\newcommand{\sparecode}{\plugin{SpareCode}}
+\newcommand{\stady}{\plugin{StaDy}}
+\newcommand{\studia}{\plugin{Studia}}
+\newcommand{\typestates}{\plugin{TypeStates}}
+\newcommand{\users}{\plugin{Users}}
+\newcommand{\Wp}{\plugin{Wp}}
+
+\newcommand{\blackcat}[1]{\textcolor{textblack}{\textbf{#1}}}
+\newcommand{\whitecat}[1]{\textcolor{textwhite}{\textbf{#1}}}
+\newcommand{\blackname}[1]{\textcolor{textblack}{#1}}
+\newcommand{\whitename}[1]{\textcolor{textwhite}{#1}}
+
+\tikzset{nodes={font=\footnotesize}}
+
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  x=1mm,y=1mm,
+  edge from parent path={[draw,ultra thick, densely dashed]
+      (\tikzparentnode\tikzparentanchor) -- (\tikzchildnode\tikzchildanchor)},
+  concept/.style={rectangle, rounded corners, minimum height=0mm},
+  opensource/.style={draw=blue, thick, solid, line width = 1pt},
+  extern/.style={draw=blue, thick, dashed, line width = 1pt}
+  ]
+%
+\node[concept] {\includegraphics[scale=0.7]{frama-c-logo.png}}
+%
+% expressiveness
+child[grow=10, concept/.append, level distance=35mm]
+{node[concept,fill=expressiveness] { \blackcat{Expressiveness} }
+  % code
+  child[grow=35, concept/.append, level distance=20mm]
+  {
+    node[concept,fill=expressiveness] { \blackcat{Code} }
+    {
+      child[grow=40, concept/.append, level distance=20mm]
+      { node[concept,fill=expressiveness] { \blackname{\instantiate} } }
+      child[grow=10, concept/.append, level distance=25mm]
+      { node[concept,fill=expressiveness] { \blackname{\framaclang} } }
+    }
+  }
+  % specification
+  child[grow=-25, concept/.append, level distance=25mm]
+  {
+    node[concept,fill=expressiveness] { \blackcat{Specification} }
+    {
+      child[grow=85, concept/.append, level distance=15mm]
+      { node[concept,fill=expressiveness] { \blackname{\rte} } }
+      child[grow=50, concept/.append, level distance=20mm]
+      { node[concept,fill=expressiveness] { \blackname{\aorai} } }
+      child[grow=20, concept/.append, level distance=25mm]
+      { node[concept,fill=expressiveness] { \blackname{\secureflow} } }
+      child[grow=3, concept/.append, level distance=30mm]
+      { node[concept,fill=expressiveness] { \blackname{\metacsl} } }
+      child[grow=-15, concept/.append, level distance=25mm]
+      { node[concept,fill=expressiveness] { \blackname{\typestates} } }
+      child[grow=-55, concept/.append, level distance=15mm]
+      { node[concept,fill=expressiveness] { \blackname{\atlas} } }
+      child[grow=-115, concept/.append, level distance=12mm]
+      { node[concept,fill=expressiveness] { \blackname{\rpp} } }
+    }
+  }
+}
+%
+% verification
+child[grow=52, concept/.append, level distance=25mm]
+{node[concept,fill=verification] { \blackcat{Verification} }
+  % static
+  child[grow=97, concept/.append, level distance=20mm]
+  {
+    node[concept,fill=verification] { \blackcat{Static} }
+    {
+      child[grow=62, concept/.append, level distance=15mm]
+      { node[concept,fill=verification] { \blackname{\Eva} } }
+      child[grow=97, concept/.append, level distance=15mm]
+      { node[concept,fill=verification] { \blackname{\Wp} } }
+      child[grow=127, concept/.append, level distance=20mm]
+      { node[concept,fill=verification] { \blackname{\cafe} } }
+    }
+  }
+  % dynamic
+  child[grow=37, concept/.append, level distance=20mm]
+  {
+    node[concept,fill=verification] { \blackcat{Dynamic} }
+    {
+      child[grow=22, concept/.append, level distance=20mm]
+      { node[concept,fill=verification] { \blackname{\ltest} } }
+      child[grow=42, concept/.append, level distance=25mm]
+      { node[concept,fill=verification] { \blackname{\pathcrawler} } }
+      child[grow=90, concept/.append, level distance=15mm]
+      { node[concept,fill=verification] { \blackname{\eacsl} } }
+    }
+  }
+}
+%
+% support
+child[grow=124, concept/.append, level distance=25mm]
+{node[concept,fill=support] { \whitecat{Support} }
+  % before
+  child[grow=79, concept/.append, level distance=15mm]
+  {
+    node[concept,fill=support]{ \whitecat{Before} }
+    {
+      child[grow=110, concept/.append, level distance=15mm]
+      { node[concept,fill=support] { \whitename{\obfuscator} } }
+      child[grow=160, concept/.append, level distance=15mm]
+      { node[concept,fill=support] { \whitename{\pilat} } }
+    }
+  }
+  % after
+  child[grow=160, concept/.append, level distance=20mm]
+  {
+    node[concept,fill=support]{ \whitecat{After} }
+    {
+      child[grow=112, concept/.append, level distance=20mm]
+      { node[concept,fill=support]
+        { \begin{tabular}{c} \whitename{\report} \\ \whitename{\mdr} \end{tabular} } }
+      child[grow=164, concept/.append, level distance=25mm]
+      { node[concept,fill=support] { \whitename{\reduction} } }
+      child[grow=186, concept/.append, level distance=20mm]
+      { node[concept,fill=support] { \whitename{\dive} } }
+      child[grow=217, concept/.append, level distance=20mm]
+      { node[concept,fill=support] { \whitename{\studia} } }
+      child[grow=262, concept/.append, level distance=15mm]
+      { node[concept,fill=support] { \whitename{\stady} } }
+    }
+  }
+}
+%
+% understanding
+child[grow=190, concept/.append, level distance=35mm]
+{node[concept,fill=understanding] { \whitecat{Understanding} }
+  % helper
+  child[grow=180, concept/.append, level distance=30mm]
+  {
+    node[concept,fill=understanding]{ \whitecat{Helping} }
+    {
+      child[grow=45, concept/.append, level distance=13mm]
+      { node[concept,fill=understanding] { \whitename{\metrics} } }
+      child[grow=120, concept/.append, level distance=20mm]
+      { node[concept,fill=understanding]
+        { \begin{tabular}{c} \whitename{\scope} \\ \whitename{\occurrence} \end{tabular} } }
+      child[grow=270, concept/.append, level distance=18mm]
+      { node[concept,fill=understanding]
+        { \begin{tabular}{c} \whitename{\from} \\ \whitename{\inout} \end{tabular} } }
+      child[grow=192, concept/.append, level distance=25mm]
+      { node[concept,fill=understanding]
+        { \begin{tabular}{c} \whitename{\callgraph} \\ \whitename{\users} \end{tabular} } }
+      child[grow=165, concept/.append, level distance=25mm]
+      { node[concept,fill=understanding] { \whitename{\nonterm} } }
+      child[grow=230, concept/.append, level distance=25mm]
+      { node[concept,fill=understanding] { \whitename{\impact} } }
+    }
+  }
+  % simplifier
+  child[grow=300, concept/.append, level distance=15mm]
+  {
+    node[concept,fill=understanding]{ \whitecat{Simplifying} }
+    {
+      child[grow=190, concept/.append, level distance=22mm]
+      { node[concept,fill=understanding] { \whitename{\constfold} } }
+      child[grow=170, concept/.append, level distance=22mm]
+      { node[concept,fill=understanding] { \whitename{\slicing} } }
+      child[grow=220, concept/.append, level distance=20mm]
+      { node[concept,fill=understanding] { \whitename{\securityslicing} } }
+      child[grow=298, concept/.append, level distance=15mm]
+      { node[concept,fill=understanding] { \whitename{\sparecode} } }
+  }
+  }
+}
+%
+% development
+child[grow=-35, concept/.append, level distance=30mm]
+{node[concept,fill=development] { \blackcat{Development} }
+  % analyzer
+  child[grow=253, concept/.append, level distance=10mm]
+  {
+    node[concept,fill=development]{ \blackcat{Analyzer} }
+    {
+      child[grow=160, concept/.append, level distance=18mm]
+      { node[concept,fill=development] { \blackname{\alias} } }
+      child[grow=190, concept/.append, level distance=23mm]
+      { node[concept,fill=development] { \blackname{\pdg} } }
+      child[grow=270, concept/.append, level distance=13mm]
+      { node[concept,fill=development]
+        { \begin{tabular}{c} \blackname{\dominators} \\ \blackname{\postdominators} \end{tabular} } }
+    }
+  }
+  % api
+  child[grow=-30, concept/.append, level distance=20mm]
+  {
+    node[concept,fill=development]{ \blackcat{API} }
+    {
+      child[grow=293, concept/.append, level distance=8mm]
+      { node[concept,fill=development] { \blackname{\server} } }
+      child[grow=342, concept/.append, level distance=23mm]
+      { node[concept,fill=development] { \blackname{\printinterface} } }
+    }
+  }
+}
+;
+\end{tikzpicture}
+}% resize box
+\end{center}
