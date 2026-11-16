@@ -43,11 +43,11 @@ pas changé entre deux points particuliers du programme :
   Il faut bien garder en mémoire que le passage se fait, comme en C, par valeur.
   Nous ne pouvons pas écrire ce prédicat en passant directement \CodeInline{i} :
   \begin{CodeBlock}{c}
-    /*@
-      predicate unchanged{L0, L1}(int i) =
-        \at(i, L0) == \at(i, L1);
-    */
-  \end{CodeBlock}
+/*@
+  predicate unchanged{L0, L1}(int i) =
+    \at(i, L0) == \at(i, L1);
+*/
+\end{CodeBlock}
   car \CodeInline{i} est juste une copie de la variable reçue en paramètre.
 \end{Warning}
 
@@ -59,7 +59,7 @@ Nous pouvons par exemple vérifier ce petit code :
 
 
 
-Nous pouvons également examiner les buts générés par WP et constater que,
+Nous pouvons également examiner les conditions de vérification générées par WP et constater que,
 même s'il subit une petite transformation syntaxique, le prédicat n'est pas
 déroulé par WP. C'est au prouveur de déterminer s'il doit raisonner avec le
 corps du prédicat.
@@ -175,10 +175,10 @@ La fonction suivante retourne le maximum de 3 valeurs d'entrée :
 
 
 \begin{CodeBlock}{c}
-  /*@
-    predicate one_of{L}(int value, int *a, int *b, int *c) =
-      // ...
-  */
+/*@
+  predicate one_of{L}(int value, int *a, int *b, int *c) =
+    // ...
+*/
 \end{CodeBlock}
 
 
@@ -192,7 +192,7 @@ qu'elle le vérifie.
 
 
 Reprendre la solution de l'exercice~\ref{l4:statements-loops-ex-bsearch} à propos
-de la recherche dichotomique utilisant des indices non signés. Écrire un prédicat
+de la recherche dichotomique utilisant des indices non-signés. Écrire un prédicat
 qui exprime qu'une plage de valeur est triée entre \CodeInline{begin} et
 \CodeInline{end} (exclu). Écrire une surcharge de ce prédicat pour rendre
 \CodeInline{begin} optionnel avec une valeur par défaut à $0$. Écrire un prédicat

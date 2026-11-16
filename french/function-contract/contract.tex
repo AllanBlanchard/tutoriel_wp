@@ -110,7 +110,7 @@ $V$ & $V$ & $V$ \\ \hline
 
 
 
-Ce qui veut signifie qu'une implication $A \Rightarrow B$ est vraie dans deux cas :
+Ce qui signifie qu'une implication $A \Rightarrow B$ est vraie dans deux cas :
 soit $A$ est fausse (et dans ce cas, il ne faut pas se préoccuper de $B$), soit
 $A$ est vraie et alors $B$ doit être vraie aussi. Notons que cela revient à dire que
 $A \Rightarrow B$ est équivalente à $\neg A \vee B$. L'idée étant finalement :
@@ -208,13 +208,27 @@ frama-c-gui abs.c
 \image{1-abs-1}
 
 
-La fenêtre de Frama-C s'ouvre, dans le volet correspondant aux fichiers et aux
-fonctions, nous pouvons sélectionner la fonction \CodeInline{abs}.
+La fenêtre de Frama-C s'ouvre. Les différents volets d'affichage (boutons
+entourés en rouge) fournissent des outils de sélection en configuration. Dans
+le cadre de ce tutoriel, nous utiliserons :
+\begin{itemize}
+  \item le bouton « écran » qui donne accès à nos trois vues principales de
+        travail : « Console » pour les logs d'erreurs, « WP View » pour la vue
+        de WP et le code source, et (plus rarement) « Source Code » pour voir
+        le lien avec le code d'origine ;
+  \item le bouton « files » (sélectionné ici) pour voir les symboles du programme ;
+  \item le bouton « WP » pour configurer l'analyse de WP.
+\end{itemize}
+Dans le volet correspondant aux fichiers et aux
+fonctions, nous pouvons sélectionner la fonction \CodeInline{abs}. Les boutons
+entourés en rouge permettent de changer le mode d'affichages de l'arbre des
+éléments du programme.
 Pour chaque ligne \CodeInline{ensures}, une pastille blanche apparaît dans la marge.
 Ces pastilles indiquent qu'aucune vérification n'a été tentée pour ces lignes.
 
 
 
+Nous pouvons sélectionner la vue WP (rappel : bouton « écran », « WP View »).
 Nous demandons de vérifier que le code répond à la spécification en faisant
 un clic droit sur le nom de la fonction puis en choisissant
 « \textit{Prove function annotations by WP} » :
@@ -284,7 +298,7 @@ WP.
 
 
 Finalement, il est également possible de configurer l'auto-génération avec le
-paramètre de ligne de commande \CodeInline{-wp-rte} qui activera la génération
+paramètre de ligne de commande \CodeInline{-wp-rte} qui active la génération
 dès le lancement de Frama-C. Cette configuration peut également être effectuée
 après avoir lancé la GUI de Frama-C, soit en cliquant sur l'icône d'engrenage
 en haut de l'interface, soit en passant par le menu « Edit »,
@@ -344,7 +358,7 @@ cas.
 
 
 
-Si  la preuve n'a pas été rejouée intégralement par rapport à la preuve
+Si la preuve n'a pas été rejouée intégralement par rapport à la preuve
 précédente, ces pastilles ont dû rester vertes, car les preuves associées ont
 été réalisées avant l'introduction de la propriété nous assurant l'absence
 d'erreur d'exécution, et ne se sont donc pas reposées sur la connaissance de
@@ -388,7 +402,7 @@ en surbrillance dans la capture d'écran).
 
 
 Le tableau est découpé comme suit, en première colonne, nous avons le nom de la
-fonction où se trouve le but à prouver. La seconde colonne indique le nom
+fonction où se trouve la condition de vérification à prouver. La seconde colonne indique le nom
 du but. Ici, par exemple, notre postcondition nommée apparaît avec le nom
 \CodeInline{postcondition 'positive\_value,function\_result'}, notons
 d'ailleurs que lorsqu'une propriété est sélectionnée dans le tableau, elle
@@ -416,7 +430,7 @@ les transmettre aux prouveurs externes, il arrive que cet outil résolve
 le problème par lui-même, dans ce cas, aucun autre prouveur
 n'est appelé. Sinon, les prouveurs employés sont listés, comme ici Alt-Ergo,
 l'un des prouveurs que nous utilisons. Notons que pour la
-propriété liée à RTE, un « timeout » est indiqué, ce qui signifie que le
+propriété liée à RTE, un « \textit{timeout} » est indiqué, ce qui signifie que le
 prouveur s'est arrêté, car le temps de preuve a dépassé la limite.
 
 
@@ -599,7 +613,7 @@ conséquent :
 
 
 Nous pouvons remarquer que pour les appels de fonctions, l'interface graphique
-met en évident le chemin d'exécution suivi avant l'appel dont nous cherchons à
+met en évidence le chemin d'exécution suivi avant l'appel dont nous cherchons à
 vérifier la précondition. Ensuite, si nous regardons l'appel \CodeInline{abs(INT\_MIN)},
 nous remarquons qu'au terme de ses simplifications, Qed a déduit que nous
 cherchons à prouver « False ». Conséquence logique, l'appel suivant \CodeInline{abs(a)}
@@ -625,7 +639,7 @@ chose que \CodeInline{INT\_MIN}.
 La fonction \CodeInline{main} n'est généralement pas appelée explicitement par le
 programme. Cependant, elle peut avoir des préconditions. Dans un tel cas, WP
 génère des conditions de vérification pour elles, mais avec une différence
-importante : le contexte fournit pour la preuve n'est pas le même que pour les
+importante : le contexte fourni pour la preuve n'est pas le même que pour les
 autres fonctions. En effet, comme la fonction principale est appelée avant toute
 autre fonction du programme, à ce point de l'exécution, les variables globales
 ont nécessairement la valeur qui leur a été attribuée à l'initialisation.
@@ -755,7 +769,7 @@ si nous écrivons les propriétés ACSL suivante, il y a des divisions par 0 :
 Néanmoins, ces annotations sont parfaitement définies en ACSL. Même si nous ne
 sommes pas capables de \textit{calculer} les valeurs de ces divisions, il est
 correct d'écrire ces assertions. La première s'évalue à vrai, la seconde est
-inconnue : dans la première assertion, même, si nous ne pouvons pas calculer
+inconnue : dans la première assertion, même si nous ne pouvons pas calculer
 les termes, ils sont effectivement les mêmes, et donc égaux ; dans la seconde,
 nous ne pouvons pas dire s'ils sont égaux parce que même s'ils sont différents,
 rien ne nous permet de connaître les valeurs qui pourraient éventuellement être
@@ -874,7 +888,7 @@ frama-c-gui your-file.c -wp
 \end{CodeBlock}
 
 
-Lorsque la preuve que la fonction est conforme à contrat est établie, lancer
+Lorsque la preuve que la fonction est conforme à son contrat est établie, lancer
 la commande :
 
 \begin{CodeBlock}{bash}

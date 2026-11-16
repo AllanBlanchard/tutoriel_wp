@@ -40,7 +40,7 @@ une bonne piste : nous avons juste à regarder la valeur qu'elles atteindront
 en fin d'exécution. Par exemple, si la boucle comporte une variable
 \CodeInline{i} qui va de 0 à \CodeInline{n}, \CodeInline{n - i} est un bon
 candidat. Pour des boucles plus complexes, nous pouvons utiliser du code
-fantôme (que l'on présente en section~\ref{l2:acsl-logic-definitions-ghost-code})
+fantôme (que nous présenterons en section~\ref{l2:acsl-logic-definitions-ghost-code})
 pour rendre explicite une mesure utilisable pour un variant de boucle.
 
 
@@ -49,7 +49,7 @@ ceux qui sont liés à la postcondition de la boucle (qui peut être aussi la
 postcondition de la fonction). Pour cela, nous pouvons nous appuyer la
 postcondition elle-même comme un guide. Si nous avons quelque chose comme
 \CodeInline{ensures P(n);} et une boucle qui fait itérer \CodeInline{i} de 0 à
-\CodeInline{n}, il y a fort à parier que \CodeInline{loop invariant P(i);} soit
+\CodeInline{n}, il y a fort à parier (même si ce n'est pas systématique) que \CodeInline{loop invariant P(i);} soit
 un bon invariant de boucle. Notons que dans certaines situations, c'est la
 clause \CodeInline{assumes} d'un comportement qui se révèle être intéressante,
 typiquement quand le résultat de l'exécution est une simple valeur qui dépend
@@ -162,8 +162,9 @@ Avec \CodeInline{\textbackslash{}exists type a ; p(a) \&\& q(a)}, la restriction
 tout en satisfaisant l'autre propriété \CodeInline{q}. Si nous mettions une
 implication comme pour le « pour tout », une telle expression deviendrait
 toujours vraie à moins que \CodeInline{p} ne soit une tautologie ! Pourquoi ?
-Existe-t-il « a » tel que p(a) implique q(a) ? Prenons n'importe quel « a » tel
-que p(a) est faux, l'implication devient vraie.
+Existe-t-il « \CodeInline{a} » tel que \CodeInline{p(a)} implique \CodeInline{q(a)} ?
+Prenons n'importe quel « \CodeInline{a} » tel que \CodeInline{p(a)} est faux,
+l'implication devient vraie.
 
 
 Notons que dans cet exemple, la clause \CodeInline{assumes} du comportement
@@ -322,17 +323,14 @@ Pour tout élément que nous avons visité, s'il valait la valeur à
 remplacer, alors il vaut la nouvelle valeur, sinon il n'a pas changé. Alors que
 nous nous reposions sur la clause \CodeInline{assigns} pour ce genre de propriété
 dans les exemples précédents, ici nous ne pouvons pas. Même si ACSL nous
-permettrait d'exprimer cette propriété de manière très précise, WP ne pourrait pas
-vraiment en tirer parti, à cause de la manière dont cette clause est traitée.
-Nous devons donc fournir un invariant supplémentaire et conserver une
-approximation des positions mémoire affectées.
+permettrait d'exprimer cette propriété de manière très précise, WP ne pourrait
+pas vraiment en tirer parti, à cause de la manière dont cette clause est traitée.
 
 
-En fait, si nous tentons de prouver l'invariant, WP n'y parvient pas, car
-la clause \CodeInline{assigns} n'est pas assez précise. Dans cette situation,
-nous fournissons un invariant supplémentaire pour préciser, dans la plage modifiée,
-quelles sont les positions en mémoire qui n'ont pas encore été modifiées par la
-boucle à une itération donnée :
+Par ailleurs, WP n'est déjà pas capable de prouver les invariants ci-dessus. En
+effet, rien ne lui permet de supposer que les éléments qui n'ont pas encore été
+visités n'ont pas changé puisque la clause \CodeInline{assigns} lui dit qu'ils
+ont été potentiellement modifiés :
 
 
 \begin{CodeBlock}{c}
@@ -343,7 +341,9 @@ for(size_t i = 0; i < length; ++i){
 \end{CodeBlock}
 
 
-Nous pouvons donc ajouter cette information comme invariant :
+Dans cette situation, nous fournissons un  invariant supplémentaire pour
+préciser, dans la plage modifiée, quelles sont les positions en mémoire qui
+n'ont pas encore été modifiées par la boucle à une itération donnée :
 
 
 \CodeBlockInput[13][26]{c}{search_and_replace-1.c}

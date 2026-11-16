@@ -28,7 +28,7 @@ lieu d'appel.
 
 
 
-Pour définir le calcul de plus faible précondition associée aux fonctions, introduisons
+Pour définir le calcul de plus faible précondition associé aux fonctions, introduisons
 d'abord quelques notations pour rendre les explications plus claires. Pour cela,
 considérons l'exemple suivant :
 
@@ -291,41 +291,41 @@ Comme pense-bête, nous devrions toujours garder en tête le schéma suivant :
 
 
 \begin{CodeBlock}{c}
-  /*@       requires bar_R
-      check requires bar_CR ;
-      admit requires bar_AR ;
+/*@       requires bar_R
+    check requires bar_CR ;
+    admit requires bar_AR ;
 
-      assigns ... ;
+    assigns ... ;
 
-            ensures bar_E
-      check ensures bar_CE ;
-      admit ensures bar_AE ;
-  */
-  void bar(...) ;
+          ensures bar_E
+    check ensures bar_CE ;
+    admit ensures bar_AE ;
+*/
+void bar(...) ;
 
-  /*@       requires foo_R
-      check requires foo_CR ;
-      admit requires foo_AR ;
+/*@       requires foo_R
+    check requires foo_CR ;
+    admit requires foo_AR ;
 
-      assigns ... ;
+    assigns ... ;
 
-            ensures foo_E
-      check ensures foo_CE ;
-      admit ensures foo_AE ;
-  */
-  type foo(parameters...){
-    // Ici, nous supposons que foo_R et foo_AR sont vraies
-
-
-    // Ici, nous devons prouver que bar_R et bar_CR sont vraies
-    bar(some parameters ...) ;
-    // Ici, nous supposons que bar_E et bar_AE sont vraies
+          ensures foo_E
+    check ensures foo_CE ;
+    admit ensures foo_AE ;
+*/
+type foo(parameters...){
+  // Ici, nous supposons que foo_R et foo_AR sont vraies
 
 
-    // Ici, nous devons prouver que foo_E et foo_CE sont vraies
-    return ... ;
-  }
-  \end{CodeBlock}
+  // Ici, nous devons prouver que bar_R et bar_CR sont vraies
+  bar(some parameters ...) ;
+  // Ici, nous supposons que bar_E et bar_AE sont vraies
+
+
+  // Ici, nous devons prouver que foo_E et foo_CE sont vraies
+  return ... ;
+}
+\end{CodeBlock}
 
 
 Notons qu'à propos du dernier commentaire, en calcul de plus faible précondition,
@@ -365,6 +365,21 @@ Bien sûr, quand on appelle une fonction qui peut quitter, ce risque est propag�
 
 
 \CodeBlockInput{c}{exit-3.c}
+
+
+\image{exits}
+
+
+Il est donc recommandé d'indiquer précisément les chemins qui peuvent mener à
+un appel à \CodeInline{exit} et de l'interdire dans les autres cas :
+
+
+\CodeBlockInput[3][13]{c}{exit-4.c}
+
+
+Notons qu'une fonction qui appelle \CodeInline{exit} ne termine pas sur le
+chemin correspondant, mais nous reviendrons à ce sujet plus tard.
+
 
 
 \paragraph*{[Formel] Calcul de WP}
@@ -483,7 +498,7 @@ Nous pouvons donc préciser un peu comment est vérifiée la correction d'une cl
 spécification doit être équipée avec une telle clause afin de prouver qu'elle
 termine. Vérifier que la clause \CodeInline{decreases} d'une fonction
 \CodeInline{f} fournit une mesure de sa profondeur de récursion consiste à vérifier,
-pour chaque appel à une fonction \textit{appartinant au même cluster que
+pour chaque appel à une fonction \textit{appartenant au même cluster que
 \CodeInline{f}}, que l'expression fournie par la clause est effectivement positive
 et décroissante. Par conséquent, aucune condition de vérification n'est
 générée lorsqu'une fonction récursive n'appartenant pas au même \textit{cluster}
@@ -567,8 +582,8 @@ vérifié, nous expliquerons pourquoi plus tard) :
 \CodeBlockInput[6]{c}{main_loop.c}
 
 
-Soulignons que la fonction \textit{pourrait ne pas} terminer, elle n'est pas
-\textit{forcée de boucler à l'infini}. Par exemple, dans la fonction suivante,
+Soulignons que la fonction \textit{pourrait ne pas} terminer, elle n'est
+\textit{pas forcée de boucler à l'infini}. Par exemple, dans la fonction suivante,
 la clause \CodeInline{terminates} est vérifiée, car
 \textit{lorsque la condition de terminaison est vérifiée} (jamais), la fonction
 termine (toujours) :

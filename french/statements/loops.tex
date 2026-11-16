@@ -110,8 +110,9 @@ spécifier manuellement ces propriétés à propos de nos boucles.
 Il existe des outils capables d'inférer des invariants (pour peu qu'ils soient
 simples, les outils automatiques restent limités). Ce n'est pas le cas de WP.
 Nous devons donc écrire nos invariants à la main. Trouver et écrire les
-invariants des boucles de nos programmes sera toujours la partie la plus difficile
-de notre travail lorsque nous chercherons à prouver des programmes.
+invariants des boucles (ou des structures de données, même si actuellement ce
+tutoriel ne l'aborde pas) de nos programmes sera toujours la partie la plus
+difficile de notre travail lorsque nous chercherons à prouver des programmes.
 
 
 
@@ -139,7 +140,7 @@ en début de boucle :
 
 
 Pourquoi ? Parce que tout au long de la boucle, \CodeInline{i} est bien compris entre
-0 et 30 \textbf{inclus}. 30 est d'ailleurs la valeur qui nous permettra de sortir de la
+0 et 30 \textbf{inclus}. 30 est d'ailleurs la valeur qui nous permet de sortir de la
 boucle. Plus encore, une des propriétés demandées par le calcul de plus faible
 précondition sur les boucles est que, lorsque l'on invalide la condition de la
 boucle, la connaissance de l'invariant nous permet de prouver la postcondition
@@ -312,7 +313,7 @@ de la façon suivante :
 \CodeBlockInput{c}{first_loop-4.c}
 
 
-Une nouvelle fois nous pouvons regarder les buts générés :
+Une nouvelle fois nous pouvons regarder les conditions de vérification générées :
 
 
 \image{i_30-4}
@@ -499,7 +500,7 @@ Ici, nous avons quatre conditions de vérification à prouver :
 Pour l'établissement de \CodeInline{I1}, il y a peu de choses à dire : WP
 génère une condition de vérification avec toutes les hypothèses qui mènent à la
 boucle (ici, uniquement le fait que \CodeInline{x} vaut 0), et nous devons
-prouver que l'invariant est vrai (ici, \CodeInline{x <= 0}). Cela nous donne
+prouver que l'invariant est vrai (ici, \CodeInline{0 <= x}). Cela nous donne
 la condition de vérification suivante (nous avons utilisé l'option
 \CodeInline{-wp-no-qed} pour éviter une preuve immédiate par Qed) :
 

@@ -192,7 +192,7 @@ contrôles supplémentaires.
 \levelFourTitle{Effets de la clause \CodeInline{reads}}
 
 
-Par exemple, la mention des valeurs lues par une fonction ou un prédicat défini
+La mention des valeurs lues par une fonction ou un prédicat défini
 axiomatiquement est importante pour la cohérence de l'axiomatique. En effet,
 comme mentionné précédemment, si nous n'exprimons pas les valeurs lues dans le
 cas de l'usage d'un pointeur, la modification d'une valeur du tableau n'invalide
@@ -206,13 +206,13 @@ Par exemple, si nous reprenons l'exemple de mise à zéro, nous pouvons modifier
 la définition de notre axiomatique en retirant la mention des valeurs dont
 dépendent le prédicat : \CodeInline{reads a[b .. e-1]}. La preuve passe toujours,
 mais n'exprime plus rien à propos du contenu des tableaux considérés.
-Par exemple, la fonction suivante :
+Ainsi, la fonction suivante :
 \CodeBlockInput[16][25]{c}{all-zeroes-bad.c}
 est prouvée correcte alors qu'une valeur a changé dans le tableau et donc qu'elle
 ne vaut plus 0.
 
 
-\levelFourTitle{Typage ACSL vs. C}
+\levelFourTitle{Typage : ACSL vs. C}
 
 
 Une autre erreur fréquente avec les définitions axiomatiques est de définir le
@@ -443,7 +443,7 @@ limite à la valeur de \CodeInline{strlen(s)} en précondition.
 Cependant, cela ne suffit pas. La raison et que si nous avons défini la
 valeur de \CodeInline{strlen(s)} comme l'indice du premier
 \CodeInline{'\textbackslash{}0'} dans le tableau, la réciproque n'est pas
-vrai : savoir que la valeur de \CodeInline{strlen(s)} est positive ne suffit
+vraie : savoir que la valeur de \CodeInline{strlen(s)} est positive ne suffit
 pas à déduire que la valeur à l'indice correspondant est
 \CodeInline{'\textbackslash{}0'}. Nous étendons donc notre définition
 axiomatique avec une autre proposition indiquant cette propriété (nous

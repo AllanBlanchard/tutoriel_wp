@@ -1,5 +1,5 @@
 \begin{Quotation}[Jean-Louis Aubert, \textit{Bleu Blanc Vert}, 1989]
-  Voilà, c'est fini ...
+Voilà, c'est fini ...
 \end{Quotation}
 
 
@@ -36,18 +36,18 @@ code appelant, nous pouvons toujours écrire quelque chose comme ceci :
 
 
 \begin{CodeBlock}{c}
-  /*@
+/*@
   requires some_properties_on(a);
   requires some_other_on(b);
 
   assigns ...
   ensures ...
-  */
-  void ma_fonction(int* a, int b){
-      // nous parlons bien du "assert" de "assert.h"
-      assert(/*properties on a*/ && "must respect properties on a");
-      assert(/*properties on b*/ && "must respect properties on b");
-    }
+*/
+void ma_fonction(int* a, int b){
+  // nous parlons bien du "assert" de "assert.h"
+  assert(/*properties on a*/ && "must respect properties on a");
+  assert(/*properties on b*/ && "must respect properties on b");
+}
 \end{CodeBlock}
 
 
@@ -111,31 +111,31 @@ académique et industriel, dans lequel nous pouvons lire :
 
 
 \begin{Quotation}[Formal Methods for Security, 2016]
-  Adoption of formal methods in various areas (including verification of hardware
-  and embedded systems, and analysis and testing of software) has dramatically
-  improved the quality of computer systems.  We anticipate that formal methods
-  can provide similar improvement in the security of computer systems.
+Adoption of formal methods in various areas (including verification of hardware
+and embedded systems, and analysis and testing of software) has dramatically
+improved the quality of computer systems.  We anticipate that formal methods
+can provide similar improvement in the security of computer systems.
 
-  ...
+...
 
-  \textbf{Without broad use of formal methods, security will always remain fragile.}
+\textbf{Without broad use of formal methods, security will always remain fragile.}
 \end{Quotation}
 
 
 
 \begin{Spoiler}
-  Traduction :
+Traduction :
 
-  L'adoption des méthodes formelles dans différents domaines (notamment la
-  vérification du matériel et des systèmes embarqués, et l'analyse et le test
-  de logiciel) a fortement amélioré la qualité des systèmes informatiques.
-  Nous nous attendons à ce que les méthodes formelles puissent fournir des
-  améliorations similaires pour la sécurité des systèmes informatiques.
+L'adoption des méthodes formelles dans différents domaines (notamment la
+vérification du matériel et des systèmes embarqués, et l'analyse et le test
+de logiciel) a fortement amélioré la qualité des systèmes informatiques.
+Nous nous attendons à ce que les méthodes formelles puissent fournir des
+améliorations similaires pour la sécurité des systèmes informatiques.
 
-  ...
+...
 
-  \textbf{Sans une utilisation plus large des méthodes formelles, la sécurité sera
-    toujours fragile.}
+\textbf{Sans une utilisation plus large des méthodes formelles, la sécurité sera
+toujours fragile.}
 \end{Spoiler}
 
 
@@ -150,10 +150,10 @@ plus courants qui sont intéressants à connaître d'un point de vue vérificati
 statique et dynamique pour l'évaluation du bon fonctionnement d'un programme,
 on peut citer :
 \begin{itemize}
-  \item l'analyse par interprétation abstraite avec
-        \externalLink{EVA}{https://www.frama-c.com/fc-plugins/eva.html},
-  \item la transformation d'annotation en vérification à l'exécution avec
-        \externalLink{E-ACSL}{https://www.frama-c.com/fc-plugins/e-acsl.html}.
+\item l'analyse par interprétation abstraite avec
+\externalLink{EVA}{https://www.frama-c.com/fc-plugins/eva.html},
+\item la transformation d'annotation en vérification à l'exécution avec
+\externalLink{E-ACSL}{https://www.frama-c.com/fc-plugins/e-acsl.html}.
 \end{itemize}
 
 

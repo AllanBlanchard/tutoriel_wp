@@ -571,7 +571,7 @@ but dans chaque fonction. Ensuite, nous utilisons la même définition axiomatiq
 pour le comptage des occurrences. De plus, nous conservons ces définitions de
 prédicats :
 \CodeBlockInput[29][46]{c}{insert-sort-auto.c}
-puisque nous en avons besoin, ainsi que le lemme sur de la transitivité du
+puisque nous en avons besoin, ainsi que le lemme sur la transitivité du
 comptage d'occurrences, puisqu'il était prouvé automatiquement par les solveurs
 SMT (nous pouvons donc le garder puisqu'il ne nécessite pas de preuve interactive
 de notre part).
@@ -609,7 +609,7 @@ prouver notre propriété.
 
 
 Pour montrer que la plage complète est une permutation, nous devons montrer que le
-nombre d'occurrences de chaque valeur n'est inchangé. Nous savons que la première
+nombre d'occurrences de chaque valeur est inchangé. Nous savons que la première
 partie du tableau est une permutation de la même plage au début du corps de la
 boucle. Donc, nous savons déjà que le nombre d'occurrences de chaque $v$ n'a pas
 changé pour une partie de notre tableau. En utilisant une boucle avec
@@ -761,7 +761,7 @@ devons fournir plus d'information aux SMT solveurs en ajoutant d'autres appels
 de fonction fantôme (ligne 15, pour isoler le premier élément du tableau), ainsi
 que des assertions pour guider les dernières étapes de preuve :
 \begin{itemize}
-    \item 16--29 : nous rappelons que le tableau original peut être coupé au
+    \item 16--20 : nous rappelons que le tableau original peut être coupé au
           niveau du dernier élément,
     \item 21--25 : nous montrons que comme le premier élément du tableau est le
           dernier élément du tableau original (21), le nombre d'occurrences pour
@@ -791,7 +791,7 @@ que nous pouvons ensuite appeler avant la boucle de la fonction \CodeInline{inse
 
 
 Notons que, selon les versions des prouveurs automatiques, les assertions en lignes
-21 à 25 de la macro, concernant l'élément au début et à la fin du tableau,
+21 à 26 de la macro, concernant l'élément au début et à la fin du tableau,
 pourraient ne pas être prouvées en raison de la complexité du contexte de preuve.
 Aidons les solveurs une dernière fois en ajoutant un dernier lemme, automatiquement
 prouvé par les solveurs SMT, qui énonce la relation en question pour tout
