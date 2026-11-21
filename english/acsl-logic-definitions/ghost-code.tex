@@ -655,6 +655,9 @@ using the option \CodeInline{-kernel-warn-key ghost=inactive}.
 \CodeBlockInput[5]{c}{ex-1-ghost-reject.c}
 
 
+\stdsolution{ex-1-ghost-reject-answer.c}
+
+
 \levelFourTitle{Two times}
 
 
@@ -665,6 +668,8 @@ is \CodeInline{i * 2} and complete the proof.
 
 \CodeBlockInput[5]{c}{ex-2-times-2.c}
 
+
+\stdsolution{ex-2-times-2-answer.c}
 
 
 \levelFourTitle{Playing with arrays}
@@ -688,6 +693,14 @@ assuring that the array \CodeInline{g} represents the old value of
 
 Once it is done, create a ghost function that performs the copy and use it in
 \CodeInline{foo} to perform the same proof.
+
+\begin{Information}
+  Solutions to the exercise on the GitHub repository of this tutorial:
+  \begin{itemize}
+    \item \solution{Part 1}{ex-3-array-answer-1.c}
+    \item \solution{Part 2}{ex-3-array-answer-2.c}
+  \end{itemize}
+\end{Information}
 
 
 \levelFourTitle{Search and replace}
@@ -728,3 +741,6 @@ following code after the call to replace:
 
 
 Everything should be proved.
+
+
+\stdsolution{ex-4-replace-answer.c}

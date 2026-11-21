@@ -169,20 +169,20 @@
 \def\boxIcon{[draw=none] circle (0.4cm)}
 
 \DeclareRobustCommand{\linkIcon}{\tikz[x=1.2ex, y=1.2ex, baseline=-0.05ex]{%
-\begin{scope}[x=1ex, y=1ex]
-   \clip (-0.1,-0.1)
-   --++ (-0, 1.2)
-   --++ (0.6, 0)
-   --++ (0, -0.6)
-   --++ (0.6, 0)
-   --++ (0, -1);
-   \path[draw,
-   line width = 0.5,
-   rounded corners=0.5]
-   (0,0) rectangle (1,1);
-\end{scope}
-\path[draw, line width = 0.5] (0.5, 0.5) -- (1, 1);
-\path[draw, line width = 0.5] (0.6, 1) -- (1, 1) -- (1, 0.6);}
+\begin{scope}[x=1ex, y=1ex]%
+   \clip (-0.1,-0.1)%
+   --++ (-0, 1.2)%
+   --++ (0.6, 0)%
+   --++ (0, -0.6)%
+   --++ (0.6, 0)%
+   --++ (0, -1);%
+   \path[draw,%
+   line width = 0.5,%
+   rounded corners=0.5]%
+   (0,0) rectangle (1,1);%
+\end{scope}%
+\path[draw, line width = 0.5] (0.5, 0.5) -- (1, 1);%
+\path[draw, line width = 0.5] (0.6, 1) -- (1, 1) -- (1, 0.6);}%
 }
 
 \def\spoilerIcon{%
@@ -295,7 +295,7 @@
       \textbf{[#1](#2)}%
    }{%
       \href{#2}{\color{externalLinkColor}{#1~\linkIcon}}%
-   }
+   }%
 }
 \newcommand{\@titlePageLink}[2]{\href{#2}{\color{alternativeTextColor}{#1}}}
 
@@ -377,6 +377,35 @@
    borderline south={2pt}{-2pt}{ZdSBoxBorderSpoiler}
 }
 
+%%% GH links
+
+\newcommand{\ghref}{0fc7c4c829a8d73fce56f21a2f13a594f0546d40}
+
+\newcommand{\ghfile}[4]{%
+  \ifstrequal{#3}{#4}{%
+\externalLink{Voir le fichier sur le répertoire GitHub du tutoriel}{https://github.com/AllanBlanchard/tutoriel_wp/tree/\ghref/code/\currentInput/#1}%
+  }{%
+\externalLink{Voir le fichier sur le répertoire GitHub du tutoriel}{https://github.com/AllanBlanchard/tutoriel_wp/tree/\ghref/code/\currentInput/#1\#L#2-L#3}%
+  }
+}
+
+\newcommand{\solution}[2]{%
+\externalLink{#1}{https://github.com/AllanBlanchard/tutoriel_wp/tree/\ghref/code/\currentInput/#2}%
+}
+
+\newcommand{\stdsolution}[1]{%
+  \begin{Information}
+  \solution{Solution à l'exercice sur le répertoire GitHub du tutoriel}{#1}
+  \end{Information}
+}
+
+\newcommand{\lemmaproof}[4]{%
+  \externalLink%
+    {Preuve du lemme \texttt{#2}}%
+    {https://github.com/AllanBlanchard/tutoriel_wp/tree/\ghref/code/\currentInput/#1.0.session/interactive/lemma_#2.v\#L#3-L#4}%
+}
+
+
 %%% CODE MANAGEMENT
 \tcbsetforeverylayer{} % Reset style
 
@@ -408,6 +437,7 @@
 }
 
 \DeclareTCBInputListing{\CodeBlockInput}{O{1} O{last line of input} m m}{%
+   title={\hspace{-7mm}\ghfile{#4}{#1}{#2}{last line of input}},
    enlarge top initially by=5mm,
    enlarge bottom finally by=1mm,
    boxrule=0.5pt,
@@ -415,6 +445,8 @@
    colback=codeBackgroundColor,
    coltext=defaultColor,
    colframe=ZdSBoxBorderSpoiler,
+   coltitle=defaultColor,
+   colbacktitle=ZdSBoxBorderSpoiler,
    arc=0.0pt,
    listing engine=minted,
    listing only,
@@ -429,12 +461,12 @@
      numbersep=3mm
    }, % Removed: highlightlines={#2}
    enhanced,
-   overlay={\begin{tcbclipinterior}\fill[lineNumberSeparatorCodeColor] ([xshift=8mm-0.5pt]frame.south west)
+   overlay={\begin{tcbclipinterior}\fill[lineNumberSeparatorCodeColor] ([xshift=8mm-0.5pt,yshift={6mm}]frame.south west)
    rectangle ([xshift=8mm]frame.north west);\end{tcbclipinterior}},
    left=8mm,
-   attach boxed title to bottom center,
-   boxed title style={empty,boxrule=0.5mm},
-   coltitle=defaultColor
+   bottom=-3mm,
+   attach boxed title to bottom,
+   boxed title style={interior hidden}
 }
 
 \DeclareTotalTCBox{\CodeInline}{m}{%

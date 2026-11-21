@@ -529,7 +529,7 @@ function:
 
 
 
-Overall, we have 6 lemmas to prove:
+Overall, we have six lemmas to prove:
 \begin{itemize}
 \item \CodeInline{l\_occurrences\_union}
 \item \CodeInline{shifted\_maintains\_occ}
@@ -540,9 +540,19 @@ Overall, we have 6 lemmas to prove:
 \end{itemize}
 
 While the Rocq proofs of these lemmas are beyond the scope of this tutorial (and
-we will see later that in this particular case we can get rid of them), let
-us give some ideas of how to prove them (nevertheless, the Rocq scripts are
-available on the GitHub repository of this book).
+we will see later that in this particular case we can get rid of them).
+Nevertheless, let us give some ideas of how to prove them.
+
+
+\begin{Information}
+  The proofs of the lemmas are available on the GitHub repository of this tutorial:
+  \begin{itemize}
+    \item \lemmaproof{insert\_sort-proved}{shifted\_maintains\_occ}{559}{589}
+    \item \lemmaproof{insert\_sort-proved}{union\_permutation}{574}{591}
+    \item \lemmaproof{insert\_sort-proved}{rotate\_left\_is\_permutation}{568}{621}
+    \item \lemmaproof{insert\_sort-proved}{l\_occurrences\_of\_union}{527}{563}
+  \end{itemize}
+\end{Information}
 
 
 To prove \CodeInline{l\_occurrences\_union}, we reason by induction on the size
@@ -627,6 +637,9 @@ allow to prove the assertion and explain how.
 \CodeBlockInput[5]{c}{ex-1-context.c}
 
 
+\stdsolution{ex-1-context-answer.c}
+
+
 \levelFourTitle{Trigger lemmas}
 
 
@@ -636,6 +649,9 @@ place), such that the proof succeeds.
 
 
 \CodeBlockInput{c}{ex-2-trigger.c}
+
+
+\stdsolution{ex-2-trigger-answer.c}
 
 
 \levelFourTitle{Trigger lemmas, under condition}
@@ -686,6 +702,15 @@ or decreased'' can be expressed with a single simple assertion. Write the
 corresponding annotation.
 
 
+\begin{Information}
+  Solution to the exercise on the GitHub repository of this tutorial:
+  \begin{itemize}
+    \item \solution{Part 1}{ex-3-trigger-cond-answer-1.c}
+    \item \solution{Part 2}{ex-3-trigger-cond-answer-2.c}
+    \item \solution{Part 3}{ex-3-trigger-cond-answer-3.c}
+  \end{itemize}
+\end{Information}
+
 
 \levelFourTitle{An actual example with sum}
 \label{l4:proof-methodologies-triggering-lemmas-exercises-sum}
@@ -718,3 +743,13 @@ Thus, we need two lemmas:
 Complete the code of the lemmas and use assertions to ensure that they will be
 used to complete the proof. We do not ask the proof of the lemmas, the Rocq
 proofs are available on the GitHub repository of this book.
+
+
+\begin{Information}
+  Solution to the exercise on the GitHub repository of this tutorial:
+  \begin{itemize}
+    \item \solution{C file}{ex-4-sum-content-answer.c}
+    \item \lemmaproof{ex-4-sum-content-answer}{sum\_separable}{516}{534}
+    \item \lemmaproof{ex-4-sum-content-answer}{unchanged\_sum}{533}{552}
+  \end{itemize}
+\end{Information}

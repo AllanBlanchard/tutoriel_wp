@@ -560,7 +560,7 @@ satisfait bien la précondition qu'elle impose :
 
 
 
-\CodeBlockInput[15]{c}{abs-5.c}
+\CodeBlockInput[15][20]{c}{abs-5.c}
 
 
 
@@ -818,6 +818,9 @@ alarmes, et pour la seconde alarme, une condition à propos de \CodeInline{a}
 (seule) est suffisante pour lever l'alarme.
 
 
+\stdsolution{ex-1-modulo-answer.c}
+
+
 \levelFourTitle{Distance}
 
 
@@ -845,6 +848,9 @@ frama-c-gui your-file.c -wp -wp-rte
 qui devrait échouer. Adapter le contrat en ajoutant la bonne précondition.
 
 
+\stdsolution{ex-2-distance-answer.c}
+
+
 \levelFourTitle{Lettres de l'alphabet}
 
 
@@ -866,6 +872,9 @@ frama-c-gui your-file.c -wp
 
 Toutes les conditions de vérification devraient être prouvées, y compris les
 assertions dans la fonction main.
+
+
+\stdsolution{ex-3-alphabet-answer.c}
 
 
 \levelFourTitle{Jours du mois}
@@ -916,6 +925,15 @@ Par exemple :
 Modifier la postcondition en utilisant cette notation.
 
 
+\begin{Information}
+  Solutions à l'exercice sur le répertoire GitHub du tutoriel :
+  \begin{itemize}
+    \item \solution{Partie 1}{ex-4-day-month-answer-1.c}
+    \item \solution{Partie 2}{ex-4-day-month-answer-2.c}
+  \end{itemize}
+\end{Information}
+
+
 \levelFourTitle{Le dernier angle d'un triangle}
 
 
@@ -948,3 +966,6 @@ frama-c-gui your-file.c -wp -wp-rte
 Si cela échoue, adapter le contrat en ajoutant la bonne précondition.
 Notons que la valeur de chaque angle ne peut pas être supérieure à 180
 et que cela inclut l'angle résultant.
+
+
+\stdsolution{ex-5-last-angle-answer.c}

@@ -67,7 +67,7 @@ pair, puis $-3$, $-5$, etc. Cela nous conduit au fait que l'assertion suivante
 ne peut pas être prouvée :
 
 
-\CodeBlockInput[20]{c}{even-0.c}
+\CodeBlockInput[20][23]{c}{even-0.c}
 
 
 De plus, nous préférons généralement indiquer la condition sous laquelle une
@@ -97,7 +97,7 @@ qui corresponde à cette valeur et nous pourrons conclure que la propriété est
 fausse.
 
 
-\CodeBlockInput[11]{c}{even-1.c}
+\CodeBlockInput[11][14]{c}{even-1.c}
 
 
 Bien sûr, définir la notion d'entier naturel pair par induction n'est pas une
@@ -235,7 +235,7 @@ assertion à la fin) :
 À noter que dans cette nouvelle version du code, la propriété énoncée par notre
 lemme n'est pas prouvée par les solveurs automatiques, qui ne savent pas raisonner
 par induction. Pour les curieux, la (très simple) preuve en Rocq est disponible
-ici~:~\ref{l2:acsl-logic-definitions-answers}.
+ici : \lemmaproof{reset-1}{no\_changes}{506}{533}.
 
 
 
@@ -355,9 +355,15 @@ N premiers entiers.
 
 
 Adapter le contrat de la fonction et le(s) lemme(s). Notons que les lemmes ne
-seront certainement pas prouvés par les solveurs SMT. Nous fournissons une solution
-et les preuves Rocq sur le répertoire GitHub de ce livre.
+seront certainement pas prouvés par les solveurs SMT.
 
+\begin{Information}
+  Solution à l'exercice sur le répertoire GitHub du tutoriel :
+  \begin{itemize}
+    \item \solution{Fichier C}{ex-1-sum-N-first-ints-answer.c}
+    \item \lemmaproof{ex-1-sum-N-first-ints-answer}{sum\_n\_value}{16}{24}
+  \end{itemize}
+\end{Information}
 
 
 \levelFourTitle{Plus grand dénominateur commun}
@@ -384,6 +390,8 @@ Exprimer la postcondition de la fonction et compléter l'invariant pour prouver
 qu'elle est vérifiée. Notons que l'invariant devrait utiliser le cas inductif
 \CodeInline{gcd\_succ}.
 
+
+\stdsolution{ex-2-gcd-answer.c}
 
 
 \levelFourTitle{Puissance}
@@ -425,11 +433,9 @@ Exprimer les deux propriétés précédentes sous forme de lemmes :
 \CodeBlockInput[12][15]{c}{ex-3-fpower.c}
 
 
-Exprimer d'abord le lemme \CodeInline{power\_even}, les solveurs SMT pourraient
-être capables de combiner ce lemme avec la définition inductive pour déduire
-\CodeInline{power\_odd}. La preuve Rocq de \CodeInline{power\_even} est fournie
-sur le répertoire GitHub de ce livre, ainsi que la preuve de \CodeInline{power\_odd}
-si les solveurs SMT échouent.
+Exprimer d'abord le lemme \CodeInline{power\_even}, ce lemme ne sera probablement
+pas prouvé par les solveurs SMT, mais ils pourraient être capables de combiner ce
+lemme avec la définition inductive pour déduire \CodeInline{power\_odd}.
 
 
 Finalement, compléter le contrat et l'invariant de la fonction \CodeInline{fast\_power}.
@@ -438,6 +444,15 @@ utilise les propriétés précédentes pour mettre à jour $r$, au sens que nous
 $x^{old(n)} = r \times p^n$ pendant toute la boucle, jusqu'à obtenir $n = 0$ et donc
 $p^n = 1$.
 
+
+\begin{Information}
+  Solution à l'exercice sur le répertoire GitHub du tutoriel :
+  \begin{itemize}
+    \item \solution{Fichier C}{ex-3-fpower-answer.c}
+    \item \lemmaproof{ex-3-fpower-answer}{power\_odd}{22}{33}
+    \item \lemmaproof{ex-3-fpower-answer}{power\_even}{33}{55}
+  \end{itemize}
+\end{Information}
 
 
 \levelFourTitle{Permutation}
@@ -479,3 +494,6 @@ considérée, et prouver qu'elle maintient la permutation.
 
 
 \CodeBlockInput[47][51]{c}{ex-4-rotate-permutation.c}
+
+
+\stdsolution{ex-4-rotate-permutation-answer.c}

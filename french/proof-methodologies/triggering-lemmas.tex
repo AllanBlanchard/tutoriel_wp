@@ -532,8 +532,18 @@ En tout, nous avons six lemmes à prouver :
 Les preuves Rocq de ces lemmes sortent du cadre de ce
 tutoriel (et nous verrons plus tard que dans le cas particulier de cette preuve
 nous pouvons nous en passer). Néanmoins, nous fournissons ici quelques
-indications pour obtenir une preuve de ces lemmes (les scripts Rocq de ces
-preuves sont disponibles sur le répertoire GitHub de ce livre).
+indications pour obtenir une preuve de ces lemmes.
+
+
+\begin{Information}
+  Les preuves de ces lemmes sont disponibles sur le répertoire GitHub du tutoriel :
+  \begin{itemize}
+    \item \lemmaproof{insert\_sort-proved}{shifted\_maintains\_occ}{559}{589}
+    \item \lemmaproof{insert\_sort-proved}{union\_permutation}{574}{591}
+    \item \lemmaproof{insert\_sort-proved}{rotate\_left\_is\_permutation}{568}{621}
+    \item \lemmaproof{insert\_sort-proved}{l\_occurrences\_of\_union}{527}{563}
+  \end{itemize}
+\end{Information}
 
 
 Pour prouver \CodeInline{l\_occurrences\_union}, nous raisonnons par induction
@@ -624,6 +634,9 @@ et expliquer comment :
 \CodeBlockInput[5]{c}{ex-1-context.c}
 
 
+\stdsolution{ex-1-context-answer.c}
+
+
 \levelFourTitle{Déclencher les lemmes}
 
 
@@ -633,6 +646,9 @@ de façon à ce que la preuve réussisse.
 
 
 \CodeBlockInput{c}{ex-2-trigger.c}
+
+
+\stdsolution{ex-2-trigger-answer.c}
 
 
 \levelFourTitle{Déclencher les lemmes sous condition}
@@ -685,6 +701,16 @@ diminuée » peut être exprimée en une seule assertion. Écrire l'annotation
 correspondante et recommencer la preuve.
 
 
+\begin{Information}
+  Solution à l'exercice sur le répertoire GitHub du tutoriel :
+  \begin{itemize}
+    \item \solution{Partie 1}{ex-3-trigger-cond-answer-1.c}
+    \item \solution{Partie 2}{ex-3-trigger-cond-answer-2.c}
+    \item \solution{Partie 3}{ex-3-trigger-cond-answer-3.c}
+  \end{itemize}
+\end{Information}
+
+
 \levelFourTitle{Un exemple avec la somme}
 \label{l4:proof-methodologies-triggering-lemmas-exercises-sum}
 
@@ -718,3 +744,13 @@ Nous avons donc besoin de deux lemmes :
 Compléter les code des lemmes et utiliser des assertions pour assurer qu'ils sont
 utilisés pour compléter la preuve. Nous ne demandons par la preuve des lemmes, les
 preuves Rocq sont disponibles sur le répertoire GitHub de ce livre.
+
+
+\begin{Information}
+  Solution à l'exercice sur le répertoire GitHub du tutoriel :
+  \begin{itemize}
+    \item \solution{Fichier C}{ex-4-sum-content-answer.c}
+    \item \lemmaproof{ex-4-sum-content-answer}{sum\_separable}{516}{534}
+    \item \lemmaproof{ex-4-sum-content-answer}{unchanged\_sum}{533}{552}
+  \end{itemize}
+\end{Information}

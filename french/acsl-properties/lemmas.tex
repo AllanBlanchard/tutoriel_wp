@@ -169,8 +169,17 @@ supérieur ou égal à $0$, si $z$ est supérieur ou égal à $y$, alors $x * z$
 est supérieur ou égal à $x * y$.
 
 
-Ce lemme ne sera probablement pas prouvé par les solveurs SMT. Une solution et
-la preuve Rocq du lemme sont disponibles sur le répertoire GitHub de ce tutoriel.
+Ce lemme ne sera probablement pas prouvé par les solveurs SMT.
+
+
+\begin{Information}
+  Solution à l'exercice sur le répertoire GitHub du tutoriel :
+  \begin{itemize}
+    \item \solution{Fichier C}{ex-1-mult-greater-answer.c}
+    \item \lemmaproof{ex-1-mult-greater-answer}{mult\_greater}{8}{13}
+  \end{itemize}
+\end{Information}
+
 
 \levelFourTitle{Localement trié vers globalement trié}
 \label{l4:acsl-properties-lemmas-lsorted-gsorted}
@@ -181,7 +190,7 @@ trié au sens que chaque élément soit plus petit ou égal à l'élément qui l
 puis appelle la fonction de recherche dichotomique.
 
 
-\CodeBlockInput[66]{c}{ex-2-sorted-link.c}
+\CodeBlockInput[66][83]{c}{ex-2-sorted-link.c}
 
 
 Pour cet exercice, reprendre la solution de
@@ -196,8 +205,13 @@ pas prouvé par un solveur SMT, toutes les autres propriétés devraient être p
 automatiquement.
 
 
-Une solution et la preuve Rocq du lemme sont disponibles sur le répertoire
-GitHub de ce tutoriel.
+\begin{Information}
+  Solution à l'exercice sur le répertoire GitHub du tutoriel :
+  \begin{itemize}
+    \item \solution{Fichier C}{ex-2-sorted-link-answer.c}
+    \item \lemmaproof{ex-2-sorted-link-answer}{element\_level\_sorted\_implies\_sorted}{512}{540}
+  \end{itemize}
+\end{Information}
 
 
 \levelFourTitle{Somme des N premiers entiers}
@@ -210,8 +224,13 @@ calculée par la fonction logique récursive qui permet la spécification de la 
 N premiers entiers est $n*(n+1)/2$. Ce lemme ne sera pas prouvé par un solveur SMT.
 
 
-Une solution et la preuve Rocq du lemme sont disponibles sur le répertoire
-GitHub de ce tutoriel.
+\begin{Information}
+  Solution à l'exercice sur le répertoire GitHub du tutoriel :
+  \begin{itemize}
+    \item \solution{Fichier C}{ex-3-sum-n-first-ints-lemma-answer.c}
+    \item \lemmaproof{ex-3-sum-n-first-ints-lemma-answer}{sum\_n\_value}{30}{48}
+  \end{itemize}
+\end{Information}
 
 
 \levelFourTitle{Transitivité d'un glissement d'éléments}
@@ -252,8 +271,18 @@ déplacement \CodeInline{s1+s2}.
 
 
 Le lemme \CodeInline{shift\_ptr} ne sera probablement pas prouvé par un solveur SMT.
-Nous fournissons une solution et la preuve Rocq de ce lemme sur le répertoire
-GitHub de ce livre. Les propriétés restantes doivent être prouvées automatiquement.
+En augmentant le \textit{timeout}, le second devrait l'être. Les propriétés
+restantes doivent être prouvées automatiquement.
+
+
+\begin{Information}
+  Solution à l'exercice sur le répertoire GitHub du tutoriel :
+  \begin{itemize}
+    \item \solution{Fichier C}{ex-4-shift-transitivity-answer.c}
+    \item \lemmaproof{ex-4-shift-transitivity-answer}{shift\_ptr}{498}{524}
+    \item \lemmaproof{ex-4-shift-transitivity-answer}{shift\_transitivity}{515}{535}
+  \end{itemize}
+\end{Information}
 
 
 \levelFourTitle{Déplacement d'une plage triée}
@@ -289,5 +318,13 @@ toujours dans la nouvelle plage obtenue. La postcondition de l'appelant devrait
 maintenant être prouvée.
 
 
-Ces lemmes ne seront probablement pas prouvés par un solveur SMT. Une solution et
-les preuves Rocq sont disponibles sur le répertoire GitHub de ce livre.
+Ces lemmes ne seront probablement pas prouvés par un solveur SMT.
+
+\begin{Information}
+  Solution à l'exercice sur le répertoire GitHub du tutoriel :
+  \begin{itemize}
+    \item \solution{Fichier C}{ex-5-shift-sorted-answer.c}
+    \item \lemmaproof{ex-5-shift-sorted-answer}{in\_array\_shifted}{520}{545}
+    \item \lemmaproof{ex-5-shift-sorted-answer}{shifted\_still\_sorted}{505}{531}
+  \end{itemize}
+\end{Information}

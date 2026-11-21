@@ -175,7 +175,7 @@ is globally sorted:
 
 
 
-Note that this function must assign \CodeInline{\textbackslash{}nothing}, indeed
+Note that this function must assign \CodeInline{assigns \textbackslash{}nothing}, indeed
 we use it to deduce some properties about the program, with ghost code, and
 thus it should not modify the content of the array, else the ghost code would
 modify the behavior of the program. Now let us provide a body to this function,
@@ -880,6 +880,9 @@ a correct optimization for the function that computes the sum of the N first
 integers.
 
 
+\stdsolution{ex-1-sum-of-n-integers-answer.c}
+
+
 \levelFourTitle{Properties about occurrences counting}
 
 
@@ -928,6 +931,9 @@ absence of runtime errors as well as the options
 \CodeInline{-warn-unsigned-overflow} and \CodeInline{-warn-unsigned-downcast}.
 
 
+\stdsolution{ex-2-l_occurrences_of-props-answer.c}
+
+
 \levelFourTitle{An actual example with sum}
 
 
@@ -938,3 +944,6 @@ The skeleton of the file follows:
 
 
 \CodeBlockInput[5]{c}{ex-3-sum-content.c}
+
+
+\stdsolution{ex-3-sum-content-answer.c}

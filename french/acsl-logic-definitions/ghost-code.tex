@@ -659,6 +659,9 @@ utilisant l'option \CodeInline{-kernel-warn-key ghost=inactive}.
 \CodeBlockInput[5]{c}{ex-1-ghost-reject.c}
 
 
+\stdsolution{ex-1-ghost-reject-answer.c}
+
+
 \levelFourTitle{Multiplication par 2}
 
 
@@ -668,6 +671,9 @@ la valeur de \CodeInline{r} est \CodeInline{i * 2} et compléter la preuve.
 
 
 \CodeBlockInput[5]{c}{ex-2-times-2.c}
+
+
+\stdsolution{ex-2-times-2-answer.c}
 
 
 \levelFourTitle{Tableaux}
@@ -692,6 +698,13 @@ de \CodeInline{a}.
 Lorsque c'est fait, créer une fonction fantôme qui effectue cette même copie, et
 l'utiliser dans la fonction \CodeInline{foo} pour effectuer la même preuve.
 
+\begin{Information}
+  Solutions à l'exercice sur le répertoire GitHub du tutoriel :
+  \begin{itemize}
+    \item \solution{Partie 1}{ex-3-array-answer-1.c}
+    \item \solution{Partie 2}{ex-3-array-answer-2.c}
+  \end{itemize}
+\end{Information}
 
 \levelFourTitle{Rechercher et remplacer}
 
@@ -715,20 +728,22 @@ jour par la fonction. Ajouter un paramètre fantôme à la fonction
 
 
 \begin{CodeBlock}{c}
-  /*@ ghost
-    /@ loop invariant 0 <= i <= 40 ;
-       loop assigns i;
-       loop variant 40 - i ;
-    @/
-    for(size_t i = 0 ; i < 40 ; ++i){
-      if(updated[i]){
-        /@ assert a[i] != \at(a[\at(i, Here)], L); @/
-      } else {
-        /@ assert a[i] == \at(a[\at(i, Here)], L); @/
-      }
+/*@ ghost
+  /@ loop invariant 0 <= i <= 40 ;
+     loop assigns i;
+     loop variant 40 - i ;
+  @/
+  for(size_t i = 0 ; i < 40 ; ++i){
+    if(updated[i]){
+      /@ assert a[i] != \at(a[\at(i, Here)], L); @/
+    } else {
+      /@ assert a[i] == \at(a[\at(i, Here)], L); @/
     }
-  */
-  \end{CodeBlock}
+  }
+*/
+\end{CodeBlock}
 
 
-  Tout devrait être prouvé.
+Tout devrait être prouvé.
+
+\stdsolution{ex-4-replace-answer.c}

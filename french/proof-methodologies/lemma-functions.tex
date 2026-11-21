@@ -171,8 +171,8 @@ qu'il est trié globalement :
 \CodeBlockInput[19][26]{c}{lemma-function-1-1.c}
 
 
-Notons que cette fonction ne doit pas modifier la mémoire (nous devons donc
-spécifier \CodeInline{assigns \textbackslash{}nothing}).
+Notons que cette fonction ne doit pas modifier la mémoire (c'est pour cela que
+nous devons spécifier \CodeInline{assigns \textbackslash{}nothing}).
 En effet, nous l'utilisons dans du code fantôme pour déduire des propriétés
 à propos du programme, si elle modifiait le contenu du tableau,
 le code fantôme modifierait le comportement du programme. Maintenant, produisons un
@@ -547,7 +547,7 @@ Revenons maintenant à notre preuve du tri par insertion et voyons comment
 nous débarrasser de nos preuves interactives pour cette fonction. Notons
 cependant que dans cette preuve, nous avons souvent besoin de macros puisqu'il
 n'a pas été particulièrement écrit avec comme objectif de le vérifier plus tard
-(pour cela, le lecteur peut se référer au livre \emph{ACSL by Example} qui peut être
+(pour cela, le lecteur peut se référer au livre \textit{ACSL by Example} qui peut être
 adapté avec une technique similaire et est beaucoup plus facile à prouver).
 Dans cet exemple, nous poussons les solveurs SMT vers leurs limites, à cause de
 la taille des contextes de preuve. En fonction de la puissance de la machine sur laquelle
@@ -855,6 +855,9 @@ que nous avons écrit une optimisation correcte pour la fonction qui calcule la
 somme des N premiers entiers.
 
 
+\stdsolution{ex-1-sum-of-n-integers-answer.c}
+
+
 \levelFourTitle{Propriétés à propos du comptage d'occurrence}
 
 
@@ -901,6 +904,9 @@ d'erreurs d'exécution ainsi que les options \CodeInline{-warn-unsigned-overflow
 et \CodeInline{-warn-unsigned-downcast}.
 
 
+\stdsolution{ex-2-l_occurrences_of-props-answer.c}
+
+
 \levelFourTitle{Un vrai exemple avec la somme}
 
 
@@ -910,5 +916,7 @@ les annotations pour assurer que plus aucun lemme classique n'est nécessaire.
 Voici un squelette pour le fichier :
 
 
-
 \CodeBlockInput[5]{c}{ex-3-sum-content.c}
+
+
+\stdsolution{ex-3-sum-content-answer.c}

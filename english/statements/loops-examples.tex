@@ -380,6 +380,9 @@ different functions.
 The two last functions should be written by just calling the two first ones.
 
 
+\stdsolution{ex-1-forall-exists-answer.c}
+
+
 \levelFourTitle{Non-mutating: Equality of ranges}
 
 
@@ -390,6 +393,9 @@ your postcondition should contain an existential quantifier.
 
 
 \CodeBlockInput[7][13]{c}{ex-2-equal.c}
+
+
+\stdsolution{ex-2-equal-answer.c}
 
 
 \levelFourTitle{Binary Search}
@@ -421,6 +427,15 @@ and the proof. As a hint, we advise making \CodeInline{up} an excluded
 bound for the search.
 
 
+\begin{Information}
+  Solution to the exercise on the GitHub repository of this tutorial:
+  \begin{itemize}
+    \item \solution{\texttt{int} size}{ex-3-binary-search-answer.c}
+    \item \solution{\texttt{size\_t} size}{ex-3-binary-search-u-answer.c}
+  \end{itemize}
+\end{Information}
+
+
 \levelFourTitle{Mutating: Addition of vectors}
 
 
@@ -433,6 +448,9 @@ the same vector should be usable for both input vectors.
 \CodeBlockInput[7][9]{c}{ex-4-add-vectors.c}
 
 
+\stdsolution{ex-4-add-vectors-answer.c}
+
+
 \levelFourTitle{Mutating: Reverse}
 
 
@@ -442,6 +460,9 @@ Use the previously proved \CodeInline{swap} function.
 
 
 \CodeBlockInput[7][11]{c}{ex-5-reverse.c}
+
+
+\stdsolution{ex-5-reverse-answer.c}
 
 
 \levelFourTitle{Mutating: Copy}
@@ -482,3 +503,6 @@ Finally, it is also possible to write a function that copies the elements from
 the end to the beginning, in this case, again, arrays can overlap, but the
 condition is not exactly the same. Write, specify and prove the function
 \CodeInline{copy\_backward} that copies elements in the reverse order.
+
+
+\stdsolution{ex-6-copy-answer.c}

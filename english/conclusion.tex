@@ -118,9 +118,9 @@ most commonly used and interesting to know from a static and dynamic
 verification point of view are certainly those:
 \begin{itemize}
 \item abstract interpretation analysis using
-\externalLink{EVA}{http://frama-c.com/value.html},
+\externalLink{EVA}{https://www.frama-c.com/fc-plugins/eva.html},
 \item the transformation of annotation into runtime verification using
-\externalLink{E-ACSL}{http://frama-c.com/eacsl.html}.
+\externalLink{E-ACSL}{https://www.frama-c.com/fc-plugins/e-acsl.html}.
 \end{itemize}
 
 The goal of the first one is to compute the domain of the different
@@ -151,6 +151,16 @@ the Frama-C kernel. A lot of tasks can be realized by the analysis of
 the source code and Frama-C allows to build them as easily as possible.
 
 
+For all of this, one can read the book
+\externalLink
+{\textit{Guide to Software Verification with Frama-C }}
+{https://link.springer.com/book/10.1007/978-3-031-55608-1}
+that gathers a lot of resources to learn how to use Frama-C. It covers ACSL, of
+course, the different analysis tools and how to combine them, but also
+feedback from industrial users of Frama-C for verifying safety or security
+properties.
+
+
 \levelThreeTitle{With deductive proof}
 
 
@@ -158,16 +168,15 @@ Along this tutorial we used WP to generate verification conditions starting
 from programs with their specification. Next we have used automatic
 solvers to assure that these properties were indeed verified.
 
-When we use other solvers than Alt-Ergo and Rocq, the communication with
-this solver in provided by a translation to the Why3 language that will
-next be used to bridge the gap to automatic solvers. But this is not the
+The communication with external solvers is provided by using Why3 that
+bridges the gap to automatic solvers. But this is not the
 only way to use Why3. It can also be used itself to write programs and
 prove them. It especially provides a set of theories for some common
 data structures.
 
 There are some proofs that cannot be discharged by automatic solvers. In
-such a case, we have to provide these proofs interactively. WP, like
-Why3, can extract its verification conditions to Rocq, and it is very
+such a case, we have to provide these proofs interactively. In this case,
+Why3 can extract the verification conditions to Rocq, and it is very
 interesting to study
 this language. In the context of Frama-C, we can produce reusable lemmas
 libraries proved with Rocq. But Rocq can also be used for many

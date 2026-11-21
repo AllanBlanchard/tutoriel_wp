@@ -717,7 +717,7 @@ l'invariant.
 
 
 
-\levelThreeTitle{Exercice}
+\levelThreeTitle{Exercices}
 
 
 \levelFourTitle{Invariant de boucle}
@@ -737,6 +737,8 @@ frama-c -wp your-file.c
 Est-ce que la propriété $-100 \leq x \leq 100$ est un invariant correct ?
 Expliquer pourquoi.
 
+
+\stdsolution{ex-1-invariant-answer.c}
 
 
 \levelFourTitle{Loop variant}
@@ -758,6 +760,8 @@ une variable qui enregistre exactement le nombre d'itérations restantes et l'ut
 comme variant. Il est possible qu'un invariant supplémentaire soit nécessaire.
 
 
+\stdsolution{ex-2-variant-answer.c}
+
 
 \levelFourTitle{Loop assigns}
 
@@ -777,6 +781,9 @@ annotations différentes (notons que nous pouvons avoir besoin d'un label C dans
 le code). Que peut-on déduire à propos de la clause \CodeInline{loop assigns} ?
 
 
+\stdsolution{ex-3-assigns-answer.c}
+
+
 \levelFourTitle{Terminaison prématurée}
 
 
@@ -785,3 +792,6 @@ assertions aux lignes 9 et 10 ainsi que le contrat de boucle.
 
 
 \CodeBlockInput[6][15]{c}{ex-4-early.c}
+
+
+\stdsolution{ex-4-early-answer.c}

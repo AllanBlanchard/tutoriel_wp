@@ -505,7 +505,7 @@ et notre matériel. Cela concerne principalement nos préconditions. Par exemple
 la fonction valeur absolue n'a, au fond, pas vraiment de précondition à
 satisfaire : c'est la machine cible qui détermine qu'une condition supplémentaire
 doit être vérifiée en raison du complément à deux. Comme nous le verrons dans le
-chapitre \ref{l1:proof-methodologies}, vérifier l'absence de \emph{runtime-errors}
+chapitre \ref{l1:proof-methodologies}, vérifier l'absence de \textit{runtime-errors}
 peut aussi impacter nos postconditions, pour l'instant laissons cela de côté.
 
 
@@ -542,6 +542,9 @@ frama-c-gui your-file.c -wp -wp-rte
 Si cela échoue, compléter le contrat en ajoutant la bonne précondition.
 
 
+\stdsolution{ex-1-div-rem-answer.c}
+
+
 \levelFourTitle{Remettre à zéro selon une condition}
 
 
@@ -560,6 +563,9 @@ Lancer la commande :
 \begin{CodeBlock}{bash}
 frama-c-gui your-file.c -wp -wp-rte
 \end{CodeBlock}
+
+
+\stdsolution{ex-2-reset-on-cond-answer.c}
 
 
 \levelFourTitle{Addition de valeurs pointées}
@@ -596,6 +602,15 @@ façon à implémenter ce comportement. Modifier le contrat de la fonction
 devraient rester inchangés.
 
 
+\begin{Information}
+  Solution à l'exercice sur le répertoire GitHub du tutoriel :
+  \begin{itemize}
+    \item \solution{Partie 1}{ex-3-add-ptr-answer-1.c}
+    \item \solution{Partie 2}{ex-3-add-ptr-answer-2.c}
+  \end{itemize}
+\end{Information}
+
+
 \levelFourTitle{Maximum de valeurs pointées}
 
 
@@ -629,6 +644,15 @@ valeur. Modifier le code de façon à assurer cela ainsi que le contrat.
 Notons que la variable  \CodeInline{x} n'est plus nécessaire dans la fonction
 \CodeInline{main} et que nous pouvons changer l'assertion en ligne 15 pour
 mettre en lumière le nouveau comportement de la fonction.
+
+
+\begin{Information}
+  Solution à l'exercice sur le répertoire GitHub du tutoriel :
+  \begin{itemize}
+    \item \solution{Partie 1}{ex-4-max-ptr-answer-1.c}
+    \item \solution{Partie 2}{ex-4-max-ptr-answer-2.c}
+  \end{itemize}
+\end{Information}
 
 
 \levelFourTitle{Ordonner trois valeurs}
@@ -687,3 +711,6 @@ nous aider :
 Si la spécification est suffisamment précise, chaque assertion devrait être
 prouvée. Cependant, cela ne signifie pas que tous les cas ont été considérés,
 il ne faut pas hésiter à ajouter d'autres tests.
+
+
+\stdsolution{ex-5-order-3-answer.c}

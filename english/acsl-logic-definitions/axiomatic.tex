@@ -379,7 +379,7 @@ no such character exists.
 And now, we can be more precise for our definition of
 \CodeInline{\textbackslash{}valid\_read\_string}, a valid string is a
 string that is valid from the first index to \CodeInline{strlen}
-of the string, and whose value is nonnegative (since an
+of the string, and whose value is non-negative (since an
 infinite string is not a valid string):
 
 
@@ -450,6 +450,9 @@ Re-express the axiomatic definition in a form that allows you to prove the
 program.
 
 
+\stdsolution{ex-1-occurrences_of-answer.c}
+
+
 \levelFourTitle{Greatest Common Divisor}
 
 
@@ -461,6 +464,9 @@ prove it:
 \CodeBlockInput[5]{c}{ex-2-gcd.c}
 
 
+\stdsolution{ex-2-gcd-answer.c}
+
+
 \levelFourTitle{Sum of the N first integers}
 
 
@@ -470,6 +476,14 @@ integers as an axiomatic definition. Write the contract of the following
 
 
 \CodeBlockInput[5]{c}{ex-3-sum-N-first-ints.c}
+
+\begin{Information}
+  Solution to the exercise on the GitHub repository of this tutorial:
+  \begin{itemize}
+    \item \solution{C file}{ex-3-sum-N-first-ints-answer.c}
+    \item \lemmaproof{ex-3-sum-N-first-ints-answer}{sum\_n\_value}{30}{43}
+  \end{itemize}
+\end{Information}
 
 
 \levelFourTitle{Permutation}
@@ -483,3 +497,6 @@ two memory labels).
 
 
 \CodeBlockInput[5]{c}{ex-4-sort.c}
+
+
+\stdsolution{ex-4-sort-answer.c}

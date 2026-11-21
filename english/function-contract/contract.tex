@@ -784,6 +784,9 @@ there is one condition about \CodeInline{b} alone for one of the alarms, and
 one about \CodeInline{a} alone is enough to avoid the second one.
 
 
+\stdsolution{ex-1-modulo-answer.c}
+
+
 \levelFourTitle{Distance}
 
 
@@ -814,6 +817,8 @@ frama-c-gui your-file.c -wp -wp-rte
 It should fail, adapt the contract by adding the right precondition.
 
 
+\stdsolution{ex-2-distance-answer.c}
+
 
 \levelFourTitle{Alphabet Letter}
 
@@ -839,6 +844,8 @@ frama-c-gui your-file.c -wp -wp-rte
 All verification conditions should be proved, including the assertions in the
 main function.
 
+
+\stdsolution{ex-3-alphabet-answer.c}
 
 
 \levelFourTitle{Days of the month}
@@ -896,6 +903,14 @@ For example:
 Modify the postcondition by using this notation.
 
 
+\begin{Information}
+  Solution to the exercise on the GitHub repository of this tutorial:
+  \begin{itemize}
+    \item \solution{Part 1}{ex-4-day-month-answer-1.c}
+    \item \solution{Part 2}{ex-4-day-month-answer-2.c}
+  \end{itemize}
+\end{Information}
+
 
 \levelFourTitle{Last angle of a triangle}
 
@@ -930,3 +945,6 @@ frama-c-gui your-file.c -wp -wp-rte
 
 If it fails, add the right precondition. Note that the values of the different
 angles should not be more than 180 degrees, including the resulting angle.
+
+
+\stdsolution{ex-5-last-angle-answer.c}

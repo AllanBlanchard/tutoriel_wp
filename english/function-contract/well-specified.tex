@@ -532,6 +532,9 @@ frama-c-gui your-file.c -wp -wp-rte
 If it fails, complete the contract by adding the right precondition.
 
 
+\stdsolution{ex-1-div-rem-answer.c}
+
+
 
 \levelFourTitle{Reset on condition}
 
@@ -552,6 +555,8 @@ Run the command:
 frama-c-gui your-file.c -wp -wp-rte
 \end{CodeBlock}
 
+
+\stdsolution{ex-2-reset-on-cond-answer.c}
 
 
 \levelFourTitle{Addition of pointed-to values}
@@ -590,6 +595,15 @@ Now the result of the sum should be stored in \CodeInline{r}.
 Modify the calls accordingly in the main function as well as in the code and the contract
 of \CodeInline{add}. \CodeInline{*p} and \CodeInline{*q} should remain
 unchanged.
+
+
+\begin{Information}
+  Solution to the exercise on the GitHub repository of this tutorial:
+  \begin{itemize}
+    \item \solution{Part 1}{ex-3-add-ptr-answer-1.c}
+    \item \solution{Part 2}{ex-3-add-ptr-answer-2.c}
+  \end{itemize}
+\end{Information}
 
 
 
@@ -632,6 +646,14 @@ the variable \CodeInline{x} is not necessary anymore in the \CodeInline{main}
 function and that we can change the assertion on line 15 to reflect the
 new behavior of the function.
 
+
+\begin{Information}
+  Solution to the exercise on the GitHub repository of this tutorial:
+  \begin{itemize}
+    \item \solution{Part 1}{ex-4-max-ptr-answer-1.c}
+    \item \solution{Part 2}{ex-4-max-ptr-answer-2.c}
+  \end{itemize}
+\end{Information}
 
 
 \levelFourTitle{Order 3 values}
@@ -691,3 +713,6 @@ As a helper, one could use the following test program:
 If the specification is precise enough, each assertion should be proved.
 However, that does not mean that all cases have been considered by our tests,
 so do not hesitate to add other cases.
+
+
+\stdsolution{ex-5-order-3-answer.c}

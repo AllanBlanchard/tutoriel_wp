@@ -59,7 +59,7 @@ we will have to check if -1 is even, and then -3, -5, etc., infinitely.
 This means that the following assertion cannot be proved:
 
 
-\CodeBlockInput[20]{c}{even-0.c}
+\CodeBlockInput[20][23]{c}{even-0.c}
 
 
 
@@ -88,7 +88,7 @@ is no inductive case that corresponds to this value, so we can
 deduce that the property is false.
 
 
-\CodeBlockInput[11]{c}{even-1.c}
+\CodeBlockInput[11][14]{c}{even-1.c}
 
 
 Of course, defining that some natural number is even inductively is not a
@@ -314,8 +314,16 @@ states that some integer equals the sum of the N first integers.
 
 
 Adapt the contract of the function and the lemma(s). Note that lemma(s) could
-certainly not be proved by SMT solvers. We provide a solution and corresponding
-Rocq proofs on the GitHub repository of this book.
+certainly not be proved by SMT solvers.
+
+
+\begin{Information}
+  Solution to the exercise on the GitHub repository of this tutorial:
+  \begin{itemize}
+    \item \solution{C file}{ex-1-sum-N-first-ints-answer.c}
+    \item \lemmaproof{ex-1-sum-N-first-ints-answer}{sum\_n\_value}{16}{24}
+  \end{itemize}
+\end{Information}
 
 
 \levelFourTitle{Greatest Common Divisor}
@@ -344,6 +352,8 @@ Express the postcondition of the function, and complete the invariant to prove
 that it is verified. Note that the invariant should make use of the inductive
 case \CodeInline{gcd\_succ}.
 
+
+\stdsolution{ex-2-gcd-answer.c}
 
 
 \levelFourTitle{Power function}
@@ -400,6 +410,16 @@ that we have $x^{old(n)} = r \times p^n$ throughout the loop, until we have $n =
 thus $p^n = 1$.
 
 
+\begin{Information}
+  Solution to the exercise on the GitHub repository of this tutorial:
+  \begin{itemize}
+    \item \solution{C file}{ex-3-fpower-answer.c}
+    \item \lemmaproof{ex-3-fpower-answer}{power\_odd}{22}{33}
+    \item \lemmaproof{ex-3-fpower-answer}{power\_even}{33}{55}
+  \end{itemize}
+\end{Information}
+
+
 \levelFourTitle{Permutation}
 
 
@@ -436,3 +456,6 @@ permutation.
 
 
 \CodeBlockInput[47][51]{c}{ex-4-rotate-permutation.c}
+
+
+\stdsolution{ex-4-rotate-permutation-answer.c}

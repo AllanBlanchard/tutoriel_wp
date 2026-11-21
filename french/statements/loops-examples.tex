@@ -193,7 +193,7 @@ contenu d'une cellule mémoire : il est alors pertinent de la contraindre à
 ce qui peut effectivement exister dans la mémoire en question.
 
 
-Venons-en aux annotations de la boucle. La première étape consiste à ajouter la
+Venons-en aux annotations de la boucle. La première étape à appliquer consiste à ajouter la
 clause \CodeInline{loop assigns}. Ici, elle est simple : la boucle ne modifie que la
 variable \CodeInline{i}. La valeur de cette variable doit donc être bornée, elle
 va de \CodeInline{0} à \CodeInline{length}, c'est notre premier invariant :
@@ -395,6 +395,9 @@ Les deux dernières fonctions doivent être écrites en appelant seulement les d
 premières.
 
 
+\stdsolution{ex-1-forall-exists-answer.c}
+
+
 \levelFourTitle{Fonction sans modification : Égalité de plages de valeurs}
 
 
@@ -406,6 +409,9 @@ devrait contenir un quantificateur existentiel.
 
 
 \CodeBlockInput[7][13]{c}{ex-2-equal.c}
+
+
+\stdsolution{ex-2-equal-answer.c}
 
 
 \levelFourTitle{Fonction sans modification : recherche dichotomique}
@@ -440,6 +446,15 @@ la spécification/les invariants. Conseil : s'arranger pour que \CodeInline{up}
 soit une borne exclue de la recherche.
 
 
+\begin{Information}
+  Solution à l'exercice sur le répertoire GitHub du tutoriel :
+  \begin{itemize}
+    \item \solution{Taille de type \texttt{int}}{ex-3-binary-search-answer.c}
+    \item \solution{Taille de type \texttt{size\_t}}{ex-3-binary-search-u-answer.c}
+  \end{itemize}
+\end{Information}
+
+
 \levelFourTitle{Fonction avec modification : addition de vecteurs}
 
 
@@ -453,6 +468,9 @@ pouvoir être utilisé pour les deux vecteurs d'entrée.
 \CodeBlockInput[7][9]{c}{ex-4-add-vectors.c}
 
 
+\stdsolution{ex-4-add-vectors-answer.c}
+
+
 \levelFourTitle{Fonction avec modification : inverse}
 
 
@@ -462,6 +480,9 @@ boucle. Utiliser la fonction \CodeInline{swap} précédemment prouvée.
 
 
 \CodeBlockInput[7][11]{c}{ex-5-reverse.c}
+
+
+\stdsolution{ex-5-reverse-answer.c}
 
 
 \levelFourTitle{Fonction avec modification : copie}
@@ -494,7 +515,7 @@ dans la plage source :
 Essentiellement, en copiant des éléments dans cet ordre, nous pouvons les
 décaler depuis la fin d'une plage vers le début. En revanche, cela signifie que
 nous devons être plus précis dans notre contrat : nous ne garantissons plus une
-égalité avec le tableau source, mais avec les \emph{anciennes} valeurs du tableau
+égalité avec le tableau source, mais avec les \textit{anciennes} valeurs du tableau
 source. Nous devons également être plus précis dans notre invariant, d'abord en
 spécifiant aussi la relation avec l'état précédent de la mémoire, et ensuite en
 ajoutant un invariant qui nous dit que le tableau source n'est pas modifié entre
@@ -506,3 +527,6 @@ la fin vers le début. Dans ce cas, à nouveau, les plages de valeurs peuvent se
 chevaucher, mais la condition n'est pas exactement la même. Écrire, spécifier et
 prouver la fonction \CodeInline{copy\_backward} qui copie les éléments dans le
 sens inverse.
+
+
+\stdsolution{ex-6-copy-answer.c}
