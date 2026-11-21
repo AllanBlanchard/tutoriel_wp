@@ -13,11 +13,11 @@ jobs:
     container: allanblanchardgh/tutoriel_wp:latex
     steps:
       - name: retrieve sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: compile
         run: make -C english
       - name: archive PDFs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: frama-c-wp-tutorial-en.pdf
           path: english/main.pdf
@@ -28,11 +28,11 @@ jobs:
     container: allanblanchardgh/tutoriel_wp:latex
     steps:
       - name: retrieve sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: compile
         run: make -C french
       - name: archive PDFs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: frama-c-wp-tutoriel-fr.pdf
           path: french/main.pdf
@@ -43,6 +43,6 @@ jobs:
     container: allanblanchardgh/tutoriel_wp:frama-c
     steps:
       - name: retrieve sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: execute
         run: cd code ; make
