@@ -18,7 +18,7 @@
   lemma shift_ptr { TO_COMPLETE }:
     \true ; // to complete
 
-  lemma shift_transivity{ TO_COMPLETE }:
+  lemma shift_transitivity{ TO_COMPLETE }:
     \true ; // to complete
 */
 

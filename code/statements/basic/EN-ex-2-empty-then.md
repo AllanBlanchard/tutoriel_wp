@@ -32,7 +32,7 @@ By replacing in the inference rule:
 ```
 
 Both `P && cond` and `P && !cond` must imply `Q`, thus, no
-matter what `cond`, `P` must imply `Q`. Thus we could have
+matter what `cond`, `P` must imply `Q`. Thus, we could have
 written using the consequence rule:
 
 
@@ -61,4 +61,4 @@ Thus, since in the previous derivation tree we have the triple:
 { Q } if cond then skip else skip { Q }
 ```
 
-We can conclude that the complete statement is equivalent to a `skip` acion.
+We can conclude that the complete statement is equivalent to a `skip` action.

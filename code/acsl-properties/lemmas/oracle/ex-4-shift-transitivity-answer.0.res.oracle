@@ -9,7 +9,7 @@
 [wp] [Valid] Goal shift_array_terminates (Cfg) (Trivial)
 [wp] 28 goals scheduled
 [wp] [Valid] typed_lemma_shift_ptr (Coq) (Cached)
-[wp] [Valid] typed_lemma_shift_transivity (Coq) (Cached)
+[wp] [Valid] typed_lemma_shift_transitivity (Coq) (Cached)
 [wp] [Valid] typed_lemma_shifted_cell_transitivity (Alt-Ergo) (Cached)
 [wp] [Valid] typed_shift_array_ensures (Alt-Ergo) (Cached)
 [wp] [Valid] typed_shift_array_loop_invariant_established (Qed)

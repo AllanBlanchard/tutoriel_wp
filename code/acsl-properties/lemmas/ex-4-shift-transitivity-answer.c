@@ -26,7 +26,7 @@
       shifted_cell{L2, L3}(p+s1, s2) ==>
         shifted_cell{L1, L3}(p, s1+s2);
 
-  lemma shift_transivity{L1, L2, L3}:
+  lemma shift_transitivity{L1, L2, L3}:
     \forall int* arr, integer fst, integer last, integer s1, s2 ;
     shifted{L1, L2}(arr, fst, last, s1) ==>
     shifted{L2, L3}(arr, fst+s1, last+s1, s2) ==>
