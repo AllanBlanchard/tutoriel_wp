@@ -380,12 +380,19 @@ calling exit is propagated:
 \CodeBlockInput{c}{exit-3.c}
 
 
+\image{exits}
+
+
 It is thus recommended indicating the precise behaviors that can lead
-to a call to \CodeInline{exit} and to forbid calls to \CodeInline{exit} in the
+to a call to \CodeInline{exit} and to forbid these calls in the
 other cases:
 
 
-\CodeBlockInput{c}{exit-4.c}
+\CodeBlockInput[3][13]{c}{exit-4.c}
+
+
+Note that a function that calls \CodeInline{exit} does not terminate on this
+program path, but we will come back to this later.
 
 
 \paragraph*{[Formal] WP calculus}

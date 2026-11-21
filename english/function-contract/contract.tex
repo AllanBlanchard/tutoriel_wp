@@ -202,13 +202,25 @@ frama-c-gui abs.c
 \image{1-abs-1}
 
 
-The window of Frama-C opens and in the panel dedicated to files and
-functions, we can select the \CodeInline{abs} function. At each
-\CodeInline{ensures} line, we can see a blue circle, which indicates that no
-verification has been attempted for these properties.
+The Frama-C window opens. The different sidebars (red squared buttons) provide
+selection and configuration tools. In this tutorial, we will use:
+\begin{itemize}
+  \item The ``screen'' button that provide access to our three main views :
+        ``Console'' to see error logs, ``WP view'' dedicated to WP plugin and
+        the source code, and (rarely) ``Source code'' to see the link with the
+        original source code.
+  \item The ``Files'' button (here, selected) to see the symbols involved in the
+        program.
+  \item The ``WP'' button to configure the WP analysis.
+\end{itemize}
+In the ``Files'' sidebar dedicated to files and functions, we can select the
+\CodeInline{abs} function. The red squared buttons allows selecting the display
+mode for the source tree.
+At each \CodeInline{ensures} line, we can see a blue circle, which indicates
+that no verification has been attempted for these properties.
 
 
-
+We can select the WP view (reminder: ``screen'' button, ``WP view'').
 We ask the verification of the code by right-clicking the name of the
 function within the center window and ``Prove function annotations by WP'':
 
@@ -522,7 +534,7 @@ conforms to the required precondition:
 
 
 
-\CodeBlockInput[15]{c}{abs-5.c}
+\CodeBlockInput[15][20]{c}{abs-5.c}
 
 
 

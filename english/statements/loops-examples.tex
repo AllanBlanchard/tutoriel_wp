@@ -321,7 +321,7 @@ the locations that have not been modified yet by the loop in some iteration:
 
 \begin{CodeBlock}{c}
 for(size_t i = 0; i < length; ++i){
-    //@assert array[i] == \at(array[i], Pre); // proof failure
+    //@ assert array[i] == \at(array[i], Pre); // proof failure
     if(array[i] == old) array[i] = new;
 }
 \end{CodeBlock}

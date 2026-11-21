@@ -57,9 +57,11 @@ the meaning of \CodeInline{complete} and \CodeInline{disjoint}:
 
 
 \begin{Warning}
-  Even if \CodeInline{assigns} is a postcondition, indicating different assigns
-  in each behavior is currently not well-handled by WP. If we need to specify
-  this, we will:
+  Even if \CodeInline{assigns} is a postcondition, and it is possible to specify
+  and prove it for each behavior, it is currently not well-handled by WP at call
+  site.
+
+  If we need to specify this, we:
   \begin{itemize}
   \item put our \CodeInline{assigns} before the behaviors (as we have done in our
     example) with all potentially modified non-local elements,
